@@ -1,0 +1,13 @@
+﻿<Window x:Class="Test.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="179" Width="176"
+        Closing="Window_Closing"
+        Deactivated="Window_Deactivated"
+        >
+
+    <DockPanel>
+        <Button x:Name="btn" Content="Get Color" Click="btn_Click" DockPanel.Dock="Top"/>
+        <Canvas x:Name="canvas" />
+    </DockPanel>
+</Window>

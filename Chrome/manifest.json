@@ -1,0 +1,21 @@
+{
+  "name": "Treehopper",
+  "description": "Treehopper Chrome App Demo",
+  "version": "1.0",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": ["usb"],
+  "optional_permissions" : [{
+	"usbDevices": [
+		{
+		  "vendorId": 1240,
+		  "productId": 62502,
+		  "interfaceId": 0
+		}
+	  ]}],
+  "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }
+}
