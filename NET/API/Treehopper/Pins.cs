@@ -10,7 +10,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin1(TreehopperBoard device)
+        internal Pin1(TreehopperUSB device)
             : base(device, 1)
         {
             ioName =  "RA4";
@@ -42,7 +42,7 @@
         /// </summary>
         public Pwm Pwm { get; set; }
 
-        internal Pin2(TreehopperBoard device)
+        internal Pin2(TreehopperUSB device)
             : base(device, 2)
         {
             ioName =  "RC5";
@@ -64,7 +64,7 @@
     /// </summary>
     public class Pin3 : Pin
     {
-        internal Pin3(TreehopperBoard device)
+        internal Pin3(TreehopperUSB device)
             : base(device, 3)
         {
             ioName =  "RC4";
@@ -90,7 +90,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin4(TreehopperBoard device)
+        internal Pin4(TreehopperUSB device)
             : base(device, 4)
         {
             ioName =  "RC3";
@@ -134,7 +134,7 @@
         /// </summary>
         public Pwm Pwm { get; set; }
 
-        internal Pin5(TreehopperBoard device)
+        internal Pin5(TreehopperUSB device)
             : base(device, 5)
         {
             ioName =  "RC6";
@@ -175,7 +175,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin6(TreehopperBoard device) : base(device, 6)
+        internal Pin6(TreehopperUSB device) : base(device, 6)
         {
             ioName =  "RC7";
             AnalogIn = new AnalogIn(this);
@@ -214,7 +214,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin7(TreehopperBoard device) : base(device, 7)
+        internal Pin7(TreehopperUSB device) : base(device, 7)
         {
             ioName =  "RC2";
             AnalogIn = new AnalogIn(this);
@@ -248,7 +248,7 @@
     /// </summary>
     public class Pin8 : Pin
     {
-        internal Pin8(TreehopperBoard device)
+        internal Pin8(TreehopperUSB device)
             : base(device, 8)
         {
             ioName =  "RB7";
@@ -266,7 +266,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin9(TreehopperBoard device) : base(device, 9)
+        internal Pin9(TreehopperUSB device) : base(device, 9)
         {
             ioName =  "RB5";
             AnalogIn = new AnalogIn(this);
@@ -297,7 +297,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin10(TreehopperBoard device)
+        internal Pin10(TreehopperUSB device)
             : base(device, 10)
         {
             ioName =  "RB4";
@@ -326,7 +326,7 @@
     /// </summary>
     public class Pin11 : Pin
     {
-        internal Pin11(TreehopperBoard device)
+        internal Pin11(TreehopperUSB device)
             : base(device, 11)
         {
             ioName =  "RB6";
@@ -344,7 +344,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set; }
 
-        internal Pin12(TreehopperBoard device)
+        internal Pin12(TreehopperUSB device)
             : base(device, 12)
         {
             ioName = "RC1";
@@ -384,7 +384,7 @@
         /// </summary>
         public AnalogIn AnalogIn { get; set;  }
 
-        internal Pin13(TreehopperBoard device)
+        internal Pin13(TreehopperUSB device)
             : base(device, 13)
         {
             ioName =  "RC0";
@@ -419,7 +419,7 @@
     /// </summary>
     public class Pin14 : Pin
     {
-        internal Pin14(TreehopperBoard device)
+        internal Pin14(TreehopperUSB device)
             : base(device, 14)
         {
             ioName = "RA5";

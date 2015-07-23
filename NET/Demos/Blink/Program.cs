@@ -1,46 +1,43 @@
 ﻿using System;
 using Treehopper;
 using System.Threading;
-
 namespace Blink
 {
+    /// <summary>
+    /// This demo blinks an LED attached to pin 1, using basic procedural programming.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Treehopper provides an asynchronous, event-driven API that helps your apps respond to plug / unplug detection.
+    /// While this is the recommended way of working with TreehopperUSB references, many users new to C# and high-level languages
+    /// in general may be uncomfortable with event-driven programming. To learn more about asynchronous usage, check out the
+    /// BlinkEventDriven example.
+    /// </para>
+    /// <para>
+    /// This example illustrates how to work with Treehopper boards procedurally to blink an LED. 
+    /// </para>
+    /// </remarks>
     class Program
     {
-
-        static TreehopperBoard Board;
         static System.Timers.Timer timer;
         static void Main(string[] args)
         {
-            /// You may be tempted to sit in a while() loop and use Thread.Sleep() for delays,
-            /// but this will block the thread that's listening for board changes. Instead,
-            /// use a timer running on the application's main thread to blink the LED.
-            timer = new System.Timers.Timer(1000);
-            timer.Elapsed += timer_Elapsed;
-            TreehopperManager manager = new TreehopperManager();
-            Console.Write("Waiting for board to be connected...");
-            manager.BoardAdded += manager_BoardAdded;
-            manager.BoardRemoved += manager_BoardRemoved;
-            Thread.Sleep(-1); // Wait here forever.
-        }
+            TreehopperUSB Board = TreehopperUSB.First();        // Get a reference to the first TreehopperUSB board connected
+            if(Board != null)                                   // Our reference is null if we couldn't find a board
+            {
+				Console.WriteLine("Found board: " + Board);
+				Board.Open();								// You must explicitly open a board before communicating with it
+                while (Board.IsConnected)                       // repeat this block of code until we unplug the board
+                {
+                    Board.Pin1.ToggleOutput();                  // toggle pin 1's output
+                    Thread.Sleep(1000);                         // Wait 1 second
+                }
+            }
+            else                                                // If our reference was null, there wasn't a board attached
+            {
+                Console.WriteLine("No board was found when application was started");
+            }
 
-        // This is called when a board is plugged into the computer.
-        static void manager_BoardAdded(object sender, TreehopperBoard board)
-        {
-            Board = board;
-            Console.WriteLine("Board found:");
-            Console.WriteLine(board.Description);
-            Board.Open();
-            timer.Start();
-        }
-
-        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            Board.Pin1.ToggleOutput();
-        }
-
-        static void manager_BoardRemoved(TreehopperManager sender, TreehopperBoard board)
-        {
-            timer.Stop();
         }
     }
 }

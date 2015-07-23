@@ -1,3 +1,5 @@
+#define TREEHOPPER_STATIC_LINK // must be put above the Treehopper.h include line
+
 #include "mex.h"
 #include <libusb.h>
 #include <stdio.h>

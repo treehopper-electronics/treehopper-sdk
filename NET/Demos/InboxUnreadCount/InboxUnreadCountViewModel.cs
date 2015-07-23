@@ -12,7 +12,7 @@ namespace InboxUnreadCount
 {
     public class InboxUnreadCountViewModel : ViewModelBase
     {
-        TreehopperBoard board;
+        TreehopperUSB board;
         SevenSegSpi display;
         System.Timers.Timer timer;
         public InboxUnreadCountViewModel()
@@ -133,7 +133,7 @@ namespace InboxUnreadCount
                 
         }
 
-        private void SetupApp(TreehopperBoard treehopperBoard)
+        private void SetupApp(TreehopperUSB treehopperBoard)
         {
             board = treehopperBoard;
             display = new SevenSegSpi(board.SPI, board.Pin1);

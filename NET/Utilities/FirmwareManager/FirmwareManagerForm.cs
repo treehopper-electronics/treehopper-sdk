@@ -15,7 +15,7 @@ namespace FirmwareManager
     public partial class FirmwareManagerForm : Form
     {
         IDeviceNotifier devNotifier;
-        TreehopperBoard Board;
+        TreehopperUSB Board;
         RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
         public FirmwareManagerForm()
         {
@@ -33,7 +33,7 @@ namespace FirmwareManager
             Console.WriteLine(e.ToString());
         }
 
-        void manager_BoardRemoved(object sender, TreehopperBoard board)
+        void manager_BoardRemoved(object sender, TreehopperUSB board)
         {
             Board = null;
             if (serialLabel.InvokeRequired)
@@ -47,7 +47,7 @@ namespace FirmwareManager
             }
         }
 
-        void manager_BoardAdded(object sender, TreehopperBoard board)
+        void manager_BoardAdded(object sender, TreehopperUSB board)
         {
             Board = board;
             if(serialLabel.InvokeRequired)

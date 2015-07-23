@@ -84,11 +84,11 @@ namespace Treehopper
         /// </summary>
         public string IOName { get { return ioName; } }
 
-        private TreehopperBoard board;
+        private TreehopperUSB board;
         /// <summary>
         /// This returns a reference to the Treehopper board this pin belongs to.
         /// </summary>
-        public TreehopperBoard Board { get { return board; } }
+        public TreehopperUSB Board { get { return board; } }
 
         PinInterruptMode interruptMode;
         bool digitalValue;
@@ -112,7 +112,7 @@ namespace Treehopper
         /// </summary>
         public SoftPwm SoftPwm { get; set;}
         
-        internal Pin(TreehopperBoard board, byte pinNumber)
+        internal Pin(TreehopperUSB board, byte pinNumber)
         {
             this.board = board;
             this.PinNumber = pinNumber;

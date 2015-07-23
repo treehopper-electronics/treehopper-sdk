@@ -83,7 +83,7 @@ namespace Treehopper.Libraries
         // can't assume that its in that state when a sketch starts (and the
         // LiquidCrystal ructor is called).
 
-        public I2cCharLcd(TreehopperBoard board, int lcd_Addr,int lcd_cols,int lcd_rows)
+        public I2cCharLcd(TreehopperUSB board, int lcd_Addr,int lcd_cols,int lcd_rows)
         {
            _I2C = board.I2C;
           _Addr = lcd_Addr;

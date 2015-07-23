@@ -31,9 +31,9 @@ namespace Treehopper
         /// Resolution, in microseconds
         /// </summary>
         private int resolution = 43;
-        TreehopperBoard board;
+        TreehopperUSB board;
 
-        internal SoftPwmManager(TreehopperBoard board)
+        internal SoftPwmManager(TreehopperUSB board)
         {
             this.board = board;
             pins = new Dictionary<int, SoftPwmPinConfig>();

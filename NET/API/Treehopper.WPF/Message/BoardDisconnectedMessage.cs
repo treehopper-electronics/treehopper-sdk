@@ -2,6 +2,6 @@
 {
     public class BoardDisconnectedMessage
     {
-        public TreehopperBoard Board { get; set; }
+        public TreehopperUSB Board { get; set; }
     }
 }

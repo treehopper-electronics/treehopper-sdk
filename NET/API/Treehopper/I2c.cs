@@ -12,9 +12,9 @@ namespace Treehopper
     /// </summary>
     public class I2c
     {
-        TreehopperBoard device;
+        TreehopperUSB device;
 
-        internal I2c(TreehopperBoard device)
+        internal I2c(TreehopperUSB device)
         {
             this.device = device;
         }

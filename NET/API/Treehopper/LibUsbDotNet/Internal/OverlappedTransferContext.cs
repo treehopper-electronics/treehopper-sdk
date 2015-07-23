@@ -93,7 +93,8 @@ namespace LibUsbDotNet.Internal
                 if (iWait == WaitHandle.WaitTimeout) return ErrorCode.IoTimedOut;
                 return ErrorCode.IoCancelled;
             }
-
+            if (EndpointBase.Handle.IsInvalid == true)
+                return ErrorCode.GetOverlappedResult;
             bSuccess = EndpointBase.mUsbApi.GetOverlappedResult(EndpointBase.Handle, Overlapped.GlobalOverlapped, out transferredCount, true);
             if (!bSuccess)
             {

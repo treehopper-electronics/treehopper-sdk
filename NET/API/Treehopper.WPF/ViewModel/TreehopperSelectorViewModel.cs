@@ -13,7 +13,7 @@ namespace Treehopper.WPF.ViewModel
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperBoard> Boards { get { return manager.Boards; } }
+        public ObservableCollection<TreehopperUSB> Boards { get { return manager.Boards; } }
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>
@@ -21,7 +21,7 @@ namespace Treehopper.WPF.ViewModel
         /// <summary>
         /// Bind this property to the Selected property of your control to it.
         /// </summary>
-        public TreehopperBoard SelectedBoard
+        public TreehopperUSB SelectedBoard
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Treehopper.WPF.ViewModel
         }
 
 
-        private TreehopperBoard selectedBoard;
+        private TreehopperUSB selectedBoard;
 
         public RelayCommand WindowClosing { get; set; }
         
@@ -93,7 +93,7 @@ namespace Treehopper.WPF.ViewModel
             if (SelectedBoard != null)
                 SelectedBoard.Dispose();
             else
-                TreehopperBoard.UsbExit();
+                TreehopperUSB.UsbExit();
         }
 
         private bool CloseCommandCanExecute()

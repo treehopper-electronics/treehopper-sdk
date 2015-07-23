@@ -10,7 +10,7 @@ namespace Test
     /// </summary>
     public partial class MainWindow : Window
     {
-        TreehopperBoard myBoard;
+        TreehopperUSB myBoard;
         Pin1 led;
         ColorSensor_ADJDS311 colorSensor;
         Brush brush;
@@ -22,7 +22,7 @@ namespace Test
             manager.BoardAdded += manager_BoardAdded;
         }
 
-        void manager_BoardAdded(object sender, TreehopperBoard board)
+        void manager_BoardAdded(object sender, TreehopperUSB board)
         {
             myBoard = board;
             myBoard.Open();

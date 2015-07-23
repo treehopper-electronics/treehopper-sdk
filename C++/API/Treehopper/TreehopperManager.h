@@ -6,15 +6,19 @@
 
 using namespace std;
 
-#ifdef TREEHOPPER_EXPORTS
-#define EXPORT __declspec(dllexport)
+#ifdef TREEHOPPER_STATIC_LINK
+#define TREEHOPPER_API
 #else
-#define EXPORT __declspec(dllimport)
+#ifdef TREEHOPPER_EXPORTS
+#define TREEHOPPER_API __declspec(dllexport)
+#else
+#define TREEHOPPER_API __declspec(dllimport)
+#endif
 #endif
 
 class TreehopperBoard;
 
-class EXPORT TreehopperManager
+class TREEHOPPER_API TreehopperManager
 {
 public:
 	TreehopperManager();

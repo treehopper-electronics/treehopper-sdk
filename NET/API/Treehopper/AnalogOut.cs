@@ -15,14 +15,14 @@ namespace Treehopper
     /// </remarks>
     public class AnalogOut
     {
-        TreehopperBoard Board;
+        TreehopperUSB Board;
         double dacValue;
         bool enabledOnPin4;
         bool enabledOnPin7;
         byte dacConfig;
 
 
-        internal AnalogOut(TreehopperBoard board)
+        internal AnalogOut(TreehopperUSB board)
         {
             Board = board;
         }

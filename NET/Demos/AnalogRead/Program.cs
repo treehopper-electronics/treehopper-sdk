@@ -15,7 +15,7 @@ namespace AnalogRead
             Thread.Sleep(-1); // wait forever for board to be attached.
         }
 
-        static void manager_BoardAdded(TreehopperManager sender, TreehopperBoard board)
+        static void manager_BoardAdded(TreehopperManager sender, TreehopperUSB board)
         {
             Console.WriteLine("Board found.");
             board.Open();

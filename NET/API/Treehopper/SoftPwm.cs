@@ -15,9 +15,9 @@
     public class SoftPwm : IPwm
     {
         Pin Pin;
-        TreehopperBoard Board;
+        TreehopperUSB Board;
         bool isEnabled;
-        internal SoftPwm(TreehopperBoard board, Pin pin)
+        internal SoftPwm(TreehopperUSB board, Pin pin)
         {
             this.Board = board;
             this.Pin = pin;

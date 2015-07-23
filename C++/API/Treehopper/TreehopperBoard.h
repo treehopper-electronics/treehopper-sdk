@@ -6,13 +6,18 @@
 #include <thread>
 #include "Pins.h"
 
-using namespace std;
 
-#ifdef TREEHOPPER_EXPORTS
-#define EXPORT __declspec(dllexport)
+#ifdef TREEHOPPER_STATIC_LINK
+	#define TREEHOPPER_API
 #else
-#define EXPORT __declspec(dllimport)
+	#ifdef TREEHOPPER_EXPORTS
+		#define TREEHOPPER_API __declspec(dllexport)
+	#else
+		#define TREEHOPPER_API __declspec(dllimport)
+	#endif
 #endif
+
+using namespace std;
 
 enum PinConfigCommand
 {
@@ -48,7 +53,7 @@ enum DeviceCommands
 	DevCmdEnterBootloader
 };
 
-class EXPORT TreehopperBoard
+class TREEHOPPER_API TreehopperBoard
 {
 public:
 	//thread pinStateThread;

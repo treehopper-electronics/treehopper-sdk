@@ -13,18 +13,18 @@ namespace Treehopper
     /// </summary>
     /// <param name="sender">The TreehopperManager that fired the event</param>
     /// <param name="board">The TreehopperBoard that was added or removed</param>
-    public delegate void BoardEventHandler(TreehopperManager sender, TreehopperBoard board);
+    public delegate void BoardEventHandler(TreehopperManager sender, TreehopperUSB board);
     /// <summary>
     /// Manages Treehopper boards connected to this computer
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This class is responsible for instantiating <see cref="TreehopperBoard"/>s connected to the system, and reacting when boards are
+    /// This class is responsible for instantiating <see cref="TreehopperUSB"/>s connected to the system, and reacting when boards are
     /// connected or disconnected during the lifecycle of the application.
     /// </para>
     /// <para>
-    /// The manager can be configured to only respond to boards matching a specified <see cref="TreehopperBoard.Name"/> or 
-    /// <see cref="TreehopperBoard.SerialNumber"/> using the <see cref="NameFilter"/> or <see cref="SerialFilter"/> properties.
+    /// The manager can be configured to only respond to boards matching a specified <see cref="TreehopperUSB.Name"/> or 
+    /// <see cref="TreehopperUSB.SerialNumber"/> using the <see cref="NameFilter"/> or <see cref="SerialFilter"/> properties.
     /// </para>
     /// <para>
     /// Automatically receiving device change notifications is supported in Forms and WPF applications. For console-based applications, 
@@ -58,14 +58,14 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// Occurs when a <see cref="TreehopperBoard"/> is removed from the system.
+        /// Occurs when a <see cref="TreehopperUSB"/> is removed from the system.
         /// </summary>
         public event BoardEventHandler BoardRemoved;
 
         /// <summary>
-        /// Contains the collection of <see cref="TreehopperBoard"/>s currently attached to the system.
+        /// Contains the collection of <see cref="TreehopperUSB"/>s currently attached to the system.
         /// </summary>
-        public ObservableCollection<TreehopperBoard> Boards { get; set; }
+        public ObservableCollection<TreehopperUSB> Boards { get; set; }
 
         /// <summary>
         /// Enable the Serial Number filter.
@@ -110,7 +110,7 @@ namespace Treehopper
             NameFilterIsEnabled = nameFilter.Length > 0;
             SerialFilter = serialFilter;
             NameFilter = nameFilter;
-            Boards = new ObservableCollection<TreehopperBoard>();
+            Boards = new ObservableCollection<TreehopperUSB>();
 
             Boards.CollectionChanged += Boards_CollectionChanged;
 
@@ -177,7 +177,7 @@ namespace Treehopper
             
            
             // Go through the list of existing Boards and remove any that no longer exist.
-            List<TreehopperBoard> BoardsToRemove = new List<TreehopperBoard>();
+            List<TreehopperUSB> BoardsToRemove = new List<TreehopperUSB>();
             foreach(var board in Boards.ToList())
             {
                 bool boardExistsInDeviceList = false;
@@ -187,7 +187,7 @@ namespace Treehopper
                     {
                         if(regDevice.Device != null)
                         {
-                            TreehopperBoard newBoard = new TreehopperBoard(regDevice.Device);
+                            TreehopperUSB newBoard = new TreehopperUSB(regDevice.Device);
                             if (newBoard.Equals(board))
                             {
                                 boardExistsInDeviceList = true;
@@ -220,7 +220,7 @@ namespace Treehopper
                 {
                     if(regDevice.Device != null)
                     {
-                        TreehopperBoard newBoard = new TreehopperBoard(regDevice.Device);
+                        TreehopperUSB newBoard = new TreehopperUSB(regDevice.Device);
                         if (PassesFilter(newBoard))
                         {
                             // add the board to the list if it doesn't already exist
@@ -249,14 +249,14 @@ namespace Treehopper
         {
             if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                foreach (TreehopperBoard board in e.NewItems)
+                foreach (TreehopperUSB board in e.NewItems)
                 {
                     if (PreBoardAdded != null) PreBoardAdded(this, board);
                 }
             }
             if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
-                foreach (TreehopperBoard board in e.OldItems)
+                foreach (TreehopperUSB board in e.OldItems)
                 {
                     if (BoardRemoved != null) BoardRemoved(this, board);
                 }
@@ -285,7 +285,7 @@ namespace Treehopper
 							}
 							if (!isInBoardList) {
 								Debug.WriteLine ("Adding board");
-								Boards.Add (new TreehopperBoard (regDevice.Device));
+								Boards.Add (new TreehopperUSB (regDevice.Device));
 							}
 						}
 
@@ -305,8 +305,7 @@ namespace Treehopper
                 }
             } else if(e.EventType == EventType.DeviceRemoveComplete) // board removed
             {
-				Debug.WriteLine ("DEVICE REMOVED!");
-				TreehopperBoard boardToRemove = null;
+				TreehopperUSB boardToRemove = null;
 				foreach (var board in Boards) {
 					bool deviceExists = false;
 //					var deviceList = UsbDevice.AllDevices.ToList ();
@@ -319,10 +318,11 @@ namespace Treehopper
 						boardToRemove = board;
 					}
 				}
+
 				if (boardToRemove != null) {
 					Boards.Remove (boardToRemove);
-					Debug.WriteLine ("Removed board ");
-
+                    boardToRemove.Close();
+                    Debug.WriteLine ("Removed board " + boardToRemove);
 				}
 				// This code only works on Windows. LibUsb doesn't get access to the serial number.
 				/*
@@ -337,7 +337,7 @@ namespace Treehopper
             }
         }
 
-        private bool PassesFilter(TreehopperBoard board)
+        private bool PassesFilter(TreehopperUSB board)
         {
             if (SerialFilterIsEnabled && board.SerialNumber != SerialFilter)
                 return false;

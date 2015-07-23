@@ -5,6 +5,6 @@
     /// </summary>
     public class BoardConnectedMessage
     {
-        public TreehopperBoard Board { get; set; }
+        public TreehopperUSB Board { get; set; }
     }
 }

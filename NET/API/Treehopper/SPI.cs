@@ -77,10 +77,10 @@ namespace Treehopper
 
         PinPolarity ChipSelectPolarity;
        
-        TreehopperBoard device;
+        TreehopperUSB device;
         Pin ChipSelect;
 
-        internal Spi(TreehopperBoard device)
+        internal Spi(TreehopperUSB device)
         {
             this.device = device;
         }

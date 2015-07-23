@@ -8,7 +8,7 @@ namespace Treehopper.Libraries
     public class HobbyServo
     {
         SoftPwm Pwm;
-        TreehopperBoard Board;
+        TreehopperUSB Board;
 
         public HobbyServo(SoftPwm pwm, double minPulseWidth = 0.8, double maxPulseWidth = 2.8)
         {
