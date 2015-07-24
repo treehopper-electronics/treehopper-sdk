@@ -40,7 +40,7 @@ namespace AnalogRead
             
         }
 
-        static void AnalogIn_Changed(AnalogIn sender, double voltage)
+        static void AnalogIn_Changed(Pin sender, double voltage)
         {
             Console.WriteLine("Pin 7 voltage: " + voltage);
         }

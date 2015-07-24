@@ -3,31 +3,12 @@
     /// <summary>
     /// Pin1
     /// </summary>
-    public class Pin1 : Pin, IAnalogInPin
+    public class Pin1 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
         internal Pin1(TreehopperUSB device)
             : base(device, 1)
         {
-            ioName =  "RA4";
-            AnalogIn = new AnalogIn(this);
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
+            ioName =  "P0.1 (MISO)";
         }
     }
 
@@ -35,26 +16,12 @@
     /// <summary>
     /// Pin2
     /// </summary>
-    public class Pin2 : Pin, IPwmPin
+    public class Pin2 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.Pwm"/>
-        /// </summary>
-        public Pwm Pwm { get; set; }
-
         internal Pin2(TreehopperUSB device)
             : base(device, 2)
         {
-            ioName =  "RC5";
-            Pwm = new Pwm(this);
-        }
-
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
+            ioName =  "P0.0 (SCK)";
         }
     }
 
@@ -67,100 +34,33 @@
         internal Pin3(TreehopperUSB device)
             : base(device, 3)
         {
-            ioName =  "RC4";
+            ioName =  "P0.2 (MOSI)";
         }
 
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
-        }
     }
 
 
     /// <summary>
     /// Pin4
     /// </summary>
-    public class Pin4 : Pin, IAnalogInPin
+    public class Pin4 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
         internal Pin4(TreehopperUSB device)
             : base(device, 4)
         {
-            ioName =  "RC3";
-            AnalogIn = new AnalogIn(this);
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
-        }
-
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
+            ioName =  "P0.3 (SDA)";
         }
     }
 
     /// <summary>
     /// Pin5
     /// </summary>
-    public class Pin5 : Pin, IPwmPin, IAnalogInPin
+    public class Pin5 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
-        /// <summary>
-        /// See <see cref="Treehopper.Pwm"/>
-        /// </summary>
-        public Pwm Pwm { get; set; }
-
         internal Pin5(TreehopperUSB device)
             : base(device, 5)
         {
-            ioName =  "RC6";
-            AnalogIn = new AnalogIn(this);
-            Pwm = new Pwm(this);
-        }
-
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
+            ioName =  "P0.6 (SCL)";
         }
     }
 
@@ -168,78 +68,24 @@
     /// <summary>
     /// Pin6
     /// </summary>
-    public class Pin6 : Pin, IAnalogInPin
+    public class Pin6 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
         internal Pin6(TreehopperUSB device) : base(device, 6)
         {
-            ioName =  "RC7";
-            AnalogIn = new AnalogIn(this);
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
-        }
-
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
+            ioName =  "P0.4 (TX)";
         }
     }
-
 
     /// <summary>
     /// Pin7
     /// </summary>
-    public class Pin7 : Pin, IAnalogInPin
+    public class Pin7 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
         internal Pin7(TreehopperUSB device) : base(device, 7)
         {
-            ioName =  "RC2";
-            AnalogIn = new AnalogIn(this);
+            ioName =  "P0.5 (RX)";
         }
 
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
-        }
-
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
-        }
     }
 
 
@@ -251,38 +97,19 @@
         internal Pin8(TreehopperUSB device)
             : base(device, 8)
         {
-            ioName =  "RB7";
+            ioName =  "P0.7 (PWM1)";
         }
     }
-
 
     /// <summary>
     /// Pin9
     /// </summary>
-    public class Pin9 : Pin, IAnalogInPin
+    public class Pin9 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
-        internal Pin9(TreehopperUSB device) : base(device, 9)
+        internal Pin9(TreehopperUSB device)
+            : base(device, 9)
         {
-            ioName =  "RB5";
-            AnalogIn = new AnalogIn(this);
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
+            ioName = "P1.0 (PWM2)";
         }
     }
 
@@ -290,36 +117,14 @@
     /// <summary>
     /// Pin10
     /// </summary>
-    public class Pin10 : Pin, IAnalogInPin
+    public class Pin10 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
         internal Pin10(TreehopperUSB device)
             : base(device, 10)
         {
-            ioName =  "RB4";
-            AnalogIn = new AnalogIn(this);
+            ioName = "P1.1 (PWM3)";
         }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
-        }
-
-
     }
-
 
     /// <summary>
     /// Pin11
@@ -329,100 +134,116 @@
         internal Pin11(TreehopperUSB device)
             : base(device, 11)
         {
-            ioName =  "RB6";
+            ioName = "P1.2";
         }
     }
 
-
     /// <summary>
-    /// Pin12
+    /// Pin11
     /// </summary>
-    public class Pin12 : Pin, IAnalogInPin
+    public class Pin12 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set; }
-
         internal Pin12(TreehopperUSB device)
             : base(device, 12)
         {
-            ioName = "RC1";
-            AnalogIn = new AnalogIn(this);
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
-        }
-
-        public override PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
+            ioName = "P1.3";
         }
     }
 
-
     /// <summary>
-    /// Pin13
+    /// Pin11
     /// </summary>
-    public class Pin13 : Pin, IAnalogInPin
+    public class Pin13 : Pin
     {
-        /// <summary>
-        /// See <see cref="Treehopper.AnalogIn"/>
-        /// </summary>
-        public AnalogIn AnalogIn { get; set;  }
-
         internal Pin13(TreehopperUSB device)
             : base(device, 13)
         {
-            ioName =  "RC0";
-            AnalogIn = new AnalogIn(this);
-        }
-
-        internal override void UpdateValue(byte highByte, byte lowByte)
-        {
-            switch (this.State)
-            {
-                case PinState.AnalogInput:
-                    AnalogIn.UpdateAnalogValue(highByte, lowByte);
-                    break;
-                case PinState.DigitalInput:
-                    base.UpdateValue(highByte, lowByte);
-                    break;
-            }
-        }
-
-        public new PinInterruptMode InterruptMode
-        {
-            get
-            {
-                return PinInterruptMode.NoInterrupt;
-            }
+            ioName = "P1.4";
         }
     }
 
-
     /// <summary>
-    /// Pin14
+    /// Pin11
     /// </summary>
     public class Pin14 : Pin
     {
         internal Pin14(TreehopperUSB device)
             : base(device, 14)
         {
-            ioName = "RA5";
+            ioName = "P1.5";
         }
     }
+
+    /// <summary>
+    /// Pin11
+    /// </summary>
+    public class Pin15 : Pin
+    {
+        internal Pin15(TreehopperUSB device)
+            : base(device, 15)
+        {
+            ioName = "P1.6";
+        }
+    }
+
+    /// <summary>
+    /// Pin11
+    /// </summary>
+    public class Pin16 : Pin
+    {
+        internal Pin16(TreehopperUSB device)
+            : base(device, 16)
+        {
+            ioName = "P1.7";
+        }
+    }
+
+    /// <summary>
+    /// Pin11
+    /// </summary>
+    public class Pin17 : Pin
+    {
+        internal Pin17(TreehopperUSB device)
+            : base(device, 17)
+        {
+            ioName = "P2.0";
+        }
+    }
+
+    /// <summary>
+    /// Pin11
+    /// </summary>
+    public class Pin18 : Pin
+    {
+        internal Pin18(TreehopperUSB device)
+            : base(device, 18)
+        {
+            ioName = "P2.1";
+        }
+    }
+
+    /// <summary>
+    /// Pin11
+    /// </summary>
+    public class Pin19 : Pin
+    {
+        internal Pin19(TreehopperUSB device)
+            : base(device, 19)
+        {
+            ioName = "P2.2";
+        }
+    }
+
+    /// <summary>
+    /// Pin11
+    /// </summary>
+    public class Pin20 : Pin
+    {
+        internal Pin20(TreehopperUSB device)
+            : base(device, 20)
+        {
+            ioName = "P2.3";
+        }
+    }
+
 }

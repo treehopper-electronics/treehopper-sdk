@@ -54,11 +54,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalogIn.cs" />
     <Compile Include="Comparator.cs" />
     <Compile Include="AnalogOut.cs" />
     <Compile Include="I2c.cs" />
-    <Compile Include="IAnalogInPin.cs" />
     <Compile Include="IAnalogOutPin.cs" />
     <Compile Include="IPwm.cs" />
     <Compile Include="IPwmPin.cs" />

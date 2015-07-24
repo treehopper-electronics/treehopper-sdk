@@ -32,7 +32,7 @@ namespace PwmFade
 			Board.Pin8.MakeDigitalOutput();
 			Board.Pin8.DigitalValue = false;
 			
-			Board.Pin2.Pwm.IsEnabled = true;
+            //Board.Pin2.Pwm.IsEnabled = true;
         //while(true)
         //{
         //    Board.Pin2.ToggleOutput();
@@ -43,12 +43,12 @@ namespace PwmFade
 			{
 				for (int i = 100; i > 0; i--)
 				{
-					Board.Pin2.Pwm.DutyCycle = i / 100.0;
+                    //Board.Pin2.Pwm.DutyCycle = i / 100.0;
 					Thread.Sleep(10);
 				}
 				for (int i = 0; i < 100; i++)
 				{
-					Board.Pin2.Pwm.DutyCycle = i / 100.0;
+                    //Board.Pin2.Pwm.DutyCycle = i / 100.0;
 					Thread.Sleep(10);
 				}		
 			}

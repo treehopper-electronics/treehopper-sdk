@@ -68,6 +68,20 @@ namespace Treehopper
     };
 
     /// <summary>
+    /// Used to send VoltageChanged events from the AnalogIn pin.
+    /// </summary>
+    /// <param name="sender">The AnalogIn pin that sent that message</param>
+    /// <param name="voltage">The new voltage of the AnalogIn pin</param>
+    public delegate void OnAnalogInVoltageChanged(Pin sender, double voltage);
+
+    /// <summary>
+    /// Used to send ValueChanged events from the AnalogIn pin.
+    /// </summary>
+    /// <param name="sender">The AnalogIn pin that sent that message</param>
+    /// <param name="value">The new voltage of the AnalogIn pin</param>
+    public delegate void OnAnalogInValueChanged(Pin sender, int value);
+
+    /// <summary>
     /// Pin is the base class for all Treehopper pins. It provides core digital I/O (GPIO) functionality.
     /// </summary>
     /// <remarks>
@@ -100,7 +114,7 @@ namespace Treehopper
         /// <remarks>
         /// This event will only fire when the pin is configured as a digital input.
         /// </remarks>
-        public event OnDigitalInValueChanged ValueChanged;
+        public event OnDigitalInValueChanged DigitalValueChanged;
 
         /// <summary>
         /// The pin number, from 1-14, of the pin.
@@ -207,21 +221,11 @@ namespace Treehopper
             DigitalValue = !DigitalValue;
         }
 
-        internal void updateDigitalValue(bool newVal)
-        {
-            if(digitalValue != newVal) // we have a new value!
-            { 
-                digitalValue = newVal;
-                RaiseDigitalInValueChanged();
-                RaisePropertyChanged("DigitalValue");
-            }
-        }
-
         internal void RaiseDigitalInValueChanged()
         {
-            if (ValueChanged != null)
+            if (DigitalValueChanged != null)
             {
-                ValueChanged(this, digitalValue);
+                DigitalValueChanged(this, digitalValue);
             }
         }
 
@@ -272,9 +276,123 @@ namespace Treehopper
         {
             if(State == PinState.DigitalInput)
             {
-                updateDigitalValue(Convert.ToBoolean(highByte));
+                bool newVal = highByte > 0;
+                if (digitalValue != newVal) // we have a new value!
+                {
+                    digitalValue = newVal;
+                    RaiseDigitalInValueChanged();
+                    RaisePropertyChanged("DigitalValue");
+                }
+            } else if(State == PinState.AnalogInput)
+            {
+
+            }
+            
+        }
+
+        public virtual void MakeAnalogInput()
+        {
+            if (State == PinState.AnalogInput)
+                return;
+            SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput });
+            State = PinState.AnalogInput;
+        }
+
+
+                /// <summary>
+        /// Occurs when an analog voltage is changed.
+        /// </summary>
+        /// <remarks>
+        /// The Changed event is raised when the 10-bit ADC value obtained is different from the previous reading.
+        /// </remarks>
+        public event OnAnalogInVoltageChanged AnalogVoltageChanged;
+
+        /// <summary>
+        /// Occurs when an analog value is changed.
+        /// </summary>
+        /// <remarks>
+        /// The Changed event is raised when the 10-bit ADC value obtained is different from the previous reading.
+        /// </remarks>
+        public event OnAnalogInValueChanged AnalogValueChanged;
+        double adcVoltage;
+        int adcValue;
+
+
+        /// <summary>
+        /// Retrieve the last value obtained from the ADC. 
+        /// </summary>
+        /// <remarks>
+        /// Treehopper has a 12-bit ADC, so ADC values will range from 0-4096.
+        /// </remarks>
+        public int AdcValue
+        {
+            get
+            {
+                return this.adcValue;
             }
         }
+
+        /// <summary>
+        /// Retrieve the last voltage reading from the ADC.
+        /// </summary>
+        /// <remarks>
+        /// This property assumes VBUS, the supply voltage, is equivalent to 5V. 
+        /// Since the actual VBUS will be higher or lower, the value returned from this property shouldn't be assumed to be exact. 
+        /// Since many sensors are ratiometric, and since most users will power these sensors from VBUS, it is safe to assume 
+        /// that 0V represents 0%, 2.5V represents 50% and 5V represents 100% readout.
+        /// </remarks>
+        public double AdcVoltage
+        {
+            get
+            {
+                return this.adcVoltage;
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the last reading from the Adc, expressed as a percent of VREF
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        public double AdcPercent
+        {
+            get
+            {
+                return this.AdcPercent;
+            }
+        }
+
+        /// <summary>
+        /// Internal method used to update the ADC with the latest value. This should only be called by the Treehopper updater
+        /// </summary>
+        /// <param name="highByte"></param>
+        /// <param name="lowByte"></param>
+        internal void UpdateAnalogValue(byte highByte, byte lowByte)
+        {
+            int val = ((int)highByte) << 8;
+            val += (int)lowByte;
+            double analogVal = Math.Round((float)val / 204.8f, 3);
+
+            if(adcValue != val) // compare the actual ADC values, not the floating-point conversions.
+            {
+                adcValue = val;
+                this.adcVoltage = analogVal;
+                if(AnalogValueChanged != null)
+                {
+                    AnalogValueChanged(this, this.adcValue);
+                }
+                
+                if(AnalogVoltageChanged != null)
+                {
+                    AnalogVoltageChanged(this, this.adcVoltage);
+                }
+
+                RaisePropertyChanged("AdcValue");
+                RaisePropertyChanged("AdcVoltage");
+                RaisePropertyChanged("AdcPercent");
+            }
+        }
+
 
         /// <summary>
         /// This event fires whenever a property changes
