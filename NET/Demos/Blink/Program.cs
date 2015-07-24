@@ -29,7 +29,7 @@ namespace Blink
 				Board.Open();								// You must explicitly open a board before communicating with it
                 while (Board.IsConnected)                       // repeat this block of code until we unplug the board
                 {
-                    Board.Pin1.ToggleOutput();                  // toggle pin 1's output
+                    Board.Pin2.ToggleOutput();                  // toggle pin 1's output
                     Thread.Sleep(1000);                         // Wait 1 second
                 }
             }

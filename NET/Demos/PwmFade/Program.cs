@@ -31,27 +31,31 @@ namespace PwmFade
 			Board.Open();
 			Board.Pin8.MakeDigitalOutput();
 			Board.Pin8.DigitalValue = false;
-			
-			Board.Pin2.Pwm.IsEnabled = true;
+
+            Board.Pin2.Pwm.IsEnabled = true;
         //while(true)
         //{
         //    Board.Pin2.ToggleOutput();
         //    Thread.Sleep(1000);
         //}
 			//timer.Start();
-			while(true)
-			{
-				for (int i = 100; i > 0; i--)
-				{
-					Board.Pin2.Pwm.DutyCycle = i / 100.0;
-					Thread.Sleep(10);
-				}
-				for (int i = 0; i < 100; i++)
-				{
-					Board.Pin2.Pwm.DutyCycle = i / 100.0;
-					Thread.Sleep(10);
-				}		
-			}
+            //Board.Pin2.Pwm.DutyCycle = 0.2;
+            //return;
+            while (true)
+            {
+                for (int i = 100; i > 0; i--)
+                {
+                    Board.Pin2.Pwm.DutyCycle = i / 400.0;
+                    Thread.Sleep(10);
+                }
+                Thread.Sleep(1000);
+                for (int i = 0; i < 100; i++)
+                {
+                    Board.Pin2.Pwm.DutyCycle = i / 400.0;
+                    Thread.Sleep(10);
+                }
+                Thread.Sleep(1000);
+            }
 		}
 
 
