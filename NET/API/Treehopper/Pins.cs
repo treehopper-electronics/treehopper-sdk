@@ -134,7 +134,7 @@
         internal Pin11(TreehopperUSB device)
             : base(device, 11)
         {
-            ioName = "P1.2";
+            ioName = "P1.2 (Counter)";
         }
     }
 

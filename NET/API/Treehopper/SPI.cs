@@ -85,19 +85,8 @@ namespace Treehopper
             this.device = device;
         }
 
-        /// <summary>
-        /// Starts the Treehopper's SPI interface.
-        /// </summary>
-        /// <param name="Mode">Configures clock polarity and phase</param>
-        /// <param name="RateMHz"></param>
-        /// <param name="ChipSelect"></param>
-        /// <param name="ChipSelectPolarity"></param>
-        /// <param name="ChipSelectDelayMilliseconds"></param>
-        /// <param name="InputMode">Chooses whether incoming data is sampled in the middle of the valid data period, or at the end. Most modern sensors produce valid output data in the middle of the waveform period.</param>
-        public void Start(SPIMode Mode, double RateMHz, Pin ChipSelect = null, PinPolarity ChipSelectPolarity = PinPolarity.ActiveLow, int ChipSelectDelayMilliseconds = 0, SPISampleMode InputMode = SPISampleMode.Middle)
+        private void SendConfig()
         {
-            this.ChipSelect = ChipSelect;
-            this.ChipSelectPolarity = ChipSelectPolarity;
             if(this.ChipSelect != null)
             {
                 this.ChipSelect.MakeDigitalOutput();
@@ -107,17 +96,85 @@ namespace Treehopper
                     this.ChipSelect.DigitalValue = false;
             }
 
-            double SSPADD = (120.0 / RateMHz - 1);
-            if (SSPADD > 255)
+            double SPI0CKR = (24.0 / _frequency) - 1;
+            if (SPI0CKR > 255.0)
             {
-                throw new Exception("SPI Rate out of limits. Valid rate is 46.875 kHz - 12 MHz");
+                throw new Exception("SPI Rate out of limits. Valid rate is 93.75 kHz - 24 MHz");
             }
+
+            actualFrequency = 47 / (2 * SPI0CKR + 1);
+
             byte[] dataToSend = new byte[4];
             dataToSend[0] = (byte)DeviceCommands.SPIConfig;
+            dataToSend[1] = (byte)(isEnabled ? 1 : 0);
             dataToSend[1] = (byte)Mode;
-            dataToSend[2] = (byte)InputMode;
-            dataToSend[3] = (byte)SSPADD;
+            dataToSend[2] = (byte)SPI0CKR;
             device.sendCommsConfigPacket(dataToSend);
+        }
+
+        /// <summary>
+        /// The <see cref="Frequency" /> property's name.
+        /// </summary>
+        public const string FrequencyPropertyName = "Frequency";
+
+        private double _frequency;
+
+        /// <summary>
+        /// Sets and gets the Frequency property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double Frequency
+        {
+            get
+            {
+                return _frequency;
+            }
+
+            set
+            {
+                //if (_frequency == value) return; // Don't try comparing floats
+                _frequency = value;
+                SendConfig();
+            }
+        }
+
+        private SPIMode mode;
+        public SPIMode Mode { 
+            get
+            {
+                return mode;
+            }
+            set
+            {
+                if (mode == value) return;
+                mode = value;
+                SendConfig();
+            }
+        }
+
+        double actualFrequency = 0;
+        public double ActualFrequency
+        {
+            get {
+                return actualFrequency;
+            }
+            
+        }
+
+        bool isEnabled;
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return isEnabled;
+            }
+            set
+            {
+                if (isEnabled == value) return;
+                isEnabled = value;
+                SendConfig();
+            }
         }
 
         /// <summary>

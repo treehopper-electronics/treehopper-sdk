@@ -19,6 +19,30 @@ namespace Treehopper
         ActiveLow
     };
 
+    public enum AdcReferenceLevel
+    {
+        /// <summary>
+        /// 3.3V rail, useful for ratiometric sensors hooked up to 3.3V supply.
+        /// </summary>
+        VREF_3V3,
+        /// <summary>
+        /// Double the 3.3V VDD rail, useful for 5V-output ratiometric sensors
+        /// </summary>
+        /// <remarks>
+        /// This setting is derived from the 3.3V VDD rail, so it's useful for measuring absolute-output sensors that range
+        /// from 0 to 5V. Using this mode to sample ratiometric sensors powered from the raw 5V USB VBUS supply is not recommended,
+        /// since this supply voltage varies considerably, and the reference voltage used for this setting is derived from the regulated 3.3V
+        /// VDD voltage, not the 5V USB VBUS voltage.
+        /// </remarks>
+        VREF_1V65_PRECISION,
+        VREF_1V8,
+        VREF_2V4_PRECISION,
+        VREF_3V3_PRECISION,
+        VREF_3V6,
+        VREF_4V8,
+        //VREF_6V6,
+    }
+
     /// <summary>
     /// This is the delegate prototype used for event-driven reading of digital pins.
     /// </summary>
@@ -285,16 +309,39 @@ namespace Treehopper
                 }
             } else if(State == PinState.AnalogInput)
             {
+                int val = ((int)highByte) << 8;
+                val |= (int)lowByte;
+                val >>= 1;
+                double analogVal = Math.Round((double)val * (referenceLevelVoltage / 4092.0), 3);
 
+                if (Math.Abs(adcValue - val) > 1) // compare the actual ADC values, not the floating-point conversions.
+                {
+                    adcValue = val;
+                    this.adcVoltage = analogVal;
+                    if (AnalogValueChanged != null)
+                    {
+                        AnalogValueChanged(this, this.adcValue);
+                    }
+
+                    if (AnalogVoltageChanged != null)
+                    {
+                        AnalogVoltageChanged(this, this.adcVoltage);
+                    }
+
+                    RaisePropertyChanged("AdcValue");
+                    RaisePropertyChanged("AdcVoltage");
+                    RaisePropertyChanged("AdcPercent");
+                }
             }
             
         }
 
         public virtual void MakeAnalogInput()
         {
-            if (State == PinState.AnalogInput)
-                return;
-            SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput });
+            // We use this function to send reconfigurations (like when we set the reference level)
+            //if (State == PinState.AnalogInput)
+            //    return;
+            SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
             State = PinState.AnalogInput;
         }
 
@@ -362,37 +409,54 @@ namespace Treehopper
             }
         }
 
+        double referenceLevelVoltage;
+
+        AdcReferenceLevel referenceLevel;
+
         /// <summary>
-        /// Internal method used to update the ADC with the latest value. This should only be called by the Treehopper updater
+        /// Sets the ADC reference value used 
         /// </summary>
-        /// <param name="highByte"></param>
-        /// <param name="lowByte"></param>
-        internal void UpdateAnalogValue(byte highByte, byte lowByte)
+        public AdcReferenceLevel ReferenceLevel
         {
-            int val = ((int)highByte) << 8;
-            val += (int)lowByte;
-            double analogVal = Math.Round((float)val / 204.8f, 3);
-
-            if(adcValue != val) // compare the actual ADC values, not the floating-point conversions.
+            get
             {
-                adcValue = val;
-                this.adcVoltage = analogVal;
-                if(AnalogValueChanged != null)
+                return referenceLevel;
+            }
+            set
+            {
+                referenceLevel = value;
+                switch(referenceLevel)
                 {
-                    AnalogValueChanged(this, this.adcValue);
-                }
-                
-                if(AnalogVoltageChanged != null)
-                {
-                    AnalogVoltageChanged(this, this.adcVoltage);
+                    case AdcReferenceLevel.VREF_1V65_PRECISION:
+                        referenceLevelVoltage = 1.65;
+                        break;
+                    case AdcReferenceLevel.VREF_1V8:
+                        referenceLevelVoltage = 1.8;
+                        break;
+                    case AdcReferenceLevel.VREF_2V4_PRECISION:
+                        referenceLevelVoltage = 2.4;
+                        break;
+                    case AdcReferenceLevel.VREF_3V3:
+                        referenceLevelVoltage = 3.3;
+                        break;
+                    case AdcReferenceLevel.VREF_3V3_PRECISION:
+                        referenceLevelVoltage = 3.3;
+                        break;
+                    case AdcReferenceLevel.VREF_3V6:
+                        referenceLevelVoltage = 3.6;
+                        break;
+                    case AdcReferenceLevel.VREF_4V8:
+                        referenceLevelVoltage = 4.8;
+                        break;
+                    case AdcReferenceLevel.VREF_6V6:
+                        referenceLevelVoltage = 6.6;
+                        break;
                 }
 
-                RaisePropertyChanged("AdcValue");
-                RaisePropertyChanged("AdcVoltage");
-                RaisePropertyChanged("AdcPercent");
+                if (State == PinState.AnalogInput)
+                    MakeAnalogInput();
             }
         }
-
 
         /// <summary>
         /// This event fires whenever a property changes

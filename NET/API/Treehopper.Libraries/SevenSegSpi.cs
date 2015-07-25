@@ -61,7 +61,7 @@ namespace Treehopper.Libraries
         public SevenSegSpi(Spi SPIModule, Pin csPin, int numDevices = 1) 
         {
             this.SPIModule = SPIModule;
-            SPIModule.Start(SPIMode.Mode00, 1);
+            //SPIModule.Start(SPIMode.Mode00, 1);
             this.csPin = csPin;
 
             if(numDevices<=0 || numDevices>8 )
