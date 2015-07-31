@@ -25,12 +25,12 @@ namespace Treehopper
 		GetDeviceInfo,	// Not implemented
 		PinConfig,	// Configures a GPIO pin as an input/output
 		ComparatorConfig,	// Not implemented
-		DACConfig,	// Configures the hardware DAC
-		UARTConfig,	// Not implemented
-		I2CConfig,	// Configures i2C master
-		SPIConfig,	// Configures SPI master
-		I2CTransaction,	// (Endpoint 2) Performs an i2C transaction 
-		SPITransaction,	// (Endpoint 2) Performs an SPI transaction
+		PwmConfig,	// Configures the hardware DAC
+		UartConfig,	// Not implemented
+		I2cConfig,	// Configures i2C master
+		SpiConfig,	// Configures SPI master
+		I2cTransaction,	// (Endpoint 2) Performs an i2C transaction 
+		SpiTransaction,	// (Endpoint 2) Performs an SPI transaction
 		SoftPwmConfig,	// 
 		SoftPwmUpdateDc,	//
 		FirmwareUpdateSerial,	//
@@ -199,11 +199,6 @@ namespace Treehopper
 
 		#region Modules
 
-		AnalogOut analogOut;
-		/// <summary>
-		/// AnalogOut module
-		/// </summary>
-		public AnalogOut AnalogOut { get { return analogOut; } }
 		//public UART UART;
 
 		I2c i2c;
@@ -222,6 +217,8 @@ namespace Treehopper
 		/// Instance of SoftPwmMgr
 		/// </summary>
 		internal SoftPwmManager SoftPwmMgr { get; set; }
+
+        internal PwmManager PwmMgr { get; set; }
 
 		// Comparator modules
 		//Comparator Comparator1;
@@ -323,12 +320,12 @@ namespace Treehopper
 		/// </remarks>
 		public void Reboot()
 		{
-			sendCommsConfigPacket(new byte[] { (byte)DeviceCommands.Reboot });
+			sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.Reboot });
 			Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
 		}
 		public void RebootIntoBootloader()
 		{
-			sendCommsConfigPacket(new byte[] { (byte)DeviceCommands.EnterBootloader });
+			sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.EnterBootloader });
 			Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
 		}
 
@@ -352,7 +349,7 @@ namespace Treehopper
 			DataToSend[1] = (byte)(serialNumber.Length * 2 + 2); // Unicode 16-bit strings are 2 bytes per character
 			DataToSend[2] = 3;
 			bytes.CopyTo(DataToSend, 3);
-			sendCommsConfigPacket(DataToSend);
+			sendPeripheralConfigPacket(DataToSend);
 			Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
 			this.serialNumber = serialNumber;
 			RaisePropertyChanged("SerialNumber");
@@ -377,7 +374,7 @@ namespace Treehopper
 			DataToSend[2] = 3;
 			byte[] stringData = Encoding.Unicode.GetBytes(deviceName);
 			stringData.CopyTo(DataToSend, 3);
-			sendCommsConfigPacket(DataToSend);
+			sendPeripheralConfigPacket(DataToSend);
 			Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
 			this.deviceName = deviceName;
 			RaisePropertyChanged("DeviceName");
@@ -522,13 +519,13 @@ namespace Treehopper
 				Pins.Add(pin14);
 
 				SoftPwmMgr = new SoftPwmManager(this);
+                PwmMgr = new PwmManager(this);
 
 				// Comparator
 				//Comparator1 = new Comparator(1);
 				//Comparator2 = new Comparator(2);
 
 				// Initialize modules
-				analogOut = new AnalogOut(this);
 				i2c = new I2c(this);
 				spi = new Spi(this);
 				//UART = new UART();
@@ -613,7 +610,7 @@ namespace Treehopper
 			}
 		}
 
-		internal void sendCommsConfigPacket(byte[] data)
+		internal void sendPeripheralConfigPacket(byte[] data)
 		{
 			if (CommsConfig == null)
 				return;

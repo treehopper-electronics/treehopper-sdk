@@ -2,31 +2,6 @@
 
 namespace Treehopper
 {
-    /// <summary>
-    /// Defines the PWM period options
-    /// </summary>
-    public enum PwmFrequency { 
-        
-        /// <summary>
-        /// 48 kHz (20.833 microseconds)
-        /// </summary>
-        Freq_48KHz, 
-        
-        /// <summary>
-        /// 12 kHz (83.333 microseconds)
-        /// </summary>
-        Freq_12KHz, 
-        
-        /// <summary>
-        /// 3 kHz (333.333 microseconds)
-        /// </summary>
-        Freq_3KHz,  
-        
-        /// <summary>
-        /// 750 Hz (1.333 milliseconds)
-        /// </summary>
-        Freq_750HZ 
-    };
 
     /// <summary>
     /// The Pwm class manages the hardware PWM module on the Treehopper board.
@@ -43,55 +18,37 @@ namespace Treehopper
         double pulseWidth;
         double period;
         private bool isEnabled = false;
-        private PwmFrequency frequency = PwmFrequency.Freq_750HZ;
+        TreehopperUSB Board;
         internal Pwm(Pin pin)
         {
             Pin = pin;
+            Board = pin.Board;
         }
-
-        /// <summary>
-        /// Gets or sets the PWM frequency of the pin, selected from <see cref="PwmFrequency"/>
-        /// </summary>
-        public PwmFrequency Frequency
-        {
-            get
-            {
-                return frequency;
-            }
-            set
-            {
-                if(frequency != value)
-                {
-                    frequency = value;
-                    if(IsEnabled)
-                    {
-                        Pin.SendCommand(new byte[] { (byte)PinConfigCommands.MakePWMPin, (byte)frequency });
-                    }
-                }
-            }
-        }
-
 
         /// <summary>
         /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
         public bool IsEnabled
         {
-            get 
+            get
             {
                 return isEnabled;
             }
-            set {
-                isEnabled = value;
-                if(isEnabled)
+            set
+            {
+                if (value != isEnabled)
                 {
-                    Pin.SendCommand(new byte[] { (byte)PinConfigCommands.MakePWMPin, (byte)Frequency });
-                    Pin.State = PinState.PWM;
-                }
-                else
-                {
-                    Pin.SendCommand(new byte[] { (byte)PinConfigCommands.MakePWMPin, 0xFF }); // magic byte to disable PWM module
-                    Pin.MakeDigitalInput();
+                    isEnabled = value;
+                    if (isEnabled)
+                    {
+                        Board.PwmMgr.StartPin(Pin);
+                        Pin.State = PinState.ReservedPin;
+                    }
+                    else
+                    {
+                        Board.PwmMgr.StopPin(Pin);
+                        Pin.MakeDigitalInput();
+                    }
                 }
             }
         }
@@ -109,11 +66,8 @@ namespace Treehopper
             set
             {
                 dutyCycle = value;
-                UInt16 register = (UInt16)Math.Round(dutyCycle * 1024.0);
-                byte high = (byte)(register >> 2);
-                byte low = (byte)(register & 0x3);
+                Board.PwmMgr.SetDutyCycle(Pin, value);
 
-                Pin.SendCommand(new byte[] { (byte)PinConfigCommands.SetPWMValue, high, low });
             }
         }
 

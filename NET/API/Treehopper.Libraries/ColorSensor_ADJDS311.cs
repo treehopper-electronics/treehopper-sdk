@@ -40,7 +40,7 @@ namespace Treehopper.Libraries
             _I2C.Start();
 
             led = LedPin;
-            led.MakeDigitalOutput();
+            led.MakeDigitalOutput(OutputType.PushPull);
 
             WriteByteData(CAP_RED, 15);
             WriteByteData(CAP_GREEN, 15);

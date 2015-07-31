@@ -89,7 +89,7 @@ namespace Treehopper
         {
             if(this.ChipSelect != null)
             {
-                this.ChipSelect.MakeDigitalOutput();
+                this.ChipSelect.MakeDigitalOutput(OutputType.PushPull);
                 if (ChipSelectPolarity == PinPolarity.ActiveLow)
                     this.ChipSelect.DigitalValue = true;
                 else
@@ -105,11 +105,11 @@ namespace Treehopper
             actualFrequency = 47 / (2 * SPI0CKR + 1);
 
             byte[] dataToSend = new byte[4];
-            dataToSend[0] = (byte)DeviceCommands.SPIConfig;
+            dataToSend[0] = (byte)DeviceCommands.SpiConfig;
             dataToSend[1] = (byte)(isEnabled ? 1 : 0);
             dataToSend[1] = (byte)Mode;
             dataToSend[2] = (byte)SPI0CKR;
-            device.sendCommsConfigPacket(dataToSend);
+            device.sendPeripheralConfigPacket(dataToSend);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Treehopper
                 throw new Exception("Maximum packet length is 255 bytes");
             byte[] returnedData = new byte[dataToWrite.Length];
             byte[] dataToSend = new byte[2 + dataToWrite.Length];
-            dataToSend[0] = (byte)DeviceCommands.SPITransaction;
+            dataToSend[0] = (byte)DeviceCommands.SpiTransaction;
             dataToSend[1] = (byte)dataToWrite.Length;
             dataToWrite.CopyTo(dataToSend, 2);
             if (ChipSelect != null)
@@ -200,7 +200,7 @@ namespace Treehopper
                 else
                     ChipSelect.DigitalValue = true;
             }
-            device.sendCommsConfigPacket(dataToSend);
+            device.sendPeripheralConfigPacket(dataToSend);
             //Thread.Sleep(1);
             byte[] receivedData = device.receiveCommsResponsePacket();
             if (ChipSelect != null)

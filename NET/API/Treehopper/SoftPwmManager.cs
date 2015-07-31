@@ -58,7 +58,7 @@ namespace Treehopper
         {
             if (pins.ContainsKey(pin.PinNumber))
                 return;
-            pin.MakeDigitalOutput();
+            //pin.MakeDigitalOutput();
             pins.Add(pin.PinNumber, new SoftPwmPinConfig() { Pin = pin, PulseWidth = 0, UsePulseWidth = true });
             UpdateConfig();
         }
@@ -98,12 +98,12 @@ namespace Treehopper
                 {
                     config[i++] = (byte)entry.Key;
                 }
-                board.sendCommsConfigPacket(config);
+                board.sendPeripheralConfigPacket(config);
             }
             else
             {
                 // turn off the SoftPWM interrupt
-                board.sendCommsConfigPacket(new byte[] { (byte)DeviceCommands.SoftPwmConfig, 0 });
+                board.sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.SoftPwmConfig, 0 });
             }
 
 
@@ -170,7 +170,7 @@ namespace Treehopper
                 i = i + 2;
             }
 
-            board.sendCommsConfigPacket(config);
+            board.sendPeripheralConfigPacket(config);
         }
 
         internal void SetDutyCycle(Pin pin, double dutyCycle)

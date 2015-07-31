@@ -94,10 +94,12 @@
     /// </summary>
     public class Pin8 : Pin
     {
+        public Pwm Pwm { get; set; }
         internal Pin8(TreehopperUSB device)
             : base(device, 8)
         {
             ioName =  "P0.7 (PWM1)";
+            Pwm = new Pwm(this);
         }
     }
 
@@ -106,10 +108,12 @@
     /// </summary>
     public class Pin9 : Pin
     {
+        public Pwm Pwm { get; set; }
         internal Pin9(TreehopperUSB device)
             : base(device, 9)
         {
             ioName = "P1.0 (PWM2)";
+            Pwm = new Pwm(this);
         }
     }
 
@@ -119,10 +123,12 @@
     /// </summary>
     public class Pin10 : Pin
     {
+        public Pwm Pwm { get; set; }
         internal Pin10(TreehopperUSB device)
             : base(device, 10)
         {
             ioName = "P1.1 (PWM3)";
+            Pwm = new Pwm(this);
         }
     }
 

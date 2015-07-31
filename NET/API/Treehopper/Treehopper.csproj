@@ -55,9 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparator.cs" />
-    <Compile Include="AnalogOut.cs" />
     <Compile Include="I2c.cs" />
-    <Compile Include="IAnalogOutPin.cs" />
     <Compile Include="IPwm.cs" />
     <Compile Include="IPwmPin.cs" />
     <Compile Include="LibUsbDotNet\Descriptors\ClassCodeType.cs" />
@@ -201,6 +199,7 @@
     <Compile Include="LibUsbDotNet\WinUsb\PowerPolicyType.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\WinUsbDevice.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\WinUsbRegistry.cs" />
+    <Compile Include="PwmManager.cs" />
     <Compile Include="SoftPwm.cs" />
     <Compile Include="SoftPwmManager.cs" />
     <Compile Include="Spi.cs" />

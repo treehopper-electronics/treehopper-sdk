@@ -32,10 +32,10 @@ namespace Treehopper
                 throw new Exception("Rate out of limits. Valid rate is 46.875 kHz - 3000 kHz (3 MHz)");
             }
             byte[] dataToSend = new byte[3];
-            dataToSend[0] = (byte)DeviceCommands.I2CConfig;
+            dataToSend[0] = (byte)DeviceCommands.I2cConfig;
             dataToSend[1] = 0; // this is hard-coded until the API can be updated with slave support.
             dataToSend[2] = (byte)SSPADD;
-            device.sendCommsConfigPacket(dataToSend);
+            device.sendPeripheralConfigPacket(dataToSend);
         }
         private Object lockObject = new object();
         /// <summary>
@@ -50,14 +50,14 @@ namespace Treehopper
            
             byte[] returnedData = new byte[numBytesToRead];
             byte[] dataToSend = new byte[4 + dataToWrite.Length];
-            dataToSend[0] = (byte)DeviceCommands.I2CTransaction;
+            dataToSend[0] = (byte)DeviceCommands.I2cTransaction;
             dataToSend[1] = address;
             dataToSend[2] = (byte)dataToWrite.Length;
             dataToSend[3] = numBytesToRead;
             dataToWrite.CopyTo(dataToSend, 4);
             lock(lockObject)
             {
-                device.sendCommsConfigPacket(dataToSend);
+                device.sendPeripheralConfigPacket(dataToSend);
                 Thread.Sleep(1);
                 byte[] response = device.receiveCommsResponsePacket();
                 if (numBytesToRead > 0)

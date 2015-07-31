@@ -29,8 +29,16 @@ namespace PwmFade
 			Console.WriteLine("Board found:");
 			Console.WriteLine(board.Description);
 			Board.Open();
-			Board.Pin8.MakeDigitalOutput();
-			Board.Pin8.DigitalValue = false;
+            Board.Pin8.Pwm.IsEnabled = true;
+            Board.Pin8.Pwm.DutyCycle = 0.0;
+            Board.Pin8.Pwm.DutyCycle = 0.5;
+            Board.Pin8.Pwm.DutyCycle = 1;
+
+            //while(true)
+            //{
+            //    Board.Pin8.Pwm.DutyCycle = 0.1;
+            //    Board.Pin8.Pwm.DutyCycle = 0.0;
+            //}
 			
             //Board.Pin2.Pwm.IsEnabled = true;
         //while(true)
@@ -41,15 +49,15 @@ namespace PwmFade
 			//timer.Start();
 			while(true)
 			{
-				for (int i = 100; i > 0; i--)
+				for (int i = 0; i <= 100; i++)
 				{
-                    //Board.Pin2.Pwm.DutyCycle = i / 100.0;
-					Thread.Sleep(10);
+                    Board.Pin8.Pwm.DutyCycle = i / 100.0;
+                    Thread.Sleep(10);
 				}
-				for (int i = 0; i < 100; i++)
+				for (int i = 100; i >= 0; i--)
 				{
-                    //Board.Pin2.Pwm.DutyCycle = i / 100.0;
-					Thread.Sleep(10);
+                    Board.Pin8.Pwm.DutyCycle = i / 100.0;
+                    Thread.Sleep(10);
 				}		
 			}
 		}
