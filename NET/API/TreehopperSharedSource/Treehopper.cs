@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading;
-using LibUsbDotNet;
-using LibUsbDotNet.Main;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 
@@ -62,11 +60,11 @@ namespace Treehopper
 	public class TreehopperUSB : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUSB>, IEqualityComparer<TreehopperUSB>
 	{
 		// USB stuff
-		UsbDevice usb;
-		UsbEndpointWriter PinConfig;
-		UsbEndpointReader pinState;
-		UsbEndpointWriter CommsConfig;
-		UsbEndpointReader CommsReceive;
+		//UsbDevice usb;
+		//UsbEndpointWriter PinConfig;
+		//UsbEndpointReader pinState;
+		//UsbEndpointWriter CommsConfig;
+		//UsbEndpointReader CommsReceive;
 
 		#region Pin Definitions
 		private Pin1 pin1;
@@ -293,24 +291,24 @@ namespace Treehopper
 
 		private static TreehopperManager manager;
 
-		internal TreehopperUSB(UsbDevice device)
-		{
-			usb = device;
-			// TODO: Complete member initialization
-			if(usb != null)
-			{
-				usb.GetString(out serialNumber, 0x0409, 3);
-				if (serialNumber != null)
-				{
-					serialNumber = Regex.Replace(serialNumber, @"[^\u0000-\u007F]", string.Empty);
-					serialNumber = serialNumber.Replace("\0", String.Empty);
-				}
+		//internal TreehopperUSB(UsbDevice device)
+		//{
+		//	usb = device;
+		//	// TODO: Complete member initialization
+		//	if(usb != null)
+		//	{
+		//		usb.GetString(out serialNumber, 0x0409, 3);
+		//		if (serialNumber != null)
+		//		{
+		//			serialNumber = Regex.Replace(serialNumber, @"[^\u0000-\u007F]", string.Empty);
+		//			serialNumber = serialNumber.Replace("\0", String.Empty);
+		//		}
 
-				usb.GetString(out deviceName, 0x0409, 4);
-				if (deviceName != null)
-					deviceName = deviceName.Replace("\0", String.Empty);
-			}
-		}
+		//		usb.GetString(out deviceName, 0x0409, 4);
+		//		if (deviceName != null)
+		//			deviceName = deviceName.Replace("\0", String.Empty);
+		//	}
+		//}
 
 		/// <summary>
 		/// Reboots the board.

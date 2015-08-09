@@ -53,12 +53,6 @@
     <Compile Include="SevenSegSpi.cs" />
     <Compile Include="SMBusDevice.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Treehopper\Treehopper.csproj">
-      <Project>{8c1a6bb5-a978-4582-834c-16a37a3b5484}</Project>
-      <Name>Treehopper</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

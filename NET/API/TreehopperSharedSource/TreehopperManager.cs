@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
-using LibUsbDotNet;
-using LibUsbDotNet.Main;
-using LibUsbDotNet.DeviceNotify;
 using System.Collections.ObjectModel;
 
 namespace Treehopper
