@@ -27,8 +27,7 @@ namespace Blink
             {
 				Console.WriteLine("Found board: " + Board);
 				Board.Open();								// You must explicitly open a board before communicating with it
-                Board.Pin1.MakeDigitalOutput(OutputType.OpenDrain);
-                Board.Pin8.Pwm.IsEnabled = true;
+                Board.Pin1.MakeDigitalOutput(OutputType.PushPull);
                 while (Board.IsConnected)                       // repeat this block of code until we unplug the board
                 {
                     Board.Pin1.ToggleOutput();                  // toggle pin 1's output
