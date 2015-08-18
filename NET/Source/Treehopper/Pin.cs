@@ -175,6 +175,7 @@ namespace Treehopper
             SoftPwm = new SoftPwm(Board, this);
             AdcValueChangedThreshold = 2;
             AdcVoltageChangedThreshold = 0.05;
+            this.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
         }
 
         /// <summary>

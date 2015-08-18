@@ -58,7 +58,7 @@ namespace Treehopper
             lock(lockObject)
             {
                 device.sendPeripheralConfigPacket(dataToSend);
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
                 byte[] response = device.receiveCommsResponsePacket();
                 if (numBytesToRead > 0)
                 {

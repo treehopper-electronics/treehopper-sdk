@@ -368,7 +368,7 @@ namespace Treehopper
 			DataToSend[2] = 3;
 			bytes.CopyTo(DataToSend, 3);
 			sendPeripheralConfigPacket(DataToSend);
-			Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+			//Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
 			this.serialNumber = serialNumber;
 			RaisePropertyChanged("SerialNumber");
 
@@ -393,7 +393,7 @@ namespace Treehopper
 			byte[] stringData = Encoding.Unicode.GetBytes(deviceName);
 			stringData.CopyTo(DataToSend, 3);
 			sendPeripheralConfigPacket(DataToSend);
-			Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+			//Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
 			this.deviceName = deviceName;
 			RaisePropertyChanged("DeviceName");
 		}
@@ -546,13 +546,16 @@ namespace Treehopper
 				// Initialize modules
 				i2c = new I2c(this);
 				spi = new Spi(this);
-				//UART = new UART();
+                //UART = new UART();
 
-				// Initialize endpoint readers/writers
-				//PinConfig	= usb.OpenEndpointWriter(WriteEndpointID.Ep01);
-				//pinState	= usb.OpenEndpointReader(ReadEndpointID.Ep01);
-				//CommsConfig	= usb.OpenEndpointWriter(WriteEndpointID.Ep02);
-				//CommsReceive	= usb.OpenEndpointReader(ReadEndpointID.Ep02);
+                // Initialize endpoint readers/writers
+
+                //PinConfig	= usb.OpenEndpointWriter(WriteEndpointID.Ep01);
+                //pinState	= usb.OpenEndpointReader(ReadEndpointID.Ep01);
+                //CommsConfig	= usb.OpenEndpointWriter(WriteEndpointID.Ep02);
+                //CommsReceive	= usb.OpenEndpointReader(ReadEndpointID.Ep02);
+
+                connection.PinEventDataReceived += Connection_PinEventDataReceived; 
 			
 				//// Start reader events
 				//pinState.DataReceived += pinState_DataReceived;
@@ -571,49 +574,50 @@ namespace Treehopper
 			}
 		}
 
-		public bool IsConnected { get; internal set; }
+
+        private void Connection_PinEventDataReceived(byte[] pinStateBuffer)
+        {
+            if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
+            {
+                Pin1.UpdateValue(pinStateBuffer[1], pinStateBuffer[2]);
+                Pin2.UpdateValue(pinStateBuffer[3], pinStateBuffer[4]);
+                Pin3.UpdateValue(pinStateBuffer[5], pinStateBuffer[6]);
+                Pin4.UpdateValue(pinStateBuffer[7], pinStateBuffer[8]);
+                Pin5.UpdateValue(pinStateBuffer[9], pinStateBuffer[10]);
+                Pin6.UpdateValue(pinStateBuffer[11], pinStateBuffer[12]);
+                Pin7.UpdateValue(pinStateBuffer[13], pinStateBuffer[14]);
+                Pin8.UpdateValue(pinStateBuffer[15], pinStateBuffer[16]);
+                Pin9.UpdateValue(pinStateBuffer[17], pinStateBuffer[18]);
+                Pin10.UpdateValue(pinStateBuffer[19], pinStateBuffer[20]);
+                Pin11.UpdateValue(pinStateBuffer[21], pinStateBuffer[22]);
+                Pin12.UpdateValue(pinStateBuffer[23], pinStateBuffer[24]);
+                Pin13.UpdateValue(pinStateBuffer[25], pinStateBuffer[26]);
+                Pin14.UpdateValue(pinStateBuffer[27], pinStateBuffer[28]);
+
+                /// Pin interrupts.
+                /// TODO: This is really hacky and needs to be cleaned up.
+                int PortAInterrupt = pinStateBuffer[29];
+                int PortBInterrupt = pinStateBuffer[30];
+                if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
+                    Pin1.RaiseDigitalInValueChanged();
+                if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
+                    Pin14.RaiseDigitalInValueChanged();
+
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
+                    Pin8.RaiseDigitalInValueChanged();
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
+                    Pin9.RaiseDigitalInValueChanged();
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
+                    Pin10.RaiseDigitalInValueChanged();
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
+                    Pin11.RaiseDigitalInValueChanged();
+            }
+        }
+
+        public bool IsConnected { get; internal set; }
         public static ObservableCollection<TreehopperUsb> Boards { get; set; }
 
-        void pinState_DataReceived(object sender)
-		{
-			int transferLength;
-			//pinState.Read(pinStateBuffer, 1000, out transferLength);
-			if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
-			{
-				Pin1.UpdateValue(	pinStateBuffer[1],	pinStateBuffer[2]);
-				Pin2.UpdateValue(	pinStateBuffer[3],	pinStateBuffer[4]);
-				Pin3.UpdateValue(	pinStateBuffer[5],	pinStateBuffer[6]);
-				Pin4.UpdateValue(	pinStateBuffer[7],	pinStateBuffer[8]);
-				Pin5.UpdateValue(	pinStateBuffer[9],	pinStateBuffer[10]);
-				Pin6.UpdateValue(	pinStateBuffer[11],	pinStateBuffer[12]);
-				Pin7.UpdateValue(	pinStateBuffer[13],	pinStateBuffer[14]);
-				Pin8.UpdateValue(	pinStateBuffer[15],	pinStateBuffer[16]);
-				Pin9.UpdateValue(	pinStateBuffer[17],	pinStateBuffer[18]);
-				Pin10.UpdateValue(	pinStateBuffer[19],	pinStateBuffer[20]);
-				Pin11.UpdateValue(	pinStateBuffer[21],	pinStateBuffer[22]);
-				Pin12.UpdateValue(	pinStateBuffer[23],	pinStateBuffer[24]);
-				Pin13.UpdateValue(	pinStateBuffer[25],	pinStateBuffer[26]);
-				Pin14.UpdateValue(	pinStateBuffer[27],	pinStateBuffer[28]);
-
-				/// Pin interrupts.
-				/// TODO: This is really hacky and needs to be cleaned up.
-				int PortAInterrupt = pinStateBuffer[29];
-				int PortBInterrupt = pinStateBuffer[30];
-				if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
-					Pin1.RaiseDigitalInValueChanged();
-				if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
-					Pin14.RaiseDigitalInValueChanged();
-
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
-					Pin8.RaiseDigitalInValueChanged();
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
-					Pin9.RaiseDigitalInValueChanged();
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
-					Pin10.RaiseDigitalInValueChanged();
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
-					Pin11.RaiseDigitalInValueChanged();
-			}
-		}
+ 
 
 		internal void sendPinConfigPacket(byte[] data)
 		{
