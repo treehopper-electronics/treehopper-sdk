@@ -49,7 +49,7 @@ namespace Blink
             BoardAdded.Pin3.AdcVoltageChangedThreshold = 0.005;
             BoardAdded.Pin3.AnalogVoltageChanged += Pin3_AnalogVoltageChanged;
 
-            while (true)
+            while (BoardAdded.IsConnected)
             {
                 BoardAdded.Pin1.ToggleOutput();
                 await Task.Delay( TimeSpan.FromSeconds(1) );

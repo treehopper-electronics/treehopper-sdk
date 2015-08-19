@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Usb;
@@ -11,11 +12,30 @@ using Windows.Storage.Streams;
 namespace Treehopper
 {
 
-
+    /// <summary>
+    /// Tasking is done following the example here: https://msdn.microsoft.com/en-us/library/dd997396(v=vs.110).aspx
+    /// </summary>
     public class TreehopperUsbConnection : ITreehopperConnection
     {
 
+
         UsbDevice usbDevice;
+
+        UsbBulkInPipe pinEventPipe;
+        UsbBulkInPipe peripheralInPipe;
+        UsbBulkOutPipe pinConfigPipe;
+        UsbBulkOutPipe peripheralOutPipe;
+
+        DataReader pinEventReader;
+        DataWriter pinConfigWriter;
+        DataReader peripheralReader;
+        DataWriter peripheralWriter;
+
+        Task pinEventListernerTask;
+        CancellationTokenSource pinEventListernerTaskCancellationTokenSource;
+        Task peripheralListenerTask;
+        CancellationTokenSource peripheralListenerTaskCancellationTokenSource;
+
 
         public TreehopperUsbConnection(UsbDevice usbDevice)
         {
@@ -52,31 +72,73 @@ namespace Treehopper
             }
         }
 
-        UsbBulkInPipe pinEventPipe;
-        UsbBulkInPipe peripheralInPipe;
-        UsbBulkOutPipe pinConfigPipe;
-        UsbBulkOutPipe peripheralOutPipe;
 
-        DataReader pinEventReader;
-        DataWriter pinConfigWriter;
-        DataReader peripheralReader;
-        DataWriter peripheralWriter;
-
+        /// <summary>
+        /// Task function constantly polling the device's output (PCs input lol) buffer
+        /// waiting for the incoming 64-bytes of USB data 
+        /// </summary>
         async void pinEventListerner()
         {
+            CancellationToken Token = pinEventListernerTaskCancellationTokenSource.Token;
             UInt32 bytesRead = 0;
+            Token.ThrowIfCancellationRequested();
             while (true)
             {
-                bytesRead = await pinEventReader.LoadAsync(64);
 
-                if(bytesRead ==64)
+                if(Token.IsCancellationRequested)
                 {
-                    byte[] data = new byte[64];
-                    pinEventReader.ReadBytes(data);
-                    if( this.PinEventDataReceived != null )
+                    Token.ThrowIfCancellationRequested();
+                }
+
+                try {
+                    bytesRead = await pinEventReader.LoadAsync(64);
+                    if (bytesRead == 64)
                     {
-                        PinEventDataReceived(data);
+                        byte[] data = new byte[64];
+                        pinEventReader.ReadBytes(data);
+                        if (this.PinEventDataReceived != null)
+                        {
+                            PinEventDataReceived(data);
+                        }
                     }
+                }catch(Exception e)
+                {
+                    Debug.WriteLine("Unable to read pin event due to exception: " + e.Message);
+                    break;
+                }
+            }
+        }
+
+        async void peripheralListener()
+        {
+            UInt32 bytesRead = 0;
+            CancellationToken Token = peripheralListenerTaskCancellationTokenSource.Token;
+            Token.ThrowIfCancellationRequested();
+
+            while (true)
+            {
+
+                if(Token.IsCancellationRequested)
+                {
+                    Token.ThrowIfCancellationRequested();
+                }
+
+                try {
+                    bytesRead = await peripheralReader.LoadAsync(64);
+                    if (bytesRead == 64)
+                    {
+                        byte[] data = new byte[64];
+                        pinEventReader.ReadBytes(data);
+                        if (this.PinEventDataReceived != null)
+                        {
+                            Debug.WriteLine("Peripheral data received!");
+                            // Call the function when data received on peripheral
+                        }
+                    }
+                }catch(Exception e)
+                {
+                    Debug.WriteLine("Unable to read the peripheral due to exception: " + e.Message);
+                    break;
                 }
             }
         }
@@ -101,16 +163,55 @@ namespace Treehopper
             peripheralInPipe = usbDevice.DefaultInterface.BulkInPipes[1];
             peripheralReader = new DataReader(peripheralInPipe.InputStream);
 
-            Task t = new Task(pinEventListerner);
-            t.Start();
+            pinEventListernerTaskCancellationTokenSource = new CancellationTokenSource();
+            peripheralListenerTaskCancellationTokenSource = new CancellationTokenSource();
+
+            pinEventListernerTask = new Task(pinEventListerner, pinEventListernerTaskCancellationTokenSource.Token);
+            peripheralListenerTask = new Task(peripheralListener, peripheralListenerTaskCancellationTokenSource.Token);
+
+            pinEventListernerTask.Start();
+            peripheralListenerTask.Start();
+
 
             Debug.WriteLine("Device opened");
             return true;
         }
 
+        /// <summary>
+        /// Proper cleanup is necessary here
+        /// </summary>
         public void Close()
         {
-            throw new NotImplementedException();
+            
+            /*
+                        UsbDevice usbDevice;
+
+                        UsbBulkInPipe pinEventPipe;
+                        UsbBulkInPipe peripheralInPipe;
+                        UsbBulkOutPipe pinConfigPipe;
+                        UsbBulkOutPipe peripheralOutPipe;
+
+                        DataReader pinEventReader;
+                        DataWriter pinConfigWriter;
+                        DataReader peripheralReader;
+                        DataWriter peripheralWriter;
+
+                        Task pinEventListernerTask;
+                        Task peripheralListenerTask;
+                        */
+
+            // Cancel all the tasks
+            pinEventListernerTaskCancellationTokenSource.Cancel();
+            peripheralListenerTaskCancellationTokenSource.Cancel();
+
+            // Wait for the tasks to complete
+            pinEventListernerTask.Wait();
+            peripheralListenerTask.Wait();
+
+//            pinEventReader.DetachStream();
+ //           peripheralReader.DetachStream();
+  //          pinConfigWriter.DetachStream();
+   //         peripheralWriter.DetachStream();
         }
 
         async public void SendDataPinConfigChannel(byte[] data)
@@ -137,18 +238,15 @@ namespace Treehopper
         }
 
 
+        static Dictionary<String, TreehopperUsbConnection> UsbConnections = new Dictionary<string, TreehopperUsbConnection>();
 
+        static uint VendorId = 0x04d8;
+        static uint ProductId = 0xf426;
         public static List<TreehopperUsbConnection> ConnectedDevices { get; set; }
-
         public static event ConnectionAddedHandler ConnectionAdded;
-
         public static event ConnectionRemovedHandler ConnectionRemoved;
-
         public static void AddBoard() { }
-
         public static TreehopperUsbConnection ConnectedDevice { get; set; }
-
-
         static DeviceWatcher deviceWatcher;
         static TypedEventHandler<DeviceWatcher, DeviceInformation> handlerAdded = null;
         static TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> handlerUpdated = null;
@@ -162,55 +260,60 @@ namespace Treehopper
             StartWatcher();
         }
 
+
+
         static void StartWatcher()
         {
-            deviceWatcher = DeviceInformation.CreateWatcher( UsbDevice.GetDeviceSelector( 0x04d8, 0xf426 ));
-
-
             // Hook up handlers for the watcher events before starting the watcher
-
             handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
             {
-
-
-
-                UsbDevice usbDevice = await UsbDevice.FromIdAsync(deviceInfo.Id);
+                String deviceInfoId = deviceInfo.Id;
+                UsbDevice usbDevice = await UsbDevice.FromIdAsync(deviceInfoId);
                 Debug.WriteLine("Device added");
                 if (TreehopperUsbConnection.ConnectionAdded != null) {
-                    TreehopperUsbConnection.ConnectionAdded(new TreehopperUsbConnection(usbDevice));
+
+                    TreehopperUsbConnection newTreehopperUsbConnection = new TreehopperUsbConnection(usbDevice);
+
+                    UsbConnections.Add(deviceInfoId, newTreehopperUsbConnection);
+                    TreehopperUsbConnection.ConnectionAdded(newTreehopperUsbConnection);
                 }
-              
+        });
 
-                });
-          
-
-            deviceWatcher.Added += handlerAdded;
 
             handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
             {
                 Debug.WriteLine("Device updated");
             });
-            deviceWatcher.Updated += handlerUpdated;
+
 
             handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
             {
-                Debug.WriteLine("Device removed");
+                String deviceInfoId = deviceInfoUpdate.Id;
+                Debug.WriteLine("Device removed, id: " + deviceInfoId);
+
+                TreehopperUsbConnection removedTreehopperUsbConnection = UsbConnections[deviceInfoId];
+                removedTreehopperUsbConnection.Close();
+                UsbConnections.Remove(deviceInfoId);
             });
-            deviceWatcher.Removed += handlerRemoved;
+            
 
             handlerEnumCompleted = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
             {
                 Debug.WriteLine("Enum completed");
             });
-            deviceWatcher.EnumerationCompleted += handlerEnumCompleted;
-
+           
             handlerStopped = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
             {
                 Debug.WriteLine("Device or something stopped");
             });
-            deviceWatcher.Stopped += handlerStopped;
 
-            Debug.WriteLine("Starting the wutchah");
+
+            deviceWatcher = DeviceInformation.CreateWatcher(UsbDevice.GetDeviceSelector(VendorId, ProductId));
+            deviceWatcher.Added += handlerAdded;
+            deviceWatcher.Updated += handlerUpdated;
+            deviceWatcher.Removed += handlerRemoved;
+            deviceWatcher.EnumerationCompleted += handlerEnumCompleted;
+            deviceWatcher.Stopped += handlerStopped;
             deviceWatcher.Start();
           
         }
