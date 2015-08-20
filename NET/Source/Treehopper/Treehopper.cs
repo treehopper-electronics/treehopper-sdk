@@ -67,6 +67,10 @@ namespace Treehopper
     /// </remarks>
     public class TreehopperUsb : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUsb>, IEqualityComparer<TreehopperUsb>
 	{
+
+
+        private static bool TreehopperConnectionManagerInitialized = false;
+
         // USB stuff
         //UsbDevice usb;
         //UsbEndpointWriter PinConfig;
@@ -291,14 +295,19 @@ namespace Treehopper
 
         private static void InitTreehopperConnectionManager()
         {
-            TreehopperUsbConnection.StartConnectionManager();
-            TreehopperUsbConnection.ConnectionAdded += TreehopperUsbConnection_ConnectionAdded;
-            TreehopperUsbConnection.ConnectionRemoved += TreehopperUsbConnection_ConnectionRemoved;
+
+            if (!TreehopperConnectionManagerInitialized)
+            {
+                TreehopperConnectionManagerInitialized = true;
+                TreehopperUsbConnection.StartConnectionManager();
+                TreehopperUsbConnection.ConnectionAdded += TreehopperUsbConnection_ConnectionAdded;
+                TreehopperUsbConnection.ConnectionRemoved += TreehopperUsbConnection_ConnectionRemoved;
+            }
         }
 
         private static void TreehopperUsbConnection_ConnectionRemoved(ITreehopperConnection connectionRemoved)
         {
-
+            
             
         }
 

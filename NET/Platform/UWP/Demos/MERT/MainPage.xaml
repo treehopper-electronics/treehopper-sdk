@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="MERT.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MERT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <local:MertController x:Name="mertController"/>
+    </Page.DataContext>
+    
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+
+        <Pivot x:Name="rootPivot" Title="MERT V3">
+            <Pivot.RightHeader>
+                <CommandBar>
+                    <AppBarButton Icon="Back" Label="Previous"  />
+                    <AppBarButton Icon="Setting" Tag="Setting" Label="Settings" />
+                </CommandBar>
+            </Pivot.RightHeader>
+            <PivotItem Header="Make an attempt">
+
+                <Grid>
+                    <Button IsEnabled="{Binding Path=State.DeviceConnected}" Content="Make an attempt"
+        ToolTipService.ToolTip="Click to make an attempt" Margin="50,50,0,497"
+                            Command="{Binding MakeAnAttemptCommand}"/>
+
+                    <local:MertProgressControl DataContext="{Binding State}" x:Name="MertProgress" Width="640" Height="480">
+                        
+                    </local:MertProgressControl>
+                    
+                    </Grid>
+            </PivotItem>
+            <PivotItem Header="Pivot Item 2">
+                <!--Pivot content goes here-->
+                <TextBlock Text="Content of pivot item 2."/>
+            </PivotItem>
+            <PivotItem Header="Pivot Item 3">
+                <!--Pivot content goes here-->
+                <TextBlock Text="Content of pivot item 3."/>
+            </PivotItem>
+        </Pivot>
+
+
+
+    </Grid>
+</Page>

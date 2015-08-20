@@ -269,14 +269,21 @@ namespace Treehopper
             {
                 String deviceInfoId = deviceInfo.Id;
                 UsbDevice usbDevice = await UsbDevice.FromIdAsync(deviceInfoId);
-                Debug.WriteLine("Device added");
-                if (TreehopperUsbConnection.ConnectionAdded != null) {
-
-                    TreehopperUsbConnection newTreehopperUsbConnection = new TreehopperUsbConnection(usbDevice);
-
-                    UsbConnections.Add(deviceInfoId, newTreehopperUsbConnection);
-                    TreehopperUsbConnection.ConnectionAdded(newTreehopperUsbConnection);
+                if (usbDevice == null)
+                {
+                    Debug.WriteLine("Returned device = null! " + deviceInfoId);
                 }
+                else
+                {
+                    Debug.WriteLine("Device added");
+                    if (TreehopperUsbConnection.ConnectionAdded != null)
+                    {
+                        TreehopperUsbConnection newTreehopperUsbConnection = new TreehopperUsbConnection(usbDevice);
+                        UsbConnections.Add(deviceInfoId, newTreehopperUsbConnection);
+                        TreehopperUsbConnection.ConnectionAdded(newTreehopperUsbConnection);
+                    }
+                }
+                
         });
 
 
@@ -292,7 +299,8 @@ namespace Treehopper
                 Debug.WriteLine("Device removed, id: " + deviceInfoId);
 
                 TreehopperUsbConnection removedTreehopperUsbConnection = UsbConnections[deviceInfoId];
-                removedTreehopperUsbConnection.Close();
+
+                TreehopperUsbConnection.ConnectionRemoved(removedTreehopperUsbConnection);
                 UsbConnections.Remove(deviceInfoId);
             });
             
