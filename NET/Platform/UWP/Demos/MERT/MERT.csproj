@@ -99,13 +99,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\MertController.cs" />
+    <Compile Include="Util\CanvasItemsControl.cs" />
+    <Compile Include="ViewModels\MertDataPointViewModel.cs" />
+    <Compile Include="ViewModels\MertTrialSampleViewModel.cs" />
+    <Compile Include="ViewModels\MertVIewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MertConfigModel.cs" />
     <Compile Include="Models\MertStateModel.cs" />
-    <Compile Include="Models\MertTrialModel.cs" />
     <Compile Include="Models\MertTrialSampleModel.cs" />
     <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="ViewModels\MertBaseViewModel.cs" />

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
-namespace MERT
+namespace MERT.ViewModels
 {
-
-
-    public class MertTrialModel
+    public class MertDataPointViewModel
     {
+        public Point Model;
 
-        public int DurationSec;
-        
+
+
     }
 }

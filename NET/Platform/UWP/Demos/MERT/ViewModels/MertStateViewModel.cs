@@ -10,33 +10,155 @@ using Windows.UI.Core;
 
 namespace MERT
 {
+
+
+
+
+
     public class MertStateViewModel: MertBaseViewModel
     {
         MertStateModel StateModel;
-        
-        public ObservableCollection<Point> TrialSamples
+
+
+        ObservableCollection<MertTrialSampleViewModel> _TrialSamples;
+        public ObservableCollection<MertTrialSampleViewModel> TrialSamples
         {
             get
             {
-                return StateModel.TrialSamples;
+                return _TrialSamples;
             }
             set
             {
-                StateModel.TrialSamples = value;
+                _TrialSamples = value;
                 NotifyPropertyChanged("TrialSamples");
+                NotifyPropertyChanged("MinY");
+                NotifyPropertyChanged("MaxY");
+                NotifyPropertyChanged("RangeY");
             }
         }
 
-        public int TrialProgressPerc
+        private void TrialSamples_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            NotifyPropertyChanged("TrialSamples");
+            NotifyPropertyChanged("CurrentValue");
+            NotifyPropertyChanged("MinY");
+            NotifyPropertyChanged("MaxY");
+            NotifyPropertyChanged("RangeY");
+        }
+
+        public double RangeY
         {
             get
             {
-                return StateModel.TrialProgressPerc;
+                return MaxY - MinY;
+            }
+        }
+
+        public double MinY
+        {
+            get
+            {
+                if(_TrialSamples.Count ==0)
+                {
+                    return 0;
+                }
+                double minY = _TrialSamples[0].Y;
+                for (int i=1; i<_TrialSamples.Count; i++)
+                {
+                    double y = _TrialSamples[i].Y;
+                    if(y < minY)
+                    {
+                        minY = y;
+                    }
+                }
+                return minY;
+            }
+        }
+
+        public double MaxY
+        {
+            get
+            {
+                if (_TrialSamples.Count == 0)
+                {
+                    return 0;
+                }
+                double maxY =_TrialSamples[0].Y;
+                for (int i = 1; i < _TrialSamples.Count; i++)
+                {
+                    double y = _TrialSamples[i].Y;
+                    if (y > maxY)
+                    {
+                        maxY = y;
+                    }
+                }
+                return maxY;
+            }
+        }
+
+
+        public String CurrentUserMessage
+        {
+            get
+            {
+                return StateModel.CurrentUserMessage;
             }
             set
             {
-                StateModel.TrialProgressPerc = value;
+                StateModel.CurrentUserMessage = value;
+                NotifyPropertyChanged("CurrentUserMessage");
+            }
+        }
+
+        public Point CurrentValue
+        {
+            get
+            {
+                if (_TrialSamples.Count > 0)
+                {
+                    MertTrialSampleViewModel lastSample = _TrialSamples.Last<MertTrialSampleViewModel>();
+                    return new Point(lastSample.X, lastSample.Y);
+                }
+                // By default return zero :)
+                return new Point(0, 0);
+            }
+        }
+
+        public int TrialProgressMs
+        {
+            get {
+                return StateModel.TrialProgressMs;
+            }
+            set
+            {
+                StateModel.TrialProgressMs = value;
+                NotifyPropertyChanged("TrialProgressMs");
                 NotifyPropertyChanged("TrialProgressPerc");
+            }
+        }
+
+        public int TrialDurationMs
+        {
+            get
+            {
+                return StateModel.TrialDurationMs;
+            }
+            set
+            {
+                StateModel.TrialDurationMs = value;
+                NotifyPropertyChanged("TrialDurationMs");
+            }
+        }
+
+        public double TrialProgressPerc
+        {
+            get
+            {
+                if(TrialDurationMs == 0)
+                {
+                    return 0;
+                }
+                return (100*StateModel.TrialProgressMs/StateModel.TrialDurationMs);
             }
         }
 
@@ -91,12 +213,9 @@ namespace MERT
 
         protected void init()
         {
-            StateModel.TrialSamples.CollectionChanged += TrialSamples_CollectionChanged;
+            _TrialSamples = new ObservableCollection<MertTrialSampleViewModel>();
+            _TrialSamples.CollectionChanged += TrialSamples_CollectionChanged;
         }
 
-        private void TrialSamples_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            NotifyPropertyChanged("TrialSamples");
-        }
     }
 }

@@ -12,17 +12,21 @@ namespace MERT
     {
         public bool DeviceConnected;
         public bool SamplingInProgress;
-        public int TrialProgressPerc;
+        public int TrialProgressMs;
+        public int TrialDurationMs;
         public int TrialNum;
-        public ObservableCollection<Point> TrialSamples;
+        public List<MertTrialSampleModel> TrialSamples;
+        public String CurrentUserMessage;
 
         public MertStateModel()
         {
             DeviceConnected = false;
             SamplingInProgress = false;
-            TrialProgressPerc = 0;
+            TrialDurationMs = 0;
+            TrialProgressMs = 0;
             TrialNum = 0;
-            TrialSamples = new ObservableCollection<Point>();
+            TrialSamples = new List<MertTrialSampleModel>();
+            CurrentUserMessage = "";
         }
     }
 }

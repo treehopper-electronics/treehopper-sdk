@@ -8,39 +8,52 @@
     mc:Ignorable="d">
 
     <Page.DataContext>
-        <local:MertController x:Name="mertController"/>
+        <local:MertViewModel x:Name="mertViewModel"/>
     </Page.DataContext>
-    
-    
+
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
-        <Pivot x:Name="rootPivot" Title="MERT V3">
-            <Pivot.RightHeader>
-                <CommandBar>
-                    <AppBarButton Icon="Back" Label="Previous"  />
-                    <AppBarButton Icon="Setting" Tag="Setting" Label="Settings" />
-                </CommandBar>
-            </Pivot.RightHeader>
-            <PivotItem Header="Make an attempt">
+        <Pivot x:Name="rootPivot">
+            <PivotItem Header="Respiratory Training" >
 
-                <Grid>
+                <StackPanel>
+                    <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="111" TextWrapping="Wrap" Text="MERT (Madonna Electronic Respiratory Training [Device]) is a highly sophisticated contraption used for extremely precise and nuanced medical observation, diagnostic, and treatment of individuals, families, and the community as a whole." VerticalAlignment="Top" Width="792"/>
+
                     <Button IsEnabled="{Binding Path=State.DeviceConnected}" Content="Make an attempt"
-        ToolTipService.ToolTip="Click to make an attempt" Margin="50,50,0,497"
+        ToolTipService.ToolTip="Click to make an attempt" 
                             Command="{Binding MakeAnAttemptCommand}"/>
 
-                    <local:MertProgressControl DataContext="{Binding State}" x:Name="MertProgress" Width="640" Height="480">
-                        
+                    <local:MertProgressControl  x:Name="MertProgress" HorizontalAlignment="Left" VerticalAlignment="Top" >
                     </local:MertProgressControl>
+
+                    </StackPanel>
+            </PivotItem>
+            <PivotItem Header="Configuration">
+                <StackPanel>
+                        <TextBlock Text="This windows allows the user to configure various parameters of MERT."/>
+                    <AppBarSeparator></AppBarSeparator>
+
+                    <TextBlock Text="Warmup time [seconds]"/>
+                    <TextBox Width="50" HorizontalAlignment="Left" Text="{Binding Path=Config.WarmupTimeSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
                     
-                    </Grid>
-            </PivotItem>
-            <PivotItem Header="Pivot Item 2">
-                <!--Pivot content goes here-->
-                <TextBlock Text="Content of pivot item 2."/>
-            </PivotItem>
-            <PivotItem Header="Pivot Item 3">
-                <!--Pivot content goes here-->
-                <TextBlock Text="Content of pivot item 3."/>
+                    
+                        <TextBlock Text="Trial duration [seconds]"/>
+                    <TextBox Width="50" HorizontalAlignment="Left" Text="{Binding Path=Config.TrialDurationSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                    <TextBlock Text="Air flow sampling frequency [Hz]"/>
+                    <TextBox Width="50" HorizontalAlignment="Left" Text="{Binding Path=Config.SamplingRateHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+
+                    <TextBlock Text="Maximum flow value [raw V]"/>
+                    <TextBox  Width="50"  Text="{Binding Path=Config.MaxAirFlowValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>
+
+
+                    <TextBlock Text="Target value"/>
+                    <TextBox  Width="50"  Text="{Binding Path=Config.TargetValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>
+                </StackPanel>
+                
             </PivotItem>
         </Pivot>
 

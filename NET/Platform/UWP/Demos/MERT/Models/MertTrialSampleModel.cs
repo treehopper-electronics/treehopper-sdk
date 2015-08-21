@@ -8,19 +8,20 @@ namespace MERT
 {
     public class MertTrialSampleModel
     {
-        public double Timestamp;
-        public double Value;
+
+        public double TimestampMs;
+        public double AirFlowValue;
 
         public MertTrialSampleModel()
         {
-            Timestamp = 0;
-            Value = 0;
+            TimestampMs = 0;
+            AirFlowValue = 0;
         }
 
-        public MertTrialSampleModel(double timestamp, double value)
+        public MertTrialSampleModel(double timestampMs, double airFlowvalue)
         {
-            Timestamp = timestamp;
-            Value = value;
+            TimestampMs = timestampMs;
+            AirFlowValue = airFlowvalue;
         }
     }
 }

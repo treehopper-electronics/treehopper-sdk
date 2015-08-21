@@ -5,31 +5,48 @@
     xmlns:local="using:MERT"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    mc:Ignorable="d">
 
-    <Grid>
+    <StackPanel>
+
+
+        <TextBlock Text="{Binding Path=State.CurrentUserMessage}"></TextBlock>
         
-        <Rectangle Fill="AliceBlue" Width="300" Height="122" Margin="50,78,50,0" VerticalAlignment="Top"></Rectangle>
-        <Path Stroke="Black" StrokeThickness="3" Data="{Binding TrialSamples}">
+        <Grid Width="{Binding Path=Config.PlottingWindowWidthPx}" Height="{Binding Path=Config.PlottingWindowHeightPx}">
+            <Canvas>
 
-        </Path>
+                <Rectangle Fill="LightGray"  Canvas.Top="{Binding Path=State.MinY}" Stroke="DarkGray"  StrokeThickness="1" Width="{Binding Path=State.CurrentValue.X}" Height="{Binding Path=State.RangeY}" />
+                    
+             
+                
+                <ProgressBar Canvas.Top="{Binding Config.TargetValueScaled}" x:Name="progressBar1" HorizontalAlignment="Left" Value="{Binding Path=State.TrialProgressPerc}" Height="2" Width="{Binding Path=Config.PlottingWindowWidthPx}" />
 
-        <ItemsControl ItemsSource="{Binding Path=TrialSamples}">
-            <ItemsControl.ItemTemplate>
+
+                <local:CanvasItemsControl  ItemsSource="{Binding Path=State.TrialSamples}">
+            <local:CanvasItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </local:CanvasItemsControl.ItemsPanel>
+            <local:CanvasItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Fill="SteelBlue" Height="3" Width="3" FlowDirection="LeftToRight" Margin="{Binding X}">
 
-                    </Ellipse>
+                    <Ellipse Width="10" Height="10" Fill="Orange"></Ellipse>
+
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        
-        
-        <ProgressBar x:Name="progressBar1" Value="{Binding Path=TrialProgressPerc}" Height="20" Margin="90,217,111,63" />
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="152,26,0,0" TextWrapping="Wrap" Text="{Binding Path=TrialSamples.Count}" VerticalAlignment="Top"/>
-    </Grid>
+            </local:CanvasItemsControl.ItemTemplate>
+        </local:CanvasItemsControl>
+
+
+           
+            <!--<Line X2="{Binding Path=State.CurrentValue.X}" X1="0" Y1="{Binding Path=Config.TargetValueScaled}" Y2="{Binding Path=Config.TargetValueScaled}"  Stroke="Red" StrokeThickness="2">
+            </Line>-->
+                
+            </Canvas>
+        </Grid>
+
+        <TextBox x:Name="textBox"  BorderThickness="0" HorizontalAlignment="Left" Margin="152,26,0,0" TextWrapping="Wrap" Text="{Binding Path=State.TrialSamples.Count}" VerticalAlignment="Top"/>
+    </StackPanel>
 
 
 </UserControl>
