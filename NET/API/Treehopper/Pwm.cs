@@ -5,8 +5,8 @@ namespace Treehopper
     /// <summary>
     /// Defines the PWM period options
     /// </summary>
-    public enum PwmFrequency { 
-        
+    public enum PwmFrequency
+    { 
         /// <summary>
         /// 48 kHz (20.833 microseconds)
         /// </summary>

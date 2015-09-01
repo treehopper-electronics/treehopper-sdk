@@ -134,17 +134,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Treehopper\AnalogIn.cpp" />
     <ClCompile Include="..\Treehopper\Pin.cpp" />
     <ClCompile Include="..\Treehopper\Pins.cpp" />
+    <ClCompile Include="..\Treehopper\Pwm.cpp" />
     <ClCompile Include="..\Treehopper\TreehopperBoard.cpp" />
     <ClCompile Include="..\Treehopper\TreehopperManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Treehopper\AnalogIn.h" />
     <ClInclude Include="..\Treehopper\Pin.h" />
     <ClInclude Include="..\Treehopper\Pins.h" />
     <ClInclude Include="..\Treehopper\Property.h" />
+    <ClInclude Include="..\Treehopper\Pwm.h" />
     <ClInclude Include="..\Treehopper\Treehopper.h" />
     <ClInclude Include="..\Treehopper\TreehopperBoard.h" />
     <ClInclude Include="..\Treehopper\TreehopperManager.h" />

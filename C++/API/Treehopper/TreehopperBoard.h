@@ -86,6 +86,7 @@ public:
 	Pin12 Pin12;
 	Pin13 Pin13;
 	Pin14 Pin14;
+	Pin *Pins[14];
 
 private:
 

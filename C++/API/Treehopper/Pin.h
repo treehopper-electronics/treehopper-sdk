@@ -32,17 +32,29 @@ public:
 	 Pin(uint8_t pinNumber, TreehopperBoard* board);
 	 void MakeDigitalOutput();
 	 void MakeDigitalInput();
+	 void MakeAnalogInput();
 	 void SetDigitalValue(bool val);
 	 bool GetDigitalValue();
 	 void ToggleOutput();
-	function<void(bool)> ValueChanged;
-	Property<bool> Value;
-	PinState State;
+
+	 PinState State;
+
+	 // Digital stuff
+	function<void(bool)> DigitalValueChanged;
+	Property<bool> DigitalValue;
+
+	// analog stuff
+	int AnalogValue;
+	double AnalogVoltage;
+	function<void(int)> AnalogValueChanged;
+	function<void(double)> AnalogVoltageChanged;
+
+	void SendCommand(uint8_t* data, int length);
 
 protected:
 	TreehopperBoard* Board;
 	uint8_t PinNumber;
 	virtual void UpdateValue(uint8_t high, uint8_t low);
 	bool digitalValue;
-	void SendCommand(uint8_t* data, int length);
+	
 };

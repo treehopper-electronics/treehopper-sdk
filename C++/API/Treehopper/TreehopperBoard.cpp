@@ -49,6 +49,23 @@ Pin12(this),
 Pin13(this),
 Pin14(this)
 {
+	Pins[0] = &Pin1;
+	Pins[1] = &Pin2;
+	Pins[2] = &Pin3;
+	Pins[3] = &Pin4;
+	Pins[4] = &Pin5;
+	Pins[5] = &Pin6;
+	Pins[6] = &Pin7;
+	Pins[7] = &Pin8;
+	Pins[8] = &Pin9;
+	Pins[9] = &Pin10;
+	Pins[10] = &Pin11;
+	Pins[11] = &Pin12;
+	Pins[12] = &Pin13;
+	Pins[13] = &Pin14;
+	
+
+
 	libusb_init(NULL);
 	libusb_device** devs;
 	libusb_device *dev;

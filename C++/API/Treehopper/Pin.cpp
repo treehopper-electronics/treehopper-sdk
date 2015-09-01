@@ -6,9 +6,9 @@
 
 Pin::Pin(uint8_t pinNumber, TreehopperBoard* board)
 {
-	Value = Property<bool>();
-	Value.Getter = [this]() { return digitalValue;  };
-	Value.Setter = [this](bool val){ digitalValue = val;  SetDigitalValue(val);  };
+	DigitalValue = Property<bool>();
+	DigitalValue.Getter = [this]() { return digitalValue;  };
+	DigitalValue.Setter = [this](bool val){ digitalValue = val;  SetDigitalValue(val);  };
 	PinNumber = pinNumber;
 	Board = board;
 	State = PinStateReservedPin;
@@ -31,6 +31,14 @@ void Pin::MakeDigitalInput()
 	State = PinStateDigitalInput;
 }
 
+void Pin::MakeAnalogInput()
+{
+	if (State == PinStateAnalogInput)
+		return;
+	uint8_t cmd = CmdMakeAnalogInput;
+	SendCommand(&cmd, 1);
+	State = PinStateAnalogInput;
+}
 
 void Pin::SetDigitalValue(bool val)
 {
@@ -45,18 +53,43 @@ bool Pin::GetDigitalValue()
 }
 void Pin::ToggleOutput()
 {
-	Value = !Value;
+	DigitalValue = !DigitalValue;
 }
 
 void Pin::UpdateValue(uint8_t high, uint8_t low)
 {
-	bool newVal = (((uint16_t)high) << 8) + low;
-	if (newVal != digitalValue)
+	if (State == PinStateDigitalInput)
 	{
-		digitalValue = newVal;
-		if (ValueChanged != NULL)
-			ValueChanged(digitalValue > 0);
+		bool newVal = (((uint16_t)high) << 8) + low;
+		if (newVal != digitalValue)
+		{
+			digitalValue = newVal;
+			if (DigitalValueChanged != NULL)
+				DigitalValueChanged(digitalValue > 0);
+		}
 	}
+	else if (State == PinStateAnalogInput)
+	{
+		int val = ((int)high) << 8;
+		val += (int)low;
+		double voltage = (double)val / 204.8f;
+
+		if (AnalogValue != val) // compare the actual ADC values, not the floating-point conversions.
+		{
+			AnalogValue = val;
+			AnalogVoltage = voltage;
+			if (AnalogValueChanged != NULL)
+			{
+				AnalogValueChanged(AnalogValue);
+			}
+			if (AnalogVoltageChanged != NULL)
+			{
+				AnalogVoltageChanged(AnalogVoltage);
+			}
+		}
+	}
+	
+
 }
 
 void Pin::SendCommand(byte* data, int length)

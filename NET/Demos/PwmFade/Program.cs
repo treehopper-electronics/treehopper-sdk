@@ -43,18 +43,19 @@ namespace PwmFade
             //return;
             while (true)
             {
-                for (int i = 100; i > 0; i--)
-                {
-                    Board.Pin2.Pwm.DutyCycle = i / 400.0;
-                    Thread.Sleep(10);
-                }
-                Thread.Sleep(1000);
-                for (int i = 0; i < 100; i++)
-                {
-                    Board.Pin2.Pwm.DutyCycle = i / 400.0;
-                    Thread.Sleep(10);
-                }
-                Thread.Sleep(1000);
+                Board.Pin2.Pwm.DutyCycle = 0.9;
+                //for (int i = 400; i > 0; i--)
+                //{
+                //    Board.Pin2.Pwm.DutyCycle = i / 400.0;
+                //    Thread.Sleep(10);
+                //}
+                //Thread.Sleep(1000);
+                //for (int i = 0; i < 400; i++)
+                //{
+                //    Board.Pin2.Pwm.DutyCycle = i / 400.0;
+                //    Thread.Sleep(10);
+                //}
+                //Thread.Sleep(1000);
             }
 		}
 

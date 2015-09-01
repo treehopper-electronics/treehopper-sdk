@@ -68,7 +68,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)LibUSB;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)LibUSB\include\libusb-1.0;$(IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)LibUSB\MS32\dll</LibraryPath>
     <OutDir>$(SolutionDir)Output\C++\DLL\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -151,17 +151,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AnalogIn.cpp" />
     <ClCompile Include="Pin.cpp" />
     <ClCompile Include="Pins.cpp" />
+    <ClCompile Include="Pwm.cpp" />
     <ClCompile Include="TreehopperBoard.cpp" />
     <ClCompile Include="TreehopperManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnalogIn.h" />
     <ClInclude Include="Pin.h" />
     <ClInclude Include="Pins.h" />
     <ClInclude Include="Property.h" />
+    <ClInclude Include="Pwm.h" />
     <ClInclude Include="Treehopper.h" />
     <ClInclude Include="TreehopperBoard.h" />
     <ClInclude Include="TreehopperManager.h" />
