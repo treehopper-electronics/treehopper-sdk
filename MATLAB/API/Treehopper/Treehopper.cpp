@@ -125,8 +125,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			if (!mxIsLogical(prhs[2]))
 				mexErrMsgIdAndTxt("Treehopper:InvalidInputArgument", "Input should be a logical specifying the pin value");
 
-			double* pinNumber = (double *)mxGetData(prhs[1]);
-			int* pinValue = (int *)mxGetLogicals(prhs[2]);
+			
+			double pinNumber = *((double *)mxGetData(prhs[1]));
+			int pinValue = *((int *)mxGetLogicals(prhs[2]));
 			int pinNumInt = (int)pinNumber;
 			Board->Pins[pinNumInt - 1]->DigitalValue = pinValue;
 		}
@@ -233,12 +234,13 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			if (!mxIsNumeric(prhs[2]))
 				mexErrMsgIdAndTxt("Treehopper:InvalidInputArgument", "Input should be a number specifying the pwm value");
 
-			double* pinNumber = (double *)mxGetData(prhs[1]);
-			double* pwmValue = (double *)mxGetData(prhs[2]);
+			double pinNumber = *((double *)mxGetData(prhs[1]));
+			double pwmValue = *((double *)mxGetData(prhs[2]));
 
-			Pin pin = Pin(*pinNumber, Board);
-			Pwm pwm = Pwm(&pin);
-			pwm.DutyCycle = *pwmValue;
+			int pinNumInt = (int)pinNumber;
+			Pwm pwm = Pwm((Board->Pins[pinNumInt - 1]));
+			pwm.IsEnabled = true;
+			pwm.DutyCycle = pwmValue;
 			
 
 		}
