@@ -20,13 +20,22 @@ int boardOpen = 0;
 
 using namespace std;
 
-void Exit()
+static void Exit()
 {
-	delete Board;
+	if (Board != NULL)
+	{
+		if (Board->IsOpen)
+		{
+			Board->Close();
+			delete Board;
+		}
+
+	}
 }
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
+	mexAtExit(Exit);
 	if (nrhs > 0)
 	{
 		wstring command = wstring(mxGetChars(prhs[0]));
@@ -50,8 +59,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		else if (command.compare(L"open") == 0)
 		{
 			// start by closing existing boards.
-			if (boardOpen)
-				Board->Close();
+			if (Board != NULL)
+			{
+				if (Board->IsOpen)
+					Board->Close();
+			}
+
 
 			if (nlhs > 1)
 				mexErrMsgIdAndTxt("Treehopper:TooManyOutputArguments", "Too many output arguments. This command only returns a single output value.");
@@ -73,11 +86,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			}
 			//mexAtExit(Exit);
 			Board->Open();
-			boardOpen = 1;
 		}
 		else if (command.compare(L"close") == 0)
 		{
-			Board->Close();
 			Exit();
 		}
 		else if (command.compare(L"makeDigitalIn") == 0)
