@@ -28,6 +28,7 @@ static void Exit()
 		{
 			Board->Close();
 			delete Board;
+			Board = NULL;
 		}
 
 	}
@@ -147,8 +148,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
 
-			if (nlhs != 1)
-				mexErrMsgIdAndTxt("Treehopper:WrongNumberOutputArguments", "You must specify one output argument.");
+			if (nlhs > 1)
+				mexErrMsgIdAndTxt("Treehopper:TooManyOutputArguments", "You may only specify one output argument.");
 
 			
 
@@ -180,8 +181,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
 
-			if (nlhs != 1)
-				mexErrMsgIdAndTxt("Treehopper:WrongNumberOutputArguments", "You must specify one output argument.");
+			if (nlhs > 1)
+				mexErrMsgIdAndTxt("Treehopper:TooManyOutputArguments", "You may only specify one output argument.");
 
 
 

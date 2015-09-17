@@ -64,7 +64,6 @@ public:
 	void pinStateListener();
 
 	//EXPORT TreehopperBoard(libusb_device* device);
-	TreehopperBoard::TreehopperBoard(libusb_device* device);
 	TreehopperBoard(string serialNumber = "");
 	void UpdateStrings();
 	void Open();
@@ -103,5 +102,7 @@ private:
 	unsigned char CommsConfigEndpoint = 0x02;
 	unsigned char CommsReceiveEndpoint = 0x82;
 	libusb_transfer* transfer;
+
+
 
 };

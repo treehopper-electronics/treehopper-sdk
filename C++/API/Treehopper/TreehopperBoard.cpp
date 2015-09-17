@@ -1,37 +1,5 @@
 #include "TreehopperBoard.h"
 
-TreehopperBoard::TreehopperBoard(libusb_device* device)
-: Pin1(this), 
-Pin2(this), 
-Pin3(this), 
-Pin4(this), 
-Pin5(this), 
-Pin6(this), 
-Pin7(this), 
-Pin8(this), 
-Pin9(this), 
-Pin10(this), 
-Pin11(this), 
-Pin12(this), 
-Pin13(this), 
-Pin14(this)
-{
-	IsOpen = false;
-	Device = device;
-
-	libusb_open(Device, &Handle);
-	unsigned char buffer[64];
-
-	libusb_get_string_descriptor_ascii(Handle, 4, buffer, 128);
-	Name = string((const char*)buffer);
-
-	libusb_get_string_descriptor_ascii(Handle, 3, buffer, 128);
-	SerialNumber = string((const char*)buffer);
-
-	libusb_close(Handle);
-	
-	
-}
 
 TreehopperBoard::TreehopperBoard(string serialNumber)
 : Pin1(this),
@@ -84,12 +52,26 @@ Pin14(this)
 		}
 		if (desc.idProduct == pid && desc.idVendor == vid)
 		{
-			TreehopperBoard board(dev);
-			if (board.SerialNumber == serialNumber || serialNumber.length() == 0)
+			// Get the name and serial number
+			libusb_device_handle* candidate;
+
+			libusb_open(dev, &candidate);
+			unsigned char buffer[64];
+
+			libusb_get_string_descriptor_ascii(candidate, 4, buffer, 128);
+			string name = string((const char*)buffer);
+
+			libusb_get_string_descriptor_ascii(candidate, 3, buffer, 128);
+			string serial = string((const char*)buffer);
+
+			libusb_close(candidate);
+
+
+			if (serial == serialNumber || serialNumber.length() == 0)
 			{
 				Device = dev;
-				Name = board.Name;
-				SerialNumber = board.SerialNumber;
+				Name = name;
+				SerialNumber = serial;
 				return;
 			}
 		}
@@ -109,7 +91,10 @@ void TreehopperBoard::Open()
 void TreehopperBoard::Close()
 {
 	IsOpen = false;
+	libusb_release_interface(Handle, 0);
 	libusb_close(Handle);
+	libusb_exit(NULL);
+	
 }
 
 int TreehopperBoard::SendPinConfigCommand(uint8_t pinNumber, uint8_t* data, uint8_t len)
