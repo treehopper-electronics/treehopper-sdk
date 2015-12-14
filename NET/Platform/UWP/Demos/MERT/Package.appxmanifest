@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="6a9e94a9-9a9e-445d-ba02-8d3febc33ba7"
+    Name="bdaff09e-e043-4d87-8fbe-3135a9283b3f"
     Publisher="CN=mmittek2"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="6a9e94a9-9a9e-445d-ba02-8d3febc33ba7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="bdaff09e-e043-4d87-8fbe-3135a9283b3f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Blink</DisplayName>
+    <DisplayName>MERT</DisplayName>
     <PublisherDisplayName>mmittek2</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Blink.App">
+      EntryPoint="MERT.App">
       <uap:VisualElements
-        DisplayName="Blink"
+        DisplayName="MERT"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Blink"
+        Description="MERT"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
@@ -45,16 +45,13 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
-
-    <DeviceCapability Name="usb">
+    
+        <DeviceCapability Name="usb">
       <Device Id="vidpid:04d8 f426">
         <Function Type="classId:ff * *"/>
       </Device>
     </DeviceCapability>
 
-
+    
   </Capabilities>
-  
-  
-  
 </Package>

@@ -1,0 +1,52 @@
+﻿<UserControl
+    x:Class="MERT.MertProgressControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MERT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel>
+
+
+        <TextBlock Text="{Binding Path=State.CurrentUserMessage}"></TextBlock>
+        
+        <Grid Width="{Binding Path=Config.PlottingWindowWidthPx}" Height="{Binding Path=Config.PlottingWindowHeightPx}">
+            <Canvas>
+
+                <Rectangle Fill="LightGray"  Canvas.Top="{Binding Path=State.MinY}" Stroke="DarkGray"  StrokeThickness="1" Width="{Binding Path=State.CurrentValue.X}" Height="{Binding Path=State.RangeY}" />
+                    
+             
+                
+                <ProgressBar Canvas.Top="{Binding Config.TargetValueScaled}" x:Name="progressBar1" HorizontalAlignment="Left" Value="{Binding Path=State.TrialProgressPerc}" Height="2" Width="{Binding Path=Config.PlottingWindowWidthPx}" />
+
+
+                <local:CanvasItemsControl  ItemsSource="{Binding Path=State.TrialSamples}">
+            <local:CanvasItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </local:CanvasItemsControl.ItemsPanel>
+            <local:CanvasItemsControl.ItemTemplate>
+                <DataTemplate>
+
+                    <Ellipse Width="10" Height="10" Fill="Orange"></Ellipse>
+
+                </DataTemplate>
+            </local:CanvasItemsControl.ItemTemplate>
+        </local:CanvasItemsControl>
+
+
+           
+            <!--<Line X2="{Binding Path=State.CurrentValue.X}" X1="0" Y1="{Binding Path=Config.TargetValueScaled}" Y2="{Binding Path=Config.TargetValueScaled}"  Stroke="Red" StrokeThickness="2">
+            </Line>-->
+                
+            </Canvas>
+        </Grid>
+
+        <TextBox x:Name="textBox"  BorderThickness="0" HorizontalAlignment="Left" Margin="152,26,0,0" TextWrapping="Wrap" Text="{Binding Path=State.TrialSamples.Count}" VerticalAlignment="Top"/>
+    </StackPanel>
+
+
+</UserControl>
