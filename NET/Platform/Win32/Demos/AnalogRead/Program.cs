@@ -18,7 +18,7 @@ namespace AnalogRead
             Console.WriteLine("Board found.");
             board.Open();
             board.Pin1.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
-            board.Pin1.MakeAnalogInput();
+            board.Pin1.Mode = PinMode.AnalogInput;
 
             /// One of the most powerful features of Treehopper's API is that input pins -- analog or digital -- have event-driven
             /// interfaces that allow them to update your application without requiring polling. This particular event only fires

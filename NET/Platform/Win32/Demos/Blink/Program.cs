@@ -22,15 +22,21 @@ namespace Blink
         static System.Timers.Timer timer;
         static void Main(string[] args)
         {
-            TreehopperUsb Board = TreehopperUsb.First();        // Get a reference to the first TreehopperUsb board connected
-            if(Board != null)                                   // Our reference is null if we couldn't find a board
+            RunBlink();
+            Thread.Sleep(-1);
+        }
+
+        static async void RunBlink()
+        {
+            TreehopperUsb Board = await TreehopperUsb.ConnectionService.First();        // Get a reference to the first TreehopperUsb board connected
+            if (Board != null)                                   // Our reference is null if we couldn't find a board
             {
-				Console.WriteLine("Found board: " + Board);
-				Board.Open();								// You must explicitly open a board before communicating with it
-                Board.Pin1.MakeDigitalOutput(OutputType.PushPull);
+                Console.WriteLine("Found board: " + Board);
+                Board.Connect();								// You must explicitly open a board before communicating with it
+                Board.Pin1.Mode = PinMode.PushPullOutput;
                 while (Board.IsConnected)                       // repeat this block of code until we unplug the board
                 {
-                    Board.Pin1.ToggleOutput();                  // toggle pin 1's output
+                    Board.Led = !Board.Led;                  // toggle pin 1's output
                     Thread.Sleep(1000);                         // Wait 1 second
                 }
             }
@@ -38,7 +44,6 @@ namespace Blink
             {
                 Console.WriteLine("No board was found when application was started");
             }
-
         }
     }
 }

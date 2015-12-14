@@ -13,7 +13,7 @@ namespace Treehopper.WPF.ViewModel
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get { return TreehopperUsb.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards { get { return TreehopperUsb.ConnectionService.Boards; } }
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>
@@ -92,8 +92,6 @@ namespace Treehopper.WPF.ViewModel
             CloseCommandExecute();
             if (SelectedBoard != null)
                 SelectedBoard.Dispose();
-            else
-                TreehopperUsb.UsbExit();
         }
 
         private bool CloseCommandCanExecute()
@@ -134,7 +132,7 @@ namespace Treehopper.WPF.ViewModel
             RaisePropertyChanged("ConnectButtonText");
             CanChangeBoardSelection = false;
             RaisePropertyChanged("CanChangeBoardSelection");
-            SelectedBoard.Open();
+            SelectedBoard.Connect();
             Messenger.Default.Send(new BoardConnectedMessage() { Board = SelectedBoard });
         }
 
@@ -148,7 +146,7 @@ namespace Treehopper.WPF.ViewModel
             RaisePropertyChanged("CanChangeBoardSelection");
             if(SelectedBoard != null)
             {
-                SelectedBoard.Close();
+                SelectedBoard.Disconnect();
             }
                 
             Messenger.Default.Send(new BoardDisconnectedMessage() { Board = SelectedBoard });

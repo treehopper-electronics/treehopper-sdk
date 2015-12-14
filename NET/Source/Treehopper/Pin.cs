@@ -8,15 +8,15 @@ namespace Treehopper
     /// </summary>
     public enum PinPolarity
     {
-        /// <summary>
-        /// The signal is considered active when the signal is high
-        /// </summary>
-        ActiveHigh,
 
         /// <summary>
         /// The signal is considered active when the signal is low
         /// </summary>
-        ActiveLow
+        ActiveLow,
+        /// <summary>
+        /// The signal is considered active when the signal is high
+        /// </summary>
+        ActiveHigh
     };
 
     public enum AdcReferenceLevel
@@ -74,7 +74,7 @@ namespace Treehopper
         GetAnalogValue
     }
 
-    internal enum PinState { ReservedPin, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput };
+    public enum PinMode { Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, Unassigned };
     
     /// <summary>
     /// The interrupt mode of the pin.
@@ -147,7 +147,44 @@ namespace Treehopper
 
         PinInterruptMode interruptMode;
         bool digitalValue;
-        internal PinState State {get; set;}
+
+        private PinMode mode = PinMode.Unassigned;
+        public PinMode Mode
+        {
+            get
+            {
+                return mode;
+            }
+            set
+            {
+                if (value == mode)
+                    return;
+                if(mode == PinMode.Reserved && value != PinMode.Unassigned)
+                {
+                    throw new Exception("This pin is reserved; you must disable the peripheral using it before interacting with it");
+                }
+
+                mode = value;
+
+                switch (mode)
+                {
+                    case PinMode.AnalogInput:
+                        SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
+                        break;
+                    case PinMode.DigitalInput:
+                        SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, (byte)interruptMode });
+                        break;
+                    case PinMode.OpenDrainOutput:
+                        SendCommand(new byte[] { (byte)PinConfigCommands.MakeOpenDrainOutput, (byte)interruptMode });
+                        break;
+                    case PinMode.PushPullOutput:
+                        SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, (byte)interruptMode });
+                        break;
+                }
+
+
+            }
+        }
 
         /// <summary>
         /// Occurs when the input on the pin changes.
@@ -201,7 +238,7 @@ namespace Treehopper
                 {
                     interruptMode = value;
                     RaisePropertyChanged("InterruptMode");
-                    if(State == PinState.DigitalInput) // People are stupid and might change the interrupt mode of the pin while it's not an input!
+                    if(Mode == PinMode.DigitalInput) // People are stupid and might change the interrupt mode of the pin while it's not an input!
                     {
                         SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, (byte)interruptMode });
                     }
@@ -240,8 +277,8 @@ namespace Treehopper
             set
             {
                 digitalValue = value;
-                if (!(State == PinState.PushPullOutput || State == PinState.OpenDrainOutput))
-                    MakeDigitalOutput(OutputType.PushPull); // assume they want push-pull
+                if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
+                    Mode = PinMode.PushPullOutput; // assume they want push-pull
                 byte byteVal = (byte)(digitalValue ? 0x01 : 0x00);
                 SendCommand(new byte[] { (byte)PinConfigCommands.SetDigitalValue, byteVal});
             }
@@ -281,46 +318,6 @@ namespace Treehopper
             }
         }
 
-        /// <summary>
-        /// Configures the pin as a digital input.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If this function is called on a pin used for another purpose (such as AnalogIn, 
-        /// AnalogOut, or communications), this alternative functionality will be disabled before
-        /// the pin is set as an input.
-        /// </para></remarks>
-        public virtual void MakeDigitalInput()
-        {
-            if (State == PinState.DigitalInput)
-                return;
-            SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, (byte)interruptMode });
-            State = PinState.DigitalInput;
-        }
-
-        /// <summary>
-        /// Configures the pin as a digital output.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If this function is called on a pin used for another purpose (such as AnalogIn, 
-        /// AnalogOut, or communications), this alternative functionality will be disabled before
-        /// the pin is set as an output.
-        /// </para></remarks>
-        public virtual void MakeDigitalOutput(OutputType OutputType)
-        {
-            if (State == PinState.PushPullOutput)
-                return;
-            if (OutputType == OutputType.PushPull)
-            {
-                SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput });
-                State = PinState.PushPullOutput;
-            } else {
-                SendCommand(new byte[] { (byte)PinConfigCommands.MakeOpenDrainOutput });
-                State = PinState.OpenDrainOutput;
-            }
-        }
-
         internal void SendCommand(byte[] cmd)
         {
             byte[] data = new byte[64];
@@ -335,7 +332,7 @@ namespace Treehopper
 
         internal virtual void UpdateValue(byte highByte, byte lowByte)
         {
-            if(State == PinState.DigitalInput)
+            if(Mode == PinMode.DigitalInput)
             {
                 bool newVal = highByte > 0;
                 if (digitalValue != newVal) // we have a new value!
@@ -344,7 +341,7 @@ namespace Treehopper
                     RaiseDigitalInValueChanged();
                     RaisePropertyChanged("DigitalValue");
                 }
-            } else if(State == PinState.AnalogInput)
+            } else if(Mode == PinMode.AnalogInput)
             {
                 int val = ((int)highByte) << 8;
                 val |= (int)lowByte;
@@ -380,16 +377,7 @@ namespace Treehopper
             
         }
 
-        public virtual void MakeAnalogInput()
-        {
-            // We use this function to send reconfigurations (like when we set the reference level)
-            //if (State == PinState.AnalogInput)
-            //    return;
-            SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
-            State = PinState.AnalogInput;
-        }
-
-                /// <summary>
+        /// <summary>
         /// Occurs when an analog voltage is changed.
         /// </summary>
         /// <remarks>
@@ -496,8 +484,9 @@ namespace Treehopper
                     //    break;
                 }
 
-                if (State == PinState.AnalogInput)
-                    MakeAnalogInput();
+                // if we're already an analog input, re-send the command to set the new reference level
+                if (Mode == PinMode.AnalogInput)
+                    SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
             }
         }
 

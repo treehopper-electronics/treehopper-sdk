@@ -32,10 +32,10 @@ namespace Treehopper.Libraries
 
         }
 
-        public double Read(Ltc2305Channels channelNumber = Ltc2305Channels.Channel0)
+        public async Task<double> Read(Ltc2305Channels channelNumber = Ltc2305Channels.Channel0)
         {
            //  SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
-            byte[] data = I2c.SendReceive(this.address, new byte[] { (byte)((byte)channelNumber | (byte)Ltc2305ConfigBits.UnipolarMode) }, 2);
+            byte[] data = await I2c.SendReceive(this.address, new byte[] { (byte)((byte)channelNumber | (byte)Ltc2305ConfigBits.UnipolarMode) }, 2);
             int code = data[1] | (data[0]<<8);
             double retVal = CodeToVoltage(code, 5.0, Ltc2305ConfigBits.UnipolarMode);
             return retVal;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Treehopper;
 namespace Treehopper.Libraries
 {
@@ -10,7 +11,8 @@ namespace Treehopper.Libraries
         {
             this.address = address;
             I2c = I2CModule;
-            I2c.Start(rateKHz);
+            //I2c.Start(rateKHz);
+            I2c.Enabled = true;
         }
         // SMBus functions
         // Key to symbols
@@ -36,10 +38,10 @@ namespace Treehopper.Libraries
         /// <param name="address"></param>
         /// <returns></returns>
 
-        public byte ReadByte()
+        public async Task<byte> ReadByte()
         {
             // S Addr Rd [A] [Data] NA P
-            byte[] data = I2c.SendReceive(this.address, new byte[] { }, 1);
+            byte[] data = await I2c.SendReceive(this.address, new byte[] { }, 1);
             return data[0];
         }
 
@@ -48,30 +50,30 @@ namespace Treehopper.Libraries
             // S Addr Wr [A] Data [A] P
         }
 
-        public byte ReadByteData(byte register)
+        public async Task<byte> ReadByteData(byte register)
         {
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [Data] NA P
-            byte[] data = I2c.SendReceive(this.address, new byte[] { register }, 1);
+            byte[] data = await I2c.SendReceive(this.address, new byte[] { register }, 1);
             return data[0];
         }
 
-        public UInt16 ReadWordData(byte register)
+        public async Task<UInt16> ReadWordData(byte register)
         {
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-           byte[] result = I2c.SendReceive(address, new byte[] { register }, 2);
+           byte[] result = await I2c.SendReceive(address, new byte[] { register }, 2);
             return (UInt16)((result[1] << 8) | result[0]);
         }
 
-        public void WriteByteData(byte register, byte data)
+        public async void WriteByteData(byte register, byte data)
         {
             // S Addr Wr [A] Comm [A] Data [A] P
-            I2c.SendReceive(address, new byte[] { register, data }, 0);
+            await I2c.SendReceive(address, new byte[] { register, data }, 0);
         }
 
-        public void WriteWordData(byte register, UInt16 data)
+        public async void WriteWordData(byte register, UInt16 data)
         {
             // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
-            I2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data << 8) }, 0);
+            await I2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data << 8) }, 0);
         }
     }
 }

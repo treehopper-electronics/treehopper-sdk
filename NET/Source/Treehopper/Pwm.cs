@@ -42,12 +42,12 @@ namespace Treehopper
                     if (isEnabled)
                     {
                         Board.PwmMgr.StartPin(Pin);
-                        Pin.State = PinState.ReservedPin;
+                        Pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
                         Board.PwmMgr.StopPin(Pin);
-                        Pin.MakeDigitalInput();
+                        Pin.Mode = PinMode.DigitalInput;
                     }
                 }
             }

@@ -201,6 +201,18 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Runtime": "[4.0.20, )",
@@ -1777,6 +1789,18 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -3388,6 +3412,18 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -5006,6 +5042,18 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Runtime": "[4.0.20, )",
@@ -6615,6 +6663,18 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -8233,6 +8293,18 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Runtime": "[4.0.20, )",
@@ -9842,6 +9914,18 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Nito.AsyncEx/3.0.1": {
+        "compile": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/netcore45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/netcore45/Nito.AsyncEx.dll": {},
+          "lib/netcore45/Nito.AsyncEx.Enlightenment.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -11866,6 +11950,88 @@
         "ref/xamarinmac20/_._",
         "package/services/metadata/core-properties/1d4eb9d0228b48b88d2df3822fba2d86.psmdcp",
         "[Content_Types].xml"
+      ]
+    },
+    "Nito.AsyncEx/3.0.1": {
+      "sha512": "JSypx/S4sBY1+0wrXcSqcdV6p5nVNFeCfIVyC9LAy69hrle/bxMJf9oZsi5UDxZl7Bsq/bD2XwxMFFOx7zVPag==",
+      "type": "Package",
+      "files": [
+        "lib/MonoAndroid/Nito.AsyncEx.Concurrent.dll",
+        "lib/MonoAndroid/Nito.AsyncEx.Concurrent.xml",
+        "lib/MonoAndroid/Nito.AsyncEx.dll",
+        "lib/MonoAndroid/Nito.AsyncEx.Enlightenment.dll",
+        "lib/MonoAndroid/Nito.AsyncEx.Enlightenment.xml",
+        "lib/MonoAndroid/Nito.AsyncEx.xml",
+        "lib/net40/Nito.AsyncEx.Concurrent.dll",
+        "lib/net40/Nito.AsyncEx.Concurrent.xml",
+        "lib/net40/Nito.AsyncEx.dll",
+        "lib/net40/Nito.AsyncEx.Enlightenment.dll",
+        "lib/net40/Nito.AsyncEx.Enlightenment.xml",
+        "lib/net40/Nito.AsyncEx.xml",
+        "lib/net45/Nito.AsyncEx.Concurrent.dll",
+        "lib/net45/Nito.AsyncEx.Concurrent.xml",
+        "lib/net45/Nito.AsyncEx.dll",
+        "lib/net45/Nito.AsyncEx.Enlightenment.dll",
+        "lib/net45/Nito.AsyncEx.Enlightenment.xml",
+        "lib/net45/Nito.AsyncEx.xml",
+        "lib/netcore45/Nito.AsyncEx.Concurrent.dll",
+        "lib/netcore45/Nito.AsyncEx.Concurrent.xml",
+        "lib/netcore45/Nito.AsyncEx.dll",
+        "lib/netcore45/Nito.AsyncEx.Enlightenment.dll",
+        "lib/netcore45/Nito.AsyncEx.Enlightenment.xml",
+        "lib/netcore45/Nito.AsyncEx.xml",
+        "lib/portable-net40+netcore45+sl4+wp71/Nito.AsyncEx.dll",
+        "lib/portable-net40+netcore45+sl4+wp71/Nito.AsyncEx.xml",
+        "lib/portable-net40+netcore45+sl5+wp8+wpa81/Nito.AsyncEx.dll",
+        "lib/portable-net40+netcore45+sl5+wp8+wpa81/Nito.AsyncEx.xml",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.Concurrent.dll",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.Concurrent.xml",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.dll",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.xml",
+        "lib/portable-net45+netcore45+wp8+wpa81/Nito.AsyncEx.dll",
+        "lib/portable-net45+netcore45+wp8+wpa81/Nito.AsyncEx.xml",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.Concurrent.dll",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.Concurrent.xml",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.dll",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.xml",
+        "lib/sl4/Nito.AsyncEx.dll",
+        "lib/sl4/Nito.AsyncEx.Enlightenment.dll",
+        "lib/sl4/Nito.AsyncEx.Enlightenment.xml",
+        "lib/sl4/Nito.AsyncEx.xml",
+        "lib/sl5/Nito.AsyncEx.dll",
+        "lib/sl5/Nito.AsyncEx.Enlightenment.dll",
+        "lib/sl5/Nito.AsyncEx.Enlightenment.xml",
+        "lib/sl5/Nito.AsyncEx.xml",
+        "lib/wp71/Nito.AsyncEx.dll",
+        "lib/wp71/Nito.AsyncEx.Enlightenment.dll",
+        "lib/wp71/Nito.AsyncEx.Enlightenment.xml",
+        "lib/wp71/Nito.AsyncEx.xml",
+        "lib/wp8/Nito.AsyncEx.dll",
+        "lib/wp8/Nito.AsyncEx.Enlightenment.dll",
+        "lib/wp8/Nito.AsyncEx.Enlightenment.xml",
+        "lib/wp8/Nito.AsyncEx.xml",
+        "lib/wpa81/Nito.AsyncEx.Concurrent.dll",
+        "lib/wpa81/Nito.AsyncEx.Concurrent.xml",
+        "lib/wpa81/Nito.AsyncEx.dll",
+        "lib/wpa81/Nito.AsyncEx.Enlightenment.dll",
+        "lib/wpa81/Nito.AsyncEx.Enlightenment.xml",
+        "lib/wpa81/Nito.AsyncEx.xml",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Concurrent.dll",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Concurrent.xml",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.dll",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Enlightenment.dll",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Enlightenment.xml",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.xml",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Concurrent.dll",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Concurrent.xml",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.dll",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Enlightenment.dll",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Enlightenment.xml",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.xml",
+        "Nito.AsyncEx.nuspec",
+        "package/services/metadata/core-properties/1593191068f8400a9734a89663f333f2.psmdcp",
+        "[Content_Types].xml",
+        "_rels/.rels"
       ]
     },
     "System.AppContext/4.0.0": {
@@ -14566,7 +14732,8 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0"
+      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",
+      "Nito.AsyncEx >= 3.0.1"
     ],
     "UAP,Version=v10.0": []
   }

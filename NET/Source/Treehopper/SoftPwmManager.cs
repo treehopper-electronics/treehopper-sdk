@@ -48,7 +48,7 @@ namespace Treehopper
         {
             foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
             {
-                entry.Value.Pin.MakeDigitalInput();
+                entry.Value.Pin.Mode = PinMode.DigitalInput;
             }
             pins.Clear();
             UpdateConfig();
@@ -67,7 +67,7 @@ namespace Treehopper
         {
             pins.Remove(pin.PinNumber);
             UpdateConfig();
-            pin.MakeDigitalInput();
+            pin.Mode = PinMode.DigitalInput;
         }
 
         private void UpdateConfig()

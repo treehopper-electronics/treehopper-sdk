@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nito.AsyncEx;
+using System;
+using System.Threading.Tasks;
 
 namespace Treehopper
 {
@@ -75,10 +77,51 @@ namespace Treehopper
         private bool dataAvailable;
         private byte[] receivedData;
 
-        PinPolarity ChipSelectPolarity;
+        PinPolarity chipSelectPolarity = PinPolarity.ActiveLow;
+        PinPolarity ChipSelectPolarity
+        {
+            get
+            {
+                return chipSelectPolarity;
+            }
+            set
+            {
+                if (chipSelectPolarity == value)
+                    return;
+                chipSelectPolarity = value;
+            }
+        }
        
         TreehopperUsb device;
-        Pin ChipSelect;
+
+        Pin Mosi { get { return device.Pin3; } }
+        Pin Miso { get { return device.Pin2; } }
+        Pin Sck  { get { return device.Pin1; } }
+
+        Pin chipSelect;
+        public Pin ChipSelect {
+            get
+            {
+                return chipSelect;
+            } set
+            {
+                if (value == chipSelect)
+                    return;
+
+                if(chipSelect != null)
+                    chipSelect.Mode = PinMode.DigitalInput; // make the old chip select pin a digital input
+
+                chipSelect = value;
+
+                if(chipSelect.Mode == PinMode.Reserved)
+                {
+                    throw new Exception("The specified ChipSelect pin is already in use by another peripheral");
+                } else if (chipSelect != null)
+                {
+                    chipSelect.Mode = PinMode.Reserved;
+                }
+            }
+        }
 
         internal Spi(TreehopperUsb device)
         {
@@ -87,14 +130,7 @@ namespace Treehopper
 
         private void SendConfig()
         {
-            if(this.ChipSelect != null)
-            {
-                this.ChipSelect.MakeDigitalOutput(OutputType.PushPull);
-                if (ChipSelectPolarity == PinPolarity.ActiveLow)
-                    this.ChipSelect.DigitalValue = true;
-                else
-                    this.ChipSelect.DigitalValue = false;
-            }
+
 
             double SPI0CKR = (24.0 / _frequency) - 1;
             if (SPI0CKR > 255.0)
@@ -104,11 +140,13 @@ namespace Treehopper
 
             actualFrequency = 47 / (2 * SPI0CKR + 1);
 
-            byte[] dataToSend = new byte[4];
+            byte[] dataToSend = new byte[6];
             dataToSend[0] = (byte)DeviceCommands.SpiConfig;
-            dataToSend[1] = (byte)(isEnabled ? 1 : 0);
-            dataToSend[1] = (byte)Mode;
-            dataToSend[2] = (byte)SPI0CKR;
+            dataToSend[1] = (enabled ? (byte)1 : (byte)0);
+            dataToSend[2] = (byte)Mode;
+            dataToSend[3] = (byte)SPI0CKR;
+            dataToSend[4] = (byte)(chipSelect == null ? 0 : chipSelect.PinNumber);
+            dataToSend[5] = (byte)(chipSelectPolarity == PinPolarity.ActiveHigh ? 1 : 0);
             device.sendPeripheralConfigPacket(dataToSend);
         }
 
@@ -117,7 +155,7 @@ namespace Treehopper
         /// </summary>
         public const string FrequencyPropertyName = "Frequency";
 
-        private double _frequency;
+        private double _frequency = 6;
 
         /// <summary>
         /// Sets and gets the Frequency property.
@@ -161,21 +199,38 @@ namespace Treehopper
             
         }
 
-        bool isEnabled;
+        bool enabled;
 
-        public bool IsEnabled
+        public bool Enabled
         {
             get
             {
-                return isEnabled;
+                return enabled;
             }
             set
             {
-                if (isEnabled == value) return;
-                isEnabled = value;
+                if (enabled == value) return;
+                enabled = value;
+
                 SendConfig();
+
+                if (enabled)
+                {
+                    Mosi.Mode = PinMode.Reserved;
+                    Miso.Mode = PinMode.Reserved;
+                    Sck.Mode = PinMode.Reserved;
+                }
+                else
+                {
+                    Mosi.Mode = PinMode.Unassigned;
+                    Miso.Mode = PinMode.Unassigned;
+                    Sck.Mode = PinMode.Unassigned;
+                }
+
             }
         }
+
+        private readonly AsyncLock mutex = new AsyncLock();
 
         /// <summary>
         /// Sends and Receives data. 
@@ -184,7 +239,7 @@ namespace Treehopper
         /// <param name="dataToWrite"></param>
         /// <param name="numBytesToRead"></param>
         /// <returns>Nothing. When data is received, an event will be generated</returns>
-        public byte[] SendReceive(byte[] dataToWrite)
+        public async Task<byte[]> SendReceive(byte[] dataToWrite)
         {
             if (dataToWrite.Length > 255)
                 throw new Exception("Maximum packet length is 255 bytes");
@@ -193,18 +248,18 @@ namespace Treehopper
             dataToSend[0] = (byte)DeviceCommands.SpiTransaction;
             dataToSend[1] = (byte)dataToWrite.Length;
             dataToWrite.CopyTo(dataToSend, 2);
-            if (ChipSelect != null)
+            //if (ChipSelect != null)
+            //{
+            //    ChipSelect.DigitalValue = ChipSelectPolarity == PinPolarity.ActiveLow ? false : true ;
+            //}
+            using (await mutex.LockAsync())
             {
-                if (ChipSelectPolarity == PinPolarity.ActiveLow)
-                    ChipSelect.DigitalValue = false;
-                else
-                    ChipSelect.DigitalValue = true;
+                device.sendPeripheralConfigPacket(dataToSend);
+                byte[] receivedData = await device.receiveCommsResponsePacket((uint)dataToWrite.Length);
             }
-            device.sendPeripheralConfigPacket(dataToSend);
-            //Thread.Sleep(1);
-            byte[] receivedData = device.receiveCommsResponsePacket();
-            if (ChipSelect != null)
-                ChipSelect.ToggleOutput();
+                
+            //if (ChipSelect != null)
+            //    chipSelect.DigitalValue = ChipSelectPolarity == PinPolarity.ActiveLow ? true : false;
             return receivedData;
         }
 

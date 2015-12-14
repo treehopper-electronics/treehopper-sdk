@@ -45,12 +45,6 @@
     <Compile Include="..\..\..\..\Source\Treehopper\Comparator.cs">
       <Link>Comparator.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\DeviceManagement.cs">
-      <Link>DeviceManagement.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\DeviceManagementApi.cs">
-      <Link>DeviceManagementApi.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\..\Source\Treehopper\I2c.cs">
       <Link>I2c.cs</Link>
     </Compile>

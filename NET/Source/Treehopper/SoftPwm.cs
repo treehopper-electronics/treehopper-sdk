@@ -40,12 +40,12 @@
                     if(isEnabled)
                     {
                         Board.SoftPwmMgr.StartPin(Pin);
-                        Pin.State = PinState.ReservedPin;
+                        Pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
                         Board.SoftPwmMgr.StopPin(Pin);
-                        Pin.MakeDigitalInput();
+                        Pin.Mode = PinMode.DigitalInput;
                     }
                 }
             }

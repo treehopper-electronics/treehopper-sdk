@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries
 {
@@ -52,38 +53,39 @@ namespace Treehopper.Libraries
         
         Spi SPIModule;
         
-        Pin csPin;
-
         int numDevices;
 
         byte[] spiData;
 
-        public SevenSegSpi(Spi SPIModule, Pin csPin, int numDevices = 1) 
+        public SevenSegSpi(Spi SPIModule, int numDevices = 1) 
         {
-            this.SPIModule = SPIModule;
-            //SPIModule.Start(SPIMode.Mode00, 1);
-            this.csPin = csPin;
-
-            if(numDevices<=0 || numDevices>8 )
+            if (numDevices <= 0 || numDevices > 8)
                 throw new Exception("This library supports 1 to 8 displays.");
 
+            this.SPIModule = SPIModule;
             this.numDevices = numDevices;
-            
-            this.csPin.DigitalValue = true;
 
-             spiData = new byte[numDevices*2];
+        }
 
-            for(int i=0; i<numDevices; i++) 
+        public async Task Init()
+        {
+            this.SPIModule.Frequency = 1;
+            this.SPIModule.Enabled = true;
+            //SPIModule.Start(SPIMode.Mode00, 1);
+
+            spiData = new byte[numDevices * 2];
+
+            for (int i = 0; i < numDevices; i++)
             {
-                spiTransfer(OP_DISPLAYTEST, 0, i);
+                await spiTransfer(OP_DISPLAYTEST, 0, i);
                 //scanlimit is set to max on startup
-                setScanLimit(7, i);
+                await setScanLimit(7, i);
                 //decode is done in source
-                spiTransfer(OP_DECODEMODE, 0, i);
-                clearDisplay(i);
+                await spiTransfer(OP_DECODEMODE, 0, i);
+                await clearDisplay(i);
                 //we go into shutdown-mode on startup
-                shutdown(false, i);
-                setIntensity(10, i);
+                await shutdown(false, i);
+                await setIntensity(10, i);
             }
         }
 
@@ -91,34 +93,34 @@ namespace Treehopper.Libraries
             return numDevices;
         }
 
-        public void shutdown(bool b, int addr = 0)
+        public async Task shutdown(bool b, int addr = 0)
         {
             if(addr<0 || addr>=numDevices)
 	        return;
             if(b)
-                spiTransfer(OP_SHUTDOWN, 0, addr);
+                await spiTransfer(OP_SHUTDOWN, 0, addr);
             else
-                spiTransfer(OP_SHUTDOWN, 1, addr);
+                await spiTransfer(OP_SHUTDOWN, 1, addr);
         }
 
-        public void setScanLimit(byte limit, int addr = 0)
+        public async Task setScanLimit(byte limit, int addr = 0)
         {
             if(addr<0 || addr>=numDevices)
 	        return;
             if(limit>=0 || limit<8)
-                spiTransfer(OP_SCANLIMIT, limit, addr);
+                await spiTransfer(OP_SCANLIMIT, limit, addr);
         }
 
-        public void setIntensity(byte intensity, int addr = 0)
+        public async Task setIntensity(byte intensity, int addr = 0)
         {
             if(addr<0 || addr>=numDevices)
 	        return;
             if(intensity>=0 || intensity<16)
-                spiTransfer(OP_INTENSITY, intensity, addr);
+                await spiTransfer(OP_INTENSITY, intensity, addr);
     
         }
 
-        public void clearDisplay(int addr = 0)
+        public async Task clearDisplay(int addr = 0)
         {
             int offset;
 
@@ -127,19 +129,19 @@ namespace Treehopper.Libraries
             offset=addr*8;
             for(byte i=0;i<8;i++) {
 	        status[offset+i]=0;
-            spiTransfer((byte)(i + 1), status[offset + i], addr);
+            await spiTransfer((byte)(i + 1), status[offset + i], addr);
             }
         }
 
-        public void setLed(int row, int column, bool state, int addr = 0)
+        public async Task setLed(int row, int column, bool state, int addr = 0)
         {
             int offset;
             byte val=0x00;
 
             if(addr<0 || addr>=numDevices)
-	        return;
+	            return;
             if(row<0 || row>7 || column<0 || column>7)
-	        return;
+	            return;
             offset=addr*8;
             val=(byte)(0x80 >> column);
             if (state)
@@ -152,56 +154,56 @@ namespace Treehopper.Libraries
                 status[offset + row] = (byte)(status[offset + row] & val);
             }
 
-            spiTransfer((byte)(row + 1), status[offset + row], addr);
+            await spiTransfer((byte)(row + 1), status[offset + row], addr);
         }
 
-        public void setRow(int row, byte value, int addr = 0)
+        public async Task setRow(int row, byte value, int addr = 0)
         {
             int offset;
             if(addr<0 || addr>=numDevices)
-	        return;
+	            return;
             if(row<0 || row>7)
-	        return;
+	            return;
             offset=addr*8;
             status[offset+row]=value;
-            spiTransfer((byte)(row + 1), status[offset + row], addr);
+            await spiTransfer((byte)(row + 1), status[offset + row], addr);
         }
 
-        public void setColumn(int col, byte value, int addr = 0)
+        public async Task setColumn(int col, byte value, int addr = 0)
         {
             byte val;
 
             if(addr<0 || addr>=numDevices)
-	        return;
+	            return;
             if(col<0 || col>7) 
-	        return;
+	            return;
             for(int row=0;row<8;row++) {
-	        val=(byte)(value >> (7-row));
-	        val=(byte)(val & 0x01);
-            setLed(row, col, val > 0, addr);
+	            val=(byte)(value >> (7-row));
+	            val=(byte)(val & 0x01);
+                await setLed(row, col, val > 0, addr);
             }
         }
 
-        public void setDigit(int digit, int value, bool dp, int addr = 0)
+        public async Task setDigit(int digit, int value, bool dp, int addr = 0)
         {
             int offset;
             byte v;
 
             if(addr<0 || addr>=numDevices)
-	        return;
+	            return;
             if(digit<0 || digit>7 || value>15)
-	        return;
+	            return;
             offset=addr*8;
             v=charTable[value];
             if(dp)
 	        v|=0x80;
             status[offset+digit]=v;
-            spiTransfer((byte)(digit + 1), v, addr);
+            await spiTransfer((byte)(digit + 1), v, addr);
     
         }
 
 
-        public void printNumber(decimal value, int addr = 0, bool rightAlign = true, bool alwaysDisplayDecimalPoint = true)
+        public async void printNumber(decimal value, int addr = 0, bool rightAlign = true, bool alwaysDisplayDecimalPoint = true)
         {
             if (value > 99999999 || value < -9999999)
                 throw new Exception("This display is limited to numbers between -9999999 and 99999999");
@@ -255,19 +257,19 @@ namespace Treehopper.Libraries
                 }
             }
 
-            clearDisplay(addr);
+            await clearDisplay(addr);
             for(int i=0; i<numbers.Count; i++)
             {
                 if(i == decimalPointPosition && (alwaysDisplayDecimalPoint || containsDecimals))
-                    setDigit(i, numbers[i], true, addr);
+                    await setDigit(i, numbers[i], true, addr);
                 else
-                    setDigit(i, numbers[i], false, addr);
+                    await setDigit(i, numbers[i], false, addr);
             }
 
 
         }
 
-        public void setChar(int digit, char value, bool dp, int addr = 0)
+        public async Task setChar(int digit, char value, bool dp, int addr = 0)
         {
             int offset;
             byte index,v;
@@ -289,10 +291,10 @@ namespace Treehopper.Libraries
             }
 
             status[offset+digit]=v;
-            spiTransfer((byte)(digit + 1), v, addr);
+            await spiTransfer((byte)(digit + 1), v, addr);
         }
 
-        public void spiTransfer(byte opcode, byte data, int addr = 0)
+        public async Task spiTransfer(byte opcode, byte data, int addr = 0)
         {
             //Create an array with the data to shift out
             int offset = addr*2;
@@ -307,14 +309,8 @@ namespace Treehopper.Libraries
             spiData[offset+1]=opcode;
             spiData[offset]=data;
 
-            //enable the line 
-            csPin.DigitalValue = false;
-
-            //Now shift out the data 
             Array.Reverse(spiData);
-            SPIModule.SendReceive(spiData);
-            //latch the data onto the display
-            csPin.DigitalValue = true;
+            await SPIModule.SendReceive(spiData);
         }    
     }
 }

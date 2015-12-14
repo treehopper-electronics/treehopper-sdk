@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries
 {
@@ -91,12 +92,12 @@ namespace Treehopper.Libraries
           _rows = lcd_rows;
           _backlightval = LCD_NOBACKLIGHT;
 
-          _I2C.Start();
+          _I2C.Enabled = true;
           _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
           begin(_cols, _rows);  
         }
 
-        void begin(int cols, int lines) {
+        async void begin(int cols, int lines) {
 	        if (lines > 1) {
 		        _displayfunction |= LCD_2LINE;
 	        }
@@ -109,49 +110,49 @@ namespace Treehopper.Libraries
   
 	        // Now we pull both RS and R/W low to begin commands
 	        expanderWrite(_backlightval);	// reset expanderand turn backlight off (Bit 8 =1)
-            Thread.Sleep(2000);
+            await Task.Delay(2000);
             //delay(1000);
 
-  	        //put the LCD into 4 bit mode
-	        // this is according to the hitachi HD44780 datasheet
-	        // figure 24, pg 46
-	
-	          // we start in 8bit mode, try to set 4 bit mode
-           write4bits(0x03 << 4);
-           Thread.Sleep(100);
+            //put the LCD into 4 bit mode
+            // this is according to the hitachi HD44780 datasheet
+            // figure 24, pg 46
+
+            // we start in 8bit mode, try to set 4 bit mode
+            write4bits(0x03 << 4);
+            await Task.Delay(100);
            //delayMicroseconds(4500); // wait min 4.1ms
    
            // second try
            write4bits(0x03 << 4);
-           //delayMicroseconds(4500); // wait min 4.1ms
-           Thread.Sleep(100);
-           // third go!
-           write4bits(0x03 << 4); 
-           //delayMicroseconds(150);
-           Thread.Sleep(100);
-           // finally, set to 4-bit interface
-           write4bits(0x02 << 4);
+            //delayMicroseconds(4500); // wait min 4.1ms
+            await Task.Delay(100);
+            // third go!
+            write4bits(0x03 << 4);
+            //delayMicroseconds(150);
+            await Task.Delay(100);
+            // finally, set to 4-bit interface
+            write4bits(0x02 << 4);
 
-           Thread.Sleep(100);
+            await Task.Delay(100);
 
-	        // set # lines, font size, etc.
-	        command(LCD_FUNCTIONSET | _displayfunction);  
+            // set # lines, font size, etc.
+            command(LCD_FUNCTIONSET | _displayfunction);  
 	
 	        // turn the display on with no cursor or blinking default
 	        _displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
 	        display();
-            Thread.Sleep(100);
-	        // clear it off
-	        clear();
-            Thread.Sleep(100);
-	        // Initialize to default text direction (for roman languages)
-	        _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+            await Task.Delay(100);
+            // clear it off
+            clear();
+            await Task.Delay(100);
+            // Initialize to default text direction (for roman languages)
+            _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
 	
 	        // set the entry mode
 	        command(LCD_ENTRYMODESET | _displaymode);
-            Thread.Sleep(100);
-	        home();
-            Thread.Sleep(100);
+            await Task.Delay(100);
+            home();
+            await Task.Delay(100);
         }
 
         /********** high level commands, for the user! */
@@ -322,10 +323,10 @@ namespace Treehopper.Libraries
 	        pulseEnable(value);
         }
 
-        void expanderWrite(int _data){
+        async void expanderWrite(int _data){
             //_I2C.Write((byte)_Addr, new byte[] {(byte)(_data | _backlightval) });
             _I2C.SendReceive((byte)_Addr, new byte[] { (byte)(_data | _backlightval) }, 0);
-            Thread.Sleep(2); 
+            await Task.Delay(2);
         }
 
         void pulseEnable(int _data){
@@ -367,7 +368,7 @@ namespace Treehopper.Libraries
 	        }
         }
 
-        public void printMessage(string test, int delay=250)
+        public async void printMessage(string test, int delay=250)
         {
             string[] words = test.Split(' ');
             List<string> lines = new List<string>();
@@ -377,7 +378,7 @@ namespace Treehopper.Libraries
                 // do we have enough space on the current line?
                 if (currentLine.Length + word.Length + 1 > _cols)
                 {
-                    lines.Add(String.Copy(currentLine));
+                    lines.Add(currentLine);
                     currentLine = "";                    
                 }
                 currentLine += word + " ";
@@ -390,7 +391,7 @@ namespace Treehopper.Libraries
             {
                 printLine(lines[i], 0);
                 printLine(lines[i + 1], 1);
-                Thread.Sleep(delay);
+                await Task.Delay(delay);
             }
         }
     }

@@ -37,10 +37,10 @@ namespace Treehopper.Libraries
         public ColorSensor_ADJDS311(I2c I2CDevice, Pin LedPin) : base(0x74, I2CDevice)
         {
             _I2C = I2CDevice;
-            _I2C.Start();
+            _I2C.Enabled = true;
 
             led = LedPin;
-            led.MakeDigitalOutput(OutputType.PushPull);
+            led.Mode = PinMode.PushPullOutput;
 
             WriteByteData(CAP_RED, 15);
             WriteByteData(CAP_GREEN, 15);
@@ -64,17 +64,17 @@ namespace Treehopper.Libraries
         public ushort Green { get; set; }
         public ushort Blue { get; set; }
 
-        public void updateColor()
+        public async void updateColor()
         {
             led.DigitalValue = true;
             WriteByteData(0, 1);
-            while ((ReadByteData(0) & 0x01) != 0) ;
+            while ((await ReadByteData(0) & 0x01) != 0) ;
             led.DigitalValue = false;
 
-            ushort red = BitConverter.ToUInt16(new byte[] { ReadByteData(DATA_RED_LO), ReadByteData(DATA_RED_HI) }, 0);
-            ushort green = BitConverter.ToUInt16(new byte[] { ReadByteData(DATA_GREEN_LO), ReadByteData(DATA_GREEN_HI) }, 0);
-            ushort blue = BitConverter.ToUInt16(new byte[] { ReadByteData(DATA_BLUE_LO), ReadByteData(DATA_BLUE_HI) }, 0);
-            ushort clear = BitConverter.ToUInt16(new byte[] { ReadByteData(DATA_CLEAR_LO), ReadByteData(DATA_CLEAR_HI) }, 0);
+            ushort red = BitConverter.ToUInt16(new byte[] { await ReadByteData(DATA_RED_LO), await ReadByteData(DATA_RED_HI) }, 0);
+            ushort green = BitConverter.ToUInt16(new byte[] { await ReadByteData(DATA_GREEN_LO), await ReadByteData(DATA_GREEN_HI) }, 0);
+            ushort blue = BitConverter.ToUInt16(new byte[] { await ReadByteData(DATA_BLUE_LO), await ReadByteData(DATA_BLUE_HI) }, 0);
+            ushort clear = BitConverter.ToUInt16(new byte[] { await ReadByteData(DATA_CLEAR_LO), await ReadByteData(DATA_CLEAR_HI) }, 0);
 
             Red = (byte)(red / 4);
             Green = (byte)(green / 4);
