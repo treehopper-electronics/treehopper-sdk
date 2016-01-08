@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+extern "C" { FILE __imp__iob[3] = { *stdin,*stdout,*stderr }; }
+
 const char *field_names[] = { "name", "serial" };
 
 mwSize dims[] = { 1, 0 };
@@ -39,8 +41,13 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	mexAtExit(Exit);
 	if (nrhs > 0)
 	{
-		wstring command = wstring(mxGetChars(prhs[0]));
-		if (command.compare(L"scan") == 0)
+		//wstring command = wstring((wchar_t*)mxGetChars(prhs[0]));
+		char buff[32];
+		mxGetString(prhs[0], buff, 32);
+
+		string command = string(buff);
+		
+		if (command.compare("scan") == 0)
 		{
 			if (nlhs > 1)
 				mexErrMsgIdAndTxt("Treehopper:TooManyOutputArguments", "Too many output arguments. This command only returns a single output value.");
@@ -57,7 +64,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			}
 			
 		}
-		else if (command.compare(L"open") == 0)
+		else if (command.compare("open") == 0)
 		{
 			// start by closing existing boards.
 			if (Board != NULL)
@@ -88,11 +95,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			//mexAtExit(Exit);
 			Board->Open();
 		}
-		else if (command.compare(L"close") == 0)
+		else if (command.compare("close") == 0)
 		{
 			Exit();
 		}
-		else if (command.compare(L"makeDigitalIn") == 0)
+		else if (command.compare("makeDigitalIn") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -108,7 +115,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			Board->Pins[pinNumInt - 1]->MakeDigitalInput();
 
 		}
-		else if (command.compare(L"makeDigitalOut") == 0)
+		else if (command.compare("makeDigitalOut") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -124,7 +131,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			Board->Pins[pinNumInt - 1]->MakeDigitalOutput();
 
 		}
-		else if (command.compare(L"digitalWrite") == 0)
+		else if (command.compare("digitalWrite") == 0)
 		{
 			if (nrhs < 3)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -143,7 +150,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			int pinNumInt = (int)pinNumber;
 			Board->Pins[pinNumInt - 1]->DigitalValue = pinValue;
 		}
-		else if (command.compare(L"digitalRead") == 0)
+		else if (command.compare("digitalRead") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -160,7 +167,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			int pinNumInt = (int)pinNumber;
 			plhs[0] = mxCreateDoubleScalar(Board->Pins[pinNumInt - 1]->DigitalValue);
 		}
-		else if (command.compare(L"makeAnalogIn") == 0)
+		else if (command.compare("makeAnalogIn") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -176,7 +183,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			Board->Pins[pinNumInt - 1]->MakeAnalogInput();
 		}
 
-		else if (command.compare(L"analogReadValue") == 0)
+		else if (command.compare("analogReadValue") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -195,14 +202,15 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
 		}
 
-		else if (command.compare(L"analogReadVoltage") == 0)
+		else if (command.compare("analogReadVoltage") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
 
-			if (nlhs != 1)
-				mexErrMsgIdAndTxt("Treehopper:WrongNumberOutputArguments", "You must specify one output argument.");
-
+			//if (nlhs != 1)
+			//	mexErrMsgIdAndTxt("Treehopper:WrongNumberOutputArguments", "You must specify one output argument.");
+			if (nlhs > 1)
+				mexErrMsgIdAndTxt("Treehopper:TooManyOutputArguments", "You may only specify one output argument.");
 
 
 			if (!mxIsNumeric(prhs[1]))
@@ -214,7 +222,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
 		}
 
-		else if (command.compare(L"makePwm") == 0)
+		else if (command.compare("makePwm") == 0)
 		{
 			if (nrhs < 2)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
@@ -233,7 +241,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
 		}
 
-		else if (command.compare(L"pwmWrite") == 0)
+		else if (command.compare("pwmWrite") == 0)
 		{
 			if (nrhs < 3)
 				mexErrMsgIdAndTxt("Treehopper:NotEnoughInputArguments", "This command requires an additional input argument.");
