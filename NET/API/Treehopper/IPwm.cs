@@ -24,9 +24,9 @@
         double DutyCycle {get; set;}
 
         /// <summary>
-        /// Get or set the pulse width, in milliseconds, of the pin
+        /// Get or set the pulse width, in microseconds, of the pin
         /// </summary>
-        double PulseWidth { get; set; }
+        int PulseWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.

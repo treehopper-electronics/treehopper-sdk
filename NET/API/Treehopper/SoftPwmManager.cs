@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Nito.AsyncEx;
 
 namespace Treehopper
 {
@@ -13,27 +15,21 @@ namespace Treehopper
         /// <summary>
         /// Pulse Width, in Milliseconds
         /// </summary>
-        public double PulseWidth { get; set; }
+        public int PulseWidthUs { get; set; }
         public bool UsePulseWidth { get; set; }
-        public ushort ActualCount { get; set; }
+        public UInt16 Ticks { get; set; }
     }
 
-    internal class SoftPwmManager : IDisposable
+    public class SoftPwmManager : IDisposable
     {
+        AsyncLock mutex = new AsyncLock();
+
         private Dictionary<int, SoftPwmPinConfig> pins;
 
-        private byte timerVal = 0;
-        /// <summary>
-        /// Period, in ticks (determined by resolution)
-        /// </summary>
-        private ushort period = 233; // 100 Hz rate
-        /// <summary>
-        /// Resolution, in microseconds
-        /// </summary>
-        private int resolution = 43;
-        TreehopperUSB board;
+        private double resolution = 0.25; // 0.25 microseconds / tick
+        TreehopperUsb board;
 
-        internal SoftPwmManager(TreehopperUSB board)
+        internal SoftPwmManager(TreehopperUsb board)
         {
             this.board = board;
             pins = new Dictionary<int, SoftPwmPinConfig>();
@@ -48,7 +44,7 @@ namespace Treehopper
         {
             foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
             {
-                entry.Value.Pin.MakeDigitalInput();
+                entry.Value.Pin.Mode = PinMode.DigitalInput;
             }
             pins.Clear();
             UpdateConfig();
@@ -58,8 +54,7 @@ namespace Treehopper
         {
             if (pins.ContainsKey(pin.PinNumber))
                 return;
-            pin.MakeDigitalOutput();
-            pins.Add(pin.PinNumber, new SoftPwmPinConfig() { Pin = pin, PulseWidth = 0, UsePulseWidth = true });
+            pins.Add(pin.PinNumber, new SoftPwmPinConfig() { Pin = pin, PulseWidthUs = 0, UsePulseWidth = true });
             UpdateConfig();
         }
 
@@ -67,124 +62,111 @@ namespace Treehopper
         {
             pins.Remove(pin.PinNumber);
             UpdateConfig();
-            pin.MakeDigitalInput();
         }
 
-        private void UpdateConfig()
-        {
-            // timerVal = 0 --> 54.25 us
-            // timerVal = 50 --> 45.8 us
-            // timerVal = 100 --> 37.5 us
-            // timerVal = 150 --> 29.17 us
-            // timerVal = 200 --> 20.83 us
-            if(pins.Count > 0)
-            { 
-                double timer = Math.Round(268.0934 - 6.22568 * this.resolution);
-            
-                if (timerVal < 0)
-                    throw new Exception("Bad timer config");
-            
-                timerVal = (byte)timer;
-            
-                byte[] periodBytes = BitConverter.GetBytes(period);
-            
-                byte[] config = new byte[5+pins.Count]; // { , (byte)pins.Count, timerVal };
-                config[0] = (byte)DeviceCommands.SoftPwmConfig;
-                config[1] = (byte)pins.Count;
-                config[2] = (byte)timerVal;
-                periodBytes.CopyTo(config, 3);
-                int i = 5;
-                foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
+    private void UpdateConfig()
+    {
+                if (pins.Count > 0)
                 {
-                    config[i++] = (byte)entry.Key;
-                }
-                board.sendCommsConfigPacket(config);
-            }
-            else
-            {
-                // turn off the SoftPWM interrupt
-                board.sendCommsConfigPacket(new byte[] { (byte)DeviceCommands.SoftPwmConfig, 0 });
-            }
+                    foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
+                    {
+                        // for pins that use pulse width, calculate value based on resolution
+                        if (entry.Value.UsePulseWidth)
+                        {
+                            entry.Value.Ticks = (UInt16)(entry.Value.PulseWidthUs / resolution);
+                            // just in case the user wants to retrieve duty cycle, update its value, too
+                            entry.Value.DutyCycle = entry.Value.Ticks / 65535;
+                        }
+                        else // for pins that use duty-cycle, calculate based on period count
+                        {
+                            entry.Value.Ticks = (UInt16)Math.Round(entry.Value.DutyCycle * 65535);
+                            // just in case the user wants to retrieve pulse width, update its value too
+                            entry.Value.PulseWidthUs = (int)(entry.Value.Ticks * resolution);
+                        }
+                    }
 
+                    // now the fun part; let's figure out the delta delays between each pin
+                    var orderedValues = pins.Values
+                        //.Where((pin) => pin.Ticks != 0 && pin.Ticks != ushort.MaxValue)
+                        .OrderBy((pin) => pin.Ticks);
+
+                    var list = orderedValues.ToList();
+
+                    int count = list.Count() + 1;
+                    byte[] config = new byte[2 + 3 * count]; // { , (byte)pins.Count, timerVal };
+                    config[0] = (byte)DeviceCommands.SoftPwmConfig;
+                    config[1] = (byte)count;
+                    if (count > 1)
+                    {
+                        int i = 2;
+
+                        int time = 0;
+
+                        for (int j = 0; j < count; j++)
+                        {
+                            int ticks = 0;
+
+                            if (j < list.Count())
+                                ticks = list[j].Ticks - time;
+                            else
+                                ticks = UInt16.MaxValue - time;
+
+                            int TmrVal = UInt16.MaxValue - ticks;
+                            if (j == 0)
+                                config[i++] = (byte)0;
+                            else
+                                config[i++] = (byte)list[j - 1].Pin.PinNumber;
+
+                            config[i++] = (byte)(TmrVal >> 8);
+                            config[i++] = (byte)(TmrVal & 0xff);
+                            time += ticks;
+                        }
+                    } else
+                    {
+                        config[1] = 0;
+                    }
+
+                    board.sendPeripheralConfigPacket(config);
+
+                    //foreach (var pin in pins.Values.Where((pin) => pin.Ticks == UInt16.MaxValue))
+                    //{
+                    //    pin.Pin.DigitalValue = true;
+                    //}
+
+                    //foreach (var pin in pins.Values.Where((pin) => pin.Ticks == 0))
+                    //{
+                    //    pin.Pin.DigitalValue = false;
+                    //}
+
+                }
+                else
+                {
+                    // turn off the SoftPWM interrupt
+                    board.sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.SoftPwmConfig, 0 });
+                }
+            
 
         }
 
-        internal int Period
+        internal async void SetDutyCycle(Pin pin, double dutyCycle)
         {
-            get {
-                return period * resolution * 1000;
-            }
-
-            set {
-                period = (ushort)(value * 1000 / resolution);
+            using (await mutex.LockAsync())
+            {
+                pins[pin.PinNumber].DutyCycle = dutyCycle;
+                pins[pin.PinNumber].UsePulseWidth = false;
                 UpdateConfig();
-                UpdateDutyCycles();
             }
-            
+                
         }
 
-        internal void SetFrequency(double hz)
+        internal async void SetPulseWidth(Pin pin, int pulseWidth)
         {
-            int milliseconds = (int)Math.Round(1.0 / hz * 1000.0);
-            Period = milliseconds;
-        }
-
-        internal void SetResolution(int microseconds)
-        {
-            if(microseconds < 10)
+            using (await mutex.LockAsync())
             {
-                throw new Exception("The minimum resolution supported is 10 microseconds");
-            } else if(microseconds > 43.0)
-            {
-                throw new Exception("The maximum resolution supported is 27 microseconds");
+                pins[pin.PinNumber].PulseWidthUs = pulseWidth;
+                pins[pin.PinNumber].UsePulseWidth = true;
+                UpdateConfig();
             }
-            this.resolution = microseconds;
-            //timerVal = 0;
-            UpdateConfig();
-            UpdateDutyCycles();
-        }
-
-        private void UpdateDutyCycles()
-        {
-            byte[] config = new byte[1 + pins.Count*2]; // { , (byte)pins.Count, timerVal };
-            config[0] = (byte)DeviceCommands.SoftPwmUpdateDc;
-            int i = 1;
-            foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
-            {
-                // for pins that use pulse width, calculate value based on resolution
-                if (entry.Value.UsePulseWidth)
-                {
-                    entry.Value.ActualCount = (ushort)(entry.Value.PulseWidth*1000.0 / resolution);
-                    // just in case the user wants to retrieve duty cycle, update its value, too
-                    entry.Value.DutyCycle = entry.Value.ActualCount / period;
-                }
-                else // for pins that use duty-cycle, calculate based on period count
-                {
-                    entry.Value.ActualCount = (ushort)Math.Round(entry.Value.DutyCycle * period);
-                    // just in case the user wants to retrieve pulse width, update its value, too
-                    entry.Value.PulseWidth = (double)(entry.Value.ActualCount * resolution) / 1000.0;
-
-                }
-                byte[] count = BitConverter.GetBytes(entry.Value.ActualCount);
-                count.CopyTo(config, i);
-                i = i + 2;
-            }
-
-            board.sendCommsConfigPacket(config);
-        }
-
-        internal void SetDutyCycle(Pin pin, double dutyCycle)
-        {
-            pins[pin.PinNumber].DutyCycle = dutyCycle;
-            pins[pin.PinNumber].UsePulseWidth = false;
-            UpdateDutyCycles();
-        }
-
-        internal void SetPulseWidth(Pin pin, double pulseWidth)
-        {
-            pins[pin.PinNumber].PulseWidth = pulseWidth;
-            pins[pin.PinNumber].UsePulseWidth = true;
-            UpdateDutyCycles();
         }
 
         internal double GetDutyCycle(Pin pin)
@@ -192,9 +174,9 @@ namespace Treehopper
             return pins[pin.PinNumber].DutyCycle;
         }
 
-        internal double GetPulseWidth(Pin pin)
+        internal int GetPulseWidth(Pin pin)
         {
-            return pins[pin.PinNumber].PulseWidth;
+            return pins[pin.PinNumber].PulseWidthUs;
         }
 
         public void Dispose()

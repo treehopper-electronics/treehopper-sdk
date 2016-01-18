@@ -2,31 +2,6 @@
 
 namespace Treehopper
 {
-    /// <summary>
-    /// Defines the PWM period options
-    /// </summary>
-    public enum PwmFrequency { 
-        
-        /// <summary>
-        /// 48 kHz (20.833 microseconds)
-        /// </summary>
-        Freq_48KHz, 
-        
-        /// <summary>
-        /// 12 kHz (83.333 microseconds)
-        /// </summary>
-        Freq_12KHz, 
-        
-        /// <summary>
-        /// 3 kHz (333.333 microseconds)
-        /// </summary>
-        Freq_3KHz,  
-        
-        /// <summary>
-        /// 750 Hz (1.333 milliseconds)
-        /// </summary>
-        Freq_750HZ 
-    };
 
     /// <summary>
     /// The Pwm class manages the hardware PWM module on the Treehopper board.
@@ -40,58 +15,40 @@ namespace Treehopper
     {
         Pin Pin;
         double dutyCycle;
-        double pulseWidth;
+        int pulseWidth;
         double period;
         private bool isEnabled = false;
-        private PwmFrequency frequency = PwmFrequency.Freq_750HZ;
+        TreehopperUsb Board;
         internal Pwm(Pin pin)
         {
             Pin = pin;
+            Board = pin.Board;
         }
-
-        /// <summary>
-        /// Gets or sets the PWM frequency of the pin, selected from <see cref="PwmFrequency"/>
-        /// </summary>
-        public PwmFrequency Frequency
-        {
-            get
-            {
-                return frequency;
-            }
-            set
-            {
-                if(frequency != value)
-                {
-                    frequency = value;
-                    if(IsEnabled)
-                    {
-                        Pin.SendCommand(new byte[] { (byte)PinConfigCommands.MakePWMPin, (byte)frequency });
-                    }
-                }
-            }
-        }
-
 
         /// <summary>
         /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
         public bool IsEnabled
         {
-            get 
+            get
             {
                 return isEnabled;
             }
-            set {
-                isEnabled = value;
-                if(isEnabled)
+            set
+            {
+                if (value != isEnabled)
                 {
-                    Pin.SendCommand(new byte[] { (byte)PinConfigCommands.MakePWMPin, (byte)Frequency });
-                    Pin.State = PinState.PWM;
-                }
-                else
-                {
-                    Pin.SendCommand(new byte[] { (byte)PinConfigCommands.MakePWMPin, 0xFF }); // magic byte to disable PWM module
-                    Pin.MakeDigitalInput();
+                    isEnabled = value;
+                    if (isEnabled)
+                    {
+                        Board.PwmManager.StartPin(Pin);
+                        Pin.Mode = PinMode.Reserved;
+                    }
+                    else
+                    {
+                        Board.PwmManager.StopPin(Pin);
+                        Pin.Mode = PinMode.DigitalInput;
+                    }
                 }
             }
         }
@@ -108,19 +65,20 @@ namespace Treehopper
             }
             set
             {
+                if (value > 1.0 || value < 0.0)
+                    throw new ArgumentOutOfRangeException("DutyCycle", "DutyCycle must be between 0.0 and 1.0");
                 dutyCycle = value;
-                UInt16 register = (UInt16)Math.Round(dutyCycle * 1024.0);
-                byte high = (byte)(register >> 2);
-                byte low = (byte)(register & 0x3);
 
-                Pin.SendCommand(new byte[] { (byte)PinConfigCommands.SetPWMValue, high, low });
+                // update the pulseWidth just in case the user wants to read from the value
+                pulseWidth = (int)Math.Round(dutyCycle * Board.PwmManager.PeriodMicroseconds);
+                Board.PwmManager.SetDutyCycle(Pin, value);
             }
         }
 
         /// <summary>
-        /// Get or set the pulse width, in milliseconds, of the pin
+        /// Get or set the pulse width, in microseconds, of the pin
         /// </summary>
-        public double PulseWidth
+        public int PulseWidth
         {
             get
             {
@@ -128,8 +86,11 @@ namespace Treehopper
             }
             set
             {
+                if (value > Board.PwmManager.PeriodMicroseconds || value < 0.0)
+                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + Board.PwmManager.PeriodMicroseconds);
                 pulseWidth = value;
 
+                DutyCycle = pulseWidth / Board.PwmManager.PeriodMicroseconds;
             }
         }
     }

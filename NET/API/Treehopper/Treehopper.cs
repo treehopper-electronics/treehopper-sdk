@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading;
-using LibUsbDotNet;
-using LibUsbDotNet.Main;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using Treehopper;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Treehopper
 {
@@ -25,18 +26,19 @@ namespace Treehopper
 		GetDeviceInfo,	// Not implemented
 		PinConfig,	// Configures a GPIO pin as an input/output
 		ComparatorConfig,	// Not implemented
-		DACConfig,	// Configures the hardware DAC
-		UARTConfig,	// Not implemented
-		I2CConfig,	// Configures i2C master
-		SPIConfig,	// Configures SPI master
-		I2CTransaction,	// (Endpoint 2) Performs an i2C transaction 
-		SPITransaction,	// (Endpoint 2) Performs an SPI transaction
+		PwmConfig,	// Configures the hardware DAC
+		UartConfig,	// Not implemented
+		I2cConfig,	// Configures i2C master
+		SpiConfig,	// Configures SPI master
+		I2cTransaction,	// (Endpoint 2) Performs an i2C transaction 
+		SpiTransaction,	// (Endpoint 2) Performs an SPI transaction
 		SoftPwmConfig,	// 
-		SoftPwmUpdateDc,	//
+		ServoControllerConfig,	//
 		FirmwareUpdateSerial,	//
 		FirmwareUpdateName,	//
 		Reboot,	//
-		EnterBootloader	//
+		EnterBootloader,	//
+        LedConfig
 	}
 
 	internal enum DeviceResponse : byte
@@ -48,28 +50,47 @@ namespace Treehopper
 		I2CDataReceived,
 		SPIDataReceived
 	}
-	/// <summary>
-	/// TreehopperBoard is the main class for interacting with Treehopper. Once constructed, it contains instances of all pins and peripherals. 
-	/// <seealso cref="TreehopperManager"/>
-	/// </summary>
-	/// <remarks>
-	/// The lifecycle of a TreehopperBoard instance begins when a board is connected. Usually, TreehopperManager is used to 
-	/// automatically instantiate a TreehopperBoard, and return the reference to the user's application. 
-	/// 
-	/// All pins and modules are automatically constructed by this class, so you can use all functions without worrying about calling constructors.
-	/// 
-	/// </remarks>
-	public class TreehopperUSB : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUSB>, IEqualityComparer<TreehopperUSB>
-	{
-		// USB stuff
-		UsbDevice usb;
-		UsbEndpointWriter PinConfig;
-		UsbEndpointReader pinState;
-		UsbEndpointWriter CommsConfig;
-		UsbEndpointReader CommsReceive;
 
-		#region Pin Definitions
-		private Pin1 pin1;
+
+    public delegate void TreehopperUsbAddedHandler(TreehopperUsb BoardAdded);
+
+    public delegate void TreehopperUsbRemovedHandler(TreehopperUsb BoardRemoved);
+
+    /// <summary>
+    /// TreehopperBoard is the main class for interacting with Treehopper. Once constructed, it contains instances of all pins and peripherals. 
+    /// <seealso cref="TreehopperManager"/>
+    /// </summary>
+    /// <remarks>
+    /// The lifecycle of a TreehopperBoard instance begins when a board is connected. Usually, TreehopperManager is used to 
+    /// automatically instantiate a TreehopperBoard, and return the reference to the user's application. 
+    /// 
+    /// All pins and modules are automatically constructed by this class, so you can use all functions without worrying about calling constructors.
+    /// 
+    /// </remarks>
+    public class TreehopperUsb : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUsb>, IEqualityComparer<TreehopperUsb>
+	{
+        // Settings
+        private static Settings settings = new Settings();
+        public static Settings Settings {
+            get {
+                return settings;
+            }
+            set {
+                settings = value;
+            }
+        }
+
+        public Pin this[int index]
+        {
+            get
+            {
+                return Pins[index];
+            }
+        }
+
+        #region Pin Definitions
+
+        private Pin1 pin1;
 		/// <summary>
 		/// Instance of <see cref="Treehopper.Pin1"/>
 		/// </summary>
@@ -199,11 +220,6 @@ namespace Treehopper
 
 		#region Modules
 
-		AnalogOut analogOut;
-		/// <summary>
-		/// AnalogOut module
-		/// </summary>
-		public AnalogOut AnalogOut { get { return analogOut; } }
 		//public UART UART;
 
 		I2c i2c;
@@ -223,167 +239,103 @@ namespace Treehopper
 		/// </summary>
 		internal SoftPwmManager SoftPwmMgr { get; set; }
 
-		// Comparator modules
-		//Comparator Comparator1;
-		//Comparator Comparator2;
+        public PwmManager PwmManager { get; set; }
 
-		#endregion
+        #endregion
 
-		string deviceName;
-		string serialNumber;
+        private bool led = false;
+            public bool Led
+        {
+            get
+            {
+                return led;
+            }
+            set
+            {
+                if (value == led)
+                    return;
+                led = value;
+
+                byte[] DataToSend = new byte[2];
+                DataToSend[0] = (byte)DeviceCommands.LedConfig;
+                DataToSend[1] = (byte)(led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
+                sendPeripheralConfigPacket(DataToSend);
+            }
+        }
 
 		byte[] pinStateBuffer;
 
-		/// <summary>
-		/// Gets a reference to the first board connected to the computer
-		/// </summary>
-		/// <returns></returns>
-		public static TreehopperUSB First()
-		{
-			InitTreehopperManager();
-			if (manager.Boards.Count > 0)
-				return manager.Boards[0];
-			else
-				return null;
-		}
+		private IConnection connection;
 
-		private static void InitTreehopperManager()
-		{
-			if (manager == null)
-			{
-				manager = new TreehopperManager();
-				manager.BoardAdded += manager_BoardAdded;
-				manager.BoardRemoved += manager_BoardRemoved;
-			}
-		}
 
-		private static event BoardEventHandler PreBoardAdded;
-		private static event BoardEventHandler PreBoardRemoved; 
-		public static event BoardEventHandler BoardAdded
-		{
-			add
-			{
-				PreBoardAdded += value;
-				InitTreehopperManager();
-			}
-			remove
-			{
-				PreBoardRemoved -= value;
-			}
-		}
-		public static event BoardEventHandler BoardRemoved
-		{
-			add
-			{
-				PreBoardRemoved += value;
-				InitTreehopperManager();
-			}
-			remove
-			{
-				PreBoardRemoved -= value;
-			}
-		}
+        public TreehopperUsb(IConnection treehopperUsbConnection)
+        {
+            this.connection = treehopperUsbConnection;
+        }
 
-		static void manager_BoardRemoved(TreehopperManager sender, TreehopperUSB board)
+        public IConnection Connection { get { return connection; } }
+        
+        /// <summary>
+        /// Reboots the board.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method will automatically call the Disconnect() method, and no further communication will be possible until the board is reopened.
+        /// </remarks>
+        public void Reboot()
 		{
-			if (PreBoardRemoved != null) PreBoardRemoved(sender, board);
-		}
-
-		static void manager_BoardAdded(TreehopperManager sender, TreehopperUSB board)
-		{
-			if (PreBoardAdded != null) PreBoardAdded(sender, board);
-		}
-
-		private static TreehopperManager manager;
-
-		internal TreehopperUSB(UsbDevice device)
-		{
-			usb = device;
-			// TODO: Complete member initialization
-			if(usb != null)
-			{
-				usb.GetString(out serialNumber, 0x0409, 3);
-				if (serialNumber != null)
-				{
-					serialNumber = Regex.Replace(serialNumber, @"[^\u0000-\u007F]", string.Empty);
-					serialNumber = serialNumber.Replace("\0", String.Empty);
-				}
-
-				usb.GetString(out deviceName, 0x0409, 4);
-				if (deviceName != null)
-					deviceName = deviceName.Replace("\0", String.Empty);
-			}
-		}
-
-		/// <summary>
-		/// Reboots the board.
-		/// </summary>
-		/// <remarks>
-		/// Calling this method will automatically call the Disconnect() method, and no further communication will be possible until the board is reopened.
-		/// </remarks>
-		public void Reboot()
-		{
-			sendCommsConfigPacket(new byte[] { (byte)DeviceCommands.Reboot });
+			sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.Reboot });
 			Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
 		}
 		public void RebootIntoBootloader()
 		{
-			sendCommsConfigPacket(new byte[] { (byte)DeviceCommands.EnterBootloader });
+			sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.EnterBootloader });
 			Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
 		}
 
 		/// <summary>
 		/// Update the serial number on the device.
 		/// </summary>
-		/// <param name="serialNumber">A 15-character (or fewer) string containing the new serial number</param>
+		/// <param name="serialNumber">A 60-character (or fewer) string containing the new serial number</param>
 		/// <remarks>
 		/// While the name is immediately written to the device and the Name property is updated immediately, the changes 
 		/// will not take effect to other applications until the device is reset. This can be done by calling <see cref="Reset"/>
 		/// </remarks>
 		public void UpdateSerialNumber(string serialNumber)
 		{
-			if (serialNumber.Length > 15)
+			if (serialNumber.Length > 60)
 				throw new Exception("String must be 15 characters or less");
 
-			byte[] bytes = Encoding.Unicode.GetBytes(serialNumber);
-
-			byte[] DataToSend = new byte[bytes.Length + 3];
+			byte[] bytes = Encoding.UTF8.GetBytes(serialNumber);
+			byte[] DataToSend = new byte[bytes.Length + 2];
 			DataToSend[0] = (byte)DeviceCommands.FirmwareUpdateSerial;
-			DataToSend[1] = (byte)(serialNumber.Length * 2 + 2); // Unicode 16-bit strings are 2 bytes per character
-			DataToSend[2] = 3;
-			bytes.CopyTo(DataToSend, 3);
-			sendCommsConfigPacket(DataToSend);
-			Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
-			this.serialNumber = serialNumber;
-			RaisePropertyChanged("SerialNumber");
-
-		}
+			DataToSend[1] = (byte)(serialNumber.Length); // Unicode 16-bit strings are 2 bytes per character
+			bytes.CopyTo(DataToSend, 2);
+			sendPeripheralConfigPacket(DataToSend);
+            //Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+        }
 
 		/// <summary>
 		/// Update the name of the device.
 		/// </summary>
-		/// <param name="deviceName">A 15-character (or fewer) string containing the new name of the device.</param>
+		/// <param name="deviceName">A 60-character (or fewer) string containing the new name of the device.</param>
 		/// <remarks>
 		/// While the name is immediately written to the device and the Name property is updated immediately, the changes 
 		/// will not take effect to other applications until the device is reset. This can be done by calling <see cref="Reset"/>
 		/// </remarks>
 		public void UpdateDeviceName(string deviceName)
 		{
-			if (deviceName.Length > 15)
-				throw new Exception("Serial number must be 15 characters or less");
-			byte[] DataToSend = new byte[deviceName.Length * 2 + 3];
+			if (deviceName.Length > 60)
+				throw new Exception("Device name must be 60 characters or less");
+			byte[] DataToSend = new byte[deviceName.Length + 2];
 			DataToSend[0] = (byte)DeviceCommands.FirmwareUpdateName;
-			DataToSend[1] = (byte)(deviceName.Length * 2 + 2); // Unicode 16-bit strings are 2 bytes per character
-			DataToSend[2] = 3;
-			byte[] stringData = Encoding.Unicode.GetBytes(deviceName);
-			stringData.CopyTo(DataToSend, 3);
-			sendCommsConfigPacket(DataToSend);
-			Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
-			this.deviceName = deviceName;
-			RaisePropertyChanged("DeviceName");
+			DataToSend[1] = (byte)(deviceName.Length); // Unicode 16-bit strings are 2 bytes per character
+			byte[] stringData = Encoding.UTF8.GetBytes(deviceName);
+			stringData.CopyTo(DataToSend, 2);
+			sendPeripheralConfigPacket(DataToSend);
+			//Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
 		}
 
-		~TreehopperUSB()
+		~TreehopperUsb()
 		{
 			Dispose();
 		}
@@ -415,7 +367,7 @@ namespace Treehopper
 		{
 			get
 			{
-				return serialNumber;
+				return connection.SerialNumber;
 			}
 		}
 
@@ -439,18 +391,7 @@ namespace Treehopper
 		{
 			get
 			{
-				return deviceName;
-			}
-		}
-
-		/// <summary>
-		/// A human-readable description of the board, containing the Name and serial identification.
-		/// </summary>
-		public string Description
-		{
-			get
-			{
-				return this.ToString();
+				return connection.Name;
 			}
 		}
 
@@ -460,231 +401,123 @@ namespace Treehopper
 		/// <remarks>
 		/// The list is zero-indexed, so <see cref="Treehopper.Pin1"/> is available at Pins[0], <see cref="Treehopper.Pin2"/> is available at Pins[1], and so on.
 		/// </remarks>
-		public List<Pin> Pins { get; set; }
+		public Dictionary<int, Pin> Pins { get; set; }
 
 		/// <summary>
 		/// Open the TreehopperBoard. The board must be opened before any other methods are called.
 		/// </summary>
-		public void Open()
+		public async Task<bool> Connect()
 		{
-			if(usb.Open())
-			{
-				// If this is a "whole" usb device (libusb-win32, linux libusb)
-				// it will have an IUsbDevice interface. If not (WinUSB) the 
-				// variable will be null indicating this is an interface of a 
-				// device.
-				IUsbDevice wholeUsbDevice = usb as IUsbDevice;
-				if (!ReferenceEquals(wholeUsbDevice, null))
-				{
-					// This is a "whole" USB device. Before it can be used, 
-					// the desired configuration and interface must be selected.
+            bool res = await connection.Open();
+            if (!res)
+            {
+                IsConnected = false;
+                return false;
+            }
+                
 
-					// Select config #1
-					wholeUsbDevice.SetConfiguration(1);
+            if (IsConnected)
+                return true;
 
-					// Claim interface #0.
-					wholeUsbDevice.ClaimInterface(0);
-				}
+			pinStateBuffer = new byte[64];
 
-				pinStateBuffer = new byte[64];
+			Pins = new Dictionary<int, Pin>();
 
-				Pins = new List<Pin>();
+			// Initialize Pins
+			pin1	= new Pin1(this);
+			pin2	= new Pin2(this);
+			pin3	= new Pin3(this);
+			pin4	= new Pin4(this);
+			pin5	= new Pin5(this);
+			pin6	= new Pin6(this);
+			pin7	= new Pin7(this);
+			pin8	= new Pin8(this);
+			pin9	= new Pin9(this);
+			pin10	= new Pin10(this);
+			pin11	= new Pin11(this);
+			pin12	= new Pin12(this);
+			pin13	= new Pin13(this);
+			pin14	= new Pin14(this);
 
-				// Initialize Pins
-				pin1	= new Pin1(this);
-				pin2	= new Pin2(this);
-				pin3	= new Pin3(this);
-				pin4	= new Pin4(this);
-				pin5	= new Pin5(this);
-				pin6	= new Pin6(this);
-				pin7	= new Pin7(this);
-				pin8	= new Pin8(this);
-				pin9	= new Pin9(this);
-				pin10	= new Pin10(this);
-				pin11	= new Pin11(this);
-				pin12	= new Pin12(this);
-				pin13	= new Pin13(this);
-				pin14	= new Pin14(this);
+			Pins.Add(1, pin1);
+			Pins.Add(2, pin2);
+			Pins.Add(3, pin3);
+			Pins.Add(4, pin4);
+			Pins.Add(5, pin5);
+			Pins.Add(6, pin6);
+			Pins.Add(7, pin7);
+			Pins.Add(8, pin8);
+			Pins.Add(9, pin9);
+			Pins.Add(10, pin10);
+			Pins.Add(11, pin11);
+			Pins.Add(12, pin12);
+			Pins.Add(13, pin13);
+			Pins.Add(14, pin14);
 
-				Pins.Add(pin1);
-				Pins.Add(pin2);
-				Pins.Add(pin3);
-				Pins.Add(pin4);
-				Pins.Add(pin5);
-				Pins.Add(pin6);
-				Pins.Add(pin7);
-				Pins.Add(pin8);
-				Pins.Add(pin9);
-				Pins.Add(pin10);
-				Pins.Add(pin11);
-				Pins.Add(pin12);
-				Pins.Add(pin13);
-				Pins.Add(pin14);
+			SoftPwmMgr = new SoftPwmManager(this);
+            PwmManager = new PwmManager(this);
 
-				SoftPwmMgr = new SoftPwmManager(this);
+			// Initialize modules
+			i2c = new I2c(this);
+			spi = new Spi(this);
+            //UART = new UART();
+                
 
-				// Comparator
-				//Comparator1 = new Comparator(1);
-				//Comparator2 = new Comparator(2);
-
-				// Initialize modules
-				analogOut = new AnalogOut(this);
-				i2c = new I2c(this);
-				spi = new Spi(this);
-				//UART = new UART();
-
-				// Initialize endpoint readers/writers
-				PinConfig	= usb.OpenEndpointWriter(WriteEndpointID.Ep01);
-				pinState	= usb.OpenEndpointReader(ReadEndpointID.Ep01);
-				CommsConfig	= usb.OpenEndpointWriter(WriteEndpointID.Ep02);
-				CommsReceive	= usb.OpenEndpointReader(ReadEndpointID.Ep02);
+            connection.PinEventDataReceived += Connection_PinEventDataReceived; 
 			
-				// Start reader events
-				pinState.DataReceived += pinState_DataReceived;
-				pinState.DataReceivedEnabled = true;
-				this.IsConnected = true;
-			}
-			else
-			{
-				if (usb != null)
-				{
-					if (usb.IsOpen) usb.Close();
-					usb = null;
-				}
-			}
+			this.IsConnected = true;
+			return true;
 		}
 
-		public bool IsConnected { get; internal set; }
 
-		void pinState_DataReceived(object sender, EndpointDataEventArgs e)
-		{
-			int transferLength;
-			pinState.Read(pinStateBuffer, 1000, out transferLength);
-			if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
-			{
-				Pin1.UpdateValue(	pinStateBuffer[1],	pinStateBuffer[2]);
-				Pin2.UpdateValue(	pinStateBuffer[3],	pinStateBuffer[4]);
-				Pin3.UpdateValue(	pinStateBuffer[5],	pinStateBuffer[6]);
-				Pin4.UpdateValue(	pinStateBuffer[7],	pinStateBuffer[8]);
-				Pin5.UpdateValue(	pinStateBuffer[9],	pinStateBuffer[10]);
-				Pin6.UpdateValue(	pinStateBuffer[11],	pinStateBuffer[12]);
-				Pin7.UpdateValue(	pinStateBuffer[13],	pinStateBuffer[14]);
-				Pin8.UpdateValue(	pinStateBuffer[15],	pinStateBuffer[16]);
-				Pin9.UpdateValue(	pinStateBuffer[17],	pinStateBuffer[18]);
-				Pin10.UpdateValue(	pinStateBuffer[19],	pinStateBuffer[20]);
-				Pin11.UpdateValue(	pinStateBuffer[21],	pinStateBuffer[22]);
-				Pin12.UpdateValue(	pinStateBuffer[23],	pinStateBuffer[24]);
-				Pin13.UpdateValue(	pinStateBuffer[25],	pinStateBuffer[26]);
-				Pin14.UpdateValue(	pinStateBuffer[27],	pinStateBuffer[28]);
+        private void Connection_PinEventDataReceived(byte[] pinStateBuffer)
+        {
+            if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
+            {
+                int i = 1;
+                foreach(Pin pin in Pins.Values)
+                {
+                    pin.UpdateValue(pinStateBuffer[i++], pinStateBuffer[i++]);
+                }
 
-				/// Pin interrupts.
-				/// TODO: This is really hacky and needs to be cleaned up.
-				int PortAInterrupt = pinStateBuffer[29];
-				int PortBInterrupt = pinStateBuffer[30];
-				if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
-					Pin1.RaiseDigitalInValueChanged();
-				if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
-					Pin14.RaiseDigitalInValueChanged();
 
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
-					Pin8.RaiseDigitalInValueChanged();
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
-					Pin9.RaiseDigitalInValueChanged();
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
-					Pin10.RaiseDigitalInValueChanged();
-				if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
-					Pin11.RaiseDigitalInValueChanged();
-			}
-		}
+                /// Pin interrupts.
+                /// TODO: This is really hacky and needs to be cleaned up.
+                int PortAInterrupt = pinStateBuffer[29];
+                int PortBInterrupt = pinStateBuffer[30];
+                if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
+                    Pin1.RaiseDigitalInValueChanged();
+                if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
+                    Pin14.RaiseDigitalInValueChanged();
+
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
+                    Pin8.RaiseDigitalInValueChanged();
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
+                    Pin9.RaiseDigitalInValueChanged();
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
+                    Pin10.RaiseDigitalInValueChanged();
+                if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
+                    Pin11.RaiseDigitalInValueChanged();
+            }
+        }
+
+        public bool IsConnected { get; internal set; }
 
 		internal void sendPinConfigPacket(byte[] data)
 		{
-			if (PinConfig == null)
-				return;
-			if (PinConfig.IsDisposed)
-				return;
-			if (data.Count() > 64)
-				throw new Exception("Data must be less than or equal to 64 bytes");
-			int transferLength;
-			ErrorCode error = PinConfig.Write(data, 1000, out transferLength);
-			if(error != ErrorCode.None && error != ErrorCode.IoCancelled)
-			{
-				Debug.WriteLine(error);
-			}
+            if(IsConnected)
+			    connection.SendDataPinConfigChannel (data);
 		}
 
-		internal void sendCommsConfigPacket(byte[] data)
+		internal void sendPeripheralConfigPacket(byte[] data)
 		{
-			if (CommsConfig == null)
-				return;
-			if (CommsConfig.IsDisposed)
-				return;
-			if (data.Count() > 64)
-				throw new Exception("Data must be less than or equal to 64 bytes");
-			int transferLength;
-			ErrorCode error;
-
-			if ((error = CommsConfig.Write(data, 1000, out transferLength)) != ErrorCode.None)
-			{
-				Debug.WriteLine(error);
-			}
+            if(IsConnected)
+                connection.SendDataPeripheralChannel(data);
 		}
 
-		internal byte[] receiveCommsResponsePacket()
+		internal async Task<byte[]> receiveCommsResponsePacket(uint bytesToRead)
 		{
-			byte[] returnVal = new byte[64];
-			int transferLength;
-			if(CommsReceive != null)
-				CommsReceive.Read(returnVal, 1000, out transferLength);
-			return returnVal;
-		}
-
-		internal void Disconnect()
-		{
-			try { 
-				if (PinConfig != null)
-				{
-					PinConfig.Abort();
-					PinConfig.Dispose();
-					PinConfig = null;
-				}
-				if (pinState != null)
-				{
-					pinState.DataReceivedEnabled = false;
-					pinState.DataReceived -= pinState_DataReceived; // TODO: sometimes pinState is null when we get here. 
-					pinState.Dispose();
-					pinState = null;
-				}
-				if (CommsConfig != null)
-				{
-					CommsConfig.Abort();
-					CommsConfig.Dispose();
-					CommsConfig = null;
-				}
-				if (CommsReceive != null)
-				{
-					CommsReceive.Dispose();
-					CommsReceive = null;
-				}
-			}
-			catch (Exception e)
-			{
-
-			}
-
-			if (usb != null)
-			{
-				if (usb.IsOpen)
-				{
-					IUsbDevice wholeUsbDevice = usb as IUsbDevice;
-					if (!ReferenceEquals(wholeUsbDevice, null))
-					{
-						wholeUsbDevice.ReleaseInterface(0);
-					}
-					usb.Close();
-				}
-			}
-
+			return await connection.ReadPeripheralResponsePacket(bytesToRead);
 		}
 
 		/// <summary>
@@ -693,30 +526,26 @@ namespace Treehopper
 		/// <remarks>
 		/// This will reset all pins to inputs and then disconnect from the device. It will not free memory associated with this device.
 		/// </remarks>
-		public void Close()
+		public void Disconnect()
 		{
-			if(usb.IsOpen)
-			{
-				if (SoftPwmMgr != null)
-					SoftPwmMgr.Dispose();
-			}
-			Disconnect();
-			this.IsConnected = false;
+            connection.Close();
+            IsConnected = false;
+			//if(usb.IsOpen)
+			//{
+			//	if (SoftPwmMgr != null)
+			//		SoftPwmMgr.Dispose();
+			//}
+			//Disconnect();
+			//this.IsConnected = false;
 		}
 
-		/// <summary>
-		/// Close device connection and free memory. 
-		/// </summary>
-		public void Dispose()
-		{
-			Disconnect();
-			UsbExit();
-		}
-
-		public static void UsbExit()
-		{
-			UsbDevice.Exit();
-		}
+        /// <summary>
+        /// Close device connection and free memory. 
+        /// </summary>
+        public void Dispose()
+        {
+            Disconnect();
+        }
 
 		/// <summary>
 		/// Compares another Treehopper to this one.
@@ -725,10 +554,10 @@ namespace Treehopper
 		/// <returns></returns>
 		public int CompareTo(object obj)
 		{
-			TreehopperUSB board = obj as TreehopperUSB;
+			TreehopperUsb board = obj as TreehopperUsb;
 			if (board == null)
 				return 1;
-			return String.Compare(this.serialNumber, board.serialNumber);
+			return String.Compare(ToString(), board.ToString());
 		}
 
 		/// <summary>
@@ -737,7 +566,7 @@ namespace Treehopper
 		/// <returns>The string</returns>
 		public override string ToString()
 		{
-			return deviceName + " (" + serialNumber + ")";
+			return Name + " (" + SerialNumber + ")";
 		}
 
 		/// <summary>
@@ -745,9 +574,9 @@ namespace Treehopper
 		/// </summary>
 		/// <param name="other">The other Treehopper board to compare</param>
 		/// <returns>True if the two boards are the same</returns>
-		public bool Equals(TreehopperUSB other)
+		public bool Equals(TreehopperUsb other)
 		{
-			return (other.SerialNumber == this.SerialNumber);
+			return (other.ToString() == this.ToString());
 		}
 		/// <summary>
 		/// Determines if two Treehopper boards are the same
@@ -755,11 +584,11 @@ namespace Treehopper
 		/// <param name="x">The first board</param>
 		/// <param name="y">The second board</param>
 		/// <returns></returns>
-		public bool Equals(TreehopperUSB x, TreehopperUSB y)
+		public bool Equals(TreehopperUsb x, TreehopperUsb y)
 		{
 			if (x == null || y == null)
 				return false;
-			return (x.serialNumber == y.serialNumber);
+			return (x.ToString() == y.ToString());
 		}
 		/// <summary>
 		/// Hash, obtained from the serial number of the device.
@@ -767,11 +596,11 @@ namespace Treehopper
 		/// <param name="board">the Treehopper board to calculate the hash for</param>
 		/// <returns>The hash code for the board</returns>
 		/// <see cref="Object.GetHashCode"/>
-		public int GetHashCode(TreehopperUSB board)
+		public int GetHashCode(TreehopperUsb board)
 		{
 			if (board != null)
-				if (board.SerialNumber != null)
-					return board.SerialNumber.GetHashCode();
+				if (board.Name != null)
+					return board.ToString().GetHashCode();
 				else
 					return 0;
 			else
@@ -784,11 +613,11 @@ namespace Treehopper
 		/// <returns>True if the two boards are the same</returns>
 		public override bool Equals(object obj)
 		{
-			TreehopperUSB y = obj as TreehopperUSB;
+			TreehopperUsb y = obj as TreehopperUsb;
 			if (y == null)
 				return false;
 			else
-				return this.serialNumber == y.serialNumber;
+				return this.ToString() == y.ToString();
 		}
 
 
@@ -799,7 +628,7 @@ namespace Treehopper
 		/// </remarks>
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		internal void RaisePropertyChanged(string property)
+		private void RaisePropertyChanged(string property)
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(property));
@@ -809,7 +638,7 @@ namespace Treehopper
 	/// <summary>
 	/// This comparer is used to compare Treehopper boards
 	/// </summary>
-	public class TreehopperBoardEqualityComparer : EqualityComparer<TreehopperUSB>
+	public class TreehopperBoardEqualityComparer : EqualityComparer<TreehopperUsb>
 	{
 		/// <summary>
 		/// Determines if two treehopper boards are the same
@@ -817,11 +646,11 @@ namespace Treehopper
 		/// <param name="x">The first board to compare</param>
 		/// <param name="y">The second board to compare</param>
 		/// <returns>Whether the boards are equal</returns>
-		public override bool Equals(TreehopperUSB x, TreehopperUSB y)
+		public override bool Equals(TreehopperUsb x, TreehopperUsb y)
 		{
 			if (x == null || y == null)
 				return false;
-			return (x.SerialNumber == y.SerialNumber);
+			return (x.ToString() == y.ToString());
 		}
 
 		/// <summary>
@@ -829,11 +658,11 @@ namespace Treehopper
 		/// </summary>
 		/// <param name="obj">The Treehopper board to calculate the hash for</param>
 		/// <returns>The calculated hash value</returns>
-		public override int GetHashCode(TreehopperUSB obj)
+		public override int GetHashCode(TreehopperUsb obj)
 		{
 			if (obj != null)
-				if (obj.SerialNumber != null)
-					return obj.SerialNumber.GetHashCode();
+				if (obj.Name != null)
+					return obj.ToString().GetHashCode();
 				else
 					return 0;
 			else

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Nito.AsyncEx;
+using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Treehopper
 {
@@ -12,11 +14,40 @@ namespace Treehopper
     /// </summary>
     public class I2c
     {
-        TreehopperUSB device;
+        TreehopperUsb device;
 
-        internal I2c(TreehopperUSB device)
+        internal I2c(TreehopperUsb device)
         {
             this.device = device;
+        }
+
+        private bool enabled;
+        public bool Enabled
+        {
+            get { return enabled; }
+            set
+            {
+                if (value == enabled)
+                    return;
+                enabled = value;
+                SendConfig();
+            }
+        }
+
+        double speed = 100;
+        double Speed
+        {
+            get
+            {
+                return speed;
+            }
+            set
+            {
+                if (speed == value)
+                    return;
+                speed = value;
+                SendConfig();
+            }
         }
 
         /// <summary>
@@ -24,20 +55,22 @@ namespace Treehopper
         /// </summary>
         /// <param name="mode">Master or slave mode</param>
         /// <param name="rate">Communication rate, in kHz.</param>
-        public void Start( double rate = 100.0)
+        private void SendConfig()
         {
-            double SSPADD = (12000.0 / rate - 1);
-            if(SSPADD < 3 || SSPADD > 255)
+            double TH0 = 256 - 4000 / (3*speed);
+            if(TH0 < 0 || TH0 > 255)
             {
-                throw new Exception("Rate out of limits. Valid rate is 46.875 kHz - 3000 kHz (3 MHz)");
+                throw new Exception("Rate out of limits. Valid rate is 62.5 kHz - 16000 kHz (16 MHz)");
             }
             byte[] dataToSend = new byte[3];
-            dataToSend[0] = (byte)DeviceCommands.I2CConfig;
-            dataToSend[1] = 0; // this is hard-coded until the API can be updated with slave support.
-            dataToSend[2] = (byte)SSPADD;
-            device.sendCommsConfigPacket(dataToSend);
+            dataToSend[0] = (byte)DeviceCommands.I2cConfig;
+            dataToSend[1] = (byte)(enabled ? 0x01 : 0x00);
+            dataToSend[2] = (byte)Math.Round(TH0);
+            device.sendPeripheralConfigPacket(dataToSend);
         }
-        private Object lockObject = new object();
+
+        private readonly AsyncLock mutex = new AsyncLock();
+
         /// <summary>
         /// Sends and Receives data. This is a blocking call that won't return until I2C communication is complete.
         /// </summary>
@@ -45,28 +78,52 @@ namespace Treehopper
         /// <param name="dataToWrite">Array of one or more bytes to write to the device.</param>
         /// <param name="numBytesToRead">Number of bytes to receive from the device.</param>
         /// <returns>Data read from the device.</returns>
-        public byte[] SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
+        public async Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead, BurstMode mode = BurstMode.NoBurst)
         {
-           
             byte[] returnedData = new byte[numBytesToRead];
-            byte[] dataToSend = new byte[4 + dataToWrite.Length];
-            dataToSend[0] = (byte)DeviceCommands.I2CTransaction;
-            dataToSend[1] = address;
-            dataToSend[2] = (byte)dataToWrite.Length;
-            dataToSend[3] = numBytesToRead;
-            dataToWrite.CopyTo(dataToSend, 4);
-            lock(lockObject)
+            int txLen = dataToWrite.Length;
+            using (await mutex.LockAsync())
             {
-                device.sendCommsConfigPacket(dataToSend);
-                Thread.Sleep(1);
-                byte[] response = device.receiveCommsResponsePacket();
-                if (numBytesToRead > 0)
+                byte[] receivedData;
+                int srcIndex = 0;
+                int bytesRemaining = txLen;
+                while (bytesRemaining > 0)
                 {
-                    Array.Copy(response, 1, returnedData, 0, numBytesToRead);
+                    int numBytesToTransfer = bytesRemaining > 57 ? 57 : bytesRemaining;
+                    byte[] dataToSend = new byte[7 + numBytesToTransfer]; // 2 bytes for the header
+                    dataToSend[0] = (byte)DeviceCommands.I2cTransaction;
+                    dataToSend[1] = address;
+                    dataToSend[2] = (byte)txLen; // total length (0-255)
+                    dataToSend[3] = (byte)srcIndex; // offset
+                    dataToSend[4] = (byte)numBytesToTransfer; // length of this packet
+                    dataToSend[5] = numBytesToRead;
+                    dataToSend[6] = (byte)mode;
+                    Array.Copy(dataToWrite, srcIndex, dataToSend, 7, numBytesToTransfer);
+                    device.sendPeripheralConfigPacket(dataToSend);
+                    srcIndex += numBytesToTransfer;
+                    bytesRemaining -= numBytesToTransfer;
+                    if (mode == BurstMode.BurstRx) // don't send additional data, just wait for read
+                        break;
                 }
+
+                // no need to wait if we're not reading anything
+                if (mode == BurstMode.BurstTx)
+                    return returnedData;
+
+                bytesRemaining = numBytesToRead;
+                srcIndex = 0;
+                while (bytesRemaining > 0)
+                {
+                    int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
+                    receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer);
+                    Array.Copy(receivedData, 0, returnedData, srcIndex, numBytesToTransfer);
+                    srcIndex += numBytesToTransfer;
+                    bytesRemaining -= numBytesToTransfer;
+                }
+
+                return returnedData;
             }
 
-            return returnedData;
         }
     }
 }

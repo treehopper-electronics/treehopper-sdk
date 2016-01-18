@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -21,33 +21,48 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AB97B3BF-9823-4AB1-BD19-3EFF17A64035}</ProjectGuid>
     <RootNamespace>Treehopper_Static</RootNamespace>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Win32</Platform>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <OutputPath>.</OutputPath>
+    <OutDir>$(SolutionDir)Output\C++\Static\$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(SolutionDir)LibUSB\MS32\static\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)LibUSB\include\libusb-1.0;$(IncludePath)</IncludePath>
+    <TargetName>Treehopper</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <OutputPath>.</OutputPath>
+    <LibraryPath>$(SolutionDir)LibUSB\MS64\static\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Output\C++\Static\$(Platform)\$(Configuration)\</OutDir>
+    <SourcePath>$(VC_SourcePath);</SourcePath>
+    <IncludePath>$(SolutionDir)LibUSB\include\libusb-1.0;$(IncludePath)</IncludePath>
+    <TargetName>Treehopper</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <OutputPath>.</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <OutputPath>.</OutputPath>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -65,19 +80,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Output\C++\Static\$(Platform)\$(Configuration)\</OutDir>
-    <LibraryPath>$(SolutionDir)LibUSB\MS32\static\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)LibUSB\include\libusb-1.0;$(IncludePath)</IncludePath>
-    <TargetName>Treehopper</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)LibUSB\MS64\static\;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)Output\C++\Static\$(Platform)\$(Configuration)\</OutDir>
-    <SourcePath>$(VC_SourcePath);</SourcePath>
-    <IncludePath>$(SolutionDir)LibUSB\include\libusb-1.0;$(IncludePath)</IncludePath>
-    <TargetName>Treehopper</TargetName>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

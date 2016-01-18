@@ -13,7 +13,7 @@ namespace Treehopper.WPF.ViewModel
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperUSB> Boards { get { return manager.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards { get { return TreehopperUsb.ConnectionService.Boards; } }
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>
@@ -21,7 +21,7 @@ namespace Treehopper.WPF.ViewModel
         /// <summary>
         /// Bind this property to the Selected property of your control to it.
         /// </summary>
-        public TreehopperUSB SelectedBoard
+        public TreehopperUsb SelectedBoard
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Treehopper.WPF.ViewModel
         }
 
 
-        private TreehopperUSB selectedBoard;
+        private TreehopperUsb selectedBoard;
 
         public RelayCommand WindowClosing { get; set; }
         
@@ -60,11 +60,11 @@ namespace Treehopper.WPF.ViewModel
 
         bool isConnected = false;
 
-        private TreehopperManager manager;
+        //private TreehopperManager manager;
 
         public TreehopperSelectorViewModel()
         {
-            manager = new TreehopperManager();
+            //manager = new TreehopperManager();
             ConnectButtonText = "Connect";
             CanChangeBoardSelection = true;
             ConnectCommand = new RelayCommand(ConnectCommandExecute, ConnectCommandCanExecute);
@@ -92,8 +92,6 @@ namespace Treehopper.WPF.ViewModel
             CloseCommandExecute();
             if (SelectedBoard != null)
                 SelectedBoard.Dispose();
-            else
-                TreehopperUSB.UsbExit();
         }
 
         private bool CloseCommandCanExecute()
@@ -134,7 +132,7 @@ namespace Treehopper.WPF.ViewModel
             RaisePropertyChanged("ConnectButtonText");
             CanChangeBoardSelection = false;
             RaisePropertyChanged("CanChangeBoardSelection");
-            SelectedBoard.Open();
+            SelectedBoard.Connect();
             Messenger.Default.Send(new BoardConnectedMessage() { Board = SelectedBoard });
         }
 
@@ -148,7 +146,7 @@ namespace Treehopper.WPF.ViewModel
             RaisePropertyChanged("CanChangeBoardSelection");
             if(SelectedBoard != null)
             {
-                SelectedBoard.Close();
+                SelectedBoard.Disconnect();
             }
                 
             Messenger.Default.Send(new BoardDisconnectedMessage() { Board = SelectedBoard });

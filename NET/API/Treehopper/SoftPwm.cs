@@ -1,4 +1,6 @@
-﻿namespace Treehopper
+﻿using System;
+
+namespace Treehopper
 {
     /// <summary>
     /// This class provides software-based pulse-width modulation (PWM) on any pin.
@@ -15,9 +17,9 @@
     public class SoftPwm : IPwm
     {
         Pin Pin;
-        TreehopperUSB Board;
+        TreehopperUsb Board;
         bool isEnabled;
-        internal SoftPwm(TreehopperUSB board, Pin pin)
+        internal SoftPwm(TreehopperUsb board, Pin pin)
         {
             this.Board = board;
             this.Pin = pin;
@@ -40,50 +42,51 @@
                     if(isEnabled)
                     {
                         Board.SoftPwmMgr.StartPin(Pin);
-                        Pin.State = PinState.ReservedPin;
+                        Pin.Mode = PinMode.PushPullOutput;
                     }
                     else
                     {
                         Board.SoftPwmMgr.StopPin(Pin);
-                        Pin.MakeDigitalInput();
+                        Pin.Mode = PinMode.DigitalInput;
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Get or set the duty cycle (0-1) of the pin
+        /// Get or set the duty cycle of the pin. This property has a range between 0.0 and 1.0, inclusive.
         /// </summary>
+        /// <remarks>
+        /// Due to software implementation constraints, the minimum duty cycle
+        /// that will be generated is approximately 0.0003, and the maximum
+        /// duty cycle will be 0.9993.
+        /// </remarks>
         public double DutyCycle
         {
             get { return Board.SoftPwmMgr.GetDutyCycle(Pin); }
-            set { Board.SoftPwmMgr.SetDutyCycle(Pin, value); }
+            set {
+                if (value > 1.0 || value < 0.0)
+                    throw new ArgumentOutOfRangeException("DutyCycle", "DutyCycle must be between 0.0 and 1.0");
+                Board.SoftPwmMgr.SetDutyCycle(Pin, value);
+            }
         }
 
 
         /// <summary>
-        /// Get or set the pulse width, in milliseconds, of the pin
+        /// Get or set the pulse width, in microseconds, of the pin. This property has a range between 0 and 16409. 
         /// </summary>
-        public double PulseWidth
+        /// <remarks>
+        /// Due to software implementation constraints, the minimum pulse width that will be generated is approximately
+        /// 5.4 microseconds, and the maximum pulse width will be approximately 16,400. 
+        /// </remarks>
+        public int PulseWidth
         {
             get { return Board.SoftPwmMgr.GetPulseWidth(Pin); }
-            set { Board.SoftPwmMgr.SetPulseWidth(Pin, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the current period for the SoftPwm module. This will affect all SoftPwm pins.
-        /// </summary>
-        public int Period
-        {
-            get
-            {
-                return Board.SoftPwmMgr.Period;
+            set {
+                if (value > 16409 || value < 0.0)
+                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0 and 16409");
+                Board.SoftPwmMgr.SetPulseWidth(Pin, value);
             }
-            set{
-                Board.SoftPwmMgr.Period = value;
-            }
-
         }
-        
     }
 }
