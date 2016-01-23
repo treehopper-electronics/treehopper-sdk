@@ -54,7 +54,7 @@
     <Compile Include="SoftPwmManager.cs" />
     <Compile Include="Spi.cs" />
     <Compile Include="Treehopper.cs" />
-    <Compile Include="UART.cs" />
+    <Compile Include="Uart.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

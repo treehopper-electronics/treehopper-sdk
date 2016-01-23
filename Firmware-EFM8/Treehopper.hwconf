@@ -47,6 +47,7 @@
     <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable2.enabletimer4interrupt" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableallinterrupts" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enabletimer2interrupt" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableuart0interrupt" value="Enabled"/>
     <property object="P0.0" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
     <property object="P0.0" propertyId="ports.settings.outputmode" value="Push-pull"/>
     <property object="P0.1" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
@@ -105,7 +106,7 @@
     <property object="SMBUS_0" propertyId="smbus.configuration.smbusclockfrequency" value="102.564 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.smbusslaveinhibit" value="Disabled"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.timer0overflowfrequency" value="307.692 kHz"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.timer1overflowfrequency" value="230.769 kHz"/>
+    <property object="SMBUS_0" propertyId="smbus.configuration.timer1overflowfrequency" value="19.230 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.view.view" value="Advanced"/>
     <property object="SPI_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencyactual" value="24.000 MHz"/>
@@ -123,7 +124,7 @@
     <property object="TIMER01_0" propertyId="timer01.timer0mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="243"/>
     <property object="TIMER01_0" propertyId="timer01.timer1highbyte.timer1highbyte" value="48"/>
     <property object="TIMER01_0" propertyId="timer01.timer1lowbyte.timer1lowbyte" value="52"/>
-    <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="230400"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="19200"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerinitvalue" value="52"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="48"/>
     <property object="TIMER16_2" propertyId="ABPeripheral.included" value="true"/>
@@ -155,7 +156,6 @@
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer0.tl0switch1:runcontrol" value="Start"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer01control.timer0runcontrol" value="Start"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer01control.timer1runcontrol" value="Start"/>
-    <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.clocksource" value="Use SYSCLK"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.mode" value="Mode 2, 8-bit Counter/Timer with Auto-Reload"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.timerrunningstate" value="Timer is Running"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer1.timerswitch1:runcontrol" value="Start"/>
@@ -166,9 +166,9 @@
     <property object="UARTE_1" propertyId="uarte.baudrategeneratorcontrol.enablebaudrategenerator" value="Enabled"/>
     <property object="UARTE_1" propertyId="uarte.baudrategeneratorcontrol.expectedbaudrate" value="115200"/>
     <property object="UART_0" propertyId="ABPeripheral.included" value="true"/>
-    <property object="UART_0" propertyId="uart.serialportcontrol.actualbaudrate" value="115384 Baud"/>
+    <property object="UART_0" propertyId="uart.serialportcontrol.actualbaudrate" value="9615 Baud"/>
     <property object="UART_0" propertyId="uart.serialportcontrol.enablereceive" value="Enabled"/>
-    <property object="UART_0" propertyId="uart.serialportcontrol.timer1overflowfrequency" value="230.769 kHz"/>
+    <property object="UART_0" propertyId="uart.serialportcontrol.timer1overflowfrequency" value="19.230 kHz"/>
     <property object="USBLIB_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="USBLIB_0" propertyId="configuration.configurationparameters.configurationstring" value=""/>
     <property object="USBLIB_0" propertyId="configuration.configurationparameters.devicepower" value="Bus-Powered"/>

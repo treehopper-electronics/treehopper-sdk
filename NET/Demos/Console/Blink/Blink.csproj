@@ -54,13 +54,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\API\Treehopper.Libraries.Win32\Treehopper.Libraries.Win32.csproj">
-      <Project>{5ac0187d-4855-4e6d-8840-44ba4420d7fc}</Project>
-      <Name>Treehopper.Libraries.Win32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\API\Treehopper.Win32\Treehopper.Win32.csproj">
-      <Project>{f95ae191-c4ca-4a18-88fb-15880d644862}</Project>
+    <ProjectReference Include="..\..\..\API\Treehopper.Win32\Treehopper.Win32.csproj">
+      <Project>{bede3a84-fd3a-4ea8-a14a-fb856a157ccd}</Project>
       <Name>Treehopper.Win32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

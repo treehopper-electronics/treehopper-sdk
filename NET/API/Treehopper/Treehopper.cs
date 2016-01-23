@@ -32,8 +32,8 @@ namespace Treehopper
 		SpiConfig,	// Configures SPI master
 		I2cTransaction,	// (Endpoint 2) Performs an i2C transaction 
 		SpiTransaction,	// (Endpoint 2) Performs an SPI transaction
+        UartTransaction,
 		SoftPwmConfig,	// 
-		ServoControllerConfig,	//
 		FirmwareUpdateSerial,	//
 		FirmwareUpdateName,	//
 		Reboot,	//
@@ -226,13 +226,18 @@ namespace Treehopper
 		/// <summary>
 		/// I2C module
 		/// </summary>
-		public I2c I2C { get { return i2c; } }
+		public I2c I2c { get { return i2c; } }
 
 		Spi spi;
 		/// <summary>
 		/// SPI module
 		/// </summary>
-		public Spi SPI { get { return spi;	} }
+		public Spi Spi { get { return spi;	} }
+
+        Uart uart;
+
+        public Uart Uart { get { return uart; } }
+
 
 		/// <summary>
 		/// Instance of SoftPwmMgr
@@ -460,8 +465,10 @@ namespace Treehopper
 			// Initialize modules
 			i2c = new I2c(this);
 			spi = new Spi(this);
+            uart = new Uart(this);
+
             //UART = new UART();
-                
+
 
             connection.PinEventDataReceived += Connection_PinEventDataReceived; 
 			

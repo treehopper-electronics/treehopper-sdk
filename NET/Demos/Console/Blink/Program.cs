@@ -33,27 +33,32 @@ namespace Blink
             {
                 Console.Write("Waiting for board...");
                 // Get a reference to the first TreehopperUsb board connected. This will await indefinitely until a board is connected.
-                TreehopperUsb Board = await TreehopperUsb.ConnectionService.First();        
+                TreehopperUsb Board = await ConnectionService.Instance.First();        
                 Console.WriteLine("Found board: " + Board);
 
                 // You must explicitly open a board before communicating with it
                 await Board.Connect();
-                Stopwatch sw = new Stopwatch();
-                Board.Pin8.Pwm.IsEnabled = true;
-                Board.Pin9.Pwm.IsEnabled = true;
-                Board.Pin10.Pwm.IsEnabled = true;
-                Board.Pin10.Pwm.DutyCycle = 0.5;
-                // repeat this block of code until we unplug the board                             
-                while (Board.IsConnected)                       
-                {
-                    // toggle the LED
-                    //Board.Led = !Board.Led;
 
-                    // Wait 1 second     
-                    //sw.Restart();
-                    //while (sw.ElapsedTicks < 20000);
-                    await Task.Delay(1);
+                Board.Uart.Mode = UartMode.OneWire;
+                Board.Uart.IsEnabled = true;
+
+
+
+                //OneWire ow = new OneWire(Board.Uart);
+                
+                while(true)
+                {
+                    bool result = await Board.Uart.OneWireReset();
+                    await Board.Uart.Send(new byte[] { 0xCC, 0x44 });
+                    await Task.Delay(750);
+                    result = await Board.Uart.OneWireReset();
+                    await Board.Uart.Send(new byte[] { 0xCC, 0xBE });
+                    byte[] data = await Board.Uart.Receive(2);
+                    double temp = ((Int16)(data[0] | (data[1] << 8))) / 16.0;
+                    Console.WriteLine("Temperature: " + (temp * 1.8 + 32));
+                    //await Task.Delay(100);
                 }
+
 
                 // We arrive here when the board has been disconnected
                 Console.WriteLine("Board has been disconnected.");

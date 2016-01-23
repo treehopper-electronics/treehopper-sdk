@@ -18,6 +18,7 @@
 #include "i2c.h"
 #include "serialNumber.h"
 #include "softPwm.h"
+#include "uart.h"
 
 // GLOBALS
 volatile bit PeripheralConfigPacketReady;
@@ -27,7 +28,6 @@ volatile bit SendPinStatusPacket;
 SI_SEGMENT_VARIABLE(Treehopper_ReportData[64], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
-SI_SEGMENT_VARIABLE(Treehopper_PeripheralResponse[64], uint8_t, SI_SEG_XDATA);
 
 SI_SEGMENT_VARIABLE(Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_RxBuffer[255], uint8_t, SI_SEG_XDATA);
@@ -182,6 +182,14 @@ void ProcessPeripheralConfigPacket()
 		}
 		break;
 
+
+	case UARTConfig:
+		UART_SetConfig((UartConfigData_t*)&(Treehopper_PeripheralConfig[1]));
+		break;
+
+	case UARTTransaction:
+		UART_Transaction(&(Treehopper_PeripheralConfig[1]));
+		break;
 	case FirmwareUpdateSerial:
 		serialNumber_update(&(Treehopper_PeripheralConfig[2]), Treehopper_PeripheralConfig[1]);
 		break;
