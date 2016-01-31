@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Treehopper;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Nito.AsyncEx;
 
 namespace Treehopper
 {
@@ -216,13 +217,13 @@ namespace Treehopper
 			get { return pin14; }
 		}
 
-		#endregion
+        #endregion
 
-		#region Modules
+        #region Modules
 
-		//public UART UART;
+        internal readonly AsyncLock ComsMutex = new AsyncLock();
 
-		I2c i2c;
+        I2c i2c;
 		/// <summary>
 		/// I2C module
 		/// </summary>

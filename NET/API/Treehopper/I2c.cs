@@ -69,8 +69,6 @@ namespace Treehopper
             device.sendPeripheralConfigPacket(dataToSend);
         }
 
-        private readonly AsyncLock mutex = new AsyncLock();
-
         /// <summary>
         /// Sends and Receives data. This is a blocking call that won't return until I2C communication is complete.
         /// </summary>
@@ -82,7 +80,7 @@ namespace Treehopper
         {
             byte[] returnedData = new byte[numBytesToRead];
             int txLen = dataToWrite.Length;
-            using (await mutex.LockAsync())
+            using (await device.ComsMutex.LockAsync())
             {
                 byte[] receivedData;
                 int srcIndex = 0;

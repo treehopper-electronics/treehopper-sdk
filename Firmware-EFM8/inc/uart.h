@@ -19,7 +19,8 @@ typedef enum {
 typedef enum {
 	UART_CMD_TX,
 	UART_CMD_RX,
-	UART_CMD_ONEWIRE_RESET
+	UART_CMD_ONEWIRE_RESET,
+	UART_CMD_ONEWIRE_SEARCH
 } UartCmd_t;
 
 typedef struct {

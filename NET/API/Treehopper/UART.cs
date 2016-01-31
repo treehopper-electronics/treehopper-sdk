@@ -177,6 +177,11 @@ namespace Treehopper
             }
         }
 
+        public async Task Send(byte data)
+        {
+            await Send(new byte[] { data });
+        }
+
         public async Task Send(byte[] dataToSend)
         {
             if(dataToSend.Length > 63)
@@ -189,14 +194,14 @@ namespace Treehopper
             data[1] = (byte)UartCommand.Transmit;
             data[2] = (byte)dataToSend.Length;
             dataToSend.CopyTo(data, 3);
-            using (await mutex.LockAsync())
+            using (await device.ComsMutex.LockAsync())
             {
                 device.sendPeripheralConfigPacket(data);
                 byte[] receivedData = await device.receiveCommsResponsePacket(1);
             }
         }
 
-        private readonly AsyncLock mutex = new AsyncLock();
+        
 
         public async Task<byte[]> Receive(int numBytes = 0)
         {
@@ -207,7 +212,7 @@ namespace Treehopper
                 data[0] = (byte)DeviceCommands.UartTransaction;
                 data[1] = (byte)UartCommand.Receive;
 
-                using (await mutex.LockAsync())
+                using (await device.ComsMutex.LockAsync())
                 {
                     device.sendPeripheralConfigPacket(data);
                     byte[] receivedData = await device.receiveCommsResponsePacket(33);
@@ -223,7 +228,7 @@ namespace Treehopper
                 data[1] = (byte)UartCommand.Receive;
                 data[2] = (byte)numBytes;
 
-                using (await mutex.LockAsync())
+                using (await device.ComsMutex.LockAsync())
                 {
                     device.sendPeripheralConfigPacket(data);
                     byte[] receivedData = await device.receiveCommsResponsePacket(33);
@@ -249,22 +254,50 @@ namespace Treehopper
             byte[] data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction;
             data[1] = (byte)UartCommand.OneWireReset;
-            using (await mutex.LockAsync())
+            using (await device.ComsMutex.LockAsync())
             {
                 device.sendPeripheralConfigPacket(data);
                 byte[] receivedData = await device.receiveCommsResponsePacket(1);
-                retVal = receivedData[0] != 0xf0;
+                retVal = receivedData[0] > 0 ? true : false;
             }
             return retVal;
         }
 
-        public async Task<List<UInt64>> OneWireScan()
+        public async Task<List<UInt64>> OneWireSearch()
         {
-            if (!await OneWireReset())
-                return new List<UInt64>();
+            List<UInt64> retVal = new List<UInt64>();
+            //if (!await OneWireReset())
+            //    return new List<UInt64>();
+            byte[] data = new byte[2];
+            data[0] = (byte)DeviceCommands.UartTransaction;
+            data[1] = (byte)UartCommand.OneWireScan;
+            using (await device.ComsMutex.LockAsync())
+            {
+                device.sendPeripheralConfigPacket(data);
+                byte[] receivedData = new byte[8];
+                while (true)
+                {
+                    receivedData = await device.receiveCommsResponsePacket(9);
+                    if (receivedData[0] == 0xff)
+                        break;
 
+                    Array.Reverse(receivedData); // endian conversion
+                    retVal.Add(BitConverter.ToUInt64(receivedData, 0));
+                }
+                
+            }
+            return retVal;
+        }
 
-            throw new NotImplementedException();
+        public async Task OneWireResetAndMatchAddress(UInt64 address)
+        {
+            await OneWireReset();
+            byte[] addr = BitConverter.GetBytes(address);
+            //Array.Reverse(addr); // endian conversion
+            byte[] data = new byte[9];
+            data[0] = 0x55; // MATCH ROM
+            Array.Copy(addr, 0, data, 1, 8);
+            await Send(data);
         }
     }
 }

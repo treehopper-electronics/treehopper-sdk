@@ -84,8 +84,6 @@ namespace Treehopper
         private bool dataAvailable;
         private byte[] receivedData;
 
-        private readonly AsyncLock mutex = new AsyncLock();
-
         PinPolarity chipSelectPolarity = PinPolarity.ActiveLow;
         PinPolarity ChipSelectPolarity
         {
@@ -257,7 +255,7 @@ namespace Treehopper
             if (dataToWrite.Length > 255)
                 throw new Exception("Maximum packet length is 255 bytes");
             byte[] returnedData = new byte[dataToWrite.Length];
-            using (await mutex.LockAsync())
+            using (await device.ComsMutex.LockAsync())
             {
                 byte[] receivedData;
                 int srcIndex = 0;
