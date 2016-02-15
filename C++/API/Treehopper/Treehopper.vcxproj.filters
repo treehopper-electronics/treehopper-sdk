@@ -27,7 +27,7 @@
     <ClCompile Include="Pins.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnalogIn.cpp">
+    <ClCompile Include="Pwm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClInclude Include="Property.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AnalogIn.h">
+    <ClInclude Include="Treehopper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Treehopper.h">
+    <ClInclude Include="Pwm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

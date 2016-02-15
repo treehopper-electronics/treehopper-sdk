@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Treehopper\AnalogIn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Treehopper\Pin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,6 +25,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Treehopper\TreehopperManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Treehopper\Pwm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClInclude Include="..\Treehopper\Pin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\AnalogIn.h">
+    <ClInclude Include="..\Treehopper\Pwm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

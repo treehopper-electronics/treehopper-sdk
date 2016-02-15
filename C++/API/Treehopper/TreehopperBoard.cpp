@@ -1,37 +1,5 @@
 #include "TreehopperBoard.h"
 
-TreehopperBoard::TreehopperBoard(libusb_device* device)
-: Pin1(this), 
-Pin2(this), 
-Pin3(this), 
-Pin4(this), 
-Pin5(this), 
-Pin6(this), 
-Pin7(this), 
-Pin8(this), 
-Pin9(this), 
-Pin10(this), 
-Pin11(this), 
-Pin12(this), 
-Pin13(this), 
-Pin14(this)
-{
-	IsOpen = false;
-	Device = device;
-
-	libusb_open(Device, &Handle);
-	unsigned char buffer[64];
-
-	libusb_get_string_descriptor_ascii(Handle, 4, buffer, 128);
-	Name = string((const char*)buffer);
-
-	libusb_get_string_descriptor_ascii(Handle, 3, buffer, 128);
-	SerialNumber = string((const char*)buffer);
-
-	libusb_close(Handle);
-	
-	
-}
 
 TreehopperBoard::TreehopperBoard(string serialNumber)
 : Pin1(this),
@@ -49,6 +17,23 @@ Pin12(this),
 Pin13(this),
 Pin14(this)
 {
+	Pins[0] = &Pin1;
+	Pins[1] = &Pin2;
+	Pins[2] = &Pin3;
+	Pins[3] = &Pin4;
+	Pins[4] = &Pin5;
+	Pins[5] = &Pin6;
+	Pins[6] = &Pin7;
+	Pins[7] = &Pin8;
+	Pins[8] = &Pin9;
+	Pins[9] = &Pin10;
+	Pins[10] = &Pin11;
+	Pins[11] = &Pin12;
+	Pins[12] = &Pin13;
+	Pins[13] = &Pin14;
+	
+
+
 	libusb_init(NULL);
 	libusb_device** devs;
 	libusb_device *dev;
@@ -67,12 +52,26 @@ Pin14(this)
 		}
 		if (desc.idProduct == pid && desc.idVendor == vid)
 		{
-			TreehopperBoard board(dev);
-			if (board.SerialNumber == serialNumber || serialNumber.length() == 0)
+			// Get the name and serial number
+			libusb_device_handle* candidate;
+
+			libusb_open(dev, &candidate);
+			unsigned char buffer[64];
+
+			libusb_get_string_descriptor_ascii(candidate, 4, buffer, 128);
+			string name = string((const char*)buffer);
+
+			libusb_get_string_descriptor_ascii(candidate, 3, buffer, 128);
+			string serial = string((const char*)buffer);
+
+			libusb_close(candidate);
+
+
+			if (serial == serialNumber || serialNumber.length() == 0)
 			{
 				Device = dev;
-				Name = board.Name;
-				SerialNumber = board.SerialNumber;
+				Name = name;
+				SerialNumber = serial;
 				return;
 			}
 		}
@@ -92,7 +91,10 @@ void TreehopperBoard::Open()
 void TreehopperBoard::Close()
 {
 	IsOpen = false;
+	libusb_release_interface(Handle, 0);
 	libusb_close(Handle);
+	libusb_exit(NULL);
+	
 }
 
 int TreehopperBoard::SendPinConfigCommand(uint8_t pinNumber, uint8_t* data, uint8_t len)
