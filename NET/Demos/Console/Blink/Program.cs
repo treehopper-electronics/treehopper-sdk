@@ -3,6 +3,7 @@ using Treehopper;
 using System.Threading.Tasks;
 using Treehopper.Libraries;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Blink
 {
@@ -40,23 +41,52 @@ namespace Blink
                 await Board.Connect();
 
                 Board.Uart.Mode = UartMode.OneWire;
-                Board.Uart.IsEnabled = true;
+                Board.Uart.Enabled = true;
 
 
 
                 //OneWire ow = new OneWire(Board.Uart);
-                
+                List<UInt64> addresses = await Board.Uart.OneWireSearch();
+
                 while(true)
                 {
                     bool result = await Board.Uart.OneWireReset();
+                    //await Board.Uart.Send(0x33);
+                    //byte[] data = await Board.Uart.Receive(8);
+
+                    //Array.Reverse(data);
+
+                    //UInt64 addr = BitConverter.ToUInt64(data, 0);
+
+                    //result = await Board.Uart.OneWireReset();
+
+
                     await Board.Uart.Send(new byte[] { 0xCC, 0x44 });
                     await Task.Delay(750);
-                    result = await Board.Uart.OneWireReset();
-                    await Board.Uart.Send(new byte[] { 0xCC, 0xBE });
-                    byte[] data = await Board.Uart.Receive(2);
-                    double temp = ((Int16)(data[0] | (data[1] << 8))) / 16.0;
-                    Console.WriteLine("Temperature: " + (temp * 1.8 + 32));
-                    //await Task.Delay(100);
+
+                    //await Board.Uart.OneWireResetAndMatchAddress(addr);
+                    ////await Board.Uart.OneWireReset();
+                    ////await Board.Uart.Send(new byte[] {0xCC, 0xBE });
+                    //await Board.Uart.Send(0xBE);
+
+                    //data = await Board.Uart.Receive(2);
+
+                    //await Board.Uart.OneWireReset();
+                    //double temp = ((Int16)(data[0] | (data[1] << 8))) / 16.0;
+                    //Console.WriteLine(String.Format("Temperature from {0}: {1} F", addr, (temp * 1.8 + 32)));
+
+                    foreach (UInt64 address in addresses)
+                    {
+                        await Board.Uart.OneWireResetAndMatchAddress(address);
+                        await Board.Uart.Send(0xBE);
+
+                        byte[] data = await Board.Uart.Receive(2);
+
+                        await Board.Uart.OneWireReset();
+                        double temp = ((Int16)(data[0] | (data[1] << 8))) / 16.0;
+                        Console.WriteLine(String.Format("Temperature from {0}: {1} F", address, (temp * 1.8 + 32)));
+
+                    }
                 }
 
 

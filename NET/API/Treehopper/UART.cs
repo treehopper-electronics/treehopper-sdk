@@ -58,7 +58,7 @@ namespace Treehopper
 
         }
 
-        public bool IsEnabled
+        public bool Enabled
         {
             get
             {
@@ -248,6 +248,8 @@ namespace Treehopper
         /// <returns>True if at least one device was found. False otherwise.</returns>
         public async Task<bool> OneWireReset()
         {
+            Mode = UartMode.OneWire;
+            Enabled = true;
             if (mode != UartMode.OneWire)
                 throw new Exception("The UART must be in OneWire mode to issue a OneWireReset command");
             bool retVal = false;
@@ -265,6 +267,8 @@ namespace Treehopper
 
         public async Task<List<UInt64>> OneWireSearch()
         {
+            Mode = UartMode.OneWire;
+            Enabled = true;
             List<UInt64> retVal = new List<UInt64>();
             //if (!await OneWireReset())
             //    return new List<UInt64>();
@@ -291,6 +295,8 @@ namespace Treehopper
 
         public async Task OneWireResetAndMatchAddress(UInt64 address)
         {
+            Mode = UartMode.OneWire;
+            Enabled = true;
             await OneWireReset();
             byte[] addr = BitConverter.GetBytes(address);
             //Array.Reverse(addr); // endian conversion

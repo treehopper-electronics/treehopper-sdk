@@ -45,7 +45,7 @@
     <OutputPath>.</OutputPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Output\C++\DLL\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)LibUSB\include\libusb-1.0</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)LibUSB\MS64\dll</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
