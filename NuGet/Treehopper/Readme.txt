@@ -1,0 +1,3 @@
+﻿This is the base .NET library for Treehopper that platform-specific libraries can reference. It is provided as an NuGet package so that developers can write cross-platform peripheral libraries for sensors and other devices; if you're building an application with Treehopper, you should *not* use this package, and instead, find the package appropriate for your platform, such as Treehopper.UWP, Treehopper.Win32, Treehopper.Android, or Treehopper.UNIX, as an example. 
+
+Treehopper is an open-source hardware platform that connects the world to your computer, tablet, or smartphone.
