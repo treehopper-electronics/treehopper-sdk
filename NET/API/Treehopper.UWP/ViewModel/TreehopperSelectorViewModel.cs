@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using Treehopper.Mvvm.Messages;
+using Treehopper;
 
 namespace Treehopper.Mvvm.ViewModel
 {
@@ -14,7 +15,7 @@ namespace Treehopper.Mvvm.ViewModel
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get { return TreehopperUsb.ConnectionService.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards { get { return ConnectionService.Instance.Boards; } }
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>

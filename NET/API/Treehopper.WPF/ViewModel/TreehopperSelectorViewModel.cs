@@ -1,19 +1,20 @@
-﻿using Treehopper.WPF.Message;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 
-namespace Treehopper.WPF.ViewModel
+using Treehopper.Mvvm.Messages;
+
+namespace Treehopper.Mvvm.ViewModel
 {
     public class TreehopperSelectorViewModel : ViewModelBase
     {
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get { return TreehopperUsb.ConnectionService.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards { get { return ConnectionService.Instance.Boards; } }
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>
@@ -125,14 +126,14 @@ namespace Treehopper.WPF.ViewModel
             }
         }
 
-        private void Connect()
+        private async void Connect()
         {
             isConnected = true;
             ConnectButtonText = "Disconnect";
             RaisePropertyChanged("ConnectButtonText");
             CanChangeBoardSelection = false;
             RaisePropertyChanged("CanChangeBoardSelection");
-            SelectedBoard.Connect();
+            await SelectedBoard.Connect();
             Messenger.Default.Send(new BoardConnectedMessage() { Board = SelectedBoard });
         }
 

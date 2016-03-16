@@ -110,13 +110,21 @@
     <Compile Include="ConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsbConnection.cs" />
+    <Compile Include="ViewModel\TreehopperSelectorViewModel.cs" />
     <EmbeddedResource Include="Properties\Treehopper.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.csproj">
+      <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
+      <Name>Treehopper.MVVM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
