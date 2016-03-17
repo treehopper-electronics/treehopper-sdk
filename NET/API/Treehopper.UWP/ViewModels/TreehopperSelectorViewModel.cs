@@ -3,10 +3,9 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows;
+
 using Treehopper.Mvvm.Messages;
-using Treehopper;
 
 namespace Treehopper.Mvvm.ViewModel
 {
@@ -15,7 +14,19 @@ namespace Treehopper.Mvvm.ViewModel
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get { return ConnectionService.Instance.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards
+        {
+            get {
+                if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+                {
+                    return DesignTimeConnectionService.Instance.Boards;
+                } else
+                {
+                    return ConnectionService.Instance.Boards;
+                }
+                    
+            }
+        }
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>
@@ -66,18 +77,34 @@ namespace Treehopper.Mvvm.ViewModel
 
         public TreehopperSelectorViewModel()
         {
+            //manager = new TreehopperManager();
             ConnectButtonText = "Connect";
             CanChangeBoardSelection = true;
-            ConnectCommand = new RelayCommand(async () => await ConnectCommandExecute(), ConnectCommandCanExecute);
+            ConnectCommand = new RelayCommand(ConnectCommandExecute, ConnectCommandCanExecute);
             CloseCommand = new RelayCommand(CloseCommandExecute, CloseCommandCanExecute);
+            WindowClosing = new RelayCommand(WindowClosingExecute);
+            // This allows us to automatically close the device when the window closes
+            //Application.Current.MainWindow.Closing += MainWindow_Closing;
 
             Boards.CollectionChanged += Boards_CollectionChanged;
+        }
+
+        private void WindowClosingExecute()
+        {
+            
         }
 
         // If the collection changed, we may have lost our board
         void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
 
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CloseCommandExecute();
+            if (SelectedBoard != null)
+                SelectedBoard.Dispose();
         }
 
         private bool CloseCommandCanExecute()
@@ -100,18 +127,18 @@ namespace Treehopper.Mvvm.ViewModel
             return (SelectedBoard != null);
         }
 
-        private async Task ConnectCommandExecute()
+        private void ConnectCommandExecute()
         {
             if (isConnected)
             {
                 Disconnect();
             } else
             {
-                await Connect();
+                Connect();
             }
         }
 
-        private async Task Connect()
+        private async void Connect()
         {
             isConnected = true;
             ConnectButtonText = "Disconnect";

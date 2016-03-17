@@ -337,7 +337,7 @@ namespace Treehopper
         {
             if (Math.Abs(prevAdcValue - adcValue) > AdcValueChangedThreshold)
             {
-                Debug.WriteLine("AdcValueThreshold");
+                //Debug.WriteLine("AdcValueThreshold");
                 prevAdcValue = adcValue;
                 if (AdcValueChanged != null)
                     AdcValueChanged(this, adcValue);

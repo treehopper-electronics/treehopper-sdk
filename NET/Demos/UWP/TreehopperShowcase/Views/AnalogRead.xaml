@@ -9,10 +9,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:TreehopperShowcase.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:TreehopperShowcase.ViewModels" mc:Ignorable="d">
+      xmlns:vm="using:TreehopperShowcase.ViewModels" mc:Ignorable="d"
+      xmlns:views="using:Treehopper.Mvvm.Views">
     
     <Page.DataContext>
-        <vm:BlinkViewModel />
+        <vm:AnalogReadViewModel />
     </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -58,9 +59,9 @@
         <!--  page header  -->
 
         <controls:PageHeader BackButtonVisibility="Collapsed" Content="Analog Read" Frame="{x:Bind Frame}">
-            <Interactivity:Interaction.Behaviors>
+            <!--<Interactivity:Interaction.Behaviors>
                 <Behaviors:EllipsisBehavior Visibility="Auto" />
-            </Interactivity:Interaction.Behaviors>
+            </Interactivity:Interaction.Behaviors>-->
             <controls:PageHeader.SecondaryCommands>
                 <!--<AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
                 <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />-->
@@ -70,9 +71,18 @@
         <!--  page content  -->
 
         <StackPanel Grid.Row="1" VerticalAlignment="Top"
-                    Orientation="Horizontal" Padding="12,8,0,0">
-
-
+                    Orientation="Vertical" Padding="12,8,0,0">
+            <views:TreehopperSelectorView />
+            <ItemsControl ItemsSource="{Binding Board.Pins.Values}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Pin " />
+                            <TextBlock Text="{Binding PinNumber}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
         </StackPanel>
 

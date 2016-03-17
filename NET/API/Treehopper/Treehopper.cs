@@ -536,7 +536,8 @@ namespace Treehopper
 		/// </remarks>
 		public void Disconnect()
 		{
-            connection.Close();
+            if(connection != null)
+                connection.Close();
             IsConnected = false;
 			//if(usb.IsOpen)
 			//{

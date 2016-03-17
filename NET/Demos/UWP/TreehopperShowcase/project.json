@@ -6,6 +6,7 @@
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "MvvmLightLibs": "5.2.0",
     "Newtonsoft.Json": "7.0.1",
+    "Nito.AsyncEx": "3.0.1",
     "Template10": "1.0.*"
   },
   "frameworks": {

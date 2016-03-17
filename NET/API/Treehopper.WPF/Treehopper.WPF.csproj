@@ -76,7 +76,7 @@
     <Compile Include="Lib\MTObservableCollection.cs" />
     <Compile Include="SystemTrayWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\TreehopperSelectorViewModel.cs" />
+    <Compile Include="ViewModels\TreehopperSelectorViewModel.cs" />
     <Compile Include="View\TreehopperSelectorView.xaml.cs">
       <DependentUpon>TreehopperSelectorView.xaml</DependentUpon>
     </Compile>
