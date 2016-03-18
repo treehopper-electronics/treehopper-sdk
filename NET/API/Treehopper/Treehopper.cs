@@ -277,6 +277,47 @@ namespace Treehopper
         public TreehopperUsb(IConnection treehopperUsbConnection)
         {
             this.connection = treehopperUsbConnection;
+
+            Pins = new Dictionary<int, Pin>();
+
+            // Initialize Pins
+            pin1 = new Pin1(this);
+            pin2 = new Pin2(this);
+            pin3 = new Pin3(this);
+            pin4 = new Pin4(this);
+            pin5 = new Pin5(this);
+            pin6 = new Pin6(this);
+            pin7 = new Pin7(this);
+            pin8 = new Pin8(this);
+            pin9 = new Pin9(this);
+            pin10 = new Pin10(this);
+            pin11 = new Pin11(this);
+            pin12 = new Pin12(this);
+            pin13 = new Pin13(this);
+            pin14 = new Pin14(this);
+
+            Pins.Add(1, pin1);
+            Pins.Add(2, pin2);
+            Pins.Add(3, pin3);
+            Pins.Add(4, pin4);
+            Pins.Add(5, pin5);
+            Pins.Add(6, pin6);
+            Pins.Add(7, pin7);
+            Pins.Add(8, pin8);
+            Pins.Add(9, pin9);
+            Pins.Add(10, pin10);
+            Pins.Add(11, pin11);
+            Pins.Add(12, pin12);
+            Pins.Add(13, pin13);
+            Pins.Add(14, pin14);
+
+            SoftPwmMgr = new SoftPwmManager(this);
+            PwmManager = new PwmManager(this);
+
+            // Initialize modules
+            i2c = new I2c(this);
+            spi = new Spi(this);
+            uart = new Uart(this);
         }
 
         public IConnection Connection { get { return connection; } }
@@ -427,46 +468,9 @@ namespace Treehopper
 
 			pinStateBuffer = new byte[64];
 
-			Pins = new Dictionary<int, Pin>();
 
-			// Initialize Pins
-			pin1	= new Pin1(this);
-			pin2	= new Pin2(this);
-			pin3	= new Pin3(this);
-			pin4	= new Pin4(this);
-			pin5	= new Pin5(this);
-			pin6	= new Pin6(this);
-			pin7	= new Pin7(this);
-			pin8	= new Pin8(this);
-			pin9	= new Pin9(this);
-			pin10	= new Pin10(this);
-			pin11	= new Pin11(this);
-			pin12	= new Pin12(this);
-			pin13	= new Pin13(this);
-			pin14	= new Pin14(this);
 
-			Pins.Add(1, pin1);
-			Pins.Add(2, pin2);
-			Pins.Add(3, pin3);
-			Pins.Add(4, pin4);
-			Pins.Add(5, pin5);
-			Pins.Add(6, pin6);
-			Pins.Add(7, pin7);
-			Pins.Add(8, pin8);
-			Pins.Add(9, pin9);
-			Pins.Add(10, pin10);
-			Pins.Add(11, pin11);
-			Pins.Add(12, pin12);
-			Pins.Add(13, pin13);
-			Pins.Add(14, pin14);
-
-			SoftPwmMgr = new SoftPwmManager(this);
-            PwmManager = new PwmManager(this);
-
-			// Initialize modules
-			i2c = new I2c(this);
-			spi = new Spi(this);
-            uart = new Uart(this);
+			
 
             //UART = new UART();
 
@@ -478,7 +482,7 @@ namespace Treehopper
 		}
 
 
-        private void Connection_PinEventDataReceived(byte[] pinStateBuffer)
+        private async void Connection_PinEventDataReceived(byte[] pinStateBuffer)
         {
             if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
             {
@@ -487,7 +491,6 @@ namespace Treehopper
                 {
                     pin.UpdateValue(pinStateBuffer[i++], pinStateBuffer[i++]);
                 }
-
 
                 /// Pin interrupts.
                 /// TODO: This is really hacky and needs to be cleaned up.
@@ -547,6 +550,17 @@ namespace Treehopper
 			//Disconnect();
 			//this.IsConnected = false;
 		}
+
+        public void CreateAnalogDemoData()
+        {
+            int i = 512;
+            foreach(Pin pin in Pins.Values)
+            {
+                pin.Mode = PinMode.AnalogInput;
+                pin.UpdateValue((byte)(i>>8), (byte)i);
+                i += 512;
+            }
+        }
 
         /// <summary>
         /// Close device connection and free memory. 

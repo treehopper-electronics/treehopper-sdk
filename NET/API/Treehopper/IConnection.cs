@@ -26,6 +26,8 @@ namespace Treehopper
         void SendDataPinConfigChannel(byte[] data);
         void SendDataPeripheralChannel(byte[] data);
 
+        int UpdateRate { get; set; }
+
         Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead);
 
         event PinEventData PinEventDataReceived;

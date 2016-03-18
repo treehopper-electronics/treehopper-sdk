@@ -219,7 +219,7 @@ namespace Treehopper
             this.PinNumber = pinNumber;
             SoftPwm = new SoftPwm(Board, this);
             AdcValueChangedThreshold = 10;
-            AnalogVoltageChangedThreshold = 0.05;
+            AnalogVoltageChangedThreshold = 0.1;
             AnalogValueChangedThreshold = 0.05;
             this.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
         }
@@ -342,7 +342,7 @@ namespace Treehopper
                 if (AdcValueChanged != null)
                     AdcValueChanged(this, adcValue);
 
-                adcValueSignal.TrySetResult(adcValue);
+                //adcValueSignal.TrySetResult(adcValue);
 
                 RaisePropertyChanged("AdcValue");
             }
@@ -353,7 +353,7 @@ namespace Treehopper
                 if (AnalogVoltageChanged != null)
                     AnalogVoltageChanged(this, AnalogVoltage);
 
-                analogVoltageSignal.TrySetResult(AnalogVoltage);
+                //analogVoltageSignal.TrySetResult(AnalogVoltage);
 
                 RaisePropertyChanged("AnalogVoltage");
             }
@@ -364,7 +364,7 @@ namespace Treehopper
                 if (AnalogValueChanged != null)
                     AnalogValueChanged(this, AnalogValue);
 
-                analogValueSignal.TrySetResult(AnalogValue);
+                //analogValueSignal.TrySetResult(AnalogValue);
 
                 RaisePropertyChanged("AnalogValue");
             }

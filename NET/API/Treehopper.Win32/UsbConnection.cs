@@ -16,6 +16,7 @@ namespace Treehopper
         private bool isOpen = false;
         public UsbConnection(string devicePath, string name)
         {
+            UpdateRate = 1000;
             DevicePath = devicePath;
             SerialNumber = devicePath.Split('#')[2];
             Name = name;
@@ -43,6 +44,7 @@ namespace Treehopper
                         if (this.PinEventDataReceived != null)
                         {
                             PinEventDataReceived(pinEventData);
+                            await Task.Delay(updateDelay);
                         }
                     }
                 }
@@ -63,6 +65,25 @@ namespace Treehopper
         public string Name { get; set; }
 
         public string DevicePath { get; set; }
+
+        private int updateRate;
+        private int updateDelay;
+
+        public int UpdateRate
+        {
+            get
+            {
+                return updateRate;
+            }
+
+            set
+            {
+                if (updateRate == value)
+                    return;
+                updateRate = value;
+                updateDelay = (int)Math.Round(1000.0 / updateRate);
+            }
+        }
 
         public void Close()
         {

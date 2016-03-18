@@ -20,11 +20,11 @@ namespace Treehopper.Mvvm.ViewModel
                 if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
                 {
                     return DesignTimeConnectionService.Instance.Boards;
-                } else
+                }
+                else
                 {
                     return ConnectionService.Instance.Boards;
                 }
-                    
             }
         }
         /// <summary>
@@ -42,7 +42,11 @@ namespace Treehopper.Mvvm.ViewModel
             }
             set
             {
+                if (selectedBoard == value)
+                    return;
+
                 selectedBoard = value;
+                RaisePropertyChanged("SelectedBoard");
                 if(selectedBoard != null)
                     ConnectCommand.RaiseCanExecuteChanged();
                 else
@@ -87,6 +91,12 @@ namespace Treehopper.Mvvm.ViewModel
             //Application.Current.MainWindow.Closing += MainWindow_Closing;
 
             Boards.CollectionChanged += Boards_CollectionChanged;
+
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                SelectedBoard = Boards[0];
+                Connect();
+            }
         }
 
         private void WindowClosingExecute()

@@ -10,9 +10,10 @@ namespace Treehopper
 {
     public class DesignTimeConnectionService : IConnectionService
     {
+        private static readonly IConnectionService instance = new DesignTimeConnectionService();
         public static IConnectionService Instance
         {
-            get { return new DesignTimeConnectionService(); }
+            get { return instance; }
         }
 
         public DesignTimeConnectionService()

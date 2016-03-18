@@ -21,6 +21,7 @@ namespace Treehopper
 
         public UsbConnection(DeviceInformation deviceInfo)
         {
+            UpdateRate = 1000;
             DevicePath = deviceInfo.Id;
             serialNumber = DevicePath.Split('#')[2];
             this.name = deviceInfo.Name;
@@ -123,6 +124,8 @@ namespace Treehopper
                         if (this.PinEventDataReceived != null)
                         {
                             PinEventDataReceived(data);
+                            if(updateDelay >= 10)
+                                await Task.Delay(updateDelay);
                         }
                     }
                 } catch {
@@ -133,6 +136,25 @@ namespace Treehopper
         CancellationTokenSource cts;
 
         public string DevicePath { get; set; }
+
+        private int updateRate;
+        private int updateDelay;
+
+        public int UpdateRate
+        {
+            get
+            {
+                return updateRate;
+            }
+
+            set
+            {
+                if (updateRate == value)
+                    return;
+                updateRate = value;
+                updateDelay = (int)Math.Round(1000.0 / updateRate);
+            }
+        }
 
         public async Task<bool> Open()
         {

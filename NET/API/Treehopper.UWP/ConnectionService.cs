@@ -15,13 +15,13 @@ namespace Treehopper
 {
     public sealed class ConnectionService : IConnectionService, INotifyPropertyChanged
     {
-        static readonly ConnectionService instance = new ConnectionService();
+        static readonly IConnectionService instance = new ConnectionService();
 
-        public static ConnectionService Instance
+        public static IConnectionService Instance
         {
             get
             {
-                return instance;
+                return instance;                    
             }
         }
 
@@ -29,18 +29,7 @@ namespace Treehopper
         {
             connectedDevices = new ObservableCollection<TreehopperUsb>();
 
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                connectedDevices.Add(new TreehopperUsb(new DesignTimeConnection()));
-                connectedDevices.Add(new TreehopperUsb(new DesignTimeConnection()));
-                connectedDevices.Add(new TreehopperUsb(new DesignTimeConnection()));
-                connectedDevices.Add(new TreehopperUsb(new DesignTimeConnection()));
-                connectedDevices.Add(new TreehopperUsb(new DesignTimeConnection()));
-
-            } else
-            {
-                StartWatcher();
-            }
+            StartWatcher();
         }
 
         ObservableCollection<TreehopperUsb> connectedDevices;

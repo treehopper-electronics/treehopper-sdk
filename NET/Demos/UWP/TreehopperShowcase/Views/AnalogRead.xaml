@@ -10,7 +10,8 @@
       xmlns:local="using:TreehopperShowcase.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:TreehopperShowcase.ViewModels" mc:Ignorable="d"
-      xmlns:views="using:Treehopper.Mvvm.Views">
+      xmlns:views="using:Treehopper.Mvvm.Views"
+    xmlns:treehopper="using:Treehopper">
     
     <Page.DataContext>
         <vm:AnalogReadViewModel />
@@ -73,13 +74,24 @@
         <StackPanel Grid.Row="1" VerticalAlignment="Top"
                     Orientation="Vertical" Padding="12,8,0,0">
             <views:TreehopperSelectorView />
+            <TextBlock Text="{Binding Board}" />
+            <TextBlock Text="{Binding Board.Pins.Count}" />
             <ItemsControl ItemsSource="{Binding Board.Pins.Values}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Pin " />
-                            <TextBlock Text="{Binding PinNumber}" />
-                        </StackPanel>
+                    <DataTemplate x:DataType="treehopper:Pin">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Pin " />
+                            <TextBlock Grid.Column="1" Text="{x:Bind PinNumber}" />
+
+                            <ProgressBar Grid.Column="2" Value="{x:Bind AdcValue, Mode=OneWay}" Maximum="4096" />
+                            <TextBlock Grid.Column="3" Text="{x:Bind AnalogVoltage, Mode=OneWay}" Margin="10,0,0,0" />
+                        </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

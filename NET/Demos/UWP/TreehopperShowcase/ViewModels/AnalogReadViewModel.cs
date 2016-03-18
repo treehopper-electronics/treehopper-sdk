@@ -14,21 +14,21 @@ namespace TreehopperShowcase.ViewModels
     {
         public TreehopperUsb Board { get; set; }
 
-        public double AdcValue { get; set; }
-
         public AnalogReadViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Board = new TreehopperUsb(new DesignTimeConnection());
+                Board = DesignTimeConnectionService.Instance.Boards[0];
+                Board.CreateAnalogDemoData();
+                RaisePropertyChanged("Board");
             }
                 Messenger.Default.Register<BoardConnectedMessage>(this, 
-                (msg) => 
-                {
-                    Board = msg.Board;
-                    RaisePropertyChanged("Board");
-                    Start();
-                });
+            (msg) => 
+            {
+                Board = msg.Board;
+                RaisePropertyChanged("Board");
+                Start();
+            });
 
             Messenger.Default.Register<BoardDisconnectedMessage>(this, 
                 (msg) => 
@@ -41,14 +41,9 @@ namespace TreehopperShowcase.ViewModels
 
         public async void Start()
         {
-            Board.Pin1.Mode = PinMode.AnalogInput;
-            IsRunning = true;
-            while(IsRunning)
-            {
-                AdcValue = await Board.Pin1.AwaitAdcValueChange();
-                Debug.WriteLine(AdcValue);
-                RaisePropertyChanged("AdcValue");
-            }
+            Board.Connection.UpdateRate = 100; // lower to 100 kHz to prevent GUI from locking up
+            foreach (Pin pin in Board.Pins.Values)
+                pin.Mode = PinMode.AnalogInput;
         }
 
         public void Stop()

@@ -42,6 +42,9 @@ namespace Treehopper
 
         public string DevicePath { get; set; }
 
+        public int UpdateRate { get; set; }
+        
+
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -52,7 +55,7 @@ namespace Treehopper
 
         public async Task<bool> Open()
         {
-            return false;
+            return true;
         }
 
         public void SendDataPeripheralChannel(byte[] data)
