@@ -82,8 +82,8 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="40" />
-                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="400" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Pin " />

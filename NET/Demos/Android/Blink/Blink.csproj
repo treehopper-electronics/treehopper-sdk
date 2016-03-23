@@ -67,9 +67,13 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\API\Treehopper.Android\Treehopper.Android.csproj">
-      <Project>{9AF8807A-4F09-4B31-B7FF-5C4AC813E5B3}</Project>
+    <ProjectReference Include="..\..\..\API\Treehopper.Android\Treehopper.Android.csproj">
+      <Project>{9af8807a-4f09-4b31-b7ff-5c4ac813e5b3}</Project>
       <Name>Treehopper.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

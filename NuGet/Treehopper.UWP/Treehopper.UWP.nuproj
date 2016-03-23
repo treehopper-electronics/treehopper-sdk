@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Treehopper.UWP</Id>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>Treehopper.UWP</Title>
     <Authors>jay</Authors>
     <Owners>jay</Owners>
@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NET\API\Treehopper.UWP\Treehopper.UWP.csproj" />
+    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.nuproj" />
     <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />

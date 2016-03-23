@@ -42,56 +42,21 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\Source\Treehopper\Comparator.cs">
-      <Link>Comparator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\I2c.cs">
-      <Link>I2c.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\IPwm.cs">
-      <Link>IPwm.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\IPwmPin.cs">
-      <Link>IPwmPin.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\Pin.cs">
-      <Link>Pin.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\Pins.cs">
-      <Link>Pins.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\Pwm.cs">
-      <Link>Pwm.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\PwmManager.cs">
-      <Link>PwmManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\SoftPwm.cs">
-      <Link>SoftPwm.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\SoftPwmManager.cs">
-      <Link>SoftPwmManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\SPI.cs">
-      <Link>SPI.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\Treehopper.cs">
-      <Link>Treehopper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\UART.cs">
-      <Link>UART.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Source\Treehopper\Utilities.cs">
-      <Link>Utilities.cs</Link>
-    </Compile>
+    <Compile Include="ConnectionService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="TreehopperUsbConnection.cs" />
+    <Compile Include="UsbConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Treehopper\Treehopper.csproj">
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

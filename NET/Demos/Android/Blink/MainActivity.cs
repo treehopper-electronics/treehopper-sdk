@@ -13,7 +13,9 @@ namespace Blink
     {
         int count = 1;
 
-        protected override void OnCreate(Bundle bundle)
+        TreehopperUsb board;
+
+        protected async override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
@@ -26,14 +28,17 @@ namespace Blink
 
             GetSystemService(Context.UsbService);
 
-            TreehopperUsbConnection.ApplicationContext = this.ApplicationContext;
-			TreehopperUsb.BoardAdded += (board) => {
-				if (board.Open ()) {
-					button.Click += delegate {
-						board.Pin1.ToggleOutput();
-					};
-				}
-			};
+            ConnectionService.Instance.Context = this.ApplicationContext; // we have to set the context before we do anything
+
+            board = await ConnectionService.Instance.First();
+            await board.Connect();
+
+            button.Click += Button_Click;
+        }
+
+        private void Button_Click(object sender, EventArgs e)
+        {
+            board.Led = !board.Led;
         }
     }
 }

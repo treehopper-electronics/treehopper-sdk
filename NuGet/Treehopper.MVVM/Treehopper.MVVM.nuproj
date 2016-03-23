@@ -11,33 +11,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>f89549a7-34e9-4b53-8446-b8ba48a8c1e2</ProjectGuid>
+    <ProjectGuid>781ca33d-0821-4c30-9f1c-d7920e6f5949</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>Treehopper</Id>
-    <Version>1.1.1</Version>
-    <Title>Treehopper</Title>
-    <Authors>Treehopper, LLC</Authors>
+    <Id>Treehopper.MVVM</Id>
+    <Version>1.0.0</Version>
+    <Title>Treehopper.MVVM</Title>
+    <Authors>Jay Carlson</Authors>
     <Owners>Jay Carlson</Owners>
-    <Summary>Platform-agnostic base class for Treehopper</Summary>
-    <Description>This is the base .NET library for Treehopper that platform-specific libraries automatically inherit. It is provided as an NuGet package so that developers can write cross-platform peripheral libraries for sensors and other devices; if you're building an application with Treehopper, you should *not* use this package, and instead, find the package appropriate for your platform, such as Treehopper.UWP, Treehopper.Win32, Treehopper.Android, or Treehopper.UNIX, as an example. Treehopper is an open-source hardware platform that connects the world to your computer, tablet, or smartphone.</Description>
+    <Summary>Provides shared code to Treehopper.UWP and Treehopper.WPF used to build MVVM-style apps.</Summary>
+    <Description>Provides shared code to Treehopper.UWP and Treehopper.WPF used to build MVVM-style apps.</Description>
     <ReleaseNotes>
     </ReleaseNotes>
-    <ProjectUrl>http://treehopper.io</ProjectUrl>
+    <ProjectUrl>
+    </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
     <Copyright>Copyright © 2016 Treehopper, LLC</Copyright>
-    <Tags>Treehopper</Tags>
+    <Tags>Treehopper.MVVM</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NET\API\Treehopper\Treehopper.csproj" />
+    <ProjectReference Include="..\..\NET\API\Treehopper.MVVM\Treehopper.MVVM.csproj" />
+    <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
