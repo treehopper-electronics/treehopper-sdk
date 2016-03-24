@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Treehopper.UWP</Id>
-    <Version>1.0.1</Version>
+    <Version>1.2.0</Version>
     <Title>Treehopper.UWP</Title>
     <Authors>jay</Authors>
     <Owners>jay</Owners>
