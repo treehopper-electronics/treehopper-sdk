@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Treehopper.UWP</Id>
-    <Version>1.2.1</Version>
+    <Version>1.2.3</Version>
     <Title>Treehopper.UWP</Title>
     <Authors>jay</Authors>
     <Owners>jay</Owners>
@@ -40,10 +40,13 @@
     <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Output\NET\Debug\Treehopper.UWP\Treehopper.UWP.xr.xml">
+    <Content Include="..\..\Output\NET\Debug\Treehopper.UWP\Treehopper.UWP.pri">
+      <Link>lib\.NETCore50\Treehopper.UWP.pri</Link>
+    </Content>
+    <Content Include="..\..\Output\NET\Debug\Treehopper.UWP\Treehopper.UWP\Treehopper.UWP.xr.xml">
       <Link>lib\.NETCore50\Treehopper.UWP\Treehopper.UWP.xr.xml</Link>
     </Content>
-    <Content Include="..\..\Output\NET\Debug\Treehopper.UWP\Views\TreehopperSelectorView.xaml">
+    <Content Include="..\..\Output\NET\Debug\Treehopper.UWP\Treehopper.UWP\Views\TreehopperSelectorView.xaml">
       <Link>lib\.NETCore50\Treehopper.UWP\Views\TreehopperSelectorView.xaml</Link>
     </Content>
   </ItemGroup>

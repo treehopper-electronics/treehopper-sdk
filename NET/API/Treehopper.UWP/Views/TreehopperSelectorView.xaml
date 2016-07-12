@@ -12,9 +12,6 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid.DataContext>
-            <vm:TreehopperSelectorViewModel />
-        </Grid.DataContext>
         <ComboBox Grid.Column="0" ItemsSource="{Binding Path=Boards}" SelectedItem="{Binding SelectedBoard, Mode=TwoWay}" IsEnabled="{Binding CanChangeBoardSelection}" HorizontalAlignment="Stretch" />
         <Button Grid.Column="1" Command="{Binding ConnectCommand}" Content="{Binding Path=ConnectButtonText}" />
     </Grid>
