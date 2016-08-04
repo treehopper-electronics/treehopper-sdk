@@ -93,26 +93,26 @@ extern volatile bit SendPinStatusPacket;
 
 #define TREEHOPPER_NUM_PINS		20
 
-#define PIN1	P0_B0
-#define PIN2	P0_B1
-#define PIN3	P0_B2
-#define PIN4	P0_B3
-#define PIN5	P0_B6
-#define PIN6	P0_B4
-#define PIN7	P0_B5
-#define PIN8	P0_B7
-#define PIN9	P1_B0
-#define PIN10	P1_B1
-#define PIN11	P1_B2
-#define PIN12	P1_B3
-#define PIN13	P1_B4
-#define PIN14	P1_B5
-#define PIN15	P1_B6
-#define PIN16	P1_B7
-#define PIN17	P2_B0
-#define PIN18	P2_B1
-#define PIN19	P2_B2
-#define PIN20	P2_B3
+#define PIN0	P0_B0
+#define PIN1	P0_B1
+#define PIN2	P0_B2
+#define PIN3	P0_B3
+#define PIN4	P0_B6
+#define PIN5	P0_B4
+#define PIN6	P0_B5
+#define PIN7	P0_B7
+#define PIN8	P1_B0
+#define PIN9	P1_B1
+#define PIN10	P1_B2
+#define PIN11	P1_B3
+#define PIN12	P1_B4
+#define PIN13	P1_B5
+#define PIN14	P1_B6
+#define PIN15	P1_B7
+#define PIN16	P2_B0
+#define PIN17	P2_B1
+#define PIN18	P2_B2
+#define PIN19	P2_B3
 
 
 

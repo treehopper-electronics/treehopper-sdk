@@ -9,7 +9,6 @@
 #include <SI_EFM8UB1_Register_Enums.h>
 
 SI_SEGMENT_VARIABLE(portBitNumber[],  static const uint8_t, SI_SEG_CODE) = {
-		0,
 		0, // pin1
 		1,
 		2,
@@ -36,7 +35,7 @@ void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull)
 {
 	uint8_t portBit = portBitNumber[pinNumber];
 	SFRPAGE = 0;
-	if(pinNumber < 9)
+	if(pinNumber < 8)
 	{
 		P0SKIP &= ~(1 << portBit);
 		if(pushPull)
@@ -44,7 +43,7 @@ void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull)
 		else
 			P0MDOUT &= ~(1 << portBit);
 	}
-	else if(pinNumber < 17)
+	else if(pinNumber < 16)
 	{
 		P1SKIP &= ~(1 << portBit);
 		if(pushPull)
@@ -66,7 +65,7 @@ void GPIO_MakeInput(uint8_t pinNumber)
 {
 	uint8_t portBit = portBitNumber[pinNumber];
 	SFRPAGE = 0;
-	if(pinNumber < 9)
+	if(pinNumber < 8)
 	{
 
 		P0SKIP |= 1 << portBit;
@@ -74,7 +73,7 @@ void GPIO_MakeInput(uint8_t pinNumber)
 		P0MDOUT &= ~(1 << portBit);
 		P0 |= 1 << portBit;
 	}
-	else if(pinNumber < 17)
+	else if(pinNumber < 16)
 	{
 		P1SKIP |= 1 << portBit;
 		P1MDIN |= 1 << portBit;
@@ -95,7 +94,7 @@ void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType)
 	uint8_t portBit = portBitNumber[pinNumber];
 	GPIO_WriteValue(pinNumber, false);
 	SFRPAGE = 0;
-	if(pinNumber < 9)
+	if(pinNumber < 8)
 	{
 		P0SKIP |= 1 << portBit;
 		P0MDIN |= 1 << portBit;
@@ -104,7 +103,7 @@ void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType)
 		else
 			P0MDOUT &= ~(1 << portBit);
 	}
-	else if(pinNumber < 17)
+	else if(pinNumber < 16)
 	{
 		P1SKIP |= 1 << portBit;
 		P1MDIN |= 1 << portBit;
@@ -127,6 +126,9 @@ void GPIO_WriteValue(uint8_t pinNumber, bool val)
 	// this only executes in 14 instructions, and this time doesn't change based on which pin is written to
 	switch(pinNumber)
 	{
+		case 0:
+			PIN0 = val;
+			break;
 		case 1:
 			PIN1 = val;
 			break;
@@ -170,7 +172,7 @@ void GPIO_WriteValue(uint8_t pinNumber, bool val)
 			PIN14 = val;
 			break;
 		case 15:
-			PIN16 = val;
+			PIN15 = val;
 			break;
 		case 16:
 			PIN16 = val;
@@ -183,9 +185,6 @@ void GPIO_WriteValue(uint8_t pinNumber, bool val)
 			break;
 		case 19:
 			PIN19 = val;
-			break;
-		case 20:
-			PIN20 = val;
 			break;
 		}
 //	uint8_t portBit = portBitNumber[pinNumber];
