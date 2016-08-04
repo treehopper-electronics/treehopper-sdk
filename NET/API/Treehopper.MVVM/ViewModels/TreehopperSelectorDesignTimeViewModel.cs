@@ -6,14 +6,12 @@ using System.Diagnostics;
 using System.Windows;
 
 using Treehopper.Mvvm.Messages;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 
 namespace Treehopper.Mvvm.ViewModel
 {
-    public class TreehopperSelectorViewModel : ViewModelBase, ITreehopperSelectorViewModel
+    public class TreehopperSelectorDesignTimeViewModel : ViewModelBase, ITreehopperSelectorViewModel
     {
-        private IConnectionService connectionService;
+        private IConnectionService connectionService = new DesignTimeConnectionService();
 
         /// <summary>
         /// Bind to this property to get an updated list of boards
@@ -40,10 +38,8 @@ namespace Treehopper.Mvvm.ViewModel
 
                 selectedBoard = value;
                 RaisePropertyChanged("SelectedBoard");
-                if (selectedBoard != null)
+                if(selectedBoard != null)
                     ConnectCommand.RaiseCanExecuteChanged();
-
-
                 else
                 {
                     Disconnect();
@@ -72,17 +68,11 @@ namespace Treehopper.Mvvm.ViewModel
 
         bool isConnected = false;
 
-        string autoConnectSerialNumber;
-
         //private TreehopperManager manager;
-        public TreehopperSelectorViewModel(IConnectionService connectionService, string autoConnectSerialNumber) : this(connectionService)
-        {
-            this.autoConnectSerialNumber = autoConnectSerialNumber;
-        }
 
-        public TreehopperSelectorViewModel(IConnectionService connectionService)
+        public TreehopperSelectorDesignTimeViewModel()
         {
-            this.connectionService = connectionService;
+            //manager = new TreehopperManager();
             ConnectButtonText = "Connect";
             CanChangeBoardSelection = true;
             ConnectCommand = new RelayCommand(ConnectCommandExecute, ConnectCommandCanExecute);
@@ -93,6 +83,8 @@ namespace Treehopper.Mvvm.ViewModel
 
             Boards.CollectionChanged += Boards_CollectionChanged;
 
+            SelectedBoard = Boards[0];
+            Connect();
         }
 
         private void WindowClosingExecute()
@@ -103,18 +95,7 @@ namespace Treehopper.Mvvm.ViewModel
         // If the collection changed, we may have lost our board
         void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            foreach (var board in Boards)
-            {
-                if (board.SerialNumber == autoConnectSerialNumber)
-                {
-                    Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                    () =>
-                    {
-                        SelectedBoard = board;
-                        ConnectCommand.Execute(null);
-                    });
-                }
-            }
+
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
