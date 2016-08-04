@@ -39,15 +39,15 @@ namespace Blink
             board = await ConnectionService.Instance.First();
             await board.Connect();
 
-            board.Pin1.Mode = PinMode.PushPullOutput;
-            board.Pin1.DigitalValue = false;
+            board[0].Mode = PinMode.PushPullOutput;
+            board[0].DigitalValue = false;
 
             button.Click += Button_Click;
         }
 
         private void Button_Click(object sender, EventArgs e)
         {
-            board.Pin1.DigitalValue = !board.Pin1.DigitalValue;
+            board.Pins[0].DigitalValue = !board.Pins[0].DigitalValue;
         }
     }
 }
