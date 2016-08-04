@@ -18,22 +18,21 @@ namespace Treehopper
 
     public class PwmManager
     {
-
         enum PwmPinEnableMode
         {
             None,
-            Pin8,
-            Pin8_Pin9,
-            Pin8_Pin9_Pin10
+            Pin7,
+            Pin7_Pin8,
+            Pin7_Pin8_Pin9
         };
 
         private TreehopperUsb board;
 
         private PwmPinEnableMode mode;
 
+        private byte[] DutyCyclePin7 = new byte[2];
         private byte[] DutyCyclePin8 = new byte[2];
         private byte[] DutyCyclePin9 = new byte[2];
-        private byte[] DutyCyclePin10 = new byte[2];
 
         public PwmManager(TreehopperUsb treehopperUSB)
         {
@@ -43,21 +42,21 @@ namespace Treehopper
         internal void StartPin(Pin Pin)
         {
             // first check to make sure the previous PWM pins have been enabled first.
-            if(Pin.PinNumber == 9 & mode != PwmPinEnableMode.Pin8)
+            if(Pin.PinNumber == 8 & mode != PwmPinEnableMode.Pin7)
                 throw new Exception("You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm");
-            if (Pin.PinNumber == 10 & mode != PwmPinEnableMode.Pin8_Pin9)
+            if (Pin.PinNumber == 9 & mode != PwmPinEnableMode.Pin7_Pin8)
                 throw new Exception("You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm");
             
             switch(Pin.PinNumber)
             {
+                case 7:
+                    mode = PwmPinEnableMode.Pin7;
+                    break;
                 case 8:
-                    mode = PwmPinEnableMode.Pin8;
+                    mode = PwmPinEnableMode.Pin7_Pin8;
                     break;
                 case 9:
-                    mode = PwmPinEnableMode.Pin8_Pin9;
-                    break;
-                case 10:
-                    mode = PwmPinEnableMode.Pin8_Pin9_Pin10;
+                    mode = PwmPinEnableMode.Pin7_Pin8_Pin9;
                     break;
             }
 
@@ -68,9 +67,9 @@ namespace Treehopper
         internal void StopPin(Pin Pin)
         {
             // first check to make sure the higher PWM pins have been disabled first
-            if (Pin.PinNumber == 9 & mode != PwmPinEnableMode.Pin8_Pin9)
+            if (Pin.PinNumber == 8 & mode != PwmPinEnableMode.Pin7_Pin8)
                 throw new Exception("You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
-            if (Pin.PinNumber == 8 & mode != PwmPinEnableMode.Pin8)
+            if (Pin.PinNumber == 7 & mode != PwmPinEnableMode.Pin7)
                 throw new Exception("You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
             
         }
@@ -81,14 +80,14 @@ namespace Treehopper
             byte[] newValue = BitConverter.GetBytes(PwmRegisterValue);
             switch(Pin.PinNumber)
             {
+                case 7:
+                    DutyCyclePin7 = newValue;
+                    break;
                 case 8:
-                    DutyCyclePin8 = newValue;
+                    DutyCyclePin9 = newValue;
                     break;
                 case 9:
                     DutyCyclePin9 = newValue;
-                    break;
-                case 10:
-                    DutyCyclePin10 = newValue;
                     break;
             }
             SendConfig();
@@ -157,14 +156,14 @@ namespace Treehopper
             configuration[1] = (byte)mode;
             configuration[2] = (byte)frequency;
 
-            configuration[3] = DutyCyclePin8[0];
-            configuration[4] = DutyCyclePin8[1];
+            configuration[3] = DutyCyclePin7[0];
+            configuration[4] = DutyCyclePin7[1];
 
             configuration[5] = DutyCyclePin9[0];
             configuration[6] = DutyCyclePin9[1];
 
-            configuration[7] = DutyCyclePin10[0];
-            configuration[8] = DutyCyclePin10[1];
+            configuration[7] = DutyCyclePin9[0];
+            configuration[8] = DutyCyclePin9[1];
 
             board.sendPeripheralConfigPacket(configuration);
         }
