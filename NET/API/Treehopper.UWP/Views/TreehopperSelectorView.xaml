@@ -8,18 +8,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
     <Grid>
-        <!--<i:Interaction.Triggers>
-            <i:EventTrigger EventName="Closing">
-                <command:EventToCommand Command="{Binding WindowClosing}" />
-            </i:EventTrigger>
-        </i:Interaction.Triggers>-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid.DataContext>
-            <vm:TreehopperSelectorViewModel />
-        </Grid.DataContext>
         <ComboBox Grid.Column="0" ItemsSource="{Binding Path=Boards}" SelectedItem="{Binding SelectedBoard, Mode=TwoWay}" IsEnabled="{Binding CanChangeBoardSelection}" HorizontalAlignment="Stretch" />
         <Button Grid.Column="1" Command="{Binding ConnectCommand}" Content="{Binding Path=ConnectButtonText}" />
     </Grid>
