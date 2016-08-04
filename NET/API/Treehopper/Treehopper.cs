@@ -115,11 +115,18 @@ namespace Treehopper
 
         public Uart Uart { get { return uart; } }
 
+        Pwm pwm1;
+        Pwm pwm2;
+        Pwm pwm3;
 
-		/// <summary>
-		/// Instance of SoftPwmMgr
-		/// </summary>
-		internal SoftPwmManager SoftPwmMgr { get; set; }
+        public Pwm Pwm1 { get { return pwm1; } }
+        public Pwm Pwm2 { get { return pwm1; } }
+        public Pwm Pwm3 { get { return pwm1; } }
+
+        /// <summary>
+        /// Instance of SoftPwmMgr
+        /// </summary>
+        internal SoftPwmManager SoftPwmMgr { get; set; }
 
         public PwmManager PwmManager { get; set; }
 
@@ -169,6 +176,9 @@ namespace Treehopper
             i2c = new I2c(this);
             spi = new Spi(this);
             uart = new Uart(this);
+            pwm1 = new Pwm(Pins[7]);
+            pwm2 = new Pwm(Pins[8]);
+            pwm3 = new Pwm(Pins[9]);
         }
 
         public IConnection Connection { get { return connection; } }

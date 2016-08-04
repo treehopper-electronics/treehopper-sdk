@@ -24,7 +24,7 @@ namespace Treehopper.Demos.AnalogRead
 
         private async static Task RunApp()
         {
-            Pin AdcPin = board.Pin11; // equivalent to Pin AdcPin = board[1];
+            Pin AdcPin = board.Pins[10]; // equivalent to Pin AdcPin = board[1];
             AdcPin.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
             AdcPin.Mode = PinMode.AnalogInput;
             while(true)
