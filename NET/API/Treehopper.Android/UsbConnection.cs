@@ -88,6 +88,9 @@ namespace Treehopper
             if (connected)
                 return false;
 
+            usbManager.RequestPermission(usbDevice, PendingIntent.GetBroadcast(ConnectionService.Instance.Context, 0, new Intent(ConnectionService.Instance.ActionUsbPermission), PendingIntentFlags.CancelCurrent));
+
+
             UsbInterface intf = usbDevice.GetInterface(0);
             pinReportEndpoint = intf.GetEndpoint(0);
             peripheralResponseEndpoint = intf.GetEndpoint(1);
