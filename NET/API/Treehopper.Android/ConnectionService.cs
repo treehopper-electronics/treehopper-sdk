@@ -23,7 +23,7 @@ namespace Treehopper
 
         public Context ApplicationContext { get; set; }
 
-        UsbManager Manager {
+        public UsbManager Manager {
             get
             {
                 return (UsbManager)Context.GetSystemService(Context.UsbService);
@@ -71,6 +71,8 @@ namespace Treehopper
                 UpdateBoardList();
             }
         }
+
+        public IntentFilter UsbPermissionIntentFilter = new IntentFilter("com.android.example.USB_PERMISSION");
 
         public void UpdateBoardList()
         {

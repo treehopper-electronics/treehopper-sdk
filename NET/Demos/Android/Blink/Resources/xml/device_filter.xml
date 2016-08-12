@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<resources>
+    <!-- 0x04d8, 0xf426 -->
+    <usb-device vendor-id="1240" product-id="62502" />
+</resources>

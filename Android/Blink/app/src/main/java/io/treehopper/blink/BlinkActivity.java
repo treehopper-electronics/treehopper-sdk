@@ -54,8 +54,8 @@ public class BlinkActivity extends TreehopperActivity {
                 board.connect();
                 board.Pin10.setMode(PinMode.PushPullOutput);
                 while (board != null) {
-                    board.Pin10.toggleOutput();
-//                    board.setLed(!board.getLed());
+//                    board.Pin10.toggleOutput();
+                    board.setLed(!board.getLed());
                     try {
                         Thread.sleep(100);
                     } catch (Exception ex) {

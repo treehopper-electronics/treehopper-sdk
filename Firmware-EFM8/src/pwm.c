@@ -10,9 +10,9 @@
 
 enum {
 	PwmMode_None,
-	PwmMode_Pin8,
-	PwmMode_Pin8_Pin9,
-	PwmMode_Pin8_Pin9_Pin10
+	PwmMode_Pin7,
+	PwmMode_Pin7_Pin8,
+	PwmMode_Pin7_Pin8_Pin9
 };
 
 uint8_t PWM_1L = 0;
@@ -97,20 +97,20 @@ void PWM_SetConfig(uint8_t* configuration)
 		case PwmMode_None:
 			PWM_Disable();
 			break;
-		case PwmMode_Pin8: // PWM1
+		case PwmMode_Pin7: // PWM1
 			XBR1 |= XBR1_PCA0ME__CEX0;
-			GPIO_MakeSpecialFunction(8, true);
+			GPIO_MakeSpecialFunction(7, true);
 			break;
-		case PwmMode_Pin8_Pin9: // PWM1, PWM2
+		case PwmMode_Pin7_Pin8: // PWM1, PWM2
 			XBR1 |= XBR1_PCA0ME__CEX0_CEX1;
+			GPIO_MakeSpecialFunction(7, true);
 			GPIO_MakeSpecialFunction(8, true);
-			GPIO_MakeSpecialFunction(9, true);
 			break;
-		case PwmMode_Pin8_Pin9_Pin10: // PWM1, PWM2, PWM3
+		case PwmMode_Pin7_Pin8_Pin9: // PWM1, PWM2, PWM3
 			XBR1 |= XBR1_PCA0ME__CEX0_CEX1_CEX2;
+			GPIO_MakeSpecialFunction(7, true);
 			GPIO_MakeSpecialFunction(8, true);
 			GPIO_MakeSpecialFunction(9, true);
-			GPIO_MakeSpecialFunction(10, true);
 			break;
 		}
 	}

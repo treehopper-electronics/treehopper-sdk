@@ -43,7 +43,6 @@
     <Compile Include="IPwmPin.cs" />
     <Compile Include="ObservableDictionary.cs" />
     <Compile Include="Pin.cs" />
-    <Compile Include="Pins.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pwm.cs" />
     <Compile Include="PwmManager.cs" />

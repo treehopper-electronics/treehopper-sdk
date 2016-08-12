@@ -101,9 +101,11 @@ namespace Treehopper
        
         TreehopperUsb device;
 
-        Pin Mosi { get { return device.Pin3; } }
-        Pin Miso { get { return device.Pin2; } }
-        Pin Sck  { get { return device.Pin1; } }
+        Pin Sck { get { return device.Pins[0]; } }
+        Pin Miso { get { return device.Pins[1]; } }
+        Pin Mosi { get { return device.Pins[2]; } }
+
+
 
         Pin chipSelect;
         public Pin ChipSelect {
