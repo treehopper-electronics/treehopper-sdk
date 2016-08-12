@@ -91,131 +91,7 @@ namespace Treehopper
 
         #region Pin Definitions
 
-        private Pin1 pin1;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin1"/>
-		/// </summary>
-		public Pin1 Pin1
-		{
-			get { return pin1; }
-		}
-
-		private Pin2 pin2;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin2"/>
-		/// </summary>
-		public Pin2 Pin2
-		{
-			get { return pin2; }
-		}
-
-		private Pin3 pin3;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin3"/>
-		/// </summary>
-		public Pin3 Pin3
-		{
-			get { return pin3; }
-		}
-
-		private Pin4 pin4;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin4"/>
-		/// </summary>
-		public Pin4 Pin4
-		{
-			get { return pin4; }
-		}
-
-		private Pin5 pin5;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin5"/>
-		/// </summary>
-		public Pin5 Pin5
-		{
-			get { return pin5; }
-		}
-
-		private Pin6 pin6;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin6"/>
-		/// </summary>
-		public Pin6 Pin6
-		{
-			get { return pin6; }
-		}
-
-		private Pin7 pin7;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin7"/>
-		/// </summary>
-		public Pin7 Pin7
-		{
-			get { return pin7; }
-		}
-
-		private Pin8 pin8;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin8"/>
-		/// </summary>
-		public Pin8 Pin8
-		{
-			get { return pin8; }
-		}
-
-		private Pin9 pin9;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin9"/>
-		/// </summary>
-		public Pin9 Pin9
-		{
-			get { return pin9; }
-		}
-
-		private Pin10 pin10;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin10"/>
-		/// </summary>
-		public Pin10 Pin10
-		{
-			get { return pin10; }
-		}
-
-		private Pin11 pin11;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin11"/>
-		/// </summary>
-		public Pin11 Pin11
-		{
-			get { return pin11; }
-		}
-
-		private Pin12 pin12;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin12"/>
-		/// </summary>
-		public Pin12 Pin12
-		{
-			get { return pin12; }
-		}
-
-		private Pin13 pin13;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin13"/>
-		/// </summary>
-		public Pin13 Pin13
-		{
-			get { return pin13; }
-		}
-
-		private Pin14 pin14;
-		/// <summary>
-		/// Instance of <see cref="Treehopper.Pin14"/>
-		/// </summary>
-		public Pin14 Pin14
-		{
-			get { return pin14; }
-		}
+       
 
         #endregion
 
@@ -239,11 +115,18 @@ namespace Treehopper
 
         public Uart Uart { get { return uart; } }
 
+        Pwm pwm1;
+        Pwm pwm2;
+        Pwm pwm3;
 
-		/// <summary>
-		/// Instance of SoftPwmMgr
-		/// </summary>
-		internal SoftPwmManager SoftPwmMgr { get; set; }
+        public Pwm Pwm1 { get { return pwm1; } }
+        public Pwm Pwm2 { get { return pwm1; } }
+        public Pwm Pwm3 { get { return pwm1; } }
+
+        /// <summary>
+        /// Instance of SoftPwmMgr
+        /// </summary>
+        internal SoftPwmManager SoftPwmMgr { get; set; }
 
         public PwmManager PwmManager { get; set; }
 
@@ -274,42 +157,17 @@ namespace Treehopper
 		private IConnection connection;
 
 
+        public int NumberOfPins { get { return 20; } }
+
         public TreehopperUsb(IConnection treehopperUsbConnection)
         {
             this.connection = treehopperUsbConnection;
 
-            Pins = new Dictionary<int, Pin>();
-
-            // Initialize Pins
-            pin1 = new Pin1(this);
-            pin2 = new Pin2(this);
-            pin3 = new Pin3(this);
-            pin4 = new Pin4(this);
-            pin5 = new Pin5(this);
-            pin6 = new Pin6(this);
-            pin7 = new Pin7(this);
-            pin8 = new Pin8(this);
-            pin9 = new Pin9(this);
-            pin10 = new Pin10(this);
-            pin11 = new Pin11(this);
-            pin12 = new Pin12(this);
-            pin13 = new Pin13(this);
-            pin14 = new Pin14(this);
-
-            Pins.Add(1, pin1);
-            Pins.Add(2, pin2);
-            Pins.Add(3, pin3);
-            Pins.Add(4, pin4);
-            Pins.Add(5, pin5);
-            Pins.Add(6, pin6);
-            Pins.Add(7, pin7);
-            Pins.Add(8, pin8);
-            Pins.Add(9, pin9);
-            Pins.Add(10, pin10);
-            Pins.Add(11, pin11);
-            Pins.Add(12, pin12);
-            Pins.Add(13, pin13);
-            Pins.Add(14, pin14);
+            // initialize pins
+            for(int i=0;i<NumberOfPins;i++)
+            {
+                Pins.Add(new Pin(this, 0));
+            }
 
             SoftPwmMgr = new SoftPwmManager(this);
             PwmManager = new PwmManager(this);
@@ -318,6 +176,9 @@ namespace Treehopper
             i2c = new I2c(this);
             spi = new Spi(this);
             uart = new Uart(this);
+            pwm1 = new Pwm(Pins[7]);
+            pwm2 = new Pwm(Pins[8]);
+            pwm3 = new Pwm(Pins[9]);
         }
 
         public IConnection Connection { get { return connection; } }
@@ -442,13 +303,10 @@ namespace Treehopper
 			}
 		}
 
-		/// <summary>
-		/// This list contains all the pins that belong to the board. 
-		/// </summary>
-		/// <remarks>
-		/// The list is zero-indexed, so <see cref="Treehopper.Pin1"/> is available at Pins[0], <see cref="Treehopper.Pin2"/> is available at Pins[1], and so on.
-		/// </remarks>
-		public Dictionary<int, Pin> Pins { get; set; }
+        /// <summary>
+        /// This list contains all the pins that belong to the board. 
+        /// </summary>
+        public ObservableCollection<Pin> Pins { get; set; } = new ObservableCollection<Pin>();
 
 		/// <summary>
 		/// Open the TreehopperBoard. The board must be opened before any other methods are called.
@@ -487,28 +345,28 @@ namespace Treehopper
             if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
             {
                 int i = 1;
-                foreach(Pin pin in Pins.Values)
+                foreach(Pin pin in Pins)
                 {
                     pin.UpdateValue(pinStateBuffer[i++], pinStateBuffer[i++]);
                 }
 
-                /// Pin interrupts.
-                /// TODO: This is really hacky and needs to be cleaned up.
-                int PortAInterrupt = pinStateBuffer[29];
-                int PortBInterrupt = pinStateBuffer[30];
-                if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
-                    Pin1.RaiseDigitalInValueChanged();
-                if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
-                    Pin14.RaiseDigitalInValueChanged();
+                ///// Pin interrupts.
+                ///// TODO: This is really hacky and needs to be cleaned up.
+                //int PortAInterrupt = pinStateBuffer[29];
+                //int PortBInterrupt = pinStateBuffer[30];
+                //if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
+                //    Pins[0].RaiseDigitalInValueChanged();
+                //if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
+                //    Pin14.RaiseDigitalInValueChanged();
 
-                if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
-                    Pin8.RaiseDigitalInValueChanged();
-                if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
-                    Pin9.RaiseDigitalInValueChanged();
-                if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
-                    Pin10.RaiseDigitalInValueChanged();
-                if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
-                    Pin11.RaiseDigitalInValueChanged();
+                //if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
+                //    Pin8.RaiseDigitalInValueChanged();
+                //if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
+                //    Pin9.RaiseDigitalInValueChanged();
+                //if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
+                //    Pin10.RaiseDigitalInValueChanged();
+                //if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
+                //    Pin11.RaiseDigitalInValueChanged();
             }
         }
 
@@ -554,7 +412,7 @@ namespace Treehopper
         public void CreateAnalogDemoData()
         {
             int i = 512;
-            foreach(Pin pin in Pins.Values)
+            foreach(Pin pin in Pins)
             {
                 pin.Mode = PinMode.AnalogInput;
                 pin.UpdateValue((byte)(i>>8), (byte)i);
