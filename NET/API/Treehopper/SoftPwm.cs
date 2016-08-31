@@ -79,7 +79,7 @@ namespace Treehopper
         /// Due to software implementation constraints, the minimum pulse width that will be generated is approximately
         /// 5.4 microseconds, and the maximum pulse width will be approximately 16,400. 
         /// </remarks>
-        public int PulseWidth
+        public double PulseWidth
         {
             get { return Board.SoftPwmMgr.GetPulseWidth(Pin); }
             set {
