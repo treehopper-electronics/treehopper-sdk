@@ -15,7 +15,7 @@ namespace Treehopper
         /// <summary>
         /// Pulse Width, in Milliseconds
         /// </summary>
-        public int PulseWidthUs { get; set; }
+        public double PulseWidthUs { get; set; }
         public bool UsePulseWidth { get; set; }
         public UInt16 Ticks { get; set; }
     }
@@ -159,7 +159,7 @@ namespace Treehopper
                 
         }
 
-        internal async void SetPulseWidth(Pin pin, int pulseWidth)
+        internal async void SetPulseWidth(Pin pin, double pulseWidth)
         {
             using (await mutex.LockAsync())
             {
@@ -174,7 +174,7 @@ namespace Treehopper
             return pins[pin.PinNumber].DutyCycle;
         }
 
-        internal int GetPulseWidth(Pin pin)
+        internal double GetPulseWidth(Pin pin)
         {
             return pins[pin.PinNumber].PulseWidthUs;
         }
