@@ -9,12 +9,11 @@ namespace Treehopper.Libraries
     public class HobbyServo
     {
         SoftPwm Pwm;
-        TreehopperUsb Board;
 
-        public HobbyServo(SoftPwm pwm, double minPulseWidth = 0.8, double maxPulseWidth = 2.8)
+        public HobbyServo(SoftPwm pwmPin, double minPulseWidth = 0.8, double maxPulseWidth = 2.8)
         {
-            this.Pwm = pwm;
-            this.Pwm.Period = 25;
+            this.Pwm = pwmPin;
+
             MinPulseWidth = minPulseWidth;
             MaxPulseWidth = maxPulseWidth;
             Angle = 90;
@@ -78,8 +77,7 @@ namespace Treehopper.Libraries
                         throw new Exception("Angle must be between 0 and 180 degrees");
                     }
 
-                    double width = Utilities.Map(angle, 0, 180, MinPulseWidth, MaxPulseWidth);
-                    Pwm.PulseWidth = width;
+                    Pwm.PulseWidth = Utilities.Map(angle, 0, 180, MinPulseWidth, MaxPulseWidth);
                 }
             }
         }
