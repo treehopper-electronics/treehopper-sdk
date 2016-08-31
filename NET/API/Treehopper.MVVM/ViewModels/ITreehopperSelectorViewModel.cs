@@ -1,9 +1,10 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Treehopper.Mvvm.ViewModel
 {
-    public interface ITreehopperSelectorViewModel
+    public interface ITreehopperSelectorViewModel : INotifyPropertyChanged
     {
         ObservableCollection<TreehopperUsb> Boards { get; }
         bool CanChangeBoardSelection { get; set; }
