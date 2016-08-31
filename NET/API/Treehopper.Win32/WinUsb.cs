@@ -873,7 +873,7 @@ namespace Treehopper
                             ref isoPacketDescriptors[0],
                             IntPtr.Zero);
 
-                        System.Console.WriteLine(Marshal.GetLastWin32Error());
+                        Debug.WriteLine(Marshal.GetLastWin32Error());
 
                         success = NativeMethods.WinUsb_UnregisterIsochBuffer(bufferHandle);
 
@@ -950,7 +950,7 @@ namespace Treehopper
                     }
                     if (!success)
                     {
-                        System.Console.WriteLine(Marshal.GetLastWin32Error());
+                        Debug.WriteLine(Marshal.GetLastWin32Error());
                     }
                 }
             }
