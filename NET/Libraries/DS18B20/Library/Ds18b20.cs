@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries
 {
-    public class Ds18b20
+    public class DS18B20
     {
-        public static List<Ds18b20> SensorList = new List<Ds18b20>();
+        public static List<DS18B20> SensorList = new List<DS18B20>();
 
         public static List<ulong> AddressList = new List<ulong>();
 
-        public async static Task<List<Ds18b20>> FindAll(TreehopperUsb board)
+        public async static Task<List<DS18B20>> FindAll(TreehopperUsb board)
         {
             SensorList.Clear();
             AddressList.Clear();
@@ -24,7 +24,7 @@ namespace Treehopper.Libraries
                 if((address & 0xff) == 0x28)
                 {
                     AddressList.Add(address);
-                    SensorList.Add(new Ds18b20(board, address));
+                    SensorList.Add(new DS18B20(board, address));
                 }
             }
             return SensorList;
@@ -61,7 +61,7 @@ namespace Treehopper.Libraries
         TreehopperUsb board;
         ulong address;
 
-        public Ds18b20(TreehopperUsb board, ulong address)
+        public DS18B20(TreehopperUsb board, ulong address)
         {
             this.board = board;
             this.address = address;

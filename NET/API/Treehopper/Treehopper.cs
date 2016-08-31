@@ -126,7 +126,7 @@ namespace Treehopper
         /// <summary>
         /// Instance of SoftPwmMgr
         /// </summary>
-        internal SoftPwmManager SoftPwmMgr { get; set; }
+        public SoftPwmManager SoftPwmMgr { get; set; }
 
         public PwmManager PwmManager { get; set; }
 
