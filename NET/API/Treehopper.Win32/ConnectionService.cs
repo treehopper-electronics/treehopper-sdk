@@ -15,7 +15,11 @@ namespace Treehopper
     public sealed class ConnectionService : IConnectionService, IDisposable
     {
         static readonly ConnectionService instance = new ConnectionService();
-        public static ConnectionService Instance { get { return instance; } }
+        public static ConnectionService Instance {
+            get {
+                return instance;
+            }
+        }
 
         DevNotifyNativeWindow notifyWindow;
 
@@ -27,6 +31,7 @@ namespace Treehopper
         Thread staThread;
         public ConnectionService()
         {
+            UpdateDeviceList();
             if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
             {
                 notifyWindow = new DevNotifyNativeWindow(OnHandleChange, OnDeviceChange);
