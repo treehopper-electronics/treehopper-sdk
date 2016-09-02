@@ -191,6 +191,14 @@ namespace LibUsbDotNet
             }
         }
 
+		public static bool IsMac
+		{
+			get
+			{
+				return Helper.IsMac;
+			}
+		}
+
         /// <summary>
         /// Gets the kernel driver type in use by LibUsbDotNet. 
         /// If <see cref="LibUsbKernelType.NativeLibUsb"/> is returned, LibUsbDotNet using using its

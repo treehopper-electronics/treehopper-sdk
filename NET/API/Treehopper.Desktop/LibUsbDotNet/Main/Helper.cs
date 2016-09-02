@@ -69,7 +69,6 @@ namespace LibUsbDotNet.Main
                             mIsLinux = false;
                             break;
                         case "Unix":
-                        case "MacOSX":
                             mIsLinux = true;
                             break;
                         default:
@@ -79,6 +78,45 @@ namespace LibUsbDotNet.Main
                 return (bool)mIsLinux;
             }
         }
+
+		[DllImport("libc")]
+		static extern int uname(IntPtr buf);
+
+		static bool? isMac;
+
+		public static bool IsMac
+		{
+			get
+			{
+				if (isMac == null)
+				{
+					isMac = false;
+					IntPtr buf = IntPtr.Zero;
+					try
+					{
+						buf = Marshal.AllocHGlobal(8192);
+						// This is a hacktastic way of getting sysname from uname ()
+						if (uname(buf) == 0)
+						{
+							string os = Marshal.PtrToStringAnsi(buf);
+							if (os == "Darwin")
+								isMac = true;
+						}
+					}
+					catch
+					{
+						
+					}
+					finally
+					{
+						if (buf != IntPtr.Zero)
+							Marshal.FreeHGlobal(buf);
+					}
+
+				}
+				return isMac.GetValueOrDefault();
+			}
+		}
 
         /// <summary>
         /// Copies bytes to a blittable object.
