@@ -135,5 +135,10 @@ namespace Treehopper
 
             connection.BulkTransfer(pinConfigEndpoint, data, data.Length, 1000);
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

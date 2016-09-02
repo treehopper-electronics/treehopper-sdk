@@ -8,8 +8,8 @@
     <ProjectGuid>{75291C29-5A64-4618-9A64-CCE7653E7738}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Library</RootNamespace>
-    <AssemblyName>Library</AssemblyName>
+    <RootNamespace>Treehopper.Libraries.ADJDS311</RootNamespace>
+    <AssemblyName>ADJDS311</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

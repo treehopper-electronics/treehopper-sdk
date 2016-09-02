@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,17 +38,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\Nito.AsyncEx.3.0.1\lib\portable-net45+netcore45+wp8+wpa81\Nito.AsyncEx.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Treehopper, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\Treehopper.1.0.0.1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Treehopper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

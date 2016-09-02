@@ -12,7 +12,7 @@ namespace Treehopper
     public delegate void ConnectionAddedHandler(IConnection connectionAdded);
     public delegate void ConnectionRemovedHandler(IConnection connectionRemoved);
 
-    public interface IConnection : INotifyPropertyChanged
+    public interface IConnection : INotifyPropertyChanged, IDisposable
     {
         Task<bool> Open();
         void Close();

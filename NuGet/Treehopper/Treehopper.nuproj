@@ -32,6 +32,7 @@
     </LicenseUrl>
     <Copyright>Copyright © 2016 Treehopper, LLC</Copyright>
     <Tags>Treehopper</Tags>
+    <OutputPath>$(SolutionDir)Output\NuGet\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

@@ -10,9 +10,9 @@ namespace Treehopper.Libraries
     {
         SoftPwm Pwm;
 
-        public HobbyServo(SoftPwm pwmPin, double minPulseWidth = 0.8, double maxPulseWidth = 2.8)
+        public HobbyServo(Pin pin, double minPulseWidth = 500, double maxPulseWidth = 2500)
         {
-            this.Pwm = pwmPin;
+            this.Pwm = pin.SoftPwm;
 
             MinPulseWidth = minPulseWidth;
             MaxPulseWidth = maxPulseWidth;
@@ -49,16 +49,16 @@ namespace Treehopper.Libraries
             }
         }
 
-        private bool isEnabled;
+        private bool enabled;
 
-        public bool IsEnabled
+        public bool Enabled
         {
             get { 
-                return isEnabled; 
+                return enabled; 
             }
             set { 
-                isEnabled = value;
-                Pwm.IsEnabled = value;
+                enabled = value;
+                Pwm.Enabled = value;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Treehopper.Libraries
             set
             {
                 angle = value;
-                if(IsEnabled)
+                if(Enabled)
                 {
                     if (angle < 0 || angle > 180)
                     {

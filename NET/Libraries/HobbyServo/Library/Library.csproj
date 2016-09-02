@@ -8,8 +8,8 @@
     <ProjectGuid>{ADAF1327-5176-4073-8237-46BE59252F13}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Library</RootNamespace>
-    <AssemblyName>Library</AssemblyName>
+    <RootNamespace>Treehopper.Libraries.HobbyServo</RootNamespace>
+    <AssemblyName>HobbyServo</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

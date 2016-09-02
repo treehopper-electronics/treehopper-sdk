@@ -33,7 +33,7 @@ namespace HobbyServo
             int rate = 1;
 
             Console.WriteLine("Connected. Starting demo.");
-            servoPin.SoftPwm.IsEnabled = true;
+            servoPin.SoftPwm.Enabled = true;
 
             while (true)
             {
@@ -55,7 +55,7 @@ namespace HobbyServo
 
         async void Start()
         {
-            TreehopperUsb board = await ConnectionService.Instance.First();
+            TreehopperUsb board = await ConnectionServiceWin.Instance.First();
             await board.Connect();
             board.Pin1.Mode = PinMode.PushPullOutput;
             while(true)
@@ -76,7 +76,7 @@ namespace HobbyServo
 
         async void Stop()
         {
-            TreehopperUsb board = await ConnectionService.Instance.First();
+            TreehopperUsb board = await ConnectionServiceWin.Instance.First();
             await board.Connect();
             board.Pin1.Mode = PinMode.PushPullOutput;
             while (true)

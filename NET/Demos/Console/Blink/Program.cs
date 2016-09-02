@@ -1,7 +1,7 @@
 ﻿using System;
 using Treehopper;
 using System.Threading.Tasks;
-using Treehopper.Libraries;
+
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -24,21 +24,26 @@ namespace Blink
 
         static async Task RunBlink()
         {
-            while(true)
+            Utilities.Map(1, 5, 3, 2, 5);
+
+            while (true)
             {
                 Console.Write("Waiting for board...");
-
                 // Get a reference to the first TreehopperUsb board connected. This will await indefinitely until a board is connected.
-                TreehopperUsb Board = await ConnectionService.Instance.First();        
+
+                //TreehopperManager manager = new TreehopperManager();
+                //manager.BoardAdded += Manager_BoardAdded;
+
+                TreehopperUsb Board = await ConnectionService.Instance.First();
                 Console.WriteLine("Found board: " + Board);
 
                 // You must explicitly open a board before communicating with it
                 await Board.Connect();
 
-                while(Board.IsConnected)
+                while (Board.IsConnected)
                 {
                     // toggle the LED
-                    Board.Led = !Board.Led; 
+                    Board.Led = !Board.Led;
 
                     // wait 500 ms
                     await Task.Delay(500);
@@ -47,7 +52,12 @@ namespace Blink
                 // We arrive here when the board has been disconnected
                 Console.WriteLine("Board has been disconnected.");
             }
-            
+
+        }
+
+        private static void Manager_BoardAdded(TreehopperManager sender, TreehopperBoard board)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

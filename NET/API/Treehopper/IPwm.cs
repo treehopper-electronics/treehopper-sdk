@@ -26,11 +26,11 @@
         /// <summary>
         /// Get or set the pulse width, in microseconds, of the pin
         /// </summary>
-        int PulseWidth { get; set; }
+        double PulseWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
-        bool IsEnabled { get; set; }
+        bool Enabled { get; set; }
     }
 }
