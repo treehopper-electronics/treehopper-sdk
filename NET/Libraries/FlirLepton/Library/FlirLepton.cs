@@ -4,12 +4,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Diagnostics;
-#if WINDOWS_UWP
-using Windows.UI.Xaml.Media.Imaging;
-#else
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-#endif
+using Treehopper;
+
 namespace Treehopper.Libraries.Sensors.Optical
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
@@ -17,7 +13,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     {
         public ushort Id;
         public ushort Crc;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
         public ushort[] Payload;
     }
     public class FlirLepton
@@ -86,31 +82,31 @@ namespace Treehopper.Libraries.Sensors.Optical
             return frame;
         }
 
-#if WINDOWS_UWP
-        public async Task<WriteableBitmap> GetFrame()
-        {
-            WriteableBitmap frame  = new WriteableBitmap(width, height);
-            var correctedFrame = await GetCorrectedRasterFrameArray();
-            byte[] correctedArgbFrame = new byte[width * height * 4];
-            for (int i=0;i<width*height;i++)
-            {
-                correctedArgbFrame[i * 4 + 0] = correctedFrame[i];
-                correctedArgbFrame[i * 4 + 1] = correctedFrame[i];
-                correctedArgbFrame[i * 4 + 2] = correctedFrame[i];
-                correctedArgbFrame[i * 4 + 3] = 0xff;
-            }
-            await frame.PixelBuffer.AsStream().WriteAsync(correctedArgbFrame, 0, correctedArgbFrame.Length);
-            return frame;
-        }
-#else
-        public async Task<WriteableBitmap> GetFrame()
-        {
-            WriteableBitmap frame = new WriteableBitmap(80, 60, 300, 300, PixelFormats.Gray8, null);
-            var correctedFrame = await GetCorrectedRasterFrameArray();
-            frame.WritePixels(new Int32Rect(0, 0, 80, 60), correctedFrame, 1, 0);
-            return frame;
-        }
-#endif
+//#if WINDOWS_UWP
+//        public async Task<WriteableBitmap> GetFrame()
+//        {
+//            WriteableBitmap frame  = new WriteableBitmap(width, height);
+//            var correctedFrame = await GetCorrectedRasterFrameArray();
+//            byte[] correctedArgbFrame = new byte[width * height * 4];
+//            for (int i=0;i<width*height;i++)
+//            {
+//                correctedArgbFrame[i * 4 + 0] = correctedFrame[i];
+//                correctedArgbFrame[i * 4 + 1] = correctedFrame[i];
+//                correctedArgbFrame[i * 4 + 2] = correctedFrame[i];
+//                correctedArgbFrame[i * 4 + 3] = 0xff;
+//            }
+//            await frame.PixelBuffer.AsStream().WriteAsync(correctedArgbFrame, 0, correctedArgbFrame.Length);
+//            return frame;
+//        }
+//#else
+//        public async Task<WriteableBitmap> GetFrame()
+//        {
+//            WriteableBitmap frame = new WriteableBitmap(80, 60, 300, 300, PixelFormats.Gray8, null);
+//            var correctedFrame = await GetCorrectedRasterFrameArray();
+//            frame.WritePixels(new Int32Rect(0, 0, 80, 60), correctedFrame, 1, 0);
+//            return frame;
+//        }
+//#endif
         public async Task<byte[]> GetCorrectedRasterFrameArray()
         {
             ushort[,] rawFrame = await GetRawFrame();
@@ -149,11 +145,11 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         async Task<VoSPI> GetPacket()
         {
-            int rawsize = Marshal.SizeOf<VoSPI>();
-            byte[] data = await spi.SendReceive(new byte[164]);
-            IntPtr buffer = Marshal.AllocHGlobal(rawsize);
-            Marshal.Copy(data, 0, buffer, rawsize);
-            return Marshal.PtrToStructure<VoSPI>(buffer);
+            //int rawsize = Marshal.SizeOf<VoSPI>();
+            //byte[] data = await spi.SendReceive(new byte[164]);
+            //IntPtr buffer = Marshal.AllocHGlobal(rawsize);
+            //Marshal.Copy(data, 0, buffer, rawsize);
+            //return Marshal.PtrToStructure<VoSPI>(buffer);
         }
     }
 

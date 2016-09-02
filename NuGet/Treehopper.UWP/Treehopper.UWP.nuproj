@@ -33,6 +33,7 @@
     </LicenseUrl>
     <Copyright>Copyright © jay</Copyright>
     <Tags>Treehopper.UWP</Tags>
+    <OutputPath>$(SolutionDir)Output\NuGet\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NET\API\Treehopper.UWP\Treehopper.UWP.csproj" />

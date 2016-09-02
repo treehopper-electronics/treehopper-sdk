@@ -80,5 +80,10 @@ namespace Treehopper
         {
             return new byte[0];
         }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

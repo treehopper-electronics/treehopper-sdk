@@ -185,16 +185,16 @@ namespace Treehopper
             request.Request = 6;
             request.Length = 64;
 
-            // serial number
-            request.Value = 0x0303;
-            responseBuffer = await usbDevice.SendControlInTransferAsync(request, buffer);
-            length = responseBuffer.GetByte(0);
-            try
-            {
-                serialNumber = System.Text.Encoding.Unicode.GetString(responseBuffer.ToArray(2, length - 2), 0, length - 2);
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SerialNumber"));
-            }
-            catch { }
+            //// serial number
+            //request.Value = 0x0303;
+            //responseBuffer = await usbDevice.SendControlInTransferAsync(request, buffer);
+            //length = responseBuffer.GetByte(0);
+            //try
+            //{
+            //    serialNumber = System.Text.Encoding.Unicode.GetString(responseBuffer.ToArray(2, length - 2), 0, length - 2);
+            //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SerialNumber"));
+            //}
+            //catch { }
 
             pinConfigPipe = usbDevice.DefaultInterface.BulkOutPipes[0];
             pinConfigPipe.WriteOptions |= UsbWriteOptions.ShortPacketTerminate;
@@ -279,6 +279,11 @@ namespace Treehopper
             {
                 return new byte[0];
             }
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
 
         ~UsbConnection()

@@ -28,7 +28,7 @@ namespace Treehopper
         /// <summary>
         /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
-        public bool IsEnabled
+        public bool Enabled
         {
             get
             {

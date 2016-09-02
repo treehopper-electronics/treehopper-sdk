@@ -15,8 +15,7 @@ namespace Treehopper
     {
         Pin Pin;
         double dutyCycle;
-        int pulseWidth;
-        double period;
+        double pulseWidth;
         private bool isEnabled = false;
         TreehopperUsb Board;
         internal Pwm(Pin pin)
@@ -28,7 +27,7 @@ namespace Treehopper
         /// <summary>
         /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
-        public bool IsEnabled
+        public bool Enabled
         {
             get
             {
@@ -78,7 +77,7 @@ namespace Treehopper
         /// <summary>
         /// Get or set the pulse width, in microseconds, of the pin
         /// </summary>
-        public int PulseWidth
+        public double PulseWidth
         {
             get
             {

@@ -80,10 +80,6 @@ namespace Treehopper
     /// </remarks>
     public class Spi
     {
-        private bool noEvents;
-        private bool dataAvailable;
-        private byte[] receivedData;
-
         PinPolarity chipSelectPolarity = PinPolarity.ActiveLow;
         PinPolarity ChipSelectPolarity
         {

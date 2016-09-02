@@ -18,7 +18,7 @@ namespace PwmFade
             TreehopperUsb board = await ConnectionService.Instance.First();
 			Console.WriteLine("Board found:" + board);
             await board.Connect();
-            board.Pwm1.IsEnabled = true;
+            board.Pwm1.Enabled = true;
             board.PwmManager.Frequency = PwmFrequency.Freq_61Hz; 
 
             int step = 5;
