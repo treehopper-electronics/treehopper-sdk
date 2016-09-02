@@ -332,5 +332,10 @@ namespace Treehopper
 
             return Boards[0];
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }
