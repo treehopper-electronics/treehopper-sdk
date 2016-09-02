@@ -199,3 +199,5 @@ FakesAssemblies/
 Treehopper.VC.db
 Treehopper.VC.db
 NET/Demos/UWP/TreehopperShowcase/null
+NET/Demos/UWP/TreehopperShowcase/null
+*.db
