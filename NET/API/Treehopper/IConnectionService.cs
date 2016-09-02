@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
-    public interface IConnectionService : INotifyPropertyChanged
+    public interface IConnectionService : INotifyPropertyChanged, IDisposable
     {
         ObservableCollection<TreehopperUsb> Boards { get; }
 
