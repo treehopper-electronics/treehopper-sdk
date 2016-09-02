@@ -148,6 +148,8 @@ namespace Treehopper
             {
                 if (regDevice.Vid != TreehopperUsb.Settings.Vid || regDevice.Pid != TreehopperUsb.Settings.Pid)
                     continue;
+                if (regDevice.Device == null)
+                    continue;
                 if (Boards.Where(i => i.Connection.DevicePath == regDevice.SymbolicName).Count() == 0)
                 {
                     var board = new TreehopperUsb(new UsbConnection(regDevice));
