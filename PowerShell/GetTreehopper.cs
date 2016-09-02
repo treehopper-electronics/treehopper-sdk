@@ -28,10 +28,11 @@ namespace Treehopper.PS
         }
 
 
-        ConnectionService service = new ConnectionService();
+        ConnectionService service = ConnectionService.Instance;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
+            service.First().Wait();
         }
 
         protected override void ProcessRecord()
@@ -61,6 +62,7 @@ namespace Treehopper.PS
         protected override void EndProcessing()
         {
             base.EndProcessing();
+            service.Dispose();
         }
     }
 }
