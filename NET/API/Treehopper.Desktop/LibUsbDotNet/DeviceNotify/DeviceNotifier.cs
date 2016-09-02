@@ -35,11 +35,15 @@ namespace LibUsbDotNet.DeviceNotify
         /// <returns>A <see cref="WindowsDeviceNotifier"/> under windows and a <see cref="LinuxDeviceNotifier"/> under linux.</returns>
         public static IDeviceNotifier OpenDeviceNotifier()
         {
-            if (UsbDevice.IsLinux)
-            {
-                return new LinuxDeviceNotifier();
-            }
-            else
+			if (UsbDevice.IsLinux && !UsbDevice.IsMac)
+			{
+				return new LinuxDeviceNotifier();
+			}
+			else if (UsbDevice.IsMac)
+			{
+				return new WindowsDeviceNotifier();
+			} 
+			else 			
             {
                 return new WindowsDeviceNotifier();
             }
