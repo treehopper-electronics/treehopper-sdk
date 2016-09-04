@@ -25,7 +25,7 @@ using System.Collections.ObjectModel;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 namespace LibUsbDotNet.Info
 {
@@ -77,7 +77,7 @@ namespace LibUsbDotNet.Info
             }
         }
 
-        internal UsbConfigInfo(MonoUsbDevice usbDevice, MonoUsbConfigDescriptor configDescriptor)
+        internal UsbConfigInfo(LibUsbDevice usbDevice, MonoUsbConfigDescriptor configDescriptor)
         {
             mUsbDevice = usbDevice;
 

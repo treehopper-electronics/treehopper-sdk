@@ -21,7 +21,7 @@
 // 
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 namespace LibUsbDotNet.DeviceNotify.Linux
 {

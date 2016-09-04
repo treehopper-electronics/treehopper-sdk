@@ -25,7 +25,7 @@ using System.Collections.ObjectModel;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 namespace LibUsbDotNet.Info
 {

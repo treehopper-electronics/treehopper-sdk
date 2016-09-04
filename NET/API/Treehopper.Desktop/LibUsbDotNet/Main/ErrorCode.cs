@@ -20,7 +20,7 @@
 // 
 // 
 
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet.Main
 {
@@ -176,9 +176,9 @@ namespace LibUsbDotNet.Main
         /// Unknown or other error.
         /// </summary>
         UnknownError,
-        /// <summary>
-        /// The error is one of the <see cref="MonoUsbError"/>
-        /// </summary>
-        MonoApiError
+		/// <summary>
+		/// The error is one of the <see cref="global::LibUsb.UsbError"/>
+		/// </summary>
+		MonoApiError
     }
 }

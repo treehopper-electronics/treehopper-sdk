@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Class representing a Libusb-1.0 session session handle.

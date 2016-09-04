@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet
 {
@@ -41,7 +41,7 @@ namespace LibUsbDotNet
         /// Setting this field to <see langword="true"/> will force <see cref="LibUsbDotNet"/> to use the <a href="http://www.libusb.org/wiki/windows_backend">Libusb-1.0 Windows-backend driver.</a>  For platforms other than windows, this setting has no effect.
         /// </summary>
         /// <remarks>
-        /// If this is <see langword="true"/>, <see cref="AllDevices"/> will return only <see cref="MonoUsbDevice"/>s in the list.
+        /// If this is <see langword="true"/>, <see cref="AllDevices"/> will return only <see cref="LibUsbDevice"/>s in the list.
         /// </remarks>
         public static bool ForceLibUsbWinBack = false;
         
@@ -163,7 +163,7 @@ namespace LibUsbDotNet
                     {
                         try
                         {
-                            MonoUsbApi.StrError(MonoUsbError.Success);
+							LibUsbApi.StrError(global::LibUsb.LibUsbError.Success);
                             mHasLibUsbWinBackDriver = true;
                         }
                         catch(Exception)

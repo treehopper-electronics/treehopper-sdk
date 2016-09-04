@@ -28,7 +28,7 @@ using LibUsbDotNet.Info;
 using LibUsbDotNet.Internal;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet
 {
