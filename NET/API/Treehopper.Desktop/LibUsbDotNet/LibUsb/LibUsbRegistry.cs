@@ -1,4 +1,4 @@
-// Copyright © 2006-2010 Travis Robinson. All rights reserved.
+// Copyright Â© 2006-2010 Travis Robinson. All rights reserved.
 // 
 // website: http://sourceforge.net/projects/libusbdotnet
 // e-mail:  libusbdotnet@gmail.com
@@ -21,120 +21,26 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.Main;
 using Microsoft.Win32.SafeHandles;
-using Debug=System.Diagnostics.Debug;
+using Debug = System.Diagnostics.Debug;
 
 namespace LibUsbDotNet.LibUsb
 {
-    /// <summary> LibUsb specific members for device registry settings.
+    /// <summary> 
+    /// LibUsb specific members for device registry settings.  
+    /// This legacy class does not actually query the windows registry as the other Registry classes do. 
+    /// Instead, it wraps a <see cref="LibUsbDevice"/> and queries descriptors directly from the device 
+    /// using usb IO control messages.
     /// </summary> 
     public class LibUsbRegistry : UsbRegistry
     {
-        private readonly string mDeviceFilename;
-        private readonly int mDeviceIndex;
 
-        private LibUsbRegistry(SafeFileHandle usbHandle, string deviceFileName, int deviceIndex)
+        private readonly UsbDevice mUSBDevice;
+        internal LibUsbRegistry(UsbDevice usbDevice)
         {
-            mDeviceFilename = deviceFileName;
-            mDeviceIndex = deviceIndex;
-            GetPropertiesSPDRP(usbHandle);
-            string symbolicName;
-
-            if (GetCustomDeviceKeyValue(usbHandle, SYMBOLIC_NAME_KEY, out symbolicName, 512) == ErrorCode.None)
-            {
-                mDeviceProperties.Add(SYMBOLIC_NAME_KEY, symbolicName);
-            }
-
-            // If the SymbolicName key does not exists, use the first HardwareID string.
-            if (!mDeviceProperties.ContainsKey(SYMBOLIC_NAME_KEY) || String.IsNullOrEmpty(symbolicName))
-            {
-                string[] hwIDs = mDeviceProperties[SPDRP.HardwareId.ToString()] as string[];
-
-                if ((hwIDs == null) || hwIDs.Length==0)
-                {
-                    LibUsbDevice usbDevice = new LibUsbDevice(UsbDevice.LibUsbApi, usbHandle, deviceFileName);
-                    LegacyUsbRegistry.GetPropertiesSPDRP(usbDevice, mDeviceProperties);
-                    return;
-                }
-
-                if (hwIDs.Length > 0)
-                {
-                    mDeviceProperties.Add(SYMBOLIC_NAME_KEY, hwIDs[0]);
-                }
-            }
-
-            string deviceInterfaceGuids;
-            if (GetCustomDeviceKeyValue(usbHandle, LIBUSB_INTERFACE_GUIDS, out deviceInterfaceGuids, 512) == ErrorCode.None)
-            {
-                string[] deviceInterfaceGuidsArray = deviceInterfaceGuids.Split(new char[] {'\0'}, StringSplitOptions.RemoveEmptyEntries);
-
-                mDeviceProperties.Add(LIBUSB_INTERFACE_GUIDS, deviceInterfaceGuidsArray);
-            }
-        }
-
-        /// <summary>
-        /// Gets the 0 based index of this libusb device
-        /// </summary>
-        public int DeviceIndex
-        {
-            get { return mDeviceIndex; }
-        }
-
-        /// <summary>
-        /// Gets a list of available LibUsb devices.
-        /// </summary>
-        public static List<LibUsbRegistry> DeviceList
-        {
-            get
-            {
-                List<LibUsbRegistry> deviceList = new List<LibUsbRegistry>();
-                for (int i = 1; i < UsbConstants.MAX_DEVICES; i++)
-                {
-                    string deviceFileName = LibUsbDriverIO.GetDeviceNameString(i);
-
-                    SafeFileHandle deviceHandle = LibUsbDriverIO.OpenDevice(deviceFileName);
-                    if (deviceHandle != null && !deviceHandle.IsInvalid && !deviceHandle.IsClosed)
-                    {
-                        try
-                        {
-                            LibUsbRegistry regInfo = new LibUsbRegistry(deviceHandle, deviceFileName, i);
-                            //System.Diagnostics.Debug.Print("Address:{0}, Index:{1}, {2}", regInfo[SPDRP.Address], i, regInfo[SPDRP.DeviceDesc]);
-                            deviceList.Add(regInfo);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.Print(ex.Message);
-                        }
-                    }
-                    if (deviceHandle != null && !deviceHandle.IsClosed) deviceHandle.Close();
-                }
-
-                return deviceList;
-            }
-        }
-
-        /// <summary>
-        /// Check this value to determine if the usb device is still connected to the bus and ready to open.
-        /// </summary>
-        public override bool IsAlive
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(SymbolicName)) throw new UsbException(this, "A symbolic name is required for this property.");
-                List<LibUsbRegistry> deviceList = DeviceList;
-                foreach (LibUsbRegistry registry in deviceList)
-                {
-                    if (String.IsNullOrEmpty(registry.SymbolicName)) continue;
-
-                    if (registry.SymbolicName == SymbolicName)
-                        return true;
-                }
-                return false;
-            }
+            mUSBDevice = usbDevice;
+            GetPropertiesSPDRP(mUSBDevice, mDeviceProperties);
         }
 
         /// <summary>
@@ -148,7 +54,7 @@ namespace LibUsbDotNet.LibUsb
         {
             get
             {
-                LibUsbDevice libUsbDevice;
+                UsbDevice libUsbDevice;
                 Open(out libUsbDevice);
                 return libUsbDevice;
             }
@@ -181,19 +87,85 @@ namespace LibUsbDotNet.LibUsb
         }
 
         /// <summary>
-        /// Opens the USB device for communucation.
+        /// Check this value to determine if the usb device is still connected to the bus and ready to open.
         /// </summary>
-        /// <param name="usbDevice">The newly created UsbDevice.</param>
-        /// <returns>True on success.</returns>
-        public bool Open(out LibUsbDevice usbDevice)
+        /// <remarks>
+        /// Uses the symbolic name as a unique id to determine if this device instance is still attached.
+        /// </remarks>
+        /// <exception cref="UsbException">An exception is thrown if the <see cref="UsbRegistry.SymbolicName"/> property is null or empty.</exception>
+        public override bool IsAlive
         {
-            bool bSuccess = LibUsbDevice.Open(mDeviceFilename, out usbDevice);
-            if (bSuccess)
+            get
             {
-                usbDevice.mUsbRegistry = this;
-            }
+                if (String.IsNullOrEmpty(SymbolicName)) throw new UsbException(this, "A symbolic name is required for this property.");
+                List<LibUsbRegistry> deviceList = DeviceList;
+                foreach (LibUsbRegistry registry in deviceList)
+                {
+                    if (String.IsNullOrEmpty(registry.SymbolicName)) continue;
 
-            return bSuccess;
+                    if (registry.SymbolicName == SymbolicName)
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of available LibUsb devices.
+        /// </summary>
+        ///
+        public static List<LibUsbRegistry> DeviceList
+        {
+            get
+            {
+                List<LibUsbRegistry> deviceList = new List<LibUsbRegistry>();
+
+	            List<LibUsbDevice> legacyLibUsbDeviceList = LibUsbDevice.MonoUsbDeviceList;
+	            foreach (LibUsbDevice usbDevice in legacyLibUsbDeviceList)
+	            {
+	                deviceList.Add(new LibUsbRegistry(usbDevice));
+	            }
+                
+                return deviceList;
+            }
+        }
+
+        ///// <summary>
+        ///// ProductID
+        ///// </summary>
+        //public override int Pid
+        //{
+        //    get { return (int)((ushort)mUSBDevice.Info.Descriptor.ProductID); }
+        //}
+
+        ///// <summary>
+        ///// VendorID
+        ///// </summary>
+        //public override int Vid
+        //{
+        //    get { return (int)((ushort)mUSBDevice.Info.Descriptor.VendorID); }
+        //}
+
+        /// <summary>
+        /// Usb device revision number.
+        /// </summary>
+        public override int Rev
+        {
+            get
+            {
+                int bcdRev;
+                string s = mUSBDevice.Info.Descriptor.BcdDevice.ToString("X4");
+                if (int.TryParse(s, out bcdRev))
+                {
+                    return bcdRev;
+                }
+                return (int)((ushort)mUSBDevice.Info.Descriptor.BcdDevice);
+            }
+        }
+
+        internal static string GetRegistryHardwareID(ushort vid, ushort pid, ushort rev)
+        {
+            return string.Format("Vid_{0:X4}&Pid_{1:X4}&Rev_{2}", vid, pid, rev.ToString("0000"));
         }
 
         /// <summary>
@@ -204,118 +176,42 @@ namespace LibUsbDotNet.LibUsb
         public override bool Open(out UsbDevice usbDevice)
         {
             usbDevice = null;
-            LibUsbDevice libUsbDevice;
-            bool bSuccess = Open(out libUsbDevice);
+            bool bSuccess = mUSBDevice.Open();
             if (bSuccess)
-                usbDevice = libUsbDevice;
+            {
+                usbDevice = mUSBDevice;
+                usbDevice.mUsbRegistry = this;
+            }
+
             return bSuccess;
         }
 
-        internal ErrorCode GetCustomDeviceKeyValue(SafeFileHandle usbHandle, string key, out string propData, int maxDataLength)
+        internal static void GetPropertiesSPDRP(UsbDevice usbDevice, Dictionary<string, object> deviceProperties)
         {
-            byte[] propDataBytes;
-            ErrorCode eReturn = GetCustomDeviceKeyValue(usbHandle, key, out propDataBytes, maxDataLength);
-            if (eReturn == ErrorCode.None)
+
+
+            deviceProperties.Add(DevicePropertyType.Mfg.ToString(),
+                                  usbDevice.Info.Descriptor.ManufacturerStringIndex > 0 ? usbDevice.Info.ManufacturerString : string.Empty);
+
+            deviceProperties.Add(DevicePropertyType.DeviceDesc.ToString(),
+                                  usbDevice.Info.Descriptor.ProductStringIndex > 0 ? usbDevice.Info.ProductString : string.Empty);
+
+            deviceProperties.Add("SerialNumber",
+                                  usbDevice.Info.Descriptor.SerialStringIndex > 0 ? usbDevice.Info.SerialString : string.Empty);
+
+            string fakeHardwareIds = GetRegistryHardwareID((ushort)usbDevice.Info.Descriptor.VendorID,
+                                                           (ushort)usbDevice.Info.Descriptor.ProductID,
+                                                           (ushort)usbDevice.Info.Descriptor.BcdDevice);
+
+            deviceProperties.Add(DevicePropertyType.HardwareId.ToString(), new string[] { fakeHardwareIds });
+
+            string fakeSymbolicName = fakeHardwareIds + "{" + Guid.Empty + " }";
+
+            if (usbDevice.Info.Descriptor.SerialStringIndex > 0)
             {
-                propData = Encoding.Unicode.GetString(propDataBytes);
-                propData.TrimEnd(new char[] {'\0'});
+                fakeSymbolicName += "#" + deviceProperties["SerialNumber"] + "#";
             }
-            else
-            {
-                propData = null;
-            }
-
-            return eReturn;
-        }
-
-        internal ErrorCode GetCustomDeviceKeyValue(SafeFileHandle usbHandle, string key, out byte[] propData, int maxDataLength)
-        {
-            ErrorCode eReturn = ErrorCode.None;
-            int iReturnBytes;
-            propData = null;
-            byte[] bytesReq = LibUsbDeviceRegistryKeyRequest.RegGetRequest(key, maxDataLength);
-            GCHandle gcbytesReq = GCHandle.Alloc(bytesReq, GCHandleType.Pinned);
-
-            bool bSuccess = LibUsbDriverIO.UsbIOSync(usbHandle,
-                                                     LibUsbIoCtl.GET_CUSTOM_REG_PROPERTY,
-                                                     bytesReq,
-                                                     bytesReq.Length,
-                                                     gcbytesReq.AddrOfPinnedObject(),
-                                                     bytesReq.Length,
-                                                     out iReturnBytes);
-            gcbytesReq.Free();
-            if (bSuccess)
-            {
-                propData = new byte[iReturnBytes];
-                Array.Copy(bytesReq, propData, iReturnBytes);
-            }
-            else
-            {
-                eReturn = ErrorCode.GetDeviceKeyValueFailed;
-                // dont log this as an error; 
-                //UsbError.Error(eReturn,0, "Failed getting device registry Key:" + key, this);
-            }
-            return eReturn;
-        }
-
-        private void GetPropertiesSPDRP(SafeHandle usbHandle)
-        {
-            byte[] propBuffer = new byte[1024];
-            GCHandle gcPropBuffer = GCHandle.Alloc(propBuffer, GCHandleType.Pinned);
-
-            LibUsbRequest req = new LibUsbRequest();
-            Dictionary<string, int> allProps = Helper.GetEnumData(typeof (DevicePropertyType));
-            foreach (KeyValuePair<string, int> prop in allProps)
-            {
-                object oValue = String.Empty;
-
-                req.DeviceProperty.ID = prop.Value;
-                int iReturnBytes;
-                bool bSuccess = LibUsbDriverIO.UsbIOSync(usbHandle,
-                                                         LibUsbIoCtl.GET_REG_PROPERTY,
-                                                         req,
-                                                         LibUsbRequest.Size,
-                                                         gcPropBuffer.AddrOfPinnedObject(),
-                                                         propBuffer.Length,
-                                                         out iReturnBytes);
-                if (bSuccess)
-                {
-                    switch ((DevicePropertyType) prop.Value)
-                    {
-                        case DevicePropertyType.PhysicalDeviceObjectName:
-                        case DevicePropertyType.LocationInformation:
-                        case DevicePropertyType.Class:
-                        case DevicePropertyType.Mfg:
-                        case DevicePropertyType.DeviceDesc:
-                        case DevicePropertyType.Driver:
-                        case DevicePropertyType.EnumeratorName:
-                        case DevicePropertyType.FriendlyName:
-                        case DevicePropertyType.ClassGuid:
-                            oValue = GetAsString(propBuffer, iReturnBytes);
-                            break;
-                        case DevicePropertyType.HardwareId:
-                        case DevicePropertyType.CompatibleIds:
-                            oValue = GetAsStringArray(propBuffer, iReturnBytes);
-                            break;
-                        case DevicePropertyType.BusNumber:
-                        case DevicePropertyType.InstallState:
-                        case DevicePropertyType.LegacyBusType:
-                        case DevicePropertyType.RemovalPolicy:
-                        case DevicePropertyType.UiNumber:
-                        case DevicePropertyType.Address:
-                            oValue = GetAsStringInt32(propBuffer, iReturnBytes);
-                            break;
-                        case DevicePropertyType.BusTypeGuid:
-                            oValue = GetAsGuid(propBuffer, iReturnBytes);
-                            break;
-                    }
-                }
-                else
-                    oValue = String.Empty;
-
-                mDeviceProperties.Add(prop.Key, oValue);
-            }
-            gcPropBuffer.Free();
+            deviceProperties.Add(SYMBOLIC_NAME_KEY, fakeSymbolicName);
         }
     }
 }

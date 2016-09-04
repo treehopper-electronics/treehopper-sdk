@@ -26,9 +26,9 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Info;
 using LibUsbDotNet.Internal;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet
 {
@@ -483,13 +483,13 @@ namespace LibUsbDotNet
         /// </remarks>
         public static void Exit()
         {
-            lock (MonoUsbDevice.OLockDeviceList)
+            lock (LibUsbDevice.OLockDeviceList)
             {
-                if (MonoUsbDevice.mMonoUSBProfileList != null)
-                    MonoUsbDevice.mMonoUSBProfileList.Close();
-                MonoUsbDevice.mMonoUSBProfileList = null;
+                if (LibUsbDevice.mMonoUSBProfileList != null)
+                    LibUsbDevice.mMonoUSBProfileList.Close();
+                LibUsbDevice.mMonoUSBProfileList = null;
             }
-            MonoUsbApi.StopAndExit();
+            LibUsbApi.StopAndExit();
         }
     }
 }

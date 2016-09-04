@@ -22,7 +22,7 @@
 using System;
 using LibUsbDotNet.Internal;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet
 {
@@ -150,7 +150,7 @@ namespace LibUsbDotNet
             }
             else if (errorCode == ErrorCode.MonoApiError && ret != 0)
             {
-                win32Error = ((MonoUsbError) ret) + ":" + MonoUsbApi.StrError((MonoUsbError) ret);
+                win32Error = ((global::LibUsb.LibUsbError) ret) + ":" + LibUsbApi.StrError((global::LibUsb.LibUsbError) ret);
             }
             UsbError err = new UsbError(errorCode, ret, win32Error, description, sender);
             lock (mLastErrorString)

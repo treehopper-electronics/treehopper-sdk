@@ -22,7 +22,7 @@
 using System;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 #pragma warning disable 649
 
@@ -71,7 +71,7 @@ namespace LibUsbDotNet.Descriptors
         /// </summary>
         public readonly byte MaxPower;
 
-        internal UsbConfigDescriptor(MonoUsbConfigDescriptor descriptor)
+        internal UsbConfigDescriptor(LibUsbConfigDescriptor descriptor)
         {
             Attributes = descriptor.bmAttributes;
             ConfigID = descriptor.bConfigurationValue;

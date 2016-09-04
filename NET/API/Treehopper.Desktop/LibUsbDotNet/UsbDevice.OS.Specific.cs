@@ -23,12 +23,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using LibUsbDotNet.Internal.LibUsb;
-using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet
 {
@@ -43,7 +41,7 @@ namespace LibUsbDotNet
         /// Setting this field to <see langword="true"/> will force <see cref="LibUsbDotNet"/> to use the <a href="http://www.libusb.org/wiki/windows_backend">Libusb-1.0 Windows-backend driver.</a>  For platforms other than windows, this setting has no effect.
         /// </summary>
         /// <remarks>
-        /// If this is <see langword="true"/>, <see cref="AllDevices"/> will return only <see cref="MonoUsbDevice"/>s in the list.
+        /// If this is <see langword="true"/>, <see cref="AllDevices"/> will return only <see cref="LibUsbDevice"/>s in the list.
         /// </remarks>
         public static bool ForceLibUsbWinBack = false;
         
@@ -165,7 +163,7 @@ namespace LibUsbDotNet
                     {
                         try
                         {
-                            MonoUsbApi.StrError(MonoUsbError.Success);
+							LibUsbApi.StrError(global::LibUsb.LibUsbError.Success);
                             mHasLibUsbWinBackDriver = true;
                         }
                         catch(Exception)
@@ -199,41 +197,6 @@ namespace LibUsbDotNet
 			}
 		}
 
-        /// <summary>
-        /// Gets the kernel driver type in use by LibUsbDotNet. 
-        /// If <see cref="LibUsbKernelType.NativeLibUsb"/> is returned, LibUsbDotNet using using its
-        /// native kernel driver.  Basic usb device information is retreived from the windows registry
-        /// which reduces USB IO overhead. 
-        /// If <see cref="LibUsbKernelType.LegacyLibUsb"/> is returned, LibUsbDotNet is using the orginal kernel
-        /// available at the libusb-win32.sourceforge.net page and true windows registry support
-        /// is unavailable.
-        /// Under linux, <see cref="LibUsbKernelType.MonoLibUsb"/> is always returned.
-        /// </summary>
-        public static LibUsbKernelType KernelType
-        {
-            get
-            {
-                if (mLibUsbKernelType == LibUsbKernelType.Unknown)
-                {
-                    if (IsLinux)
-                    {
-                        mLibUsbKernelType = LibUsbKernelType.MonoLibUsb;
-                    }
-                    else
-                    {
-                        UsbKernelVersion libUsbVersion = KernelVersion;
-                        if (!libUsbVersion.IsEmpty)
-                        {
-                            mLibUsbKernelType = libUsbVersion.BcdLibUsbDotNetKernelMod != 0
-                                                    ? LibUsbKernelType.NativeLibUsb
-                                                    : LibUsbKernelType.LegacyLibUsb;
-                        }
-                    }
-                }
-
-                return mLibUsbKernelType;
-            }
-        }
 
         /// <summary>
         /// Gets the kernel driver version in use by LibUsbDotNet.
@@ -247,37 +210,7 @@ namespace LibUsbDotNet
             {
                 if (mUsbKernelVersion.IsEmpty)
                 {
-                    if (IsLinux)
-                    {
                         mUsbKernelVersion = new UsbKernelVersion(1, 0, 0, 0, 0);
-                    }
-                    else
-                    {
-                        for (int i = 1; i < UsbConstants.MAX_DEVICES; i++)
-                        {
-                            LibUsbDevice newLibUsbDevice;
-                            string deviceFileName = LibUsbDriverIO.GetDeviceNameString(i);
-                            if (!LibUsbDevice.Open(deviceFileName, out newLibUsbDevice)) continue;
-                            LibUsbRequest request = new LibUsbRequest();
-                            GCHandle gcReq = GCHandle.Alloc(request, GCHandleType.Pinned);
-
-                            int transferred;
-                            bool bSuccess = newLibUsbDevice.UsbIoSync(LibUsbIoCtl.GET_VERSION,
-                                                                      request,
-                                                                      LibUsbRequest.Size,
-                                                                      gcReq.AddrOfPinnedObject(),
-                                                                      LibUsbRequest.Size,
-                                                                      out transferred);
-
-                            gcReq.Free();
-                            newLibUsbDevice.Close();
-                            if (bSuccess && transferred == LibUsbRequest.Size)
-                            {
-                                mUsbKernelVersion = request.Version;
-                                break;
-                            }
-                        }
-                    }
                 }
 
                 return mUsbKernelVersion;

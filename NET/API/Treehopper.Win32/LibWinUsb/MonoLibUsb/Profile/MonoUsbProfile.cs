@@ -22,9 +22,9 @@
 
 using LibUsbDotNet;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
-namespace MonoLibUsb.Profile
+namespace LibUsb.Profile
 {
     /// <summary>
     /// Representing a USB device that can be opened and used by Libusb-1.0.

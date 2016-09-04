@@ -22,7 +22,7 @@
 using System;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 #pragma warning disable 649
 
@@ -92,7 +92,7 @@ namespace LibUsbDotNet.Descriptors
 
         internal UsbEndpointDescriptor() { }
 
-        internal UsbEndpointDescriptor(MonoUsbEndpointDescriptor descriptor)
+        internal UsbEndpointDescriptor(LibUsbEndpointDescriptor descriptor)
         {
             Attributes = descriptor.bmAttributes;
             DescriptorType = descriptor.bDescriptorType;

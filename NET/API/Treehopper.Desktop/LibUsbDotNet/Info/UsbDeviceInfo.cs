@@ -24,7 +24,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 namespace LibUsbDotNet.Info
 {
@@ -46,7 +46,7 @@ namespace LibUsbDotNet.Info
             GetDeviceDescriptor(mUsbDevice, out mDeviceDescriptor);
         }
 
-        internal UsbDeviceInfo(UsbDevice usbDevice, MonoUsbDeviceDescriptor usbDeviceDescriptor)
+        internal UsbDeviceInfo(UsbDevice usbDevice, LibUsbDeviceDescriptor usbDeviceDescriptor)
         {
             mUsbDevice = usbDevice;
 

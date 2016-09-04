@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
-using MonoLibUsb.Transfer.Internal;
+using LibUsb.Transfer.Internal;
 
-namespace MonoLibUsb.Transfer
+namespace LibUsb.Transfer
 {
     /// <summary>
     /// Wraps an iso packet structure

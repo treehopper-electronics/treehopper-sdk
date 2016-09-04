@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb.Transfer
+namespace LibUsb.Transfer
 {
     /// <summary>
     /// Allocates memory and fills an asynchronous control setup packet. 

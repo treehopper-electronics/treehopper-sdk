@@ -21,10 +21,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using LibUsbDotNet.Internal.LibUsb;
-using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb.Internal;
 using Debug=System.Diagnostics.Debug;
 
@@ -32,12 +30,10 @@ namespace LibUsbDotNet
 {
     public abstract partial class UsbDevice
     {
-        private static LibUsbAPI _libUsbApi;
         private static WinUsbAPI _winUsbApi;
         private static object mHasWinUsbDriver;
         private static object mHasLibUsbWinBackDriver;
 
-        private static LibUsbKernelType mLibUsbKernelType;
         private static UsbKernelVersion mUsbKernelVersion;
 
         /// <summary>
@@ -47,7 +43,7 @@ namespace LibUsbDotNet
         /// Use this property to get a list of USB device that can be accessed by LibUsbDotNet.
         /// Using this property as opposed to <see cref="AllLibUsbDevices"/> and <see cref="AllWinUsbDevices"/>
         /// will ensure your source code is platform-independent.
-        /// </remarks>
+        /// </remarks>Ø
         public static UsbRegDeviceList AllDevices
         {
             get
@@ -83,29 +79,13 @@ namespace LibUsbDotNet
             get
             {
                 UsbRegDeviceList regDevList = new UsbRegDeviceList();
-                if (HasLibUsbWinBackDriver && ForceLibUsbWinBack)
-                {
-                    List<MonoUsbDevice> deviceList = MonoUsbDevice.MonoUsbDeviceList;
-                    foreach (MonoUsbDevice usbDevice in deviceList)
-                    {
-                        regDevList.Add(new LegacyUsbRegistry(usbDevice));
-                    }
-                }
-                else
-                {
-                    if (!ForceLegacyLibUsb && KernelType == LibUsbKernelType.NativeLibUsb)
-                    {
-                        List<LibUsbRegistry> libUsbRegistry = LibUsbRegistry.DeviceList;
-                        foreach (LibUsbRegistry usbRegistry in libUsbRegistry)
-                            regDevList.Add(usbRegistry);
-                    }
-                    else 
-                    {
-                        List<LegacyUsbRegistry> libUsbRegistry = LegacyUsbRegistry.DeviceList;
-                        foreach (LegacyUsbRegistry usbRegistry in libUsbRegistry)
-                            regDevList.Add(usbRegistry);
-                    }
-                }
+
+				List<LibUsbDevice> legacyLibUsbDeviceList = LibUsbDevice.MonoUsbDeviceList;
+				foreach (LibUsbDevice usbDevice in legacyLibUsbDeviceList)
+				{
+					regDevList.Add(new LibUsbRegistry(usbDevice));
+				}
+
                 return regDevList;
             }
         }
@@ -126,15 +106,6 @@ namespace LibUsbDotNet
             get { return UsbError.mLastErrorString; }
         }
 
-        internal static LibUsbAPI LibUsbApi
-        {
-            get
-            {
-                if (ReferenceEquals(_libUsbApi, null))
-                    _libUsbApi = new LibUsbAPI();
-                return _libUsbApi;
-            }
-        }
 
         internal static WinUsbAPI WinUsbApi
         {

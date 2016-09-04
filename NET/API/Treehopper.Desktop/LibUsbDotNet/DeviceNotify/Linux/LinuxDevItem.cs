@@ -21,7 +21,7 @@
 // 
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 namespace LibUsbDotNet.DeviceNotify.Linux
 {
@@ -46,7 +46,7 @@ namespace LibUsbDotNet.DeviceNotify.Linux
             gcFileDescriptor.Free();
         }
 
-        public LinuxDevItem(string deviceFileName, byte busNumber, byte deviceAddress, MonoUsbDeviceDescriptor monoUsbDeviceDescriptor)
+        public LinuxDevItem(string deviceFileName, byte busNumber, byte deviceAddress, LibUsbDeviceDescriptor monoUsbDeviceDescriptor)
         {
             DeviceFileName = deviceFileName;
             BusNumber = busNumber;

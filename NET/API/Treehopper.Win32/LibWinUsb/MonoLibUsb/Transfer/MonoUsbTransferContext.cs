@@ -23,10 +23,10 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
-using MonoLibUsb.Transfer;
+using LibUsb;
+using LibUsb.Transfer;
 
-namespace LibUsbDotNet.LudnMonoLibUsb.Internal
+namespace LibUsbDotNet.LibUsb.Internal
 {
     internal class MonoUsbTransferContext : UsbTransfer, IDisposable
     {

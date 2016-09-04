@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb.Profile
+namespace LibUsb.Profile
 {
     /// <summary>
     /// Manages the device list.  This class is thread safe.

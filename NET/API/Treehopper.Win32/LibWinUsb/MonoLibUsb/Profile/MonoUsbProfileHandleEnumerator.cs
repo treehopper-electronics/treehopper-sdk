@@ -24,7 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace MonoLibUsb.Profile
+namespace LibUsb.Profile
 {
     /// <summary>
     /// A forward-only enumerator for iterating a device lists.
