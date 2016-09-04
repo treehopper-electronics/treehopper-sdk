@@ -21,7 +21,6 @@
 // 
 using System;
 using System.Text;
-using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.Main;
 
 namespace LibUsbDotNet.LibUsb
@@ -30,77 +29,17 @@ namespace LibUsbDotNet.LibUsb
     {
         public static byte[] RegGetRequest(string name, int valueBufferSize)
         {
-            if (valueBufferSize < 1 || name.Trim().Length == 0) throw new UsbException("Global", "Invalid DeviceRegistry het parameter.");
-
-            LibUsbRequest req = new LibUsbRequest();
-            int uOffset = LibUsbRequest.Size;
-            req.DeviceRegKey.KeyType = (int) KeyType.RegBinary;
-
-            byte[] bytesName = Encoding.Unicode.GetBytes(name + "\0");
-
-            req.DeviceRegKey.NameOffset = uOffset;
-            uOffset += bytesName.Length;
-            req.DeviceRegKey.ValueOffset = uOffset;
-            req.DeviceRegKey.ValueLength = (valueBufferSize);
-
-            uOffset += Math.Max(uOffset + 1, valueBufferSize - (LibUsbRequest.Size + bytesName.Length));
-            byte[] buffer = new byte[uOffset];
-            byte[] regBytes = req.Bytes;
-
-            Array.Copy(regBytes, buffer, regBytes.Length);
-            Array.Copy(bytesName, 0, buffer, req.DeviceRegKey.NameOffset, bytesName.Length);
-
-            return buffer;
+			throw new NotImplementedException();
         }
 
         public static byte[] RegSetBinaryRequest(string name, byte[] value)
         {
-            LibUsbRequest req = new LibUsbRequest();
-            int uOffset = LibUsbRequest.Size;
-            req.DeviceRegKey.KeyType = (int) KeyType.RegBinary;
-
-            byte[] bytesName = Encoding.Unicode.GetBytes(name + "\0");
-            byte[] bytesValue = value;
-
-            req.DeviceRegKey.NameOffset = uOffset;
-            uOffset += bytesName.Length;
-            req.DeviceRegKey.ValueOffset = uOffset;
-            req.DeviceRegKey.ValueLength = bytesValue.Length;
-
-            uOffset += bytesValue.Length;
-            byte[] buffer = new byte[uOffset];
-            byte[] regBytes = req.Bytes;
-
-            Array.Copy(regBytes, buffer, regBytes.Length);
-            Array.Copy(bytesName, 0, buffer, req.DeviceRegKey.NameOffset, bytesName.Length);
-            Array.Copy(bytesValue, 0, buffer, req.DeviceRegKey.ValueOffset, bytesValue.Length);
-
-            return buffer;
+			throw new NotImplementedException();
         }
 
         public static byte[] RegSetStringRequest(string name, string value)
         {
-            LibUsbRequest req = new LibUsbRequest();
-            int uOffset = LibUsbRequest.Size;
-            req.DeviceRegKey.KeyType = (int) KeyType.RegSz;
-
-            byte[] bytesName = Encoding.Unicode.GetBytes(name + "\0");
-            byte[] bytesValue = Encoding.Unicode.GetBytes(value + "\0");
-
-            req.DeviceRegKey.NameOffset = uOffset;
-            uOffset += bytesName.Length;
-            req.DeviceRegKey.ValueOffset = uOffset;
-            req.DeviceRegKey.ValueLength = bytesValue.Length;
-
-            uOffset += bytesValue.Length;
-            byte[] buffer = new byte[uOffset];
-            byte[] regBytes = req.Bytes;
-
-            Array.Copy(regBytes, buffer, regBytes.Length);
-            Array.Copy(bytesName, 0, buffer, req.DeviceRegKey.NameOffset, bytesName.Length);
-            Array.Copy(bytesValue, 0, buffer, req.DeviceRegKey.ValueOffset, bytesValue.Length);
-
-            return buffer;
+			throw new NotImplementedException();
         }
 
         #region Nested Types

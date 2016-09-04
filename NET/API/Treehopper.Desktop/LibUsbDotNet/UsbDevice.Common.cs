@@ -21,7 +21,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LudnMonoLibUsb;
@@ -32,7 +31,6 @@ namespace LibUsbDotNet
 {
     public abstract partial class UsbDevice
     {
-        private static LibUsbAPI _libUsbApi;
         private static WinUsbAPI _winUsbApi;
         private static object mHasWinUsbDriver;
         private static object mHasLibUsbWinBackDriver;
@@ -110,15 +108,6 @@ namespace LibUsbDotNet
             get { return UsbError.mLastErrorString; }
         }
 
-        internal static LibUsbAPI LibUsbApi
-        {
-            get
-            {
-                if (ReferenceEquals(_libUsbApi, null))
-                    _libUsbApi = new LibUsbAPI();
-                return _libUsbApi;
-            }
-        }
 
         internal static WinUsbAPI WinUsbApi
         {
