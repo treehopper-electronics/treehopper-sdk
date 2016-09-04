@@ -47,7 +47,7 @@ namespace LibUsbDotNet
         /// Use this property to get a list of USB device that can be accessed by LibUsbDotNet.
         /// Using this property as opposed to <see cref="AllLibUsbDevices"/> and <see cref="AllWinUsbDevices"/>
         /// will ensure your source code is platform-independent.
-        /// </remarks>
+        /// </remarks>Ø
         public static UsbRegDeviceList AllDevices
         {
             get
@@ -83,29 +83,13 @@ namespace LibUsbDotNet
             get
             {
                 UsbRegDeviceList regDevList = new UsbRegDeviceList();
-                if (HasLibUsbWinBackDriver && ForceLibUsbWinBack)
-                {
-                    List<MonoUsbDevice> deviceList = MonoUsbDevice.MonoUsbDeviceList;
-                    foreach (MonoUsbDevice usbDevice in deviceList)
-                    {
-                        regDevList.Add(new LegacyUsbRegistry(usbDevice));
-                    }
-                }
-                else
-                {
-                    if (!ForceLegacyLibUsb && KernelType == LibUsbKernelType.NativeLibUsb)
-                    {
-                        List<LibUsbRegistry> libUsbRegistry = LibUsbRegistry.DeviceList;
-                        foreach (LibUsbRegistry usbRegistry in libUsbRegistry)
-                            regDevList.Add(usbRegistry);
-                    }
-                    else 
-                    {
-                        List<LegacyUsbRegistry> libUsbRegistry = LegacyUsbRegistry.DeviceList;
-                        foreach (LegacyUsbRegistry usbRegistry in libUsbRegistry)
-                            regDevList.Add(usbRegistry);
-                    }
-                }
+
+				List<MonoUsbDevice> legacyLibUsbDeviceList = MonoUsbDevice.MonoUsbDeviceList;
+				foreach (MonoUsbDevice usbDevice in legacyLibUsbDeviceList)
+				{
+					regDevList.Add(new LegacyUsbRegistry(usbDevice));
+				}
+
                 return regDevList;
             }
         }
