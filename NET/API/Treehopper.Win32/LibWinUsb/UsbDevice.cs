@@ -26,9 +26,9 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Info;
 using LibUsbDotNet.Internal;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet
 {

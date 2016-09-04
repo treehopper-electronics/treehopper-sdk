@@ -27,11 +27,11 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Info;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
-using MonoLibUsb.Descriptors;
-using MonoLibUsb.Profile;
+using LibUsb;
+using LibUsb.Descriptors;
+using LibUsb.Profile;
 
-namespace LibUsbDotNet.LudnMonoLibUsb
+namespace LibUsbDotNet.LibUsb
 {
     /// <summary>This is the LibUsbDotNet Libusb-1.0 implementation of a <see cref="UsbDevice"/>.
     /// </summary> 

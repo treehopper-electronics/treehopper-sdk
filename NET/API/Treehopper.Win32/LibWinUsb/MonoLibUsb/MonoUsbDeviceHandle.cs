@@ -23,9 +23,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Profile;
+using LibUsb.Profile;
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Represents a Libusb-1.0 device handle.

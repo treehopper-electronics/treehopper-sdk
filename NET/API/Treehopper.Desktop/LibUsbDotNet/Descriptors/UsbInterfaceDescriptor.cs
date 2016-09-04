@@ -22,7 +22,7 @@
 using System;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Descriptors;
+using LibUsb.Descriptors;
 
 #pragma warning disable 649
 
@@ -110,7 +110,7 @@ namespace LibUsbDotNet.Descriptors
 
         internal UsbInterfaceDescriptor() { }
 
-        internal UsbInterfaceDescriptor(MonoUsbAltInterfaceDescriptor altInterfaceDescriptor)
+        internal UsbInterfaceDescriptor(LibUsbAltInterfaceDescriptor altInterfaceDescriptor)
         {
             AlternateID = altInterfaceDescriptor.bAlternateSetting;
             Class = altInterfaceDescriptor.bInterfaceClass;

@@ -23,7 +23,7 @@ using System;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
 
-namespace MonoLibUsb.Descriptors
+namespace LibUsb.Descriptors
 {
     /// <summary>
     /// A structure representing the standard USB endpoint descriptor. This

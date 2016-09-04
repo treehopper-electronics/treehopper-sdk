@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb.Descriptors
+namespace LibUsb.Descriptors
 {
     ///<summary>A structure representing the standard USB device descriptor. 
     ///This descriptor is documented in section 9.6.1 of the USB 2.0 specification. 

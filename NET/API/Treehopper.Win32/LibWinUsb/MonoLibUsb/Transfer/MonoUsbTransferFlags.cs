@@ -19,7 +19,7 @@
 // visit www.gnu.org.
 // 
 // 
-namespace MonoLibUsb.Transfer
+namespace LibUsb.Transfer
 {
     /// <summary>
     /// Transfer flags.

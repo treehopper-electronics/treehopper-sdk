@@ -25,12 +25,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Descriptors;
-using MonoLibUsb.Profile;
-using MonoLibUsb.Transfer;
+using LibUsb.Descriptors;
+using LibUsb.Profile;
+using LibUsb.Transfer;
 using System.Threading;
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Libusb-1.0 low-level API library.
@@ -1404,8 +1404,8 @@ namespace MonoLibUsb
         internal static void StopAndExit()
         {
 #if LIBUSBDOTNET
-            if (LibUsbDotNet.LudnMonoLibUsb.MonoUsbDevice.mMonoUSBProfileList != null) LibUsbDotNet.LudnMonoLibUsb.MonoUsbDevice.mMonoUSBProfileList.Close();
-            LibUsbDotNet.LudnMonoLibUsb.MonoUsbDevice.mMonoUSBProfileList = null;
+            if (LibUsbDotNet.LibUsb.MonoUsbDevice.mMonoUSBProfileList != null) LibUsbDotNet.LibUsb.MonoUsbDevice.mMonoUSBProfileList.Close();
+            LibUsbDotNet.LibUsb.MonoUsbDevice.mMonoUSBProfileList = null;
 #endif
             MonoUsbEventHandler.Stop(true);
             MonoUsbEventHandler.Exit();

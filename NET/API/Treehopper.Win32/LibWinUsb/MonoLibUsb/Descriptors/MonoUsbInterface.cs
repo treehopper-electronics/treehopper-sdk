@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace MonoLibUsb.Descriptors
+namespace LibUsb.Descriptors
 {
     ///<summary>A collection of alternate settings for a particular USB interface.</summary>
     [StructLayout(LayoutKind.Sequential, Pack = MonoUsbApi.LIBUSB_PACK)]

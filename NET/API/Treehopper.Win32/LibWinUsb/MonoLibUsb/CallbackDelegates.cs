@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
-using MonoLibUsb.Transfer;
+using LibUsb.Transfer;
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Asynchronous transfer callback delegate

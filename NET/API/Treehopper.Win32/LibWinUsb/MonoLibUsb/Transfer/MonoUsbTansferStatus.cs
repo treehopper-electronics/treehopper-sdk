@@ -20,7 +20,7 @@
 // 
 // 
 
-namespace MonoLibUsb.Transfer
+namespace LibUsb.Transfer
 {
     /// <summary>
     /// Transfer status codes. 

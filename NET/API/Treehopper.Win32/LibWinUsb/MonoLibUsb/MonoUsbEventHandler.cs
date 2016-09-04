@@ -23,7 +23,7 @@ using System;
 using System.Threading;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Manages a static Libusb-1.0 <see cref="MonoUsbSessionHandle"/> and "handle_events" thread for simplified asynchronous IO.

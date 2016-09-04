@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
-using MonoLibUsb.Transfer.Internal;
+using LibUsb.Transfer.Internal;
 
-namespace MonoLibUsb.Transfer
+namespace LibUsb.Transfer
 {
     /// <summary>
     /// Reads/writes a Libusb-1.0 control setup packet pointer.  Control setup packets should be allocated with <see cref="MonoUsbControlSetupHandle"/>.

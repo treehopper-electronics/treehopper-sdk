@@ -1,6 +1,6 @@
 using System;
 
-namespace MonoLibUsb.Profile
+namespace LibUsb.Profile
 {
     /// <summary>
     /// Describes a device arrival/removal notification event

@@ -24,8 +24,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LibUsbDotNet.Descriptors;
 using LibUsbDotNet.Main;
-using LibUsbDotNet.LudnMonoLibUsb;
-using MonoLibUsb.Descriptors;
+using LibUsbDotNet.LibUsb;
+using LibUsb.Descriptors;
 
 namespace LibUsbDotNet.Info
 {
@@ -77,17 +77,17 @@ namespace LibUsbDotNet.Info
             }
         }
 
-        internal UsbConfigInfo(MonoUsbDevice usbDevice, MonoUsbConfigDescriptor configDescriptor)
+        internal UsbConfigInfo(LibUsbDevice usbDevice, LibUsbConfigDescriptor configDescriptor)
         {
             mUsbDevice = usbDevice;
 
             mUsbConfigDescriptor = new UsbConfigDescriptor(configDescriptor);
 
-            List<MonoUsbInterface> monoUSBInterfaces = configDescriptor.InterfaceList;
-            foreach (MonoUsbInterface usbInterface in monoUSBInterfaces)
+            List<LibUsbInterface> monoUSBInterfaces = configDescriptor.InterfaceList;
+            foreach (LibUsbInterface usbInterface in monoUSBInterfaces)
             {
-                List<MonoUsbAltInterfaceDescriptor> monoUSBAltInterfaces = usbInterface.AltInterfaceList;
-                foreach (MonoUsbAltInterfaceDescriptor monoUSBAltInterface in monoUSBAltInterfaces)
+                List<LibUsbAltInterfaceDescriptor> monoUSBAltInterfaces = usbInterface.AltInterfaceList;
+                foreach (LibUsbAltInterfaceDescriptor monoUSBAltInterface in monoUSBAltInterfaces)
                 {
                     UsbInterfaceInfo usbInterfaceInfo = new UsbInterfaceInfo(mUsbDevice, monoUSBAltInterface);
                     mInterfaceList.Add(usbInterfaceInfo);

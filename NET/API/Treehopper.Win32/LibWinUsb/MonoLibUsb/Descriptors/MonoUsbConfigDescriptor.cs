@@ -25,9 +25,9 @@ using System.Runtime.InteropServices;
 
 
 using LibUsbDotNet.Descriptors;
-using MonoLibUsb.Profile;
+using LibUsb.Profile;
 
-namespace MonoLibUsb.Descriptors
+namespace LibUsb.Descriptors
 {
     ///<summary>A structure representing the standard USB configuration descriptor. 
     ///This descriptor is documented in section 9.6.3 of the USB 2.0 specification. 

@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb.Transfer.Internal
+namespace LibUsb.Transfer.Internal
 {
     /// <remarks>
     /// This class is never instantiated in .NET.  Instead it is used as a template by the <see cref="MonoUsbTransfer"/> class.

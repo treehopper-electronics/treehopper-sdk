@@ -20,7 +20,7 @@
 // 
 // 
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Error codes.
