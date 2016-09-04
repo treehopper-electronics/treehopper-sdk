@@ -21,12 +21,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using LibUsbDotNet.LibUsb;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.Main;
 using Microsoft.Win32.SafeHandles;
-using Debug=System.Diagnostics.Debug;
+using Debug = System.Diagnostics.Debug;
 
-namespace LibUsbDotNet.Main
+namespace LibUsbDotNet.LibUsb
 {
     /// <summary> 
     /// LibUsb specific members for device registry settings.  
@@ -34,11 +33,11 @@ namespace LibUsbDotNet.Main
     /// Instead, it wraps a <see cref="LibUsbDevice"/> and queries descriptors directly from the device 
     /// using usb IO control messages.
     /// </summary> 
-    public class LegacyUsbRegistry : UsbRegistry
+    public class MonoLibUsbRegistry : UsbRegistry
     {
 
         private readonly UsbDevice mUSBDevice;
-        internal LegacyUsbRegistry(UsbDevice usbDevice)
+        internal MonoLibUsbRegistry(UsbDevice usbDevice)
         {
             mUSBDevice = usbDevice;
             GetPropertiesSPDRP(mUSBDevice, mDeviceProperties);
@@ -99,8 +98,8 @@ namespace LibUsbDotNet.Main
             get
             {
                 if (String.IsNullOrEmpty(SymbolicName)) throw new UsbException(this, "A symbolic name is required for this property.");
-                List<LegacyUsbRegistry> deviceList = DeviceList;
-                foreach (LegacyUsbRegistry registry in deviceList)
+                List<MonoLibUsbRegistry> deviceList = DeviceList;
+                foreach (MonoLibUsbRegistry registry in deviceList)
                 {
                     if (String.IsNullOrEmpty(registry.SymbolicName)) continue;
 
@@ -115,16 +114,16 @@ namespace LibUsbDotNet.Main
         /// Gets a list of available LibUsb devices.
         /// </summary>
         ///
-        public static List<LegacyUsbRegistry> DeviceList
+        public static List<MonoLibUsbRegistry> DeviceList
         {
             get
             {
-                List<LegacyUsbRegistry> deviceList = new List<LegacyUsbRegistry>();
+                List<MonoLibUsbRegistry> deviceList = new List<MonoLibUsbRegistry>();
 
 	            List<MonoUsbDevice> legacyLibUsbDeviceList = MonoUsbDevice.MonoUsbDeviceList;
 	            foreach (MonoUsbDevice usbDevice in legacyLibUsbDeviceList)
 	            {
-	                deviceList.Add(new LegacyUsbRegistry(usbDevice));
+	                deviceList.Add(new MonoLibUsbRegistry(usbDevice));
 	            }
                 
                 return deviceList;

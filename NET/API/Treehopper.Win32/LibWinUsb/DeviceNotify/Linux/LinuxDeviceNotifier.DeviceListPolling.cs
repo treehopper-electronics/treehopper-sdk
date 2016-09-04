@@ -21,7 +21,7 @@
 // 
 using System;
 using System.Timers;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using MonoLibUsb.Profile;
 
 namespace LibUsbDotNet.DeviceNotify.Linux

@@ -107,15 +107,12 @@
     <Compile Include="LibUsbDotNet\Internal\UsbRegex\RegSymbolicName.cs" />
     <Compile Include="LibUsbDotNet\IUsbDevice.cs" />
     <Compile Include="LibUsbDotNet\IUsbInterface.cs" />
-    <Compile Include="LibUsbDotNet\LibUsb\LibUsbDevice.cs" />
-    <Compile Include="LibUsbDotNet\LibUsb\LibUsbDeviceRegistryKeyRequest.cs" />
     <Compile Include="LibUsbDotNet\Main\DataReceivedEnabledChangedEventArgs.cs" />
     <Compile Include="LibUsbDotNet\Main\DevicePropertyType.cs" />
     <Compile Include="LibUsbDotNet\Main\EndpointDataEventArgs.cs" />
     <Compile Include="LibUsbDotNet\Main\EndpointType.cs" />
     <Compile Include="LibUsbDotNet\Main\ErrorCode.cs" />
     <Compile Include="LibUsbDotNet\Main\Helper.cs" />
-    <Compile Include="LibUsbDotNet\Main\LegacyUsbRegistry.cs" />
     <Compile Include="LibUsbDotNet\Main\ReadEndpointID.cs" />
     <Compile Include="LibUsbDotNet\Main\SafeContextHandle.cs" />
     <Compile Include="LibUsbDotNet\Main\SPDRP.cs" />
@@ -194,6 +191,7 @@
     <Compile Include="Treehopper.cs" />
     <Compile Include="TreehopperManager.cs" />
     <Compile Include="UsbConnection.cs" />
+    <Compile Include="LibUsbDotNet\MonoLibUsb\MonoLibUsbRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />

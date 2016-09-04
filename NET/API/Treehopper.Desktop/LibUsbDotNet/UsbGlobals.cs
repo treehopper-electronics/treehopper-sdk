@@ -20,7 +20,6 @@
 // 
 // 
 using System;
-using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
 
 namespace LibUsbDotNet

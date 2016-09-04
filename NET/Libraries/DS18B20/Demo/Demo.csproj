@@ -60,7 +60,7 @@
       <Name>Treehopper</Name>
     </ProjectReference>
     <ProjectReference Include="..\library\Library.csproj">
-      <Project>{339fe595-2efe-4759-904c-7579397b4b10}</Project>
+      <Project>{75291C29-5A64-4618-9A64-CCE7653E7738}</Project>
       <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
