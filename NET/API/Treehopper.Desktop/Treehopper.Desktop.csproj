@@ -109,8 +109,6 @@
     <Compile Include="LibUsbDotNet\IUsbInterface.cs" />
     <Compile Include="LibUsbDotNet\LibUsb\LibUsbDevice.cs" />
     <Compile Include="LibUsbDotNet\LibUsb\LibUsbDeviceRegistryKeyRequest.cs" />
-    <Compile Include="LibUsbDotNet\LibUsb\LibUsbKernelType.cs" />
-    <Compile Include="LibUsbDotNet\LibUsb\LibUsbRegistry.cs" />
     <Compile Include="LibUsbDotNet\Main\DataReceivedEnabledChangedEventArgs.cs" />
     <Compile Include="LibUsbDotNet\Main\DevicePropertyType.cs" />
     <Compile Include="LibUsbDotNet\Main\EndpointDataEventArgs.cs" />

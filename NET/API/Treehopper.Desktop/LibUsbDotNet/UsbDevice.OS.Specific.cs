@@ -198,41 +198,6 @@ namespace LibUsbDotNet
 			}
 		}
 
-        /// <summary>
-        /// Gets the kernel driver type in use by LibUsbDotNet. 
-        /// If <see cref="LibUsbKernelType.NativeLibUsb"/> is returned, LibUsbDotNet using using its
-        /// native kernel driver.  Basic usb device information is retreived from the windows registry
-        /// which reduces USB IO overhead. 
-        /// If <see cref="LibUsbKernelType.LegacyLibUsb"/> is returned, LibUsbDotNet is using the orginal kernel
-        /// available at the libusb-win32.sourceforge.net page and true windows registry support
-        /// is unavailable.
-        /// Under linux, <see cref="LibUsbKernelType.MonoLibUsb"/> is always returned.
-        /// </summary>
-        public static LibUsbKernelType KernelType
-        {
-            get
-            {
-                if (mLibUsbKernelType == LibUsbKernelType.Unknown)
-                {
-                    if (IsLinux)
-                    {
-                        mLibUsbKernelType = LibUsbKernelType.MonoLibUsb;
-                    }
-                    else
-                    {
-                        UsbKernelVersion libUsbVersion = KernelVersion;
-                        if (!libUsbVersion.IsEmpty)
-                        {
-                            mLibUsbKernelType = libUsbVersion.BcdLibUsbDotNetKernelMod != 0
-                                                    ? LibUsbKernelType.NativeLibUsb
-                                                    : LibUsbKernelType.LegacyLibUsb;
-                        }
-                    }
-                }
-
-                return mLibUsbKernelType;
-            }
-        }
 
         /// <summary>
         /// Gets the kernel driver version in use by LibUsbDotNet.

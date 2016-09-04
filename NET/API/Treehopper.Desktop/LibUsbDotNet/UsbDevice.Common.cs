@@ -35,7 +35,6 @@ namespace LibUsbDotNet
         private static object mHasWinUsbDriver;
         private static object mHasLibUsbWinBackDriver;
 
-        private static LibUsbKernelType mLibUsbKernelType;
         private static UsbKernelVersion mUsbKernelVersion;
 
         /// <summary>
