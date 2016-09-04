@@ -39,7 +39,7 @@ namespace LibUsbDotNet.DeviceNotify
 			{
 				return new LinuxDeviceNotifier();
 			}
-			else if (UsbDevice.IsMac)
+			else if (!UsbDevice.IsLinux)
 			{
 				return new WindowsDeviceNotifier();
 			} 
