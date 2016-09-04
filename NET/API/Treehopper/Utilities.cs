@@ -30,5 +30,21 @@
         {
             return (input - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
         }
+
+        /// <summary>
+        /// Constrains a number to be within a range
+        /// </summary>
+        /// <param name="x">the number to constrain</param>
+        /// <param name="a">the lower end of the range</param>
+        /// <param name="b">the upper end of the range</param>
+        /// <returns>the constrained number</returns>
+        public static double Constrain(double x, double a, double b)
+        {
+            if (x < a)
+                return a;
+            if (x > b)
+                return b;
+            return x;
+        }
     }
 }
