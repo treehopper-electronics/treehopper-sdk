@@ -11,6 +11,7 @@ namespace ArduinoShim
 {
     public abstract class Sketch
     {
+        public TreehopperUsb Board { get; private set; }
         private bool throwExceptions;
         public SerialShim Serial;
         /// <summary>
