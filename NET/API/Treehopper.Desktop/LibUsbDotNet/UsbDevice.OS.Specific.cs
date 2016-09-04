@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LudnMonoLibUsb;
@@ -247,37 +246,7 @@ namespace LibUsbDotNet
             {
                 if (mUsbKernelVersion.IsEmpty)
                 {
-                    if (IsLinux)
-                    {
                         mUsbKernelVersion = new UsbKernelVersion(1, 0, 0, 0, 0);
-                    }
-                    else
-                    {
-                        for (int i = 1; i < UsbConstants.MAX_DEVICES; i++)
-                        {
-                            LibUsbDevice newLibUsbDevice;
-                            string deviceFileName = LibUsbDriverIO.GetDeviceNameString(i);
-                            if (!LibUsbDevice.Open(deviceFileName, out newLibUsbDevice)) continue;
-                            LibUsbRequest request = new LibUsbRequest();
-                            GCHandle gcReq = GCHandle.Alloc(request, GCHandleType.Pinned);
-
-                            int transferred;
-                            bool bSuccess = newLibUsbDevice.UsbIoSync(LibUsbIoCtl.GET_VERSION,
-                                                                      request,
-                                                                      LibUsbRequest.Size,
-                                                                      gcReq.AddrOfPinnedObject(),
-                                                                      LibUsbRequest.Size,
-                                                                      out transferred);
-
-                            gcReq.Free();
-                            newLibUsbDevice.Close();
-                            if (bSuccess && transferred == LibUsbRequest.Size)
-                            {
-                                mUsbKernelVersion = request.Version;
-                                break;
-                            }
-                        }
-                    }
                 }
 
                 return mUsbKernelVersion;

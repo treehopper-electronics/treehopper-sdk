@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Info;
 using LibUsbDotNet.Internal;
-using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.Main;
 using Microsoft.Win32.SafeHandles;
 
@@ -56,19 +55,7 @@ namespace LibUsbDotNet.LibUsb
         {
             get
             {
-                List<LibUsbDevice> deviceList = new List<LibUsbDevice>();
-                for (int i = 1; i < UsbConstants.MAX_DEVICES; i++)
-                {
-                    LibUsbDevice newLibUsbDevice;
-                    string deviceFileName = LibUsbDriverIO.GetDeviceNameString(i);
-                    if (!Open(deviceFileName, out newLibUsbDevice)) continue;
-
-                    newLibUsbDevice.mDeviceInfo = new UsbDeviceInfo(newLibUsbDevice);
-                    newLibUsbDevice.Close();
-                    deviceList.Add(newLibUsbDevice);
-                }
-
-                return deviceList;
+				throw new NotImplementedException();
             }
         }
 
@@ -92,15 +79,7 @@ namespace LibUsbDotNet.LibUsb
         ///</returns>
         public override bool Open()
         {
-            if (IsOpen) return true;
-
-            mUsbHandle = LibUsbDriverIO.OpenDevice(mDeviceFilename);
-            if (!IsOpen)
-            {
-                UsbError.Error(ErrorCode.Win32Error,Marshal.GetLastWin32Error(), "LibUsbDevice.Open Failed", this);
-                return false;
-            }
-            return true;
+			throw new NotImplementedException();
         }
 
         /// <summary>
@@ -110,18 +89,7 @@ namespace LibUsbDotNet.LibUsb
         /// <returns>True on success.</returns>
         public bool ClaimInterface(int interfaceID)
         {
-            if (mClaimedInterfaces.Contains(interfaceID)) return true;
-
-            LibUsbRequest req = new LibUsbRequest();
-            req.Iface.ID = interfaceID;
-            req.Timeout = UsbConstants.DEFAULT_TIMEOUT;
-
-            int ret;
-            bool bSuccess = UsbIoSync(LibUsbIoCtl.CLAIM_INTERFACE, req, LibUsbRequest.Size, IntPtr.Zero, 0, out ret);
-            if (bSuccess)
-                mClaimedInterfaces.Add(interfaceID);
-
-            return bSuccess;
+			throw new NotImplementedException();
         }
 
         /// <summary>
@@ -154,17 +122,7 @@ namespace LibUsbDotNet.LibUsb
         /// <returns>True on success.</returns>
         public bool ReleaseInterface(int interfaceID)
         {
-            LibUsbRequest req = new LibUsbRequest();
-            req.Iface.ID = interfaceID;
-            if (!mClaimedInterfaces.Remove(interfaceID)) return true;
-
-            req.Timeout = UsbConstants.DEFAULT_TIMEOUT;
-
-            int ret;
-            // NOTE: A claimed interface is ALWAYS removed from the internal list.
-            bool bSuccess = UsbIoSync(LibUsbIoCtl.RELEASE_INTERFACE, req, LibUsbRequest.Size, IntPtr.Zero, 0, out ret);
-
-            return bSuccess;
+			throw new NotImplementedException();
         }
 
 
@@ -217,18 +175,7 @@ namespace LibUsbDotNet.LibUsb
         /// <returns>True on success.</returns>
         public static bool Open(string deviceFilename, out LibUsbDevice usbDevice)
         {
-            usbDevice = null;
-            SafeFileHandle sfh = LibUsbDriverIO.OpenDevice(deviceFilename);
-            if (!sfh.IsClosed && !sfh.IsInvalid)
-            {
-                usbDevice = new LibUsbDevice(LibUsbApi, sfh, deviceFilename);
-                return true;
-            }
-            else
-            {
-//                UsbDevice.Error(ErrorCode.DeviceNotFound, "The device is no longer attached or failed to open.", typeof(LibUsbDevice));
-            }
-            return false;
+			throw new NotImplementedException();
         }
 
         /// <summary>
@@ -266,15 +213,7 @@ namespace LibUsbDotNet.LibUsb
         /// <returns>True on success.</returns>
         public bool SetAltInterface(int interfaceID, int alternateID)
         {
-            if (!mClaimedInterfaces.Contains(interfaceID))
-                throw new UsbException(this, String.Format("You must claim interface {0} before setting an alternate interface.", interfaceID));
-            LibUsbRequest req = new LibUsbRequest();
-            req.Iface.ID = interfaceID;
-            req.Iface.AlternateID = alternateID;
-            req.Timeout = UsbConstants.DEFAULT_TIMEOUT;
-
-            int ret;
-            return UsbIoSync(LibUsbIoCtl.SET_INTERFACE, req, LibUsbRequest.Size, IntPtr.Zero, 0, out ret);
+			throw new NotImplementedException();
         }
 
         /// <summary>
@@ -287,20 +226,7 @@ namespace LibUsbDotNet.LibUsb
         /// <returns>True on success.</returns>
         public bool ResetDevice()
         {
-            bool bSuccess;
-            if (!IsOpen) throw new UsbException(this, "Device is not opened.");
-            ActiveEndpoints.Clear();
-            
-            if ((bSuccess = LibUsbApi.ResetDevice(mUsbHandle))!=true)
-            {
-                UsbError.Error(ErrorCode.Win32Error, Marshal.GetLastWin32Error(), "ResetDevice Failed", this);
-            }
-            else
-            {
-                Close();
-            }
-
-            return bSuccess;
+			throw new NotImplementedException();
         }
 
         internal bool ControlTransferEx(UsbSetupPacket setupPacket,
@@ -309,12 +235,12 @@ namespace LibUsbDotNet.LibUsb
                                         out int lengthTransferred,
                                         int timeout)
         {
-            bool bSuccess = LibUsbDriverIO.ControlTransferEx(mUsbHandle, setupPacket, buffer, bufferLength, out lengthTransferred, timeout);
-
-
-            return bSuccess;
+			throw new NotImplementedException();
         }
 
-        internal bool UsbIoSync(int controlCode, Object inBuffer, int inSize, IntPtr outBuffer, int outSize, out int ret) { return LibUsbDriverIO.UsbIOSync(mUsbHandle, controlCode, inBuffer, inSize, outBuffer, outSize, out ret); }
+        internal bool UsbIoSync(int controlCode, Object inBuffer, int inSize, IntPtr outBuffer, int outSize, out int ret) 
+		{
+			throw new NotImplementedException();
+		}
     }
 }

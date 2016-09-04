@@ -21,7 +21,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.LudnMonoLibUsb;
 using Microsoft.Win32.SafeHandles;
