@@ -28,10 +28,10 @@
     <OutputPath>..\..\..\Output\NET\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;LIBUSBDOTNET</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>anycpu</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <Optimize>false</Optimize>
     <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.Desktop.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
@@ -192,6 +192,8 @@
     <Compile Include="TreehopperManager.cs" />
     <Compile Include="UsbConnection.cs" />
     <Compile Include="LibUsbDotNet\LibUsb\LibUsbRegistry.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\MacUsbDevice.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\MacUsbRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />
@@ -201,6 +203,9 @@
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LibUsbDotNet\MacUsb\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
