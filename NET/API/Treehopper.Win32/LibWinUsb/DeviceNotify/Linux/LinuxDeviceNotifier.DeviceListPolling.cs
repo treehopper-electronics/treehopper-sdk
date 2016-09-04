@@ -22,7 +22,7 @@
 using System;
 using System.Timers;
 using LibUsbDotNet.LibUsb;
-using MonoLibUsb.Profile;
+using LibUsb.Profile;
 
 namespace LibUsbDotNet.DeviceNotify.Linux
 {

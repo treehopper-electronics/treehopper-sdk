@@ -23,8 +23,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using LibUsbDotNet.Main;
-using MonoLibUsb;
-using MonoLibUsb.Transfer;
+using LibUsb;
+using LibUsb.Transfer;
 
 namespace LibUsbDotNet.LibUsb.Internal
 {

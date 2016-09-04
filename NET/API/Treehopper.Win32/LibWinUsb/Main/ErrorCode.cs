@@ -20,7 +20,7 @@
 // 
 // 
 
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet.Main
 {

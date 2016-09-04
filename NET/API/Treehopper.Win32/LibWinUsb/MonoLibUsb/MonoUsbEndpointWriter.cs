@@ -23,7 +23,7 @@ using System;
 using LibUsbDotNet.Internal;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb.Internal;
-using MonoLibUsb;
+using LibUsb;
 
 namespace LibUsbDotNet.LibUsb
 {

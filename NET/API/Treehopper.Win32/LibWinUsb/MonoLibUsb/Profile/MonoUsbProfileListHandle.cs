@@ -24,7 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb.Profile
+namespace LibUsb.Profile
 {
     /// <summary>
     /// Used to iterate through the <see cref="MonoUsbProfileHandle"/> collection contained in the <see cref="MonoUsbProfileListHandle"/>.

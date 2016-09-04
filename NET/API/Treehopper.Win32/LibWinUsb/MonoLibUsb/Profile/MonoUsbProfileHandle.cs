@@ -24,7 +24,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb.Profile
+namespace LibUsb.Profile
 {
     /// <summary>
     /// Wraps a profile handle into a <see cref="System.Runtime.ConstrainedExecution.CriticalFinalizerObject"/>. 

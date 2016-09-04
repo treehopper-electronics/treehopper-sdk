@@ -80,10 +80,10 @@ namespace LibUsbDotNet
             {
                 UsbRegDeviceList regDevList = new UsbRegDeviceList();
 
-				List<MonoUsbDevice> legacyLibUsbDeviceList = MonoUsbDevice.MonoUsbDeviceList;
-				foreach (MonoUsbDevice usbDevice in legacyLibUsbDeviceList)
+				List<LibUsbDevice> legacyLibUsbDeviceList = LibUsbDevice.MonoUsbDeviceList;
+				foreach (LibUsbDevice usbDevice in legacyLibUsbDeviceList)
 				{
-					regDevList.Add(new MonoLibUsbRegistry(usbDevice));
+					regDevList.Add(new LibUsbRegistry(usbDevice));
 				}
 
                 return regDevList;

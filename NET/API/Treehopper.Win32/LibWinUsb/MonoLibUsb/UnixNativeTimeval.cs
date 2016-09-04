@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using LibUsbDotNet.Main;
 
-namespace MonoLibUsb
+namespace LibUsb
 {
     /// <summary>
     /// Unix mono.net timeval structure.
