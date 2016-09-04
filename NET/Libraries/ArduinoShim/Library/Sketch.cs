@@ -11,7 +11,6 @@ namespace ArduinoShim
 {
     public abstract class Sketch
     {
-        private TreehopperUsb board;
         private bool throwExceptions;
         public SerialShim Serial;
         /// <summary>
@@ -21,7 +20,7 @@ namespace ArduinoShim
         /// <param name="throwExceptions">Whether unimplemented or miscalled functions should throw exceptions or fail silently</param>
         public Sketch(TreehopperUsb board, bool throwExceptions = true)
         {
-            this.board = board;
+            Board = board;
             this.throwExceptions = throwExceptions;
             board.Connect().Wait();
 
@@ -69,20 +68,20 @@ namespace ArduinoShim
             if (pin == ledPin)
                 return; // LED is always an output
 
-            if (!throwExceptions && (pin >= board.NumberOfPins || pin <= 0))  // fail silently
+            if (!throwExceptions && (pin >= Board.NumberOfPins || pin <= 0))  // fail silently
                 return;
 
             switch(mode)
             {
                 case INPUT:
-                    board.Pins[pin].Mode = PinMode.DigitalInput;
+                    Board.Pins[pin].Mode = PinMode.DigitalInput;
                     break;
                 case OUTPUT:
-                    board.Pins[pin].Mode = PinMode.PushPullOutput;
+                    Board.Pins[pin].Mode = PinMode.PushPullOutput;
                     break;
 
                 case INPUT_PULLUP:
-                    board.Pins[pin].Mode = PinMode.DigitalInput;
+                    Board.Pins[pin].Mode = PinMode.DigitalInput;
                     break;
             }
         }
@@ -96,15 +95,15 @@ namespace ArduinoShim
         {
             if (pin == ledPin)
             {
-                board.Led = value;
+                Board.Led = value;
                 return;
             }
 
-            if (!throwExceptions && (pin >= board.NumberOfPins || pin <= 0))  // fail silently
+            if (!throwExceptions && (pin >= Board.NumberOfPins || pin <= 0))  // fail silently
                 return;
 
-            if (board.Pins[pin].Mode == PinMode.PushPullOutput)
-                board.Pins[pin].DigitalValue = value;
+            if (Board.Pins[pin].Mode == PinMode.PushPullOutput)
+                Board.Pins[pin].DigitalValue = value;
         }
 
         /// <summary>
@@ -115,13 +114,13 @@ namespace ArduinoShim
         public bool digitalRead(int pin)
         {
             if (pin == ledPin)
-                return board.Led;
+                return Board.Led;
 
-            if (!throwExceptions && (pin >= board.NumberOfPins || pin <= 0))  // fail silently
+            if (!throwExceptions && (pin >= Board.NumberOfPins || pin <= 0))  // fail silently
                 return false;
 
-            if (board.Pins[pin].Mode == PinMode.DigitalInput)
-                return board.Pins[pin].DigitalValue;
+            if (Board.Pins[pin].Mode == PinMode.DigitalInput)
+                return Board.Pins[pin].DigitalValue;
 
             return false; // some other state
         }
@@ -133,11 +132,11 @@ namespace ArduinoShim
         /// <returns>int (0 to 2^analogReadResolution -- 1024 by default)</returns>
         public int analogRead(int pin)
         {
-            if (!throwExceptions && (pin >= board.NumberOfPins || pin <= 0))  // fail silently
+            if (!throwExceptions && (pin >= Board.NumberOfPins || pin <= 0))  // fail silently
                 return 0;
 
-            board.Pins[pin].Mode = PinMode.AnalogInput;
-            return (int)Math.Round(board.Pins[pin].AdcValue * (Math.Pow(2, adcResolution) / 4096.0 ));
+            Board.Pins[pin].Mode = PinMode.AnalogInput;
+            return (int)Math.Round(Board.Pins[pin].AdcValue * (Math.Pow(2, adcResolution) / 4096.0 ));
         }
 
         /// <summary>
@@ -147,25 +146,25 @@ namespace ArduinoShim
         /// <param name="value">the duty cycle between 0 (always off) and 2^analogWriteResolution (defaults to 255) (always on)</param>
         public void analogWrite(int pin, int value)
         {
-            if (!throwExceptions && (pin >= board.NumberOfPins || pin <= 0))  // fail silently
+            if (!throwExceptions && (pin >= Board.NumberOfPins || pin <= 0))  // fail silently
                 return;
 
             if (pin == 7)
             {
-                board.Pwm1.Enabled = true;
-                board.Pwm1.DutyCycle = value / Math.Pow(2, pwmResolution);
+                Board.Pwm1.Enabled = true;
+                Board.Pwm1.DutyCycle = value / Math.Pow(2, pwmResolution);
             } else if (pin == 8)
             {
-                board.Pwm2.Enabled = true;
-                board.Pwm2.DutyCycle = value / Math.Pow(2, pwmResolution);
+                Board.Pwm2.Enabled = true;
+                Board.Pwm2.DutyCycle = value / Math.Pow(2, pwmResolution);
             } else if (pin == 9)
             {
-                board.Pwm3.Enabled = true;
-                board.Pwm3.DutyCycle = value / Math.Pow(2, pwmResolution);
+                Board.Pwm3.Enabled = true;
+                Board.Pwm3.DutyCycle = value / Math.Pow(2, pwmResolution);
             } else
             {
-                board.Pins[pin].SoftPwm.Enabled = true;
-                board.Pins[pin].SoftPwm.DutyCycle = value / Math.Pow(2, pwmResolution);
+                Board.Pins[pin].SoftPwm.Enabled = true;
+                Board.Pins[pin].SoftPwm.DutyCycle = value / Math.Pow(2, pwmResolution);
             }
         }
 
