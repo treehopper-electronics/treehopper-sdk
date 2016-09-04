@@ -25,7 +25,7 @@ namespace LibUsb.Transfer
     /// <summary>
     /// Transfer status codes. 
     /// </summary>
-    public enum MonoUsbTansferStatus
+    public enum LibUsbTansferStatus
     {
         /// <summary>
         /// Transfer completed without error. Note that this does not indicate that the entire amount of requested data was transferred.

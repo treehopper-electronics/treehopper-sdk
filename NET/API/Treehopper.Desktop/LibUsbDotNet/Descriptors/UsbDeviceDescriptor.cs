@@ -101,7 +101,7 @@ namespace LibUsbDotNet.Descriptors
 
         internal UsbDeviceDescriptor() { }
 
-        internal UsbDeviceDescriptor(MonoUsbDeviceDescriptor usbDeviceDescriptor)
+        internal UsbDeviceDescriptor(LibUsbDeviceDescriptor usbDeviceDescriptor)
         {
             BcdDevice = usbDeviceDescriptor.BcdDevice;
             BcdUsb = usbDeviceDescriptor.BcdUsb;

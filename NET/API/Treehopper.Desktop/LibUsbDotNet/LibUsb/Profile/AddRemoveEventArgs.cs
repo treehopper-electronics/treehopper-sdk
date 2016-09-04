@@ -8,17 +8,17 @@ namespace LibUsb.Profile
     public class AddRemoveEventArgs : EventArgs
     {
         private readonly AddRemoveType mAddRemoveType;
-        private readonly MonoUsbProfile mMonoUSBProfile;
+        private readonly LibUsbProfile mMonoUSBProfile;
 
-        internal AddRemoveEventArgs(MonoUsbProfile monoUSBProfile, AddRemoveType addRemoveType)
+        internal AddRemoveEventArgs(LibUsbProfile monoUSBProfile, AddRemoveType addRemoveType)
         {
             mMonoUSBProfile = monoUSBProfile;
             mAddRemoveType = addRemoveType;
         }
         /// <summary>
-        /// The <see cref ="MonoUsbProfile"/> that was added or removed.
+        /// The <see cref ="LibUsbProfile"/> that was added or removed.
         /// </summary>
-        public MonoUsbProfile MonoUSBProfile
+        public LibUsbProfile MonoUSBProfile
         {
             get { return mMonoUSBProfile; }
         }

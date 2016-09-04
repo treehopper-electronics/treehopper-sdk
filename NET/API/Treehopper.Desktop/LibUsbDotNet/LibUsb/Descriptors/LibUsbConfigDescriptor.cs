@@ -34,17 +34,17 @@ namespace LibUsb.Descriptors
     ///All multiple-byte fields are represented in host-endian format.</summary>
     /// <example><code source="..\MonoLibUsb\MonoUsb.ShowConfig\ShowConfig.cs" lang="cs"/></example>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
-    public class MonoUsbConfigDescriptor
+    public class LibUsbConfigDescriptor
     {
-        internal MonoUsbConfigDescriptor()
+        internal LibUsbConfigDescriptor()
         {
         }
 
         /// <summary>
-        /// Create a new <see cref="MonoUsbConfigDescriptor"/> instance from a <see cref="MonoUsbConfigHandle"/>.
+        /// Create a new <see cref="LibUsbConfigDescriptor"/> instance from a <see cref="LibUsbConfigHandle"/>.
         /// </summary>
         /// <param name="configHandle">A config handle.</param>
-        public MonoUsbConfigDescriptor(MonoUsbConfigHandle configHandle)
+        public LibUsbConfigDescriptor(LibUsbConfigHandle configHandle)
         {
             Marshal.PtrToStructure(configHandle.DangerousGetHandle(), this);
         }
@@ -94,16 +94,16 @@ namespace LibUsb.Descriptors
         }
 
         ///<summary> Array of interfaces supported by this configuration. The length of this array is determined by the bNumInterfaces field.</summary>
-        public List<MonoUsbInterface> InterfaceList
+        public List<LibUsbInterface> InterfaceList
         {
             get
             {
-                List<MonoUsbInterface> interfaceList = new List<MonoUsbInterface>();
+                List<LibUsbInterface> interfaceList = new List<LibUsbInterface>();
                 int iInterface;
                 for (iInterface = 0; iInterface < bNumInterfaces; iInterface++)
                 {
-                    IntPtr pNextInterface = new IntPtr(pInterfaces.ToInt64() + (Marshal.SizeOf(typeof (MonoUsbInterface))*iInterface));
-                    MonoUsbInterface monoUsbInterface = new MonoUsbInterface();
+                    IntPtr pNextInterface = new IntPtr(pInterfaces.ToInt64() + (Marshal.SizeOf(typeof (LibUsbInterface))*iInterface));
+                    LibUsbInterface monoUsbInterface = new LibUsbInterface();
                     Marshal.PtrToStructure(pNextInterface, monoUsbInterface);
                     interfaceList.Add(monoUsbInterface);
                 }

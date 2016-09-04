@@ -46,7 +46,7 @@ namespace LibUsbDotNet.Info
             GetDeviceDescriptor(mUsbDevice, out mDeviceDescriptor);
         }
 
-        internal UsbDeviceInfo(UsbDevice usbDevice, MonoUsbDeviceDescriptor usbDeviceDescriptor)
+        internal UsbDeviceInfo(UsbDevice usbDevice, LibUsbDeviceDescriptor usbDeviceDescriptor)
         {
             mUsbDevice = usbDevice;
 

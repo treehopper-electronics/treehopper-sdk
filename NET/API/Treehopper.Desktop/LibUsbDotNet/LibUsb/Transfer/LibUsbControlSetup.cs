@@ -6,15 +6,15 @@ using LibUsb.Transfer.Internal;
 namespace LibUsb.Transfer
 {
     /// <summary>
-    /// Reads/writes a Libusb-1.0 control setup packet pointer.  Control setup packets should be allocated with <see cref="MonoUsbControlSetupHandle"/>.
+    /// Reads/writes a Libusb-1.0 control setup packet pointer.  Control setup packets should be allocated with <see cref="LibUsbControlSetupHandle"/>.
     /// </summary>
     /// <remarks>
     /// <para>This class that reads and writes values directly from/to the setup packet <see cref="IntPtr"/> using <see cref="Marshal"/>.</para>
     /// <note type="tip">This type is used for asynchronous control transfers only.</note>
     /// </remarks>
-    /// <seealso cref="MonoUsbControlSetupHandle"/>
+    /// <seealso cref="LibUsbControlSetupHandle"/>
     [StructLayout(LayoutKind.Sequential)]
-    public class MonoUsbControlSetup
+    public class LibUsbControlSetup
     {
         /// <summary>
         /// Size of a Libusb-1.0 setup packet.
@@ -32,13 +32,13 @@ namespace LibUsb.Transfer
         private IntPtr handle;
 
         /// <summary>
-        /// Creates a <see cref="MonoUsbControlSetup"/> structure for a control setup packet pointer.
+        /// Creates a <see cref="LibUsbControlSetup"/> structure for a control setup packet pointer.
         /// </summary>
         /// <remarks>
-        /// The <paramref name="pControlSetup"/> pointer must be a pointer in memory to a valid Libusb-1.0 <a href="http://libusb.sourceforge.net/api-1.0/structlibusb__control__setup.html">libusb__control__setup</a> that was allocated with <see cref="MonoUsbControlSetupHandle"/>.
+        /// The <paramref name="pControlSetup"/> pointer must be a pointer in memory to a valid Libusb-1.0 <a href="http://libusb.sourceforge.net/api-1.0/structlibusb__control__setup.html">libusb__control__setup</a> that was allocated with <see cref="LibUsbControlSetupHandle"/>.
         /// </remarks>
-        /// <param name="pControlSetup">Pointer to the setup packet.  This will usually be <see cref="MonoUsbTransfer.PtrBuffer">MonoUsbTransfer.PtrBuffer</see></param>
-        public MonoUsbControlSetup(IntPtr pControlSetup)
+        /// <param name="pControlSetup">Pointer to the setup packet.  This will usually be <see cref="LibUsbTransfer.PtrBuffer">MonoUsbTransfer.PtrBuffer</see></param>
+        public LibUsbControlSetup(IntPtr pControlSetup)
         {
             handle = pControlSetup;
         }
@@ -132,7 +132,7 @@ namespace LibUsb.Transfer
         /// <summary>
         /// Gets control data as bytes.
         /// </summary>
-        /// <param name="transferLength">The number of bytes to copy out of <see cref="PtrData"/>. This will usually come from <see cref="MonoUsbTransfer.ActualLength">MonoUsbTransfer.ActualLength</see>.</param>
+        /// <param name="transferLength">The number of bytes to copy out of <see cref="PtrData"/>. This will usually come from <see cref="LibUsbTransfer.ActualLength">MonoUsbTransfer.ActualLength</see>.</param>
         /// <returns>A new byte array of control data.</returns>
         public Byte[] GetData(int transferLength)
         {

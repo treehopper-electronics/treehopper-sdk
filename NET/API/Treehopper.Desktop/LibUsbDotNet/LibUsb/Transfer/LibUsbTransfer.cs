@@ -35,12 +35,12 @@ namespace LibUsb.Transfer
     /// After the transfer has completed, the library populates the transfer with the results 
     /// and passes it back to the user.
     /// <note title="Libusb-1.0 API Note:" type="cpp">
-    /// The <see cref="MonoUsbTransfer"/> structure is roughly equivalent to
+    /// The <see cref="LibUsbTransfer"/> structure is roughly equivalent to
     /// the <a href="http://libusb.sourceforge.net/api-1.0/structlibusb__transfer.html">struct libusb_transfer</a>.
     /// </note>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MonoUsbTransfer 
+    public struct LibUsbTransfer 
     {
         private static readonly int OfsActualLength = Marshal.OffsetOf(typeof (libusb_transfer), "actual_length").ToInt32();
         private static readonly int OfsEndpoint = Marshal.OffsetOf(typeof (libusb_transfer), "endpoint").ToInt32();
@@ -63,11 +63,11 @@ namespace LibUsb.Transfer
         /// <remarks>
         /// <para>The transfer is pre-initialized for you. When the new transfer is no longer needed, it should be freed with <see cref="Free"/>.</para>
         /// <para>Transfers intended for non-isochronous endpoints (e.g. control, bulk, interrupt) should specify an iso_packets count of zero.</para>
-        /// <para>For transfers intended for isochronous endpoints, specify an appropriate number of packet descriptors to be allocated as part of the transfer. The returned transfer is not specially initialized for isochronous I/O; you are still required to set the <see cref="MonoUsbTransfer.NumIsoPackets"/> and <see cref="MonoUsbTransfer.Type"/> fields accordingly.</para>
-        /// <para>It is safe to allocate a transfer with some isochronous packets and then use it on a non-isochronous endpoint. If you do this, ensure that at time of submission, <see cref="MonoUsbTransfer.NumIsoPackets"/> is 0 and that type is set appropriately.</para>
+        /// <para>For transfers intended for isochronous endpoints, specify an appropriate number of packet descriptors to be allocated as part of the transfer. The returned transfer is not specially initialized for isochronous I/O; you are still required to set the <see cref="LibUsbTransfer.NumIsoPackets"/> and <see cref="LibUsbTransfer.Type"/> fields accordingly.</para>
+        /// <para>It is safe to allocate a transfer with some isochronous packets and then use it on a non-isochronous endpoint. If you do this, ensure that at time of submission, <see cref="LibUsbTransfer.NumIsoPackets"/> is 0 and that type is set appropriately.</para>
         /// </remarks>
         /// <param name="numIsoPackets">number of isochronous packet descriptors to allocate.</param>
-        public MonoUsbTransfer(int numIsoPackets)
+        public LibUsbTransfer(int numIsoPackets)
         {
             handle = LibUsbApi.AllocTransfer(numIsoPackets);
         }
@@ -76,7 +76,7 @@ namespace LibUsb.Transfer
         /// Creates a new wrapper for transfers allocated by <see cref="LibUsbApi.AllocTransfer"/>,
         /// </summary>
         /// <param name="pTransfer">The pointer to the transfer that was previously allocated with<see cref="LibUsbApi.AllocTransfer"/>. </param>
-        internal MonoUsbTransfer(IntPtr pTransfer)
+        internal LibUsbTransfer(IntPtr pTransfer)
         {
             handle = pTransfer;
         }
@@ -132,9 +132,9 @@ namespace LibUsb.Transfer
         /// <summary>
         /// The status of the transfer.
         /// </summary>
-        public MonoUsbTansferStatus Status
+        public LibUsbTansferStatus Status
         {
-            get { return (MonoUsbTansferStatus)Marshal.ReadInt32(handle, OfsStatus); }
+            get { return (LibUsbTansferStatus)Marshal.ReadInt32(handle, OfsStatus); }
             set { Marshal.WriteInt32(handle, OfsStatus, (int)value); }
         }
 
@@ -166,11 +166,11 @@ namespace LibUsb.Transfer
         }
 
         /// <summary>
-        /// A bitwise OR combination of <see cref="MonoUsbTransferFlags"/>.
+        /// A bitwise OR combination of <see cref="LibUsbTransferFlags"/>.
         /// </summary>
-        public MonoUsbTransferFlags Flags
+        public LibUsbTransferFlags Flags
         {
-            get { return (MonoUsbTransferFlags)Marshal.ReadByte(handle, OfsFlags); }
+            get { return (LibUsbTransferFlags)Marshal.ReadByte(handle, OfsFlags); }
             set { Marshal.WriteByte(handle, OfsFlags, (byte)value); }
         }
 
@@ -224,17 +224,17 @@ namespace LibUsb.Transfer
         }
 
         /// <summary>
-        /// Gets a <see cref="MonoUsbIsoPacket"/> that represents the specified iso packet descriptor. 
+        /// Gets a <see cref="LibUsbIsoPacket"/> that represents the specified iso packet descriptor. 
         /// </summary>
         /// <param name="packetNumber">The iso packet descriptor to return.</param>
-        /// <returns>The <see cref="MonoUsbIsoPacket"/> that represents <paramref name="packetNumber"/>.</returns>
-        public MonoUsbIsoPacket IsoPacket(int packetNumber)
+        /// <returns>The <see cref="LibUsbIsoPacket"/> that represents <paramref name="packetNumber"/>.</returns>
+        public LibUsbIsoPacket IsoPacket(int packetNumber)
         {
             if (packetNumber > NumIsoPackets) throw new ArgumentOutOfRangeException("packetNumber");
             IntPtr pIsoPacket =
                 new IntPtr(handle.ToInt64() + OfsIsoPackets + (packetNumber * Marshal.SizeOf(typeof(libusb_iso_packet_descriptor))));
 
-            return new MonoUsbIsoPacket(pIsoPacket);
+            return new LibUsbIsoPacket(pIsoPacket);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace LibUsb.Transfer
             return (LibUsbError) LibUsbApi.CancelTransfer(handle);
         }
         /// <summary>
-        /// Helper function to populate the required <see cref="MonoUsbTransfer"/> properties for a bulk transfer.
+        /// Helper function to populate the required <see cref="LibUsbTransfer"/> properties for a bulk transfer.
         /// </summary>
         /// <remarks>
         /// <note title="Libusb-1.0 API Note:" type="cpp">
@@ -295,7 +295,7 @@ namespace LibUsb.Transfer
             PtrUserData = userData;
             Timeout = timeout;
             Type = EndpointType.Bulk;
-            Flags = MonoUsbTransferFlags.None;
+            Flags = LibUsbTransferFlags.None;
             NumIsoPackets = 0;
             ActualLength = 0;
 
@@ -303,7 +303,7 @@ namespace LibUsb.Transfer
         }
 
         /// <summary>
-        /// Helper function to populate the required <see cref="MonoUsbTransfer"/> properties for an interrupt transfer.
+        /// Helper function to populate the required <see cref="LibUsbTransfer"/> properties for an interrupt transfer.
         /// </summary>
         /// <remarks>
         /// <note title="Libusb-1.0 API Note:" type="cpp">
@@ -334,11 +334,11 @@ namespace LibUsb.Transfer
             PtrUserData = userData;
             Timeout = timeout;
             Type = EndpointType.Interrupt;
-            Flags = MonoUsbTransferFlags.None;
+            Flags = LibUsbTransferFlags.None;
         }
 
         /// <summary>
-        /// Helper function to populate the required <see cref="MonoUsbTransfer"/> properties for an isochronous transfer.
+        /// Helper function to populate the required <see cref="LibUsbTransfer"/> properties for an isochronous transfer.
         /// </summary>
         /// <remarks>
         /// <note type="tip">
@@ -373,7 +373,7 @@ namespace LibUsb.Transfer
             PtrUserData = userData;
             Timeout = timeout;
             Type = EndpointType.Isochronous;
-            Flags = MonoUsbTransferFlags.None;
+            Flags = LibUsbTransferFlags.None;
             NumIsoPackets = numIsoPackets;
         }
         
@@ -466,25 +466,25 @@ namespace LibUsb.Transfer
         /// <remarks>
         /// <para>The returned transfer is pre-initialized for you. When the new transfer is no longer needed, it should be freed with <see cref="Free"/>.</para>
         /// <para>Transfers intended for non-isochronous endpoints (e.g. control, bulk, interrupt) should specify an iso_packets count of zero.</para>
-        /// <para>For transfers intended for isochronous endpoints, specify an appropriate number of packet descriptors to be allocated as part of the transfer. The returned transfer is not specially initialized for isochronous I/O; you are still required to set the <see cref="MonoUsbTransfer.NumIsoPackets"/> and <see cref="MonoUsbTransfer.Type"/> fields accordingly.</para>
-        /// <para>It is safe to allocate a transfer with some isochronous packets and then use it on a non-isochronous endpoint. If you do this, ensure that at time of submission, <see cref="MonoUsbTransfer.NumIsoPackets"/> is 0 and that type is set appropriately.</para>
+        /// <para>For transfers intended for isochronous endpoints, specify an appropriate number of packet descriptors to be allocated as part of the transfer. The returned transfer is not specially initialized for isochronous I/O; you are still required to set the <see cref="LibUsbTransfer.NumIsoPackets"/> and <see cref="LibUsbTransfer.Type"/> fields accordingly.</para>
+        /// <para>It is safe to allocate a transfer with some isochronous packets and then use it on a non-isochronous endpoint. If you do this, ensure that at time of submission, <see cref="LibUsbTransfer.NumIsoPackets"/> is 0 and that type is set appropriately.</para>
         /// <note title="Libusb-1.0 API Note:" type="cpp">
         /// <see cref="Alloc"/> is roughly equivalent to
         /// <a href="http://libusb.sourceforge.net/api-1.0/group__asyncio.html#ga13cc69ea40c702181c430c950121c000">libusb_alloc_transfer()</a>.
         /// </note>
         /// </remarks>
         /// <param name="numIsoPackets">number of isochronous packet descriptors to allocate.</param>
-        /// <returns>A newly allocated <see cref="MonoUsbTransfer"/>.</returns>
+        /// <returns>A newly allocated <see cref="LibUsbTransfer"/>.</returns>
         /// <exception cref="OutOfMemoryException">If the transfer was not allocated.</exception>
-        public static MonoUsbTransfer Alloc(int numIsoPackets)
+        public static LibUsbTransfer Alloc(int numIsoPackets)
         {
             IntPtr p = LibUsbApi.AllocTransfer(numIsoPackets);
             if (p == IntPtr.Zero) throw new OutOfMemoryException("AllocTransfer");
-            return new MonoUsbTransfer(p);
+            return new LibUsbTransfer(p);
         }
 
         /// <summary>
-        /// Helper function to populate the required <see cref="MonoUsbTransfer"/> properties for a control transfer.
+        /// Helper function to populate the required <see cref="LibUsbTransfer"/> properties for a control transfer.
         /// </summary>
         /// <remarks>
         /// <note type="tip">
@@ -500,7 +500,7 @@ namespace LibUsb.Transfer
         /// <param name="callback">callback function to be invoked on transfer completion</param>
         /// <param name="userData">user data to pass to callback function</param>
         /// <param name="timeout">timeout for the transfer in milliseconds</param>
-        public void FillControl(LibUsbDeviceHandle devHandle, MonoUsbControlSetupHandle controlSetupHandle, Delegate callback, IntPtr userData, int timeout) 
+        public void FillControl(LibUsbDeviceHandle devHandle, LibUsbControlSetupHandle controlSetupHandle, Delegate callback, IntPtr userData, int timeout) 
         {
             PtrDeviceHandle = devHandle.DangerousGetHandle();
             Endpoint = 0;
@@ -508,12 +508,12 @@ namespace LibUsb.Transfer
             PtrUserData = userData;
             Timeout = timeout;
             Type = EndpointType.Control;
-            Flags = MonoUsbTransferFlags.None;
+            Flags = LibUsbTransferFlags.None;
 
             IntPtr pSetupPacket = controlSetupHandle.DangerousGetHandle();
             PtrBuffer = pSetupPacket;
-            MonoUsbControlSetup w = new MonoUsbControlSetup(pSetupPacket);
-            Length = MonoUsbControlSetup.SETUP_PACKET_SIZE + w.Length;
+            LibUsbControlSetup w = new LibUsbControlSetup(pSetupPacket);
+            Length = LibUsbControlSetup.SETUP_PACKET_SIZE + w.Length;
         }
     }
 }

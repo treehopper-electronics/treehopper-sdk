@@ -42,19 +42,19 @@ namespace LibUsbDotNet.LibUsb
     public class LibUsbDevice : UsbDevice, IUsbDevice
     {
         internal static readonly object OLockDeviceList = new object();
-        internal static MonoUsbProfileList mMonoUSBProfileList;
-        private readonly MonoUsbProfile mMonoUSBProfile;
+        internal static LibUsbProfileList mMonoUSBProfileList;
+        private readonly LibUsbProfile mMonoUSBProfile;
 
         private int mClaimedInteface;
 
-        internal LibUsbDevice(ref MonoUsbProfile monoUSBProfile)
+        internal LibUsbDevice(ref LibUsbProfile monoUSBProfile)
             : base(null, null)
         {
             mMonoUSBProfile = monoUSBProfile;
             mCachedDeviceDescriptor = new UsbDeviceDescriptor(monoUSBProfile.DeviceDescriptor);
         }
 
-        internal static MonoUsbProfileList ProfileList
+        internal static LibUsbProfileList ProfileList
         {
             get
             {
@@ -63,7 +63,7 @@ namespace LibUsbDotNet.LibUsb
                     LibUsbApi.InitAndStart();
                     if (mMonoUSBProfileList == null)
                     {
-                        mMonoUSBProfileList = new MonoUsbProfileList();
+                        mMonoUSBProfileList = new LibUsbProfileList();
                     }
                     return mMonoUSBProfileList;
                 }
@@ -89,14 +89,14 @@ namespace LibUsbDotNet.LibUsb
                     LibUsbApi.InitAndStart();
                     if (mMonoUSBProfileList == null)
                     {
-                        mMonoUSBProfileList = new MonoUsbProfileList();
+                        mMonoUSBProfileList = new LibUsbProfileList();
                     }
                     int ret = (int) mMonoUSBProfileList.Refresh(LibUsbEventHandler.SessionHandle);
                     if (ret < 0) return null;
                     List<LibUsbDevice> rtnList = new List<LibUsbDevice>();
                     for (int iProfile = 0; iProfile < mMonoUSBProfileList.Count; iProfile++)
                     {
-                        MonoUsbProfile monoUSBProfile = mMonoUSBProfileList[iProfile];
+                        LibUsbProfile monoUSBProfile = mMonoUSBProfileList[iProfile];
                         if (monoUSBProfile.DeviceDescriptor.BcdUsb == 0) continue;
                         LibUsbDevice newDevice = new LibUsbDevice(ref monoUSBProfile);
                         rtnList.Add(newDevice);
@@ -270,9 +270,9 @@ namespace LibUsbDotNet.LibUsb
         }
 
         /// <summary>
-        /// Gets the <see cref="MonoUsbProfile"/> for this usb device.
+        /// Gets the <see cref="LibUsbProfile"/> for this usb device.
         /// </summary>
-        public MonoUsbProfile Profile
+        public LibUsbProfile Profile
         {
             get
             {
@@ -459,12 +459,12 @@ namespace LibUsbDotNet.LibUsb
         {
             configInfoListRtn = new List<UsbConfigInfo>();
             UsbError usbError = null;
-            List<MonoUsbConfigDescriptor> configList = new List<MonoUsbConfigDescriptor>();
+            List<LibUsbConfigDescriptor> configList = new List<LibUsbConfigDescriptor>();
             int iConfigs = usbDevice.Info.Descriptor.ConfigurationCount;
 
             for (int iConfig = 0; iConfig < iConfigs; iConfig++)
             {
-                MonoUsbConfigHandle nextConfigHandle;
+                LibUsbConfigHandle nextConfigHandle;
                 int ret = LibUsbApi.GetConfigDescriptor(usbDevice.mMonoUSBProfile.ProfileHandle, (byte) iConfig, out nextConfigHandle);
                 Debug.Print("GetConfigDescriptor:{0}", ret);
                 if (ret != 0 || nextConfigHandle.IsInvalid)
@@ -477,7 +477,7 @@ namespace LibUsbDotNet.LibUsb
                 }
                 try
                 {
-                    MonoUsbConfigDescriptor nextConfig = new MonoUsbConfigDescriptor();
+                    LibUsbConfigDescriptor nextConfig = new LibUsbConfigDescriptor();
                     Marshal.PtrToStructure(nextConfigHandle.DangerousGetHandle(), nextConfig);
 
                     UsbConfigInfo nextConfigInfo = new UsbConfigInfo(usbDevice, nextConfig);
@@ -504,7 +504,7 @@ namespace LibUsbDotNet.LibUsb
                 LibUsbApi.InitAndStart();
                 if (mMonoUSBProfileList == null)
                 {
-                    mMonoUSBProfileList = new MonoUsbProfileList();
+                    mMonoUSBProfileList = new LibUsbProfileList();
                 }
                 return (int) mMonoUSBProfileList.Refresh(LibUsbEventHandler.SessionHandle);
             }

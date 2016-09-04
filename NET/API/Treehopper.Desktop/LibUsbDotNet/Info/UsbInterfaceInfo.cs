@@ -44,13 +44,13 @@ namespace LibUsbDotNet.Info
             Helper.BytesToObject(descriptor, 0, Math.Min(UsbInterfaceDescriptor.Size, descriptor[0]), mUsbInterfaceDescriptor);
         }
 
-        internal UsbInterfaceInfo(UsbDevice usbDevice, MonoUsbAltInterfaceDescriptor monoUSBAltInterfaceDescriptor)
+        internal UsbInterfaceInfo(UsbDevice usbDevice, LibUsbAltInterfaceDescriptor monoUSBAltInterfaceDescriptor)
         {
             mUsbDevice = usbDevice;
 
             mUsbInterfaceDescriptor = new UsbInterfaceDescriptor(monoUSBAltInterfaceDescriptor);
-            List<MonoUsbEndpointDescriptor> monoUsbEndpoints = monoUSBAltInterfaceDescriptor.EndpointList;
-            foreach (MonoUsbEndpointDescriptor monoUSBEndpoint in monoUsbEndpoints)
+            List<LibUsbEndpointDescriptor> monoUsbEndpoints = monoUSBAltInterfaceDescriptor.EndpointList;
+            foreach (LibUsbEndpointDescriptor monoUSBEndpoint in monoUsbEndpoints)
             {
                 mEndpointInfo.Add(new UsbEndpointInfo(monoUSBEndpoint));
             }

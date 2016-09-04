@@ -44,7 +44,7 @@ namespace LibUsb
         #region Private Members
 
         private static readonly MonoUsbTransferDelegate DefaultAsyncDelegate = DefaultAsyncCB;
-        private static void DefaultAsyncCB(MonoUsbTransfer transfer)
+        private static void DefaultAsyncCB(LibUsbTransfer transfer)
         {
             ManualResetEvent completeEvent = GCHandle.FromIntPtr(transfer.PtrUserData).Target as ManualResetEvent;
             completeEvent.Set();
@@ -96,7 +96,7 @@ namespace LibUsb
         /// <param name="monoUSBProfileListHandle">	output location for a list of devices.</param>
         /// <returns>The number of devices in the outputted list, or <see cref="LibUsbError.ErrorNoMem"/> on memory allocation failure.</returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_device_list")]
-        public static extern int GetDeviceList([In]LibUsbSessionHandle sessionHandle, [Out] out MonoUsbProfileListHandle monoUSBProfileListHandle);
+        public static extern int GetDeviceList([In]LibUsbSessionHandle sessionHandle, [Out] out LibUsbProfileListHandle monoUSBProfileListHandle);
 
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_free_device_list")]
         internal static extern void FreeDeviceList(IntPtr pHandleList, int unrefDevices);
@@ -110,7 +110,7 @@ namespace LibUsb
         /// <returns>The bus number.</returns>
         /// <param name="deviceProfileHandle">A device profile handle.</param>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_bus_number")]
-        public static extern byte GetBusNumber([In] MonoUsbProfileHandle deviceProfileHandle);
+        public static extern byte GetBusNumber([In] LibUsbProfileHandle deviceProfileHandle);
 
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace LibUsb
         /// <returns>The device address.</returns>
         /// <param name="deviceProfileHandle">A device profile handle.</param>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_device_address")]
-        public static extern byte GetDeviceAddress([In] MonoUsbProfileHandle deviceProfileHandle);
+        public static extern byte GetDeviceAddress([In] LibUsbProfileHandle deviceProfileHandle);
 
         /// <summary>
         /// Convenience function to retrieve the wMaxPacketSize value for a particular endpoint in the active device configuration. 
@@ -131,11 +131,11 @@ namespace LibUsb
         /// <param name="endpoint">Endpoint address to retrieve the max packet size for.</param>
         /// <remarks>
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
-        /// <para>This function was originally intended to be of assistance when setting up isochronous transfers, but a design mistake resulted in this function instead. It simply returns the <see cref="MonoUsbEndpointDescriptor.wMaxPacketSize"/> value without considering its contents. If you're dealing with isochronous transfers, you probably want <see cref="GetMaxIsoPacketSize"/> instead.</para>
+        /// <para>This function was originally intended to be of assistance when setting up isochronous transfers, but a design mistake resulted in this function instead. It simply returns the <see cref="LibUsbEndpointDescriptor.wMaxPacketSize"/> value without considering its contents. If you're dealing with isochronous transfers, you probably want <see cref="GetMaxIsoPacketSize"/> instead.</para>
         /// </remarks>
-        /// <returns>The <see cref="MonoUsbEndpointDescriptor.wMaxPacketSize"/></returns>
+        /// <returns>The <see cref="LibUsbEndpointDescriptor.wMaxPacketSize"/></returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_max_packet_size")]
-        public static extern int GetMaxPacketSize([In] MonoUsbProfileHandle deviceProfileHandle, byte endpoint);
+        public static extern int GetMaxPacketSize([In] LibUsbProfileHandle deviceProfileHandle, byte endpoint);
 
         /// <summary>
         /// Calculate the maximum packet size which a specific endpoint is capable is sending or receiving in the duration of 1 microframe.
@@ -143,14 +143,14 @@ namespace LibUsb
         /// <remarks>
         /// <para>Only the active configuration is examined. The calculation is based on the wMaxPacketSize field in the endpoint descriptor as described in section 9.6.6 in the USB 2.0 specifications.</para>
         /// <para>If acting on an isochronous or interrupt endpoint, this function will multiply the value found in bits 0:10 by the number of transactions per microframe (determined by bits 11:12). Otherwise, this function just returns the numeric value found in bits 0:10.</para>
-        /// <para>This function is useful for setting up isochronous transfers, for example you might pass the return value from this function to <see  cref="MonoUsbTransfer.SetIsoPacketLengths">libusb_set_iso_packet_lengths</see> in order to set the length field of every isochronous packet in a transfer.</para>
+        /// <para>This function is useful for setting up isochronous transfers, for example you might pass the return value from this function to <see  cref="LibUsbTransfer.SetIsoPacketLengths">libusb_set_iso_packet_lengths</see> in order to set the length field of every isochronous packet in a transfer.</para>
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="deviceProfileHandle">A device profile handle.</param>
         /// <param name="endpoint">Endpoint address to retrieve the max packet size for.</param>
         /// <returns>The maximum packet size which can be sent/received on this endpoint.</returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_max_iso_packet_size")]
-        public static extern int GetMaxIsoPacketSize([In] MonoUsbProfileHandle deviceProfileHandle, byte endpoint);
+        public static extern int GetMaxIsoPacketSize([In] LibUsbProfileHandle deviceProfileHandle, byte endpoint);
 
 
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_ref_device")]
@@ -161,7 +161,7 @@ namespace LibUsb
         internal static extern IntPtr UnrefDevice(IntPtr pDeviceProfileHandle);
 
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_open")]
-        internal static extern int Open([In] MonoUsbProfileHandle deviceProfileHandle, ref IntPtr deviceHandle);
+        internal static extern int Open([In] LibUsbProfileHandle deviceProfileHandle, ref IntPtr deviceHandle);
 
 
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_open_device_with_vid_pid")]
@@ -190,23 +190,23 @@ namespace LibUsb
 
 
         /// <summary>
-        /// Get a <see cref="MonoUsbProfileHandle"/> for a <see cref="LibUsbDeviceHandle"/>. 
+        /// Get a <see cref="LibUsbProfileHandle"/> for a <see cref="LibUsbDeviceHandle"/>. 
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This function differs from the Libusb-1.0 C API in that when the new <see cref="MonoUsbProfileHandle"/> is returned, the device profile reference count 
+        /// This function differs from the Libusb-1.0 C API in that when the new <see cref="LibUsbProfileHandle"/> is returned, the device profile reference count 
         /// is incremented ensuring the profile will remain valid as long as it is in-use.
         /// </para>
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="devicehandle">A device handle.</param>
         /// <returns>The underlying profile handle.</returns>
-        public static MonoUsbProfileHandle GetDevice(LibUsbDeviceHandle devicehandle) { return new MonoUsbProfileHandle(GetDeviceInternal(devicehandle)); }
+        public static LibUsbProfileHandle GetDevice(LibUsbDeviceHandle devicehandle) { return new LibUsbProfileHandle(GetDeviceInternal(devicehandle)); }
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_device")]
         private static extern IntPtr GetDeviceInternal([In] LibUsbDeviceHandle devicehandle);
 
         /// <summary>
-        /// Determine the <see cref="MonoUsbConfigDescriptor.bConfigurationValue"/> of the currently active configuration. 
+        /// Determine the <see cref="LibUsbConfigDescriptor.bConfigurationValue"/> of the currently active configuration. 
         /// </summary>
         /// <remarks>
         /// <para>You could formulate your own control request to obtain this information, but this function has the advantage that it may be able to retrieve the information from operating system caches (no I/O involved).</para>
@@ -215,7 +215,7 @@ namespace LibUsb
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="deviceHandle">A device handle.</param>
-        /// <param name="configuration">Output location for the <see cref="MonoUsbConfigDescriptor.bConfigurationValue"/> of the active configuration. (only valid for return code 0)</param>
+        /// <param name="configuration">Output location for the <see cref="LibUsbConfigDescriptor.bConfigurationValue"/> of the active configuration. (only valid for return code 0)</param>
         /// <returns>
         /// <list type="bullet">
         /// <item>0 on success</item>
@@ -239,7 +239,7 @@ namespace LibUsb
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="deviceHandle">A device handle.</param>
-        /// <param name="configuration">The <see cref="MonoUsbConfigDescriptor.bConfigurationValue"/> of the configuration you wish to activate, or -1 if you wish to put the device in unconfigured state </param>
+        /// <param name="configuration">The <see cref="LibUsbConfigDescriptor.bConfigurationValue"/> of the configuration you wish to activate, or -1 if you wish to put the device in unconfigured state </param>
         /// <returns>
         /// <list type="bullet">
         /// <item>0 on success</item>
@@ -262,7 +262,7 @@ namespace LibUsb
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="deviceHandle">A device handle.</param>
-        /// <param name="interfaceNumber">the <see cref="MonoUsbAltInterfaceDescriptor.bInterfaceNumber"/> of the interface you wish to claim.</param>
+        /// <param name="interfaceNumber">the <see cref="LibUsbAltInterfaceDescriptor.bInterfaceNumber"/> of the interface you wish to claim.</param>
         /// <returns>
         /// <list type="bullet">
         /// <item>0 on success</item>
@@ -284,7 +284,7 @@ namespace LibUsb
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="deviceHandle">A device handle.</param>
-        /// <param name="interfaceNumber">the <see cref="MonoUsbAltInterfaceDescriptor.bInterfaceNumber"/> of the interface you wish to claim.</param>
+        /// <param name="interfaceNumber">the <see cref="LibUsbAltInterfaceDescriptor.bInterfaceNumber"/> of the interface you wish to claim.</param>
         /// <returns>
         /// <list type="bullet">
         /// <item>0 on success</item>
@@ -306,8 +306,8 @@ namespace LibUsb
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="dev"/></note>
         /// </remarks>
         /// <param name="deviceHandle">A device handle.</param>
-        /// <param name="interfaceNumber">The <see cref="MonoUsbAltInterfaceDescriptor.bInterfaceNumber"/> of the previously-claimed interface.</param>
-        /// <param name="alternateSetting">The <see cref="MonoUsbAltInterfaceDescriptor.bAlternateSetting"/> of the alternate setting to activate.</param>
+        /// <param name="interfaceNumber">The <see cref="LibUsbAltInterfaceDescriptor.bInterfaceNumber"/> of the previously-claimed interface.</param>
+        /// <param name="alternateSetting">The <see cref="LibUsbAltInterfaceDescriptor.bAlternateSetting"/> of the alternate setting to activate.</param>
         /// <returns>
         /// <list type="bullet">
         /// <item>0 on success</item>
@@ -434,11 +434,11 @@ namespace LibUsb
         /// <note type="tip" title="Libusb-1.0 API:"><seelibusb10 group="desc"/></note>
         /// </remarks>
         /// <param name="deviceProfileHandle">A device profile handle.</param>
-        /// <param name="deviceDescriptor">The <see cref="MonoUsbDeviceDescriptor"/> clas that will hold the data.</param>
+        /// <param name="deviceDescriptor">The <see cref="LibUsbDeviceDescriptor"/> clas that will hold the data.</param>
         /// <returns>0 on success or a <see cref="LibUsbError"/> code on failure.</returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_device_descriptor")]
-        public static extern int GetDeviceDescriptor([In] MonoUsbProfileHandle deviceProfileHandle,
-                                                              [Out] MonoUsbDeviceDescriptor deviceDescriptor);
+        public static extern int GetDeviceDescriptor([In] LibUsbProfileHandle deviceProfileHandle,
+                                                              [Out] LibUsbDeviceDescriptor deviceDescriptor);
 
         /// <summary>
         /// Get the USB configuration descriptor for the currently active configuration.
@@ -457,8 +457,8 @@ namespace LibUsb
         /// </list>
         /// </returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_active_config_descriptor")]
-        public static extern int GetActiveConfigDescriptor([In] MonoUsbProfileHandle deviceProfileHandle,
-                                                                       [Out] out MonoUsbConfigHandle configHandle);
+        public static extern int GetActiveConfigDescriptor([In] LibUsbProfileHandle deviceProfileHandle,
+                                                                       [Out] out LibUsbConfigHandle configHandle);
 
 
         /// <summary>
@@ -479,9 +479,9 @@ namespace LibUsb
         /// </list>
         /// </returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_config_descriptor")]
-        public static extern int GetConfigDescriptor([In] MonoUsbProfileHandle deviceProfileHandle,
+        public static extern int GetConfigDescriptor([In] LibUsbProfileHandle deviceProfileHandle,
                                                               byte configIndex,
-                                                              [Out] out MonoUsbConfigHandle configHandle);
+                                                              [Out] out LibUsbConfigHandle configHandle);
 
         /// <summary>
         /// Get a USB configuration descriptor with a specific bConfigurationValue.
@@ -501,9 +501,9 @@ namespace LibUsb
         /// </list>
         /// </returns>
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_get_config_descriptor_by_value")]
-        public static extern int GetConfigDescriptorByValue([In] MonoUsbProfileHandle deviceProfileHandle,
+        public static extern int GetConfigDescriptorByValue([In] LibUsbProfileHandle deviceProfileHandle,
                                                                        byte bConfigurationValue,
-                                                                       [Out] out MonoUsbConfigHandle configHandle);
+                                                                       [Out] out LibUsbConfigHandle configHandle);
 
         [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_free_config_descriptor")]
         internal static extern void FreeConfigDescriptor(IntPtr pConfigDescriptor);
@@ -899,8 +899,8 @@ namespace LibUsb
                                                  short dataLength,
                                                  int timeout)
         {
-            MonoUsbControlSetupHandle setupHandle = new MonoUsbControlSetupHandle(requestType, request, value, index, pData, dataLength);
-            MonoUsbTransfer transfer = new MonoUsbTransfer(0);
+            LibUsbControlSetupHandle setupHandle = new LibUsbControlSetupHandle(requestType, request, value, index, pData, dataLength);
+            LibUsbTransfer transfer = new LibUsbTransfer(0);
             ManualResetEvent completeEvent = new ManualResetEvent(false);
             GCHandle gcCompleteEvent = GCHandle.Alloc(completeEvent);
 
@@ -944,7 +944,7 @@ namespace LibUsb
                 completeEvent.WaitOne(Timeout.Infinite, UsbConstants.EXIT_CONTEXT);
             }
 
-            if (transfer.Status == MonoUsbTansferStatus.TransferCompleted)
+            if (transfer.Status == LibUsbTansferStatus.TransferCompleted)
             {
                 r = transfer.ActualLength;
                 if (r > 0)
@@ -1361,27 +1361,27 @@ namespace LibUsb
         #endregion
 
         /// <summary>
-        /// Converts a <see cref="MonoUsbTansferStatus"/> enum to a <see cref="LibUsbError"/> enum.
+        /// Converts a <see cref="LibUsbTansferStatus"/> enum to a <see cref="LibUsbError"/> enum.
         /// </summary>
-        /// <param name="status">the <see cref="MonoUsbTansferStatus"/> to convert.</param>
+        /// <param name="status">the <see cref="LibUsbTansferStatus"/> to convert.</param>
         /// <returns>A <see cref="LibUsbError"/> that represents <paramref name="status"/>.</returns>
-        public static LibUsbError MonoLibUsbErrorFromTransferStatus(MonoUsbTansferStatus status)
+        public static LibUsbError MonoLibUsbErrorFromTransferStatus(LibUsbTansferStatus status)
         {
             switch (status)
             {
-                case MonoUsbTansferStatus.TransferCompleted:
+                case LibUsbTansferStatus.TransferCompleted:
                     return LibUsbError.Success;
-                case MonoUsbTansferStatus.TransferError:
+                case LibUsbTansferStatus.TransferError:
                     return LibUsbError.ErrorPipe;
-                case MonoUsbTansferStatus.TransferTimedOut:
+                case LibUsbTansferStatus.TransferTimedOut:
                     return LibUsbError.ErrorTimeout;
-                case MonoUsbTansferStatus.TransferCancelled:
+                case LibUsbTansferStatus.TransferCancelled:
                     return LibUsbError.ErrorIOCancelled;
-                case MonoUsbTansferStatus.TransferStall:
+                case LibUsbTansferStatus.TransferStall:
                     return LibUsbError.ErrorPipe;
-                case MonoUsbTansferStatus.TransferNoDevice:
+                case LibUsbTansferStatus.TransferNoDevice:
                     return LibUsbError.ErrorNoDevice;
-                case MonoUsbTansferStatus.TransferOverflow:
+                case LibUsbTansferStatus.TransferOverflow:
                     return LibUsbError.ErrorOverflow;
                 default:
                     return LibUsbError.ErrorOther;

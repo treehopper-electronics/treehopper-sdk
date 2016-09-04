@@ -27,18 +27,18 @@ using LibUsbDotNet.Main;
 namespace LibUsb.Profile
 {
     /// <summary>
-    /// Used to iterate through the <see cref="MonoUsbProfileHandle"/> collection contained in the <see cref="MonoUsbProfileListHandle"/>.
+    /// Used to iterate through the <see cref="LibUsbProfileHandle"/> collection contained in the <see cref="LibUsbProfileListHandle"/>.
     /// </summary>
     /// <remarks>
     /// <para>Wraps a device list handle into a <see cref="System.Runtime.ConstrainedExecution.CriticalFinalizerObject"/></para>
     /// </remarks>
-    /// <seealso cref="MonoUsbProfileList"/>
-    public class MonoUsbProfileListHandle : SafeContextHandle, IEnumerable<MonoUsbProfileHandle>
+    /// <seealso cref="LibUsbProfileList"/>
+    public class LibUsbProfileListHandle : SafeContextHandle, IEnumerable<LibUsbProfileHandle>
     {
-        private MonoUsbProfileListHandle()
+        private LibUsbProfileListHandle()
             : base(IntPtr.Zero) { }
 
-        internal MonoUsbProfileListHandle(IntPtr pHandleToOwn)
+        internal LibUsbProfileListHandle(IntPtr pHandleToOwn)
             : base(pHandleToOwn) { }
 
         #region IEnumerable<MonoUsbProfileHandle> Members
@@ -46,8 +46,8 @@ namespace LibUsb.Profile
         /// <summary>
         /// Gets a forward-only device list enumerator.
         /// </summary>
-        /// <returns>A profile handle enumerator used iterating through the <see cref="MonoUsbProfileHandle"/> classes.</returns>
-        public IEnumerator<MonoUsbProfileHandle> GetEnumerator() { return new MonoUsbProfileHandleEnumerator(this); }
+        /// <returns>A profile handle enumerator used iterating through the <see cref="LibUsbProfileHandle"/> classes.</returns>
+        public IEnumerator<LibUsbProfileHandle> GetEnumerator() { return new LibUsbProfileHandleEnumerator(this); }
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 

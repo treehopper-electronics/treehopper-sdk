@@ -28,15 +28,15 @@ using LibUsb.Transfer;
 
 namespace LibUsbDotNet.LibUsb.Internal
 {
-    internal class MonoUsbTransferContext : UsbTransfer, IDisposable
+    internal class LibUsbTransferContext : UsbTransfer, IDisposable
     {
         private bool mOwnsTransfer;
 
         private static readonly MonoUsbTransferDelegate mMonoUsbTransferCallbackDelegate = TransferCallback;
         private GCHandle mCompleteEventHandle;
-        private MonoUsbTransfer mTransfer;
+        private LibUsbTransfer mTransfer;
 
-        public MonoUsbTransferContext(UsbEndpointBase endpointBase)
+        public LibUsbTransferContext(UsbEndpointBase endpointBase)
             : base(endpointBase)
         {
         }
@@ -55,7 +55,7 @@ namespace LibUsbDotNet.LibUsb.Internal
             if (isoPacketSize > 0)
                 numIsoPackets = count/isoPacketSize;
             freeTransfer();
-            mTransfer = MonoUsbTransfer.Alloc(numIsoPackets);
+            mTransfer = LibUsbTransfer.Alloc(numIsoPackets);
             mOwnsTransfer = ownsTransfer;
             mTransfer.Type = endpointBase.Type;
             mTransfer.Endpoint = endpointBase.EpNum;
@@ -106,7 +106,7 @@ namespace LibUsbDotNet.LibUsb.Internal
             
             mTransfer.ActualLength = 0;
             mTransfer.Status = 0;
-            mTransfer.Flags = MonoUsbTransferFlags.None;
+            mTransfer.Flags = LibUsbTransferFlags.None;
         }
 
         /// <summary>
@@ -133,11 +133,11 @@ namespace LibUsbDotNet.LibUsb.Internal
 
             mTransfer.ActualLength = 0;
             mTransfer.Status = 0;
-            mTransfer.Flags = MonoUsbTransferFlags.None;
+            mTransfer.Flags = LibUsbTransferFlags.None;
         }
         // Clean up the globally allocated memory. 
 
-        ~MonoUsbTransferContext() { Dispose(); }
+        ~LibUsbTransferContext() { Dispose(); }
 
         /// <summary>
         /// Submits the transfer.
@@ -191,7 +191,7 @@ namespace LibUsbDotNet.LibUsb.Internal
             {
                 case 0: // TransferCompleteEvent
 
-                    if (mTransfer.Status == MonoUsbTansferStatus.TransferCompleted)
+                    if (mTransfer.Status == LibUsbTansferStatus.TransferCompleted)
                     {
                         transferredCount = mTransfer.ActualLength;
                         return ErrorCode.Success;
@@ -223,7 +223,7 @@ namespace LibUsbDotNet.LibUsb.Internal
             }
         }
 
-        private static void TransferCallback(MonoUsbTransfer pTransfer)
+        private static void TransferCallback(LibUsbTransfer pTransfer)
         {
             ManualResetEvent completeEvent = GCHandle.FromIntPtr(pTransfer.PtrUserData).Target as ManualResetEvent;
             completeEvent.Set();
