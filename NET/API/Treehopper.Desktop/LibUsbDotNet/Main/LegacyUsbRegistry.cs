@@ -121,39 +121,13 @@ namespace LibUsbDotNet.Main
             get
             {
                 List<LegacyUsbRegistry> deviceList = new List<LegacyUsbRegistry>();
-                if (UsbDevice.IsLinux)
-                {
-                    List<MonoUsbDevice> legacyLibUsbDeviceList = MonoUsbDevice.MonoUsbDeviceList;
-                    foreach (MonoUsbDevice usbDevice in legacyLibUsbDeviceList)
-                    {
-                        deviceList.Add(new LegacyUsbRegistry(usbDevice));
-                    }
-                }
-                else
-                {
-                    for (int i = 1; i < UsbConstants.MAX_DEVICES; i++)
-                    {
-                        string deviceFileName = LibUsbDriverIO.GetDeviceNameString(i);
 
-                        SafeFileHandle deviceHandle = LibUsbDriverIO.OpenDevice(deviceFileName);
-                        if (deviceHandle != null && !deviceHandle.IsInvalid && !deviceHandle.IsClosed)
-                        {
-                            try
-                            {
-                                LibUsbDevice newUsbDevice = new LibUsbDevice(UsbDevice.LibUsbApi, deviceHandle, deviceFileName);
-
-                                LegacyUsbRegistry regInfo = new LegacyUsbRegistry(newUsbDevice);
-
-                                deviceList.Add(regInfo);
-                            }
-                            catch (Exception ex)
-                            {
-                                Debug.Print(ex.Message);
-                            }
-                        }
-                        if (deviceHandle != null && !deviceHandle.IsClosed) deviceHandle.Close();
-                    }
-                }
+	            List<MonoUsbDevice> legacyLibUsbDeviceList = MonoUsbDevice.MonoUsbDeviceList;
+	            foreach (MonoUsbDevice usbDevice in legacyLibUsbDeviceList)
+	            {
+	                deviceList.Add(new LegacyUsbRegistry(usbDevice));
+	            }
+                
                 return deviceList;
             }
         }
