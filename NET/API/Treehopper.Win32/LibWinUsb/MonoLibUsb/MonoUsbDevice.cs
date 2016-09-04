@@ -31,7 +31,7 @@ using MonoLibUsb;
 using MonoLibUsb.Descriptors;
 using MonoLibUsb.Profile;
 
-namespace LibUsbDotNet.LudnMonoLibUsb
+namespace LibUsbDotNet.LibUsb
 {
     /// <summary>This is the LibUsbDotNet Libusb-1.0 implementation of a <see cref="UsbDevice"/>.
     /// </summary> 

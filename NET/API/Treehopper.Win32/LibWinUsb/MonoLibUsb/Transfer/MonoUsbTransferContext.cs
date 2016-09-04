@@ -26,7 +26,7 @@ using LibUsbDotNet.Main;
 using MonoLibUsb;
 using MonoLibUsb.Transfer;
 
-namespace LibUsbDotNet.LudnMonoLibUsb.Internal
+namespace LibUsbDotNet.LibUsb.Internal
 {
     internal class MonoUsbTransferContext : UsbTransfer, IDisposable
     {

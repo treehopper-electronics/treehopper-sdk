@@ -21,9 +21,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb.Internal;
 using Debug=System.Diagnostics.Debug;
 
@@ -84,7 +83,7 @@ namespace LibUsbDotNet
 				List<MonoUsbDevice> legacyLibUsbDeviceList = MonoUsbDevice.MonoUsbDeviceList;
 				foreach (MonoUsbDevice usbDevice in legacyLibUsbDeviceList)
 				{
-					regDevList.Add(new LegacyUsbRegistry(usbDevice));
+					regDevList.Add(new MonoLibUsbRegistry(usbDevice));
 				}
 
                 return regDevList;

@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using LibUsbDotNet.Internal.LibUsb;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using LibUsbDotNet.LudnMonoLibUsb;
+using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb;
 using MonoLibUsb;
 
