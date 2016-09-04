@@ -50,15 +50,12 @@ namespace LibUsbDotNet
             {
                 UsbRegDeviceList regDevReturnList = new UsbRegDeviceList();
 
-                UsbRegDeviceList winUsbList = AllWinUsbDevices;
-                foreach (UsbRegistry winUsbRegistry in winUsbList)
-                    regDevReturnList.Add(winUsbRegistry);
-
-                UsbRegDeviceList libUsbList = AllLibUsbDevices;
-                foreach (UsbRegistry libUsbRegistry in libUsbList)
-                    regDevReturnList.Add(libUsbRegistry);
-
-                return regDevReturnList;
+                if (UsbDevice.IsWindows)
+                    return AllWinUsbDevices;
+                else if (UsbDevice.IsLinux && !UsbDevice.IsMac)
+                    return AllLibUsbDevices;
+                else
+                    return regDevReturnList; // fill in with Mac later
             }
         }
 

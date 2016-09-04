@@ -44,7 +44,7 @@ namespace LibUsbDotNet
         /// If this is <see langword="true"/>, <see cref="AllDevices"/> will return only <see cref="LibUsbDevice"/>s in the list.
         /// </remarks>
         public static bool ForceLibUsbWinBack = false;
-        
+
 
         /// <summary>
         /// Gets a list of all available WinUSB USB devices.
@@ -142,7 +142,7 @@ namespace LibUsbDotNet
                         }
                     }
                 }
-                return (bool) mHasWinUsbDriver;
+                return (bool)mHasWinUsbDriver;
             }
         }
 
@@ -163,13 +163,13 @@ namespace LibUsbDotNet
                     {
                         try
                         {
-							LibUsbApi.StrError(global::LibUsb.LibUsbError.Success);
+                            LibUsbApi.StrError(global::LibUsb.LibUsbError.Success);
                             mHasLibUsbWinBackDriver = true;
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             mHasLibUsbWinBackDriver = false;
-                          
+
                         }
                     }
                 }
@@ -186,6 +186,14 @@ namespace LibUsbDotNet
             {
                 return Helper.IsLinux;
 
+            }
+        }
+
+        public static bool IsWindows
+        {
+            get
+            {
+                return !IsLinux;
             }
         }
 
