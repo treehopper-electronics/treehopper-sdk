@@ -55,7 +55,7 @@ namespace LibUsbDotNet
                 else if (UsbDevice.IsLinux && !UsbDevice.IsMac)
                     return AllLibUsbDevices;
                 else
-                    return regDevReturnList; // fill in with Mac later
+                    return AllLibUsbDevices; // fill in with Mac later
             }
         }
 
