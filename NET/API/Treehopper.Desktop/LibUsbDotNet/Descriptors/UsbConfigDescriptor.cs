@@ -71,7 +71,7 @@ namespace LibUsbDotNet.Descriptors
         /// </summary>
         public readonly byte MaxPower;
 
-        internal UsbConfigDescriptor(MonoUsbConfigDescriptor descriptor)
+        internal UsbConfigDescriptor(LibUsbConfigDescriptor descriptor)
         {
             Attributes = descriptor.bmAttributes;
             ConfigID = descriptor.bConfigurationValue;

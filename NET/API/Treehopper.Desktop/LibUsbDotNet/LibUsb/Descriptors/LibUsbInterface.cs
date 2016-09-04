@@ -27,7 +27,7 @@ namespace LibUsb.Descriptors
 {
     ///<summary>A collection of alternate settings for a particular USB interface.</summary>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
-    public class MonoUsbInterface
+    public class LibUsbInterface
     {
         ///<summary> Array of interface descriptors. The length of this array is determined by the num_altsetting field.</summary>
         private IntPtr pAltSetting;
@@ -37,16 +37,16 @@ namespace LibUsb.Descriptors
 
 
         ///<summary> Array of interface descriptors. The length of this array is determined by the num_altsetting field.</summary>
-        public List<MonoUsbAltInterfaceDescriptor> AltInterfaceList
+        public List<LibUsbAltInterfaceDescriptor> AltInterfaceList
         {
             get
             {
-                List<MonoUsbAltInterfaceDescriptor> altInterfaceList = new List<MonoUsbAltInterfaceDescriptor>();
+                List<LibUsbAltInterfaceDescriptor> altInterfaceList = new List<LibUsbAltInterfaceDescriptor>();
                 int iAltInterface;
                 for (iAltInterface = 0; iAltInterface < num_altsetting; iAltInterface++)
                 {
-                    IntPtr pNextInterface = new IntPtr(pAltSetting.ToInt64() + (Marshal.SizeOf(typeof (MonoUsbAltInterfaceDescriptor))*iAltInterface));
-                    MonoUsbAltInterfaceDescriptor monoUSBAltInterfaceDescriptor = new MonoUsbAltInterfaceDescriptor();
+                    IntPtr pNextInterface = new IntPtr(pAltSetting.ToInt64() + (Marshal.SizeOf(typeof (LibUsbAltInterfaceDescriptor))*iAltInterface));
+                    LibUsbAltInterfaceDescriptor monoUSBAltInterfaceDescriptor = new LibUsbAltInterfaceDescriptor();
                     Marshal.PtrToStructure(pNextInterface, monoUSBAltInterfaceDescriptor);
 
                     altInterfaceList.Add(monoUSBAltInterfaceDescriptor);

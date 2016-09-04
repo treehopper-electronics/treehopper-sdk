@@ -27,17 +27,17 @@ using LibUsbDotNet.Main;
 namespace LibUsb.Transfer.Internal
 {
     /// <remarks>
-    /// This class is never instantiated in .NET.  Instead it is used as a template by the <see cref="MonoUsbTransfer"/> class.
+    /// This class is never instantiated in .NET.  Instead it is used as a template by the <see cref="LibUsbTransfer"/> class.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
     internal class libusb_transfer
     {
         IntPtr deviceHandle;
-        MonoUsbTransferFlags flags;
+        LibUsbTransferFlags flags;
         byte endpoint;
         EndpointType type;
         uint timeout;
-        MonoUsbTansferStatus status;
+        LibUsbTansferStatus status;
         int length;
         int actual_length;
         IntPtr pCallbackFn;

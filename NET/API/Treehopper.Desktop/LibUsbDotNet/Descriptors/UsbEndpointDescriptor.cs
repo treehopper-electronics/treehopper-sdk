@@ -92,7 +92,7 @@ namespace LibUsbDotNet.Descriptors
 
         internal UsbEndpointDescriptor() { }
 
-        internal UsbEndpointDescriptor(MonoUsbEndpointDescriptor descriptor)
+        internal UsbEndpointDescriptor(LibUsbEndpointDescriptor descriptor)
         {
             Attributes = descriptor.bmAttributes;
             DescriptorType = descriptor.bDescriptorType;

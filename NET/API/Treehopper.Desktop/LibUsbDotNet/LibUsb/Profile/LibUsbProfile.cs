@@ -29,15 +29,15 @@ namespace LibUsb.Profile
     /// <summary>
     /// Representing a USB device that can be opened and used by Libusb-1.0.
     /// </summary>
-    public class MonoUsbProfile
+    public class LibUsbProfile
     {
         private readonly byte mBusNumber;
         private readonly byte mDeviceAddress;
-        private readonly MonoUsbDeviceDescriptor mMonoUsbDeviceDescriptor = new MonoUsbDeviceDescriptor();
-        private readonly MonoUsbProfileHandle mMonoUSBProfileHandle;
+        private readonly LibUsbDeviceDescriptor mMonoUsbDeviceDescriptor = new LibUsbDeviceDescriptor();
+        private readonly LibUsbProfileHandle mMonoUSBProfileHandle;
         internal bool mDiscovered;
 
-        internal MonoUsbProfile(MonoUsbProfileHandle monoUSBProfileHandle)
+        internal LibUsbProfile(LibUsbProfileHandle monoUSBProfileHandle)
         {
             mMonoUSBProfileHandle = monoUSBProfileHandle;
             mBusNumber = LibUsbApi.GetBusNumber(mMonoUSBProfileHandle);
@@ -56,7 +56,7 @@ namespace LibUsb.Profile
         /// <summary>
         /// Gets the standard usb device descriptor.
         /// </summary>
-        public MonoUsbDeviceDescriptor DeviceDescriptor
+        public LibUsbDeviceDescriptor DeviceDescriptor
         {
             get { return mMonoUsbDeviceDescriptor; }
         }
@@ -80,7 +80,7 @@ namespace LibUsb.Profile
         /// <summary>
         /// Gets the internal profile handle need for some api calls.
         /// </summary>
-        public MonoUsbProfileHandle ProfileHandle
+        public LibUsbProfileHandle ProfileHandle
         {
             get { return mMonoUSBProfileHandle; }
         }
@@ -96,8 +96,8 @@ namespace LibUsb.Profile
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (MonoUsbProfile)) return false;
-            return Equals((MonoUsbProfile) obj);
+            if (obj.GetType() != typeof (LibUsbProfile)) return false;
+            return Equals((LibUsbProfile) obj);
         }
 
         /// <summary>
@@ -116,32 +116,32 @@ namespace LibUsb.Profile
         }
 
         ///<summary>
-        /// <c>true</c> if the <see cref="MonoUsbProfile"/> types are equal.
+        /// <c>true</c> if the <see cref="LibUsbProfile"/> types are equal.
         ///</summary>
         /// <remarks>
-        /// <see cref="MonoUsbProfile"/> types are considered equal they have the same <see cref="BusNumber"/> and <see cref="DeviceAddress"/>.
+        /// <see cref="LibUsbProfile"/> types are considered equal they have the same <see cref="BusNumber"/> and <see cref="DeviceAddress"/>.
         /// </remarks>
-        ///<param name="left"><see cref="MonoUsbProfile"/> on the left.</param>
-        ///<param name="right"><see cref="MonoUsbProfile"/> on the right.</param>
-        ///<returns>True if the <see cref="MonoUsbProfile"/> types are equal.</returns>
-        public static bool operator ==(MonoUsbProfile left, MonoUsbProfile right) { return Equals(left, right); }
+        ///<param name="left"><see cref="LibUsbProfile"/> on the left.</param>
+        ///<param name="right"><see cref="LibUsbProfile"/> on the right.</param>
+        ///<returns>True if the <see cref="LibUsbProfile"/> types are equal.</returns>
+        public static bool operator ==(LibUsbProfile left, LibUsbProfile right) { return Equals(left, right); }
 
         ///<summary>
-        /// <c>true</c> if the <see cref="MonoUsbProfile"/> types are not equal.
+        /// <c>true</c> if the <see cref="LibUsbProfile"/> types are not equal.
         ///</summary>
         /// <remarks>
-        /// <see cref="MonoUsbProfile"/> types are considered equal they have the same <see cref="BusNumber"/> and <see cref="DeviceAddress"/>.
+        /// <see cref="LibUsbProfile"/> types are considered equal they have the same <see cref="BusNumber"/> and <see cref="DeviceAddress"/>.
         /// </remarks>
-        ///<param name="left"><see cref="MonoUsbProfile"/> on the left.</param>
-        ///<param name="right"><see cref="MonoUsbProfile"/> on the right.</param>
-        ///<returns>True if the <see cref="MonoUsbProfile"/> types are not equal.</returns>
-        public static bool operator !=(MonoUsbProfile left, MonoUsbProfile right) { return !Equals(left, right); }
+        ///<param name="left"><see cref="LibUsbProfile"/> on the left.</param>
+        ///<param name="right"><see cref="LibUsbProfile"/> on the right.</param>
+        ///<returns>True if the <see cref="LibUsbProfile"/> types are not equal.</returns>
+        public static bool operator !=(LibUsbProfile left, LibUsbProfile right) { return !Equals(left, right); }
 
-        private LibUsbError GetDeviceDescriptor(out MonoUsbDeviceDescriptor monoUsbDeviceDescriptor)
+        private LibUsbError GetDeviceDescriptor(out LibUsbDeviceDescriptor monoUsbDeviceDescriptor)
         {
             LibUsbError ec = LibUsbError.Success;
 
-            monoUsbDeviceDescriptor = new MonoUsbDeviceDescriptor();
+            monoUsbDeviceDescriptor = new LibUsbDeviceDescriptor();
             //Console.WriteLine("MonoUsbProfile:GetDeviceDescriptor");
             ec = (LibUsbError) LibUsbApi.GetDeviceDescriptor(mMonoUSBProfileHandle, monoUsbDeviceDescriptor);
             if (ec != LibUsbError.Success)
@@ -155,7 +155,7 @@ namespace LibUsb.Profile
         }
 
         /// <summary>
-        /// Closes the internal <see cref="MonoUsbProfileHandle"/>.
+        /// Closes the internal <see cref="LibUsbProfileHandle"/>.
         /// </summary>
         public void Close()
         {
@@ -167,16 +167,16 @@ namespace LibUsb.Profile
         /// Convenience function to open the device handle this profile handle represents.
         /// </summary>
         /// <returns>
-        /// A new <see cref="LibUsbDeviceHandle"/> instance. Created with <see cref="LibUsbDeviceHandle(MonoUsbProfileHandle)"/> constructor.
+        /// A new <see cref="LibUsbDeviceHandle"/> instance. Created with <see cref="LibUsbDeviceHandle(LibUsbProfileHandle)"/> constructor.
         /// </returns>
         public LibUsbDeviceHandle OpenDeviceHandle() { return new LibUsbDeviceHandle(ProfileHandle); }
 
         /// <summary>
-        /// Compares a <see cref="MonoUsbProfile"/> with this one.
+        /// Compares a <see cref="LibUsbProfile"/> with this one.
         /// </summary>
-        /// <param name="other">The other <see cref="MonoUsbProfile"/>.</param>
+        /// <param name="other">The other <see cref="LibUsbProfile"/>.</param>
         /// <returns>True if the <see cref="BusNumber"/> and <see cref="DeviceAddress"/> are equal.</returns>
-        public bool Equals(MonoUsbProfile other)
+        public bool Equals(LibUsbProfile other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;

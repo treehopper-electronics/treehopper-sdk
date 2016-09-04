@@ -38,7 +38,7 @@ namespace LibUsbDotNet.Info
             Helper.BytesToObject(descriptor, 0, Math.Min(UsbEndpointDescriptor.Size, descriptor[0]), mUsbEndpointDescriptor);
         }
 
-        internal UsbEndpointInfo(MonoUsbEndpointDescriptor monoUsbEndpointDescriptor) { mUsbEndpointDescriptor = new UsbEndpointDescriptor(monoUsbEndpointDescriptor); }
+        internal UsbEndpointInfo(LibUsbEndpointDescriptor monoUsbEndpointDescriptor) { mUsbEndpointDescriptor = new UsbEndpointDescriptor(monoUsbEndpointDescriptor); }
 
         /// <summary>
         /// Gets the <see cref="UsbEndpointDescriptor"/> information.

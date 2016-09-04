@@ -31,7 +31,7 @@ namespace LibUsb.Descriptors
     /// All multiple-byte fields are represented in host-endian format.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
-    public class MonoUsbEndpointDescriptor
+    public class LibUsbEndpointDescriptor
     {
         ///<summary> Size of this descriptor (in bytes)</summary>
         public readonly Byte bLength;

@@ -75,10 +75,10 @@ namespace LibUsb
         /// <para>A handle allows you to perform I/O on the device in question.</para>
         /// <para>To close a device handle call its <see cref="SafeHandle.Close"/> method.</para>
         /// <para>This is a non-blocking function; no requests are sent over the bus.</para>
-        /// <note title="Libusb-1.0 API Note:" type="cpp">The <see cref="LibUsbDeviceHandle(MonoUsbProfileHandle)"/> constructor is roughly equivalent to <a href="http://libusb.sourceforge.net/api-1.0/group__dev.html#ga8163100afdf933fabed0db7fa81c89d1">libusb_open()</a>.</note>
+        /// <note title="Libusb-1.0 API Note:" type="cpp">The <see cref="LibUsbDeviceHandle(LibUsbProfileHandle)"/> constructor is roughly equivalent to <a href="http://libusb.sourceforge.net/api-1.0/group__dev.html#ga8163100afdf933fabed0db7fa81c89d1">libusb_open()</a>.</note>
         /// </remarks>
         /// <param name="profileHandle">A device profile handle.</param>
-        public LibUsbDeviceHandle(MonoUsbProfileHandle profileHandle)
+        public LibUsbDeviceHandle(LibUsbProfileHandle profileHandle)
             : base(IntPtr.Zero) 
         {
             IntPtr pDeviceHandle = IntPtr.Zero;

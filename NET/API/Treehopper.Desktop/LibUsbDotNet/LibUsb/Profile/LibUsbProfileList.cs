@@ -31,15 +31,15 @@ namespace LibUsb.Profile
     /// <summary>
     /// Manages the device list.  This class is thread safe.
     /// </summary>
-    public class MonoUsbProfileList : IEnumerable<MonoUsbProfile>
+    public class LibUsbProfileList : IEnumerable<LibUsbProfile>
     {
         private object LockProfileList = new object();
 
-        private static bool FindDiscoveredFn(MonoUsbProfile check) { return check.mDiscovered; }
-        private static bool FindUnDiscoveredFn(MonoUsbProfile check) { return !check.mDiscovered; }
+        private static bool FindDiscoveredFn(LibUsbProfile check) { return check.mDiscovered; }
+        private static bool FindUnDiscoveredFn(LibUsbProfile check) { return !check.mDiscovered; }
 
-        private List<MonoUsbProfile> mList=new List<MonoUsbProfile>();
-        private void FireAddRemove(MonoUsbProfile monoUSBProfile, AddRemoveType addRemoveType)
+        private List<LibUsbProfile> mList=new List<LibUsbProfile>();
+        private void FireAddRemove(LibUsbProfile monoUSBProfile, AddRemoveType addRemoveType)
         {
             EventHandler<AddRemoveEventArgs> temp = AddRemoveEvent;
             if (!ReferenceEquals(temp, null))
@@ -50,13 +50,13 @@ namespace LibUsb.Profile
 
         private void SetDiscovered(bool discovered)
         {
-            foreach (MonoUsbProfile deviceProfile in this)
+            foreach (LibUsbProfile deviceProfile in this)
             {
                 deviceProfile.mDiscovered = discovered;
             }
         }
 
-        private void syncWith(MonoUsbProfileList newList)
+        private void syncWith(LibUsbProfileList newList)
         {
             SetDiscovered(false);
             newList.SetDiscovered(true);
@@ -64,7 +64,7 @@ namespace LibUsb.Profile
             int iNewProfiles = newList.mList.Count;
             for (int iNewProfile = 0; iNewProfile < iNewProfiles; iNewProfile++)
             {
-                MonoUsbProfile newProfile = newList.mList[iNewProfile];
+                LibUsbProfile newProfile = newList.mList[iNewProfile];
                 int iFoundOldIndex;
                 if ((iFoundOldIndex = mList.IndexOf(newProfile)) == -1)
                 {
@@ -85,7 +85,7 @@ namespace LibUsb.Profile
             newList.mList.RemoveAll(FindDiscoveredFn);
             newList.Close();
 
-            foreach (MonoUsbProfile deviceProfile in mList)
+            foreach (LibUsbProfile deviceProfile in mList)
             {
                 if (!deviceProfile.mDiscovered)
                 {
@@ -102,12 +102,12 @@ namespace LibUsb.Profile
 
 
         /// <summary>
-        /// Refreshes the <see cref="MonoUsbProfile"/> list.
+        /// Refreshes the <see cref="LibUsbProfile"/> list.
         /// </summary>
         /// <remarks>
         /// <para>This is your entry point into finding a USB device to operate.</para>
         /// <para>This return value of this function indicates the number of devices in the resultant list.</para>
-        /// <para>The <see cref="MonoUsbProfileList"/> has a crude form of built-in device notification that works on all platforms. By adding an event handler to the <see cref="AddRemoveEvent"/> changes in the device profile list are reported when <see cref="Refresh"/> is called.</para>
+        /// <para>The <see cref="LibUsbProfileList"/> has a crude form of built-in device notification that works on all platforms. By adding an event handler to the <see cref="AddRemoveEvent"/> changes in the device profile list are reported when <see cref="Refresh"/> is called.</para>
         /// </remarks>
         /// <param name="sessionHandle">A valid <see cref="LibUsbSessionHandle"/>.</param>
         /// <returns>The number of devices in the outputted list, or <see cref="LibUsbError.ErrorNoMem"/> on memory allocation failure.</returns>
@@ -118,8 +118,8 @@ namespace LibUsb.Profile
         {
             lock (LockProfileList)
             {
-                MonoUsbProfileList newList = new MonoUsbProfileList();
-                MonoUsbProfileListHandle monoUSBProfileListHandle;
+                LibUsbProfileList newList = new LibUsbProfileList();
+                LibUsbProfileListHandle monoUSBProfileListHandle;
 
                 int ret = LibUsbApi.GetDeviceList(sessionHandle, out monoUSBProfileListHandle);
                 if (ret < 0 || monoUSBProfileListHandle.IsInvalid)
@@ -134,9 +134,9 @@ namespace LibUsb.Profile
                     return ret;
                 }
                 int stopCount = ret;
-                foreach (MonoUsbProfileHandle deviceProfileHandle in monoUSBProfileListHandle)
+                foreach (LibUsbProfileHandle deviceProfileHandle in monoUSBProfileListHandle)
                 {
-                    newList.mList.Add(new MonoUsbProfile(deviceProfileHandle));
+                    newList.mList.Add(new LibUsbProfile(deviceProfileHandle));
                     stopCount--;
                     if (stopCount <= 0) break;
                 }
@@ -152,7 +152,7 @@ namespace LibUsb.Profile
         /// </summary>
         /// <remarks>
         /// <para>
-        /// <see cref="MonoUsbProfileHandle"/>s that are in-use are never closed until all reference(s) have gone 
+        /// <see cref="LibUsbProfileHandle"/>s that are in-use are never closed until all reference(s) have gone 
         /// out-of-scope or specifically been closed with the <see cref="SafeHandle.Close"/> method.
         /// </para>
         /// </remarks>
@@ -160,7 +160,7 @@ namespace LibUsb.Profile
         {
             lock (LockProfileList)
             {
-                foreach (MonoUsbProfile profile in mList)
+                foreach (LibUsbProfile profile in mList)
                     profile.Close();
 
                 mList.Clear();
@@ -202,7 +202,7 @@ namespace LibUsb.Profile
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<MonoUsbProfile> GetEnumerator() 
+        public IEnumerator<LibUsbProfile> GetEnumerator() 
         { 
             lock(LockProfileList)
                 return mList.GetEnumerator(); 
@@ -211,7 +211,7 @@ namespace LibUsb.Profile
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
         /// <summary>
-        /// Returns the number of <see cref="MonoUsbProfile"/> instances in the list.
+        /// Returns the number of <see cref="LibUsbProfile"/> instances in the list.
         /// </summary>
         public int Count
         {
@@ -222,32 +222,32 @@ namespace LibUsb.Profile
             }
         }
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="MonoUsbProfile"/> instances.
+        /// Gets a <see cref="List{T}"/> of <see cref="LibUsbProfile"/> instances.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="MonoUsbProfileList"/> uses an internal list that is locked when changes must be made.
+        /// The <see cref="LibUsbProfileList"/> uses an internal list that is locked when changes must be made.
         /// The <see cref="GetList"/> method returns a copy of this list that can be searched and modified as needed by the user.
         /// </para>
         /// <para>
         /// The returned generic <see cref="List{T}"/> contains many more functions for finding devices.  
-        /// It may be desirable to use these members, such as <see cref="List{T}.FindAll"/> or <see cref="List{T}.ForEach"/> to find a <see cref="MonoUsbProfile"/> instead of iterating through the <see cref="MonoUsbProfileList"/> one-by-one.
+        /// It may be desirable to use these members, such as <see cref="List{T}.FindAll"/> or <see cref="List{T}.ForEach"/> to find a <see cref="LibUsbProfile"/> instead of iterating through the <see cref="LibUsbProfileList"/> one-by-one.
         /// </para>
         /// </remarks>
-        /// <returns>A <see cref="List{T}"/> of <see cref="MonoUsbProfile"/> instances.</returns>
-        public List<MonoUsbProfile> GetList()
+        /// <returns>A <see cref="List{T}"/> of <see cref="LibUsbProfile"/> instances.</returns>
+        public List<LibUsbProfile> GetList()
         {
             lock (LockProfileList)
-                return new List<MonoUsbProfile>(mList);
+                return new List<LibUsbProfile>(mList);
         }
 
         /// <summary>
-        /// Gets the <see cref="MonoUsbProfile"/> at the specfied index.
+        /// Gets the <see cref="LibUsbProfile"/> at the specfied index.
         /// </summary>
-        /// <param name="index">The index of the <see cref="MonoUsbProfile"/> to retrieve.</param>
-        /// <returns>The <see cref="MonoUsbProfile"/> instance at the specified <paramref name="index"/>.</returns>
+        /// <param name="index">The index of the <see cref="LibUsbProfile"/> to retrieve.</param>
+        /// <returns>The <see cref="LibUsbProfile"/> instance at the specified <paramref name="index"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">If index is invalid.</exception>
-        public MonoUsbProfile this[int index]
+        public LibUsbProfile this[int index]
         {
             get
             {

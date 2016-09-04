@@ -32,7 +32,7 @@ namespace LibUsbDotNet.LibUsb
     /// </summary> 
     public class LibUsbEndpointWriter : UsbEndpointWriter
     {
-        private MonoUsbTransferContext mMonoTransferContext;
+        private LibUsbTransferContext mMonoTransferContext;
 
         internal LibUsbEndpointWriter(UsbDevice usbDevice, WriteEndpointID writeEndpointID,EndpointType endpointType)
             : base(usbDevice, writeEndpointID, endpointType) { }
@@ -71,6 +71,6 @@ namespace LibUsbDotNet.LibUsb
             return true;
         }
 
-        internal override UsbTransfer CreateTransferContext() { return new MonoUsbTransferContext(this); }
+        internal override UsbTransfer CreateTransferContext() { return new LibUsbTransferContext(this); }
     }
 }

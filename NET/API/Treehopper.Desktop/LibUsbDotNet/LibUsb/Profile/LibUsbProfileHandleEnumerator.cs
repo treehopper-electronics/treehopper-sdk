@@ -29,14 +29,14 @@ namespace LibUsb.Profile
     /// <summary>
     /// A forward-only enumerator for iterating a device lists.
     /// </summary>
-    internal class MonoUsbProfileHandleEnumerator : IEnumerator<MonoUsbProfileHandle>
+    internal class LibUsbProfileHandleEnumerator : IEnumerator<LibUsbProfileHandle>
     {
-        private readonly MonoUsbProfileListHandle mProfileListHandle;
-        private MonoUsbProfileHandle mCurrentProfile;
+        private readonly LibUsbProfileListHandle mProfileListHandle;
+        private LibUsbProfileHandle mCurrentProfile;
         private int mNextDeviceProfilePos;
 
         
-        internal MonoUsbProfileHandleEnumerator(MonoUsbProfileListHandle profileListHandle)
+        internal LibUsbProfileHandleEnumerator(LibUsbProfileListHandle profileListHandle)
         {
             mProfileListHandle = profileListHandle;
             Reset();
@@ -52,7 +52,7 @@ namespace LibUsb.Profile
 
 
         /// <summary>
-        /// Advances the enumerator to the next <see cref="MonoUsbProfileHandle"/> element of the collection.
+        /// Advances the enumerator to the next <see cref="LibUsbProfileHandle"/> element of the collection.
         /// </summary>
         /// <returns>
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
@@ -64,7 +64,7 @@ namespace LibUsb.Profile
                 Marshal.ReadIntPtr(new IntPtr(mProfileListHandle.DangerousGetHandle().ToInt64() + (mNextDeviceProfilePos*IntPtr.Size)));
             if (pNextProfileHandle != IntPtr.Zero)
             {
-                mCurrentProfile = new MonoUsbProfileHandle(pNextProfileHandle);
+                mCurrentProfile = new LibUsbProfileHandle(pNextProfileHandle);
                 mNextDeviceProfilePos++;
                 return true;
             }
@@ -84,21 +84,21 @@ namespace LibUsb.Profile
         }
 
         /// <summary>
-        /// Gets the element in the <see cref="MonoUsbProfileHandle"/> collection at the current position of the enumerator.
+        /// Gets the element in the <see cref="LibUsbProfileHandle"/> collection at the current position of the enumerator.
         /// </summary>
         /// <returns>
-        /// The current <see cref="MonoUsbProfileHandle"/> element.
+        /// The current <see cref="LibUsbProfileHandle"/> element.
         /// </returns>
-        public MonoUsbProfileHandle Current
+        public LibUsbProfileHandle Current
         {
             get { return mCurrentProfile; }
         }
 
         /// <summary>
-        /// Gets the current element in the <see cref="MonoUsbProfileHandle"/> collection.
+        /// Gets the current element in the <see cref="LibUsbProfileHandle"/> collection.
         /// </summary>
         /// <returns>
-        /// The current <see cref="MonoUsbProfileHandle"/> element.
+        /// The current <see cref="LibUsbProfileHandle"/> element.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The enumerator is positioned before the first element of the collection or after the last element.-or- The collection was modified after the enumerator was created.</exception><filterpriority>2</filterpriority>
         object IEnumerator.Current

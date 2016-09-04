@@ -32,7 +32,7 @@ namespace LibUsb.Descriptors
     /// All multiple-byte fields are represented in host-endian format.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
-    public class MonoUsbAltInterfaceDescriptor
+    public class LibUsbAltInterfaceDescriptor
     {
         ///<summary>Size of this descriptor (in bytes)</summary>
         public readonly Byte bLength;
@@ -82,16 +82,16 @@ namespace LibUsb.Descriptors
         }
 
         ///<summary> Array of endpoint descriptors. This length of this array is determined by the bNumEndpoints field.</summary>
-        public List<MonoUsbEndpointDescriptor> EndpointList
+        public List<LibUsbEndpointDescriptor> EndpointList
         {
             get
             {
-                List<MonoUsbEndpointDescriptor> endpointList = new List<MonoUsbEndpointDescriptor>();
+                List<LibUsbEndpointDescriptor> endpointList = new List<LibUsbEndpointDescriptor>();
                 int iEndpoint;
                 for (iEndpoint = 0; iEndpoint < bNumEndpoints; iEndpoint++)
                 {
-                    IntPtr pNextInterface = new IntPtr(pEndpointDescriptors.ToInt64() + (Marshal.SizeOf(typeof (MonoUsbEndpointDescriptor))*iEndpoint));
-                    MonoUsbEndpointDescriptor monoUsbEndpoint = new MonoUsbEndpointDescriptor();
+                    IntPtr pNextInterface = new IntPtr(pEndpointDescriptors.ToInt64() + (Marshal.SizeOf(typeof (LibUsbEndpointDescriptor))*iEndpoint));
+                    LibUsbEndpointDescriptor monoUsbEndpoint = new LibUsbEndpointDescriptor();
                     Marshal.PtrToStructure(pNextInterface, monoUsbEndpoint);
                     endpointList.Add(monoUsbEndpoint);
                 }

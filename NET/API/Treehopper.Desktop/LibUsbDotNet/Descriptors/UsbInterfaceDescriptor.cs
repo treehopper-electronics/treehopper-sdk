@@ -110,7 +110,7 @@ namespace LibUsbDotNet.Descriptors
 
         internal UsbInterfaceDescriptor() { }
 
-        internal UsbInterfaceDescriptor(MonoUsbAltInterfaceDescriptor altInterfaceDescriptor)
+        internal UsbInterfaceDescriptor(LibUsbAltInterfaceDescriptor altInterfaceDescriptor)
         {
             AlternateID = altInterfaceDescriptor.bAlternateSetting;
             Class = altInterfaceDescriptor.bInterfaceClass;

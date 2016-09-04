@@ -8,7 +8,7 @@ namespace LibUsb.Transfer
     /// Wraps an iso packet structure
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class MonoUsbIsoPacket
+    public class LibUsbIsoPacket
     {
         private static readonly int OfsActualLength = Marshal.OffsetOf(typeof(libusb_iso_packet_descriptor), "actual_length").ToInt32();
         private static readonly int OfsLength = Marshal.OffsetOf(typeof(libusb_iso_packet_descriptor), "length").ToInt32();
@@ -20,7 +20,7 @@ namespace LibUsb.Transfer
         /// Creates a structure that wraps an iso packet.
         /// </summary>
         /// <param name="isoPacketPtr">The pointer to the iso packet to wrap.</param>
-        public MonoUsbIsoPacket(IntPtr isoPacketPtr) { mpMonoUsbIsoPacket = isoPacketPtr; }
+        public LibUsbIsoPacket(IntPtr isoPacketPtr) { mpMonoUsbIsoPacket = isoPacketPtr; }
 
         /// <summary>
         /// Returns the location in memory of this iso packet.
@@ -48,9 +48,9 @@ namespace LibUsb.Transfer
         /// <summary>
         /// Status code for this packet. 
         /// </summary>
-        public MonoUsbTansferStatus Status
+        public LibUsbTansferStatus Status
         {
-            get { return (MonoUsbTansferStatus)Marshal.ReadInt32(mpMonoUsbIsoPacket, OfsStatus); }
+            get { return (LibUsbTansferStatus)Marshal.ReadInt32(mpMonoUsbIsoPacket, OfsStatus); }
             set { Marshal.WriteInt32(mpMonoUsbIsoPacket, OfsStatus, (int)value); }
         }
 

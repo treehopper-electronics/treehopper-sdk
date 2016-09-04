@@ -30,12 +30,12 @@ namespace LibUsb.Descriptors
     ///This descriptor is documented in section 9.6.1 of the USB 2.0 specification. 
     ///All multiple-byte fields are represented in host-endian format.</summary>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
-    public class MonoUsbDeviceDescriptor
+    public class LibUsbDeviceDescriptor
     {
         /// <summary>
         /// Total size of this structure in bytes.
         /// </summary>
-        public static readonly int Size = Marshal.SizeOf(typeof (MonoUsbDeviceDescriptor));
+        public static readonly int Size = Marshal.SizeOf(typeof (LibUsbDeviceDescriptor));
 
         /// <summary>
         /// Length of structure reported by the associated usb device.
@@ -109,11 +109,11 @@ namespace LibUsb.Descriptors
         public readonly byte ConfigurationCount;
 
         ///<summary>
-        ///Returns a <see cref="T:System.String"/> that represents the current <see cref="MonoUsbDeviceDescriptor"/>.
+        ///Returns a <see cref="T:System.String"/> that represents the current <see cref="LibUsbDeviceDescriptor"/>.
         ///</summary>
         ///
         ///<returns>
-        ///A <see cref="System.String"/> that represents the current <see cref="MonoUsbDeviceDescriptor"/>.
+        ///A <see cref="System.String"/> that represents the current <see cref="LibUsbDeviceDescriptor"/>.
         ///</returns>
         public override string ToString()
         {

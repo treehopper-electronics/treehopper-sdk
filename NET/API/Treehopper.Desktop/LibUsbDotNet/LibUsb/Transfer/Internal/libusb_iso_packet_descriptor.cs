@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace LibUsb.Transfer.Internal
 {
     /// <remarks>
-    /// This class is never instantiated in .NET.  Instead it is used as a template by the <see cref="MonoUsbIsoPacket"/> class.
+    /// This class is never instantiated in .NET.  Instead it is used as a template by the <see cref="LibUsbIsoPacket"/> class.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential, Pack = LibUsbApi.LIBUSB_PACK)]
     internal class libusb_iso_packet_descriptor
@@ -21,7 +21,7 @@ namespace LibUsb.Transfer.Internal
         /// <summary>
         /// Status code for this packet 
         /// </summary>
-        MonoUsbTansferStatus status;
+        LibUsbTansferStatus status;
 
         private libusb_iso_packet_descriptor() { }
 

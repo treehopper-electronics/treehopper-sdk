@@ -24,7 +24,7 @@ namespace LibUsb.Transfer
     /// <summary>
     /// Transfer flags.
     /// </summary>
-    public enum MonoUsbTransferFlags : byte
+    public enum LibUsbTransferFlags : byte
     {
         /// <summary>
         /// No transfer flags.
@@ -36,15 +36,15 @@ namespace LibUsb.Transfer
         TransferShortNotOk = 1 << 0,
 
         /// <summary>
-        /// Automatically free() transfer buffer during <see cref ="MonoUsbTransfer.Free">MonoUsbTransfer.Free()</see>.
+        /// Automatically free() transfer buffer during <see cref ="LibUsbTransfer.Free">MonoUsbTransfer.Free()</see>.
         /// </summary>
         TransferFreeBuffer = 1 << 1,
 
         /// <summary>
-        /// Automatically call <see cref ="MonoUsbTransfer.Free">MonoUsbTransfer.Free()</see> after callback returns.
+        /// Automatically call <see cref ="LibUsbTransfer.Free">MonoUsbTransfer.Free()</see> after callback returns.
         /// </summary>
         /// <remakrks>
-        /// <para>If this flag is set, it is illegal to call <see cref ="MonoUsbTransfer.Free"/> from your transfer callback, as this will result in a double-free when this flag is acted upon.</para>
+        /// <para>If this flag is set, it is illegal to call <see cref ="LibUsbTransfer.Free"/> from your transfer callback, as this will result in a double-free when this flag is acted upon.</para>
         /// </remakrks>
         TransferFreeTransfer = 1 << 2,
     } ;

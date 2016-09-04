@@ -33,31 +33,31 @@ namespace LibUsb.Profile
     /// </summary>
     /// <remarks>
     /// <para>
-    /// When a <see cref="MonoUsbProfileHandle"/> instance is created and wrapped around the 
+    /// When a <see cref="LibUsbProfileHandle"/> instance is created and wrapped around the 
     /// <a href="http://libusb.sourceforge.net/api-1.0/group__dev.html#ga77eedd00d01eb7569b880e861a971c2b">libusb_device</a>
     /// pointer, <see cref="LibUsbApi.RefDevice"/> is called.  When all references to this 
-    /// <see cref="MonoUsbProfileHandle"/> instance are out-of-scope or have all been closed, this profile handle is de-referenced with 
+    /// <see cref="LibUsbProfileHandle"/> instance are out-of-scope or have all been closed, this profile handle is de-referenced with 
     /// <see cref="LibUsbApi.UnrefDevice"/>.
     /// When the reference count equals zero, memory is freed and resources are released.
     /// </para>
     /// <para>
-    /// The <see cref="MonoUsbProfileHandle"/> class ensures all device profiles get closed and freed 
+    /// The <see cref="LibUsbProfileHandle"/> class ensures all device profiles get closed and freed 
     /// regardless of abnormal program terminations or coding errors. 
     /// </para>
     /// <para>
-    /// Certain operations can be performed using just the <see cref="MonoUsbProfileHandle"/>, but in order to do 
+    /// Certain operations can be performed using just the <see cref="LibUsbProfileHandle"/>, but in order to do 
     /// any I/O you will have to first obtain a <see cref="LibUsbDeviceHandle"/> using <see cref="LibUsbApi.Open"/>.
     /// </para>
     /// </remarks>    
-    public class MonoUsbProfileHandle : SafeContextHandle
+    public class LibUsbProfileHandle : SafeContextHandle
     {
 
 
         /// <summary>
-        /// Wraps a raw usb device profile handle pointer in a <see cref="MonoUsbProfileHandle"/> class.
+        /// Wraps a raw usb device profile handle pointer in a <see cref="LibUsbProfileHandle"/> class.
         /// </summary>
         /// <param name="pProfileHandle">the profile handle to wrap.</param>
-        public MonoUsbProfileHandle(IntPtr pProfileHandle) : base(pProfileHandle,true)
+        public LibUsbProfileHandle(IntPtr pProfileHandle) : base(pProfileHandle,true)
         {
             lock (oDeviceProfileRefLock)
             {
