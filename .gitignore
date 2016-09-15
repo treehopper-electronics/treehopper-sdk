@@ -208,8 +208,5 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 *.opendb
-Treehopper.VC.db
-Treehopper.VC.db
+*.VC.db
 NET/Demos/UWP/TreehopperShowcase/null
-NET/Demos/UWP/TreehopperShowcase/null
-*.db
