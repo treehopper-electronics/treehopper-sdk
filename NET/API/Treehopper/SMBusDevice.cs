@@ -5,9 +5,9 @@ namespace Treehopper.Libraries
 {
     public class SMBusDevice
     {
-        protected I2c I2c;
+        protected II2c I2c;
         protected byte address;
-        public SMBusDevice(byte address, I2c I2CModule, int rateKHz = 100)
+        public SMBusDevice(byte address, II2c I2CModule, int rateKHz = 100)
         {
             this.address = address;
             I2c = I2CModule;

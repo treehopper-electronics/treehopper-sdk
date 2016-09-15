@@ -12,7 +12,7 @@ namespace Treehopper
     /// <summary>
     /// The I2c class is used for interacting with the I2C module on the Treehopper Board. 
     /// </summary>
-    public class I2c
+    public class I2c : II2c
     {
         TreehopperUsb device;
 
@@ -35,7 +35,7 @@ namespace Treehopper
         }
 
         double speed = 100;
-        double Speed
+        public double Speed
         {
             get
             {

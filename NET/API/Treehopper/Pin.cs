@@ -141,7 +141,7 @@ namespace Treehopper
     /// between pins. While it cannot be instantiated directly by the user, Pin variables can reference existing pins.
     /// </para>
     /// </remarks>
-    public class Pin : INotifyPropertyChanged
+    public class Pin : INotifyPropertyChanged, IDigitalPin, IAdcPin
     {
         protected string ioName;
         /// <summary>
@@ -527,6 +527,21 @@ namespace Treehopper
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
+
+        public void MakeDigitalPushPullOut()
+        {
+            Mode = PinMode.PushPullOutput;
+        }
+
+        public void MakeDigitalIn()
+        {
+            Mode = PinMode.DigitalInput;
+        }
+
+        public void MakeAnalogIn()
+        {
+            Mode = PinMode.AnalogInput;
         }
     }
 }
