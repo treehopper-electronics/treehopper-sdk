@@ -31,10 +31,10 @@ namespace Treehopper.Libraries
         byte DATA_CLEAR_LO = 0x46;
         byte DATA_CLEAR_HI = 0x47;
 
-        I2c _I2C;
+        II2c _I2C;
         Pin led;
 
-        public ADJDS311(I2c I2CDevice, Pin LedPin) : base(0x74, I2CDevice)
+        public ADJDS311(II2c I2CDevice, Pin LedPin) : base(0x74, I2CDevice)
         {
             _I2C = I2CDevice;
             _I2C.Enabled = true;

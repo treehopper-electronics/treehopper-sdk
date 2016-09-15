@@ -13,7 +13,7 @@ namespace Treehopper
         OneWire
     }
 
-    public class Uart
+    public class Uart : IOneWire
     {
         private enum UartConfig : byte
         {
@@ -304,6 +304,12 @@ namespace Treehopper
             data[0] = 0x55; // MATCH ROM
             Array.Copy(addr, 0, data, 1, 8);
             await Send(data);
+        }
+
+        public void StartOneWire()
+        {
+            Mode = UartMode.OneWire;
+            Enabled = true;
         }
     }
 }
