@@ -1,0 +1,12 @@
+[ProjectGroup]
+Version=1.0
+[Project1]
+ProjectPath=treehopper-panel\treehopper-panel.PrjPcb
+[Project2]
+ProjectPath=treehopper-micro\treehopper-micro.PrjPcb
+[Project3]
+ProjectPath=treehopper-mini\treehopper-mini.PrjPcb
+[Project4]
+ProjectPath=treehopper-fob\treehopper-fob.PrjPcb
+[Project5]
+ProjectPath=treehopper\treehopper.PrjPcb
