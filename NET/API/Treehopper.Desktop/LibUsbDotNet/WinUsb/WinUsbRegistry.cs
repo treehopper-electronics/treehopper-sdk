@@ -63,7 +63,7 @@ namespace LibUsbDotNet.WinUsb
             SetupApi.SP_DEVICE_INTERFACE_DATA interfaceData = SetupApi.SP_DEVICE_INTERFACE_DATA.Empty;
             SetupApi.DeviceInterfaceDetailHelper detailHelper;
 
-            IntPtr deviceInfo = SetupApi.SetupDiGetClassDevs(ref deviceInterfaceGuid, null, IntPtr.Zero, SetupApi.DICFG.PRESENT | SetupApi.DICFG.DEVICEINTERFACE);
+            IntPtr deviceInfo = SetupApi.SetupDiGetClassDevs(ref deviceInterfaceGuid, null, IntPtr.Zero, SetupApi.DIGCF.PRESENT | SetupApi.DIGCF.DEVICEINTERFACE);
             if (deviceInfo != IntPtr.Zero)
             {
                 while ((SetupApi.SetupDiEnumDeviceInterfaces(deviceInfo, null, ref deviceInterfaceGuid, devicePathIndex, ref interfaceData)))
@@ -105,7 +105,7 @@ namespace LibUsbDotNet.WinUsb
             SetupApi.SP_DEVINFO_DATA devInfoData = SetupApi.SP_DEVINFO_DATA.Empty;
 
             // [1]
-            IntPtr deviceInfo = SetupApi.SetupDiGetClassDevs(ref deviceInterfaceGuid, null, IntPtr.Zero, SetupApi.DICFG.PRESENT | SetupApi.DICFG.DEVICEINTERFACE);
+            IntPtr deviceInfo = SetupApi.SetupDiGetClassDevs(ref deviceInterfaceGuid, null, IntPtr.Zero, SetupApi.DIGCF.PRESENT | SetupApi.DIGCF.DEVICEINTERFACE);
             if (deviceInfo != IntPtr.Zero)
             {
                 while ((SetupApi.SetupDiEnumDeviceInterfaces(deviceInfo, null, ref deviceInterfaceGuid, devicePathIndex, ref interfaceData)))
@@ -156,7 +156,7 @@ namespace LibUsbDotNet.WinUsb
             get
             {
                 List<WinUsbRegistry> deviceList = new List<WinUsbRegistry>();
-                SetupApi.EnumClassDevs(null, SetupApi.DICFG.ALLCLASSES | SetupApi.DICFG.PRESENT, WinUsbRegistryCallBack, deviceList);
+                SetupApi.EnumClassDevs(null, SetupApi.DIGCF.ALLCLASSES | SetupApi.DIGCF.PRESENT, WinUsbRegistryCallBack, deviceList, Guid.Empty);
                 return deviceList;
             }
         }
@@ -367,91 +367,6 @@ namespace LibUsbDotNet.WinUsb
             return false;
         }
 
-        /*
-        private static bool WinUsbRegistryCallBack(IntPtr deviceInfoSet,
-                                                   int deviceIndex,
-                                                   ref SetupApi.SP_DEVINFO_DATA deviceInfoData,
-                                                   object classEnumeratorCallbackParam1)
-        {
-
-            List<WinUsbRegistry> deviceList = (List<WinUsbRegistry>) classEnumeratorCallbackParam1;
-
-            RegistryValueKind propertyType;
-            byte[] propBuffer = new byte[256];
-            int requiredSize;
-            bool isNew = true;
-            bool bSuccess;
-
-            bSuccess = SetupApi.SetupDiGetCustomDeviceProperty(deviceInfoSet,
-                                                                    ref deviceInfoData,
-                                                                    DEVICE_INTERFACE_GUIDS,
-                                                                    SetupApi.DICUSTOMDEVPROP.NONE,
-                                                                    out propertyType,
-                                                                    propBuffer,
-                                                                    propBuffer.Length,
-                                                                    out requiredSize);
-            if (bSuccess)
-            {
-                string[] devInterfaceGuids = GetAsStringArray(propBuffer, requiredSize);
-
-                foreach (String devInterfaceGuid in devInterfaceGuids)
-                {
-                    Guid g = new Guid(devInterfaceGuid);
-                    List<string> devicePaths;
-                    if (SetupApi.GetDevicePathList(g, out devicePaths))
-                    {
-                        foreach (string devicePath in devicePaths)
-                        {
-                            WinUsbRegistry regInfo = new WinUsbRegistry();
-
-                            SetupApi.getSPDRPProperties(deviceInfoSet, ref deviceInfoData, regInfo.mDeviceProperties);
-
-                            // Use the actual winusb device path for SYMBOLIC_NAME_KEY. This will be used to open the device.
-                            regInfo.mDeviceProperties.Add(SYMBOLIC_NAME_KEY, devicePath);
-
-                            regInfo.mDeviceInterfaceGuids = new Guid[] { g };
-
-                            // Don't add duplicate devices (with the same device path)
-                            WinUsbRegistry foundRegistry=null;
-                            foreach (WinUsbRegistry usbRegistry in deviceList)
-                            {
-                                if (usbRegistry.SymbolicName == regInfo.SymbolicName)
-                                {
-                                    foundRegistry = usbRegistry;
-                                    break;
-                                }
-                            }
-                            if (foundRegistry == null)
-                                deviceList.Add(regInfo);
-                            else
-                            {
-                                if (isNew)
-                                {
-                                    deviceList.Remove(foundRegistry);
-                                    deviceList.Add(regInfo);
-                                }
-                                else
-                                {
-
-                                    // If the device path already exists, add this compatible guid 
-                                    // to the foundRegstry guid list.
-                                    List<Guid> newGuidList = new List<Guid>(foundRegistry.mDeviceInterfaceGuids);
-                                    if (!newGuidList.Contains(g))
-                                    {
-                                        newGuidList.Add(g);
-                                        foundRegistry.mDeviceInterfaceGuids = newGuidList.ToArray();
-                                    }
-                                }
-                            }
-                            isNew = false;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-        */
         private static bool WinUsbRegistryCallBack(IntPtr deviceInfoSet,
                                            int deviceIndex,
                                            ref SetupApi.SP_DEVINFO_DATA deviceInfoData,

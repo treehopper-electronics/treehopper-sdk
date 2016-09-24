@@ -57,6 +57,11 @@ namespace LibUsbDotNet.Internal
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
         public static extern bool GetOverlappedResult(SafeHandle hDevice, IntPtr lpOverlapped, out int lpNumberOfBytesTransferred, bool bWait);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern int ReadFile([In] SafeHandle handle, IntPtr bytes, int numBytesToRead,  out int numBytesRead, IntPtr overlapped);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern int WriteFile([In] SafeHandle handle, IntPtr bytes, int numBytesToWrite, out int numBytesWritten, IntPtr overlapped);
 
         public static string FormatSystemMessage(int dwMessageId)
         {
