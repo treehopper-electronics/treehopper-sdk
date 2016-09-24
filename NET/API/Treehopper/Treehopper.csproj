@@ -36,11 +36,13 @@
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
     <Compile Include="Comparator.cs" />
+    <Compile Include="FirmwareUpdate.cs" />
     <Compile Include="I2c.cs" />
     <Compile Include="IAdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
     <Compile Include="IDigitalPin.cs" />
+    <Compile Include="IFirmwareConnection.cs" />
     <Compile Include="II2c.cs" />
     <Compile Include="IOneWire.cs" />
     <Compile Include="IPwm.cs" />
@@ -71,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="treehopper.efm8" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
