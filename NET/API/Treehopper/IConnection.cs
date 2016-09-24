@@ -14,7 +14,7 @@ namespace Treehopper
 
     public interface IConnection : INotifyPropertyChanged, IDisposable
     {
-        Task<bool> Open();
+        Task<bool> OpenAsync();
         void Close();
 
         // these are read-only; TreehopperUsb is responsible for setting these using application commands

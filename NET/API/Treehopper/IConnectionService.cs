@@ -12,6 +12,6 @@ namespace Treehopper
     {
         ObservableCollection<TreehopperUsb> Boards { get; }
 
-        Task<TreehopperUsb> First();
+        Task<TreehopperUsb> GetFirstDeviceAsync();
     }
 }

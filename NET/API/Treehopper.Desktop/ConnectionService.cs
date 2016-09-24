@@ -323,7 +323,7 @@ namespace Treehopper
             return true;
         }
 
-        public async Task<TreehopperUsb> First()
+        public async Task<TreehopperUsb> GetFirstDeviceAsync()
         {
             while (Boards.Count == 0)
             {

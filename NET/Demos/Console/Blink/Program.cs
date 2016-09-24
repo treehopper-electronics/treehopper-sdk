@@ -34,7 +34,7 @@ namespace Blink
                 //TreehopperManager manager = new TreehopperManager();
                 //manager.BoardAdded += Manager_BoardAdded;
 
-                TreehopperUsb Board = await ConnectionService.Instance.First();
+                TreehopperUsb Board = await ConnectionService.Instance.GetFirstDeviceAsync();
                 Console.WriteLine("Found board: " + Board);
 
                 // You must explicitly open a board before communicating with it
