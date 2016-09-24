@@ -133,7 +133,7 @@ namespace LibUsbDotNet.Internal
         #region DICFG enum
 
         [Flags]
-        public enum DICFG
+        public enum DIGCF
         {
             /// <summary>
             /// Return only the device that is associated with the system default device interface, if one is set, for the specified device interface classes. 
@@ -253,13 +253,13 @@ namespace LibUsbDotNet.Internal
         public static extern IntPtr SetupDiGetClassDevs(ref Guid ClassGuid,
                                                         [MarshalAs(UnmanagedType.LPTStr)] string Enumerator,
                                                         IntPtr hwndParent,
-                                                        DICFG Flags);
+                                                        DIGCF Flags);
 
         [DllImport("setupapi.dll", CharSet = CharSet.Ansi, EntryPoint = "SetupDiGetClassDevsA")]
-        public static extern IntPtr SetupDiGetClassDevs(ref Guid ClassGuid, int Enumerator, IntPtr hwndParent, DICFG Flags);
+        public static extern IntPtr SetupDiGetClassDevs(ref Guid ClassGuid, int Enumerator, IntPtr hwndParent, DIGCF Flags);
 
         [DllImport("setupapi.dll", CharSet = CharSet.Ansi, EntryPoint = "SetupDiGetClassDevsA")]
-        public static extern IntPtr SetupDiGetClassDevs(int ClassGuid, string Enumerator, IntPtr hwndParent, DICFG Flags);
+        public static extern IntPtr SetupDiGetClassDevs(int ClassGuid, string Enumerator, IntPtr hwndParent, DIGCF Flags);
 
         [DllImport("setupapi.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetupDiGetCustomDeviceProperty(IntPtr DeviceInfoSet,
@@ -348,15 +348,16 @@ namespace LibUsbDotNet.Internal
         public static extern int RegCloseKey(IntPtr hKey);
 
         public static bool EnumClassDevs(string enumerator,
-                                         DICFG flags,
+                                         DIGCF flags,
                                          ClassEnumeratorDelegate classEnumeratorCallback,
-                                         object classEnumeratorCallbackParam1)
+                                         object classEnumeratorCallbackParam1,
+                                         Guid ClassGuid)
         {
             SP_DEVINFO_DATA dev_info_data = SP_DEVINFO_DATA.Empty;
 
             int dev_index = 0;
 
-            IntPtr dev_info = SetupDiGetClassDevs(0, enumerator, IntPtr.Zero, flags);
+            IntPtr dev_info = SetupDiGetClassDevs(ref ClassGuid, enumerator, IntPtr.Zero, flags);
 
             if (dev_info == IntPtr.Zero || dev_info.ToInt64() == -1) return false;
             bool bSuccess = false;

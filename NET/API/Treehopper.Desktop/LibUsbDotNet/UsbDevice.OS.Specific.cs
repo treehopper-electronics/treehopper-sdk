@@ -27,6 +27,7 @@ using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb;
 using LibUsb;
+using LibUsbDotNet.WinHid;
 
 namespace LibUsbDotNet
 {
@@ -67,6 +68,11 @@ namespace LibUsbDotNet
                     List<WinUsbRegistry> winUsbRegistry = WinUsbRegistry.DeviceList;
                     foreach (WinUsbRegistry usbRegistry in winUsbRegistry)
                         regDevList.Add(usbRegistry);
+
+                    List<WinHidRegistry> hidRegistry = WinHidRegistry.DeviceList;
+                    foreach (WinHidRegistry usbRegistry in hidRegistry)
+                        regDevList.Add(usbRegistry);
+
                 }
 
                 return regDevList;

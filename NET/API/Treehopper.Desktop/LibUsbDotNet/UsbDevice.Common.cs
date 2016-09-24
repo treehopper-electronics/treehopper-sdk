@@ -24,13 +24,16 @@ using System.Collections.Generic;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb.Internal;
-using Debug=System.Diagnostics.Debug;
+using Debug = System.Diagnostics.Debug;
+using LibUsbDotNet.WinHid;
 
 namespace LibUsbDotNet
 {
     public abstract partial class UsbDevice
     {
         private static WinUsbAPI _winUsbApi;
+        private static WinHidApi _winHidApi;
+
         private static object mHasWinUsbDriver;
         private static object mHasLibUsbWinBackDriver;
 
@@ -111,6 +114,16 @@ namespace LibUsbDotNet
                 if (ReferenceEquals(_winUsbApi, null))
                     _winUsbApi = new WinUsbAPI();
                 return _winUsbApi;
+            }
+        }
+
+        internal static WinHidApi WinHidApi
+        {
+            get
+            {
+                if (ReferenceEquals(_winHidApi, null))
+                    _winHidApi = new WinHidApi();
+                return _winHidApi;
             }
         }
 

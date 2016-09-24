@@ -59,7 +59,7 @@ namespace LibUsbDotNet.Internal
             {
                 mTransferCompleteEvent.Set();
                 UsbError usbErr = UsbError.Error(ErrorCode.Win32Error, Marshal.GetLastWin32Error(), "PipeTransferSubmit", EndpointBase);
-
+                
                 eReturn = usbErr.ErrorCode;
             }
             return eReturn;
