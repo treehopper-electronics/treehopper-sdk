@@ -32,7 +32,7 @@ namespace FirmwareUpdate
                         if (!await board.ConnectAsync())
                             Console.WriteLine("Couldn't connect to board. Retrying in 5 seconds...");
                         else
-                            board.RebootIntoBootloader();
+                        board.RebootIntoBootloader();
                     }
                     Console.WriteLine("Waiting 5 seconds to reconnect...");
                     await Task.Delay(5000);

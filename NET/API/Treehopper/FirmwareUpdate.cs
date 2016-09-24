@@ -81,7 +81,7 @@ namespace Treehopper
 
         public async Task<bool> Load()
         {
-            var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Treehopper.treehopper.efm8");
+            var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Treehopper.treehopper.tfi");
             return await this.Load(stream);
         }
     }
