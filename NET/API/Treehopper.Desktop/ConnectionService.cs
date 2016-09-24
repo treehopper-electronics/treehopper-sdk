@@ -16,15 +16,7 @@ namespace Treehopper
     {
         private static readonly ConnectionService instance = new ConnectionService();
         public static ConnectionService Instance { get { return instance; } }
-            
-        private IDeviceNotifier myNotifier = DeviceNotifier.OpenDeviceNotifier();
-        // Microchip
-        //int vid = 0x04d8;
-        //int pid = 0xF426;
 
-        // SiLabs
-        int vid = 0x10c4;
-        int pid = 0x8a7e;
 
 
         /// <summary>
@@ -65,6 +57,10 @@ namespace Treehopper
         public string NameFilter { get; set; }
 
         System.Timers.Timer pollingTimer;
+
+
+
+
 
         /// <summary>
         /// Manages Treehopper boards connected to the computer. If optional filter parameters are provided, only boards matching the filter will be available.
@@ -189,7 +185,7 @@ namespace Treehopper
                 bool boardExistsInDeviceList = false;
                 foreach (UsbRegistry regDevice in UsbDevice.AllDevices)
                 {
-                    if (regDevice.Vid == vid && regDevice.Pid == pid)
+                    if (regDevice.Vid == TreehopperUsb.Settings.Vid && regDevice.Pid == TreehopperUsb.Settings.Pid)
                     {
                         if (regDevice.Device != null)
                         {
@@ -222,7 +218,7 @@ namespace Treehopper
             // Now add any new boards
             foreach (UsbRegistry regDevice in UsbDevice.AllDevices)
             {
-                if (regDevice.Vid == vid && regDevice.Pid == pid)
+                if (regDevice.Vid == TreehopperUsb.Settings.Vid && regDevice.Pid == TreehopperUsb.Settings.Pid)
                 {
                     if (regDevice.Device != null)
                     {
@@ -260,7 +256,7 @@ namespace Treehopper
         {
             if (PollingTimerIsEnabled)
                 return;
-            if (e.Device.IdVendor != vid || e.Device.IdProduct != pid)
+            if (e.Device.IdVendor != TreehopperUsb.Settings.Vid || e.Device.IdProduct != TreehopperUsb.Settings.Pid)
                 return;
 
             if(e.EventType == EventType.DeviceArrival) // board added
@@ -269,7 +265,7 @@ namespace Treehopper
                 {
                     if(regDevice.Device != null)
                     {
-						if (regDevice.Vid == vid || regDevice.Pid == pid) {
+						if (regDevice.Vid == TreehopperUsb.Settings.Vid || regDevice.Pid == TreehopperUsb.Settings.Pid) {
 							bool isInBoardList = false;
 							foreach (var board in Boards) {
 								if (regDevice.SymbolicName == board.Connection.DevicePath) {
