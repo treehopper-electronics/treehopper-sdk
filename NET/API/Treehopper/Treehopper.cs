@@ -208,7 +208,7 @@ namespace Treehopper
 		/// While the name is immediately written to the device and the Name property is updated immediately, the changes 
 		/// will not take effect to other applications until the device is reset. This can be done by calling <see cref="Reset"/>
 		/// </remarks>
-		public void UpdateSerialNumber(string serialNumber)
+		public async Task UpdateSerialNumber(string serialNumber)
 		{
 			if (serialNumber.Length > 60)
 				throw new Exception("String must be 15 characters or less");
@@ -219,7 +219,7 @@ namespace Treehopper
 			DataToSend[1] = (byte)(serialNumber.Length); // Unicode 16-bit strings are 2 bytes per character
 			bytes.CopyTo(DataToSend, 2);
 			sendPeripheralConfigPacket(DataToSend);
-            //Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+            await Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
         }
 
 		/// <summary>
@@ -230,7 +230,7 @@ namespace Treehopper
 		/// While the name is immediately written to the device and the Name property is updated immediately, the changes 
 		/// will not take effect to other applications until the device is reset. This can be done by calling <see cref="Reset"/>
 		/// </remarks>
-		public void UpdateDeviceName(string deviceName)
+		public async Task UpdateDeviceName(string deviceName)
 		{
 			if (deviceName.Length > 60)
 				throw new Exception("Device name must be 60 characters or less");
@@ -240,8 +240,8 @@ namespace Treehopper
 			byte[] stringData = Encoding.UTF8.GetBytes(deviceName);
 			stringData.CopyTo(DataToSend, 2);
 			sendPeripheralConfigPacket(DataToSend);
-			//Thread.Sleep(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
-		}
+            await Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+        }
 
 		~TreehopperUsb()
 		{

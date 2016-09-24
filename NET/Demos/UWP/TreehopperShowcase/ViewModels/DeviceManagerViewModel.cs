@@ -73,10 +73,10 @@ namespace TreehopperShowcase.ViewModels
             {
                 return updateName
                     ?? (updateName = new RelayCommand(
-                    () =>
+                    async () =>
                     {
-                        SelectedBoard.UpdateDeviceName(newName);
-                        SelectedBoard.UpdateSerialNumber(RandomString(8));
+                        await SelectedBoard.UpdateDeviceName(newName);
+                        await SelectedBoard.UpdateSerialNumber(RandomString(8));
                         SelectedBoard.Reboot();
                     },
                     () => SelectedBoard != null));
