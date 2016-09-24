@@ -133,7 +133,7 @@ namespace Treehopper.Mvvm.ViewModel
             RaisePropertyChanged("ConnectButtonText");
             CanChangeBoardSelection = false;
             RaisePropertyChanged("CanChangeBoardSelection");
-            await SelectedBoard.Connect();
+            await SelectedBoard.ConnectAsync();
             Messenger.Default.Send(new BoardConnectedMessage() { Board = SelectedBoard });
         }
 

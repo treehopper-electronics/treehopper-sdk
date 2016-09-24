@@ -105,7 +105,7 @@ namespace TreehopperShowcase.ViewModels
                         if (IsRunning)
                         {
                             ButtonText = "Stop";
-                            await Board.Connect();
+                            await Board.ConnectAsync();
                             cts = new CancellationTokenSource();
                             blinkingTask();
                         }

@@ -30,7 +30,7 @@ namespace Treehopper.PS
             foreach(var board in Board)
             {
 
-                board.Connect().Wait();
+                board.ConnectAsync().Wait();
                 switch(ParameterSetName)
                 {
                     case "Led":

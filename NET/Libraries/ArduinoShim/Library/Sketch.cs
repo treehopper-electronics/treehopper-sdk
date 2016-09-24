@@ -23,7 +23,7 @@ namespace ArduinoShim
         {
             Board = board;
             this.throwExceptions = throwExceptions;
-            board.Connect().Wait();
+            board.ConnectAsync().Wait();
 
             Serial = new SerialShim(board);
         }
