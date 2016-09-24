@@ -18,7 +18,11 @@ namespace Treehopper
         public static ConnectionService Instance { get { return instance; } }
 
 
+        public static bool IsWindows { get { return LibUsbDotNet.UsbDevice.IsWindows; } }
+        public static bool IsLinux { get { return LibUsbDotNet.UsbDevice.IsLinux; } }
+        public static bool IsMac { get { return LibUsbDotNet.UsbDevice.IsMac; } }
 
+        private IDeviceNotifier myNotifier = DeviceNotifier.OpenDeviceNotifier();
         /// <summary>
         /// Occurs when a <see cref="TreehopperBoard"/> is removed from the system.
         /// </summary>
