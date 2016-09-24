@@ -55,6 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FirmwareConnection.cs" />
     <Compile Include="LibUsbDotNet\Descriptors\ClassCodeType.cs" />
     <Compile Include="LibUsbDotNet\Descriptors\DescriptorType.cs" />
     <Compile Include="LibUsbDotNet\Descriptors\LangStringDescriptor.cs" />
@@ -175,8 +176,15 @@
     <Compile Include="LibUsbDotNet\UsbEndpointReader.cs" />
     <Compile Include="LibUsbDotNet\UsbEndpointWriter.cs" />
     <Compile Include="LibUsbDotNet\UsbGlobals.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\WinHidApi.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\WinHidDevice.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\WinHidRegistry.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\DeviceInformationTypes.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\DeviceSpeedTypes.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\DeviceManagement.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\DeviceManagementDeclarations.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\FileIODeclarations.cs" />
+    <Compile Include="LibUsbDotNet\WinHid\HidDeclarations.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\Internal\SafeWinUsbInterfaceHandle.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\Internal\WinUsbAPI.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\PipeInformation.cs" />
@@ -204,9 +212,7 @@
       <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LibUsbDotNet\MacUsb\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

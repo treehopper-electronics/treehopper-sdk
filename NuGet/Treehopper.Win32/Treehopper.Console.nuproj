@@ -39,7 +39,6 @@
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NET\API\Treehopper.Win32\Treehopper.Win32.csproj" />
     <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
