@@ -72,8 +72,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\..\..\Firmware-EFM8\Keil 8051 v9.53 - Debug\treehopper.tfi">
+      <Link>treehopper.tfi</Link>
+    </EmbeddedResource>
     <None Include="packages.config" />
-    <EmbeddedResource Include="treehopper.efm8" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

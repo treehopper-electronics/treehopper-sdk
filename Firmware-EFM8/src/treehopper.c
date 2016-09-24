@@ -120,6 +120,7 @@ void ProcessPinConfigPacket()
 // this gets called whenever we received peripheral config data from the host
 void ProcessPeripheralConfigPacket()
 {
+	uint16_t i;
 	uint8_t totalWriteBytes;
 	uint8_t totalReadBytes;
 	uint8_t offset;
@@ -203,6 +204,12 @@ void ProcessPeripheralConfigPacket()
 		USBD_Stop();
 		SFRPAGE = 0x00;
 		RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
+		break;
+	case EnterBootloader:
+		USBD_Stop();
+		 *((uint8_t SI_SEG_DATA *)0x00) = 0xA5;
+		 SFRPAGE = 0x00;
+		 RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
 		break;
 	}
 
