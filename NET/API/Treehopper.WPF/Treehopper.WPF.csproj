@@ -95,10 +95,6 @@
       <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
       <Name>Treehopper.MVVM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Treehopper.Win32\Treehopper.Win32.csproj">
-      <Project>{BEDE3A84-FD3A-4EA8-A14A-FB856A157CCD}</Project>
-      <Name>Treehopper.Win32</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
