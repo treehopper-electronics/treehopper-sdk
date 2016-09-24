@@ -83,7 +83,7 @@ namespace Treehopper
             connected = false;
         }
 
-        public async Task<bool> Open()
+        public async Task<bool> OpenAsync()
         {
             if (connected)
                 return false;

@@ -313,7 +313,7 @@ namespace Treehopper
 		/// </summary>
 		public async Task<bool> Connect()
 		{
-            bool res = await connection.Open();
+            bool res = await connection.OpenAsync();
             if (!res)
             {
                 IsConnected = false;

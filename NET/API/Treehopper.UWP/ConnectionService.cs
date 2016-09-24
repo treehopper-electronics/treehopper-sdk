@@ -128,10 +128,15 @@ namespace Treehopper
             deviceWatcher.Start();
         }
 
-        public async Task<TreehopperUsb> First()
+        public async Task<TreehopperUsb> GetFirstDeviceAsync()
         {
             await boardAddedSignal.WaitAsync();
             return Boards[0];
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

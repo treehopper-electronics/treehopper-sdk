@@ -29,7 +29,7 @@ namespace Treehopper
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public async Task<TreehopperUsb> First()
+        public async Task<TreehopperUsb> GetFirstDeviceAsync()
         {
             return Boards[0];
         }

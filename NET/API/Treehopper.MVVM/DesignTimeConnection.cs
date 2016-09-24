@@ -53,7 +53,7 @@ namespace Treehopper
             
         }
 
-        public async Task<bool> Open()
+        public async Task<bool> OpenAsync()
         {
             return true;
         }
