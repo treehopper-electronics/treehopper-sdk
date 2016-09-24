@@ -21,7 +21,7 @@ namespace Treehopper.Demos.SoftPwm
             board = await ConnectionService.Instance.First();
             Console.WriteLine("Board found.");
             Console.WriteLine(String.Format("Connecting to {0} and starting SoftPwm on Pin{1}", board, pinNumber));
-            await board.Connect();
+            await board.ConnectAsync();
             board[pinNumber].SoftPwm.Enabled = true;
             int step = 10;
             int rate = 25;

@@ -22,7 +22,7 @@ namespace Treehopper.Libraries
             Console.Write("Starting Ds18b20 temperature sensor demo...");
             board = await ConnectionService.Instance.First();
             Console.WriteLine("Found board: " + board);
-            await board.Connect();
+            await board.ConnectAsync();
             await DS18B20.FindAll(board);
             Console.WriteLine("Found temperature sensors at addresses:");
             foreach(var addr in DS18B20.AddressList)

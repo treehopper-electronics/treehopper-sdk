@@ -81,7 +81,7 @@ namespace Treehopper
             isOpen = false;
         }
 
-        public async Task<bool> Open()
+        public async Task<bool> OpenAsync()
         {
             if (isOpen)
                 return true;

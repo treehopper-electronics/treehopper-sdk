@@ -311,7 +311,7 @@ namespace Treehopper
 		/// <summary>
 		/// Open the TreehopperBoard. The board must be opened before any other methods are called.
 		/// </summary>
-		public async Task<bool> Connect()
+		public async Task<bool> ConnectAsync()
 		{
             bool res = await connection.OpenAsync();
             if (!res)

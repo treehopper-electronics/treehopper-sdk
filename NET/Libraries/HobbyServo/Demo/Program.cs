@@ -31,7 +31,7 @@ namespace Demo
                 board = await ConnectionService.Instance.First();
                 Console.WriteLine("Board Found! Serial: "+board.SerialNumber+".");
                 Console.Write("Connecting...");
-                await board.Connect();
+                await board.ConnectAsync();
                 Console.WriteLine("Connected. Starting application...");
 
                 var servo = new HobbyServo(board.Pins[0], 650, 2600);

@@ -46,7 +46,7 @@ namespace TreehopperShowcase.ViewModels
         }
         public async Task Start()
         {
-            await selectedBoard.Connect();
+            await selectedBoard.ConnectAsync();
 
             //SelectedBoard.SPI.ChipSelect = SelectedBoard.Pin6;
 

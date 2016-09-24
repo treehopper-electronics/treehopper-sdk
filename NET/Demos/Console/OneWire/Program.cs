@@ -38,7 +38,7 @@ namespace Blink
                 Console.WriteLine("Found board: " + Board);
 
                 // You must explicitly open a board before communicating with it
-                await Board.Connect();
+                await Board.ConnectAsync();
 
                 Board.Uart.Mode = UartMode.OneWire;
                 Board.Uart.Enabled = true;

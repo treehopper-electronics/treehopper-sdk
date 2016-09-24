@@ -37,7 +37,7 @@ namespace Blink
             RegisterReceiver(ConnectionService.Instance, ConnectionService.Instance.UsbPermissionIntentFilter);
 
             board = await ConnectionService.Instance.First();
-            await board.Connect();
+            await board.ConnectAsync();
 
             board[0].Mode = PinMode.PushPullOutput;
             board[0].DigitalValue = false;
