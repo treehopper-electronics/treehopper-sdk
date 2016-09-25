@@ -1007,7 +1007,7 @@ extern void INTERRUPT_0_enter_DefaultMode_from_RESET(void) {
 //================================================================================
 extern void USBLIB_0_enter_DefaultMode_from_RESET(void) {
 	// $[USBD Init]
-	USBD_Init (&initstruct);
+	USBD_Init(&initstruct);
 	// [USBD Init]$
 
 }

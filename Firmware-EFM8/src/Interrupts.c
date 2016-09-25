@@ -20,8 +20,7 @@
 // TMR2CN0::TF2L (Timer # Low Byte Overflow Flag)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (TIMER2_ISR, TIMER2_IRQn)
-{
+SI_INTERRUPT (TIMER2_ISR, TIMER2_IRQn) {
 	TMR2CN0 &= ~(TMR2CN0_TF2H__SET | TMR2CN0_TF2L__SET);
 
 }
@@ -39,8 +38,7 @@ SI_INTERRUPT (TIMER2_ISR, TIMER2_IRQn)
 // SPI0FCN1::TFRQ (Transmit FIFO Request)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (SPI0_ISR, SPI0_IRQn)
-{
+SI_INTERRUPT (SPI0_ISR, SPI0_IRQn) {
 
 }
 
@@ -52,8 +50,7 @@ SI_INTERRUPT (SPI0_ISR, SPI0_IRQn)
 // ADC0CN0::ADINT (Conversion Complete Interrupt Flag)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (ADC0EOC_ISR, ADC0EOC_IRQn)
-{
+SI_INTERRUPT (ADC0EOC_ISR, ADC0EOC_IRQn) {
 
 }
 
@@ -66,8 +63,7 @@ SI_INTERRUPT (ADC0EOC_ISR, ADC0EOC_IRQn)
 // TMR3CN0::TF3L (Timer # Low Byte Overflow Flag)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (TIMER3_ISR, TIMER3_IRQn)
-{
+SI_INTERRUPT (TIMER3_ISR, TIMER3_IRQn) {
 	SFRPAGE = 0x00;
 	TMR3CN0 &= ~(TMR3CN0_TF3H__SET | TMR3CN0_TF3L__SET);
 
@@ -86,25 +82,21 @@ SI_INTERRUPT (TIMER3_ISR, TIMER3_IRQn)
 // PCA0PWM::COVF (Cycle Overflow Flag)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (PCA0_ISR, PCA0_IRQn)
-{
+SI_INTERRUPT (PCA0_ISR, PCA0_IRQn) {
 	SFRPAGE = 0x00;
-	if(PCA0CN0_CCF0)
-	{
+	if (PCA0CN0_CCF0) {
 		PCA0CPL0 = PWM_1L;
 		PCA0CPH0 = PWM_1H;
 		PCA0CN0_CCF0 = 0;
 	}
 
-	if(PCA0CN0_CCF1)
-	{
+	if (PCA0CN0_CCF1) {
 		PCA0CPL1 = PWM_2L;
 		PCA0CPH1 = PWM_2H;
 		PCA0CN0_CCF1 = 0;
 	}
 
-	if(PCA0CN0_CCF2)
-	{
+	if (PCA0CN0_CCF2) {
 		PCA0CPL2 = PWM_3L;
 		PCA0CPH2 = PWM_3H;
 		PCA0CN0_CCF2 = 0;
@@ -123,8 +115,7 @@ SI_INTERRUPT (PCA0_ISR, PCA0_IRQn)
 // SMB0CN0::SI (SMBus Interrupt Flag)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (SMBUS0_ISR, SMBUS0_IRQn)
-{
+SI_INTERRUPT (SMBUS0_ISR, SMBUS0_IRQn) {
 
 }
 
@@ -137,8 +128,7 @@ SI_INTERRUPT (SMBUS0_ISR, SMBUS0_IRQn)
 // TMR4CN0::TF4L (Timer # Low Byte Overflow Flag)
 //
 //-----------------------------------------------------------------------------
-SI_INTERRUPT (TIMER4_ISR, TIMER4_IRQn)
-{
+SI_INTERRUPT (TIMER4_ISR, TIMER4_IRQn) {
 	SFRPAGE = 0x10;
 	TMR4CN0 &= ~(TMR4CN0_TF4H__SET | TMR4CN0_TF4L__SET);
 //	SoftPwm_Task();

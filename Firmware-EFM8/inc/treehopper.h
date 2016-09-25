@@ -11,57 +11,54 @@
 #include "efm8_usb.h"
 #include <stdint.h>
 
-typedef enum GlobalCommands
-{
-    GlobalCommandsReserved = 0,
-    GetDeviceInfo,
-    PinConfig,
-    ComparatorConfig,
-    PWMConfig,
-    UARTConfig,
-    I2CConfig,
-    SPIConfig,
-    I2CTransaction,
-    SPITransaction,
-    UARTTransaction,
-    SoftPwmConfig,
-    FirmwareUpdateSerial,
-    FirmwareUpdateName,
-    Reboot,
-    EnterBootloader,
-    LedConfig
+typedef enum GlobalCommands {
+	GlobalCommandsReserved = 0,
+	GetDeviceInfo,
+	PinConfig,
+	ComparatorConfig,
+	PWMConfig,
+	UARTConfig,
+	I2CConfig,
+	SPIConfig,
+	I2CTransaction,
+	SPITransaction,
+	UARTTransaction,
+	SoftPwmConfig,
+	FirmwareUpdateSerial,
+	FirmwareUpdateName,
+	Reboot,
+	EnterBootloader,
+	LedConfig
 
 } GlobalCommands_t;
 
 typedef enum PinConfigCommands {
-        PinConfig_MakeDigitalInput = 0,
-        PinConfig_MakePushPullOutput,
-        PinConfig_MakeOpenDrainOutput,
-        PinConfig_MakeAnalogInput,
-        PinConfig_SetDigitalValue,
-        PinConfig_GetDigitalValue,
-        PinConfig_GetAnalogValue
+	PinConfig_MakeDigitalInput = 0,
+	PinConfig_MakePushPullOutput,
+	PinConfig_MakeOpenDrainOutput,
+	PinConfig_MakeAnalogInput,
+	PinConfig_SetDigitalValue,
+	PinConfig_GetDigitalValue,
+	PinConfig_GetAnalogValue
 } PinConfigCommands_t;
 
 typedef enum DeviceResponse {
-        DeviceResponseReserved = 0,
-        DeviceResponse_DeviceInfo,
-        DeviceResponse_CurrentReadings,
-        DeviceResponse_UARTDataReceived,
-        DeviceResponse_I2CDataReceived,
-        DeviceResponse_SPIDataReceived
+	DeviceResponseReserved = 0,
+	DeviceResponse_DeviceInfo,
+	DeviceResponse_CurrentReadings,
+	DeviceResponse_UARTDataReceived,
+	DeviceResponse_I2CDataReceived,
+	DeviceResponse_SPIDataReceived
 } DeviceResponse_t;
 
-typedef struct pinConfigPacket
-{
+typedef struct pinConfigPacket {
 	GlobalCommands_t Opcode;
 	uint8_t PinNumber;
 	PinConfigCommands_t PinCommand;
 	uint8_t PinConfigData[4];
 } pinConfigPacket_t;
 
-typedef enum AppState
-{
+typedef enum AppState {
 	AppState_Normal,
 	AppState_Spi1,
 	AppState_Spi2,
@@ -70,11 +67,8 @@ typedef enum AppState
 	AppState_Spi5,
 } AppState_t;
 
-typedef enum BurstMode
-{
-	Burst_None,
-	Burst_Tx,
-	Burst_Rx
+typedef enum BurstMode {
+	Burst_None, Burst_Tx, Burst_Rx
 } BurstMode_t;
 
 extern SI_SEGMENT_VARIABLE(Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
@@ -89,7 +83,6 @@ extern volatile bit PeripheralConfigPacketReady;
 extern volatile bit PinConfigPacketReady;
 extern volatile bit SendPinStatusPacket;
 //static uint8_t Treehopper_PinConfig[5];
-
 
 #define TREEHOPPER_NUM_PINS		20
 
@@ -113,8 +106,6 @@ extern volatile bit SendPinStatusPacket;
 #define PIN17	P2_B1
 #define PIN18	P2_B2
 #define PIN19	P2_B3
-
-
 
 void Treehopper_Init();
 void Treehopper_Task();

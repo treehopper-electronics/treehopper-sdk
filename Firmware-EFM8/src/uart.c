@@ -31,53 +31,46 @@ uint8_t oneWire_readByte();
 void oneWire_FindSlaves();
 uint8_t oneWire_Search(uint8_t nextNode);
 
-void UART_Init()
-{
+void UART_Init() {
 	UART0_init(UART0_RX_ENABLE, UART0_WIDTH_8, UART0_MULTIPROC_DISABLE);
 }
 
-void UART_Enable()
-{
+void UART_Enable() {
 	P0SKIP &= ~(TX_BIT | RX_BIT);
 	XBR0 |= XBR0_URT0E__ENABLED;
 }
 
-void UART_Disable()
-{
+void UART_Disable() {
 	P0SKIP |= TX_BIT | RX_BIT;
 	XBR0 &= ~XBR0_URT0E__ENABLED;
 }
 
-void UART_SetConfig(UartConfigData_t* config)
-{
+void UART_SetConfig(UartConfigData_t* config) {
 	SFRPAGE = 0x00;
 
 	mode = config->Config; // save the UART mode so we know how to interpret future commands
 
-	switch(config->Config)
-	{
+	switch (config->Config) {
 	case UART_DISABLED:
 		UART_Disable();
 		break;
-
 
 	case UART_STANDARD:
 		UART_Enable();
 		TH1 = config->TH1Val;
 
-		if(config->usePrescaler)
+		if (config->usePrescaler)
 			CKCON0 &= ~CKCON0_T1M__BMASK;
 		else
 			CKCON0 |= CKCON0_T1M__BMASK;
 
-		if(config->useOpenDrain)
+		if (config->useOpenDrain)
 			P0MDOUT &= ~TX_BIT;
 		else
 			P0MDOUT |= TX_BIT;
 
 		UART0_readBuffer(rxBuffer, BUFF_LEN);
 		break;
-
 
 	case UART_ONEWIRE:
 		// 115200 baud
@@ -89,60 +82,54 @@ void UART_SetConfig(UartConfigData_t* config)
 		break;
 	}
 
-
 }
 
-void UART_Transaction(uint8_t* txBuff)
-{
+void UART_Transaction(uint8_t* txBuff) {
 	uint8_t val;
 	uint8_t i;
 	uint8_t len = txBuff[1];
 
-	switch(txBuff[0])
-	{
+	switch (txBuff[0]) {
 	case UART_CMD_TX:
-		if(mode == UART_STANDARD)
-		{
+		if (mode == UART_STANDARD) {
 			IE_ES0 = 0; // disable UART interrupts
-			for(i = 0; i<len; i++)
-			{
+			for (i = 0; i < len; i++) {
 				SCON0_TI = 0;
-				SBUF0 = txBuff[i+2];
-				while(!SCON0_TI);
+				SBUF0 = txBuff[i + 2];
+				while (!SCON0_TI)
+					;
 			}
 			IE_ES0 = 1;
 
 			temp = 0xff;
-			USBD_Write(EP2IN, &temp, 1, false );
+			USBD_Write(EP2IN, &temp, 1, false);
 
-		} else if(mode == UART_ONEWIRE) {
+		} else if (mode == UART_ONEWIRE) {
 			IE_ES0 = 0; // disable UART interrupts
-			for(i = 0; i < len; i++)
-			{
-				oneWire_writeByte(txBuff[2+i]);
+			for (i = 0; i < len; i++) {
+				oneWire_writeByte(txBuff[2 + i]);
 			}
 			IE_ES0 = 1;
 			temp = 0xff;
-			USBD_Write(EP2IN, &temp, 1, false );
+			USBD_Write(EP2IN, &temp, 1, false);
 		}
 		break;
 
 	case UART_CMD_RX:
-		if(mode == UART_STANDARD) {
+		if (mode == UART_STANDARD) {
 			rxBuffer[BUFF_LEN] = BUFF_LEN - UART0_rxBytesRemaining();
-			USBD_Write(EP2IN, rxBuffer, BUFF_LEN+1, false );
+			USBD_Write(EP2IN, rxBuffer, BUFF_LEN + 1, false);
 			memset(rxBuffer, 0, BUFF_LEN);
 			UART0_readBuffer(rxBuffer, BUFF_LEN);
 
-		} else if(mode == UART_ONEWIRE) {
+		} else if (mode == UART_ONEWIRE) {
 			IE_ES0 = 0; // disable UART interrupts
-			for(i=0;i<len;i++)
-			{
+			for (i = 0; i < len; i++) {
 				rxBuffer[i] = oneWire_readByte();
 			}
 			rxBuffer[BUFF_LEN] = len;
 			IE_ES0 = 1; // enable UART interrupts
-			USBD_Write(EP2IN, rxBuffer, BUFF_LEN+1, false );
+			USBD_Write(EP2IN, rxBuffer, BUFF_LEN + 1, false);
 
 		}
 
@@ -152,9 +139,8 @@ void UART_Transaction(uint8_t* txBuff)
 		IE_ES0 = 0; // disable UART interrupts
 		val = oneWire_Reset();
 		IE_ES0 = 1;
-		USBD_Write(EP2IN, &val, 1, false );
+		USBD_Write(EP2IN, &val, 1, false);
 		break;
-
 
 	case UART_CMD_ONEWIRE_SEARCH:
 		IE_ES0 = 0; // disable UART interrupts
@@ -165,112 +151,102 @@ void UART_Transaction(uint8_t* txBuff)
 
 }
 
-void oneWire_writeByte(uint8_t val)
-{
+void oneWire_writeByte(uint8_t val) {
 	uint8_t i;
-	for(i = 0; i<8; i++)
-	{
+	for (i = 0; i < 8; i++) {
 		oneWire_writeBit((val >> i) & 0x01);
 	}
 }
 
-uint8_t oneWire_readByte()
-{
+uint8_t oneWire_readByte() {
 	uint8_t i;
 	uint8_t val = 0;
-	for(i = 0; i<8; i++)
-	{
+	for (i = 0; i < 8; i++) {
 		val |= (oneWire_readBit() << i);
 	}
 	return val;
 }
 
-uint8_t oneWire_readBit()
-{
+uint8_t oneWire_readBit() {
 	uint8_t temp;
 	SCON0_TI = 0;
 	temp = SBUF0; // just in case we have a byte in the buffer already
 	SCON0_REN = 1;
 	SBUF0 = 0xff;
-	while(!SCON0_TI);
-	while(!SCON0_RI);
+	while (!SCON0_TI)
+		;
+	while (!SCON0_RI)
+		;
 	temp = SBUF0;
 	temp = (temp == 0xff);
 
-	if(temp)
+	if (temp)
 		return true;
 	else
 		return false;
 }
 
-void oneWire_writeBit(uint8_t val)
-{
+void oneWire_writeBit(uint8_t val) {
 	SCON0_REN = 0;
 	SCON0_TI = 0;
-	if(val)
+	if (val)
 		SBUF0 = 0xff;
 	else
 		SBUF0 = 0x00;
 
-	while(!SCON0_TI);
+	while (!SCON0_TI)
+		;
 
 }
 
 uint8_t id[8];
 uint8_t nextDevice;
-void oneWire_FindSlaves()
-{
+void oneWire_FindSlaves() {
 	nextDevice = 65;
 	memset(id, 0, 8);
 
-	while(nextDevice)
-	{
+	while (nextDevice) {
 		nextDevice = oneWire_Search(nextDevice);
 		rxBuffer[0] = 0x00; // not done yet
 		memcpy(&rxBuffer[1], id, 8);
-		while(USBD_EpIsBusy(EP2IN));
-		USBD_Write(EP2IN, rxBuffer, 9, false );
+		while (USBD_EpIsBusy(EP2IN))
+			;
+		USBD_Write(EP2IN, rxBuffer, 9, false);
 	}
 
 	rxBuffer[0] = 0xff; // done
-	while(USBD_EpIsBusy(EP2IN));
-	USBD_Write(EP2IN, rxBuffer, 9, false );
+	while (USBD_EpIsBusy(EP2IN))
+		;
+	USBD_Write(EP2IN, rxBuffer, 9, false);
 }
 
 // from https://electricimp.com/docs/resources/onewire/
-uint8_t oneWire_Search(uint8_t nextNode)
-{
+uint8_t oneWire_Search(uint8_t nextNode) {
 	uint8_t i;
 	uint8_t byte;
 	bool bitVal;
 	bool complementBit;
 	uint8_t lastForkPoint = 0;
-	if(oneWire_Reset()) // no devices found
+	if (oneWire_Reset()) // no devices found
 	{
 
 		oneWire_writeByte(0xF0);
 
-		for(i = 64; i > 0; i--)
-		{
+		for (i = 64; i > 0; i--) {
 			byte = (i - 1) / 8;
 
 			bitVal = oneWire_readBit();
 			complementBit = oneWire_readBit();
-			if(complementBit)
-			{
-				if(bitVal)
-				{
+			if (complementBit) {
+				if (bitVal) {
 					// both bits are 1 which indicates that there are no further devices on the bus
 					// so put pointer back to the start and break out of the loop
 					lastForkPoint = 0;
 					break;
 				}
-			}
-			else if(!bitVal)
-			{
+			} else if (!bitVal) {
 				// first and second bits are both 0: we'rd at a node
-				if (nextNode > i || (nextNode != i && (id[byte] & 1)))
-				{
+				if (nextNode > i || (nextNode != i && (id[byte] & 1))) {
 					// Take the '1' direction on this point
 					bitVal = 1;
 					lastForkPoint = i;
@@ -289,8 +265,7 @@ uint8_t oneWire_Search(uint8_t nextNode)
 	return lastForkPoint;
 }
 
-uint8_t oneWire_Reset()
-{
+uint8_t oneWire_Reset() {
 	uint8_t val;
 	// switch to 9600
 	SFRPAGE = 0x00;
@@ -300,21 +275,21 @@ uint8_t oneWire_Reset()
 	SCON0_TI = 0;
 	SCON0_REN = 1;
 	SBUF0 = 0xf0;
-	while(!SCON0_TI);
-	while(!SCON0_RI);
+	while (!SCON0_TI)
+		;
+	while (!SCON0_RI)
+		;
 	val = SBUF0;
 	// switch back to 115200
 	CKCON0 |= CKCON0_T1M__BMASK;
 	return (val != 0xf0);
 }
 
-void UART0_transmitCompleteCb()
-{
+void UART0_transmitCompleteCb() {
 	txBusy = 0;
 }
 
-void UART0_receiveCompleteCb()
-{
+void UART0_receiveCompleteCb() {
 	// we filled up our buffer before we read everything. Oops... oh well, try again
 	UART0_readBuffer(rxBuffer, BUFF_LEN);
 }

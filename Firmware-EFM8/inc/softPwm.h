@@ -11,8 +11,7 @@
 #include "efm8_usb.h"
 #include <stdint.h>
 
-typedef struct
-{
+typedef struct {
 	uint8_t pinNumber;
 	uint16_t nextTmrVal;
 } softPwmPinConfig_t;

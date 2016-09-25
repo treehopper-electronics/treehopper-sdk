@@ -26,5 +26,4 @@ void SPI_Disable();
 void SPI_ActivateCs();
 void SPI_DeactivateCs();
 
-
 #endif /* SPI_H_ */

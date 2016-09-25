@@ -11,5 +11,4 @@
 void LED_Init();
 void LED_SetVal(uint8_t val);
 
-
 #endif /* LED_H_ */
