@@ -18,32 +18,19 @@ namespace Treehopper
     {
         public DesignTimeConnection()
         {
-            serialNumber = RandomString(16);
-            name = "MyTreehopper "+RandomString(2);
+            SerialNumber = RandomString(16);
+            Name = "MyTreehopper "+RandomString(2);
             
         }
-        private string name;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-        }
+        public string Name { get; private set; }
 
-        private string serialNumber;
-        public string SerialNumber
-        {
-            get
-            {
-                return serialNumber;
-            }
-        }
+        public string SerialNumber { get; private set;  }
+        
 
         public string DevicePath { get; set; }
 
         public int UpdateRate { get; set; }
-        
+
         public short Version { get; set; }
 
         public event PinEventData PinEventDataReceived;

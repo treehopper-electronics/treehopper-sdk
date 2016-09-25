@@ -23,77 +23,22 @@ namespace Treehopper
         {
             UpdateRate = 1000;
             DevicePath = deviceInfo.Id;
-            serialNumber = DevicePath.Split('#')[2];
-            this.name = deviceInfo.Name;
-
+            SerialNumber = DevicePath.Split('#')[2];
+            Name = deviceInfo.Name;
         }
 
         bool isOpen;
         public bool IsOpen { get { return isOpen; } }
 
-        private async void GetStrings()
-        {
-            using (var tempUsbDevice = await UsbDevice.FromIdAsync(DevicePath))
-            {
-                if (tempUsbDevice == null)
-                    return;
-                var buffer = new Windows.Storage.Streams.Buffer(64);
-                int length;
-                IBuffer responseBuffer;
-
-                UsbSetupPacket request = new UsbSetupPacket();
-                request.RequestType.Direction = UsbTransferDirection.In;
-                request.RequestType.Recipient = UsbControlRecipient.Device;
-                request.RequestType.ControlTransferType = UsbControlTransferType.Standard;
-
-                request.Index = 0;
-                request.Request = 6;
-                request.Length = 64;
-
-                // serial number
-                request.Value = 0x0303;
-                responseBuffer = await tempUsbDevice.SendControlInTransferAsync(request, buffer);
-                length = responseBuffer.GetByte(0);
-                try
-                {
-                    serialNumber = System.Text.Encoding.Unicode.GetString(responseBuffer.ToArray(2, length - 2), 0, length - 2);
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SerialNumber"));
-                }
-                catch { }
-                // device name
-                request.Value = 0x0304;
-                responseBuffer = await tempUsbDevice.SendControlInTransferAsync(request, buffer);
-                length = responseBuffer.GetByte(0);
-                try
-                {
-                    name = System.Text.Encoding.Unicode.GetString(responseBuffer.ToArray(2, length - 2), 0, length - 2);
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
-                }
-                catch { }
-            }
-        }
-
         public event PinEventData PinEventDataReceived;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string serialNumber;
-        public string SerialNumber
-        {
-            get
-            {
-                return serialNumber;
-            }
-        }
+        public string SerialNumber { get; private set; }
 
-        private string name;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-        }
+
+        public string Name { get; private set; }
+        
 
         UsbBulkInPipe pinEventPipe;
         UsbBulkInPipe peripheralInPipe;
@@ -173,30 +118,6 @@ namespace Treehopper
 
             // https://msdn.microsoft.com/en-us/library/windows/hardware/dn303346(v=vs.85).aspx
 
-            // Get the serial number
-            var buffer = new Windows.Storage.Streams.Buffer(64);
-            int length;
-            IBuffer responseBuffer;
-
-            UsbSetupPacket request = new UsbSetupPacket();
-            request.RequestType.Direction = UsbTransferDirection.In;
-            request.RequestType.Recipient = UsbControlRecipient.Device;
-            request.RequestType.ControlTransferType = UsbControlTransferType.Standard;
-
-            request.Index = 0;
-            request.Request = 6;
-            request.Length = 64;
-
-            //// serial number
-            //request.Value = 0x0303;
-            //responseBuffer = await usbDevice.SendControlInTransferAsync(request, buffer);
-            //length = responseBuffer.GetByte(0);
-            //try
-            //{
-            //    serialNumber = System.Text.Encoding.Unicode.GetString(responseBuffer.ToArray(2, length - 2), 0, length - 2);
-            //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SerialNumber"));
-            //}
-            //catch { }
             Version = (short)usbDevice.DeviceDescriptor.BcdDeviceRevision;
 
             pinConfigPipe = usbDevice.DefaultInterface.BulkOutPipes[0];
