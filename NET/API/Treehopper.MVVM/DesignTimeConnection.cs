@@ -44,6 +44,7 @@ namespace Treehopper
 
         public int UpdateRate { get; set; }
         
+        public short Version { get; set; }
 
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;

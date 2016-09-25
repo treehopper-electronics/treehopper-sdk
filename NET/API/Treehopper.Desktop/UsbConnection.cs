@@ -33,6 +33,7 @@ namespace Treehopper
             {
                 SerialNumber = device.Info.SerialString;
                 Name = device.Info.ProductString;
+                Version = device.Info.Descriptor.BcdDevice;
             }
         }
 
@@ -71,6 +72,8 @@ namespace Treehopper
                 updateDelay = (int)Math.Round(1000.0 / updateRate);
             }
         }
+
+        public short Version { get; set; }
 
         public void Close()
         {

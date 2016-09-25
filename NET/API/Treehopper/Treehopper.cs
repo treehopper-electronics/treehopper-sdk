@@ -303,6 +303,23 @@ namespace Treehopper
 			}
 		}
 
+
+        public string VersionString
+        {
+            get
+            {
+                return Utilities.BcdToString(connection.Version, 2);
+            }
+        }
+
+        public int Version
+        {
+            get
+            {
+                return Utilities.BcdToInt(connection.Version);
+            }
+        }
+
         /// <summary>
         /// This list contains all the pins that belong to the board. 
         /// </summary>

@@ -69,6 +69,8 @@ namespace Treehopper
             }
         }
 
+        public short Version { get; private set; }
+
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;
 
