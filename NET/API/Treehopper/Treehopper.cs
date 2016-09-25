@@ -165,7 +165,7 @@ namespace Treehopper
             // initialize pins
             for(int i=0;i<NumberOfPins;i++)
             {
-                Pins.Add(new Pin(this, 0));
+                Pins.Add(new Pin(this, (byte)i));
             }
 
             SoftPwmMgr = new SoftPwmManager(this);
