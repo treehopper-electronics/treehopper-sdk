@@ -13,9 +13,18 @@ namespace Treehopper.Mvvm.ViewModel
 {
     public class SelectorViewModel : SelectorViewModelBase
     {
-        public SelectorViewModel() : base(ConnectionService.Instance)
+        public SelectorViewModel(IConnectionService service) : base(service)
+        {
+            Application.Current.MainWindow.Closing += MainWindow_Closing; ;
+        }
+
+        public SelectorViewModel() : this(ConnectionService.Instance)
         {
 
+        }
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            WindowClosing.Execute(this);
         }
 
         protected override void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
