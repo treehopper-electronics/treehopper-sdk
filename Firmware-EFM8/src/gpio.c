@@ -9,31 +9,40 @@
 #include <SI_EFM8UB1_Register_Enums.h>
 
 SI_SEGMENT_VARIABLE(portBitNumber[],  static const uint8_t, SI_SEG_CODE) = {
-		0, // pin1
+		0, // pin0
 		1,
 		2,
 		3,
 		6,
 		4,
 		5,
-		7, // pin8
-		0, // pin9
+		7, // pin7
+		0, // pin8
 		1,
 		2,
 		3,
 		4,
 		5,
 		6,
-		7, // pin16
-		0, // pin17
-		1,
+		7, // pin15
+
+		// < Rev A2
+		3, // pin16
 		2,
-		3,
+		1,
+		0,
+
+		// > Rev A2
+		// 0, // pin16
+		// 1,
+		// 2,
+		// 3
 };
 
 void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull)
 {
 	uint8_t portBit = portBitNumber[pinNumber];
+	uint8_t SFRPAGE_save = SFRPAGE;
 	SFRPAGE = 0;
 	if(pinNumber < 8)
 	{
@@ -59,34 +68,51 @@ void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull)
 		else
 			P2MDOUT &= ~(1 << portBit);
 	}
+	SFRPAGE = SFRPAGE_save;
 }
 
-void GPIO_MakeInput(uint8_t pinNumber)
+void GPIO_MakeInput(uint8_t pinNumber, uint8_t digital)
 {
 	uint8_t portBit = portBitNumber[pinNumber];
+	uint8_t SFRPAGE_save = SFRPAGE;
 	SFRPAGE = 0;
 	if(pinNumber < 8)
 	{
 
 		P0SKIP |= 1 << portBit;
-		P0MDIN |= 1 << portBit;
+		if(digital) {
+			P0MDIN |= 1 << portBit;
+			P0 |= 1 << portBit;
+		} else {
+			P0MDIN &= ~(1 << portBit);
+		}
 		P0MDOUT &= ~(1 << portBit);
-		P0 |= 1 << portBit;
 	}
 	else if(pinNumber < 16)
 	{
 		P1SKIP |= 1 << portBit;
-		P1MDIN |= 1 << portBit;
+		if(digital) {
+			P1MDIN |= 1 << portBit;
+			P1 |= 1 << portBit;
+		} else {
+			P1MDIN &= ~(1 << portBit);
+		}
 		P1MDOUT &= ~(1 << portBit);
-		P1 |= 1 << portBit;
 	}
 	else
 	{
+		SFRPAGE = 0x20;
 		P2SKIP |= 1 << portBit;
-		P2MDIN |= 1 << portBit;
+		if(digital)
+		{
+			P2MDIN |= 1 << portBit;
+			P2 |= 1 << portBit;
+		} else {
+			P2MDIN &= ~(1 << portBit);
+		}
 		P2MDOUT &= ~(1 << portBit);
-		P2 |= 1 << portBit;
 	}
+	SFRPAGE = SFRPAGE_save;
 }
 
 void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType)
