@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\API\Treehopper.Desktop\Treehopper.Desktop.csproj">
+      <Project>{8c1a6bb5-a978-4582-834c-16a37a3b5484}</Project>
+      <Name>Treehopper.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
