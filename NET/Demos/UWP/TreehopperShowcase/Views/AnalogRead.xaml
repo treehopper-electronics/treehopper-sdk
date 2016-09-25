@@ -81,16 +81,13 @@
                     <DataTemplate x:DataType="treehopper:Pin">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="30" />
                                 <ColumnDefinition Width="400" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Pin " />
-                            <TextBlock Grid.Column="1" Text="{x:Bind PinNumber}" />
-
-                            <ProgressBar Grid.Column="2" Value="{x:Bind AdcValue, Mode=OneWay}" Maximum="4096" />
-                            <TextBlock Grid.Column="3" Text="{x:Bind AnalogVoltage, Mode=OneWay}" Margin="10,0,0,0" />
+                            <TextBlock Grid.Column="0" Text="{x:Bind PinNumber}" />
+                            <ProgressBar Grid.Column="1" Value="{x:Bind AdcValue, Mode=OneWay}" Maximum="4096" />
+                            <TextBlock Grid.Column="2" Text="{x:Bind AnalogVoltage, Mode=OneWay}" Margin="10,0,0,0" />
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

@@ -425,16 +425,31 @@ namespace Treehopper
 			//this.IsConnected = false;
 		}
 
-        public void CreateAnalogDemoData()
+
+
+        public void GenerateAnalogDemoData()
         {
             int i = 512;
-            foreach(Pin pin in Pins)
+            foreach (Pin pin in Pins)
             {
                 pin.Mode = PinMode.AnalogInput;
-                pin.UpdateValue((byte)(i>>8), (byte)i);
+                pin.UpdateValue((byte)(i >> 8), (byte)i);
                 i += 512;
             }
         }
+
+        public void GenerateDigitalTestData()
+        {
+            byte i = 0;
+            foreach (Pin pin in Pins)
+            {
+                pin.Mode = PinMode.DigitalInput;
+                pin.UpdateValue(0x01, 0x00);
+                i ^= 0x01;
+            }
+        }
+
+
 
         /// <summary>
         /// Close device connection and free memory. 
