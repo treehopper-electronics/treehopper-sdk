@@ -91,19 +91,13 @@ namespace Treehopper.Mvvm.ViewModel
 
         private void WindowClosingExecute()
         {
-
+            CloseCommand.Execute(this);
+            if (SelectedBoard != null)
+                SelectedBoard.Dispose();
         }
 
         // If the collection changed, we may have lost our board
         protected abstract void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
-
-
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            CloseCommandExecute();
-            if (SelectedBoard != null)
-                SelectedBoard.Dispose();
-        }
 
         private bool CloseCommandCanExecute()
         {
