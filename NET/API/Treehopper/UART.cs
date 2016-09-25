@@ -1,7 +1,5 @@
-﻿
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using Nito.AsyncEx;
 using System.Collections.Generic;
 
 namespace Treehopper

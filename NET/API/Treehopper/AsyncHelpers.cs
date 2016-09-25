@@ -3,128 +3,83 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-public static class AsyncHelpers
+namespace Treehopper
 {
-    /// <summary>
-    /// Execute's an async Task<T> method which has a void return value synchronously
-    /// </summary>
-    /// <param name="task">Task<T> method to execute</param>
-    public static void RunSync(Func<Task> task)
+    // from https://blogs.msdn.microsoft.com/pfxteam/2012/02/12/building-async-coordination-primitives-part-6-asynclock/
+    public class AsyncSemaphore
     {
-        var oldContext = SynchronizationContext.Current;
-        var synch = new ExclusiveSynchronizationContext();
-        SynchronizationContext.SetSynchronizationContext(synch);
-        synch.Post(async _ =>
+        private readonly static Task s_completed = Task.FromResult(true);
+        private readonly Queue<TaskCompletionSource<bool>> m_waiters = new Queue<TaskCompletionSource<bool>>();
+        private int m_currentCount;
+        public AsyncSemaphore(int initialCount)
         {
-            try
-            {
-                await task();
-            }
-            catch (Exception e)
-            {
-                synch.InnerException = e;
-                throw;
-            }
-            finally
-            {
-                synch.EndMessageLoop();
-            }
-        }, null);
-        synch.BeginMessageLoop();
-
-        SynchronizationContext.SetSynchronizationContext(oldContext);
-    }
-
-    /// <summary>
-    /// Execute's an async Task<T> method which has a T return type synchronously
-    /// </summary>
-    /// <typeparam name="T">Return Type</typeparam>
-    /// <param name="task">Task<T> method to execute</param>
-    /// <returns></returns>
-    public static T RunSync<T>(Func<Task<T>> task)
-    {
-        var oldContext = SynchronizationContext.Current;
-        var synch = new ExclusiveSynchronizationContext();
-        SynchronizationContext.SetSynchronizationContext(synch);
-        T ret = default(T);
-        synch.Post(async _ =>
-        {
-            try
-            {
-                ret = await task();
-            }
-            catch (Exception e)
-            {
-                synch.InnerException = e;
-                throw;
-            }
-            finally
-            {
-                synch.EndMessageLoop();
-            }
-        }, null);
-        synch.BeginMessageLoop();
-        SynchronizationContext.SetSynchronizationContext(oldContext);
-        return ret;
-    }
-
-    private class ExclusiveSynchronizationContext : SynchronizationContext
-    {
-        private bool done;
-        public Exception InnerException { get; set; }
-        readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(false);
-        readonly Queue<Tuple<SendOrPostCallback, object>> items =
-            new Queue<Tuple<SendOrPostCallback, object>>();
-
-        public override void Send(SendOrPostCallback d, object state)
-        {
-            throw new NotSupportedException("We cannot send to our same thread");
+            if (initialCount < 0) throw new ArgumentOutOfRangeException("initialCount");
+            m_currentCount = initialCount;
         }
-
-        public override void Post(SendOrPostCallback d, object state)
+        public Task WaitAsync()
         {
-            lock (items)
+            lock (m_waiters)
             {
-                items.Enqueue(Tuple.Create(d, state));
-            }
-            workItemsWaiting.Set();
-        }
-
-        public void EndMessageLoop()
-        {
-            Post(_ => done = true, null);
-        }
-
-        public void BeginMessageLoop()
-        {
-            while (!done)
-            {
-                Tuple<SendOrPostCallback, object> task = null;
-                lock (items)
+                if (m_currentCount > 0)
                 {
-                    if (items.Count > 0)
-                    {
-                        task = items.Dequeue();
-                    }
-                }
-                if (task != null)
-                {
-                    task.Item1(task.Item2);
-                    if (InnerException != null) // the method threw an exeption
-                    {
-                        throw new AggregateException("AsyncHelpers.Run method threw an exception.", InnerException);
-                    }
+                    --m_currentCount;
+                    return s_completed;
                 }
                 else
                 {
-                    workItemsWaiting.WaitOne();
+                    var waiter = new TaskCompletionSource<bool>();
+                    m_waiters.Enqueue(waiter);
+                    return waiter.Task;
                 }
             }
         }
-
-        public override SynchronizationContext CreateCopy()
+        public void Release()
         {
-            return this;
+            TaskCompletionSource<bool> toRelease = null;
+            lock (m_waiters)
+            {
+                if (m_waiters.Count > 0)
+                    toRelease = m_waiters.Dequeue();
+                else
+                    ++m_currentCount;
+            }
+            if (toRelease != null)
+                toRelease.SetResult(true);
         }
     }
+
+    public class AsyncLock
+    {
+        private readonly AsyncSemaphore m_semaphore;
+        private readonly Task<Releaser> m_releaser;
+        public AsyncLock()
+        {
+            m_semaphore = new AsyncSemaphore(1);
+            m_releaser = Task.FromResult(new Releaser(this));
+        }
+        public Task<Releaser> LockAsync()
+        {
+            var wait = m_semaphore.WaitAsync();
+            return wait.IsCompleted ?
+                m_releaser :
+                wait.ContinueWith((_, state) => new Releaser((AsyncLock)state),
+                    this, CancellationToken.None,
+                    TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+        }
+
+        public struct Releaser : IDisposable
+        {
+            private readonly AsyncLock m_toRelease;
+
+            internal Releaser(AsyncLock toRelease) { m_toRelease = toRelease; }
+
+            public void Dispose()
+            {
+                if (m_toRelease != null)
+                    m_toRelease.m_semaphore.Release();
+            }
+        }
+    }
+
+
 }

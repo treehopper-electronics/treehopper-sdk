@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using Treehopper;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Nito.AsyncEx;
 
 namespace Treehopper
 {
