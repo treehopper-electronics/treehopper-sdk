@@ -54,7 +54,9 @@ namespace Treehopper.Libraries
 
         public TSL2591(I2c I2cModule) : base(0x29, I2cModule, 100)
         {
-            byte retVal = AsyncHelpers.RunSync<byte>(() => ReadByteData(CommandBit | (byte)Registers.DeviceId));
+            var t = ReadByteData(CommandBit | (byte)Registers.DeviceId);
+            t.Wait();
+            byte retVal = t.Result;
             if(retVal != 0x50)
             {
                 throw new Exception("TSL2591 not found on bus. Check your connections");
@@ -72,7 +74,7 @@ namespace Treehopper.Libraries
                 if (integrationTime == value)
                     return;
                 integrationTime = value;
-                AsyncHelpers.RunSync(() => sendConfig());
+                sendConfig().Wait();
             }
         }
 
@@ -88,7 +90,7 @@ namespace Treehopper.Libraries
                 if (gain == value)
                     return;
                 gain = value;
-                AsyncHelpers.RunSync(() => sendConfig());
+                sendConfig().Wait();
             }
         }
 

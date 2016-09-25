@@ -28,7 +28,7 @@ namespace Demo
             while(true)
             {
                 Console.Write("Waiting for board...");
-                board = await ConnectionService.Instance.First();
+                board = await ConnectionService.Instance.GetFirstDeviceAsync();
                 Console.WriteLine("Board Found! Serial: "+board.SerialNumber+".");
                 Console.Write("Connecting...");
                 await board.ConnectAsync();

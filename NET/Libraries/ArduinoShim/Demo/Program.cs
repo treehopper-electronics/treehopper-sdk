@@ -16,7 +16,7 @@ namespace Demo
 
         static async Task App()
         {
-            var board = await ConnectionService.Instance.First();
+            var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             var blinkSketch = new Blink(board);
             blinkSketch.Serial.WriteRequested += (msg) => Console.Write(msg); // if we want Serial.write() to print to our screen, we do this
             blinkSketch.Run();

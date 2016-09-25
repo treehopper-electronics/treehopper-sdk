@@ -34,7 +34,7 @@ namespace Blink
             {
                 Console.Write("Waiting for board...");
                 // Get a reference to the first TreehopperUsb board connected. This will await indefinitely until a board is connected.
-                TreehopperUsb Board = await ConnectionService.Instance.First();
+                TreehopperUsb Board = await ConnectionService.Instance.GetFirstDeviceAsync();
                 Console.WriteLine("Found board: " + Board);
 
                 // You must explicitly open a board before communicating with it

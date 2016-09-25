@@ -20,12 +20,12 @@ namespace Treehopper.Libraries
         static async void RunApp()
         {
             Console.Write("Starting Ds18b20 temperature sensor demo...");
-            board = await ConnectionService.Instance.First();
+            board = await ConnectionService.Instance.GetFirstDeviceAsync();
             Console.WriteLine("Found board: " + board);
             await board.ConnectAsync();
-            await DS18B20.FindAll(board);
+            await Ds18b20.FindAll(board.Uart);
             Console.WriteLine("Found temperature sensors at addresses:");
-            foreach(var addr in DS18B20.AddressList)
+            foreach(var addr in Ds18b20.AddressList)
             {
                 Console.WriteLine(addr);
             }
@@ -35,10 +35,10 @@ namespace Treehopper.Libraries
                 try
                 {
                     Console.WriteLine("Collecting readings... (press any key to exit)");
-                    Dictionary<ulong, double> temps = await DS18B20.GetAllTemperatures(board);
+                    Dictionary<ulong, double> temps = await Ds18b20.GetAllTemperatures(board.Uart);
                     foreach (KeyValuePair<ulong, double> item in temps)
                     {
-                        Console.WriteLine(String.Format("Sensor {0} reports a temperature of {1} °C ({2} °F)", item.Key, item.Value, DS18B20.CelsiusToFahrenheit(item.Value)));
+                        Console.WriteLine(String.Format("Sensor {0} reports a temperature of {1} °C ({2} °F)", item.Key, item.Value, Ds18b20.CelsiusToFahrenheit(item.Value)));
                     }
                     Console.WriteLine("\n");
                 } catch(Exception ex)

@@ -40,7 +40,7 @@ namespace TreehopperShowcase.ViewModels
                 Set(ref selectedBoard, value);
                 if(selectedBoard != null)
                 {
-                    AsyncHelpers.RunSync(() => selectedBoard.ConnectAsync());
+                    selectedBoard.ConnectAsync().Wait();
                     NewName = selectedBoard.Name;
                     RaisePropertyChanged("UpdateName");
                     RaisePropertyChanged("GenerateSerial");

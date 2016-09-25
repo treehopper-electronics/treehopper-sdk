@@ -59,8 +59,8 @@
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\library\Library.csproj">
-      <Project>{75291C29-5A64-4618-9A64-CCE7653E7738}</Project>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{339fe595-2efe-4759-904c-7579397b4b10}</Project>
       <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
