@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Treehopper.WPF.View
+namespace Treehopper.Mvvm.Views
 {
     /// <summary>
     /// Interaction logic for TreehopperSelectorView.xaml
     /// </summary>
-    public partial class TreehopperSelectorView : UserControl
+    public partial class SelectorView : UserControl
     {
-        public TreehopperSelectorView()
+        public SelectorView()
         {
             InitializeComponent();
         }

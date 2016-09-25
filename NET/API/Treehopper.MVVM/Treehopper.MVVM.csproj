@@ -39,8 +39,9 @@
     <Compile Include="Messages\BoardConnectedMessage.cs" />
     <Compile Include="Messages\BoardDisconnectedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\ITreehopperSelectorViewModel.cs" />
-    <Compile Include="ViewModels\TreehopperSelectorDesignTimeViewModel.cs" />
+    <Compile Include="ViewModels\ISelectorViewModel.cs" />
+    <Compile Include="ViewModels\SelectorDesignTimeViewModel.cs" />
+    <Compile Include="ViewModels\SelectorViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
