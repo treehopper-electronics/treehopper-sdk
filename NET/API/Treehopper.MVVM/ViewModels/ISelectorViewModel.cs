@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Treehopper.Mvvm.ViewModel
 {
-    public interface ITreehopperSelectorViewModel : INotifyPropertyChanged
+    public interface ISelectorViewModel : INotifyPropertyChanged
     {
         ObservableCollection<TreehopperUsb> Boards { get; }
         bool CanChangeBoardSelection { get; set; }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Treehopper.WPF.View.TreehopperSelectorView"
+﻿<UserControl x:Class="Treehopper.Mvvm.Views.SelectorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,7 +15,7 @@
             </i:EventTrigger>
         </i:Interaction.Triggers>
         <DockPanel.DataContext>
-            <vm:TreehopperSelectorViewModel />
+            <vm:SelectorViewModel />
         </DockPanel.DataContext>
         <Button DockPanel.Dock="Right" Command="{Binding ConnectCommand}" Content="{Binding Path=ConnectButtonText}" />
         <ComboBox DockPanel.Dock="Left" ItemsSource="{Binding Path=Boards}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedBoard}" IsEnabled="{Binding CanChangeBoardSelection}" />

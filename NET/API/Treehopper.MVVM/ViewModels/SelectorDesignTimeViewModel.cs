@@ -9,12 +9,15 @@ using Treehopper.Mvvm.Messages;
 
 namespace Treehopper.Mvvm.ViewModel
 {
-    public class TreehopperSelectorViewModel : ViewModelBase
+    public class SelectorDesignTimeViewModel : ViewModelBase, ISelectorViewModel
     {
+        private IConnectionService connectionService = new DesignTimeConnectionService();
+
         /// <summary>
         /// Bind to this property to get an updated list of boards
         /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get { return ConnectionService.Instance.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards => connectionService.Boards;
+
         /// <summary>
         /// Bind the IsEnabled property of your control to this property to prevent changing the selected board once it's connected.
         /// </summary>
@@ -30,7 +33,11 @@ namespace Treehopper.Mvvm.ViewModel
             }
             set
             {
+                if (selectedBoard == value)
+                    return;
+
                 selectedBoard = value;
+                RaisePropertyChanged("SelectedBoard");
                 if(selectedBoard != null)
                     ConnectCommand.RaiseCanExecuteChanged();
                 else
@@ -63,7 +70,7 @@ namespace Treehopper.Mvvm.ViewModel
 
         //private TreehopperManager manager;
 
-        public TreehopperSelectorViewModel()
+        public SelectorDesignTimeViewModel()
         {
             //manager = new TreehopperManager();
             ConnectButtonText = "Connect";
@@ -72,9 +79,12 @@ namespace Treehopper.Mvvm.ViewModel
             CloseCommand = new RelayCommand(CloseCommandExecute, CloseCommandCanExecute);
             WindowClosing = new RelayCommand(WindowClosingExecute);
             // This allows us to automatically close the device when the window closes
-            Application.Current.MainWindow.Closing += MainWindow_Closing;
+            //Application.Current.MainWindow.Closing += MainWindow_Closing;
 
             Boards.CollectionChanged += Boards_CollectionChanged;
+
+            SelectedBoard = Boards[0];
+            Connect();
         }
 
         private void WindowClosingExecute()
