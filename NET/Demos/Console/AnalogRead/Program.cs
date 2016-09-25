@@ -15,7 +15,7 @@ namespace Treehopper.Demos.AnalogRead
         static async void Connect()
         {
             Console.Write("Waiting for board to be connected...");
-            board = await ConnectionService.Instance.First();
+            board = await ConnectionService.Instance.GetFirstDeviceAsync();
             Console.WriteLine("Board found:" + board);
             await board.ConnectAsync();
 

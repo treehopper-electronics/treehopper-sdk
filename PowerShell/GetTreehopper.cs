@@ -32,7 +32,7 @@ namespace Treehopper.PS
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            service.First().Wait();
+            service.GetFirstDeviceAsync().Wait();
         }
 
         protected override void ProcessRecord()

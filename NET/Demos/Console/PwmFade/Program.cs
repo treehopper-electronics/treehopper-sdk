@@ -15,7 +15,7 @@ namespace PwmFade
         static async void RunApp()
 		{
             Console.Write("Waiting for board to be connected...");
-            TreehopperUsb board = await ConnectionService.Instance.First();
+            TreehopperUsb board = await ConnectionService.Instance.GetFirstDeviceAsync();
 			Console.WriteLine("Board found:" + board);
             await board.ConnectAsync();
             board.Pwm1.Enabled = true;
