@@ -8,29 +8,38 @@
 #include "adc.h"
 #include <SI_EFM8UB1_Register_Enums.h>
 #include "treehopper.h"
-SI_SEGMENT_VARIABLE(referenceLevels[TREEHOPPER_NUM_PINS+1], AdcReferenceLevel_t, SI_SEG_XDATA);
-SI_SEGMENT_VARIABLE(adcMxVal[],  static const uint8_t, SI_SEG_CODE) = {
-		0,
-		0, // pin1
-		1,
-		2,
-		3,
-		6,
-		4,
-		5,
-		7, // pin8
-		8, // pin9
-		9,
-		10,
-		11,
-		12,
-		13,
-		14,
-		15, // pin16
-		20, // pin17
-		21,
-		22,
-		23,
+#include "gpio.h"
+
+SI_SEGMENT_VARIABLE(referenceLevels[TREEHOPPER_NUM_PINS], AdcReferenceLevel_t,
+		SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE(adcMxVal[], static const uint8_t, SI_SEG_CODE) = {
+	0, // pin0
+	1,
+	2,
+	3,
+	6,
+	4,
+	5,
+	7,// pin7
+	8,// pin8
+	9,
+	10,
+	11,
+	12,
+	13,
+	14,
+	15,// pin15
+
+	// Rev < A2
+	23,// pin16
+	22,
+	21,
+	20,
+	// Rev > A2
+//		20, // pin16
+//		21,
+//		22,
+//		23,
 };
 void ADC_Init()
 {
@@ -42,22 +51,7 @@ void ADC_Enable(uint8_t pinNumber, AdcReferenceLevel_t referenceLevel)
 	uint8_t SFRPAGE_save = SFRPAGE;
 	SFRPAGE = 0x00;
 	referenceLevels[pinNumber] = referenceLevel;
-	if(pinNumber < 9)
-	{
-		P0SKIP |= 1 << (pinNumber-1);
-		P0MDIN &= ~(1 << (pinNumber-1));
-		P0 |= 1 << (pinNumber-1);
-	}
-	else if(pinNumber < 17)
-	{
-		P1SKIP |= 1 << (pinNumber-9);
-		P1MDIN &= ~(1 << (pinNumber-9));
-		P1 |= 1 << (pinNumber-9);
-	} else {
-		P2SKIP |= 1 << (pinNumber-17);
-		P2MDIN &= ~(1 << (pinNumber-17));
-		P2 |= 1 << (pinNumber-17);
-	}
+	GPIO_MakeInput(pinNumber, false);
 	SFRPAGE = SFRPAGE_save;
 }
 
