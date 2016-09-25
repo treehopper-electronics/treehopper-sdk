@@ -36,6 +36,7 @@ namespace Blink
 
                 TreehopperUsb Board = await ConnectionService.Instance.GetFirstDeviceAsync();
                 Console.WriteLine("Found board: " + Board);
+                Console.WriteLine("Version: " + Board.Version);
 
                 // You must explicitly open a board before communicating with it
                 await Board.ConnectAsync();
