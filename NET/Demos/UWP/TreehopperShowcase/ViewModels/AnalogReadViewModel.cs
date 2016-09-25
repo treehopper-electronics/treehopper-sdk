@@ -18,30 +18,29 @@ namespace TreehopperShowcase.ViewModels
         public ISelectorViewModel Selector { get; set; }
         public AnalogReadViewModel()
         {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                Selector = new SelectorDesignTimeViewModel();
-                Board = DesignTimeConnectionService.Instance.Boards[0];
-                Board.CreateAnalogDemoData();
-                RaisePropertyChanged("Board");
-            } else
-            {
-                Selector = new SelectorViewModel();
-            }
 
-            Messenger.Default.Register<BoardConnectedMessage>(this, 
-            (msg) => 
+            Messenger.Default.Register<BoardConnectedMessage>(this,
+            (msg) =>
             {
                 Board = msg.Board;
                 RaisePropertyChanged("Board");
                 Start();
             });
 
-            Messenger.Default.Register<BoardDisconnectedMessage>(this, 
-                (msg) => 
+            Messenger.Default.Register<BoardDisconnectedMessage>(this,
+                (msg) =>
                 {
                     Stop();
                 });
+
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                Selector = new SelectorDesignTimeViewModel(true, DesignTimeTestData.Analog);
+            } else
+            {
+                Selector = new SelectorViewModel();
+            }
+
         }
 
         bool IsRunning = false;
