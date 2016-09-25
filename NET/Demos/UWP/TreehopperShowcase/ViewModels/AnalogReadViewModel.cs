@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Treehopper;
 using Treehopper.Mvvm.Messages;
 using System.Diagnostics;
+using Treehopper.Mvvm.ViewModel;
 
 namespace TreehopperShowcase.ViewModels
 {
@@ -14,15 +15,21 @@ namespace TreehopperShowcase.ViewModels
     {
         public TreehopperUsb Board { get; set; }
 
+        public ISelectorViewModel Selector { get; set; }
         public AnalogReadViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
+                Selector = new SelectorDesignTimeViewModel();
                 Board = DesignTimeConnectionService.Instance.Boards[0];
                 Board.CreateAnalogDemoData();
                 RaisePropertyChanged("Board");
+            } else
+            {
+                Selector = new SelectorViewModel();
             }
-                Messenger.Default.Register<BoardConnectedMessage>(this, 
+
+            Messenger.Default.Register<BoardConnectedMessage>(this, 
             (msg) => 
             {
                 Board = msg.Board;
