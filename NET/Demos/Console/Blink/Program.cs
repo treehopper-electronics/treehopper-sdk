@@ -24,8 +24,6 @@ namespace Blink
 
         static async Task RunBlink()
         {
-            Utilities.Map(1, 5, 3, 2, 5);
-
             while (true)
             {
                 Console.Write("Waiting for board...");
