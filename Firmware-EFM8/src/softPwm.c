@@ -17,12 +17,11 @@ static SI_SEGMENT_VARIABLE(newConfig[TREEHOPPER_NUM_PINS], softPwmPinConfig_t, S
 uint8_t currentNumConfigs = 0;
 uint8_t newNumConfigs = 0;
 
-uint8_t currentConfigIdx  = 0;
+uint8_t currentConfigIdx = 0;
 
 volatile bit lock = false;
 bit isRunning = false;
-void SoftPwm_Init()
-{
+void SoftPwm_Init() {
 #ifdef DEBUG_SOFTPWM
 	GPIO_MakeOutput(9, PushPullOutput);
 	GPIO_MakeOutput(7, PushPullOutput);
@@ -33,27 +32,24 @@ void SoftPwm_Init()
 //		SoftPwm_Test();
 }
 
-
 bit shouldReload = false;
 
-void loadNewConfig()
-{
+void loadNewConfig() {
 	currentNumConfigs = newNumConfigs;
-	memcpy(currentConfig, newConfig, newNumConfigs * sizeof(softPwmPinConfig_t));
+	memcpy(currentConfig, newConfig,
+			newNumConfigs * sizeof(softPwmPinConfig_t));
 }
 
-void SoftPwm_SetConfig(softPwmPinConfig_t* config, uint8_t len)
-{
+void SoftPwm_SetConfig(softPwmPinConfig_t* config, uint8_t len) {
 #ifdef DEBUG_SOFTPWM
 	PIN7 = true; // use pin9 to test the interrupt speed
 #endif
 
-	if(len > TREEHOPPER_NUM_PINS) // sanity check to prevent bad memory copying
+	if (len > TREEHOPPER_NUM_PINS) // sanity check to prevent bad memory copying
 		return;
 
 	SFRPAGE = 0x10;
-	if(len == 0)
-	{
+	if (len == 0) {
 		TMR3 = 0x0000;
 		isRunning = false;
 //		TMR3CN0 &= ~(TMR3CN0_TR3__RUN);
@@ -63,10 +59,7 @@ void SoftPwm_SetConfig(softPwmPinConfig_t* config, uint8_t len)
 		memcpy(newConfig, config, len * sizeof(softPwmPinConfig_t));
 		newNumConfigs = len;
 
-
-
-		if(!isRunning)
-		{
+		if (!isRunning) {
 			loadNewConfig(); // we're not running so we can force a reload now
 			currentConfigIdx = 0; // reset the index
 			// we weren't running before
@@ -81,57 +74,49 @@ void SoftPwm_SetConfig(softPwmPinConfig_t* config, uint8_t len)
 //		}
 	}
 
-
 #ifdef DEBUG_SOFTPWM
 	PIN7 = false; // use pin9 to test the interrupt speed
 #endif
 
 }
 
-void SoftPwm_Task()
-{
+void SoftPwm_Task() {
 	uint8_t i;
 #ifdef DEBUG_SOFTPWM
-		PIN9 = true; // use pin9 to test the interrupt speed
+	PIN9 = true; // use pin9 to test the interrupt speed
 #endif
-		if(!isRunning)
-			return;
+	if (!isRunning)
+		return;
 
-		if(currentConfigIdx == 0) // we're at the first state, so set all pins high
-		{
-			for(i=1;i<currentNumConfigs;i++)
+	if (currentConfigIdx == 0) // we're at the first state, so set all pins high
 			{
-				GPIO_WriteValue(currentConfig[i].pinNumber, true);
-			}
-		} else {
-			GPIO_WriteValue(currentConfig[currentConfigIdx].pinNumber, false);
+		for (i = 1; i < currentNumConfigs; i++) {
+			GPIO_WriteValue(currentConfig[i].pinNumber, true);
+		}
+	} else {
+		GPIO_WriteValue(currentConfig[currentConfigIdx].pinNumber, false);
+	}
+
+	SFRPAGE = 0x00;
+	TMR3 = currentConfig[currentConfigIdx].nextTmrVal;
+
+	currentConfigIdx++;
+
+	if (currentConfigIdx == currentNumConfigs) {
+		if (!lock) // reload if we can, otherwise, wait until next time
+		{
+			loadNewConfig();
 		}
 
-		SFRPAGE = 0x00;
-		TMR3 = currentConfig[currentConfigIdx].nextTmrVal;
-
-		currentConfigIdx++;
-
-		if(currentConfigIdx == currentNumConfigs)
-		{
-			if(!lock) // reload if we can, otherwise, wait until next time
-			{
-				loadNewConfig();
-			}
-
-			currentConfigIdx = 0;
-		}
-
-
-
+		currentConfigIdx = 0;
+	}
 
 #ifdef DEBUG_SOFTPWM
 	PIN9 = false; // use pin9 to test the interrupt speed
 #endif
 }
 
-void SoftPwm_Test()
-{
+void SoftPwm_Test() {
 	softPwmPinConfig_t testConfig[3];
 
 	GPIO_MakeOutput(1, PushPullOutput);
@@ -148,7 +133,6 @@ void SoftPwm_Test()
 
 	SoftPwm_SetConfig(&testConfig, 3);
 }
-
 
 //#include "softPwm.h"
 //#include "gpio.h"

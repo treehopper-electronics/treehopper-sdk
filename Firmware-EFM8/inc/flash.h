@@ -7,7 +7,6 @@
 #ifndef __FLASH_H__
 #define __FLASH_H__
 
-
 /**************************************************************************//**
  * Erase the flash page the contains the specified address.
  *

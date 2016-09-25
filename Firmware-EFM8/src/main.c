@@ -35,25 +35,23 @@
 // for details.
 //
 //-----------------------------------------------------------------------------
-int16_t main(void)
-{
+int16_t main(void) {
 //  serialNumber_init();
-  enter_DefaultMode_from_RESET();
+	enter_DefaultMode_from_RESET();
 
-  LED_Init();
-  SPI_Disable();
-  UART_Disable();
-  I2C_Disable();
-  PWM_Disable();
+	LED_Init();
+	SPI_Disable();
+	UART_Disable();
+	I2C_Disable();
+	PWM_Disable();
 
-  Treehopper_Init();
+	Treehopper_Init();
 
-  SoftPwm_Init();
+	SoftPwm_Init();
 //  ServoController_Init();
 
-  while(1)
-  {
-	  Treehopper_Task();
-  }
+	while (1) {
+		Treehopper_Task();
+	}
 
 }

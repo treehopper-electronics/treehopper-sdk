@@ -11,16 +11,11 @@
 #include "stdint.h"
 
 typedef enum {
-	UART_DISABLED,
-	UART_STANDARD,
-	UART_ONEWIRE
+	UART_DISABLED, UART_STANDARD, UART_ONEWIRE
 } UartConfiguration_t;
 
 typedef enum {
-	UART_CMD_TX,
-	UART_CMD_RX,
-	UART_CMD_ONEWIRE_RESET,
-	UART_CMD_ONEWIRE_SEARCH
+	UART_CMD_TX, UART_CMD_RX, UART_CMD_ONEWIRE_RESET, UART_CMD_ONEWIRE_SEARCH
 } UartCmd_t;
 
 typedef struct {
@@ -29,7 +24,6 @@ typedef struct {
 	uint8_t usePrescaler;
 	uint8_t useOpenDrain;
 } UartConfigData_t;
-
 
 void UART_Init();
 void UART_SetConfig(UartConfigData_t* config);

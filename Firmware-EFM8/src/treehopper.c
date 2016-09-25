@@ -25,12 +25,12 @@ volatile bit PeripheralConfigPacketReady;
 volatile bit PinConfigPacketReady;
 volatile bit SendPinStatusPacket;
 
-SI_SEGMENT_VARIABLE(Treehopper_ReportData[64], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE( Treehopper_ReportData[64], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA);
-SI_SEGMENT_VARIABLE(Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE( Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
 
-SI_SEGMENT_VARIABLE(Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
-SI_SEGMENT_VARIABLE(Treehopper_RxBuffer[255], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE( Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE( Treehopper_RxBuffer[255], uint8_t, SI_SEG_XDATA);
 
 // PROTOTYPES
 void ProcessPeripheralConfigPacket();
@@ -38,70 +38,61 @@ void ProcessPinConfigPacket();
 void SendPinStatus();
 
 // LOCALS
-uint8_t pins[21];
+uint8_t pins[TREEHOPPER_NUM_PINS];
 
-void Treehopper_Init()
-{
-	  memset(&Treehopper_ReportData, 0, 64);
+void Treehopper_Init() {
+	memset(&Treehopper_ReportData, 0, 64);
 }
 
-void Treehopper_Task()
-{
-	if(PinConfigPacketReady)
-	{
+void Treehopper_Task() {
+	if (PinConfigPacketReady) {
 		ProcessPinConfigPacket();
 		PinConfigPacketReady = false;
 	}
-	if(PeripheralConfigPacketReady)
-	{
+	if (PeripheralConfigPacketReady) {
 		ProcessPeripheralConfigPacket();
 		PeripheralConfigPacketReady = false;
 	}
 
-	if(SendPinStatusPacket)
-	{
+	if (SendPinStatusPacket) {
 		SendPinStatus();
 		SendPinStatusPacket = false;
 	}
 }
 
-void SendPinStatus()
-{
+void SendPinStatus() {
 	uint8_t i = 0;
 	uint16_t val;
 	Treehopper_ReportData[0] = DeviceResponse_CurrentReadings;
-	for(i=0;i<20;i++)
-	{
-		switch (pins[i+1])
-		{
-			case DigitalInput:
-				Treehopper_ReportData[i * 2 + 1] = GPIO_ReadValue(i+1);
-				Treehopper_ReportData[i * 2 + 2] = 0;
-				break;
-			case AnalogInput:
-				val = ADC_GetVal(i+1);
-				Treehopper_ReportData[i * 2 + 1] = val >> 8;
-				Treehopper_ReportData[i * 2 + 2] = val & 0xFF;
-				break;
-			default:
-				Treehopper_ReportData[i * 2 + 1] = 0;
-				Treehopper_ReportData[i * 2 + 2] = 0;
+	for (i = 0; i < 20; i++) {
+		switch (pins[i]) {
+		case DigitalInput:
+			Treehopper_ReportData[i * 2 + 1] = GPIO_ReadValue(i);
+			Treehopper_ReportData[i * 2 + 2] = 0;
+			break;
+		case AnalogInput:
+			val = ADC_GetVal(i);
+			Treehopper_ReportData[i * 2 + 1] = val >> 8;
+			Treehopper_ReportData[i * 2 + 2] = val & 0xFF;
+			break;
+		default:
+			Treehopper_ReportData[i * 2 + 1] = 0;
+			Treehopper_ReportData[i * 2 + 2] = 0;
 		}
 	}
 	USBD_Write(EP1IN, &Treehopper_ReportData, 64, true);
 }
 
-void ProcessPinConfigPacket()
-{
-	switch(Treehopper_PinConfig.PinCommand)
-	{
+void ProcessPinConfigPacket() {
+	switch (Treehopper_PinConfig.PinCommand) {
 	case PinConfig_MakeDigitalInput:
 		pins[Treehopper_PinConfig.PinNumber] = DigitalInput;
-		GPIO_MakeInput(Treehopper_PinConfig.PinNumber);
+		GPIO_MakeInput(Treehopper_PinConfig.PinNumber, true);
 		break;
 	case PinConfig_MakeAnalogInput:
 		pins[Treehopper_PinConfig.PinNumber] = AnalogInput;
-		ADC_Enable(Treehopper_PinConfig.PinNumber, Treehopper_PinConfig.PinConfigData[0]);
+		ADC_Enable(Treehopper_PinConfig.PinNumber,
+				Treehopper_PinConfig.PinConfigData[0]);
 		break;
 	case PinConfig_MakePushPullOutput:
 		pins[Treehopper_PinConfig.PinNumber] = PushPullOutput;
@@ -112,93 +103,91 @@ void ProcessPinConfigPacket()
 		GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, OpenDrainOutput);
 		break;
 	case PinConfig_SetDigitalValue:
-		GPIO_WriteValue(Treehopper_PinConfig.PinNumber, Treehopper_PinConfig.PinConfigData[0]);
+		GPIO_WriteValue(Treehopper_PinConfig.PinNumber,
+				Treehopper_PinConfig.PinConfigData[0]);
 		break;
 	}
 }
 
 // this gets called whenever we received peripheral config data from the host
-void ProcessPeripheralConfigPacket()
-{
+void ProcessPeripheralConfigPacket() {
 	uint16_t i;
 	uint8_t totalWriteBytes;
 	uint8_t totalReadBytes;
 	uint8_t offset;
 	uint8_t count;
-	switch(Treehopper_PeripheralConfig[0])
-	{
+	switch (Treehopper_PeripheralConfig[0]) {
 	case PWMConfig:
 		PWM_SetConfig(&(Treehopper_PeripheralConfig[1]));
 		break;
-
 
 	case LedConfig:
 		LED_SetVal(Treehopper_PeripheralConfig[1]);
 		break;
 
-
 	case SPIConfig:
-		SPI_SetConfig((SpiConfigData_t*)&(Treehopper_PeripheralConfig[1]));
+		SPI_SetConfig((SpiConfigData_t*) &(Treehopper_PeripheralConfig[1]));
 		break;
 	case SPITransaction:
 		totalWriteBytes = Treehopper_PeripheralConfig[1];
 		offset = Treehopper_PeripheralConfig[2];
 		count = Treehopper_PeripheralConfig[3];
-		memcpy(Treehopper_TxBuffer, &(Treehopper_PeripheralConfig[5]), count );
+		memcpy(Treehopper_TxBuffer, &(Treehopper_PeripheralConfig[5]), count);
 
 		// check whether we're done copying, or if we don't care about Tx data
-		if(totalWriteBytes == offset+count || Treehopper_PeripheralConfig[4] == Burst_Rx)
-		{
+		if (totalWriteBytes == offset + count
+				|| Treehopper_PeripheralConfig[4] == Burst_Rx) {
 			SPI_ActivateCs();
-			SPI_Transaction(Treehopper_TxBuffer, Treehopper_RxBuffer, totalWriteBytes);
+			SPI_Transaction(Treehopper_TxBuffer, Treehopper_RxBuffer,
+					totalWriteBytes);
 			SPI_DeactivateCs();
 		}
 		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
-		if(Treehopper_PeripheralConfig[4] != Burst_Tx)
-		{
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalWriteBytes, false );
+		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
+			USBD_Write(EP2IN, Treehopper_RxBuffer, totalWriteBytes, false);
 		}
 		break;
 
-
 	case I2CConfig:
-		I2C_SetConfig((I2cConfigData_t*)&(Treehopper_PeripheralConfig[1]));
+		I2C_SetConfig((I2cConfigData_t*) &(Treehopper_PeripheralConfig[1]));
 		break;
 	case I2CTransaction:
 		totalWriteBytes = Treehopper_PeripheralConfig[2];
 		offset = Treehopper_PeripheralConfig[3];
 		count = Treehopper_PeripheralConfig[4];
 		totalReadBytes = Treehopper_PeripheralConfig[5];
-		memcpy(Treehopper_TxBuffer, &(Treehopper_PeripheralConfig[7]), count );
+		memcpy(Treehopper_TxBuffer, &(Treehopper_PeripheralConfig[7]), count);
 
 		// check whether we're done copying, or if we don't care about Tx data
-		if(totalWriteBytes == offset+count || Treehopper_PeripheralConfig[6] == Burst_Rx)
-		{
-			I2C_Transaction(Treehopper_PeripheralConfig[1], Treehopper_TxBuffer, Treehopper_RxBuffer, totalWriteBytes, totalReadBytes);
+		if (totalWriteBytes == offset + count
+				|| Treehopper_PeripheralConfig[6] == Burst_Rx) {
+			I2C_Transaction(Treehopper_PeripheralConfig[1], Treehopper_TxBuffer,
+					Treehopper_RxBuffer, totalWriteBytes, totalReadBytes);
 		}
 		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
-		if(Treehopper_PeripheralConfig[6] != Burst_Tx && totalReadBytes > 0)
-		{
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes, false );
+		if (Treehopper_PeripheralConfig[6] != Burst_Tx && totalReadBytes > 0) {
+			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes, false);
 		}
 		break;
 
-
 	case UARTConfig:
-		UART_SetConfig((UartConfigData_t*)&(Treehopper_PeripheralConfig[1]));
+		UART_SetConfig((UartConfigData_t*) &(Treehopper_PeripheralConfig[1]));
 		break;
 
 	case UARTTransaction:
 		UART_Transaction(&(Treehopper_PeripheralConfig[1]));
 		break;
 	case FirmwareUpdateSerial:
-		serialNumber_update(&(Treehopper_PeripheralConfig[2]), Treehopper_PeripheralConfig[1]);
+		serialNumber_update(&(Treehopper_PeripheralConfig[2]),
+				Treehopper_PeripheralConfig[1]);
 		break;
 	case FirmwareUpdateName:
-		serialNumber_updateName(&(Treehopper_PeripheralConfig[2]), Treehopper_PeripheralConfig[1]);
+		serialNumber_updateName(&(Treehopper_PeripheralConfig[2]),
+				Treehopper_PeripheralConfig[1]);
 		break;
 	case SoftPwmConfig:
-		SoftPwm_SetConfig(&(Treehopper_PeripheralConfig[2]), Treehopper_PeripheralConfig[1]);
+		SoftPwm_SetConfig(&(Treehopper_PeripheralConfig[2]),
+				Treehopper_PeripheralConfig[1]);
 		break;
 	case Reboot:
 		USBD_Stop();
@@ -207,9 +196,9 @@ void ProcessPeripheralConfigPacket()
 		break;
 	case EnterBootloader:
 		USBD_Stop();
-		 *((uint8_t SI_SEG_DATA *)0x00) = 0xA5;
-		 SFRPAGE = 0x00;
-		 RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
+		*((uint8_t SI_SEG_DATA *) 0x00) = 0xA5;
+		SFRPAGE = 0x00;
+		RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
 		break;
 	}
 
