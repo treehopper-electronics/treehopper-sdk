@@ -45,3 +45,6 @@ extern SI_SEGMENT_VARIABLE(initstruct, const USBD_Init_TypeDef, SI_SEG_CODE);
 #endif
 
 #endif  // #define __SILICON_LABS_DESCRIPTORS_H__
+// $[HID Report Descriptors]
+// [HID Report Descriptors]$
+

@@ -547,8 +547,7 @@ extern void CLOCK_0_enter_DefaultMode_from_RESET(void) {
 	// Ensure SYSCLK is > 24 MHz before switching to HFOSC1
 	SFRPAGE = 0x00;
 	CLKSEL = CLKSEL_CLKSL__HFOSC0 | CLKSEL_CLKDIV__SYSCLK_DIV_1;
-	CLKSEL = CLKSEL_CLKSL__HFOSC0 | CLKSEL_CLKDIV__SYSCLK_DIV_1;
-	while (CLKSEL & CLKSEL_DIVRDY__BMASK == CLKSEL_DIVRDY__NOT_READY)
+	while ((CLKSEL & CLKSEL_DIVRDY__BMASK) == CLKSEL_DIVRDY__NOT_READY)
 		;
 	// [HFOSC1 Setup]$
 
@@ -558,14 +557,9 @@ extern void CLOCK_0_enter_DefaultMode_from_RESET(void) {
 	 //     High Frequency Oscillator 1.)
 	 // CLKDIV (Clock Source Divider) = SYSCLK_DIV_1 (SYSCLK is equal to
 	 //     selected clock source divided by 1.)
-	 // CLKSL (Clock Source Select) = HFOSC1 (Clock derived from the Internal
-	 //     High Frequency Oscillator 1.)
-	 // CLKDIV (Clock Source Divider) = SYSCLK_DIV_1 (SYSCLK is equal to
-	 //     selected clock source divided by 1.)
 	 */
 	CLKSEL = CLKSEL_CLKSL__HFOSC1 | CLKSEL_CLKDIV__SYSCLK_DIV_1;
-	CLKSEL = CLKSEL_CLKSL__HFOSC1 | CLKSEL_CLKDIV__SYSCLK_DIV_1;
-	while (CLKSEL & CLKSEL_DIVRDY__BMASK == CLKSEL_DIVRDY__NOT_READY)
+	while ((CLKSEL & CLKSEL_DIVRDY__BMASK) == CLKSEL_DIVRDY__NOT_READY)
 		;
 	// [CLKSEL - Clock Select]$
 
@@ -874,6 +868,12 @@ extern void SMBUS_0_enter_DefaultMode_from_RESET(void) {
 			| SMB0CF_INH__SLAVE_DISABLED;
 	// [SMB0CF - SMBus 0 Configuration]$
 
+	// $[SMB0FCN0 - SMBus0 FIFO Control 0]
+	// [SMB0FCN0 - SMBus0 FIFO Control 0]$
+
+	// $[SMB0RXLN - SMBus0 Receive Length Counter]
+	// [SMB0RXLN - SMBus0 Receive Length Counter]$
+
 }
 
 //================================================================================
@@ -1070,6 +1070,12 @@ extern void SPI_0_enter_DefaultMode_from_RESET(void) {
 	SPI0CN0 &= ~SPI0CN0_NSSMD__FMASK;
 	SPI0CN0 |= SPI0CN0_SPIEN__ENABLED;
 	// [SPI0CN0 - SPI0 Control]$
+
+	// $[SPI0FCN0 - SPI0 FIFO Control 0]
+	// [SPI0FCN0 - SPI0 FIFO Control 0]$
+
+	// $[SPI0FCN1 - SPI0 FIFO Control 1]
+	// [SPI0FCN1 - SPI0 FIFO Control 1]$
 
 }
 
