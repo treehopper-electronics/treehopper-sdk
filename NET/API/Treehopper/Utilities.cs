@@ -1,4 +1,6 @@
-﻿namespace Treehopper
+﻿using System;
+
+namespace Treehopper
 {
     /// <summary>
     /// This is a utility class that contains convenient static methods.
@@ -45,6 +47,35 @@
             if (x > b)
                 return b;
             return x;
+        }
+
+        public static int BcdToInt(int val)
+        {
+            int retVal = 0;
+            for(int i=0;i<8;i++)
+            {
+                retVal += (int)Math.Pow(10, i) * (val >> (i * 4) & 0xF);
+            }
+            return retVal;
+        }
+
+        public static string BcdToString(int val, int decimalPlace = 0, bool showLeadingZeros = false)
+        {
+            string retVal = "";
+            bool nonZeroFound = false;
+            for (int i = 7; i >= 0; i--)
+            {
+                int num = (val >> (i * 4) & 0xF);
+                if(showLeadingZeros || num != 0 || nonZeroFound || i == decimalPlace)
+                    retVal += num.ToString();
+
+                if (num != 0 || i == decimalPlace)
+                    nonZeroFound = true;
+
+                if (i == decimalPlace)
+                    retVal += ".";
+            }
+            return retVal;
         }
     }
 }

@@ -156,6 +156,8 @@ namespace Treehopper
             }
         }
 
+        public short Version { get; private set; }
+
         public async Task<bool> OpenAsync()
         {
             if (IsOpen)
@@ -195,6 +197,7 @@ namespace Treehopper
             //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SerialNumber"));
             //}
             //catch { }
+            Version = (short)usbDevice.DeviceDescriptor.BcdDeviceRevision;
 
             pinConfigPipe = usbDevice.DefaultInterface.BulkOutPipes[0];
             pinConfigPipe.WriteOptions |= UsbWriteOptions.ShortPacketTerminate;

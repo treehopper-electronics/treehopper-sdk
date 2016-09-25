@@ -21,6 +21,8 @@ namespace Treehopper
         string SerialNumber { get; } 
         string Name { get; }
 
+        short Version { get;  }
+
         string DevicePath { get; set; }
 
         void SendDataPinConfigChannel(byte[] data);
