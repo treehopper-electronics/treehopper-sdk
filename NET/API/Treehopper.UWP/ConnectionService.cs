@@ -88,19 +88,9 @@ namespace Treehopper
 
             handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
             {
-                //connectedDevices.RemoveAll((board) => { return ((UsbConnection)(board.Connection)).DeviceId == deviceInfoUpdate.Id; });
                 Debug.WriteLine("Device removed");
                 await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    //foreach (var board in connectedDevices)
-                    //{
-                    //    if (((UsbConnection)(board.Connection)).DeviceId == deviceInfoUpdate.Id)
-                    //    {
-                    //        board.Disconnect();
-                    //        connectedDevices.Remove(board);
-                    //    }
-                    //}
-
                     connectedDevices.Where(board => ((UsbConnection)(board.Connection)).DevicePath == deviceInfoUpdate.Id).ToList().All(i =>
                     {
                         i.Disconnect();

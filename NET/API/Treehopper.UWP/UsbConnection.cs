@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace Treehopper
 {
-    public class UsbConnection : IConnection
+    public class UsbConnection : IConnection, INotifyPropertyChanged
     {
 
         UsbDevice usbDevice;
@@ -98,6 +98,7 @@ namespace Treehopper
                     return;
                 updateRate = value;
                 updateDelay = (int)Math.Round(1000.0 / updateRate);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UpdateRate"));
             }
         }
 
@@ -139,6 +140,7 @@ namespace Treehopper
             pinEventListerner(cts.Token);
 
             Debug.WriteLine("Connection opened");
+
             return true;
         }
 
