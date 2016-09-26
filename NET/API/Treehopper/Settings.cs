@@ -11,6 +11,9 @@ namespace Treehopper
         public uint Vid { get; set; }
         public uint Pid { get; set; }
 
+        public uint BootloaderPid { get; set; }
+        public uint BootloaderVid { get; set; }
+
         public Guid Guid { get; set; }
 
 
@@ -19,6 +22,9 @@ namespace Treehopper
             Guid = new Guid("{5B34B38B-F4CD-49C3-B2BB-60E47A43E12D}");
             Vid = 0x10c4;
             Pid = 0x8a7e;
+
+            BootloaderVid = 0x10c4;
+            BootloaderPid = 0xeac9;
         }
     }
 }

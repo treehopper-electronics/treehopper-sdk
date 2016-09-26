@@ -342,17 +342,14 @@ namespace Treehopper
 
 			pinStateBuffer = new byte[64];
 
-
-
-			
-
-            //UART = new UART();
-
-
             connection.PinEventDataReceived += Connection_PinEventDataReceived; 
 			
 			this.IsConnected = true;
-			return true;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Version"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VersionString"));
+
+            return true;
 		}
 
 
@@ -365,24 +362,6 @@ namespace Treehopper
                 {
                     pin.UpdateValue(pinStateBuffer[i++], pinStateBuffer[i++]);
                 }
-
-                ///// Pin interrupts.
-                ///// TODO: This is really hacky and needs to be cleaned up.
-                //int PortAInterrupt = pinStateBuffer[29];
-                //int PortBInterrupt = pinStateBuffer[30];
-                //if ((PortAInterrupt & (1 << 4)) > 0) // RA4 = Pin1
-                //    Pins[0].RaiseDigitalInValueChanged();
-                //if ((PortAInterrupt & (1 << 5)) > 0) // RA5 = Pin14
-                //    Pin14.RaiseDigitalInValueChanged();
-
-                //if ((PortBInterrupt & (1 << 7)) > 0) // RB7 = Pin8
-                //    Pin8.RaiseDigitalInValueChanged();
-                //if ((PortBInterrupt & (1 << 7)) > 0) // RB5 = Pin9
-                //    Pin9.RaiseDigitalInValueChanged();
-                //if ((PortBInterrupt & (1 << 7)) > 0) // RB4 = Pin10
-                //    Pin10.RaiseDigitalInValueChanged();
-                //if ((PortBInterrupt & (1 << 7)) > 0) // RB6 = Pin11
-                //    Pin11.RaiseDigitalInValueChanged();
             }
         }
 
@@ -416,13 +395,6 @@ namespace Treehopper
             if(connection != null)
                 connection.Close();
             IsConnected = false;
-			//if(usb.IsOpen)
-			//{
-			//	if (SoftPwmMgr != null)
-			//		SoftPwmMgr.Dispose();
-			//}
-			//Disconnect();
-			//this.IsConnected = false;
 		}
 
 

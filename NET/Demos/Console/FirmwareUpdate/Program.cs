@@ -43,7 +43,7 @@ namespace FirmwareUpdate
                 if(response.ToLower() == "y" || response.Length == 0)
                 {
                     Console.WriteLine("Loading default firmware from the Treehopper assembly");
-                    await dfu.Load();
+                    await dfu.LoadAsync();
                 }
                 else
                 {

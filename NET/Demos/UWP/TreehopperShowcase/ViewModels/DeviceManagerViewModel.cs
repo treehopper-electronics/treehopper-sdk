@@ -44,6 +44,7 @@ namespace TreehopperShowcase.ViewModels
                     NewName = selectedBoard.Name;
                     RaisePropertyChanged("UpdateName");
                     RaisePropertyChanged("GenerateSerial");
+                    RaisePropertyChanged("UpdateFirmwareFromEmbeddedImage");
                 }
                 
             }
@@ -80,6 +81,54 @@ namespace TreehopperShowcase.ViewModels
                         SelectedBoard.Reboot();
                     },
                     () => SelectedBoard != null));
+            }
+        }
+
+
+        private RelayCommand updateFirmwareFromEmbeddedImage;
+
+        private bool isUpdating = false;
+        public RelayCommand UpdateFirmwareFromEmbeddedImage
+        {
+            get
+            {
+                return updateFirmwareFromEmbeddedImage ?? (updateFirmwareFromEmbeddedImage = new RelayCommand(
+                    async () =>
+                    {
+                        isUpdating = true;
+                        Progress = 1;
+                        SelectedBoard.RebootIntoBootloader();
+                        Progress = 10;
+                        await Task.Delay(1000);
+                        Progress = 20;
+                        await Task.Delay(1000);
+                        Progress = 30;
+                        await Task.Delay(1000);
+                        Progress = 40;
+                        await Task.Delay(1000);
+                        Progress = 50;
+
+                        var updater = new FirmwareUpdater(new FirmwareConnection());
+                        updater.ProgressChanged += (sender, args) => { Progress = args.ProgressPercentage/2.0 + 50.0; };
+                        await updater.ConnectAsync();
+                        await updater.LoadAsync();
+
+                    },
+                    () => SelectedBoard != null && isUpdating == false));
+            }
+        }
+
+
+        private double progress = 0;
+        public double Progress
+        {
+            get
+            {
+                return progress;
+            }
+            set
+            {
+                Set(ref progress, value);
             }
         }
 
