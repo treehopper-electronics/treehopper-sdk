@@ -8,6 +8,7 @@ using LibUsbDotNet.Main;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.IO;
+using System.Diagnostics;
 
 namespace LibUsbDotNet.WinHid
 {
@@ -15,22 +16,28 @@ namespace LibUsbDotNet.WinHid
     {
         public override bool AbortPipe(SafeHandle interfaceHandle, byte pipeID)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Unimplemented: WinHidApi: AbortPipe");
+            return false;
         }
 
         public override bool ControlTransfer(SafeHandle interfaceHandle, UsbSetupPacket setupPacket, IntPtr buffer, int bufferLength, out int lengthTransferred)
         {
-            throw new NotImplementedException();
+            lengthTransferred = 0;
+            Debug.WriteLine("Unimplemented: WinHidApi: ControlTransfer");
+            return false;
         }
 
         public override bool FlushPipe(SafeHandle interfaceHandle, byte pipeID)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Unimplemented: WinHidApi: FlushPipe");
+            return false;
         }
 
         public override bool GetDescriptor(SafeHandle interfaceHandle, byte descriptorType, byte index, ushort languageID, IntPtr buffer, int bufferLength, out int lengthTransferred)
         {
-            throw new NotImplementedException();
+            lengthTransferred = 0;
+            Debug.WriteLine("Unimplemented: WinHidApi: GetDescriptor");
+            return false;
         }
 
         public override bool GetOverlappedResult(SafeHandle interfaceHandle, IntPtr pOverlapped, out int numberOfBytesTransferred, bool wait)
@@ -46,7 +53,8 @@ namespace LibUsbDotNet.WinHid
 
         public override bool ResetPipe(SafeHandle interfaceHandle, byte pipeID)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Unimplemented: WinHidApi: ResetPipe");
+            return false;
         }
 
         public override bool WritePipe(UsbEndpointBase endPointBase, IntPtr pBuffer, int bufferLength, out int lengthTransferred, int isoPacketSize, IntPtr pOverlapped)
