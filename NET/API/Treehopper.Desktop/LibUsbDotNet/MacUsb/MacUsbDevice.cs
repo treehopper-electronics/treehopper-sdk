@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using LibUsbDotNet;
 using LibUsbDotNet.Internal;
 using Microsoft.Win32.SafeHandles;
 
-namespace Treehopper.Desktop
+namespace LibUsbDotNet.MacUsb
 {
 	public class MacUsbDevice : UsbDevice, IUsbInterface
 	{
@@ -29,6 +30,8 @@ namespace Treehopper.Desktop
 				throw new NotImplementedException();
 			}
 		}
+
+		public static List<MacUsbDevice> MacUsbDeviceList { get; internal set; }
 
 		public override bool Close()
 		{

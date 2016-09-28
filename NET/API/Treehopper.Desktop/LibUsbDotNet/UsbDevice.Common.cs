@@ -24,7 +24,8 @@ using System.Collections.Generic;
 using LibUsbDotNet.Main;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.WinUsb.Internal;
-using Debug=System.Diagnostics.Debug;
+using Debug = System.Diagnostics.Debug;
+using LibUsbDotNet.MacUsb;
 
 namespace LibUsbDotNet
 {
@@ -55,7 +56,7 @@ namespace LibUsbDotNet
                 else if (UsbDevice.IsLinux && !UsbDevice.IsMac)
                     return AllLibUsbDevices;
                 else
-                    return AllLibUsbDevices; // fill in with Mac later
+                    return AllMacUsbDevices; // fill in with Mac later
             }
         }
 
@@ -63,10 +64,6 @@ namespace LibUsbDotNet
         /// Gets a list of all available libusb-win32 USB devices.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// On windows, gets a list of libusb-win32 USB devices . If <see cref="ForceLibUsbWinBack"/> 
-        /// is true, gets a list of libusb-1.0 devices.
-        /// </para>
         /// <para>
         /// On linux/mac, gets a list of libusb-1.0 devices.
         /// </para>
@@ -86,6 +83,31 @@ namespace LibUsbDotNet
                 return regDevList;
             }
         }
+
+		/// <summary>
+		/// Gets a list of all available IOKit USB devices
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// This only works on Mac
+		/// </para>
+		/// </remarks>
+		public static UsbRegDeviceList AllMacUsbDevices
+		{
+			get
+			{
+				UsbRegDeviceList regDevList = new UsbRegDeviceList();
+
+				foreach (MacUsbRegistry usbDevice in MacUsbRegistry.Devices)
+				{
+					regDevList.Add(usbDevice);
+				}
+
+				return regDevList;
+			}
+		}
+
+
 
         /// <summary>
         /// Returns the last error number reported by LibUsbDotNet.

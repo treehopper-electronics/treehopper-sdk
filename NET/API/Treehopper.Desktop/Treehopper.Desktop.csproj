@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\Output\NET\Release\Treehopper.Desktop.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +36,7 @@
     <Optimize>false</Optimize>
     <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.Desktop.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -194,6 +196,10 @@
     <Compile Include="LibUsbDotNet\LibUsb\LibUsbRegistry.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\MacUsbDevice.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\MacUsbRegistry.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\CFObject.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOIterator.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOKitFramework.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />
@@ -206,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LibUsbDotNet\MacUsb\" />
+    <Folder Include="LibUsbDotNet\MacUsb\IOKit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
