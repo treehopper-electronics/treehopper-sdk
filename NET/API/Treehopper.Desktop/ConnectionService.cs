@@ -62,10 +62,6 @@ namespace Treehopper
 
         System.Timers.Timer pollingTimer;
 
-
-
-
-
         /// <summary>
         /// Manages Treehopper boards connected to the computer. If optional filter parameters are provided, only boards matching the filter will be available.
         /// </summary>
@@ -82,15 +78,10 @@ namespace Treehopper
             SerialFilter = serialFilter;
             NameFilter = nameFilter;
 
-            Boards.CollectionChanged += Boards_CollectionChanged;
-
             Rescan(); // add all the boards that were already connected when we started up
-            
 
             // now, setup a device notifier so we can be alerted when boards are added/removed
             myNotifier.OnDeviceNotify += myNotifier_OnDeviceNotify;
-
-            
             pollingTimer.Elapsed += devicePollingTimer_Elapsed;
         }
 
@@ -177,85 +168,6 @@ namespace Treehopper
             }
         }
 
-        private void Scan()
-        {
-            // get a list of all current devices attached to the computer
-
-
-            // Go through the list of existing Boards and remove any that no longer exist.
-            var BoardsToRemove = new List<TreehopperUsb>();
-            foreach (var board in Boards.ToList())
-            {
-                bool boardExistsInDeviceList = false;
-                foreach (UsbRegistry regDevice in UsbDevice.AllDevices)
-                {
-                    if (regDevice.Vid == TreehopperUsb.Settings.Vid && regDevice.Pid == TreehopperUsb.Settings.Pid)
-                    {
-                        if (regDevice.Device != null)
-                        {
-                            var newBoard = new UsbConnection(regDevice);
-                            if (newBoard.Equals(board))
-                            {
-                                boardExistsInDeviceList = true;
-                            }
-                        }
-                        else
-                        { // If this property reads null, it's probably because the board is open.
-                            boardExistsInDeviceList = true;
-                        }
-
-                    }
-                }
-                if (!boardExistsInDeviceList)
-                {
-                    BoardsToRemove.Add(board);
-                }
-            }
-
-            foreach (var board in BoardsToRemove)
-            {
-                Boards.Remove(board);
-                Debug.WriteLine("New board list has " + Boards.Count + " Boards");
-            }
-
-
-            // Now add any new boards
-            foreach (UsbRegistry regDevice in UsbDevice.AllDevices)
-            {
-                if (regDevice.Vid == TreehopperUsb.Settings.Vid && regDevice.Pid == TreehopperUsb.Settings.Pid)
-                {
-                    if (regDevice.Device != null)
-                    {
-                        UsbConnection newConnection = new UsbConnection(regDevice);
-                        if (PassesFilter(newConnection))
-                        {
-                            // add the board to the list if it doesn't already exist
-                            bool alreadyInList = false;
-                            foreach (var board in Boards)
-                            {
-                                if (board.Equals(newConnection))
-                                {
-                                    alreadyInList = true;
-                                }
-                            }
-                            if (!alreadyInList)
-                            {
-                                Boards.Add(new TreehopperUsb(newConnection));
-                                Debug.WriteLine("Adding " + newConnection.ToString() + ". New board list has " + Boards.Count + " Boards");
-                            }
-
-                        }
-                    }
-
-                }
-            }
-        }
-
-        void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-
-        }
-
         void myNotifier_OnDeviceNotify(object sender, DeviceNotifyEventArgs e)
         {
             if (PollingTimerIsEnabled)
@@ -289,19 +201,6 @@ namespace Treehopper
                 string id = e.Device.SymbolicName.FullName.ToLower();
 
                 Debug.WriteLine ("Device removed: " +id);
-                //TreehopperUsb boardToRemove = null;
-                //foreach (var board in Boards) {
-                //	bool deviceExists = false;
-
-                //	if (!deviceExists) {
-                //		boardToRemove = board;
-                //	}
-                //}
-                //if (boardToRemove != null) {
-                //	Boards.Remove(boardToRemove);
-                //	Debug.WriteLine ("Removed board ");
-
-                //}
 
                 var board = Boards.Where(x => x.Connection.SerialNumber == e.Device.SymbolicName.SerialNumber).ToList();
                 if (board.Count > 0)
