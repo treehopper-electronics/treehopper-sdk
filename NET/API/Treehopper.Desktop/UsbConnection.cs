@@ -29,12 +29,15 @@ namespace Treehopper
             this.DevicePath = regDevice.SymbolicName;
             device = regDevice.Device;
 
-            if(!UsbDevice.IsLinux)
+            // LibUSB can't read stuff without opening the device
+            if (device.DriverMode == UsbDevice.DriverModeType.LibUsb) 
             {
+                device.Open();
+            }
                 SerialNumber = device.Info.SerialString;
                 Name = device.Info.ProductString;
                 Version = device.Info.Descriptor.BcdDevice;
-            }
+            
         }
 
         byte[] pinEventData = new byte[64];
