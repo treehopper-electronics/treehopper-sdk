@@ -188,7 +188,7 @@ namespace Treehopper
 									isInBoardList = true;
 								}
 							}
-							if (!isInBoardList) {
+							if (!isInBoardList && regDevice.Device.Info.SerialString.Length > 0) {
 								Debug.WriteLine ("Adding board");
 								Boards.Add (new TreehopperUsb(new UsbConnection(regDevice)));
 							}
