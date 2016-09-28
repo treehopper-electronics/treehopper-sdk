@@ -29,19 +29,10 @@ namespace Treehopper
             this.DevicePath = regDevice.SymbolicName;
             device = regDevice.Device;
 
-            // LibUSB can't read stuff without opening the device
-            if (device.DriverMode == UsbDevice.DriverModeType.LibUsb) 
-            {
-                device.Open();
-            }
-                SerialNumber = device.Info.SerialString;
-                Name = device.Info.ProductString;
-                Version = device.Info.Descriptor.BcdDevice;
-            if (device.DriverMode == UsbDevice.DriverModeType.LibUsb)
-            {
-                device.Close();
-            }
 
+            SerialNumber = device.Info.SerialString;
+            Name = device.Info.ProductString;
+            Version = device.Info.Descriptor.BcdDevice;
         }
 
         byte[] pinEventData = new byte[64];
@@ -98,27 +89,6 @@ namespace Treehopper
 
             if (device.Open())
             {
-                if (UsbDevice.IsLinux)
-                {
-                    string serialNumber = "";
-                    string deviceName = "";
-
-                    device.GetString(out serialNumber, 0x0409, 3);
-                    if (serialNumber != null)
-                    {
-                        serialNumber = Regex.Replace(serialNumber, @"[^\u0000-\u007F]", string.Empty);
-                        serialNumber = serialNumber.Replace("\0", String.Empty);
-                        SerialNumber = serialNumber;
-                    }
-
-                    device.GetString(out deviceName, 0x0409, 4);
-                    if (deviceName != null)
-                    {
-                        deviceName = deviceName.Replace("\0", String.Empty);
-                        Name = deviceName;
-                    }
-                }
-
                 // If this is a "whole" usb device (libusb-win32, linux libusb)
                 // it will have an IUsbDevice interface. If not (WinUSB) the 
                 // variable will be null indicating this is an interface of a 
