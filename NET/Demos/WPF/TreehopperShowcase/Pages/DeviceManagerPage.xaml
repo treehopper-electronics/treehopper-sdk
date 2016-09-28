@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="TreehopperShowcase.Pages.DeviceManagerPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             xmlns:treehopper="clr-namespace:Treehopper.Mvvm.Views;assembly=Treehopper.WPF"
+             xmlns:vm="clr-namespace:TreehopperShowcase.ViewModels"
+             d:DesignHeight="500" d:DesignWidth="500">
+    <UserControl.DataContext>
+        <vm:DeviceManagerViewModel />
+    </UserControl.DataContext>
+    <Grid Style="{StaticResource ContentRoot}">
+        <ScrollViewer>
+            <StackPanel MinWidth="200">
+                <TextBlock Text="DEVICE MANAGER" Style="{StaticResource Heading2}" />
+                <treehopper:SelectorView DataContext="{Binding Selector}"  />
+                <DockPanel Margin="0 10 0 0">
+                    <TextBlock DockPanel.Dock="Left" Margin="0 0 10 0" Text="Name" />
+                    <Button Margin="10 0 0 0" DockPanel.Dock="Right" Content="Update Name" Command="{Binding UpdateNameCommand}"/>
+                    <Button Margin="10 0 0 0" DockPanel.Dock="Right" Content="Generate New Serial" Command="{Binding UpdateSerialCommand}" />
+                    <TextBox Text="{Binding Name}" IsEnabled="{Binding CanEdit}" />
+                </DockPanel>
+                <DockPanel Margin="0 10 0 0 ">
+                    <Button  Margin="10 0 0 0" DockPanel.Dock="Right" Content="Update Firmware" Command="{Binding UpdateFirmwareFromEmbeddedImage}" />
+                    <ProgressBar Value="{Binding Progress}" />
+                </DockPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
