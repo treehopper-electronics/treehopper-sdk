@@ -5,19 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:Treehopper.Mvvm.ViewModel"
              xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
     <DockPanel LastChildFill="True">
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="Closing">
-                <command:EventToCommand Command="{Binding WindowClosing}" />
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
-        <DockPanel.DataContext>
-            <vm:SelectorViewModel />
-        </DockPanel.DataContext>
         <Button DockPanel.Dock="Right" Command="{Binding ConnectCommand}" Content="{Binding Path=ConnectButtonText}" />
-        <ComboBox DockPanel.Dock="Left" ItemsSource="{Binding Path=Boards}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedBoard}" IsEnabled="{Binding CanChangeBoardSelection}" />
+        <ComboBox DockPanel.Dock="Left" ItemsSource="{Binding Path=Boards}" SelectedItem="{Binding SelectedBoard}" IsEnabled="{Binding CanChangeBoardSelection}" />
     </DockPanel>
 </UserControl>
