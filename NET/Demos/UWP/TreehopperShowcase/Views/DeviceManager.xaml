@@ -73,18 +73,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     <Button Margin="10 0 0 0" Command="{Binding GenerateSerial}" Content="Generate New Serial" />
                 </StackPanel>
                 <TextBlock Text="Firmware Update" FontWeight="Light" FontSize="24" Margin="0 30 0 0" />
-                <TextBlock Text="Unfortunately, Windows UWP apps cannot communicate with the HID bootloader on Treehopper. To update the firmware, run the Firmware Update console utility from your desktop computer or tablet."  TextWrapping="WrapWholeWords" />
-                <!--<StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-                        <TextBlock Text="Current Version:" />
-                        <TextBlock Text="{Binding SelectedBoard.VersionString}" Margin="5 0 0 0" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-                        <Button Command="{Binding UpdateFirmwareFromEmbeddedImage}" Content="Update firmware from embedded image" />
-                        <Button Margin="10 0 0 0" Command="{Binding UpdateFirmwareFromFile}" Content="Update firmware from file" />
-                    </StackPanel>
-                    <ProgressBar Margin="0 10 0 0 " Height="50" Maximum="100" Minimum="0" Value="{Binding Progress}" />
-                </StackPanel>-->
+                <TextBlock Text="Unfortunately, Windows UWP apps cannot communicate with the HID bootloader on Treehopper. To update the firmware, run the Device Manager desktop app, or the Firmware Update console utility from your desktop computer or tablet."  TextWrapping="WrapWholeWords" />
             </StackPanel>
         </StackPanel>
 

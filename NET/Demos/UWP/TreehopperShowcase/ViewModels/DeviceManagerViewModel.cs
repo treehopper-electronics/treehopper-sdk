@@ -58,9 +58,10 @@ namespace TreehopperShowcase.ViewModels
             {
                 return generateSerial
                     ?? (generateSerial = new RelayCommand(
-                    () =>
+                    async () =>
                     {
-                        SelectedBoard.UpdateSerialNumber(RandomString(8));
+                        await SelectedBoard.UpdateSerialNumber(Utilities.RandomString(8));
+                        SelectedBoard.Reboot();
                     },
                     () => SelectedBoard != null));
             }
@@ -77,67 +78,11 @@ namespace TreehopperShowcase.ViewModels
                     async () =>
                     {
                         await SelectedBoard.UpdateDeviceName(newName);
-                        await SelectedBoard.UpdateSerialNumber(RandomString(8));
+                        await SelectedBoard.UpdateSerialNumber(Utilities.RandomString(8));
                         SelectedBoard.Reboot();
                     },
                     () => SelectedBoard != null));
             }
-        }
-
-
-        private RelayCommand updateFirmwareFromEmbeddedImage;
-
-        private bool isUpdating = false;
-        public RelayCommand UpdateFirmwareFromEmbeddedImage
-        {
-            get
-            {
-                return updateFirmwareFromEmbeddedImage ?? (updateFirmwareFromEmbeddedImage = new RelayCommand(
-                    async () =>
-                    {
-                        isUpdating = true;
-                        Progress = 1;
-                        SelectedBoard.RebootIntoBootloader();
-                        Progress = 10;
-                        await Task.Delay(1000);
-                        Progress = 20;
-                        await Task.Delay(1000);
-                        Progress = 30;
-                        await Task.Delay(1000);
-                        Progress = 40;
-                        await Task.Delay(1000);
-                        Progress = 50;
-
-                        var updater = new FirmwareUpdater(new FirmwareConnection());
-                        updater.ProgressChanged += (sender, args) => { Progress = args.ProgressPercentage/2.0 + 50.0; };
-                        await updater.ConnectAsync();
-                        await updater.LoadAsync();
-
-                    },
-                    () => SelectedBoard != null && isUpdating == false));
-            }
-        }
-
-
-        private double progress = 0;
-        public double Progress
-        {
-            get
-            {
-                return progress;
-            }
-            set
-            {
-                Set(ref progress, value);
-            }
-        }
-
-        static Random random = new Random();
-        public static string RandomString(int length)
-        {
-            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
