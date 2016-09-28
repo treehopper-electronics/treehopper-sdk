@@ -53,10 +53,5 @@ namespace Blink
             }
 
         }
-
-        private static void Manager_BoardAdded(TreehopperManager sender, TreehopperBoard board)
-        {
-            //throw new NotImplementedException();
-        }
     }
 }

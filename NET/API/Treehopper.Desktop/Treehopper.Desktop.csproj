@@ -196,8 +196,6 @@
     <Compile Include="LibUsbDotNet\WinUsb\WinUsbRegistry.cs" />
     <Compile Include="ConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Treehopper.cs" />
-    <Compile Include="TreehopperManager.cs" />
     <Compile Include="UsbConnection.cs" />
     <Compile Include="LibUsbDotNet\LibUsb\LibUsbRegistry.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\MacUsbDevice.cs" />
