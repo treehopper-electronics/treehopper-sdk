@@ -37,7 +37,11 @@ namespace Treehopper
                 SerialNumber = device.Info.SerialString;
                 Name = device.Info.ProductString;
                 Version = device.Info.Descriptor.BcdDevice;
-            
+            if (device.DriverMode == UsbDevice.DriverModeType.LibUsb)
+            {
+                device.Close();
+            }
+
         }
 
         byte[] pinEventData = new byte[64];
