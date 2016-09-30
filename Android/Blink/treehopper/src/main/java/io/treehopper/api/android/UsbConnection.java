@@ -36,6 +36,7 @@ public class UsbConnection implements UsbConnectionInterface {
         if(connected)
             return false;
 
+
         UsbInterface intf = usbDevice.getInterface(0);
         pinReportEndpoint = intf.getEndpoint(0);
         peripheralResponseEndpoint = intf.getEndpoint(1);

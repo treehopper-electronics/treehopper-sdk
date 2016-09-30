@@ -9,7 +9,6 @@ import java.util.Arrays;
 public class Pin {
     private TreehopperUsb board;
     private int pinNumber;
-    private String ioName;
 
     // digital members
     private boolean digitalValue;
@@ -20,10 +19,9 @@ public class Pin {
     double adcVoltageChangedThreshold = 0.05;
     private AdcReferenceLevel referenceLevel = AdcReferenceLevel.VREF_3V3;
 
-    public Pin(TreehopperUsb board, int pinNumber, String ioName) {
+    public Pin(TreehopperUsb board, int pinNumber) {
         this.board = board;
         this.pinNumber = pinNumber;
-        this.ioName = ioName;
     }
 
     public void setMode(PinMode value) {
