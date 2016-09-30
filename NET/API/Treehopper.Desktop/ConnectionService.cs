@@ -143,9 +143,16 @@ namespace Treehopper
                     continue;
                 if (Boards.Where(i => i.Connection.DevicePath == regDevice.SymbolicName).Count() == 0)
                 {
-                    var board = new TreehopperUsb(new UsbConnection(regDevice));
-                    Debug.WriteLine("Added board: " + board);
-                    Boards.Add(board);
+                    if(regDevice.Device.Info.SerialString != null && regDevice.Device.Info.SerialString.Length > 0)
+                    {
+                        var board = new TreehopperUsb(new UsbConnection(regDevice));
+                        Debug.WriteLine("Added board: " + board);
+                        Boards.Add(board);
+                    } else
+                    {
+
+                    }
+                    
                 }
             }
 
@@ -181,7 +188,7 @@ namespace Treehopper
                 {
                     if(regDevice.Device != null)
                     {
-						if (regDevice.Vid == TreehopperUsb.Settings.Vid || regDevice.Pid == TreehopperUsb.Settings.Pid) {
+						if (regDevice.Vid == TreehopperUsb.Settings.Vid && regDevice.Pid == TreehopperUsb.Settings.Pid) {
 							bool isInBoardList = false;
 							foreach (var board in Boards) {
 								if (regDevice.SymbolicName == board.Connection.DevicePath) {
@@ -191,7 +198,10 @@ namespace Treehopper
 							if (!isInBoardList && regDevice.Device.Info.SerialString.Length > 0) {
 								Debug.WriteLine ("Adding board");
 								Boards.Add (new TreehopperUsb(new UsbConnection(regDevice)));
-							}
+							} else
+                            {
+
+                            }
 						}
                     }
                    
