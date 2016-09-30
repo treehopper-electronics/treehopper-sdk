@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.usb.*;
 import android.util.Log;
 
@@ -189,11 +190,10 @@ public class ConnectionService extends BroadcastReceiver {
 
                 boards.put(device.getSerialNumber(), board);
                 Log.i(TAG, "Added new board (name=" + board.getName() + ", serial=" + board.getSerialNumber() + "). Total number of boards: " + boards.size());
-                ;
-                Log.i(TAG, "calling " + listeners.size() + " listeners.");
-                for (TreehopperEventsListener listener : listeners) {
-                    listener.onBoardAdded(board);
-                }
+
+
+                manager.requestPermission(device, pendingIntent);
+
             }
         }
     }
@@ -206,15 +206,38 @@ public class ConnectionService extends BroadcastReceiver {
             UsbDevice usbDevice = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
             deviceRemoved(usbDevice);
         }
+
+        if(intent.getAction() == ActionUsbPermission)
+        {
+            synchronized (this) {
+                UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+                if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                    if(device != null){
+                        Log.i(TAG, "calling " + listeners.size() + " listeners.");
+                        for (TreehopperEventsListener listener : listeners) {
+                            listener.onBoardAdded(boards.get(device.getSerialNumber()));
+                        }
+                    }
+                }
+                else {
+                    Log.d(TAG, "permission denied for device " + device);
+                }
+            }
+
+
+        }
+
     }
 
     public void scan() {
             if(context == null)
         return;
 
-//        pendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(ActionUsbPermission), 0);
-//        IntentFilter filter = new IntentFilter(ActionUsbPermission);
-//        context.registerReceiver(this, filter);
+        pendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(ActionUsbPermission), 0);
+        IntentFilter filter = new IntentFilter(ActionUsbPermission);
+        context.registerReceiver(this, filter);
+
         manager = (UsbManager)context.getSystemService(context.USB_SERVICE);
         HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
         for(Map.Entry<String, UsbDevice> entry : deviceList.entrySet()) {
