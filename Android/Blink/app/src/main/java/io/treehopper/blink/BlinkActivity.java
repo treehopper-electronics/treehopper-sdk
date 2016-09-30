@@ -52,7 +52,7 @@ public class BlinkActivity extends TreehopperActivity {
                 Log.i("BlinkActivity", "Starting app with " + board.getSerialNumber());
                 super.run();
                 board.connect();
-                board.Pin10.setMode(PinMode.PushPullOutput);
+                board.Pins[9].setMode(PinMode.PushPullOutput);
                 while (board != null) {
 //                    board.Pin10.toggleOutput();
                     board.setLed(!board.getLed());
