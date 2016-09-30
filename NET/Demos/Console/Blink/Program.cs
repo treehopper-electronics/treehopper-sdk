@@ -17,6 +17,7 @@ namespace Blink
     /// </remarks>
     class Program
     {
+        static TreehopperUsb Board;
         static void Main(string[] args)
         {
             RunBlink().Wait();
@@ -32,7 +33,7 @@ namespace Blink
                 //TreehopperManager manager = new TreehopperManager();
                 //manager.BoardAdded += Manager_BoardAdded;
 
-                TreehopperUsb Board = await ConnectionService.Instance.GetFirstDeviceAsync();
+                Board = await ConnectionService.Instance.GetFirstDeviceAsync();
                 Console.WriteLine("Found board: " + Board);
                 Console.WriteLine("Version: " + Board.Version);
 

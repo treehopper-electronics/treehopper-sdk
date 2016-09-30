@@ -26,16 +26,21 @@ namespace DeviceManager.ViewModels
         private string name = "";
         public string Name { get { return name; } set { Set(ref name, value); } }
 
+        private string firmwareString = "";
+        public string FirmwareString { get { return firmwareString; } set { Set(ref firmwareString, value); } }
+
         private TreehopperUsb board;
         public TreehopperUsb SelectedBoard
         {
             get { return board; }
             set {
-                Set(ref board, value);
+                board = value;
+                RaisePropertyChanged("Board"); 
                 RaisePropertyChanged("CanEdit");
                 UpdateNameCommand.RaiseCanExecuteChanged();
                 UpdateSerialCommand.RaiseCanExecuteChanged();
                 UpdateFirmwareFromEmbeddedImage.RaiseCanExecuteChanged();
+                FirmwareString = "Current firmware: " + board.VersionString;
 
                 if (board != null)
                     Name = board.Name;
@@ -94,6 +99,7 @@ namespace DeviceManager.ViewModels
                     async () =>
                     {
                         isUpdating = true;
+                        UpdateFirmwareFromEmbeddedImage.RaiseCanExecuteChanged();
                         Progress = 1;
                         SelectedBoard.RebootIntoBootloader();
                         Progress = 10;
@@ -108,8 +114,19 @@ namespace DeviceManager.ViewModels
 
                         var updater = new FirmwareUpdater(new FirmwareConnection());
                         updater.ProgressChanged += (sender, args) => { Progress = args.ProgressPercentage / 2.0 + 50.0; };
-                        await updater.ConnectAsync();
-                        await updater.LoadAsync();
+                        if(await updater.ConnectAsync())
+                        {
+                            await updater.LoadAsync();
+                        } else
+                        {
+                            FirmwareString = "Could not connect";
+                        }
+                        isUpdating = false;
+                        Progress = 0;
+                        UpdateFirmwareFromEmbeddedImage.RaiseCanExecuteChanged();
+
+
+
 
                     },
                     () => SelectedBoard != null && isUpdating == false));
@@ -127,6 +144,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 Set(ref progress, value);
+                FirmwareString = Math.Round(progress).ToString() + "%";
             }
         }
 
