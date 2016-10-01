@@ -3,6 +3,8 @@ package io.treehopper.api.android;
 import android.content.Context;
 import android.hardware.usb.*;
 
+import java.util.concurrent.TimeUnit;
+
 import io.treehopper.api.*;
 
 /**
@@ -18,22 +20,23 @@ public class UsbConnection implements UsbConnectionInterface {
     UsbEndpoint peripheralConfigEndpoint;
     UsbEndpoint peripheralResponseEndpoint;
 
+    Thread pinListenerThread;
+    boolean pinListenerThreadRunning = false;
+    private PinReportListener pinReportListener;
+
     public UsbConnection(UsbDevice device, Context appContext) {
-        this(device, (UsbManager)appContext.getSystemService(appContext.USB_SERVICE));
+        this(device, (UsbManager) appContext.getSystemService(appContext.USB_SERVICE));
     }
 
-    public UsbConnection(UsbDevice device, UsbManager manager)
-    {
+    public UsbConnection(UsbDevice device, UsbManager manager) {
         usbDevice = device;
         serialNumber = device.getSerialNumber();
         name = device.getProductName();
         usbManager = manager;
     }
 
-    TreehopperUsb board;
-
     public boolean open() {
-        if(connected)
+        if (connected)
             return false;
 
 
@@ -43,27 +46,52 @@ public class UsbConnection implements UsbConnectionInterface {
         pinConfigEndpoint = intf.getEndpoint(2);
         peripheralConfigEndpoint = intf.getEndpoint(3);
         connection = usbManager.openDevice(usbDevice);
-        if(connection != null)
-        {
+        if (connection != null) {
             boolean intfClaimed = connection.claimInterface(intf, true);
-            if(intfClaimed)
-            {
+            if (intfClaimed) {
                 connected = true;
-                return true;
+
+                pinListenerThread = new Thread() {
+                    @Override
+                    public void run() {
+                        byte[] data = new byte[64];
+                        pinListenerThreadRunning = true;
+                        while (pinListenerThreadRunning) {
+                            connection.bulkTransfer(pinReportEndpoint, data, 64, 0);
+                            if (pinReportListener != null)
+                                pinReportListener.onPinReportReceived(data);
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(100);
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                    }
+                };
+
+                pinListenerThread.start();
             }
         }
-        return false;
+
+        return connected;
     }
+
     boolean connected;
 
-    public boolean isConnected()
-    {
+    public boolean isConnected() {
         return connected;
     }
 
     public void close() {
-        if(!connected)
+        if (!connected)
             return;
+
+        pinListenerThreadRunning = false;
+        try {
+            pinListenerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         connection.close();
         connected = false;
@@ -82,8 +110,7 @@ public class UsbConnection implements UsbConnectionInterface {
     String name;
 
     public void sendDataPinConfigChannel(byte[] data) {
-        if(connection == null)
-        {
+        if (connection == null) {
             connected = false;
             return;
         }
@@ -92,17 +119,17 @@ public class UsbConnection implements UsbConnectionInterface {
     }
 
     public void sendDataPeripheralChannel(byte[] data) {
-        if(connection == null)
-        {
+        if (connection == null) {
             connected = false;
             return;
         }
 
-        connection.bulkTransfer (peripheralConfigEndpoint, data, data.length, 1000);
+        connection.bulkTransfer(peripheralConfigEndpoint, data, data.length, 1000);
     }
 
     @Override
-    public void setBoardReference(TreehopperUsb board) {
-        this.board = board;
+    public void setPinReportListener(PinReportListener pinReportListener) {
+        this.pinReportListener = pinReportListener;
     }
+
 }

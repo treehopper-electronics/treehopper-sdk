@@ -17,6 +17,8 @@ public class BlinkActivity extends TreehopperActivity {
     TreehopperUsb board;
     Thread app;
 
+    private static final String TAG = "BlinkApp";
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blink);
@@ -44,18 +46,18 @@ public class BlinkActivity extends TreehopperActivity {
     @Override
     protected void boardAdded(TreehopperUsb newBoard) {
         this.board = newBoard;
-        if (board.isConnected())
+        if (!board.connect())
             return;
         app = new Thread() {
             @Override
             public void run() {
-                Log.i("BlinkActivity", "Starting app with " + board.getSerialNumber());
+                Log.i(TAG, "Starting app with " + board.getSerialNumber());
                 super.run();
                 board.connect();
-                board.Pins[9].setMode(PinMode.PushPullOutput);
+                board.Pins[0].setMode(PinMode.AnalogInput);
                 while (board != null) {
-//                    board.Pin10.toggleOutput();
                     board.setLed(!board.getLed());
+                    Log.i(TAG, "Value: " + board.Pins[0].getAnalogValue());
                     try {
                         Thread.sleep(100);
                     } catch (Exception ex) {

@@ -325,10 +325,7 @@ namespace Treehopper
 
         internal void RaiseDigitalInValueChanged()
         {
-            if (DigitalValueChanged != null)
-            {
-                DigitalValueChanged(this, digitalValue);
-            }
+            DigitalValueChanged?.Invoke(this, digitalValue);
 
             digitalSignal.TrySetResult(digitalValue);
         }
@@ -337,12 +334,10 @@ namespace Treehopper
         {
             if (Math.Abs(prevAdcValue - adcValue) > AdcValueChangedThreshold)
             {
-                //Debug.WriteLine("AdcValueThreshold");
                 prevAdcValue = adcValue;
-                if (AdcValueChanged != null)
-                    AdcValueChanged(this, adcValue);
+                AdcValueChanged?.Invoke(this, adcValue);
 
-                //adcValueSignal.TrySetResult(adcValue);
+                adcValueSignal.TrySetResult(adcValue);
 
                 RaisePropertyChanged("AdcValue");
             }
@@ -350,10 +345,9 @@ namespace Treehopper
             if (Math.Abs(prevAnalogVoltage - AnalogVoltage) > AnalogVoltageChangedThreshold)
             {
                 prevAnalogVoltage = AnalogVoltage;
-                if (AnalogVoltageChanged != null)
-                    AnalogVoltageChanged(this, AnalogVoltage);
+                AnalogVoltageChanged?.Invoke(this, AnalogVoltage);
 
-                //analogVoltageSignal.TrySetResult(AnalogVoltage);
+                analogVoltageSignal.TrySetResult(AnalogVoltage);
 
                 RaisePropertyChanged("AnalogVoltage");
             }
@@ -361,15 +355,12 @@ namespace Treehopper
             if(Math.Abs(prevAnalogValue - AnalogValue) > AnalogValueChangedThreshold)
             {
                 prevAnalogValue = AnalogValue;
-                if (AnalogValueChanged != null)
-                    AnalogValueChanged(this, AnalogValue);
+                AnalogValueChanged?.Invoke(this, AnalogValue);
 
-                //analogValueSignal.TrySetResult(AnalogValue);
+                analogValueSignal.TrySetResult(AnalogValue);
 
                 RaisePropertyChanged("AnalogValue");
             }
-
-
         }
 
         internal void SendCommand(byte[] cmd)

@@ -11,5 +11,5 @@ public interface UsbConnectionInterface {
     String getName();
     void sendDataPinConfigChannel(byte[] data);
     void sendDataPeripheralChannel(byte[] data);
-    void setBoardReference(TreehopperUsb board);
+    void setPinReportListener(PinReportListener pinReportListener);
 }
