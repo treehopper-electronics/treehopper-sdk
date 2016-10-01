@@ -60,11 +60,6 @@ public class UsbConnection implements UsbConnectionInterface {
                             connection.bulkTransfer(pinReportEndpoint, data, 64, 0);
                             if (pinReportListener != null)
                                 pinReportListener.onPinReportReceived(data);
-                            try {
-                                TimeUnit.MILLISECONDS.sleep(100);
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                            }
                         }
                     }
                 };
