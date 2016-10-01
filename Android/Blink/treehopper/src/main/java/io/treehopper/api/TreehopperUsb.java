@@ -8,7 +8,7 @@ import io.treehopper.api.android.UsbConnection;
 /**
  * Created by jay on 12/27/2015.
  */
-public class TreehopperUsb {
+public class TreehopperUsb implements PinReportListener {
     public static ConnectionService getConnectionService() {
         return ConnectionService.getInstance();
     }
@@ -18,7 +18,8 @@ public class TreehopperUsb {
 
     public TreehopperUsb(UsbConnectionInterface connection) {
         usbConnection = connection;
-        for(int i=0;i<20;i++)
+        usbConnection.setPinReportListener(this);
+        for (int i = 0; i < 20; i++)
             Pins[i] = new Pin(this, i);
 
     }
@@ -61,6 +62,15 @@ public class TreehopperUsb {
 
     public Pin[] Pins = new Pin[20];
 
+    @Override
+    public void onPinReportReceived(byte[] pinReport) {
+        if (DeviceResponse.values()[pinReport[0]] == DeviceResponse.CurrentReadings) {
+            int i = 1;
+            for (Pin pin : Pins) {
+                pin.UpdateValue(pinReport[i++], pinReport[i++]);
+            }
+        }
+    }
 }
 
 enum DeviceCommands {
@@ -81,4 +91,13 @@ enum DeviceCommands {
     Reboot,    //
     EnterBootloader,    //
     LedConfig
+}
+
+enum DeviceResponse {
+    Reserved,
+    DeviceInfo,
+    CurrentReadings,
+    UARTDataReceived,
+    I2CDataReceived,
+    SPIDataReceived
 }

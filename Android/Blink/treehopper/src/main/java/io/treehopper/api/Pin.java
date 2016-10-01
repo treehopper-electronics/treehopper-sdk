@@ -1,25 +1,38 @@
 package io.treehopper.api;
 
 import java.util.Arrays;
+import java.util.Observable;
+
+import static java.lang.Math.abs;
 
 /**
  * Created by jay on 12/28/2015.
  */
 
-public class Pin {
+public class Pin extends Observable {
     private TreehopperUsb board;
     private int pinNumber;
 
     // digital members
     private boolean digitalValue;
-    private PinMode mode;
+    private PinMode mode = PinMode.Unassigned;
 
     // analog members
     int adcValueChangedThreshold = 2;
-    double adcVoltageChangedThreshold = 0.05;
-    private AdcReferenceLevel referenceLevel = AdcReferenceLevel.VREF_3V3;
+    double analogValueChangedThreshold = 0.05;
+    double analogVoltageChangedThreshold = 0.1;
+    AdcReferenceLevel referenceLevel = AdcReferenceLevel.VREF_3V3;
 
-    public Pin(TreehopperUsb board, int pinNumber) {
+    int adcValue;
+    double analogVoltage;
+    double analogValue;
+
+    private int prevAdcValue;
+    double prevAnalogVoltage;
+    double prevAnalogValue;
+
+
+    public Pin(TreehopperUsb board, int pinNumber)  {
         this.board = board;
         this.pinNumber = pinNumber;
     }
@@ -76,6 +89,102 @@ public class Pin {
         data[1] = (byte) pinNumber;
         System.arraycopy(cmd, 0, data, 2, cmd.length);
         board.getConnection().sendDataPinConfigChannel(data);
+    }
+
+    public void UpdateValue(byte highByte, byte lowByte) {
+        if(mode == PinMode.DigitalInput)
+        {
+            boolean newVal = highByte > 0;
+            if (digitalValue != newVal) // we have a new value!
+            {
+                digitalValue = newVal;
+
+                RaiseDigitalInValueChanged();
+
+                // TODO: How do I do this in Java?
+                // RaisePropertyChanged("DigitalValue");
+            }
+        } else if(mode == PinMode.AnalogInput)
+        {
+            adcValue = (highByte & 0xFF) << 7 | (lowByte & 0xFF) >> 1;
+            RaiseAnalogInChanged();
+
+        }
+    }
+
+    void RaiseDigitalInValueChanged()
+    {
+        // TODO: how do I do this in Java?
+        // DigitalValueChanged?.Invoke(this, digitalValue);
+    }
+
+    void RaiseAnalogInChanged()
+    {
+        if (abs(prevAdcValue - adcValue) > adcValueChangedThreshold)
+        {
+            prevAdcValue = adcValue;
+            // TODO
+            // AdcValueChanged?.Invoke(this, adcValue);
+            // RaisePropertyChanged("AdcValue");
+        }
+
+        if (abs(prevAnalogVoltage - getAnalogVoltage()) > analogVoltageChangedThreshold)
+        {
+            prevAnalogVoltage = getAnalogVoltage();
+            // TODO
+            // AnalogVoltageChanged?.Invoke(this, AnalogVoltage);
+            // RaisePropertyChanged("AnalogVoltage");
+        }
+
+        if(abs(prevAnalogValue - getAnalogValue()) > analogValueChangedThreshold)
+        {
+            prevAnalogValue = getAnalogValue();
+            // TODO
+            // AnalogValueChanged?.Invoke(this, AnalogValue);
+            // RaisePropertyChanged("AnalogValue");
+        }
+    }
+
+    public double getAdcValue()
+    {
+        return adcValue;
+    }
+
+    public double getAnalogVoltage()
+    {
+        return adcValue * (getReferenceLevelVoltage() / 4092.0);
+    }
+
+    public double getAnalogValue()
+    {
+        return adcValue / 4092.0;
+    }
+
+    double getReferenceLevelVoltage()
+    {
+        switch(referenceLevel)
+        {
+            case VREF_1V65:
+                return 1.65;
+
+            case VREF_1V8:
+                return 1.8;
+
+            case VREF_2V4:
+                return 2.4;
+
+            case VREF_3V3:
+                return 3.6;
+
+            case VREF_3V3_DERIVED:
+                return 3.3;
+
+            case VREF_3V6:
+                return 3.6;
+
+            default:
+                return 0;
+        }
     }
 }
 

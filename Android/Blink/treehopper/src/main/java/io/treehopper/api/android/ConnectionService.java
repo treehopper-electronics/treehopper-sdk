@@ -25,8 +25,7 @@ public class ConnectionService extends BroadcastReceiver {
 
     private static final ConnectionService instance = new ConnectionService();
 
-    public static ConnectionService getInstance()
-    {
+    public static ConnectionService getInstance() {
         return instance;
     }
 
@@ -46,8 +45,7 @@ public class ConnectionService extends BroadcastReceiver {
 
     private Context context;
 
-    public ConnectionService()
-    {
+    public ConnectionService() {
 
     }
 
@@ -118,60 +116,55 @@ public class ConnectionService extends BroadcastReceiver {
 //    }
 
     private HashMap<String, TreehopperUsb> boards = new HashMap<String, TreehopperUsb>();
+
     public HashMap<String, TreehopperUsb> getBoards() {
         return boards;
     }
 
     private ArrayList<TreehopperEventsListener> listeners = new ArrayList<TreehopperEventsListener>();
-    public void addEventsListener(TreehopperEventsListener listener)
-    {
-        if(listeners.contains(listener)) // no double-subscribing, plz
+
+    public void addEventsListener(TreehopperEventsListener listener) {
+        if (listeners.contains(listener)) // no double-subscribing, plz
             return;
         listeners.add(listener);
     }
 
-    public void removeEventsListener(TreehopperEventsListener listener)
-    {
-        if(!listeners.contains(listener))
+    public void removeEventsListener(TreehopperEventsListener listener) {
+        if (!listeners.contains(listener))
             return;
         listeners.remove(listener);
     }
 
 
-    public void deviceAdded(UsbDevice device)
-    {
+    public void deviceAdded(UsbDevice device) {
         createTreehopperFromDevice(device);
     }
 
-    public void deviceRemoved(UsbDevice device)
-    {
+    public void deviceRemoved(UsbDevice device) {
         Log.i(TAG, "deviceRemoved called");
-        if(device == null) {
+        if (device == null) {
             // ugh, Android didn't tell us which device was removed, but if we only have one connected, we'll remove it
-            if(boards.size() == 1)
-            {
+            if (boards.size() == 1) {
                 Iterator<TreehopperUsb> it = boards.values().iterator();
                 TreehopperUsb removedBoard = it.next();
                 removedBoard.disconnect();
-                for(TreehopperEventsListener listener : listeners)
-                {
+                for (TreehopperEventsListener listener : listeners) {
                     listener.onBoardRemoved(removedBoard);
                 }
                 boards.clear();
             }
 
         } else {
-            if(device.getVendorId() == 0x10c4 && device.getProductId() == 0x8a7e) {
+            if (device.getVendorId() == 0x10c4 && device.getProductId() == 0x8a7e) {
                 TreehopperUsb removedBoard = boards.get(device.getSerialNumber());
-                if(removedBoard == null)
+                if (removedBoard == null)
                     return;
-                if(!boards.containsKey(removedBoard.getSerialNumber())) // we already removed it! thanks, though!
+                if (!boards.containsKey(removedBoard.getSerialNumber())) // we already removed it! thanks, though!
                     return;
                 removedBoard.disconnect();
                 boards.remove(device.getSerialNumber());
                 Log.i(TAG, "calling " + listeners.size() + " listeners");
-                for(TreehopperEventsListener listener : listeners)
-                {
+                for (TreehopperEventsListener listener : listeners) {
                     listener.onBoardRemoved(removedBoard);
                 }
             }
@@ -201,46 +194,45 @@ public class ConnectionService extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction() == UsbManager.ACTION_USB_DEVICE_DETACHED)
-        {
-            UsbDevice usbDevice = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        if (intent.getAction() == UsbManager.ACTION_USB_DEVICE_DETACHED) {
+            UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
             deviceRemoved(usbDevice);
         }
 
-        if(intent.getAction() == ActionUsbPermission)
-        {
+        if (intent.getAction() == UsbManager.ACTION_USB_DEVICE_ATTACHED) {
+            UsbDevice usbDevice = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+            createTreehopperFromDevice(usbDevice);
+        }
+
+        if (intent.getAction() == ActionUsbPermission) {
             synchronized (this) {
-                UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+                UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 
                 if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-                    if(device != null){
+                    if (device != null) {
                         Log.i(TAG, "calling " + listeners.size() + " listeners.");
                         for (TreehopperEventsListener listener : listeners) {
                             listener.onBoardAdded(boards.get(device.getSerialNumber()));
                         }
                     }
-                }
-                else {
+                } else {
                     Log.d(TAG, "permission denied for device " + device);
                 }
             }
-
-
         }
-
     }
 
     public void scan() {
-            if(context == null)
-        return;
+        if (context == null)
+            return;
 
         pendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(ActionUsbPermission), 0);
         IntentFilter filter = new IntentFilter(ActionUsbPermission);
         context.registerReceiver(this, filter);
 
-        manager = (UsbManager)context.getSystemService(context.USB_SERVICE);
+        manager = (UsbManager) context.getSystemService(context.USB_SERVICE);
         HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
-        for(Map.Entry<String, UsbDevice> entry : deviceList.entrySet()) {
+        for (Map.Entry<String, UsbDevice> entry : deviceList.entrySet()) {
             UsbDevice device = entry.getValue();
             createTreehopperFromDevice(device);
         }
