@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Treehopper;
-namespace Treehopper.Libraries
+namespace Treehopper
 {
     public class SMBusDevice
     {
@@ -109,6 +109,21 @@ namespace Treehopper.Libraries
         {
             // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
             await I2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data << 8) }, 0);
+        }
+
+        public async Task<byte[]> ReadBufferData(byte register, int numBytes)
+        {
+            var buffer = new byte[numBytes];
+            buffer = await I2c.SendReceive(address, new byte[] { register }, (byte)numBytes);
+            return buffer;
+        }
+
+        public async Task WriteBufferData(byte register, byte[] buffer)
+        {
+            var data = new byte[buffer.Length + 1];
+            data[0] = register;
+            Array.Copy(buffer, 0, data, 1, buffer.Length);
+            await I2c.SendReceive(address, data, 0);
         }
     }
 }
