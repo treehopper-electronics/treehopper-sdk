@@ -1,9 +1,6 @@
 package io.treehopper.api;
 
-import java.util.ArrayList;
-
-import io.treehopper.api.android.ConnectionService;
-import io.treehopper.api.android.UsbConnection;
+import io.treehopper.api.java.ConnectionService;
 
 /**
  * Created by jay on 12/27/2015.
