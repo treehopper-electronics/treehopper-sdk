@@ -16,66 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>lib/commons-lang3-3.2.1.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/commons-lang3-3.2.1.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/jsr80-1.0.1.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/jsr80-1.0.1.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/junit-4.10.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/junit-4.10.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-linux-arm.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-linux-arm.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-linux-x86.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-linux-x86.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-linux-x86_64.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-linux-x86_64.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-osx-x86.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-osx-x86.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-osx-x86_64.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-osx-x86_64.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-windows-x86.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-windows-x86.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/libusb4java-1.2.0-windows-x86_64.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/libusb4java-1.2.0-windows-x86_64.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/usb4java-1.2.0.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/usb4java-1.2.0.jar</locationURI>
-		</link>
-		<link>
-			<name>lib/usb4java-javax.jar</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/thirdparty/java/usb4java-javax.jar</locationURI>
-		</link>
-		<link>
 			<name>src/io/treehopper/api/AdcReferenceLevel.java</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/io/treehopper/api/AdcReferenceLevel.java</locationURI>
