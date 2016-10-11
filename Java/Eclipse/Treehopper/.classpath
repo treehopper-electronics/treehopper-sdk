@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="lib/libusb4java-1.2.0-windows-x86.jar"/>
 	<classpathentry kind="lib" path="lib/usb4java-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/usb4java-javax-1.2.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/usb4java-javax.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
