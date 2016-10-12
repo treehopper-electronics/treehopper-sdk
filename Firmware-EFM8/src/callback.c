@@ -150,7 +150,6 @@ uint16_t USBD_XferCompleteCb(uint8_t epAddr, USB_Status_TypeDef status,
 		break;
 	case EP2OUT:
 		PeripheralConfigPacketReady = true;
-		USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
 		break;
 	}
 	return 0;
