@@ -434,40 +434,9 @@ extern void PBCFG_0_enter_DefaultMode_from_RESET(void) {
 	// [PRTDRV - Port Drive Strength]$
 
 	// $[XBR0 - Port I/O Crossbar 0]
-	/*
-	 // URT0E (UART0 I/O Enable) = ENABLED (UART0 TX0, RX0 routed to Port pins
-	 //     P0.4 and P0.5.)
-	 // SPI0E (SPI I/O Enable) = ENABLED (SPI I/O routed to Port pins. The SPI
-	 //     can be assigned either 3 or 4 GPIO pins.)
-	 // SMB0E (SMB0 I/O Enable) = ENABLED (SMBus 0 I/O routed to Port pins.)
-	 // CP0E (Comparator0 Output Enable) = DISABLED (CP0 unavailable at Port
-	 //     pin.)
-	 // CP0AE (Comparator0 Asynchronous Output Enable) = DISABLED
-	 //     (Asynchronous CP0 unavailable at Port pin.)
-	 // CP1E (Comparator1 Output Enable) = DISABLED (CP1 unavailable at Port
-	 //     pin.)
-	 // CP1AE (Comparator1 Asynchronous Output Enable) = DISABLED
-	 //     (Asynchronous CP1 unavailable at Port pin.)
-	 // SYSCKE (SYSCLK Output Enable) = DISABLED (SYSCLK unavailable at Port
-	 //     pin.)
-	 */
-	XBR0 = XBR0_URT0E__ENABLED | XBR0_SPI0E__ENABLED | XBR0_SMB0E__ENABLED
-			| XBR0_CP0E__DISABLED | XBR0_CP0AE__DISABLED | XBR0_CP1E__DISABLED
-			| XBR0_CP1AE__DISABLED | XBR0_SYSCKE__DISABLED;
 	// [XBR0 - Port I/O Crossbar 0]$
 
 	// $[XBR1 - Port I/O Crossbar 1]
-	/*
-	 // PCA0ME (PCA Module I/O Enable) = CEX0_CEX1_CEX2 (CEX0, CEX1, CEX2
-	 //     routed to Port pins.)
-	 // ECIE (PCA0 External Counter Input Enable) = DISABLED (ECI unavailable
-	 //     at Port pin.)
-	 // T0E (T0 Enable) = DISABLED (T0 unavailable at Port pin.)
-	 // T1E (T1 Enable) = DISABLED (T1 unavailable at Port pin.)
-	 // T2E (T2 Enable) = ENABLED (T2 routed to Port pin.)
-	 */
-	XBR1 = XBR1_PCA0ME__CEX0_CEX1_CEX2 | XBR1_ECIE__DISABLED
-			| XBR1_T0E__DISABLED | XBR1_T1E__DISABLED | XBR1_T2E__ENABLED;
 	// [XBR1 - Port I/O Crossbar 1]$
 
 }
@@ -1007,7 +976,7 @@ extern void INTERRUPT_0_enter_DefaultMode_from_RESET(void) {
 //================================================================================
 extern void USBLIB_0_enter_DefaultMode_from_RESET(void) {
 	// $[USBD Init]
-	USBD_Init(&initstruct);
+	USBD_Init (&initstruct);
 	// [USBD Init]$
 
 }
