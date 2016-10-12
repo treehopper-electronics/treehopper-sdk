@@ -12,10 +12,10 @@
     <property object="ADC_0" propertyId="adc.configuration.sysclk" value="48.000 MHz"/>
     <property object="ADC_0" propertyId="adc.control.enableadc" value="Enabled"/>
     <property object="ADC_0" propertyId="adc.control.enableburstmode" value="Enabled"/>
-    <property object="ADC_0" propertyId="adc.control.timer0overflowfrequency" value="0 Hz"/>
+    <property object="ADC_0" propertyId="adc.control.timer0overflowfrequency" value="307.692 kHz"/>
     <property object="ADC_0" propertyId="adc.control.timer2overflowfrequency" value="0 Hz"/>
-    <property object="ADC_0" propertyId="adc.control.timer3overflowfrequency" value="0 Hz"/>
-    <property object="ADC_0" propertyId="adc.control.timer4overflowfrequency" value="0 Hz"/>
+    <property object="ADC_0" propertyId="adc.control.timer3overflowfrequency" value="61.000 Hz"/>
+    <property object="ADC_0" propertyId="adc.control.timer4overflowfrequency" value="14.981 kHz"/>
     <property object="ADC_0" propertyId="adc.view.view" value="Advanced"/>
     <property object="CIP51_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="CIP51_0" propertyId="cip51.prefetchenginecontrol.enableprefetch" value="Enabled"/>
@@ -33,11 +33,6 @@
     <property object="CMP_1" propertyId="cmp.input.negativeinputmuxselection" value="CMP1N.0 (P1.0)"/>
     <property object="CMP_1" propertyId="cmp.input.positiveinputmuxselection" value="CMP1P.8 (Internal 1.8 V LDO Output)"/>
     <property object="CMP_1" propertyId="cmp.mode.selectcomparatormode" value="Mode 0 (fastest response, highest power)"/>
-    <property object="CROSSBAR0" propertyId="xbar0.pca0.cex" value="CEX0, CEX1, and CEX2"/>
-    <property object="CROSSBAR0" propertyId="xbar0.smbus0.clockdata" value="Enabled"/>
-    <property object="CROSSBAR0" propertyId="xbar0.spi0.clockdata" value="Enabled"/>
-    <property object="CROSSBAR0" propertyId="xbar0.timer2.timer2input" value="Enabled"/>
-    <property object="CROSSBAR0" propertyId="xbar0.uart0.data" value="Enabled"/>
     <property object="DefaultMode" propertyId="mode.diagramLocation" value="100, 100"/>
     <property object="HFOSC_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="INTERRUPT_0" propertyId="ABPeripheral.included" value="true"/>
@@ -90,7 +85,9 @@
     <property object="PCACH_2" propertyId="pcach.pcacontrol.channelcapturecomparemode" value="16-Bit pulse width modulator"/>
     <property object="PCA_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.enablepcacountertimeroverflowinterrupt" value="Enabled"/>
-    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockperiod" value="Not available"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockfrequency" value="48.000 MHz"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockfrequencyintegervalue" value="48000000"/>
+    <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.pcaclockperiod" value="20.000 nS"/>
     <property object="PCA_0" propertyId="pca.pcacountertimerconfiguration.selectpcacountertimerpulse" value="SYSCLK"/>
     <property object="PCA_0" propertyId="pca.pcacountertimerruncontrol.pcarun" value="Start"/>
     <property object="PCA_0" propertyId="pca.pcapwmconfiguration.cex0outputpolarity" value="Inverted"/>
@@ -103,23 +100,28 @@
     <property object="SMBUS_0" propertyId="smbus.configuration.enablesmbussetupandholdtimeextension" value="Enabled"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.smbusclockfrequency" value="102.564 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.smbusslaveinhibit" value="Disabled"/>
+    <property object="SMBUS_0" propertyId="smbus.configuration.timer0overflowfrequency" value="307.692 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.timer1overflowfrequency" value="19.230 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.view.view" value="Advanced"/>
     <property object="SPI_0" propertyId="ABPeripheral.included" value="true"/>
-    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencyactual" value="0 Hz"/>
-    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencytarget" value="0"/>
-    <property object="SPI_0" propertyId="spi.clockrate.sysclk" value="1.000 Hz"/>
+    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencyactual" value="24.000 MHz"/>
+    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencytarget" value="24000000"/>
+    <property object="SPI_0" propertyId="spi.clockrate.sysclk" value="48.000 MHz"/>
     <property object="SPI_0" propertyId="spi.configuration.enablemastermode" value="Enable"/>
     <property object="SPI_0" propertyId="spi.configuration.spimode" value="Master"/>
     <property object="SPI_0" propertyId="spi.control.slaveselectmode" value="Slave or master 3-wire mode"/>
     <property object="SPI_0" propertyId="spi.control.spienable" value="Enabled"/>
     <property object="SPI_0" propertyId="spi.view.view" value="Advanced"/>
     <property object="TIMER01_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER01_0" propertyId="timer01.timer0highbyte.timer0highbyte" value="243"/>
     <property object="TIMER01_0" propertyId="timer01.timer0mode0:13bitcountertimer.timerinitvalue" value="5000"/>
     <property object="TIMER01_0" propertyId="timer01.timer0mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="300000"/>
+    <property object="TIMER01_0" propertyId="timer01.timer0mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="243"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1highbyte.timer1highbyte" value="48"/>
     <property object="TIMER01_0" propertyId="timer01.timer1lowbyte.timer1lowbyte" value="52"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="19200"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerinitvalue" value="52"/>
+    <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="48"/>
     <property object="TIMER16_2" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER16_2" propertyId="timer16.control.enablecapture" value="Enabled"/>
     <property object="TIMER16_2" propertyId="timer16.control.mode" value="Capture mode, 16-bit"/>
@@ -134,11 +136,11 @@
     <property object="TIMER16_4" propertyId="timer16.highbyte.highbyte" value="254"/>
     <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="15000"/>
     <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerinitvalue" value="65269"/>
-    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="65535"/>
+    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="65269"/>
     <property object="TIMER16_4" propertyId="timer16.initandreloadvaluehighbyte.targetoverflowfrequency" value="10000"/>
     <property object="TIMER16_4" propertyId="timer16.lowbyte.lowbyte" value="245"/>
-    <property object="TIMER16_4" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="255"/>
-    <property object="TIMER16_4" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="255"/>
+    <property object="TIMER16_4" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="254"/>
+    <property object="TIMER16_4" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="245"/>
     <property object="TIMER_SETUP_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer0.mode" value="Mode 2, 8-bit Counter/Timer with Auto-Reload"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer0.th0runcontrol" value="Run"/>
@@ -159,7 +161,9 @@
     <property object="UARTE_1" propertyId="uarte.baudrategeneratorcontrol.enablebaudrategenerator" value="Enabled"/>
     <property object="UARTE_1" propertyId="uarte.baudrategeneratorcontrol.expectedbaudrate" value="115200"/>
     <property object="UART_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="UART_0" propertyId="uart.serialportcontrol.actualbaudrate" value="9615 Baud"/>
     <property object="UART_0" propertyId="uart.serialportcontrol.enablereceive" value="Enabled"/>
+    <property object="UART_0" propertyId="uart.serialportcontrol.timer1overflowfrequency" value="19.230 kHz"/>
     <property object="USBLIB_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="USBLIB_0" propertyId="configuration.configurationparameters.configurationstring" value=""/>
     <property object="USBLIB_0" propertyId="configuration.configurationparameters.devicepower" value="Bus-Powered"/>
