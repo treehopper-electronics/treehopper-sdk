@@ -19,10 +19,11 @@ void I2C_Init() {
 
 void I2C_SetConfig(I2cConfigData_t* config) {
 	if (config->IsEnabled) {
+		SFRPAGE = 0x00;
+		TH0 = config->TH0Val;
 		I2C0_reset();
 		I2C_Enable();
 		I2C0_init(I2C0_TIMER0, true);
-		TH0 = config->TH0Val;
 	} else {
 		I2C_Disable();
 	}
@@ -40,15 +41,20 @@ void I2C_Disable() {
 
 void I2C_Transaction(uint8_t address, uint8_t* tx, uint8_t* rx, uint8_t txlen,
 		uint8_t rxlen) {
-	commandComplete = 0;
-	I2C0_transfer(address << 1, tx, NULL, txlen, 0);
-	while (!commandComplete)
-		;
+	if(txlen > 0) {
+		commandComplete = 0;
+		I2C0_transfer(address << 1, tx, NULL, txlen, 0);
+		while (!commandComplete)
+			;
 
-	commandComplete = 0;
-	I2C0_transfer(address << 1 | 1, NULL, rx, 0, rxlen);
-	while (!commandComplete)
-		;
+	}
+
+	if(rxlen > 0) {
+		commandComplete = 0;
+		I2C0_transfer(address << 1 | 1, NULL, rx, 0, rxlen);
+		while (!commandComplete)
+			;
+	}
 }
 void I2C0_commandReceivedCb() {
 
