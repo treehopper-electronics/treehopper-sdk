@@ -201,5 +201,7 @@ void ProcessPeripheralConfigPacket() {
 		RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
 		break;
 	}
+	// when we're all done, re-arm the endpoint.
+	USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
 
 }
