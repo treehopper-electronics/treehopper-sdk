@@ -11,7 +11,7 @@ namespace Treehopper
         {
             this.address = address;
             I2c = I2CModule;
-            //I2c.Start(rateKHz);
+            I2c.Speed = rateKHz;
             I2c.Enabled = true;
         }
         // SMBus functions
