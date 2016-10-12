@@ -11,8 +11,8 @@
 #include <stdint.h>
 
 typedef struct {
-	unsigned int IsEnabled;
-	unsigned int TH0Val;
+	uint8_t IsEnabled;
+	uint8_t TH0Val;
 } I2cConfigData_t;
 
 void I2C_Init();
