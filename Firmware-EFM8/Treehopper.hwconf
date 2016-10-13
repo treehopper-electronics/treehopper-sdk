@@ -43,6 +43,7 @@
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableallinterrupts" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enabletimer2interrupt" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableuart0interrupt" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interruptenables.codegenerationoptions.generateinterruptfunctions" value="Disabled"/>
     <property object="P0.0" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
     <property object="P0.0" propertyId="ports.settings.outputmode" value="Push-pull"/>
     <property object="P0.1" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
