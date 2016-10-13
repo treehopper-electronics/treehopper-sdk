@@ -25,7 +25,7 @@ volatile bit PeripheralConfigPacketReady;
 volatile bit PinConfigPacketReady;
 volatile bit SendPinStatusPacket;
 
-SI_SEGMENT_VARIABLE( Treehopper_ReportData[64], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE( Treehopper_ReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE( Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
 
@@ -80,7 +80,7 @@ void SendPinStatus() {
 			Treehopper_ReportData[i * 2 + 2] = 0;
 		}
 	}
-	USBD_Write(EP1IN, &Treehopper_ReportData, 64, true);
+	USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
 }
 
 void ProcessPinConfigPacket() {
