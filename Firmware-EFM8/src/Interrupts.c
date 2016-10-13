@@ -133,18 +133,3 @@ SI_INTERRUPT (TIMER4_ISR, TIMER4_IRQn) {
 	TMR4CN0 &= ~(TMR4CN0_TF4H__SET | TMR4CN0_TF4L__SET);
 //	SoftPwm_Task();
 }
-
-//-----------------------------------------------------------------------------
-// UART0_ISR
-//-----------------------------------------------------------------------------
-//
-// UART0 ISR Content goes here. Remember to clear flag bits:
-// SCON0::RI (Receive Interrupt Flag)
-// SCON0::TI (Transmit Interrupt Flag)
-//
-//-----------------------------------------------------------------------------
-//SI_INTERRUPT (UART0_ISR, UART0_IRQn)
-//{
-//
-//}
-
