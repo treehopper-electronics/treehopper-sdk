@@ -81,6 +81,7 @@ void SendPinStatus() {
 		}
 	}
 	USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
+
 }
 
 void ProcessPinConfigPacket() {
@@ -143,8 +144,8 @@ void ProcessPeripheralConfigPacket() {
 			SPI_DeactivateCs();
 		}
 		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
-		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalWriteBytes, false);
+		if (Treehopper_PeripheralConfig[4] != Burst_Tx  && totalReadBytes > 0) {
+			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes, false);
 		}
 		break;
 
