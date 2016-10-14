@@ -391,7 +391,6 @@ namespace Treehopper
             {
                 int val = ((int)highByte) << 8;
                 val |= (int)lowByte;
-                val >>= 1;
                 adcValue = val;
                 RaiseAnalogInChanged();
             }

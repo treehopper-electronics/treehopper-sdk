@@ -110,7 +110,7 @@ uint16_t ADC_GetVal(uint8_t pin) {
 	while (!ADC0CN0_ADINT)
 		;
 	ADC0CN0_ADINT = 0;
-	adcVal = ADC0;
+	adcVal = ADC0 >> 1;
 	SFRPAGE = SFRPAGE_save;
 	return adcVal;
 }
