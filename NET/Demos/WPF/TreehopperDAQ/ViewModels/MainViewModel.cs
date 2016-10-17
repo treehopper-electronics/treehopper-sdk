@@ -27,6 +27,8 @@ namespace TreehopperDAQ.ViewModels
 
         public MainViewModel()
         {
+            for (int i = 0; i < 20; i++)
+                ChannelEnabled.Add(true);
             Selector.OnBoardConnected += Selector_OnBoardConnected;
             Selector.OnBoardDisconnected += Selector_OnBoardDisconnected;
             timer.Elapsed += Timer_Elapsed;
@@ -36,6 +38,8 @@ namespace TreehopperDAQ.ViewModels
 
         Queue<DataPoint> buffer = new Queue<DataPoint>(); // temp buffer to avoid tying down the GUI
         public ObservableCollection<DataPoint> Data { get; set; } = new ObservableCollection<DataPoint>(); // GUI-accessible buffer
+
+        public ObservableCollection<bool> ChannelEnabled { get; set; } = new ObservableCollection<bool>();
 
         private TreehopperUsb board;
 
@@ -51,7 +55,14 @@ namespace TreehopperDAQ.ViewModels
             board = e.Board;
             board.Connection.UpdateRate = sampleRate;
             for (int i = 0; i < 20; i++)
-                board.Pins[i].Mode = PinMode.AnalogInput;
+            {
+
+                if(ChannelEnabled[i])
+                    board.Pins[i].Mode = PinMode.AnalogInput;
+                else
+                    board.Pins[i].Mode = PinMode.Unassigned;
+            }
+                
 
 
             board.OnPinValuesUpdated += Board_OnPinValuesUpdated;
@@ -75,7 +86,8 @@ namespace TreehopperDAQ.ViewModels
             var newValues = new double[board.Pins.Count];
             for (int i = 0; i < board.Pins.Count; i++)
             {
-                newValues[i] = board.Pins[i].AnalogVoltage;
+                if (ChannelEnabled[i])
+                    newValues[i] = board.Pins[i].AnalogVoltage;
             }
             data.Values = newValues;
             data.TimestampOffset = sw.ElapsedTicks / msFreq;
