@@ -56,6 +56,8 @@ namespace Treehopper
 
     public delegate void TreehopperUsbRemovedHandler(TreehopperUsb BoardRemoved);
 
+    public delegate void PinValuesUpdatedHandler(object sender, EventArgs e);
+
     /// <summary>
     /// TreehopperBoard is the main class for interacting with Treehopper. Once constructed, it contains instances of all pins and peripherals. 
     /// <seealso cref="TreehopperManager"/>
@@ -362,6 +364,9 @@ namespace Treehopper
                 {
                     pin.UpdateValue(pinStateBuffer[i++], pinStateBuffer[i++]);
                 }
+
+                OnPinValuesUpdated?.Invoke(this, new EventArgs());
+
             }
         }
 
@@ -511,6 +516,8 @@ namespace Treehopper
 		/// <remarks>
 		/// </remarks>
 		public event PropertyChangedEventHandler PropertyChanged;
+
+        public event PinValuesUpdatedHandler OnPinValuesUpdated;
 
 		private void RaisePropertyChanged(string property)
 		{
