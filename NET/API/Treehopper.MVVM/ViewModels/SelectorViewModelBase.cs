@@ -5,9 +5,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
-
+using Treehopper.Mvvm;
 using Treehopper.Mvvm.Messages;
-
 
 namespace Treehopper.Mvvm.ViewModel
 {
@@ -40,6 +39,7 @@ namespace Treehopper.Mvvm.ViewModel
 
                 selectedBoard = value;
                 RaisePropertyChanged("SelectedBoard");
+                OnSelectedBoardChanged?.Invoke(this, new SelectedBoardChangedEventArgs() { Board = selectedBoard });
                 if (selectedBoard != null)
                     ConnectCommand.RaiseCanExecuteChanged();
 
@@ -71,6 +71,10 @@ namespace Treehopper.Mvvm.ViewModel
         public RelayCommand CloseCommand { get; set; }
 
         bool isConnected = false;
+
+        public event SelectedBoardChangedEventHandler OnSelectedBoardChanged;
+        public event BoardConnectedEventHandler OnBoardConnected;
+        public event BoardDisconnectedEventHandler OnBoardDisconnected;
 
         public string AutoConnectSerialNumber { get; set; }
 
@@ -139,7 +143,9 @@ namespace Treehopper.Mvvm.ViewModel
             CanChangeBoardSelection = false;
             RaisePropertyChanged("CanChangeBoardSelection");
             await SelectedBoard.ConnectAsync();
+            OnBoardConnected?.Invoke(this, new BoardConnectedEventArgs() { Board = SelectedBoard });
             Messenger.Default.Send(new BoardConnectedMessage() { Board = SelectedBoard });
+
         }
 
         private void Disconnect()
@@ -154,7 +160,7 @@ namespace Treehopper.Mvvm.ViewModel
             {
                 SelectedBoard.Disconnect();
             }
-
+            OnBoardDisconnected?.Invoke(this, new BoardDisconnectedEventArgs() { Board = SelectedBoard });
             Messenger.Default.Send(new BoardDisconnectedMessage() { Board = SelectedBoard });
         }
     }
