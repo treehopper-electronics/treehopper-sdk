@@ -4,6 +4,9 @@ using System.ComponentModel;
 
 namespace Treehopper.Mvvm.ViewModel
 {
+    public delegate void SelectedBoardChangedEventHandler(object sender, SelectedBoardChangedEventArgs e);
+    public delegate void BoardConnectedEventHandler(object sender, BoardConnectedEventArgs e);
+    public delegate void BoardDisconnectedEventHandler(object sender, BoardDisconnectedEventArgs e);
     public interface ISelectorViewModel : INotifyPropertyChanged
     {
         ObservableCollection<TreehopperUsb> Boards { get; }
@@ -13,5 +16,8 @@ namespace Treehopper.Mvvm.ViewModel
         RelayCommand ConnectCommand { get; set; }
         string ConnectButtonText { get; set; }
         RelayCommand CloseCommand { get; set; }
+        event SelectedBoardChangedEventHandler OnSelectedBoardChanged;
+        event BoardConnectedEventHandler OnBoardConnected;
+        event BoardDisconnectedEventHandler OnBoardDisconnected;
     }
 }
