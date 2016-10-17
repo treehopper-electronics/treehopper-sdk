@@ -83,7 +83,7 @@ extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralResponse[64], uint8_t, SI_SEG_XD
 
 extern volatile bit PeripheralConfigPacketReady;
 extern volatile bit PinConfigPacketReady;
-extern volatile bit PinStatusPacketSent;
+extern volatile bit PinStatusPacketCompleted;
 //static uint8_t Treehopper_PinConfig[5];
 
 
