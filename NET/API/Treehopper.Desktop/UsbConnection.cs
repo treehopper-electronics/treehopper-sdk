@@ -112,10 +112,10 @@ namespace Treehopper
                 peripheralConfig = device.OpenEndpointWriter(WriteEndpointID.Ep02);
                 peripheralReceive = device.OpenEndpointReader(ReadEndpointID.Ep02);
 
-                pinState.DataReceived += pinState_DataReceived;
-                pinState.DataReceivedEnabled = true;
-
                 isOpen = true;
+
+                new Thread(new ThreadStart(PinListenerTask)).Start();
+
                 return true;
 
             } else
@@ -124,14 +124,24 @@ namespace Treehopper
             }
         }
 
-        private async void pinState_DataReceived(object sender, EndpointDataEventArgs e)
+        private void PinListenerTask()
         {
-            int transferLength;
-            pinState.Read(pinEventData, 1000, out transferLength);
-            if(PinEventDataReceived != null) PinEventDataReceived(pinEventData);
-            await Task.Delay(updateDelay);
-        }
+            while(isOpen)
+            {
+                byte[] buffer = new byte[41];
+                int len = 0;
+                try
+                {
+                    pinState.Read(buffer, 1000, out len);
+                    PinEventDataReceived?.Invoke(buffer);
+                } catch(Exception ex)
+                {
 
+                }
+                if(updateDelay > 1) Task.Delay(updateDelay).Wait();
+            }
+
+        }
         public void SendDataPeripheralChannel(byte[] data)
         {
             if (!isOpen)
@@ -181,8 +191,6 @@ namespace Treehopper
                 }
                 if (pinState != null)
                 {
-                    pinState.DataReceivedEnabled = false;
-                    pinState.DataReceived -= pinState_DataReceived; // TODO: sometimes pinState is null when we get here. 
                     pinState.Dispose();
                     pinState = null;
                 }
