@@ -23,7 +23,7 @@
 // GLOBALS
 volatile bit PeripheralConfigPacketReady;
 volatile bit PinConfigPacketReady;
-volatile bit PinStatusPacketSent;
+volatile bit PinStatusPacketCompleted;
 
 SI_SEGMENT_VARIABLE( Treehopper_ReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE( lastReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
@@ -53,8 +53,8 @@ void Treehopper_Task() {
 		ProcessPeripheralConfigPacket();
 		PeripheralConfigPacketReady = false;
 	}
-
-	SendPinStatus();
+	if(PinStatusPacketCompleted)
+		SendPinStatus();
 }
 
 void SendPinStatus() {
@@ -77,13 +77,14 @@ void SendPinStatus() {
 			Treehopper_ReportData[i * 2 + 2] = 0;
 		}
 	}
-	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
-	{
-		while(!PinStatusPacketSent);
-		PinStatusPacketSent = false;
+//	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
+//	{
+//		while(!PinStatusPacketSent);
+//		PinStatusPacketSent = false;
+		PinStatusPacketCompleted = false;
 		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
-		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
-	}
+//		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
+//	}
 }
 
 void ProcessPinConfigPacket() {

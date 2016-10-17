@@ -139,7 +139,7 @@ uint16_t USBD_XferCompleteCb(uint8_t epAddr, USB_Status_TypeDef status,
 	case EP0:
 		break;
 	case EP1IN:
-		SendPinStatusPacket = true;
+		PinStatusPacketCompleted = true;
 		break;
 	case EP1OUT:
 		PinConfigPacketReady = true;
