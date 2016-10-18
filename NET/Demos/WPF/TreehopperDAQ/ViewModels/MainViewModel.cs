@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Timers;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace TreehopperDAQ.ViewModels
 {
@@ -23,7 +24,7 @@ namespace TreehopperDAQ.ViewModels
         public SelectorViewModel Selector { get { return selector; } }
 
         private Stopwatch sw = new Stopwatch(); // accurate timer
-        Timer timer = new Timer(); // fire every second to update the GUI
+        System.Timers.Timer timer = new System.Timers.Timer(); // fire every second to update the GUI
 
         public MainViewModel()
         {
@@ -49,6 +50,7 @@ namespace TreehopperDAQ.ViewModels
         public double refreshRate = 2;
         public string RefreshRate { get { return refreshRate.ToString(); } set { refreshRate = double.Parse(value); timer.Interval = 1000 / refreshRate; } }
 
+        private SemaphoreSlim semaphore = new SemaphoreSlim(1);
         private void Selector_OnBoardConnected(object sender, BoardConnectedEventArgs e)
         {
             Data.Clear();
@@ -74,8 +76,10 @@ namespace TreehopperDAQ.ViewModels
         {
             Application.Current.Dispatcher.InvokeAsync(() =>
             {
+                semaphore.Wait();
                 while (buffer.Count > 0)
                     Data.Add(buffer.Dequeue());
+                semaphore.Release();
             });
         }
 
@@ -91,8 +95,9 @@ namespace TreehopperDAQ.ViewModels
             }
             data.Values = newValues;
             data.TimestampOffset = sw.ElapsedTicks / msFreq;
-
+            semaphore.Wait();
             buffer.Enqueue(data);
+            semaphore.Release();
         }
 
         private void Selector_OnBoardDisconnected(object sender, BoardDisconnectedEventArgs e)
