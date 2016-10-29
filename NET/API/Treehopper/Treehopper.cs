@@ -434,6 +434,7 @@ namespace Treehopper
         public void Dispose()
         {
             Disconnect();
+            connection.Dispose();
         }
 
 		/// <summary>
