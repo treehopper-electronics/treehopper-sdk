@@ -115,10 +115,10 @@ SI_SEGMENT_VARIABLE(configDesc[],
 LANGID_STATIC_CONST_STRING_DESC(langDesc[], LANG_STRING);
 UTF16LE_PACKED_STATIC_CONST_STRING_DESC(mfrDesc[], MFR_STRING);
 UTF16LE_PACKED_STATIC_CONST_STRING_DESC(prodDesc[], PROD_STRING);
-SI_LOCATED_VARIABLE_NO_INIT( nameDesc[64], USB_StringDescriptor_TypeDef,
-		SI_SEG_CODE, NAME_ADDR);
-SI_LOCATED_VARIABLE_NO_INIT( serDesc[64], USB_StringDescriptor_TypeDef,
-		SI_SEG_CODE, SER_ADDR);
+//SI_LOCATED_VARIABLE_NO_INIT( nameDesc[64], USB_StringDescriptor_TypeDef,
+//		SI_SEG_CODE, NAME_ADDR);
+//SI_LOCATED_VARIABLE_NO_INIT( serDesc[64], USB_StringDescriptor_TypeDef,
+//		SI_SEG_CODE, SER_ADDR);
 //-----------------------------------------------------------------------------
 SI_SEGMENT_POINTER(myUsbStringTable_USEnglish[],
 		static const USB_StringDescriptor_TypeDef,
@@ -126,9 +126,9 @@ SI_SEGMENT_POINTER(myUsbStringTable_USEnglish[],
 {
 	langDesc,
 	mfrDesc,
-	nameDesc,
-	serDesc,
-	nameDesc
+	serialNumber_name,
+	serialNumber_serial,
+	serialNumber_name
 
 };
 
