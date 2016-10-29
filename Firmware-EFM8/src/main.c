@@ -36,8 +36,10 @@
 //
 //-----------------------------------------------------------------------------
 int16_t main(void) {
-//  serialNumber_init();
+
 	enter_DefaultMode_from_RESET();
+
+	serialNumber_init();
 
 	LED_Init();
 	SPI_Disable();
