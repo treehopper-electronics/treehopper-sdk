@@ -186,6 +186,10 @@ namespace Treehopper
 
         internal void Disconnect()
         {
+            if (!isOpen) return; // already disconnected
+
+            isOpen = false;
+            pinListenerTask.Wait(); // wait for the task to return
             try
             {
                 if (pinConfig != null)
@@ -234,6 +238,11 @@ namespace Treehopper
         {
             Disconnect();
             UsbDevice.Exit();
+        }
+
+        ~UsbConnection()
+        {
+            Dispose();
         }
     }
 }
