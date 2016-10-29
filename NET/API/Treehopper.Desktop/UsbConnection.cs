@@ -114,7 +114,27 @@ namespace Treehopper
 
                 isOpen = true;
 
-                new Thread(new ThreadStart(PinListenerTask)).Start();
+                pinListenerTask = new Task(() =>
+                {
+                    while (isOpen)
+                    {
+                        byte[] buffer = new byte[41];
+                        int len = 0;
+                        try
+                        {
+                            pinState.Read(buffer, 1000, out len);
+                            PinEventDataReceived?.Invoke(buffer);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                        if (updateDelay > 1) Task.Delay(updateDelay).Wait();
+                    }
+
+                });
+
+                pinListenerTask.Start();
 
                 return true;
 
@@ -124,24 +144,9 @@ namespace Treehopper
             }
         }
 
-        private void PinListenerTask()
-        {
-            while(isOpen)
-            {
-                byte[] buffer = new byte[41];
-                int len = 0;
-                try
-                {
-                    pinState.Read(buffer, 1000, out len);
-                    PinEventDataReceived?.Invoke(buffer);
-                } catch(Exception ex)
-                {
 
-                }
-                if(updateDelay > 1) Task.Delay(updateDelay).Wait();
-            }
 
-        }
+        private Task pinListenerTask;
         public void SendDataPeripheralChannel(byte[] data)
         {
             if (!isOpen)
