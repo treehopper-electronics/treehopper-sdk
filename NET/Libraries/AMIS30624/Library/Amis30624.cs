@@ -11,15 +11,21 @@ namespace Treehopper.Libraries.Amis30624
     public class Amis30624
     {
         private SMBusDevice dev;
-        public Amis30624(II2c module, Address HardwiredAddressPin) : this(module, (byte)HardwiredAddressPin)
+        public Amis30624(II2c module, Address HardwiredAddressPin, int speed = 400) : this(module, (byte)HardwiredAddressPin, speed)
         {
 
         }
 
-        public Amis30624(II2c module, byte address)
+        public Amis30624(II2c module, byte address, int speed)
         {
-            dev = new SMBusDevice(address, module);
-            GetStatus().ConfigureAwait(false);
+            dev = new SMBusDevice(address, module, speed);
+            ResetToDefault().ConfigureAwait(false);
+            GetFullStatus().ConfigureAwait(false);
+        }
+
+        public Task ResetToDefault()
+        {
+            return dev.WriteByte((byte)Command.ResetToDefault);
         }
 
 
@@ -40,38 +46,96 @@ namespace Treehopper.Libraries.Amis30624
             return dev.WriteByte((byte)Command.RunVelocity);
         }
 
-        public async Task GetStatus()
+        public async Task GetFullStatus()
         {
-            var data = await dev.ReadBufferData((byte)Command.GetFullStatus1, 8);
-            int irun = (data[0] >> 4) & 0x0f;
+            var data = await dev.ReadBufferData((byte)Command.GetFullStatus1, 9);
+            int irun = (data[1] >> 4) & 0x0f;
             runningCurrent = (RunningCurrent)irun;
 
-            int ihold = data[0] & 0x0f;
+            int ihold = data[1] & 0x0f;
             holdingCurrent = (HoldingCurrent)irun;
 
-            int vmax = (data[1] >> 4) & 0x0f;
+            int vmax = (data[2] >> 4) & 0x0f;
             maxVelocity = (MaxVelocity)vmax;
 
-            int vmin = data[1] & 0x0f;
+            int vmin = data[2] & 0x0f;
             minVelocityFactorThirtySeconds = (vmin == 0) ? 32 : vmin;
 
-            int acc = data[2] & 0x0f;
+            int acc = data[3] & 0x0f;
             acceleration = (Acceleration)acc;
 
-            accelShape = (data[2] & 0x80) > 0;
+            accelShape = (data[3] & 0x80) > 0;
 
-            int _stepMode = (data[2] >> 5) & 0x03;
+            int _stepMode = (data[3] >> 5) & 0x03;
             stepMode = (StepMode)_stepMode;
 
-            shaftDirection = (data[2] & 0x10) > 0;
+            shaftDirection = (data[3] & 0x10) > 0;
 
+            await GetPositionStatus();
+        }
 
-
-            data = await dev.ReadBufferData((byte)Command.GetFullStatus2, 8);
+        public async Task GetPositionStatus()
+        {
+            var data = await dev.ReadBufferData((byte)Command.GetFullStatus2, 8);
+            ActualPosition = (short)(data[1] << 8 | data[2]);
+            targetPosition = (short)(data[3] << 8 | data[4]);
+            securePosition = (short)(data[5]);
 
         }
 
+        public short ActualPosition { get; private set; }
+
+        private short targetPosition;
+        public short TargetPosition
+        {
+            get { return targetPosition; }
+            set
+            {
+                if (targetPosition == value) return;
+                targetPosition = value;
+                SetPosition(targetPosition).ConfigureAwait(false);
+            }
+        }
+
+        private short securePosition;
+        public short SecurePosition
+        {
+            get { return targetPosition; }
+            set
+            {
+                if (securePosition == value) return;
+                securePosition = value;
+                SetMotorParams();
+            }
+        }
+
+        public async Task MoveAsync(short position)
+        {
+            await SetPosition(position);
+            while(true)
+            {
+                await GetPositionStatus();
+                if (ActualPosition == TargetPosition)
+                    return;
+            }
+
+        }
+
+        private Task SetPosition(short position)
+        {
+            var data = new byte[4];
+            data[0] = 0xff;
+            data[1] = 0xff;
+            data[2] = (byte)(position >> 8);
+            data[3] = (byte)(position & 0xff);
+            return dev.WriteBufferData((byte)Command.SetPosition, data);
+        }
+
         private bool shaftDirection;
+
+        /// <summary>
+        /// Determines whether a positive motion is clockwise or counter-clockwise. Note that this value is ignored for RunVelocity mode!
+        /// </summary>
         public bool ShaftDirection
         {
             get { return shaftDirection;  }
@@ -167,7 +231,6 @@ namespace Treehopper.Libraries.Amis30624
             }
         }
 
-        ushort secPos;
         bool pwmFreq;
         bool pwmjen;
         private void SetMotorParams()
@@ -177,8 +240,8 @@ namespace Treehopper.Libraries.Amis30624
             data[1] = 0xff;
             data[2] = (byte)(((byte)runningCurrent << 4) | ((byte)holdingCurrent & 0x0f));
             data[3] = (byte)(((byte)maxVelocity << 4) | ((byte)minVelocityFactorThirtySeconds & 0x0f));
-            data[4] = (byte)(((byte)(secPos >> 8) << 5) | ((shaftDirection ? 1 : 0) << 4) | ((byte)acceleration & 0x0f));
-            data[5] = (byte)(secPos & 0xff);
+            data[4] = (byte)(((byte)(securePosition >> 8) << 5) | ((shaftDirection ? 1 : 0) << 4) | ((byte)acceleration & 0x0f));
+            data[5] = (byte)(securePosition & 0xff);
             data[6] = (byte)(
                     (1 << 7) | 
                     ((pwmFreq ? 1 : 0) << 6) | 
