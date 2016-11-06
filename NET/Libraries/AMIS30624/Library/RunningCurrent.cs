@@ -17,6 +17,7 @@ namespace Treehopper.Libraries.Amis30624
         mA_168,
         mA_200,
         mA_238,
+        mA_283,
         mA_336,
         mA_400,
         mA_476,
@@ -43,6 +44,8 @@ namespace Treehopper.Libraries.Amis30624
                     return 200;
                 case RunningCurrent.mA_238:
                     return 238;
+                case RunningCurrent.mA_283:
+                    return 283;
                 case RunningCurrent.mA_336:
                     return 336;
                 case RunningCurrent.mA_400:

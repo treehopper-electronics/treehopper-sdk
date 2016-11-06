@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Treehopper;
 using Treehopper.Libraries.Amis30624;
+using System.Diagnostics;
 
 namespace Demo
 {
@@ -20,17 +21,22 @@ namespace Demo
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
+            var stepper = new Amis30624(board.I2c, Address.Hw0, 100);
 
-            var stepper = new Amis30624(board.I2c, Address.Hw0);
+            stepper.MinVelocityFactorThirtySeconds = 1;
             stepper.RunningCurrent = RunningCurrent.mA_800;
-            stepper.HoldingCurrent = HoldingCurrent.mA_673;
+            stepper.Acceleration = Acceleration.StepsPerSec2_1004;
             stepper.MaxVelocity = MaxVelocity.StepsPerSecond_973;
-            await stepper.RunVelocity();
-            //await Task.Delay(5000);
-            //stepper.ShaftDirection = false;
-            //await Task.Delay(5000);
 
-            await stepper.SoftStop();
+            while (!Console.KeyAvailable)
+            {
+                await stepper.MoveAsync(5000);
+                await Task.Delay(1000);
+                await stepper.MoveAsync(-5000);
+                await Task.Delay(1000);
+            }
+
+            board.Disconnect();
         }
     }
 }
