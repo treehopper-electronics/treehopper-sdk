@@ -181,7 +181,8 @@ namespace Treehopper
             int transferLength;
             if (peripheralReceive != null)
                 peripheralReceive.Read(returnVal, 1000, out transferLength);
-            return returnVal;
+            Array.Copy(returnVal, retVal, bytesToRead);
+            return retVal;
         }
 
         internal void Disconnect()
