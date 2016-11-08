@@ -275,18 +275,18 @@ namespace Treehopper
                 }
 
                 // no need to wait if we're not reading anything
-                if (mode == BurstMode.BurstTx)
-                    return returnedData;
-
-                bytesRemaining = transactionLength;
-                srcIndex = 0;
-                while (bytesRemaining > 0)
+                if (mode != BurstMode.BurstTx)
                 {
-                    int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                    receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer);
-                    Array.Copy(receivedData, 0, returnedData, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
-                    srcIndex += numBytesToTransfer;
-                    bytesRemaining -= numBytesToTransfer;
+                    bytesRemaining = transactionLength;
+                    srcIndex = 0;
+                    while (bytesRemaining > 0)
+                    {
+                        int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
+                        receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer);
+                        Array.Copy(receivedData, 0, returnedData, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
+                        srcIndex += numBytesToTransfer;
+                        bytesRemaining -= numBytesToTransfer;
+                    }
                 }
             }
                 
