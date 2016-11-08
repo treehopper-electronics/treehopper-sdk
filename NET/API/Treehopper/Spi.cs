@@ -179,7 +179,7 @@ namespace Treehopper
 
             set
             {
-                //if (_frequency == value) return; // Don't try comparing floats
+                if (Math.Abs(_frequency-value) < 0.01) return;
                 _frequency = value;
                 SendConfig();
             }
