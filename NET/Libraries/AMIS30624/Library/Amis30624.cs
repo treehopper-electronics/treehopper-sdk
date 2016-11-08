@@ -8,9 +8,17 @@ using Treehopper;
 
 namespace Treehopper.Libraries.Amis30624
 {
+    public class PositionChangedEventArgs : EventArgs
+    {
+        public short Position;
+    }
+
+    public delegate void PositionChangedHandler(object sender, PositionChangedEventArgs e);
     public class Amis30624
     {
         private SMBusDevice dev;
+
+        public event PositionChangedHandler PositionChanged;
         public Amis30624(II2c module, Address HardwiredAddressPin, int speed = 400) : this(module, (byte)HardwiredAddressPin, speed)
         {
 
@@ -83,7 +91,20 @@ namespace Treehopper.Libraries.Amis30624
 
         }
 
-        public short ActualPosition { get; private set; }
+        private short actualPosition;
+        public short ActualPosition
+        {
+            get
+            {
+                return actualPosition;
+            }
+            private set
+            {
+                if (actualPosition == value) return;
+                actualPosition = value;
+                PositionChanged?.Invoke(this, new PositionChangedEventArgs() { Position = actualPosition });
+            }
+        }
 
         private short targetPosition;
         public short TargetPosition
