@@ -46,7 +46,7 @@ namespace Blink
                     Board.Led = !Board.Led;
 
                     // wait 500 ms
-                    await Task.Delay(500);
+                    await Task.Delay(100);
                 }
 
                 // We arrive here when the board has been disconnected
