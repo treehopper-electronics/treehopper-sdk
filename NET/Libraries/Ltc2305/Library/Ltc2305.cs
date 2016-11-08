@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries
+namespace Treehopper.Libraries.Ltc2305
 {
     public enum Ltc2305ConfigBits
     {
