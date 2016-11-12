@@ -154,6 +154,8 @@ void ProcessPeripheralConfigPacket() {
 		}
 //		 if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
 		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
+			while(USBD_EpIsBusy(EP2IN));
+			USBD_Write(EP2IN, Treehopper_RxBuffer, totalWriteBytes, false);
 		}
 		break;
 
