@@ -88,7 +88,7 @@ void USBD_DeviceStateChangeCb(USBD_State_TypeDef oldState,
 		USBD_State_TypeDef newState) {
 	if (newState == USBD_STATE_CONFIGURED) {
 		USBD_Read(EP1OUT, &Treehopper_PinConfig, 8, true);
-		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
+//		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
 		USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
 	}
 }

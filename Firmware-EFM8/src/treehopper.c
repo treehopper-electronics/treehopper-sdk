@@ -53,7 +53,7 @@ void Treehopper_Task() {
 		ProcessPeripheralConfigPacket();
 		PeripheralConfigPacketReady = false;
 	}
-	if(PinStatusPacketCompleted)
+	if(!USBD_EpIsBusy(EP1IN))
 		SendPinStatus();
 }
 
@@ -82,7 +82,7 @@ void SendPinStatus() {
 //		while(!PinStatusPacketSent);
 //		PinStatusPacketSent = false;
 		PinStatusPacketCompleted = false;
-		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
+		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
 //		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
 //	}
 }
