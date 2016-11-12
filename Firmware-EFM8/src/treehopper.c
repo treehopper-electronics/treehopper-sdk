@@ -42,6 +42,9 @@ void SendPinStatus();
 uint8_t pins[TREEHOPPER_NUM_PINS];
 void Treehopper_Init() {
 	memset(&Treehopper_ReportData, 0, 64);
+	// used for debugging
+//	GPIO_MakeOutput(4, PushPullOutput);
+//	GPIO_MakeOutput(3, PushPullOutput);
 }
 
 void Treehopper_Task() {
@@ -60,6 +63,7 @@ void Treehopper_Task() {
 void SendPinStatus() {
 	uint8_t i = 0;
 	uint16_t val;
+//	GPIO_WriteValue(3, true);
 	Treehopper_ReportData[0] = DeviceResponse_CurrentReadings;
 	for (i = 0; i < 20; i++) {
 		switch (pins[i]) {
@@ -85,6 +89,7 @@ void SendPinStatus() {
 		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
 //		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
 //	}
+//		GPIO_WriteValue(3, false);
 }
 
 void ProcessPinConfigPacket() {
@@ -120,6 +125,7 @@ void ProcessPeripheralConfigPacket() {
 	uint8_t totalReadBytes;
 	uint8_t offset;
 	uint8_t count;
+//	GPIO_WriteValue(4, true);
 	switch (Treehopper_PeripheralConfig[0]) {
 	case PWMConfig:
 		PWM_SetConfig(&(Treehopper_PeripheralConfig[1]));
@@ -207,5 +213,6 @@ void ProcessPeripheralConfigPacket() {
 	}
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
+//	GPIO_WriteValue(4, false);
 
 }
