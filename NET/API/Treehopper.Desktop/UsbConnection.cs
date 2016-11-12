@@ -122,8 +122,11 @@ namespace Treehopper
                         int len = 0;
                         try
                         {
-                            pinState.Read(buffer, 1000, out len);
-                            PinEventDataReceived?.Invoke(buffer);
+                            var error = pinState.Read(buffer, 1000, out len);
+                            if (error == ErrorCode.Success)
+                                PinEventDataReceived?.Invoke(buffer);
+                            else
+                                Debug.WriteLine("Pin Data Read Failure: " + error);
                         }
                         catch (Exception ex)
                         {
@@ -156,7 +159,7 @@ namespace Treehopper
             ErrorCode error = peripheralConfig.Write(data, 1000, out transferLength);
             if (error != ErrorCode.None && error != ErrorCode.IoCancelled)
             {
-                Debug.WriteLine(error);
+                Debug.WriteLine("Peripheral Config Write Failure: " + error);
             }
         }
 
@@ -168,7 +171,7 @@ namespace Treehopper
             ErrorCode error = pinConfig.Write(data, 1000, out transferLength);
             if (error != ErrorCode.None && error != ErrorCode.IoCancelled)
             {
-                Debug.WriteLine(error);
+                Debug.WriteLine("Pin Config Write Failure: " + error);
             }
         }
 
@@ -180,8 +183,15 @@ namespace Treehopper
             byte[] returnVal = new byte[64];
             int transferLength;
             if (peripheralReceive != null)
-                peripheralReceive.Read(returnVal, 1000, out transferLength);
-            Array.Copy(returnVal, retVal, bytesToRead);
+            {
+                ErrorCode error = peripheralReceive.Read(returnVal, 1000, out transferLength);
+                if (error == ErrorCode.Success)
+                    Array.Copy(returnVal, retVal, bytesToRead);
+                else
+                    Debug.WriteLine("Peripheral Response Read Failure: " + error);
+
+            }
+                
             return retVal;
         }
 
