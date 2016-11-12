@@ -89,17 +89,20 @@ void PWM_SetConfig(uint8_t* configuration) {
 		case PwmMode_Pin7: // PWM1
 			XBR1 |= XBR1_PCA0ME__CEX0;
 			GPIO_MakeSpecialFunction(7, true);
+			PCA0CN0_CR = 1; // enable PCA timer
 			break;
 		case PwmMode_Pin7_Pin8: // PWM1, PWM2
 			XBR1 |= XBR1_PCA0ME__CEX0_CEX1;
 			GPIO_MakeSpecialFunction(7, true);
 			GPIO_MakeSpecialFunction(8, true);
+			PCA0CN0_CR = 1; // enable PCA timer
 			break;
 		case PwmMode_Pin7_Pin8_Pin9: // PWM1, PWM2, PWM3
 			XBR1 |= XBR1_PCA0ME__CEX0_CEX1_CEX2;
 			GPIO_MakeSpecialFunction(7, true);
 			GPIO_MakeSpecialFunction(8, true);
 			GPIO_MakeSpecialFunction(9, true);
+			PCA0CN0_CR = 1; // enable PCA timer
 			break;
 		}
 	}
@@ -110,6 +113,7 @@ void PWM_SetConfig(uint8_t* configuration) {
 void PWM_Disable() {
 	uint8_t SFRPAGE_save = SFRPAGE;
 	SFRPAGE = 0x00;
+	PCA0CN0_CR = 0; // disable PCA timer
 	GPIO_MakeInput(8, true);
 	GPIO_MakeInput(9, true);
 	GPIO_MakeInput(10, true);
