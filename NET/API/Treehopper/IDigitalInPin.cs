@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
-    public interface IDigitalPin
+    public interface IDigitalInPin
     {
-        bool DigitalValue { get; set; }
-        void ToggleOutput();
+        bool DigitalValue { get; }
         Task<bool> AwaitDigitalValueChange();
-        void MakeDigitalPushPullOut();
         void MakeDigitalIn();
     }
 }
