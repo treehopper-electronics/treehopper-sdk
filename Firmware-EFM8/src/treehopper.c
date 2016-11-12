@@ -152,9 +152,8 @@ void ProcessPeripheralConfigPacket() {
 					totalWriteBytes);
 			SPI_DeactivateCs();
 		}
-		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
-		if (Treehopper_PeripheralConfig[4] != Burst_Tx  && totalReadBytes > 0) {
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes, false);
+//		 if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
+		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
 		}
 		break;
 
