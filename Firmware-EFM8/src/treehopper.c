@@ -97,7 +97,7 @@ void SendPinStatus() {
 //	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
 //	{
 //		while(!PinStatusPacketSent);
-		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
+		USBD_Write(EP1IN, Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
 //		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
 //	}
 }
