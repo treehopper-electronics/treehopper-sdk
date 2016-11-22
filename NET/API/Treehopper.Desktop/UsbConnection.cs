@@ -114,7 +114,7 @@ namespace Treehopper
 
                 isOpen = true;
 
-                pinListenerTask = new Task(() =>
+                pinListenerThread = new Thread(() =>
                 {
                     while (isOpen)
                     {
@@ -137,7 +137,7 @@ namespace Treehopper
 
                 });
 
-                pinListenerTask.Start();
+                pinListenerThread.Start();
 
                 return true;
 
@@ -149,7 +149,7 @@ namespace Treehopper
 
 
 
-        private Task pinListenerTask;
+        private Thread pinListenerThread;
         public void SendDataPeripheralChannel(byte[] data)
         {
             if (!isOpen)
@@ -200,7 +200,7 @@ namespace Treehopper
             if (!isOpen) return; // already disconnected
 
             isOpen = false;
-            pinListenerTask.Wait(); // wait for the task to return
+            pinListenerThread.Join(); // wait for the task to return
             try
             {
                 if (pinConfig != null)
