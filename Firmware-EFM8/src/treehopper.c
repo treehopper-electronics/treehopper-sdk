@@ -130,7 +130,6 @@ void ProcessPinConfigPacket() {
 
 // this gets called whenever we received peripheral config data from the host
 void ProcessPeripheralConfigPacket() {
-	uint16_t i;
 	uint8_t totalWriteBytes;
 	uint8_t totalReadBytes;
 	uint8_t offset;
