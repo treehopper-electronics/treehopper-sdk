@@ -211,6 +211,14 @@ void ProcessPeripheralConfigPacket() {
 		SFRPAGE = 0x00;
 		RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
 		break;
+
+	case ParallelConfig:
+		Parallel_SetConfig(&(Treehopper_PeripheralConfig[1]));
+		break;
+
+	case ParallelTransaction:
+		Parallel_Transaction(&(Treehopper_PeripheralConfig[1]));
+		break;
 	}
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
