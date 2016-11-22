@@ -19,6 +19,7 @@
 #include "led.h"
 #include "pwm.h"
 #include "softPwm.h"
+#include "gpio.h"
 //-----------------------------------------------------------------------------
 // Variables
 //-----------------------------------------------------------------------------
@@ -51,6 +52,13 @@ int16_t main(void) {
 
 	SoftPwm_Init();
 //  ServoController_Init();
+#ifdef ENABLE_TIMING_DEBUGGING
+	GPIO_MakeOutput(10, PushPullOutput);
+#endif
+
+#ifdef ENABLE_UART_DEBGUGGING
+	UART_StartDebugging115200();
+#endif
 
 	while (1) {
 		Treehopper_Task();
