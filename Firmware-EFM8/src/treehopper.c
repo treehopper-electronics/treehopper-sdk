@@ -126,6 +126,7 @@ void ProcessPinConfigPacket() {
 				Treehopper_PinConfig.PinConfigData[0]);
 		break;
 	}
+	memset(&Treehopper_PinConfig, 0, sizeof(pinConfigPacket_t)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP_PinConfig, (uint8_t *)&Treehopper_PinConfig, sizeof(pinConfigPacket_t), false);
 }
