@@ -30,5 +30,7 @@ void UART_SetConfig(UartConfigData_t* config);
 void UART_Transaction(uint8_t* transaction);
 void UART_Enable();
 void UART_Disable();
+void UART_SendChar(uint8_t c);
+void UART_StartDebugging115200();
 
 #endif /* UART_H_ */
