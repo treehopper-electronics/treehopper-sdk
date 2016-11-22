@@ -84,10 +84,9 @@ public class Pin extends Observable {
     }
 
     private void sendCommand(byte[] cmd) {
-        byte[] data = new byte[8];
-        data[0] = (byte) DeviceCommands.PinConfig.ordinal();
-        data[1] = (byte) pinNumber;
-        System.arraycopy(cmd, 0, data, 2, cmd.length);
+        byte[] data = new byte[6];
+        data[0] = (byte) pinNumber;
+        System.arraycopy(cmd, 0, data, 1, cmd.length);
         board.getConnection().sendDataPinConfigChannel(data);
     }
 
