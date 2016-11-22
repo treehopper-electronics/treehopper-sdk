@@ -37,21 +37,10 @@
 //
 //-----------------------------------------------------------------------------
 int16_t main(void) {
-
 	enter_DefaultMode_from_RESET();
-
-	serialNumber_init();
-
-	LED_Init();
-	SPI_Disable();
-	UART_Disable();
-	I2C_Disable();
-	PWM_Disable();
 
 	Treehopper_Init();
 
-	SoftPwm_Init();
-//  ServoController_Init();
 #ifdef ENABLE_TIMING_DEBUGGING
 	GPIO_MakeOutput(10, PushPullOutput);
 #endif
