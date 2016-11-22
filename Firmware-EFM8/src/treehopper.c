@@ -5,7 +5,6 @@
  *      Author: jay
  */
 
-#include "Treehopper.h"
 #include <SI_EFM8UB1_Register_Enums.h>
 #include <efm8_usb.h>
 #include "descriptors.h"
