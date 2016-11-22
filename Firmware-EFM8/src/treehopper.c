@@ -210,7 +210,7 @@ void ProcessPeripheralConfigPacket() {
 				Treehopper_PeripheralConfig[1]);
 		break;
 	case SoftPwmConfig:
-		SoftPwm_SetConfig(&(Treehopper_PeripheralConfig[2]),
+		SoftPwm_SetConfig((softPwmPinConfig_t*)&(Treehopper_PeripheralConfig[2]),
 				Treehopper_PeripheralConfig[1]);
 		break;
 	case Reboot:
