@@ -135,7 +135,7 @@ void ProcessPeripheralConfigPacket() {
 		totalWriteBytes = Treehopper_PeripheralConfig[1];
 		offset = Treehopper_PeripheralConfig[2];
 		count = Treehopper_PeripheralConfig[3];
-		memcpy(Treehopper_TxBuffer, &(Treehopper_PeripheralConfig[5]), count);
+		memcpy(&Treehopper_TxBuffer[offset], &(Treehopper_PeripheralConfig[5]), count);
 
 		// check whether we're done copying, or if we don't care about Tx data
 		if (totalWriteBytes == offset + count
@@ -160,7 +160,7 @@ void ProcessPeripheralConfigPacket() {
 		offset = Treehopper_PeripheralConfig[3];
 		count = Treehopper_PeripheralConfig[4];
 		totalReadBytes = Treehopper_PeripheralConfig[5];
-		memcpy(Treehopper_TxBuffer, &(Treehopper_PeripheralConfig[7]), count);
+		memcpy(&Treehopper_TxBuffer[offset], &(Treehopper_PeripheralConfig[7]), count);
 
 		// check whether we're done copying, or if we don't care about Tx data
 		if (totalWriteBytes == offset + count
