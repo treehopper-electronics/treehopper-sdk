@@ -36,8 +36,10 @@ namespace Treehopper
 		FirmwareUpdateName,	//
 		Reboot,	//
 		EnterBootloader,	//
-        LedConfig
-	}
+        LedConfig,
+        ParallelConfig,
+        ParallelTransaction
+    }
 
 	internal enum DeviceResponse : byte
 	{
@@ -106,6 +108,7 @@ namespace Treehopper
         public Pwm Pwm1 { get; private set; }
         public Pwm Pwm2 { get; private set; }
         public Pwm Pwm3 { get; private set; }
+        public ParallelInterface ParallelInterface { get; private set; }
 
         /// <summary>
         /// Instance of SoftPwmMgr
@@ -163,6 +166,7 @@ namespace Treehopper
             Pwm1 = new Pwm(Pins[7]);
             Pwm2 = new Pwm(Pins[8]);
             Pwm3 = new Pwm(Pins[9]);
+            ParallelInterface = new ParallelInterface(this);
         }
 
         public IConnection Connection { get { return connection; } }
