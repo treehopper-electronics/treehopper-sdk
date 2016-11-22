@@ -189,6 +189,7 @@ public class Pin extends Observable {
 
 
 enum PinConfigCommands {
+	Reserved = 0,
     MakeDigitalInput,
     MakePushPullOutput,
     MakeOpenDrainOutput,

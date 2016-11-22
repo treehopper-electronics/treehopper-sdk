@@ -68,7 +68,8 @@ namespace Treehopper
 
     internal enum PinConfigCommands
     {
-        MakeDigitalInput = 0x00,
+        Reserved = 0,
+        MakeDigitalInput,
         MakePushPullOutput,
         MakeOpenDrainOutput,
         MakeAnalogInput,

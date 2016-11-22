@@ -56,6 +56,8 @@ typedef enum GlobalCommands {
 
 typedef enum PinConfigCommands {
 	PinConfig_MakeDigitalInput = 0,
+	PinConfig_Reserved = 0,
+	PinConfig_MakeDigitalInput,
 	PinConfig_MakePushPullOutput,
 	PinConfig_MakeOpenDrainOutput,
 	PinConfig_MakeAnalogInput,
