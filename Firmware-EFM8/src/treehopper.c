@@ -126,6 +126,8 @@ void ProcessPinConfigPacket() {
 				Treehopper_PinConfig.PinConfigData[0]);
 		break;
 	}
+	// when we're all done, re-arm the endpoint.
+	USBD_Read(EP_PinConfig, (uint8_t *)&Treehopper_PinConfig, sizeof(pinConfigPacket_t), false);
 }
 
 // this gets called whenever we received peripheral config data from the host
@@ -234,6 +236,5 @@ void ProcessPeripheralConfigPacket() {
 	}
 	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
-	USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig, 64, false);
-
+	USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, sizeof(Treehopper_PeripheralConfig), false);
 }
