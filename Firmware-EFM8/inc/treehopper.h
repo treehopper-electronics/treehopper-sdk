@@ -74,7 +74,6 @@ typedef enum DeviceResponse {
 } DeviceResponse_t;
 
 typedef struct pinConfigPacket {
-	GlobalCommands_t Opcode;
 	uint8_t PinNumber;
 	PinConfigCommands_t PinCommand;
 	uint8_t PinConfigData[4];

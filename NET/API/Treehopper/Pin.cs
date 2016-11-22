@@ -365,10 +365,9 @@ namespace Treehopper
 
         internal void SendCommand(byte[] cmd)
         {
-            byte[] data = new byte[8];
-            data[0] = (byte)DeviceCommands.PinConfig;
-            data[1] = (byte)PinNumber;
-            cmd.CopyTo(data, 2);
+            byte[] data = new byte[6];
+            data[0] = (byte)PinNumber;
+            cmd.CopyTo(data, 1);
             Board.sendPinConfigPacket(data);
         }
 
