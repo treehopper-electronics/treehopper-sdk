@@ -24,8 +24,6 @@ namespace Treehopper
 	{
 		Reserved = 0,	// Not implemented
 		ConfigureDevice,	// Sent upon device connect/disconnect
-		PinConfig,	// Configures a GPIO pin as an input/output
-		ComparatorConfig,	// Not implemented
 		PwmConfig,	// Configures the hardware DAC
 		UartConfig,	// Not implemented
 		I2cConfig,	// Configures i2C master
