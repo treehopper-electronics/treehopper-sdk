@@ -59,12 +59,12 @@ void Parallel_SetConfig(uint8_t *config)
 		}
 
 	} else {
-		GPIO_MakeInput(RS);
-		GPIO_MakeInput(RW);
-		GPIO_MakeInput(EN);
+		GPIO_MakeInput(RS, true);
+		GPIO_MakeInput(RW, true);
+		GPIO_MakeInput(EN, true);
 
 		for(i=0;i<Count;i++) {
-			GPIO_MakeInput(DataBus[i]);
+			GPIO_MakeInput(DataBus[i], true);
 		}
 	}
 
@@ -162,7 +162,7 @@ void makeBusInput()
 	uint8_t i;
 	if(dir == 1) return;
 	for(i=0;i<Count;i++)
-		GPIO_MakeInput(DataBus[i]);
+		GPIO_MakeInput(DataBus[i], true);
 	dir = 1;
 }
 
