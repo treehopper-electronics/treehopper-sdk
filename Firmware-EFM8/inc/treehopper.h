@@ -34,8 +34,6 @@
 typedef enum GlobalCommands {
 	GlobalCommandsReserved = 0,
 	ConfigureDevice,
-	PinConfig,
-	ComparatorConfig,
 	PWMConfig,
 	UARTConfig,
 	I2CConfig,
