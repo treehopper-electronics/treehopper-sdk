@@ -84,6 +84,26 @@ void UART_SetConfig(UartConfigData_t* config) {
 
 }
 
+void UART_StartDebugging115200()
+{
+	UartConfigData_t config;
+	config.Config = 1;
+	config.TH1Val = 152;
+	config.usePrescaler = true;
+	config.useOpenDrain = false;
+	UART_SetConfig(&config);
+}
+
+void UART_SendChar(uint8_t c)
+{
+	IE_ES0 = 0;
+	SFRPAGE = 0x00;
+	SCON0_TI = 0;
+	SBUF0 = c;
+	while (!SCON0_TI)
+		;
+}
+
 void UART_Transaction(uint8_t* txBuff) {
 	uint8_t val;
 	uint8_t i;
