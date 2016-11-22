@@ -18,6 +18,7 @@
 #include "serialNumber.h"
 #include "softPwm.h"
 #include "uart.h"
+#include "parallel.h"
 
 // GLOBALS
 
