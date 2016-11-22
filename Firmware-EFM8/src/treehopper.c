@@ -21,7 +21,6 @@
 #include "parallel.h"
 
 // GLOBALS
-
 SI_SEGMENT_VARIABLE( Treehopper_ReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE( lastReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA);
@@ -71,12 +70,12 @@ void Treehopper_Task() {
 	}
 	if(!USBD_EpIsBusy(EP_PinStatus))
 		SendPinStatus();
+	DEBUG_LOW();
 }
 
 void SendPinStatus() {
 	uint8_t i = 0;
 	uint16_t val;
-	DEBUG_LOW();
 	Treehopper_ReportData[0] = DeviceResponse_CurrentReadings;
 	for (i = 0; i < 20; i++) {
 		switch (pins[i]) {
@@ -104,28 +103,29 @@ void SendPinStatus() {
 
 void ProcessPinConfigPacket() {
 	switch (Treehopper_PinConfig.PinCommand) {
-	case PinConfig_MakeDigitalInput:
-		pins[Treehopper_PinConfig.PinNumber] = DigitalInput;
-		GPIO_MakeInput(Treehopper_PinConfig.PinNumber, true);
-		break;
-	case PinConfig_MakeAnalogInput:
-		pins[Treehopper_PinConfig.PinNumber] = AnalogInput;
-		ADC_Enable(Treehopper_PinConfig.PinNumber,
-				Treehopper_PinConfig.PinConfigData[0]);
-		break;
-	case PinConfig_MakePushPullOutput:
-		pins[Treehopper_PinConfig.PinNumber] = PushPullOutput;
-		GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, PushPullOutput);
-		break;
-	case PinConfig_MakeOpenDrainOutput:
-		pins[Treehopper_PinConfig.PinNumber] = OpenDrainOutput;
-		GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, OpenDrainOutput);
-		break;
-	case PinConfig_SetDigitalValue:
-		GPIO_WriteValue(Treehopper_PinConfig.PinNumber,
-				Treehopper_PinConfig.PinConfigData[0]);
-		break;
-	}
+		case PinConfig_MakeDigitalInput:
+			pins[Treehopper_PinConfig.PinNumber] = DigitalInput;
+			GPIO_MakeInput(Treehopper_PinConfig.PinNumber, true);
+			break;
+		case PinConfig_MakeAnalogInput:
+			pins[Treehopper_PinConfig.PinNumber] = AnalogInput;
+			ADC_Enable(Treehopper_PinConfig.PinNumber,
+					Treehopper_PinConfig.PinConfigData[0]);
+			break;
+		case PinConfig_MakePushPullOutput:
+			pins[Treehopper_PinConfig.PinNumber] = PushPullOutput;
+			GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, PushPullOutput);
+			break;
+		case PinConfig_MakeOpenDrainOutput:
+			pins[Treehopper_PinConfig.PinNumber] = OpenDrainOutput;
+			GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, OpenDrainOutput);
+			break;
+		case PinConfig_SetDigitalValue:
+			GPIO_WriteValue(Treehopper_PinConfig.PinNumber,
+					Treehopper_PinConfig.PinConfigData[0]);
+			break;
+		}
+
 	memset(&Treehopper_PinConfig, 0, sizeof(pinConfigPacket_t)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP_PinConfig, (uint8_t *)&Treehopper_PinConfig, sizeof(pinConfigPacket_t), false);
