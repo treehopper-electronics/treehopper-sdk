@@ -67,23 +67,23 @@ void generateRandomString()
 
 
 
-void serialNumber_init() {
+void SerialNumber_Init() {
 	if (serialNumber_serial[0] == 0xFF) // blank, program with default
 	{
 		generateRandomString();
-		serialNumber_update(serialString, 8);
+		SerialNumber_update(serialString, 8);
 	}
 
 	if (serialNumber_name[0] == 0xFF) {
-		serialNumber_updateName("Treehopper", 10);
+		SerialNumber_updateName("Treehopper", 10);
 	}
 }
 
-void serialNumber_update(uint8_t* string, uint8_t len) {
+void SerialNumber_update(uint8_t* string, uint8_t len) {
 	writeUsbString(string, len, SER_ADDR);
 }
 
-void serialNumber_updateName(uint8_t* string, uint8_t len) {
+void SerialNumber_updateName(uint8_t* string, uint8_t len) {
 	writeUsbString(string, len, NAME_ADDR);
 }
 
