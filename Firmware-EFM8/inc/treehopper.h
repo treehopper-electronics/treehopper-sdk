@@ -33,7 +33,7 @@
 
 typedef enum GlobalCommands {
 	GlobalCommandsReserved = 0,
-	GetDeviceInfo,
+	ConfigureDevice,
 	PinConfig,
 	ComparatorConfig,
 	PWMConfig,

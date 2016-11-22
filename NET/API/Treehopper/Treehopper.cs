@@ -23,7 +23,7 @@ namespace Treehopper
 	internal enum DeviceCommands : byte
 	{
 		Reserved = 0,	// Not implemented
-		GetDeviceInfo,	// Not implemented
+		ConfigureDevice,	// Sent upon device connect/disconnect
 		PinConfig,	// Configures a GPIO pin as an input/output
 		ComparatorConfig,	// Not implemented
 		PwmConfig,	// Configures the hardware DAC
@@ -351,9 +351,16 @@ namespace Treehopper
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Version"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VersionString"));
 
+            Reinitialize();
             return true;
 		}
 
+        public void Reinitialize()
+        {
+            var data = new byte[2];
+            data[0] = (byte)DeviceCommands.ConfigureDevice;
+            sendPeripheralConfigPacket(data);
+        }
 
         private async void Connection_PinEventDataReceived(byte[] pinStateBuffer)
         {
@@ -397,7 +404,8 @@ namespace Treehopper
 		/// </remarks>
 		public void Disconnect()
 		{
-            if(connection != null)
+            Reinitialize();
+            if (connection != null)
                 connection.Close();
             IsConnected = false;
 		}
