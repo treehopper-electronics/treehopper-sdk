@@ -70,15 +70,8 @@ namespace Treehopper
     public class TreehopperUsb : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUsb>, IEqualityComparer<TreehopperUsb>
 	{
         // Settings
-        private static Settings settings = new Settings();
-        public static Settings Settings {
-            get {
-                return settings;
-            }
-            set {
-                settings = value;
-            }
-        }
+        public static Settings Settings { get; set; } = new Settings();
+
 
         public Pin this[int index]
         {
@@ -98,36 +91,28 @@ namespace Treehopper
 
         internal readonly AsyncLock ComsMutex = new AsyncLock();
 
-        I2c i2c;
 		/// <summary>
 		/// I2C module
 		/// </summary>
-		public I2c I2c { get { return i2c; } }
+		public I2c I2c { get; private set; }
 
-		Spi spi;
 		/// <summary>
 		/// SPI module
 		/// </summary>
-		public Spi Spi { get { return spi;	} }
+		public Spi Spi { get; private set; }
 
-        Uart uart;
+        public Uart Uart { get; private set; }
 
-        public Uart Uart { get { return uart; } }
-
-        Pwm pwm1;
-        Pwm pwm2;
-        Pwm pwm3;
-
-        public Pwm Pwm1 { get { return pwm1; } }
-        public Pwm Pwm2 { get { return pwm1; } }
-        public Pwm Pwm3 { get { return pwm1; } }
+        public Pwm Pwm1 { get; private set; }
+        public Pwm Pwm2 { get; private set; }
+        public Pwm Pwm3 { get; private set; }
 
         /// <summary>
         /// Instance of SoftPwmMgr
         /// </summary>
-        public SoftPwmManager SoftPwmMgr { get; set; }
+        public SoftPwmManager SoftPwmMgr { get; private set; }
 
-        public PwmManager PwmManager { get; set; }
+        public PwmManager PwmManager { get; private set; }
 
         #endregion
 
@@ -172,12 +157,12 @@ namespace Treehopper
             PwmManager = new PwmManager(this);
 
             // Initialize modules
-            i2c = new I2c(this);
-            spi = new Spi(this);
-            uart = new Uart(this);
-            pwm1 = new Pwm(Pins[7]);
-            pwm2 = new Pwm(Pins[8]);
-            pwm3 = new Pwm(Pins[9]);
+            I2c = new I2c(this);
+            Spi = new Spi(this);
+            Uart = new Uart(this);
+            Pwm1 = new Pwm(Pins[7]);
+            Pwm2 = new Pwm(Pins[8]);
+            Pwm3 = new Pwm(Pins[9]);
         }
 
         public IConnection Connection { get { return connection; } }
