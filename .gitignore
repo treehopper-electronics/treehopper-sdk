@@ -213,3 +213,4 @@ NET/Demos/UWP/TreehopperShowcase/null
 
 # Third party libraries
 /thirdparty
+*.lock.json
