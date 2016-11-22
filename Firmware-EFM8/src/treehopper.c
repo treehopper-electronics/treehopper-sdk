@@ -216,6 +216,5 @@ void ProcessPeripheralConfigPacket() {
 	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig, 64, false);
-//	GPIO_WriteValue(4, false);
 
 }

@@ -11,6 +11,26 @@
 #include "efm8_usb.h"
 #include <stdint.h>
 
+// enable this for verbose logging of all packets sent
+// and received (not implemented yet -- sorry!)
+// #define ENABLE_UART_DEBGUGGING
+
+// Timing debugging lets you check how long
+// it's taking to process packets. The high
+// time tells you how long it's taking to process
+// the task, and the low time is telling you
+// how long USB traffic is taking. The debug
+// pin is set as P1_B2 (which is Pin 10)
+// #define	ENABLE_TIMING_DEBUGGING
+
+#ifdef ENABLE_TIMING_DEBUGGING
+	#define DEBUG_HIGH();	P1_B2 = true;
+	#define DEBUG_LOW();		P1_B2 = false;
+#else
+	#define DEBUG_HIGH() { }
+	#define DEBUG_LOW() { }
+#endif
+
 typedef enum GlobalCommands {
 	GlobalCommandsReserved = 0,
 	GetDeviceInfo,
