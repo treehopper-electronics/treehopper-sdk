@@ -38,7 +38,7 @@ void SendPinStatus();
 // LOCALS
 uint8_t pins[TREEHOPPER_NUM_PINS];
 void Treehopper_Init() {
-	memset(&Treehopper_ReportData, 0, 64);
+	memset(&Treehopper_ReportData, 0, sizeof(Treehopper_ReportData));
 	// used for debugging
 //	GPIO_MakeOutput(4, PushPullOutput);
 //	GPIO_MakeOutput(3, PushPullOutput);
