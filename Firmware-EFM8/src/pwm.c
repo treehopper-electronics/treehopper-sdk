@@ -114,9 +114,9 @@ void PWM_Disable() {
 	uint8_t SFRPAGE_save = SFRPAGE;
 	SFRPAGE = 0x00;
 	PCA0CN0_CR = 0; // disable PCA timer
+	GPIO_MakeInput(7, true);
 	GPIO_MakeInput(8, true);
 	GPIO_MakeInput(9, true);
-	GPIO_MakeInput(10, true);
 	XBR1 &= ~(XBR1_PCA0ME__CEX0_CEX1_CEX2);
 	SFRPAGE = SFRPAGE_save;
 }
