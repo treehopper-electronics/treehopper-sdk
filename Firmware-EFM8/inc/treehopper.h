@@ -28,7 +28,9 @@ typedef enum GlobalCommands {
 	FirmwareUpdateName,
 	Reboot,
 	EnterBootloader,
-	LedConfig
+	LedConfig,
+    ParallelConfig,
+    ParallelTransaction
 
 } GlobalCommands_t;
 
