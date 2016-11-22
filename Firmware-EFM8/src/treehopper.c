@@ -182,11 +182,11 @@ void ProcessPeripheralConfigPacket() {
 		UART_Transaction(&(Treehopper_PeripheralConfig[1]));
 		break;
 	case FirmwareUpdateSerial:
-		serialNumber_update(&(Treehopper_PeripheralConfig[2]),
+		SerialNumber_update(&(Treehopper_PeripheralConfig[2]),
 				Treehopper_PeripheralConfig[1]);
 		break;
 	case FirmwareUpdateName:
-		serialNumber_updateName(&(Treehopper_PeripheralConfig[2]),
+		SerialNumber_updateName(&(Treehopper_PeripheralConfig[2]),
 				Treehopper_PeripheralConfig[1]);
 		break;
 	case SoftPwmConfig:
