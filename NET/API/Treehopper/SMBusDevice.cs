@@ -54,6 +54,11 @@ namespace Treehopper
             await I2c.SendReceive(address, new byte[] { data }, 0);
         }
 
+        public async Task WriteData(byte[] data)
+        {
+            await I2c.SendReceive(address, data, 0);
+        }
+
         /// <summary>
         /// Read an 8-bit register's value from the device
         /// </summary>
