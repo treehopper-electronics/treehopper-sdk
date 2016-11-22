@@ -27,8 +27,7 @@ extern void enter_DefaultMode_from_RESET(void) {
 	// Save the SFRPAGE
 	uint8_t SFRPAGE_save = SFRPAGE;
 	WDT_0_enter_DefaultMode_from_RESET();
-	PORTS_0_enter_DefaultMode_from_RESET();
-	PORTS_1_enter_DefaultMode_from_RESET();
+	PORTS_3_enter_DefaultMode_from_RESET();
 	PBCFG_0_enter_DefaultMode_from_RESET();
 	ADC_0_enter_DefaultMode_from_RESET();
 	VREF_0_enter_DefaultMode_from_RESET();
@@ -425,6 +424,7 @@ extern void PBCFG_0_enter_DefaultMode_from_RESET(void) {
 	 // URT1CTSE (UART1 CTS Input Enable) = DISABLED (UART1 CTS1 unavailable
 	 //     at Port pin.)
 	 */
+	SFRPAGE = 0x00;
 	XBR2 = XBR2_WEAKPUD__PULL_UPS_ENABLED | XBR2_XBARE__ENABLED
 			| XBR2_URT1E__DISABLED | XBR2_URT1RTSE__DISABLED
 			| XBR2_URT1CTSE__DISABLED;
@@ -1249,6 +1249,39 @@ extern void TIMER16_4_enter_DefaultMode_from_RESET(void) {
 	// Restore Timer Configuration
 	TMR4CN0 |= TMR4CN0_TR4_save;
 	// [Timer Restoration]$
+
+}
+
+extern void PORTS_3_enter_DefaultMode_from_RESET(void) {
+	// $[P3 - Port 3 Pin Latch]
+	/*
+	 // B0 (Port 3 Bit 0 Latch) = HIGH (P3.0 is high. Set P3.0 to drive or
+	 //     float high.)
+	 // B1 (Port 3 Bit 1 Latch) = HIGH (P3.1 is high. Set P3.1 to drive or
+	 //     float high.)
+	 */
+	P3 = P3_B0__HIGH | P3_B1__HIGH;
+	// [P3 - Port 3 Pin Latch]$
+
+	// $[P3MDOUT - Port 3 Output Mode]
+	/*
+	 // B0 (Port 3 Bit 0 Output Mode) = OPEN_DRAIN (P3.0 output is open-
+	 //     drain.)
+	 // B1 (Port 3 Bit 1 Output Mode) = PUSH_PULL (P3.1 output is push-pull.)
+	 */
+	SFRPAGE = 0x20;
+	P3MDOUT = P3MDOUT_B0__OPEN_DRAIN | P3MDOUT_B1__PUSH_PULL;
+	// [P3MDOUT - Port 3 Output Mode]$
+
+	// $[P3MDIN - Port 3 Input Mode]
+	/*
+	 // B0 (Port 3 Bit 0 Input Mode) = DIGITAL (P3.0 pin is configured for
+	 //     digital mode.)
+	 // B1 (Port 3 Bit 1 Input Mode) = DIGITAL (P3.1 pin is configured for
+	 //     digital mode.)
+	 */
+	P3MDIN = P3MDIN_B0__DIGITAL | P3MDIN_B1__DIGITAL;
+	// [P3MDIN - Port 3 Input Mode]$
 
 }
 
