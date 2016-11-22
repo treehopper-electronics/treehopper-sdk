@@ -83,13 +83,6 @@ extern SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA
 extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
 extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralResponse[64], uint8_t, SI_SEG_XDATA);
 
-extern volatile bit PeripheralConfigPacketReady;
-extern volatile bit PinConfigPacketReady;
-extern volatile bit PinStatusPacketCompleted;
-//static uint8_t Treehopper_PinConfig[5];
-
-
-
 #define PIN0	P0_B0
 #define PIN1	P0_B1
 #define PIN2	P0_B2
@@ -110,6 +103,13 @@ extern volatile bit PinStatusPacketCompleted;
 #define PIN17	P2_B1
 #define PIN18	P2_B2
 #define PIN19	P2_B3
+
+
+#define EP_PinStatus           EP1IN
+#define EP_PinConfig           EP1OUT
+#define EP_PeripheralResponse  EP2IN
+#define EP_PeripheralConfig    EP2OUT
+
 
 void Treehopper_Init();
 void Treehopper_Task();

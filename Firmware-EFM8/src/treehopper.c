@@ -21,9 +21,6 @@
 #include "uart.h"
 
 // GLOBALS
-volatile bit PeripheralConfigPacketReady;
-volatile bit PinConfigPacketReady;
-volatile bit PinStatusPacketCompleted;
 
 SI_SEGMENT_VARIABLE( Treehopper_ReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE( lastReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
@@ -48,15 +45,13 @@ void Treehopper_Init() {
 }
 
 void Treehopper_Task() {
-	if (PinConfigPacketReady) {
+	if (!USBD_EpIsBusy(EP_PinConfig)) {
 		ProcessPinConfigPacket();
-		PinConfigPacketReady = false;
 	}
-	if (PeripheralConfigPacketReady) {
+	if (!USBD_EpIsBusy(EP_PeripheralConfig)) {
 		ProcessPeripheralConfigPacket();
-		PeripheralConfigPacketReady = false;
 	}
-	if(!USBD_EpIsBusy(EP1IN))
+	if(!USBD_EpIsBusy(EP_PinStatus))
 		SendPinStatus();
 }
 
@@ -84,8 +79,6 @@ void SendPinStatus() {
 //	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
 //	{
 //		while(!PinStatusPacketSent);
-//		PinStatusPacketSent = false;
-		PinStatusPacketCompleted = false;
 		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
 //		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
 //	}
@@ -221,7 +214,7 @@ void ProcessPeripheralConfigPacket() {
 		break;
 	}
 	// when we're all done, re-arm the endpoint.
-	USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
+	USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig, 64, false);
 //	GPIO_WriteValue(4, false);
 
 }

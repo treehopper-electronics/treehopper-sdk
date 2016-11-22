@@ -24,6 +24,7 @@
 #include "i2c.h"
 #include "serialNumber.h"
 #include <stdint.h>
+#include "uart.h"
 //-----------------------------------------------------------------------------
 // Constants
 //-----------------------------------------------------------------------------
@@ -87,9 +88,9 @@ void USBD_SofCb(uint16_t sofNr) {
 void USBD_DeviceStateChangeCb(USBD_State_TypeDef oldState,
 		USBD_State_TypeDef newState) {
 	if (newState == USBD_STATE_CONFIGURED) {
-		USBD_Read(EP1OUT, &Treehopper_PinConfig, 8, true);
-//		USBD_Write(EP1IN, &Treehopper_ReportData, sizeof(Treehopper_ReportData), true);
-		USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, true);
+		// Arm these endpoints once we're configured
+		USBD_Read(EP1OUT, &Treehopper_PinConfig, 8, false);
+		USBD_Read(EP2OUT, &Treehopper_PeripheralConfig, 64, false);
 	}
 }
 
@@ -132,25 +133,5 @@ USB_Status_TypeDef USBD_SetupCmdCb(
 
 uint16_t USBD_XferCompleteCb(uint8_t epAddr, USB_Status_TypeDef status,
 		uint16_t xferred, uint16_t remaining) {
-	if (status != USB_STATUS_OK && USBD_GetUsbState() == USBD_STATE_CONFIGURED)
-		return 0;
-
-	switch (epAddr) {
-	case EP0:
-		break;
-	case EP1IN:
-		PinStatusPacketCompleted = true;
-		break;
-	case EP1OUT:
-		PinConfigPacketReady = true;
-		USBD_Read(EP1OUT, &Treehopper_PinConfig, 8, true);
-		break;
-	case EP2IN:
-
-		break;
-	case EP2OUT:
-		PeripheralConfigPacketReady = true;
-		break;
-	}
 	return 0;
 }
