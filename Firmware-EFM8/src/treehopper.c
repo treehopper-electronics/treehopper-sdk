@@ -38,10 +38,27 @@ void SendPinStatus();
 // LOCALS
 uint8_t pins[TREEHOPPER_NUM_PINS];
 void Treehopper_Init() {
-	memset(&Treehopper_ReportData, 0, sizeof(Treehopper_ReportData));
-	// used for debugging
-//	GPIO_MakeOutput(4, PushPullOutput);
-//	GPIO_MakeOutput(3, PushPullOutput);
+	// re-init all the buffers
+	memset(Treehopper_ReportData, 0, sizeof(Treehopper_ReportData));
+	memset(lastReportData, 0, sizeof(lastReportData));
+	memset(&Treehopper_PinConfig, 0, sizeof(pinConfigPacket_t));
+	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig));
+
+	memset(Treehopper_TxBuffer, 0, sizeof(Treehopper_TxBuffer));
+	memset(Treehopper_RxBuffer, 0, sizeof(Treehopper_RxBuffer));
+
+	SerialNumber_Init();
+	LED_Init();
+	SPI_Disable();
+	UART_Disable();
+	I2C_Disable();
+	PWM_Disable();
+	SoftPwm_Init();
+}
+
+void configureDevice(uint8_t config) {
+	// we may have to pass specific configurations in the future, but for now, just re-init everything
+	Treehopper_Init();
 }
 
 void Treehopper_Task() {
@@ -120,6 +137,10 @@ void ProcessPeripheralConfigPacket() {
 	uint8_t count;
 //	GPIO_WriteValue(4, true);
 	switch (Treehopper_PeripheralConfig[0]) {
+	case ConfigureDevice:
+		configureDevice(Treehopper_PeripheralConfig[1]);
+		break;
+
 	case PWMConfig:
 		PWM_SetConfig(&(Treehopper_PeripheralConfig[1]));
 		break;

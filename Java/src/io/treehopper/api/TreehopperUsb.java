@@ -72,7 +72,7 @@ public class TreehopperUsb implements PinReportListener {
 
 enum DeviceCommands {
     Reserved,    // Not implemented
-    GetDeviceInfo,    // Not implemented
+    ConfigureDevice,    // Sent upon device connect/disconnect
     PinConfig,    // Configures a GPIO pin as an input/output
     ComparatorConfig,    // Not implemented
     PwmConfig,    // Configures the hardware DAC
