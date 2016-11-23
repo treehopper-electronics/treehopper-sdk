@@ -37,6 +37,7 @@ void SendPinStatus();
 // LOCALS
 uint8_t pins[TREEHOPPER_NUM_PINS];
 void Treehopper_Init() {
+	int i;
 	// re-init all the buffers
 	memset(Treehopper_ReportData, 0, sizeof(Treehopper_ReportData));
 	memset(lastReportData, 0, sizeof(lastReportData));
@@ -53,6 +54,13 @@ void Treehopper_Init() {
 	I2C_Disable();
 	PWM_Disable();
 	SoftPwm_Init();
+
+	for(i=0; i<TREEHOPPER_NUM_PINS;i++)
+	{
+		pins[i] = DigitalInput;
+		GPIO_MakeInput(i, true);
+	}
+
 }
 
 void configureDevice(uint8_t config) {
