@@ -60,13 +60,16 @@ void SPI_SetConfig(SpiConfigData_t* config) {
 }
 
 void SPI_Enable() {
+	P0MDOUT |= SCK_BIT | MISO_BIT | MOSI_BIT;
 	P0SKIP &= ~(SCK_BIT | MISO_BIT | MOSI_BIT);
+
 	// which pins should be open-drain vs push-pull?
 	XBR0 |= XBR0_SPI0E__ENABLED;
 }
 
 void SPI_Disable() {
 	P0SKIP |= SCK_BIT | MISO_BIT | MOSI_BIT;
+	P0MDOUT &= ~(SCK_BIT | MISO_BIT | MOSI_BIT);
 	XBR0 &= ~XBR0_SPI0E__ENABLED;
 }
 
