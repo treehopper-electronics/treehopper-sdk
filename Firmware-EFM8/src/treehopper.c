@@ -101,12 +101,12 @@ void SendPinStatus() {
 			Treehopper_ReportData[i * 2 + 2] = 0;
 		}
 	}
-//	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
-//	{
-//		while(!PinStatusPacketSent);
+	// if the pins have changed, send the update. Otherwise no need!
+	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
+	{
 		USBD_Write(EP1IN, Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
-//		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
-//	}
+		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
+	}
 }
 
 void ProcessPinConfigPacket() {
