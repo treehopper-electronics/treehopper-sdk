@@ -82,6 +82,9 @@ namespace Treehopper
             isOpen = false;
         }
 
+        static readonly object lockObject = new object();
+
+
         public async Task<bool> OpenAsync()
         {
             if (isOpen)
@@ -122,11 +125,17 @@ namespace Treehopper
                         int len = 0;
                         try
                         {
-                            var error = pinState.Read(buffer, 1000, out len);
+                            ErrorCode error;
+                            lock (lockObject)
+                            {
+                                error = pinState.Read(buffer, 0, out len);
+                            }
+
                             if (error == ErrorCode.Success)
                                 PinEventDataReceived?.Invoke(buffer);
                             else
-                                Debug.WriteLine("Pin Data Read Failure: " + error);
+                                if(error != ErrorCode.IoTimedOut)
+                                    Debug.WriteLine("Pin Data Read Failure: " + error);
                         }
                         catch (Exception ex)
                         {
@@ -156,7 +165,11 @@ namespace Treehopper
                 return;
 
             int transferLength;
-            ErrorCode error = peripheralConfig.Write(data, 1000, out transferLength);
+            ErrorCode error;
+            lock (lockObject)
+            {
+                error = peripheralConfig.Write(data, 1000, out transferLength);
+            }
             if (error != ErrorCode.None && error != ErrorCode.IoCancelled)
             {
                 Debug.WriteLine("Peripheral Config Write Failure: " + error);
@@ -168,7 +181,11 @@ namespace Treehopper
             if (!isOpen)
                 return;
             int transferLength;
-            ErrorCode error = pinConfig.Write(data, 1000, out transferLength);
+            ErrorCode error;
+            lock (lockObject)
+            {
+                error = pinConfig.Write(data, 1000, out transferLength);
+            }
             if (error != ErrorCode.None && error != ErrorCode.IoCancelled)
             {
                 Debug.WriteLine("Pin Config Write Failure: " + error);
@@ -184,7 +201,11 @@ namespace Treehopper
             int transferLength;
             if (peripheralReceive != null)
             {
-                ErrorCode error = peripheralReceive.Read(returnVal, 1000, out transferLength);
+                ErrorCode error;
+                lock (lockObject)
+                {
+                    error = peripheralReceive.Read(returnVal, 1000, out transferLength);
+                }
                 if (error == ErrorCode.Success)
                     Array.Copy(returnVal, retVal, bytesToRead);
                 else
