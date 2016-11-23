@@ -141,6 +141,7 @@ void ProcessPinConfigPacket() {
 
 // this gets called whenever we received peripheral config data from the host
 void ProcessPeripheralConfigPacket() {
+	uint16_t i = 0;
 	uint8_t totalWriteBytes;
 	uint8_t totalReadBytes;
 	uint8_t offset;
@@ -177,8 +178,8 @@ void ProcessPeripheralConfigPacket() {
 		}
 //		 if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
 		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
-			while(USBD_EpIsBusy(EP2IN));
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalWriteBytes, false);
+			while(USBD_EpIsBusy(EP_PeripheralResponse && i++ < 10000));
+			USBD_Write(EP_PeripheralResponse, Treehopper_RxBuffer, totalWriteBytes, false);
 		}
 		break;
 
