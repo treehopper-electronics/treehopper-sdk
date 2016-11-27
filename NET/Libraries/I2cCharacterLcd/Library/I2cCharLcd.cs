@@ -86,7 +86,7 @@ namespace Treehopper.Libraries
 
         public I2cCharLcd(TreehopperUsb board, int lcd_Addr,int lcd_cols,int lcd_rows)
         {
-           _I2C = board.I2C;
+           _I2C = board.I2c;
           _Addr = lcd_Addr;
           _cols = lcd_cols;
           _rows = lcd_rows;
