@@ -33,8 +33,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.WPF.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
