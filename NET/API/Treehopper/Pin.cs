@@ -22,6 +22,9 @@ namespace Treehopper
         ActiveHigh
     };
 
+    /// <summary>
+    /// Select the reference to use for the analog input of the pin
+    /// </summary>
     public enum AdcReferenceLevel
     {
         /// <summary>
@@ -68,49 +71,72 @@ namespace Treehopper
 
     internal enum PinConfigCommands
     {
+        /// <summary>
+        /// Unused command to prevent NULL packets from being processed
+        /// </summary>
         Reserved = 0,
+
+        /// <summary>
+        /// Make the pin a digital input
+        /// </summary>
         MakeDigitalInput,
+
+        /// <summary>
+        /// Make the pin a push-pull output
+        /// </summary>
         MakePushPullOutput,
+
+        /// <summary>
+        /// Make the pin an open-drain output
+        /// </summary>
         MakeOpenDrainOutput,
+
+        /// <summary>
+        /// Make the pin an analog input
+        /// </summary>
         MakeAnalogInput,
+
+        /// <summary>
+        /// Set the digital value of the pin
+        /// </summary>
         SetDigitalValue,
-        GetDigitalValue,
-        GetAnalogValue
     }
 
-    public enum PinMode { Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, Unassigned };
-    
-    ///// <summary>
-    ///// The interrupt mode of the pin.
-    ///// </summary>
-    //public enum PinInterruptMode {
-    //    /// <summary>
-    //    /// Interrupts disabled.
-    //    /// </summary>
-    //    NoInterrupt, 
-        
-    //    /// <summary>
-    //    /// Interrupt occurs when pin transitions from low to high.
-    //    /// </summary>
-    //    Rising, 
-        
-    //    /// <summary>
-    //    /// Interrupt occurs when pin transitions from high to low
-    //    /// </summary>
-    //    Falling, 
-        
-    //    /// <summary>
-    //    /// Interrupt occurs when pin transitions from either low to high, or from high to low.
-    //    /// </summary>
-    //    RisingFalling 
-    //};
-
-    public enum OutputType
+    /// <summary>
+    /// An enumeration representing the different supported modes of this pin.
+    /// </summary>
+    public enum PinMode
     {
-        PushPull,
+        /// <summary>
+        /// Pin is reserved for other use
+        /// </summary>
+        Reserved,
 
-        OpenDrain
-    }
+        /// <summary>
+        /// Pin is a digital input
+        /// </summary>
+        DigitalInput,
+
+        /// <summary>
+        /// Pin is a push-pull output
+        /// </summary>
+        PushPullOutput,
+
+        /// <summary>
+        /// Pin is an open-drain output
+        /// </summary>
+        OpenDrainOutput,
+
+        /// <summary>
+        /// Pin is an analog input
+        /// </summary>
+        AnalogInput,
+
+        /// <summary>
+        /// Pin is unassigned
+        /// </summary>
+        Unassigned
+    };
 
     /// <summary>
     /// Used to send VoltageChanged events from the AnalogIn pin.
@@ -146,7 +172,7 @@ namespace Treehopper
     {
         protected string ioName;
         /// <summary>
-        /// The PIC16F1459 pin name
+        /// The EFM8 I/O name of the pin
         /// </summary>
         public string IOName { get { return ioName; } }
 
@@ -159,6 +185,10 @@ namespace Treehopper
         bool digitalValue;
 
         private PinMode mode = PinMode.Unassigned;
+
+        /// <summary>
+        /// Get or set the mode of the pin.
+        /// </summary>
         public PinMode Mode
         {
             get
@@ -299,6 +329,11 @@ namespace Treehopper
 
 
         TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
+
+        /// <summary>
+        /// Wait for the digital input value of the pin to change
+        /// </summary>
+        /// <returns>An awaitable bool, indicating the pin's state</returns>
         public Task<bool> AwaitDigitalValueChange()
         {
             digitalSignal = new TaskCompletionSource<bool>();
@@ -309,18 +344,30 @@ namespace Treehopper
         TaskCompletionSource<double> analogValueSignal = new TaskCompletionSource<double>();
         TaskCompletionSource<double> analogVoltageSignal = new TaskCompletionSource<double>();
 
+        /// <summary>
+        /// Wait for the pin's ADC value to change.
+        /// </summary>
+        /// <returns>An awaitable int, in the range of 0-4095, of the pin's ADC value.</returns>
         public Task<int> AwaitAdcValueChange()
         {
             adcValueSignal = new TaskCompletionSource<int>();
             return adcValueSignal.Task;
         }
 
+        /// <summary>
+        /// Wait for the pin's analog voltage to change.
+        /// </summary>
+        /// <returns>An awaitable double of the pin's analog voltage, measured in volts.</returns>
         public Task<double> AwaitAnalogVoltageChange()
         {
             analogVoltageSignal = new TaskCompletionSource<double>();
             return analogVoltageSignal.Task;
         }
 
+        /// <summary>
+        /// Wait for the pin's analog value to change.
+        /// </summary>
+        /// <returns>An awaitable double of the analog value, normalized from 0-1.</returns>
         public Task<double> AwaitAnalogValueChange()
         {
             analogValueSignal = new TaskCompletionSource<double>();
@@ -433,7 +480,7 @@ namespace Treehopper
         /// Retrieve the last value obtained from the ADC. 
         /// </summary>
         /// <remarks>
-        /// Treehopper has a 12-bit ADC, so ADC values will range from 0-4092.
+        /// Treehopper has a 12-bit ADC, so ADC values will range from 0-4095.
         /// </remarks>
         public int AdcValue
         {
@@ -525,16 +572,25 @@ namespace Treehopper
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
+        /// <summary>
+        /// Make the pin a push-pull output.
+        /// </summary>
         public void MakeDigitalPushPullOut()
         {
             Mode = PinMode.PushPullOutput;
         }
 
+        /// <summary>
+        /// Make the pin a digital input.
+        /// </summary>
         public void MakeDigitalIn()
         {
             Mode = PinMode.DigitalInput;
         }
 
+        /// <summary>
+        /// Make the pin an analog input.
+        /// </summary>
         public void MakeAnalogIn()
         {
             Mode = PinMode.AnalogInput;

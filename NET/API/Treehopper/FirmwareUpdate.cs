@@ -9,29 +9,59 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
+    /// <summary>
+    /// A class for uploading new firmware images to a board
+    /// </summary>
     public class FirmwareUpdater
     {
         const int SizeIn = 4;
         const int SizeOut = 64;
 
+        /// <summary>
+        /// Fires whenever firmware updating progress has changed.
+        /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
 
         IFirmwareConnection connection;
+
+        /// <summary>
+        /// Create a new FirmwareUpdater from an <see cref="IFirmwareConnection"/>  connection.
+        /// </summary>
+        /// <param name="connection">A platform-specific FirmwareConnection</param>
         public FirmwareUpdater(IFirmwareConnection connection)
         {
             this.connection = connection;
         }
 
+        /// <summary>
+        /// Connect to a board that is currently in bootloader mode.
+        /// </summary>
+        /// <returns>An awaitable bool indicating whether a connection was successful.</returns>
+        /// <remarks>
+        /// <para>
+        /// Unlike <see cref="IConnectionService.GetFirstDeviceAsync"/>, this call will not wait for a board to be connected.
+        /// </para>
+        /// </remarks>
         public async Task<bool> ConnectAsync()
         {
             return await connection.OpenAsync();
         }
 
+        /// <summary>
+        /// Load a firmware image specified by the path
+        /// </summary>
+        /// <param name="path">A file path to the firmware file to load</param>
+        /// <returns>An awaitable bool indicating wheather loading was successful.</returns>
         public async Task<bool> Load(string path)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Load a firmware image from a Stream of data
+        /// </summary>
+        /// <param name="data">the firmware image Stream.</param>
+        /// <returns>An awaitable bool indicating whether loading was successful.</returns>
         public async Task<bool> Load(Stream data)
         {
             byte dollarSign = Encoding.UTF8.GetBytes("$")[0];

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This is an example media content file -->
+<stockSharedContentDefinitions>
+  <item id="4cfacbe8-d100-471c-9d69-1dbcce50e316">
+    <image file="Media\VS_newProject.png">
+      <altText>Visual Studio new console application</altText>
+    </image>
+  </item>
+
+</stockSharedContentDefinitions>

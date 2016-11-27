@@ -8,19 +8,41 @@ using System.Collections.ObjectModel;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using LibUsbDotNet;
 
 namespace Treehopper
 {
-
+    /// <summary>
+    /// This class is used for discovering <see cref="TreehopperUsb"/> devices attached to this computer.
+    /// </summary>
     public class ConnectionService : IConnectionService
     {
         private static readonly ConnectionService instance = new ConnectionService();
+
+        /// <summary>
+        /// Retrieve a reference to the static instance of the <see cref="ConnectionService"/> that should be used for discovering boards.
+        /// </summary>
+        /// <remarks>
+        /// A single instance of <see cref="ConnectionService"/> is created and started upon the first reference to <see cref="Instance"/>.
+        /// In general, there is no need to construct your own <see cref="ConnectionService"/>; just access <see cref="Instance"/> for any
+        /// board discovery functionalities you need.
+        /// </remarks>
         public static ConnectionService Instance { get { return instance; } }
 
+        /// <summary>
+        /// Determines if we're running under Windows
+        /// </summary>
+        public static bool IsWindows { get { return UsbDevice.IsWindows; } }
 
-        public static bool IsWindows { get { return LibUsbDotNet.UsbDevice.IsWindows; } }
-        public static bool IsLinux { get { return LibUsbDotNet.UsbDevice.IsLinux; } }
-        public static bool IsMac { get { return LibUsbDotNet.UsbDevice.IsMac; } }
+        /// <summary>
+        /// Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
+        /// </summary>
+        public static bool IsLinux { get { return UsbDevice.IsLinux; } }
+
+        /// <summary>
+        /// Determines if we're running under macOS (OS X)
+        /// </summary>
+        public static bool IsMac { get { return UsbDevice.IsMac; } }
 
         private IDeviceNotifier myNotifier = DeviceNotifier.OpenDeviceNotifier();
         /// <summary>
@@ -126,6 +148,9 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Collection of <see cref="TreehopperUsb"/> devices attached to this computer
+        /// </summary>
         public ObservableCollection<TreehopperUsb> Boards { get; } = new ObservableCollection<TreehopperUsb>();
 
         void devicePollingTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -232,6 +257,20 @@ namespace Treehopper
             return true;
         }
 
+        /// <summary>
+        /// Get a reference to the first device discovered.
+        /// </summary>
+        /// <returns>The first board found.</returns>
+        /// <remarks>
+        /// <para>
+        /// If no devices have been plugged into the computer, 
+        /// this call will await indefinitely until a board is plugged in.
+        /// </para>
+        /// 
+        /// <para>
+        /// Remember to call <see cref="TreehopperUsb.ConnectAsync()"/> before starting communication.
+        /// </para>
+        /// </remarks>
         public async Task<TreehopperUsb> GetFirstDeviceAsync()
         {
             while (Boards.Count == 0)

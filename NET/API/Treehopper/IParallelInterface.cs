@@ -9,17 +9,20 @@ namespace Treehopper
     public enum ParallelMode
     {
         Intel8080,
-        Motorola6800,
-
+        //Motorola6800,
     }
-    public interface IParallelInterface
+    public interface IWriteOnlyParallelInterface
     {
         bool Enabled { get; set; }
-        void WriteCommand(byte command, ushort[] data = null);
-        void WriteData(ushort[] data);
+        void WriteCommand(uint[] command);
+        void WriteData(uint[] data);
         int DelayMicroseconds { get; set; }
         int Width { get; }
-        Task<ushort[]> ReadCommand(byte command, int length);
+    }
+
+    public interface IReadWriteParallelInterface : IWriteOnlyParallelInterface
+    {
+        Task<ushort[]> ReadCommand(uint command, int length);
 
         Task<ushort[]> ReadData(int length);
 

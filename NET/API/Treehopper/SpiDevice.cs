@@ -19,7 +19,7 @@ namespace Treehopper
             spi.Enabled = true;
         }
 
-        protected async Task<byte[]> SendReceive(byte[] dataToSend, BurstMode burst = BurstMode.NoBurst)
+        public async Task<byte[]> SendReceive(byte[] dataToSend, BurstMode burst = BurstMode.NoBurst)
         {
             spi.ChipSelect = cs;
             spi.Frequency = speed;
