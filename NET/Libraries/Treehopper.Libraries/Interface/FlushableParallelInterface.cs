@@ -1,0 +1,116 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Treehopper.Libraries.Interface
+{
+    public class FlushableParallelInterface<T> : IWriteOnlyParallelInterface where T : IDigitalOutPin
+    {
+        private IFlushableOutputPort<T> port;
+
+        public Collection<IDigitalOutPin> DataBus { get; set; } = new Collection<IDigitalOutPin>();
+        public IDigitalOutPin RegisterSelectPin { get; set; }
+        public IDigitalOutPin ReadWritePin { get; set; }
+
+        public IDigitalOutPin EnablePin { get; set; }
+
+        public int DelayMicroseconds { get; set; }
+
+        public FlushableParallelInterface(IFlushableOutputPort<T> outputPort)
+        {
+            this.port = outputPort;
+        }
+
+        private bool enabled;
+        private bool oldAutoflushSettings;
+        public bool Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+
+            set
+            {
+                if (enabled == value) return;
+                enabled = value;
+                if(enabled)
+                {
+                    oldAutoflushSettings = port.AutoFlush; // save old autoflush settings
+                    port.AutoFlush = false; // disable autoflush for speed
+
+                    // make sure pins are outputs
+                    foreach (var pin in DataBus)
+                        pin.MakeDigitalPushPullOut();
+
+                    RegisterSelectPin.MakeDigitalPushPullOut();
+                    if(ReadWritePin != null) // R/W is optional, and is often tied to "write"
+                        ReadWritePin.MakeDigitalPushPullOut();
+                    EnablePin.MakeDigitalPushPullOut();
+
+                    port.Flush().Wait(); // write out port settings
+
+                } else
+                {
+                    port.AutoFlush = oldAutoflushSettings; // restore old autoflush settings
+                }
+            }
+        }
+
+        public int Width
+        {
+            get
+            {
+                return DataBus.Count;
+            }
+        }
+
+        public void WriteCommand(uint[] command)
+        {
+            WriteDataOrCommand(command, false);
+        }
+
+        public void Pulse()
+        {
+            EnablePin.DigitalValue = false;
+            port.Flush();
+            EnablePin.DigitalValue = true;
+            port.Flush();
+            EnablePin.DigitalValue = false;
+            port.Flush();
+        }
+
+        public void SetDataBus(uint value)
+        {
+            for (int i = 0; i < Width; i++)
+            {
+                if (((value >> i) & 0x01) == 0x01)
+                    DataBus[i].DigitalValue = true;
+                else
+                    DataBus[i].DigitalValue = false;
+            }
+        }
+
+        public void WriteData(uint[] data)
+        {
+             WriteDataOrCommand(data, true);
+        }
+
+        private void WriteDataOrCommand(uint[] busValues, bool isData = false)
+        {
+            RegisterSelectPin.DigitalValue = isData;
+            if (ReadWritePin != null)
+                ReadWritePin.DigitalValue = false;
+
+            foreach(var val in busValues)
+            {
+                SetDataBus(val);
+                Pulse();
+            }
+            
+        }
+    }
+}

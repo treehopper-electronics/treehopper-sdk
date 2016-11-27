@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{397B4612-9FF2-4288-A7D0-C2B2FC4F4816}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Treehopper.Libraries</RootNamespace>
+    <AssemblyName>Treehopper.Libraries</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Treehopper.Libraries.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\API\Treehopper\Treehopper.csproj">
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArduinoShim\SerialShim.cs" />
+    <Compile Include="ArduinoShim\Sketch.cs" />
+    <Compile Include="Displays\BarGraph.cs" />
+    <Compile Include="Displays\CharacterDisplay.cs" />
+    <Compile Include="Displays\HobbyDisplayFactories.cs" />
+    <Compile Include="Displays\GraphicDisplay.cs" />
+    <Compile Include="Displays\Hd44780.cs" />
+    <Compile Include="Displays\Ili9341.cs" />
+    <Compile Include="Displays\Led.cs" />
+    <Compile Include="Displays\LedDriver.cs" />
+    <Compile Include="Displays\Max7219.cs" />
+    <Compile Include="Displays\SevenSegmentDigit.cs" />
+    <Compile Include="Displays\SevenSegmentDisplay.cs" />
+    <Compile Include="Displays\Ssd1306.cs" />
+    <Compile Include="Displays\Stp16cpc26.cs" />
+    <Compile Include="Displays\Tm1650.cs" />
+    <Compile Include="Interface\AnalogMux\AnalogMux4051.cs" />
+    <Compile Include="Interface\FlushableParallelInterface.cs" />
+    <Compile Include="Interface\I2cMux\I2cMux.cs" />
+    <Compile Include="Interface\I2cMux\I2cMuxPort.cs" />
+    <Compile Include="Interface\I2cMux\Mux4052.cs" />
+    <Compile Include="Interface\IFlushableOutputPort.cs" />
+    <Compile Include="Interface\Ltc2305.cs" />
+    <Compile Include="Interface\PcfSeries\Pcf8574.cs" />
+    <Compile Include="Interface\PcfSeries\Pcf8575.cs" />
+    <Compile Include="Interface\PcfSeries\PcfInterface.cs" />
+    <Compile Include="Interface\PortExpander.cs" />
+    <Compile Include="Interface\PortExpanderPin.cs" />
+    <Compile Include="Interface\ShiftRegister\Sn74hc166.cs" />
+    <Compile Include="Motors\Amis30624\Acceleration.cs" />
+    <Compile Include="Motors\Amis30624\Address.cs" />
+    <Compile Include="Motors\Amis30624\Amis30624.cs" />
+    <Compile Include="Motors\Amis30624\Command.cs" />
+    <Compile Include="Motors\Amis30624\HoldingCurrent.cs" />
+    <Compile Include="Motors\Amis30624\MaxVelocity.cs" />
+    <Compile Include="Motors\Amis30624\RunningCurrent.cs" />
+    <Compile Include="Motors\Amis30624\StepMode.cs" />
+    <Compile Include="Motors\AnalogFeedbackServo.cs" />
+    <Compile Include="Motors\HBridge.cs" />
+    <Compile Include="Motors\HobbyServo.cs" />
+    <Compile Include="Motors\ISpeedController.cs" />
+    <Compile Include="Motors\MotorizedFader.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sensors\Inertial\Mpu9150.cs" />
+    <Compile Include="Sensors\Optical\Adjds311.cs" />
+    <Compile Include="Sensors\Optical\FlirLepton.cs" />
+    <Compile Include="Sensors\Optical\Tsl2591.cs" />
+    <Compile Include="Sensors\Temperature\Ds18b20.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
