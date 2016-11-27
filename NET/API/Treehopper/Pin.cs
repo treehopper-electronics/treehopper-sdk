@@ -6,21 +6,6 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
-    /// <summary>
-    /// Defines whether a signal is active high (rising-edge) or active low (falling-edge)
-    /// </summary>
-    public enum PinPolarity
-    {
-
-        /// <summary>
-        /// The signal is considered active when the signal is low
-        /// </summary>
-        ActiveLow,
-        /// <summary>
-        /// The signal is considered active when the signal is high
-        /// </summary>
-        ActiveHigh
-    };
 
     /// <summary>
     /// Select the reference to use for the analog input of the pin
