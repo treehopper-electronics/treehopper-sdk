@@ -10,12 +10,47 @@
 
 #include "SI_EFM8UB1_Register_Enums.h"
 
+
+typedef enum ChipSelectMode
+{
+	 /// <summary>
+	/// CS is asserted low, the SPI transaction takes place, and then the signal is returned high.
+	/// </summary>
+	CsMode_SpiActiveLow,
+	/// <summary>
+	/// CS is asserted high, the SPI transaction takes place, and then the signal is returned low.
+	/// </summary>
+	CsMode_SpiActiveHigh,
+
+	/// <summary>
+	/// CS is pulsed high, and then the SPI transaction takes place.
+	/// </summary>
+	CsMode_PulseHighAtBeginning,
+
+	/// <summary>
+	/// The SPI transaction takes place, and once finished, CS is pulsed high
+	/// </summary>
+	CsMode_PulseHighAtEnd,
+
+	/// <summary>
+	/// CS is pulsed low, and then the SPI transaction takes place.
+	/// </summary>
+	CsMode_PulseLowAtBeginning,
+
+	/// <summary>
+	/// The SPI transaction takes place, and once finished, CS is pulsed low
+	/// </summary>
+	CsMode_PulseLowAtEnd
+
+} ChipSelectMode_t;
+
+
 typedef struct SpiConfigData {
 	uint8_t IsEnabled;
 	uint8_t SpiMode;
 	uint8_t CkrVal;
 	uint8_t CsPin;
-	uint8_t CsPolarity;
+	ChipSelectMode_t CsMode;
 } SpiConfigData_t;
 
 void SPI_Init();

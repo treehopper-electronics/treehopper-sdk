@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Treehopper
@@ -9,6 +10,45 @@ namespace Treehopper
         BurstTx,
         BurstRx
     }
+
+    /// <summary>
+    /// Defines whether a signal is active high (rising-edge) or active low (falling-edge)
+    /// </summary>
+    public enum ChipSelectMode
+    {
+
+        /// <summary>
+        /// CS is asserted low, the SPI transaction takes place, and then the signal is returned high.
+        /// </summary>
+        SpiActiveLow,
+        /// <summary>
+        /// CS is asserted high, the SPI transaction takes place, and then the signal is returned low.
+        /// </summary>
+        SpiActiveHigh,
+
+        /// <summary>
+        /// CS is pulsed high, and then the SPI transaction takes place.
+        /// </summary>
+        PulseHighAtBeginning,
+
+        /// <summary>
+        /// The SPI transaction takes place, and once finished, CS is pulsed high
+        /// </summary>
+        PulseHighAtEnd,
+
+        /// <summary>
+        /// CS is pulsed low, and then the SPI transaction takes place.
+        /// </summary>
+        PulseLowAtBeginning,
+
+        /// <summary>
+        /// The SPI transaction takes place, and once finished, CS is pulsed low
+        /// </summary>
+        PulseLowAtEnd
+
+
+
+    };
 
     /// <summary>
     /// Defines when incoming data is sampled
@@ -29,6 +69,9 @@ namespace Treehopper
     /// <summary>
     /// Defines the clock phase and polarity used for SPI communication
     /// </summary>
+    /// <remarks>
+    /// The left number indicates the clock polarity (CPOL), while the right number indicates the clock phase (CPHA). Consult https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Clock_polarity_and_phase for more information.
+    /// </remarks>
     public enum SPIMode
     {
         /// <summary>
@@ -61,9 +104,9 @@ namespace Treehopper
     /// 
     /// SPI is a full-duplex synchronous serial communication standard that uses four pins:
     /// <list type="number">
-    /// <item><term>MISO</term><description>Short for "Master In, Slave Out." This pin carries data from the device to the Treehopper. It is on <see cref="Pin10"/></description></item>
-    /// <item><term>MOSI</term><description>Short for "Master Out, Slave In." This pin carries data from the Treehopper to the device. It is on <see cref="Pin12"/></description></item>
-    /// <item><term>SCK</term><description>Short for "Serial Clock." This pin carries the clock signal from the Treehopper to the device. It is on <see cref="Pin11"/></description></item>
+    /// <item><term>MISO</term><description>Short for "Master In, Slave Out." This pin carries data from the device to the Treehopper. It is on pin 1</description></item>
+    /// <item><term>MOSI</term><description>Short for "Master Out, Slave In." This pin carries data from the Treehopper to the device. It is on pin 2</description></item>
+    /// <item><term>SCK</term><description>Short for "Serial Clock." This pin carries the clock signal from the Treehopper to the device. It is on pin 0</description></item>
     /// <item><term>CS</term><description>Short for "Chip Select." Treehopper asserts this pin when communication begins, and de-asserts when communication is done.</description></item>
     /// </list>
     /// The SPI specification allows for many different configuration options, so the datasheet for the device must be consulted to determine the communication rate, the
@@ -79,8 +122,12 @@ namespace Treehopper
     /// </remarks>
     public class Spi
     {
-        PinPolarity chipSelectPolarity = PinPolarity.ActiveLow;
-        PinPolarity ChipSelectPolarity
+        ChipSelectMode chipSelectPolarity = ChipSelectMode.SpiActiveLow;
+
+        /// <summary>
+        /// Gets or sets the chip select polarity of the SPI module.
+        /// </summary>
+        public ChipSelectMode ChipSelectMode
         {
             get
             {
@@ -91,6 +138,9 @@ namespace Treehopper
                 if (chipSelectPolarity == value)
                     return;
                 chipSelectPolarity = value;
+
+                if(Enabled)
+                    SendConfig(); // only send the config when we're enabled.
             }
         }
        
@@ -103,6 +153,14 @@ namespace Treehopper
 
 
         Pin chipSelect;
+
+        /// <summary>
+        /// Get or set the pin to use for chip-select duties.
+        /// </summary>
+        /// <remarks>
+        /// Almost every SPI peripheral chip has some sort of chip select (which may be called load, strobe, or enable, depending on the type of chip). You can use any <see cref="Pin"/> for chip-select duties as long as it belongs to the same board as this SPI peripheral (i.e., you can't use a pin from one Treehopper as a chip-select for the SPI port on another Treehopper).
+        /// Chip-selects are controlled at the firmware, not peripheral, level, which offers quite a bit of flexibility in choosing the behavior. Make sure to set <see cref="ChipSelectMode"/> properly for your device.
+        /// </remarks>
         public Pin ChipSelect {
             get
             {
@@ -113,22 +171,22 @@ namespace Treehopper
                     return;
 
                 if(chipSelect != null)
-                    chipSelect.Mode = PinMode.DigitalInput; // make the old chip select pin a digital input
+                    chipSelect.Mode = PinMode.Unassigned; // unassign old chip select pin
 
-                chipSelect = value;
-
-                if (chipSelect.Mode == PinMode.Reserved)
-                {
-                    throw new Exception("The specified ChipSelect pin is already in use by another peripheral");
-                }
-                else if (chipSelect.Board != device)
+                if (value.Board != device)
                 {
                     throw new Exception("The specified ChipSelect pin does not belong to this TreehopperUsb device");
                 }
                 else if (chipSelect != null)
                 {
-                    //chipSelect.Mode = PinMode.Reserved; 
+                    chipSelect.Mode = PinMode.Reserved;
                 }
+
+                // finally, assign the new CS pin
+                chipSelect = value;
+
+                if (Enabled)
+                    SendConfig(); // only send the config when we're enabled.
             }
         }
 
@@ -141,21 +199,30 @@ namespace Treehopper
         {
 
 
-            double SPI0CKR = (24.0 / _frequency) - 1;
+            int SPI0CKR = (int)Math.Round((24.0 / _frequency) - 1);
             if (SPI0CKR > 255.0)
             {
-                throw new Exception("SPI Rate out of limits. Valid rate is 93.75 kHz - 24 MHz");
+                SPI0CKR = 255;
+                Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is below the minimum frequency, and will be clipped to 0.09375 MHz (93.75 kHz).", Frequency);
+            }
+            else if(SPI0CKR < 0)
+            {
+                SPI0CKR = 0;
+                Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is above the maximum frequency, and will be clipped to 24 MHz.", Frequency);
             }
 
-            actualFrequency = 47 / (2 * SPI0CKR + 1);
+            ActualFrequency = 48.0 / (2.0 * (SPI0CKR + 1.0));
+
+            if (Math.Abs(ActualFrequency - Frequency) > 1)
+                Debug.WriteLine("NOTICE: SPI module actual frequency of {0} MHz is more than 1 MHz away from the requested frequency of {1} MHz", ActualFrequency, Frequency);
 
             byte[] dataToSend = new byte[6];
             dataToSend[0] = (byte)DeviceCommands.SpiConfig;
             dataToSend[1] = (enabled ? (byte)1 : (byte)0);
             dataToSend[2] = (byte)Mode;
             dataToSend[3] = (byte)SPI0CKR;
-            dataToSend[4] = (byte)(chipSelect == null ? 0 : chipSelect.PinNumber);
-            dataToSend[5] = (byte)(chipSelectPolarity == PinPolarity.ActiveHigh ? 1 : 0);
+            dataToSend[4] = (byte)(chipSelect == null ? 255 : chipSelect.PinNumber); // send an invalid pin number (255) if we're not using chipSelect
+            dataToSend[5] = (byte)(chipSelectPolarity);
             device.sendPeripheralConfigPacket(dataToSend);
         }
 
@@ -167,9 +234,12 @@ namespace Treehopper
         private double _frequency = 6;
 
         /// <summary>
-        /// Sets and gets the Frequency property.
-        /// Changes to that property's value raise the PropertyChanged event. 
+        /// Sets and gets the Frequency, in MHz, of the SPI module.
         /// </summary>
+        /// <remarks>
+        /// The SPI module can operate from 0.09375 MHz (93.75 kHz) to 24 MHz. Setting Frequency outside of those limits will result in clipping, plus a debug notice.
+        /// Note that SPI transfers are managed by the CPU, as Treehopper's MCU has no DMA. As a result, there are diminishing performance returns above 8 MHz, as dead space starts appearing between bytes as the SPI module waits for the CPU to push the next byte into the register.
+        /// </remarks>
         public double Frequency
         {
             get
@@ -179,6 +249,7 @@ namespace Treehopper
 
             set
             {
+                // if we're basically setting the same frequency, no need to update it.
                 if (Math.Abs(_frequency-value) < 0.01) return;
                 _frequency = value;
                 SendConfig();
@@ -186,6 +257,13 @@ namespace Treehopper
         }
 
         private SPIMode mode;
+
+        /// <summary>
+        /// Get or set the SPI module's mode
+        /// </summary>
+        /// <remarks>
+        /// The SPI module supports the four SPI modes: 00, 01, 10, 11. See <see cref="SPIMode"/> for more info.
+        /// </remarks>
         public SPIMode Mode { 
             get
             {
@@ -199,17 +277,23 @@ namespace Treehopper
             }
         }
 
-        double actualFrequency = 0;
-        public double ActualFrequency
-        {
-            get {
-                return actualFrequency;
-            }
-            
-        }
+        /// <summary>
+        /// Get the actual frequency the SPI module is operating at (after clipping and rounding is applied).
+        /// </summary>
+        /// <remarks>
+        /// To learn more about the SPI module's frequency capability, <see cref="Frequency"/> .
+        /// </remarks>
+        public double ActualFrequency { get; private set; } = 0;
+
 
         bool enabled;
 
+        /// <summary>
+        /// Enable or disable the SPI module.
+        /// </summary>
+        /// <remarks>
+        /// When enabled, the MOSI, MISO, and SCK pins become reserved, and cannot be used for digital or analog operations. When disabled, these pins return to an unassigned state.
+        /// </remarks>
         public bool Enabled
         {
             get
@@ -234,6 +318,9 @@ namespace Treehopper
                     Mosi.Mode = PinMode.Unassigned;
                     Miso.Mode = PinMode.Unassigned;
                     Sck.Mode = PinMode.Unassigned;
+
+                    if(chipSelect != null)
+                        chipSelect.Mode = PinMode.Unassigned;
                 }
 
             }

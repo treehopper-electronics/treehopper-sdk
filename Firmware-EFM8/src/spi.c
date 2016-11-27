@@ -15,20 +15,56 @@
 #define MOSI_BIT	4
 
 uint8_t csPin;
-uint8_t csPolarity;
+ChipSelectMode_t csMode;
 
 void SPI_Init() {
 
 }
 
 void SPI_Transaction(uint8_t* dataToSend, uint8_t* dataToReceive, uint8_t count) {
+	switch(csMode)
+	{
+	case CsMode_SpiActiveHigh:
+		GPIO_WriteValue(csPin, true);
+		break;
+	case CsMode_SpiActiveLow:
+		GPIO_WriteValue(csPin, false);
+		break;
+	case CsMode_PulseHighAtBeginning:
+		GPIO_WriteValue(csPin, true); // approx 1 us pulse
+		GPIO_WriteValue(csPin, false);
+		break;
+	case CsMode_PulseLowAtBeginning:
+		GPIO_WriteValue(csPin, false);
+		GPIO_WriteValue(csPin, true);
+		break;
+	}
+
 	SPI0_pollTransfer(dataToSend, dataToReceive, SPI0_TRANSFER_RXTX, count);
+
+	switch(csMode)
+	{
+	case CsMode_SpiActiveHigh:
+		GPIO_WriteValue(csPin, false);
+		break;
+	case CsMode_SpiActiveLow:
+		GPIO_WriteValue(csPin, true);
+		break;
+	case CsMode_PulseHighAtEnd:
+		GPIO_WriteValue(csPin, true);
+		GPIO_WriteValue(csPin, false);
+		break;
+	case CsMode_PulseLowAtEnd:
+		GPIO_WriteValue(csPin, true);
+		GPIO_WriteValue(csPin, false);
+		break;
+	}
 }
 
 void SPI_SetConfig(SpiConfigData_t* config) {
 	uint8_t spiMode;
 	csPin = config->CsPin;
-	csPolarity = config->CsPolarity;
+	csMode = config->CsMode;
 	switch (config->SpiMode) {
 	case 0:
 		spiMode = SPI0_CLKMODE_0;
@@ -49,10 +85,30 @@ void SPI_SetConfig(SpiConfigData_t* config) {
 		SPI0CKR = config->CkrVal;
 		SPI0_init(spiMode, true, false);
 		SPI_Enable();
-		if (csPin != 0) {
-			GPIO_MakeOutput(csPin, PushPullOutput);
-			GPIO_WriteValue(csPin, !csPolarity);
+		GPIO_MakeOutput(csPin, PushPullOutput);
+
+		switch(csMode)
+		{
+		case CsMode_SpiActiveHigh:
+			GPIO_WriteValue(csPin, false);
+			break;
+
+		case CsMode_SpiActiveLow:
+			GPIO_WriteValue(csPin, true);
+			break;
+
+		case CsMode_PulseHighAtBeginning:
+		case CsMode_PulseHighAtEnd:
+			GPIO_WriteValue(csPin, false);
+			break;
+
+		case CsMode_PulseLowAtBeginning:
+		case CsMode_PulseLowAtEnd:
+			GPIO_WriteValue(csPin, true);
+			break;
 		}
+
+
 
 	} else
 		SPI_Disable();
@@ -71,14 +127,4 @@ void SPI_Disable() {
 	P0SKIP |= SCK_BIT | MISO_BIT | MOSI_BIT;
 	P0MDOUT &= ~(SCK_BIT | MISO_BIT | MOSI_BIT);
 	XBR0 &= ~XBR0_SPI0E__ENABLED;
-}
-
-void SPI_ActivateCs() {
-	if (csPin != 0)
-		GPIO_WriteValue(csPin, csPolarity);
-}
-
-void SPI_DeactivateCs() {
-	if (csPin != 0)
-		GPIO_WriteValue(csPin, !csPolarity);
 }
