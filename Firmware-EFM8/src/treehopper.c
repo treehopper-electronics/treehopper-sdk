@@ -171,10 +171,8 @@ void ProcessPeripheralConfigPacket() {
 		// check whether we're done copying, or if we don't care about Tx data
 		if (totalWriteBytes == offset + count
 				|| Treehopper_PeripheralConfig[4] == Burst_Rx) {
-			SPI_ActivateCs();
 			SPI_Transaction(Treehopper_TxBuffer, Treehopper_RxBuffer,
 					totalWriteBytes);
-			SPI_DeactivateCs();
 		}
 //		 if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
 		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
