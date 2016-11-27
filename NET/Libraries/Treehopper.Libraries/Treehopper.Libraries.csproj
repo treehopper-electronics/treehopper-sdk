@@ -70,7 +70,10 @@
     <Compile Include="Interface\PcfSeries\PcfInterface.cs" />
     <Compile Include="Interface\PortExpander.cs" />
     <Compile Include="Interface\PortExpanderPin.cs" />
+    <Compile Include="Interface\ShiftRegister\ShiftOut.cs" />
+    <Compile Include="Interface\ShiftRegister\ShiftOutPin.cs" />
     <Compile Include="Interface\ShiftRegister\Sn74hc166.cs" />
+    <Compile Include="Interface\ShiftRegister\Sn74hc595.cs" />
     <Compile Include="Motors\Amis30624\Acceleration.cs" />
     <Compile Include="Motors\Amis30624\Address.cs" />
     <Compile Include="Motors\Amis30624\Amis30624.cs" />
