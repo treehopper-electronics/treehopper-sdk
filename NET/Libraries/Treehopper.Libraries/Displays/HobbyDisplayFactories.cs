@@ -30,25 +30,24 @@ namespace Treehopper.Libraries.Displays
         /// <returns>An Hd44780 object supporting standard CharacterDisplay methods.</returns>
         /// <remarks>
         /// <para>
-        /// This factory method takes a Pcf8574, creates a <see cref="FlushableParallelInterface{PortExpanderPin}"/>
+        /// This factory method takes an already-created <see cref="Pcf8574"/>, creates a <see cref="FlushableParallelInterface{PortExpanderPin}"/>
         /// parallel interface for it, assigns the correct pinout to this interface, and constructs a <see cref="Hd44780"/>
         /// display using this interface, using the slower 4-bit mode for operation.
         /// </para>
         /// <para>
         /// If you wish to produce custom hardware compatiable with this factory method, the correct pinout is:
-        /// </para>
-        /// <list>
-        /// <item>Register Select (RS): Pin 0</item>
-        /// <item>Read/Write (R/W): Pin 1</item>
-        /// <item>Enable (E): Pin 2</item>
-        /// <item>Backlight Enable: Pin 3</item>
-        /// <item>Data 4: Pin 4</item>
-        /// <item>Data 5: Pin 5</item>
-        /// <item>Data 6: Pin 6</item>
-        /// <item>Data 7: Pin 7</item>
+        /// <list type="number">
+        /// <item><term>Register Select (RS)</term><description>Pin 0</description></item>
+        /// <item><term>Read/Write (RW)</term><description>Pin 1</description></item>
+        /// <item><term>Enable (E)</term><description>Pin 2</description></item>
+        /// <item><term>Backlight Enable</term><description>Pin 3</description></item>
+        /// <item><term>Data 4</term><description>Pin 4</description></item>
+        /// <item><term>Data 5</term><description>Pin 5</description></item>
+        /// <item><term>Data 6</term><description>Pin 6</description></item>
+        /// <item><term>Data 7</term><description>Pin 7</description></item>
         /// </list>
-        /// <para>
-        /// Note that when the Hd44780 is operated in 4-bit mode, the high-nibble (D4-D7) is used, not the low-nibble.
+        /// 
+        /// Note that when the Hd44780 is operated in 4-bit mode, only the high-nibble (D4-D7) is used, not the low-nibble.
         /// </para>
         /// </remarks>
         public static Hd44780 GetCharacterDisplayFromPcf8574(Pcf8574 ioExpander, int columns = 16, int rows = 2)
