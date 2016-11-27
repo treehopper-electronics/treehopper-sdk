@@ -256,6 +256,9 @@ namespace Treehopper
         {
             get
             {
+                if (Mode == PinMode.Reserved || Mode == PinMode.AnalogInput)
+                    Debug.WriteLine(string.Format("NOTICE: Pin {0} must be in digital I/O mode to read from. This call will return 0 always.", PinNumber));
+
                 return digitalValue;
             }
             set
@@ -436,6 +439,9 @@ namespace Treehopper
         {
             get
             {
+                if(Mode != PinMode.AnalogInput)
+                    Debug.WriteLine(string.Format("NOTICE: Attempting to read AdcValue from Pin {0}, which is configured for {1}. This call will always return 0", PinNumber, Mode));
+
                 return adcValue;
             }
         }
