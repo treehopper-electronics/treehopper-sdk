@@ -35,7 +35,7 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>Treehopper API</HelpTitle>
+    <HelpTitle>Treehopper .NET Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <VisibleItems>InheritedMembers, ProtectedInternalAsProtected</VisibleItems>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, AutoDocumentDispose</MissingTags>
@@ -82,6 +82,9 @@
     </ComponentConfigurations>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
+    <ApiFilter>
+      <Filter entryType="Namespace" fullName="Treehopper.ThirdParty" isExposed="False" xmlns="" />
+    </ApiFilter>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
