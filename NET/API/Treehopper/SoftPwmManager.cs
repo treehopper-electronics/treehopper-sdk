@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Treehopper.ThirdParty;
 
 namespace Treehopper
 {
-    internal class SoftPwmPinConfig
-    {
-        public Pin Pin { get; set; }
-        /// <summary>
-        /// Duty Cycle, from 0 to 1.
-        /// </summary>
-        public double DutyCycle { get; set; }
-        /// <summary>
-        /// Pulse Width, in Milliseconds
-        /// </summary>
-        public double PulseWidthUs { get; set; }
-        public bool UsePulseWidth { get; set; }
-        public UInt16 Ticks { get; set; }
-    }
-
-    public class SoftPwmManager : IDisposable
+    /// <summary>
+    /// The SoftPwmManager is used to configure soft-PWM pins on the board
+    /// </summary>
+    internal class SoftPwmManager : IDisposable
     {
         AsyncLock mutex = new AsyncLock();
 
@@ -63,8 +52,8 @@ namespace Treehopper
             UpdateConfig();
         }
 
-    private void UpdateConfig()
-    {
+        private void UpdateConfig()
+        {
                 if (pins.Count > 0)
                 {
                     foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
@@ -182,5 +171,21 @@ namespace Treehopper
         {
             Stop();
         }
+    }
+
+
+    internal class SoftPwmPinConfig
+    {
+        public Pin Pin { get; set; }
+        /// <summary>
+        /// Duty Cycle, from 0 to 1.
+        /// </summary>
+        public double DutyCycle { get; set; }
+        /// <summary>
+        /// Pulse Width, in Milliseconds
+        /// </summary>
+        public double PulseWidthUs { get; set; }
+        public bool UsePulseWidth { get; set; }
+        public UInt16 Ticks { get; set; }
     }
 }

@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bb121085-86c0-4b65-962f-4b8c82809cff" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>Treehopper boards have up to 20 pins — each of which can be used as analog or digital inputs, or digital outputs.</para>
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+
+      <section address="PinMode">
+        <title>Pin Mode</title>
+        <content>
+          <para>
+            You can choose whether a pin should be a digital input, output, or analog input by setting the
+            pin's <codeEntityReference>P:Treehopper.Pin.Mode</codeEntityReference> property.
+
+          </para>
+        </content>
+      </section>
+      <section address="DigitalOut">
+        <title>Digital Outputs</title>
+        <content>
+          <para>To use a pin as a digital output, first set its <codeEntityReference>P:Treehopper.Pin.Mode</codeEntityReference> to either <codeEntityReference>T:Treehopper.PinMode.PushPullOutput</codeEntityReference> or <codeEntityReference>T:Treehopper.PinMode.OpenDrainOutput</codeEntityReference>, depending on what style of output you want. All pins on Treehopper support both push-pull and open-drain outputs. 
+          </para>
+            
+          <para>Writing a <codeInline>true</codeInline> or <codeInline>false</codeInline> to the pin's <codeEntityReference qualifyHint="true">P:Treehopper.Pin.DigitalValue</codeEntityReference> will flush that value to the pin.
+        </para>
+        </content>
+        <sections>
+          <section>
+            <title>Push-Pull</title>
+            <content>
+              <para>Push-pull is the standard output style; it can drive a pin both to logic HIGH (3.3V) and logic LOW (0V). When a pin is set to <codeInline>true</codeInline>, Treehopper will attempt to drive the pin to logic HIGH (3.3V). When a pin is set to <codeInline>false</codeInline>, Treehopper will attempt to drive the pin to logic LOW (0V — also referred to as ground). 
+              </para>
+            </content>
+          </section>
+          <section>
+            <title>Open-Drain</title>
+            <content>
+              <para>Open-drain outputs can only drive a strong logic LOW (0V); in the other state, the pin is allowed to float.</para>
+            </content>
+          </section>
+          <section>
+            <title>Output Current Limitations</title>
+            <content>
+              <para>
+                Treehopper can source approximately 20 mA of current out of each pin when short-circuited. Treehopper can sink approximately 40 mA of current into each pin when short-circuited. While this is plenty of current for peripheral ICs and small indicator LEDs, do not expect to drive large arrays of LEDs, or low-impedance loads like motors, solenoids, or speakers directly from Treehopper's pins. There are a wide variety of peripherals in the <codeEntityReference>N:Treehopper.Libraries</codeEntityReference> namespace that can be used for interfacing with these peripherals.
+              </para>
+              <alert class="warning">
+                <para>
+                  <legacyBold>To avoid damaging the device permanently, do not source or sink more than 400 mA of combined current out of the pins on the board!</legacyBold> Note that these limits have nothing to do with the supply pins found on Treehopper; you can comfortably source 500 mA out of either the 5V or 3.3V supply pins on the board.
+                </para>
+              </alert>
+            </content>
+          </section>
+        </sections>
+      </section>
+      <section address="DigitalIn">
+        <title>Digital Inputs</title>
+        <content>
+          <para>Sub-section content.</para>
+        </content>
+      </section>
+      <section address="AnalogIn">
+        <title>Analog Inputs</title>
+        <content>
+          <para>Sub-section content.</para>
+        </content>
+      </section>
+
+    <section address="Performance">
+      <title>Performance Considerations</title>
+      <content>
+        <!-- Uncomment this to create a sub-section outline
+        <autoOutline /> -->
+        <para>Writing values to (or changing pin modes of) Treehopper pins will flush to the OS's USB layer immediately, 
+        but there is no way of achieving guaranteed latency. Occasional writes (say, on the order of every 20 ms or more)
+        will usually flush to the port within 0.1-1 ms. If your application is chatty (for example, toggling a pin 
+        continuously in a <codeInline>while()</codeInline> loop), expect several cycles of fast performance, followed
+        by occasionally hangs (up to 6-10 ms has been observed).</para>
+
+        <para>
+          
+        </para>
+      </content>
+      <!-- If a section contains a sections element, its content creates
+           sub-sections.  These are not collapsible.
+      <sections>
+          <section address="SubSection1">
+              <title>Sub-section 1</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+          <section address="SubSection2">
+              <title>Sub-section 2</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+      </sections> -->
+    </section>
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on GitHub</linkText>
+          <linkAlternateText>Go to GitHub</linkAlternateText>
+          <linkUri>https://GitHub.com/EWSoftware/SHFB</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

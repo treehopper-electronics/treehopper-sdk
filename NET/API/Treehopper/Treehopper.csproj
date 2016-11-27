@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,16 +42,13 @@
     <Compile Include="IAdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
-    <Compile Include="IDigitalInPin.cs" />
-    <Compile Include="IDigitalIOPin.cs" />
-    <Compile Include="IDigitalOutPin.cs" />
+    <Compile Include="IDigitalPin.cs" />
     <Compile Include="IFirmwareConnection.cs" />
     <Compile Include="II2c.cs" />
     <Compile Include="IOneWire.cs" />
     <Compile Include="IParallelInterface.cs" />
     <Compile Include="IPwm.cs" />
     <Compile Include="IPwmPin.cs" />
-    <Compile Include="ObservableDictionary.cs" />
     <Compile Include="ParallelInterface.cs" />
     <Compile Include="Pin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,12 +65,8 @@
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\..\Firmware-EFM8\Keil 8051 v9.53 - Debug\treehopper.tfi">
-      <Link>treehopper.tfi</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="project.json" />
+    <EmbeddedResource Include="treehopper.tfi" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

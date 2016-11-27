@@ -9,6 +9,9 @@ using Treehopper;
 
 namespace Treehopper
 {
+    /// <summary>
+    /// This platform-specific class is used for discovering Treehopper boards booted into firmware upload mode.
+    /// </summary>
     public class FirmwareConnection : IFirmwareConnection
     {
         UsbDevice dev;

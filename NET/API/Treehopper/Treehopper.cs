@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Treehopper;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Treehopper.ThirdParty;
 
 namespace Treehopper
 {
@@ -71,6 +72,8 @@ namespace Treehopper
     /// </remarks>
     public class TreehopperUsb : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUsb>, IEqualityComparer<TreehopperUsb>
 	{
+        const int MinimumSupportedFirmwareVersion = 110;
+
         // Settings
         public static Settings Settings { get; set; } = new Settings();
 
@@ -113,7 +116,7 @@ namespace Treehopper
         /// <summary>
         /// Instance of SoftPwmMgr
         /// </summary>
-        public SoftPwmManager SoftPwmMgr { get; private set; }
+        internal SoftPwmManager SoftPwmMgr { get; private set; }
 
         public PwmManager PwmManager { get; private set; }
 
@@ -318,6 +321,8 @@ namespace Treehopper
 		/// </summary>
 		public async Task<bool> ConnectAsync()
 		{
+            if (Version < MinimumSupportedFirmwareVersion)
+                Debug.WriteLine("NOTICE: The specified board has an old firmware version. Please use the Firmware Updater to load a firmware image with a minimum version of " + MinimumSupportedFirmwareVersion);
             bool res = await connection.OpenAsync();
             if (!res)
             {
