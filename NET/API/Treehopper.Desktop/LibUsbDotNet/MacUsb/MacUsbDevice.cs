@@ -4,7 +4,7 @@ using LibUsbDotNet;
 using LibUsbDotNet.Internal;
 using Microsoft.Win32.SafeHandles;
 
-namespace Treehopper.Desktop
+namespace Treehopper.Desktop.LibUsbDotNet
 {
 	public class MacUsbDevice : UsbDevice, IUsbInterface
 	{
