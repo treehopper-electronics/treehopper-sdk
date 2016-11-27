@@ -88,10 +88,25 @@ void USBD_SofCb(uint16_t sofNr) {
 void USBD_DeviceStateChangeCb(USBD_State_TypeDef oldState,
 		USBD_State_TypeDef newState) {
 	if (newState == USBD_STATE_CONFIGURED) {
+		uint16_t i;
+		LED_SetVal(true);
+		for(i=0;i<60000;i++);
+		LED_SetVal(false);
+		for(i=0;i<60000;i++);
+		LED_SetVal(true);
+		for(i=0;i<60000;i++);
+		LED_SetVal(false);
+		for(i=0;i<60000;i++);
+		LED_SetVal(true);
+		for(i=0;i<60000;i++);
+		LED_SetVal(false);
 		// Arm these endpoints once we're configured
 		USBD_Read(EP_PinConfig, (uint8_t *)&Treehopper_PinConfig, sizeof(pinConfigPacket_t), false);
 		USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, sizeof(Treehopper_PeripheralConfig), false);
 	}
+
+
+
 }
 
 bool USBD_IsSelfPoweredCb(void) {
