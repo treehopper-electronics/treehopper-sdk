@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="31625c00-5575-46c4-9b80-b0182a521e53" visible="True" isDefault="true" isSelected="true" title="Treehopper.Libraries Documentation">
+  <Topic id="0b2e49c2-f29a-49c0-9bc8-d36676773549" visible="True" isDefault="true" isSelected="true" title="Treehopper.MVVM Documentation">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
     </HelpKeywords>
   </Topic>
-  <Topic id="8f4c6a7e-b502-4c20-b3ef-68ebe844b2c5" visible="True" isExpanded="true" title="Version History">
+  <Topic id="862d6e76-6838-4bca-b9e4-68782ca0d9fc" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version, history" />
     </HelpKeywords>
-    <Topic id="d63344e1-913c-4313-bbbf-d7d1ff7caf8e" visible="True" title="Version 1.0.0.0">
+    <Topic id="5bdb533f-ac4b-4a64-aefa-ee06366ad087" visible="True" title="Version 1.0.0.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="version, 1.0.0.0" />
       </HelpKeywords>
