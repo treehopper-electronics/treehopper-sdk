@@ -2,7 +2,7 @@
 using LibUsbDotNet;
 using LibUsbDotNet.Main;
 
-namespace Treehopper.Desktop
+namespace Treehopper.Desktop.LibUsbDotNet
 {
 	public class MacUsbRegistry : UsbRegistry
 	{
