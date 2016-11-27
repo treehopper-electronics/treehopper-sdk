@@ -13,6 +13,10 @@ using System.Text.RegularExpressions;
 
 namespace Treehopper
 {
+    /// <summary>
+    /// This class represents the platform-specific implementation of <see cref="IConnection"/>, 
+    /// which is used for communicating with <see cref="TreehopperUsb"/> devices.
+    /// </summary>
     public class UsbConnection : IConnection
     {
         private bool isOpen = false;
@@ -128,7 +132,7 @@ namespace Treehopper
                             ErrorCode error;
                             lock (lockObject)
                             {
-                                error = pinState.Read(buffer, 0, out len);
+                                error = pinState.Read(buffer, 1, out len);
                             }
 
                             if (error == ErrorCode.Success)
@@ -139,8 +143,9 @@ namespace Treehopper
                         }
                         catch (Exception ex)
                         {
-
+                            Debug.WriteLine("Exception: " + ex.Message);
                         }
+
                         if (updateDelay > 1) Task.Delay(updateDelay).Wait();
                     }
 
@@ -166,7 +171,7 @@ namespace Treehopper
 
             int transferLength;
             ErrorCode error;
-            lock (lockObject)
+            //lock (lockObject)
             {
                 error = peripheralConfig.Write(data, 1000, out transferLength);
             }
@@ -182,7 +187,7 @@ namespace Treehopper
                 return;
             int transferLength;
             ErrorCode error;
-            lock (lockObject)
+            //lock (lockObject)
             {
                 error = pinConfig.Write(data, 1000, out transferLength);
             }
