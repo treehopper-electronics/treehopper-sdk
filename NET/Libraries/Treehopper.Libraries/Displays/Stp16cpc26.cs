@@ -6,92 +6,120 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
+using Treehopper.Libraries.Interface.ShiftRegister;
 
 namespace Treehopper.Libraries.Displays
 {
-    public class Stp16cpc26 : LedDriver
+    public class Stp16cpc26 : ChainableShiftRegisterOutput, ILedDriver
     {
-        Spi spi;
-        IDigitalOutPin le;
         IDigitalOutPin oe;
         IPwm oePwm;
-        public Stp16cpc26(Spi SpiModule, IDigitalOutPin LatchPin, IDigitalOutPin OutputEnablePin = null) : base(16, true, false)
-        {
-            this.spi = SpiModule;
-            this.le = LatchPin;
-            if (OutputEnablePin != null)
-            {
-                this.oe = OutputEnablePin;
-                oe.MakeDigitalPushPullOut();
-                oe.DigitalValue = false;
-            }
 
-            HasGlobalBrightnessControl = false;
+        public Stp16cpc26(Spi SpiModule, Pin LatchPin, IDigitalOutPin OutputEnablePin = null) : base(SpiModule, LatchPin, 2)
+        {
+            oe = OutputEnablePin;
             Start();
         }
 
-        public Stp16cpc26(Spi SpiModule, IDigitalOutPin LatchPin, IPwm OutputEnablePin) : base(16, true, false)
+        public Stp16cpc26(Spi SpiModule, Pin LatchPin, IPwm OutputEnablePin) : base(SpiModule, LatchPin, 2)
         {
-            this.spi = SpiModule;
-            this.le = LatchPin;
             this.oePwm = OutputEnablePin;
-            oePwm.PulseWidth = 0;
-            oePwm.Enabled = true;
-            HasGlobalBrightnessControl = true;
-            Brightness = 1.0;
             Start();
         }
+
+        public Stp16cpc26(ChainableShiftRegisterOutput upstreamDevice, IDigitalOutPin OutputEnablePin = null) : base(upstreamDevice, 2)
+        {
+            oe = OutputEnablePin;
+            Start();
+        }
+
+        public Stp16cpc26(ChainableShiftRegisterOutput upstreamDevice, IPwm OutputEnablePin) : base(upstreamDevice, 2)
+        {
+            this.oePwm = OutputEnablePin;
+            Start();
+        }
+
 
         private void Start()
         {
-            spi.Enabled = true;
-            le.MakeDigitalPushPullOut();
-            le.DigitalValue = false;
+            for (int i = 0; i < 16; i++)
+                Leds.Add(new Led(this, i));
+
+            if (oe != null)
+            {
+                oe.MakeDigitalPushPullOut();
+                oe.DigitalValue = false;
+                HasGlobalBrightnessControl = false;
+            } else if(oePwm != null)
+            {
+                oePwm.PulseWidth = 0;
+                oePwm.Enabled = true;
+                HasGlobalBrightnessControl = true;
+              } else
+            {
+                HasGlobalBrightnessControl = false;
+            }
+
+            Brightness = 1.0; // turn on the display
         }
 
-        public override double Brightness
+        double brightness;
+
+        public double Brightness
         {
             get
             {
-                return base.Brightness;
+                return brightness;
             }
 
             set
             {
-                if (base.Brightness == value) return;
-                base.Brightness = value;
-                oePwm.DutyCycle = 1 - base.Brightness;
+                if (brightness == value) return;
+                brightness = value;
+
+                if (oePwm != null)
+                    oePwm.DutyCycle = 1 - brightness;
+                else if (oe != null)
+                    oe.DigitalValue = brightness > 0.5 ? false : true;
+
             }
         }
 
-        private async Task WriteValue()
-        {
-            byte[] data = new byte[] { (byte)(currentValue >> 8), (byte)(currentValue & 0xff) };
-            await spi.SendReceive(data);
-            le.DigitalValue = true;
-            le.DigitalValue = false;
-            await Task.Delay(15);
-        }
+        public bool HasGlobalBrightnessControl { get; private set; }
+
+        public bool HasIndividualBrightnessControl { get; private set; }
+
+        public IList<Led> Leds { get; private set; } = new Collection<Led>();
 
         ushort currentValue = 0x0000;
-        internal override void LedStateChanged(Led led)
+
+        void ILedDriver.LedStateChanged(Led led)
         {
             if (led.State)
-                currentValue |= (ushort)(1 << led.Channel);
+                CurrentValue |= (uint)(1 << led.Channel);
             else
-                currentValue &= (ushort)(~(1 << led.Channel));
-            if (AutoFlush) WriteValue().Wait();
+                CurrentValue &= (uint)~(1 << led.Channel);
+
+            FlushIfAutoFlushEnabled().Wait();
         }
 
-        internal override void LedBrightnessChanged(Led led)
+        void ILedDriver.LedBrightnessChanged(Led led)
         {
             
         }
 
-        public override async Task Flush(bool force = false)
+        public Task Clear()
         {
-            if (AutoFlush && !force) return;
-            await WriteValue();
+            return Write(0);
+        }
+
+        protected override void updateFromCurrentValue()
+        {
+            uint currentValue = CurrentValue; // CurrentValue is an expensive read, so only read it once
+            for (int i = 0; i < Leds.Count; i++)
+            {
+                Leds[i].State = ((currentValue >> i) & 1) == 0x01 ? true : false;
+            }
         }
     }
 }
