@@ -13,11 +13,13 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
     public class Sn74hc595 : ShiftOut
     {
         /// <summary>
-        /// Construct a new 595-type shift register that is directly connected to a Treehopper's SPI port
+        /// Construct a new 74HC595-type shift register that is directly connected to a Treehopper's SPI port
         /// </summary>
+        /// <remarks>
+        /// This class supports all 74HC595 shift registers. The name of the class comes from the widely-available TI part.
+        /// </remarks>
         public Sn74hc595(Spi spiModule, Pin latchPin, double speedMhz = 1) : base(spiModule, latchPin, 8, SPIMode.Mode00, ChipSelectMode.PulseHighAtEnd, speedMhz)
         {
-
         }
 
         /// <summary>
@@ -26,7 +28,6 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <param name="UpstreamDevice"></param>
         public Sn74hc595(ShiftOut UpstreamDevice) : base(UpstreamDevice, 8)
         {
-
         }
     }
 }
