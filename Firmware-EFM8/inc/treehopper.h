@@ -59,8 +59,6 @@ typedef enum PinConfigCommands {
 	PinConfig_MakeOpenDrainOutput,
 	PinConfig_MakeAnalogInput,
 	PinConfig_SetDigitalValue,
-	PinConfig_GetDigitalValue,
-	PinConfig_GetAnalogValue
 } PinConfigCommands_t;
 
 typedef enum DeviceResponse {
