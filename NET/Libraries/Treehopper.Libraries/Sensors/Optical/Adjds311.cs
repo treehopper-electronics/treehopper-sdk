@@ -67,7 +67,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         public async void updateColor()
         {
             led.DigitalValue = true;
-            WriteByteData(0, 1);
+            await WriteByteData(0, 1);
             while ((await ReadByteData(0) & 0x01) != 0) ;
             led.DigitalValue = false;
 

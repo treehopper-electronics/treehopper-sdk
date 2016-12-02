@@ -51,7 +51,7 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        Collection<LedDriver> drivers = new Collection<LedDriver>();
+        Collection<ILedDriver> drivers = new Collection<ILedDriver>();
 
         private string text;
         /// <summary>
@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.Displays
                 if (!string.Equals(text, value.ToString()))
                 {
                     text = value.ToString();
-                    printString(text).ConfigureAwait(false);
+                    printString(text).Wait();
                 }
             }
         }
@@ -111,21 +111,21 @@ namespace Treehopper.Libraries.Displays
 
             foreach(var driver in drivers)
             {
-                await driver.Flush();
+                await driver.Flush().ConfigureAwait(false);
             }                
         }
 
-        protected override void clear()
+        protected override async Task clear()
         {
             
         }
 
-        protected override void updateCursorPosition()
+        protected override async Task updateCursorPosition()
         {
 
         }
 
-        protected override void write(dynamic value)
+        protected override Task write(dynamic value)
         {
             throw new NotImplementedException();
         }

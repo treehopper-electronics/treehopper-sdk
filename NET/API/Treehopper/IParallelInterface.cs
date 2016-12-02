@@ -14,10 +14,11 @@ namespace Treehopper
     public interface IWriteOnlyParallelInterface
     {
         bool Enabled { get; set; }
-        void WriteCommand(uint[] command);
-        void WriteData(uint[] data);
         int DelayMicroseconds { get; set; }
         int Width { get; }
+        Task WriteCommand(uint[] command);
+        Task WriteData(uint[] data);
+
     }
 
     public interface IReadWriteParallelInterface : IWriteOnlyParallelInterface

@@ -24,12 +24,12 @@ namespace CharacterLcd16x2Pcf8574
             await board.ConnectAsync();
             var ioExpander = new Pcf8574(board.I2c, false, false, false);
             var display = HobbyDisplayFactories.GetCharacterDisplayFromPcf8574(ioExpander, 20, 4);
-            display.WriteLine("The current date is:");
+            await display.WriteLine("The current date is:").ConfigureAwait(false);
             while (true)
             {
-                display.WriteLine(DateTime.Now.ToLongTimeString());
-                display.WriteLine(DateTime.Now.ToShortDateString());
-                display.SetCursorPosition(0, 1);
+                await display.WriteLine(DateTime.Now.ToLongTimeString()).ConfigureAwait(false);
+                await display.WriteLine(DateTime.Now.ToShortDateString()).ConfigureAwait(false);
+                await display.SetCursorPosition(0, 1);
                 await Task.Delay(100);
             }
 

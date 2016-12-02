@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
 {
     public abstract class CharacterDisplay
     {
+        public Collection<string> History { get; private set; } = new Collection<string>();
+        public Collection<string> Lines { get; private set; } = new Collection<string>();
+        public int Columns { get; private set; }
+        public int Rows { get; private set; }
+
+        private int cursorLeft;
+
+        private int cursorTop;
+
         public CharacterDisplay(int Columns, int Rows)
         {
             this.Columns = Columns;
@@ -15,12 +25,6 @@ namespace Treehopper.Libraries.Displays
             for (int i = 0; i < Rows; i++)
                 Lines.Add("");
         }
-        public Collection<string> History { get; private set; } = new Collection<string>();
-        public Collection<string> Lines { get; private set; } = new Collection<string>();
-        public int Columns { get; private set; }
-        public int Rows { get; private set; }
-
-        private int cursorLeft;
 
         public int CusorLeft
         {
@@ -29,11 +33,10 @@ namespace Treehopper.Libraries.Displays
             {
                 if (cursorLeft == value) return;
                 cursorLeft = value;
-                updateCursorPosition();
+                updateCursorPosition().Wait();
             }
         }
 
-        private int cursorTop;
         public int CusorTop
         {
             get { return cursorTop; }
@@ -41,33 +44,33 @@ namespace Treehopper.Libraries.Displays
             {
                 if (cursorTop == value) return;
                 cursorTop = value;
-                updateCursorPosition();
+                updateCursorPosition().Wait();
             }
         }
-        public void SetCursorPosition(int left, int top)
+        public Task SetCursorPosition(int left, int top)
         {
             cursorLeft = left;
             cursorTop = top;
-            updateCursorPosition();
+            return updateCursorPosition();
         }
 
-        public void WriteLine(dynamic value)
+        public Task WriteLine(dynamic value)
         {
-            Write(value + "\n");
+            return Write(value + "\n");
         }
 
-        public void Write(dynamic value)
+        public async Task Write(dynamic value)
         {
             if(cursorTop > Rows-1)
             {
                 // we need to shift all the text up, so just clear the display and resend
                 // from history
-                Clear();
+                await Clear().ConfigureAwait(false);
                 int startingRow = History.Count - Rows + 1;
                 for (int i=0;i<Rows-1;i++)
                 {
-                    write(History[startingRow + i]);
-                    SetCursorPosition(0, i + 1);
+                    await write(History[startingRow + i]).ConfigureAwait(false);
+                    await SetCursorPosition(0, i + 1).ConfigureAwait(false);
                 }
             }
             string str = value.ToString();
@@ -79,10 +82,10 @@ namespace Treehopper.Libraries.Displays
                     if(s.Length > 0)
                     {
                         History.Add(s.ToString());
-                        write(s);
+                        await write(s).ConfigureAwait(false);
                     }
                     s.Clear();
-                    SetCursorPosition(0, cursorTop + 1);
+                    await SetCursorPosition(0, cursorTop + 1).ConfigureAwait(false);
                 } else
                 {
                     s.Append(c);
@@ -91,16 +94,16 @@ namespace Treehopper.Libraries.Displays
             if(s.Length > 0)
             {
                 History.Add(s.ToString());
-                write(s);
+                await write(s).ConfigureAwait(false);
             }
             
         }
 
-        public void Clear()
+        public Task Clear()
         {
             cursorLeft = 0;
             cursorTop = 0;
-            clear();
+            return clear();
         }
 
         // Methods that display drivers need to implement
@@ -108,8 +111,8 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         /// Clear the display. The driver is expected to reset the cursor to home
         /// </summary>
-        protected abstract void clear();
-        protected abstract void updateCursorPosition();
-        protected abstract void write(dynamic value);
+        protected abstract Task clear();
+        protected abstract Task updateCursorPosition();
+        protected abstract Task write(dynamic value);
     }
 }

@@ -19,12 +19,12 @@ namespace Treehopper.Libraries.Displays
             this.Height = Height;
         }
 
-        public void Flush()
+        public Task Flush()
         {
-            flush();
+            return flush();
         }
 
-        protected abstract void flush();
+        protected abstract Task flush();
 
     }
 }

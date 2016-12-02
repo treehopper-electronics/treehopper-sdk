@@ -1,5 +1,4 @@
-﻿using Displays;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,6 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using Treehopper.Libraries.Displays;
 
 namespace Ssd1306Oled128x32
 {
@@ -30,7 +30,7 @@ namespace Ssd1306Oled128x32
                 display.RawBuffer[i++] = 0x55;
                 display.RawBuffer[i] = 0xAA;
             }
-            display.Flush();
+            await display.Flush().ConfigureAwait(false);
 
             var bitmap = new Bitmap(display.Width, display.Height, PixelFormat.Format32bppArgb);
 
@@ -60,7 +60,7 @@ namespace Ssd1306Oled128x32
                     }
                 }
 
-                display.Flush();
+                await display.Flush().ConfigureAwait(false);
                 //await Task.Delay(500);
             }
 

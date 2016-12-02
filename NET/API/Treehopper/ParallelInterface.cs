@@ -104,7 +104,7 @@ namespace Treehopper
         /// Write one or more words of data to the bus with the command flag asserted (RS=0);
         /// </summary>
         /// <param name="command"></param>
-        public void WriteCommand(uint[] command)
+        public async Task WriteCommand(uint[] command)
         {
             int cmdLen = command.Length;
             byte[] cmd;
@@ -145,7 +145,7 @@ namespace Treehopper
         /// Write one or more words of data to the bus with the data flag asserted (RS=1);
         /// </summary>
         /// <param name="data"></param>
-        public void WriteData(uint[] data)
+        public async Task WriteData(uint[] data)
         {
             int dataLen = data.Length;
             byte[] cmd;

@@ -68,19 +68,19 @@ namespace Treehopper.Libraries.Interface
             }
         }
 
-        public void WriteCommand(uint[] command)
+        public Task WriteCommand(uint[] command)
         {
-            WriteDataOrCommand(command, false);
+            return WriteDataOrCommand(command, false);
         }
 
-        public void Pulse()
+        public async Task Pulse()
         {
             EnablePin.DigitalValue = false;
-            port.Flush();
+            await port.Flush().ConfigureAwait(false);
             EnablePin.DigitalValue = true;
-            port.Flush();
+            await port.Flush().ConfigureAwait(false);
             EnablePin.DigitalValue = false;
-            port.Flush();
+            await port.Flush().ConfigureAwait(false);
         }
 
         public void SetDataBus(uint value)
@@ -94,12 +94,12 @@ namespace Treehopper.Libraries.Interface
             }
         }
 
-        public void WriteData(uint[] data)
+        public Task WriteData(uint[] data)
         {
-             WriteDataOrCommand(data, true);
+             return WriteDataOrCommand(data, true);
         }
 
-        private void WriteDataOrCommand(uint[] busValues, bool isData = false)
+        private async Task WriteDataOrCommand(uint[] busValues, bool isData = false)
         {
             RegisterSelectPin.DigitalValue = isData;
             if (ReadWritePin != null)
@@ -108,7 +108,7 @@ namespace Treehopper.Libraries.Interface
             foreach(var val in busValues)
             {
                 SetDataBus(val);
-                Pulse();
+                await Pulse().ConfigureAwait(false);
             }
             
         }

@@ -138,7 +138,7 @@ namespace Treehopper
 
         internal async void SetDutyCycle(Pin pin, double dutyCycle)
         {
-            using (await mutex.LockAsync())
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 pins[pin.PinNumber].DutyCycle = dutyCycle;
                 pins[pin.PinNumber].UsePulseWidth = false;
@@ -149,7 +149,7 @@ namespace Treehopper
 
         internal async void SetPulseWidth(Pin pin, double pulseWidth)
         {
-            using (await mutex.LockAsync())
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 pins[pin.PinNumber].PulseWidthUs = pulseWidth;
                 pins[pin.PinNumber].UsePulseWidth = true;
