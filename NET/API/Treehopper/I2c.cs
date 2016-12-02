@@ -122,9 +122,10 @@ namespace Treehopper
                     var result = await device.receiveCommsResponsePacket((uint)1).ConfigureAwait(false);
                     if (result[0] != 255)
                     {
-                        I2cTransferError error = (I2cTransferError)result[0];
+                        var error = (I2cTransferError)result[0];
                         Debug.WriteLine("NOTICE: I2C transaction resulted in an error: " + error);
-                        //throw new I2cTransferException() { Error = error };
+                        if(TreehopperUsb.Settings.ThrowExceptions)
+                            throw new I2cTransferException() { Error = error };
                     }
                         
                 } else
@@ -142,11 +143,17 @@ namespace Treehopper
                         bytesRemaining -= numBytesToTransfer;
                     }
 
-                    I2cTransferError error = (I2cTransferError)result[0];
-                    if (error != I2cTransferError.Success)
-                        throw new I2cTransferException() { Error = error };
-                    else
+                    if (result[0] != 255)
+                    {
+                        var error = (I2cTransferError)result[0];
+                        Debug.WriteLine("NOTICE: I2C transaction resulted in an error: " + error);
+                        if (TreehopperUsb.Settings.ThrowExceptions)
+                            throw new I2cTransferException() { Error = error };
+                    } else
+                    {
                         Array.Copy(result, 1, receivedData, 0, numBytesToRead);
+                    }
+                    
 
                 }
             }
