@@ -13,6 +13,8 @@
 
 volatile bit commandComplete;
 
+I2C0_TransferError_t transferError;
+
 void I2C_Init() {
 
 }
@@ -42,18 +44,22 @@ void I2C_Disable() {
 void I2C_Transaction(uint8_t address, uint8_t* tx, uint8_t* rx, uint8_t txlen,
 		uint8_t rxlen) {
 	if(txlen > 0) {
+		transferError = -1;
 		commandComplete = 0;
 		I2C0_transfer(address << 1, tx, NULL, txlen, 0);
 		while (!commandComplete)
 			;
 
+		rx[0] = transferError;
 	}
 
-	if(rxlen > 0) {
+	if(rxlen > 0 & transferError != -1) {
+		transferError = -1;
 		commandComplete = 0;
-		I2C0_transfer(address << 1 | 1, NULL, rx, 0, rxlen);
+		I2C0_transfer(address << 1 | 1, NULL, &rx[1], 0, rxlen);
 		while (!commandComplete)
 			;
+		rx[0] = transferError;
 	}
 }
 void I2C0_commandReceivedCb() {
@@ -66,4 +72,5 @@ void I2C0_transferCompleteCb() {
 
 void I2C0_errorCb(I2C0_TransferError_t error) {
 	commandComplete = 1;
+	transferError = error;
 }
