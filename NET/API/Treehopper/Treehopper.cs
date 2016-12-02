@@ -61,7 +61,7 @@ namespace Treehopper
 
     /// <summary>
     /// TreehopperBoard is the main class for interacting with Treehopper. Once constructed, it contains instances of all pins and peripherals. 
-    /// <seealso cref="TreehopperManager"/>
+    /// <seealso cref="IConnectionService"/>
     /// </summary>
     /// <remarks>
     /// The lifecycle of a TreehopperBoard instance begins when a board is connected. Usually, TreehopperManager is used to 
@@ -88,18 +88,18 @@ namespace Treehopper
 
         #region Pin Definitions
 
-       
+
 
         #endregion
 
         #region Modules
 
-        internal readonly AsyncLock ComsMutex = new AsyncLock();
+        internal readonly AsyncLock ComsLock = new AsyncLock();
 
-		/// <summary>
-		/// I2C module
-		/// </summary>
-		public I2c I2c { get; private set; }
+        /// <summary>
+        /// I2C module
+        /// </summary>
+        public I2c I2c { get; private set; }
 
 		/// <summary>
 		/// SPI module
@@ -199,7 +199,7 @@ namespace Treehopper
 		/// While the name is immediately written to the device and the Name property is updated immediately, the changes 
 		/// will not take effect to other applications until the device is reset. This can be done by calling <see cref="Reset"/>
 		/// </remarks>
-		public async Task UpdateSerialNumber(string serialNumber)
+		public Task UpdateSerialNumber(string serialNumber)
 		{
 			if (serialNumber.Length > 60)
 				throw new Exception("String must be 15 characters or less");
@@ -210,7 +210,7 @@ namespace Treehopper
 			DataToSend[1] = (byte)(serialNumber.Length); // Unicode 16-bit strings are 2 bytes per character
 			bytes.CopyTo(DataToSend, 2);
 			sendPeripheralConfigPacket(DataToSend);
-            await Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+            return Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
         }
 
 		/// <summary>
@@ -221,7 +221,7 @@ namespace Treehopper
 		/// While the name is immediately written to the device and the Name property is updated immediately, the changes 
 		/// will not take effect to other applications until the device is reset. This can be done by calling <see cref="Reset"/>
 		/// </remarks>
-		public async Task UpdateDeviceName(string deviceName)
+		public Task UpdateDeviceName(string deviceName)
 		{
 			if (deviceName.Length > 60)
 				throw new Exception("Device name must be 60 characters or less");
@@ -231,7 +231,7 @@ namespace Treehopper
 			byte[] stringData = Encoding.UTF8.GetBytes(deviceName);
 			stringData.CopyTo(DataToSend, 2);
 			sendPeripheralConfigPacket(DataToSend);
-            await Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+            return Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
         }
 
 		~TreehopperUsb()
@@ -323,7 +323,7 @@ namespace Treehopper
 		{
             if (Version < MinimumSupportedFirmwareVersion)
                 Debug.WriteLine("NOTICE: The specified board has an old firmware version. Please use the Firmware Updater to load a firmware image with a minimum version of " + MinimumSupportedFirmwareVersion);
-            bool res = await connection.OpenAsync();
+            bool res = await connection.OpenAsync().ConfigureAwait(false);
             if (!res)
             {
                 IsConnected = false;
@@ -354,7 +354,7 @@ namespace Treehopper
             sendPeripheralConfigPacket(data);
         }
 
-        private async void Connection_PinEventDataReceived(byte[] pinStateBuffer)
+        private void Connection_PinEventDataReceived(byte[] pinStateBuffer)
         {
             if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
             {
@@ -383,9 +383,9 @@ namespace Treehopper
                 connection.SendDataPeripheralChannel(data);
 		}
 
-		internal async Task<byte[]> receiveCommsResponsePacket(uint bytesToRead)
+		internal Task<byte[]> receiveCommsResponsePacket(uint bytesToRead)
 		{
-			return await connection.ReadPeripheralResponsePacket(bytesToRead);
+			return connection.ReadPeripheralResponsePacket(bytesToRead);
 		}
 
 		/// <summary>
