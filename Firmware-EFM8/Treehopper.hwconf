@@ -13,9 +13,9 @@
     <property object="ADC_0" propertyId="adc.control.enableadc" value="Enabled"/>
     <property object="ADC_0" propertyId="adc.control.enableburstmode" value="Enabled"/>
     <property object="ADC_0" propertyId="adc.control.timer0overflowfrequency" value="307.692 kHz"/>
-    <property object="ADC_0" propertyId="adc.control.timer2overflowfrequency" value="0 Hz"/>
+    <property object="ADC_0" propertyId="adc.control.timer2overflowfrequency" value="61.000 Hz"/>
     <property object="ADC_0" propertyId="adc.control.timer3overflowfrequency" value="61.000 Hz"/>
-    <property object="ADC_0" propertyId="adc.control.timer4overflowfrequency" value="14.981 kHz"/>
+    <property object="ADC_0" propertyId="adc.control.timer4overflowfrequency" value="61.000 Hz"/>
     <property object="ADC_0" propertyId="adc.view.view" value="Advanced"/>
     <property object="CIP51_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="CIP51_0" propertyId="cip51.prefetchenginecontrol.enableprefetch" value="Enabled"/>
@@ -41,7 +41,6 @@
     <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable1.enabletimer3interrupt" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.extendedinterruptenable2.enabletimer4interrupt" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableallinterrupts" value="Enabled"/>
-    <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enabletimer2interrupt" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableuart0interrupt" value="Enabled"/>
     <property object="INTERRUPT_0" propertyId="interruptenables.codegenerationoptions.generateinterruptfunctions" value="Disabled"/>
     <property object="P3.1" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
@@ -91,11 +90,14 @@
     <property object="SMBUS_0" propertyId="smbus.configuration.smbusslaveinhibit" value="Disabled"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.timer0overflowfrequency" value="307.692 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.timer1overflowfrequency" value="19.230 kHz"/>
+    <property object="SMBUS_0" propertyId="smbus.configuration.timer2highbyteoverflowfrequency" value="61.000 Hz"/>
+    <property object="SMBUS_0" propertyId="smbus.configuration.timer2lowbyteoverflowfrequency" value="15.625 kHz"/>
     <property object="SMBUS_0" propertyId="smbus.view.view" value="Advanced"/>
     <property object="SPI_0" propertyId="ABPeripheral.included" value="true"/>
-    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencyactual" value="24.000 MHz"/>
-    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencytarget" value="24000000"/>
+    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencyactual" value="12.000 MHz"/>
+    <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencytarget" value="12000000"/>
     <property object="SPI_0" propertyId="spi.clockrate.sysclk" value="48.000 MHz"/>
+    <property object="SPI_0" propertyId="spi.clockrate.sysclkdividercoefficientspi0ckr" value="1"/>
     <property object="SPI_0" propertyId="spi.configuration.enablemastermode" value="Enable"/>
     <property object="SPI_0" propertyId="spi.configuration.spimode" value="Master"/>
     <property object="SPI_0" propertyId="spi.control.slaveselectmode" value="Slave or master 3-wire mode"/>
@@ -112,24 +114,16 @@
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerinitvalue" value="52"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="48"/>
     <property object="TIMER16_2" propertyId="ABPeripheral.included" value="true"/>
-    <property object="TIMER16_2" propertyId="timer16.control.enablecapture" value="Enabled"/>
-    <property object="TIMER16_2" propertyId="timer16.control.mode" value="Capture mode, 16-bit"/>
-    <property object="TIMER16_2" propertyId="timer16.control.runcontrol" value="Start"/>
-    <property object="TIMER16_2" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
     <property object="TIMER16_3" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER16_3" propertyId="timer16.control.runcontrol" value="Start"/>
     <property object="TIMER16_3" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="60"/>
+    <property object="TIMER16_3" propertyId="timer16.initandreloadvalue.timerinitvalue" value="60"/>
+    <property object="TIMER16_3" propertyId="timer16.lowbyte.lowbyte" value="60"/>
     <property object="TIMER16_4" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER16_4" propertyId="timer16.control.runcontrolhighbyte" value="Run"/>
     <property object="TIMER16_4" propertyId="timer16.control.timerhighbyterunningstate" value="Timer is Running"/>
-    <property object="TIMER16_4" propertyId="timer16.highbyte.highbyte" value="254"/>
-    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="15000"/>
-    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerinitvalue" value="65269"/>
-    <property object="TIMER16_4" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="65269"/>
     <property object="TIMER16_4" propertyId="timer16.initandreloadvaluehighbyte.targetoverflowfrequency" value="10000"/>
-    <property object="TIMER16_4" propertyId="timer16.lowbyte.lowbyte" value="245"/>
-    <property object="TIMER16_4" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="254"/>
-    <property object="TIMER16_4" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="245"/>
     <property object="TIMER_SETUP_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer0.mode" value="Mode 2, 8-bit Counter/Timer with Auto-Reload"/>
     <property object="TIMER_SETUP_0" propertyId="timer_setup.timer0.th0runcontrol" value="Run"/>

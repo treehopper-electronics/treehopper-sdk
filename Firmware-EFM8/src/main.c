@@ -24,18 +24,13 @@
 // Variables
 //-----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
-// main() Routine
-// ----------------------------------------------------------------------------
-//
-// Note: the software watchdog timer is not disabled by default in this
-// example, so a long-running program will reset periodically unless
-// the timer is disabled or your program periodically writes to it.
-//
-// Review the "Watchdog Timer" section under the part family's datasheet
-// for details.
-//
-//-----------------------------------------------------------------------------
+//TIMERS
+//Timer0: SMBus clock rate
+//Timer1: UART clock rate
+//Timer2: Unused
+//Timer3: SMBus SCL low timeout detection
+//Timer4: SoftPWM
+
 int16_t main(void) {
 	enter_DefaultMode_from_RESET();
 
