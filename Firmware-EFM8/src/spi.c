@@ -16,100 +16,67 @@
 
 uint8_t csPin;
 ChipSelectMode_t csMode;
+SPI0_ClockMode_t clockMode = SPI0_CLKMODE_0;
+
 
 void SPI_Init() {
 
 }
 
-void SPI_Transaction(uint8_t* dataToSend, uint8_t* dataToReceive, uint8_t count) {
-	switch(csMode)
+void SPI_Transaction(SpiConfigData_t* config, uint8_t count, uint8_t* dataToSend, uint8_t* dataToReceive) {
+
+	SFRPAGE = 0x00;
+	SPI0CKR = config->CkrVal;
+	// if we want to change the SPI Mode, we have to reinit the peripheral, so only do it if necessary.
+	if(clockMode != config->SpiMode)
+	{
+		SPI0_init(config->SpiMode, true, false);
+		clockMode = config->SpiMode;
+	}
+
+	switch(config->CsMode)
 	{
 	case CsMode_SpiActiveHigh:
-		GPIO_WriteValue(csPin, true);
+		GPIO_WriteValue(config->CsPin, true);
 		break;
 	case CsMode_SpiActiveLow:
-		GPIO_WriteValue(csPin, false);
+		GPIO_WriteValue(config->CsPin, false);
 		break;
 	case CsMode_PulseHighAtBeginning:
-		GPIO_WriteValue(csPin, true); // approx 1 us pulse
-		GPIO_WriteValue(csPin, false);
+		GPIO_WriteValue(config->CsPin, true); // approx 1 us pulse
+		GPIO_WriteValue(config->CsPin, false);
 		break;
 	case CsMode_PulseLowAtBeginning:
-		GPIO_WriteValue(csPin, false);
-		GPIO_WriteValue(csPin, true);
+		GPIO_WriteValue(config->CsPin, false);
+		GPIO_WriteValue(config->CsPin, true);
 		break;
 	}
 
 	SPI0_pollTransfer(dataToSend, dataToReceive, SPI0_TRANSFER_RXTX, count);
 
-	switch(csMode)
+	switch(config->CsMode)
 	{
 	case CsMode_SpiActiveHigh:
-		GPIO_WriteValue(csPin, false);
+		GPIO_WriteValue(config->CsPin, false);
 		break;
 	case CsMode_SpiActiveLow:
-		GPIO_WriteValue(csPin, true);
+		GPIO_WriteValue(config->CsPin, true);
 		break;
 	case CsMode_PulseHighAtEnd:
-		GPIO_WriteValue(csPin, true);
-		GPIO_WriteValue(csPin, false);
+		GPIO_WriteValue(config->CsPin, true);
+		GPIO_WriteValue(config->CsPin, false);
 		break;
 	case CsMode_PulseLowAtEnd:
-		GPIO_WriteValue(csPin, true);
-		GPIO_WriteValue(csPin, false);
+		GPIO_WriteValue(config->CsPin, true);
+		GPIO_WriteValue(config->CsPin, false);
 		break;
 	}
 }
 
-void SPI_SetConfig(SpiConfigData_t* config) {
-	uint8_t spiMode;
-	csPin = config->CsPin;
-	csMode = config->CsMode;
-	switch (config->SpiMode) {
-	case 0:
-		spiMode = SPI0_CLKMODE_0;
-		break;
-	case 1:
-		spiMode = SPI0_CLKMODE_1;
-		break;
-	case 2:
-		spiMode = SPI0_CLKMODE_2;
-		break;
-	case 3:
-		spiMode = SPI0_CLKMODE_3;
-		break;
-	}
-
-	if (config->IsEnabled) {
-		SFRPAGE = 0x20;
-		SPI0CKR = config->CkrVal;
-		SPI0_init(spiMode, true, false);
+void SPI_SetConfig(uint8_t enabled) {
+	if (enabled) {
+		SPI0_init(clockMode, true, false);
 		SPI_Enable();
-		GPIO_MakeOutput(csPin, PushPullOutput);
-
-		switch(csMode)
-		{
-		case CsMode_SpiActiveHigh:
-			GPIO_WriteValue(csPin, false);
-			break;
-
-		case CsMode_SpiActiveLow:
-			GPIO_WriteValue(csPin, true);
-			break;
-
-		case CsMode_PulseHighAtBeginning:
-		case CsMode_PulseHighAtEnd:
-			GPIO_WriteValue(csPin, false);
-			break;
-
-		case CsMode_PulseLowAtBeginning:
-		case CsMode_PulseLowAtEnd:
-			GPIO_WriteValue(csPin, true);
-			break;
-		}
-
-
-
 	} else
 		SPI_Disable();
 
