@@ -175,9 +175,9 @@ namespace Treehopper
             }
         }
 
-        public async Task Send(byte data)
+        public Task Send(byte data)
         {
-            await Send(new byte[] { data });
+            return Send(new byte[] { data });
         }
 
         public async Task Send(byte[] dataToSend)
@@ -192,10 +192,10 @@ namespace Treehopper
             data[1] = (byte)UartCommand.Transmit;
             data[2] = (byte)dataToSend.Length;
             dataToSend.CopyTo(data, 3);
-            using (await device.ComsMutex.LockAsync())
+            using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 device.sendPeripheralConfigPacket(data);
-                byte[] receivedData = await device.receiveCommsResponsePacket(1);
+                byte[] receivedData = await device.receiveCommsResponsePacket(1).ConfigureAwait(false);
             }
         }
 
@@ -210,10 +210,10 @@ namespace Treehopper
                 data[0] = (byte)DeviceCommands.UartTransaction;
                 data[1] = (byte)UartCommand.Receive;
 
-                using (await device.ComsMutex.LockAsync())
+                using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
                     device.sendPeripheralConfigPacket(data);
-                    byte[] receivedData = await device.receiveCommsResponsePacket(33);
+                    byte[] receivedData = await device.receiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -226,10 +226,10 @@ namespace Treehopper
                 data[1] = (byte)UartCommand.Receive;
                 data[2] = (byte)numBytes;
 
-                using (await device.ComsMutex.LockAsync())
+                using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
                     device.sendPeripheralConfigPacket(data);
-                    byte[] receivedData = await device.receiveCommsResponsePacket(33);
+                    byte[] receivedData = await device.receiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -254,10 +254,10 @@ namespace Treehopper
             byte[] data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction;
             data[1] = (byte)UartCommand.OneWireReset;
-            using (await device.ComsMutex.LockAsync())
+            using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 device.sendPeripheralConfigPacket(data);
-                byte[] receivedData = await device.receiveCommsResponsePacket(1);
+                byte[] receivedData = await device.receiveCommsResponsePacket(1).ConfigureAwait(false);
                 retVal = receivedData[0] > 0 ? true : false;
             }
             return retVal;
@@ -273,13 +273,13 @@ namespace Treehopper
             byte[] data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction;
             data[1] = (byte)UartCommand.OneWireScan;
-            using (await device.ComsMutex.LockAsync())
+            using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 device.sendPeripheralConfigPacket(data);
                 byte[] receivedData = new byte[8];
                 while (true)
                 {
-                    receivedData = await device.receiveCommsResponsePacket(9);
+                    receivedData = await device.receiveCommsResponsePacket(9).ConfigureAwait(false);
                     if (receivedData[0] == 0xff)
                         break;
 
@@ -295,13 +295,13 @@ namespace Treehopper
         {
             Mode = UartMode.OneWire;
             Enabled = true;
-            await OneWireReset();
+            await OneWireReset().ConfigureAwait(false);
             byte[] addr = BitConverter.GetBytes(address);
             //Array.Reverse(addr); // endian conversion
             byte[] data = new byte[9];
             data[0] = 0x55; // MATCH ROM
             Array.Copy(addr, 0, data, 1, 8);
-            await Send(data);
+            await Send(data).ConfigureAwait(false);
         }
 
         public void StartOneWire()
