@@ -55,7 +55,7 @@ namespace Treehopper
             I2c.Speed = rateKhz; 
 
             // S Addr Rd [A] [Data] NA P
-            byte[] data = await I2c.SendReceive(this.address, new byte[] { }, 1);
+            byte[] data = await I2c.SendReceive(this.address, new byte[] { }, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -122,7 +122,7 @@ namespace Treehopper
             I2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [Data] NA P
-            byte[] data = await I2c.SendReceive(this.address, new byte[] { register }, 1);
+            byte[] data = await I2c.SendReceive(this.address, new byte[] { register }, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -137,7 +137,7 @@ namespace Treehopper
             I2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            byte[] result = await I2c.SendReceive(address, new byte[] { register }, 2);
+            byte[] result = await I2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
             return (UInt16)((result[1] << 8) | result[0]);
         }
 
@@ -177,14 +177,11 @@ namespace Treehopper
         /// <param name="register">The register to read from</param>
         /// <param name="numBytes">The number of bytes to read</param>
         /// <returns>An awaitable array of bytes read</returns>
-        public async Task<byte[]> ReadBufferData(byte register, int numBytes)
+        public Task<byte[]> ReadBufferData(byte register, int numBytes)
         {
             // set the speed for this device, just in case another device mucked with these settings
             I2c.Speed = rateKhz;
-
-            var buffer = new byte[numBytes];
-            buffer = await I2c.SendReceive(address, new byte[] { register }, (byte)numBytes);
-            return buffer;
+            return I2c.SendReceive(address, new byte[] { register }, (byte)numBytes);
         }
 
         /// <summary>

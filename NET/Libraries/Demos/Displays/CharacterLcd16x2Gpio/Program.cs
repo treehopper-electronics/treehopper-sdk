@@ -34,12 +34,12 @@ namespace CharacterLcd16x2Gpio
             board.ParallelInterface.DataBus.Add(board.Pins[10]);
 
             var display = new Hd44780(board.ParallelInterface, 16, 2);
-            display.WriteLine("The time is:");
+            await display.WriteLine("The time is:").ConfigureAwait(false);
             while (true)
             {
-                display.Write(DateTime.Now.ToLongTimeString());
-                display.SetCursorPosition(0, 1);
-                await Task.Delay(1000);
+                await display.Write(DateTime.Now.ToLongTimeString()).ConfigureAwait(false);
+                await display.SetCursorPosition(0, 1).ConfigureAwait(false);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
             
         }

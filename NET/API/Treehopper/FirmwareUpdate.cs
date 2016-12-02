@@ -42,9 +42,9 @@ namespace Treehopper
         /// Unlike <see cref="IConnectionService.GetFirstDeviceAsync"/>, this call will not wait for a board to be connected.
         /// </para>
         /// </remarks>
-        public async Task<bool> ConnectAsync()
+        public Task<bool> ConnectAsync()
         {
-            return await connection.OpenAsync();
+            return connection.OpenAsync();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Treehopper
                     throw new Exception("Bad record header");
                 }
                 header = ReadBytes(data, 2);
-                var reply = await SendFrame(frame);
+                var reply = await SendFrame(frame).ConfigureAwait(false);
                 if(Encoding.UTF8.GetChars(reply)[0] != '@')
                 {
                     throw new Exception("Received an invalid response");
@@ -93,9 +93,9 @@ namespace Treehopper
             {
                 var buffer = new byte[SizeOut];
                 Array.Copy(frame, i, buffer, 0, Math.Min(frame.Length-i, SizeOut));
-                await connection.Write(buffer);
+                await connection.Write(buffer).ConfigureAwait(false);
             }
-            var res = await connection.Read(SizeIn);
+            var res = await connection.Read(SizeIn).ConfigureAwait(false);
             return res;
         }
 
@@ -109,10 +109,10 @@ namespace Treehopper
             return retVal;
         }
 
-        public async Task<bool> LoadAsync()
+        public Task<bool> LoadAsync()
         {
             var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Treehopper.treehopper.tfi");
-            return await this.Load(stream);
+            return  Load(stream);
         }
     }
 }

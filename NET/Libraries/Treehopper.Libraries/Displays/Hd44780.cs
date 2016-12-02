@@ -9,71 +9,6 @@ namespace Treehopper.Libraries.Displays
 {
     public class Hd44780 : CharacterDisplay
     {
-        private BitMode bits;
-        private LinesMode lines;
-        private FontMode font;
-        private IWriteOnlyParallelInterface iface;
-
-
-        public Hd44780(IWriteOnlyParallelInterface iface, int Columns, int Rows, IDigitalOutPin Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
-        {
-            if (iface.Width == 8)
-                this.bits = BitMode.EightBit;
-            else if (iface.Width == 4)
-                this.bits = BitMode.FourBit;
-            else
-                throw new ArgumentException("The IParallelInterface bus must be either 4 or 8 bits wide.", "iface");
-
-            if (Rows == 1)
-                this.lines = LinesMode.OneLine;
-            else
-                this.lines = LinesMode.TwoLine;
-
-            this.font = font;
-            this.iface = iface;
-            iface.DelayMicroseconds = 50;
-            iface.Enabled = true;
-            byte cmd;
-
-            if(bits == BitMode.FourBit)
-            {
-                iface.WriteCommand(new uint[] { 0x03});
-                Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] { 0x03});
-                Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] { 0x03});
-                Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] { 0x02});
-            }
-
-
-            cmd = (byte)((byte)Command.FunctionSet | (byte)bits | (byte)lines | (byte)font);
-            writeCommand(cmd);
-
-            Display = true;
-            Clear();
-
-            if (Backlight != null)
-            {
-                this.backlight = Backlight;
-                backlight.MakeDigitalPushPullOut();
-            }
-                
-
-            this.Backlight = true;
-        }
-
-        public bool Backlight
-        {
-            get {
-                return backlight?.DigitalValue ?? false;
-            }
-            set {
-                if (backlight == null) return;
-                backlight.DigitalValue = value;
-            }
-        }
-
         public enum BitMode
         {
             FourBit = 0x00,
@@ -83,7 +18,7 @@ namespace Treehopper.Libraries.Displays
         public enum FontMode
         {
             Font_5x8 = 0x00,
-            Font_5x10   = 0x04
+            Font_5x10 = 0x04
         }
 
         public enum LinesMode
@@ -122,7 +57,76 @@ namespace Treehopper.Libraries.Displays
             SetDdramAddr = 0x80
         }
 
+        private BitMode bits;
+        private LinesMode lines;
+        private FontMode font;
+        private IWriteOnlyParallelInterface iface;
         private bool display;
+        private bool cursor;
+        private bool blink;
+        private IDigitalOutPin backlight;
+
+        public Hd44780(IWriteOnlyParallelInterface iface, int Columns, int Rows, IDigitalOutPin Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
+        {
+            if (iface.Width == 8)
+                this.bits = BitMode.EightBit;
+            else if (iface.Width == 4)
+                this.bits = BitMode.FourBit;
+            else
+                throw new ArgumentException("The IParallelInterface bus must be either 4 or 8 bits wide.", "iface");
+
+            if (Rows == 1)
+                this.lines = LinesMode.OneLine;
+            else
+                this.lines = LinesMode.TwoLine;
+
+            this.font = font;
+            this.iface = iface;
+            iface.DelayMicroseconds = 50;
+            iface.Enabled = true;
+            byte cmd;
+
+            if (bits == BitMode.FourBit)
+            {
+                iface.WriteCommand(new uint[] { 0x03 }).Wait();
+                Task.Delay(10).Wait();
+                iface.WriteCommand(new uint[] { 0x03 }).Wait();
+                Task.Delay(10).Wait();
+                iface.WriteCommand(new uint[] { 0x03 }).Wait();
+                Task.Delay(10).Wait();
+                iface.WriteCommand(new uint[] { 0x02 }).Wait();
+            }
+
+
+            cmd = (byte)((byte)Command.FunctionSet | (byte)bits | (byte)lines | (byte)font);
+            writeCommand(cmd).Wait();
+
+            Display = true;
+            Clear().Wait();
+
+            if (Backlight != null)
+            {
+                this.backlight = Backlight;
+                backlight.MakeDigitalPushPullOut();
+            }
+
+
+            this.Backlight = true;
+        }
+
+        public bool Backlight
+        {
+            get
+            {
+                return backlight?.DigitalValue ?? false;
+            }
+            set
+            {
+                if (backlight == null) return;
+                backlight.DigitalValue = value;
+            }
+        }
+
         public bool Display
         {
             get { return display; }
@@ -130,11 +134,10 @@ namespace Treehopper.Libraries.Displays
             {
                 if (display == value) return;
                 display = value;
-                updateDisplayControl();
+                updateDisplayControl().Wait();
             }
         }
 
-        private bool cursor;
         public bool Cursor
         {
             get { return cursor; }
@@ -142,12 +145,9 @@ namespace Treehopper.Libraries.Displays
             {
                 if (cursor == value) return;
                 cursor = value;
-                updateDisplayControl();
+                updateDisplayControl().Wait();
             }
         }
-
-        private bool blink;
-        private IDigitalOutPin backlight;
 
         public bool Blink
         {
@@ -156,36 +156,36 @@ namespace Treehopper.Libraries.Displays
             {
                 if (blink == value) return;
                 blink = value;
-                updateDisplayControl();
+                updateDisplayControl().Wait();
             }
         }
 
-        private void updateDisplayControl()
+        private Task updateDisplayControl()
         {
             byte cmd = (byte)((byte)Command.DisplayControl |
                 (Display ? (byte)DisplayState.DisplayOn : 0) |
                 (Cursor ? (byte)CursorState.CursorOn : 0) |
                 (Blink ? (byte)BlinkState.BlinkOn : 0));
 
-            writeCommand(cmd);
+            return writeCommand(cmd);
         }
 
-        protected override void clear()
+        protected override async Task clear()
         {
-            writeCommand(Command.ClearDisplay);
-            Task.Delay(10).Wait();
+            await writeCommand(Command.ClearDisplay).ConfigureAwait(false);
+            await Task.Delay(10).ConfigureAwait(false);
         }
 
-        protected override void updateCursorPosition()
+        protected override Task updateCursorPosition()
         {
             byte[] row_offsets = new byte[] { 0x00, 0x40, (byte)Columns, (byte)(0x40 + Columns) };
             byte data = (byte)(CusorLeft + row_offsets[CusorTop]);
 
             byte cmd = (byte)((byte)Command.SetDdramAddr | data);
-            writeCommand(cmd);
+            return writeCommand(cmd);
         }
 
-        protected override void write(dynamic value)
+        protected override Task write(dynamic value)
         {
             string str = value.ToString();
             var data = new byte[str.Length];
@@ -193,24 +193,24 @@ namespace Treehopper.Libraries.Displays
             {
                 data[i] = (byte)str[i];
             }
-            writeData(data);
+            return writeData(data);
         }
 
-        protected void writeCommand(Command cmd)
+        protected Task writeCommand(Command cmd)
         {
-            writeCommand((byte)cmd);
+            return writeCommand((byte)cmd);
         }
-        protected void writeCommand(byte cmd)
+        protected Task writeCommand(byte cmd)
         {
             if(bits == BitMode.EightBit)
-                iface.WriteCommand(new uint[] { cmd });
+                return iface.WriteCommand(new uint[] { cmd });
             else
             {
-                iface.WriteCommand(new uint[] { (uint)(cmd >> 4), (uint)(cmd & 0x0f) }); // send high nib, then low nib
+                return iface.WriteCommand(new uint[] { (uint)(cmd >> 4), (uint)(cmd & 0x0f) }); // send high nib, then low nib
             }
         }
 
-        protected void writeData(byte[] data)
+        protected Task writeData(byte[] data)
         {
             uint[] dataToSend;
             if (bits == BitMode.EightBit)
@@ -231,7 +231,7 @@ namespace Treehopper.Libraries.Displays
                 }
             }
 
-            iface.WriteData(dataToSend);
+            return iface.WriteData(dataToSend);
         }
 
 

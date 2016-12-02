@@ -82,76 +82,86 @@ namespace Treehopper.Libraries.Displays
 
             RawBuffer = new byte[Width * Height / 8 + Width];
             BoolBuffer = new bool[Width, Height];
-            sendCommand(Command.DisplayOff);
-            sendCommand(Command.SetDisplayClockDiv);
-            sendCommand(0x80);
+
+            this.mode = mode;
+            InitAsync().Wait();
+        }
+
+        private VccMode mode;
+
+        private async Task InitAsync()
+        {
+            await sendCommand(Command.DisplayOff).ConfigureAwait(false);
+            await sendCommand(Command.SetDisplayClockDiv).ConfigureAwait(false);
+            await sendCommand(0x80).ConfigureAwait(false);
 
             if (Width == 128 && Height == 32)
             {
-                sendCommand(Command.SetComPins);
-                sendCommand(0x02);
-                sendCommand(Command.SetContrast);
-                sendCommand(0x8F);
+                await sendCommand(Command.SetComPins).ConfigureAwait(false);
+                await sendCommand(0x02).ConfigureAwait(false);
+                await sendCommand(Command.SetContrast).ConfigureAwait(false);
+                await sendCommand(0x8F).ConfigureAwait(false);
             }
             else if (Width == 128 && Height == 64)
             {
 
-                sendCommand(Command.SetComPins);
-                sendCommand(0x12);
-                sendCommand(Command.SetContrast);
-                sendCommand(0x9F);
+                await sendCommand(Command.SetComPins).ConfigureAwait(false);
+                await sendCommand(0x12).ConfigureAwait(false);
+                await sendCommand(Command.SetContrast).ConfigureAwait(false);
+                await sendCommand(0x9F).ConfigureAwait(false);
             }
             else
             {
-                sendCommand(Command.SetComPins);
-                sendCommand(0x02);
-                sendCommand(Command.SetContrast);
-                sendCommand(0x10);
+                await sendCommand(Command.SetComPins).ConfigureAwait(false);
+                await sendCommand(0x02).ConfigureAwait(false);
+                await sendCommand(Command.SetContrast).ConfigureAwait(false);
+                await sendCommand(0x10).ConfigureAwait(false);
             }
 
-            sendCommand(Command.SetMultiplex);
-            sendCommand((byte)(Height - 1));
+            await sendCommand(Command.SetMultiplex).ConfigureAwait(false);
+            await sendCommand((byte)(Height - 1)).ConfigureAwait(false);
 
-            sendCommand(Command.DisplayOffset);
-            sendCommand((byte)0x00);
+            await sendCommand(Command.DisplayOffset).ConfigureAwait(false);
+            await sendCommand((byte)0x00).ConfigureAwait(false);
 
-            sendCommand(Command.SetStartLine | 0x0);
+            await sendCommand(Command.SetStartLine | 0x0).ConfigureAwait(false);
 
-            sendCommand(Command.ChargePump);
+            await sendCommand(Command.ChargePump).ConfigureAwait(false);
             if (mode == VccMode.External)
-                sendCommand(0x10);
+                await sendCommand(0x10).ConfigureAwait(false);
             else
-                sendCommand(0x14);
-            sendCommand(Command.MemoryMode);
-            sendCommand((byte)0x00);
+                await sendCommand(0x14).ConfigureAwait(false);
+            await sendCommand(Command.MemoryMode).ConfigureAwait(false);
+            await sendCommand((byte)0x00).ConfigureAwait(false);
 
-            sendCommand((byte)((byte)Command.SegRemap | 0x1));
-            sendCommand(Command.ComScanDec);
+            await sendCommand((byte)((byte)Command.SegRemap | 0x1)).ConfigureAwait(false);
+            await sendCommand(Command.ComScanDec).ConfigureAwait(false);
 
-            sendCommand(Command.SetPrecharge);
+            await sendCommand(Command.SetPrecharge).ConfigureAwait(false);
             if (mode == VccMode.External)
-                sendCommand(0x22);
+                await sendCommand(0x22).ConfigureAwait(false);
             else
-                sendCommand(0xF1);
+                await sendCommand(0xF1).ConfigureAwait(false);
 
-            sendCommand(Command.SetVcomDetect);
-            sendCommand(0x40);
-            sendCommand(Command.DisplayAllOn_Resume);
-            sendCommand(Command.NormalDisplay);
-            sendCommand(Command.DeactivateScroll);
-            sendCommand(Command.DisplayOn);
+            await sendCommand(Command.SetVcomDetect).ConfigureAwait(false);
+            await sendCommand(0x40);
+            await sendCommand(Command.DisplayAllOn_Resume).ConfigureAwait(false);
+            await sendCommand(Command.NormalDisplay).ConfigureAwait(false);
+            await sendCommand(Command.DeactivateScroll).ConfigureAwait(false);
+            await sendCommand(Command.DisplayOn).ConfigureAwait(false);
+
             Clear();
-            flush();
+            await flush().ConfigureAwait(false);
         }
 
-        private void sendCommand(Command cmd)
+        private Task sendCommand(Command cmd)
         {
-            sendCommand((byte)cmd);
+            return sendCommand((byte)cmd);
         }
-        private void sendCommand(byte cmd)
+        private Task sendCommand(byte cmd)
         {
             var dat = new byte[] { 0x00, cmd };
-            dev.WriteData(dat).Wait();
+            return dev.WriteData(dat);
         }
 
         public void Clear()
@@ -171,24 +181,24 @@ namespace Treehopper.Libraries.Displays
                     
         }
 
-        protected override void flush()
+        protected override async Task flush()
         {
-            sendCommand(Command.ColumnAddress);
-            sendCommand((byte)0);
-            sendCommand((byte)(Width - 1));
+            await sendCommand(Command.ColumnAddress).ConfigureAwait(false);
+            await sendCommand((byte)0).ConfigureAwait(false);
+            await sendCommand((byte)(Width - 1)).ConfigureAwait(false);
 
-            sendCommand(Command.PageAddress);
-            sendCommand((byte)0);
+            await sendCommand(Command.PageAddress).ConfigureAwait(false);
+            await sendCommand((byte)0).ConfigureAwait(false);
             switch(Height)
             {
                 case 64:
-                    sendCommand(7);
+                    await sendCommand(7).ConfigureAwait(false);
                     break;
                 case 32:
-                    sendCommand(3);
+                    await sendCommand(3).ConfigureAwait(false);
                     break;
                 case 16:
-                    sendCommand(1);
+                    await sendCommand(1).ConfigureAwait(false);
                     break;
             }
 
@@ -196,7 +206,6 @@ namespace Treehopper.Libraries.Displays
             //    RawBuffer[i] = 0x00;
 
             // copy the bool data to the byte buffer
-            int k = 0;
             for (int i = 0; i < Width; i++)
             {
 
@@ -219,7 +228,7 @@ namespace Treehopper.Libraries.Displays
                     i++;
                 }
                 i--;
-                dev.WriteData(dat).Wait();
+                await dev.WriteData(dat).ConfigureAwait(false);
             }
 
         }

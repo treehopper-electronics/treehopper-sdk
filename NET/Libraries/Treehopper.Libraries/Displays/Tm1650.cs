@@ -64,12 +64,12 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        internal override void LedBrightnessChanged(Led led)
+        public override void LedBrightnessChanged(Led led)
         {
             
         }
 
-        internal override void LedStateChanged(Led led)
+        public override void LedStateChanged(Led led)
         {
             int digit = led.Channel / 8;
             int segment = led.Channel % 8;

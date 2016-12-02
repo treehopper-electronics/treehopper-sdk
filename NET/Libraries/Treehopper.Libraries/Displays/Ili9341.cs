@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Displays
         {
         }
 
-        protected override void flush()
+        protected override Task flush()
         {
             throw new NotImplementedException();
         }

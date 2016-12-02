@@ -84,6 +84,9 @@ namespace Treehopper
 
         System.Timers.Timer pollingTimer;
 
+
+        private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
+
         /// <summary>
         /// Manages Treehopper boards connected to the computer. If optional filter parameters are provided, only boards matching the filter will be available.
         /// </summary>
@@ -100,11 +103,19 @@ namespace Treehopper
             SerialFilter = serialFilter;
             NameFilter = nameFilter;
 
+            Boards.CollectionChanged += Boards_CollectionChanged;
+
             Rescan(); // add all the boards that were already connected when we started up
 
             // now, setup a device notifier so we can be alerted when boards are added/removed
             myNotifier.OnDeviceNotify += myNotifier_OnDeviceNotify;
             pollingTimer.Elapsed += devicePollingTimer_Elapsed;
+        }
+
+        private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if ((e.OldItems?.Count ?? 0) == 0 && e.NewItems.Count > 0)
+                waitForFirstBoard.TrySetResult(Boards[0]);
         }
 
         private bool pollingTimerIsEnabled;
@@ -271,14 +282,9 @@ namespace Treehopper
         /// Remember to call <see cref="TreehopperUsb.ConnectAsync()"/> before starting communication.
         /// </para>
         /// </remarks>
-        public async Task<TreehopperUsb> GetFirstDeviceAsync()
+        public Task<TreehopperUsb> GetFirstDeviceAsync()
         {
-            while (Boards.Count == 0)
-            {
-                await Task.Delay(100);
-            }
-
-            return Boards[0];
+            return waitForFirstBoard.Task;
         }
 
         public void Dispose()
