@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Treehopper
 {
-
+    public enum I2cTransferError
+    {
+        ArbitrationLostError,
+        NackError,
+        UnknownError,
+        TxunderError,
+        Success = 0x255
+    }
     //public enum I2cMode { Master, Slave };
 
     /// <summary>
@@ -75,52 +83,80 @@ namespace Treehopper
         /// <param name="dataToWrite">Array of one or more bytes to write to the device.</param>
         /// <param name="numBytesToRead">Number of bytes to receive from the device.</param>
         /// <returns>Data read from the device.</returns>
-        public async Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead, BurstMode mode = BurstMode.NoBurst)
+        public async Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
-            byte[] returnedData = new byte[numBytesToRead];
-            int txLen = dataToWrite.Length;
-            using (await device.ComsMutex.LockAsync())
+            if(!Enabled)
             {
-                byte[] receivedData;
-                int srcIndex = 0;
-                int bytesRemaining = txLen;
+                Debug.WriteLine("NOTICE: I2c.SendReceive() called before enabling the peripheral. This call will be ignored.");
+            }
+            byte[] receivedData = new byte[numBytesToRead];
+            int txLen = dataToWrite.Length;
+
+            using (await device.ComsLock.LockAsync())
+            //lock (device.ComsLock)
+            {
+                byte[] dataToSend = new byte[4 + txLen]; // 2 bytes for the header
+                dataToSend[0] = (byte)DeviceCommands.I2cTransaction;
+                dataToSend[1] = address;
+                dataToSend[2] = (byte)txLen; // total length (0-255)
+                dataToSend[3] = numBytesToRead;
+
+                Array.Copy(dataToWrite, 0, dataToSend, 4, txLen);
+
+                int bytesRemaining = dataToSend.Length; 
+                int offset = 0;
+
+                // for long transactions (> 64 bytes - 4 byte header), we send <=64 byte chunks, one by one.
                 while (bytesRemaining > 0)
                 {
-                    int numBytesToTransfer = bytesRemaining > 57 ? 57 : bytesRemaining;
-                    byte[] dataToSend = new byte[7 + numBytesToTransfer]; // 2 bytes for the header
-                    dataToSend[0] = (byte)DeviceCommands.I2cTransaction;
-                    dataToSend[1] = address;
-                    dataToSend[2] = (byte)txLen; // total length (0-255)
-                    dataToSend[3] = (byte)srcIndex; // offset
-                    dataToSend[4] = (byte)numBytesToTransfer; // length of this packet
-                    dataToSend[5] = numBytesToRead;
-                    dataToSend[6] = (byte)mode;
-                    Array.Copy(dataToWrite, srcIndex, dataToSend, 7, numBytesToTransfer);
-                    device.sendPeripheralConfigPacket(dataToSend);
-                    srcIndex += numBytesToTransfer;
-                    bytesRemaining -= numBytesToTransfer;
-                    if (mode == BurstMode.BurstRx) // don't send additional data, just wait for read
-                        break;
+                    int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
+                    var tmp = dataToSend.Skip(offset).Take(transferLength);
+                    device.sendPeripheralConfigPacket(tmp.ToArray());
+                    offset += transferLength;
+                    bytesRemaining -= transferLength;
                 }
 
-                // no need to wait if we're not reading anything
-                if (mode == BurstMode.BurstTx)
-                    return returnedData;
-
-                bytesRemaining = numBytesToRead;
-                srcIndex = 0;
-                while (bytesRemaining > 0)
+                if (numBytesToRead == 0)
                 {
-                    int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                    receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer);
-                    Array.Copy(receivedData, 0, returnedData, srcIndex, numBytesToTransfer);
-                    srcIndex += numBytesToTransfer;
-                    bytesRemaining -= numBytesToTransfer;
-                }
+                    //var result = device.receiveCommsResponsePacket((uint)1).Result;
+                    var result = await device.receiveCommsResponsePacket((uint)1).ConfigureAwait(false);
+                    if (result[0] != 255)
+                    {
+                        I2cTransferError error = (I2cTransferError)result[0];
+                        Debug.WriteLine("NOTICE: I2C transaction resulted in an error: " + error);
+                        //throw new I2cTransferException() { Error = error };
+                    }
+                        
+                } else
+                {
+                    bytesRemaining = numBytesToRead + 1; // received data length + status byte
+                    int srcIndex = 0;
+                    var result = new byte[bytesRemaining];
+                    while (bytesRemaining > 0)
+                    {
+                        int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
+                        //var chunk = device.receiveCommsResponsePacket((uint)numBytesToTransfer).Result;
+                        var chunk = await device.receiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
+                        Array.Copy(chunk, 0, result, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
+                        srcIndex += numBytesToTransfer;
+                        bytesRemaining -= numBytesToTransfer;
+                    }
 
-                return returnedData;
+                    I2cTransferError error = (I2cTransferError)result[0];
+                    if (error != I2cTransferError.Success)
+                        throw new I2cTransferException() { Error = error };
+                    else
+                        Array.Copy(result, 1, receivedData, 0, numBytesToRead);
+
+                }
             }
 
+            return receivedData;
         }
+    }
+
+    public class I2cTransferException : Exception
+    {
+        public I2cTransferError Error { get; set; }
     }
 }

@@ -102,7 +102,7 @@ void USBD_DeviceStateChangeCb(USBD_State_TypeDef oldState,
 		LED_SetVal(false);
 		// Arm these endpoints once we're configured
 		USBD_Read(EP_PinConfig, (uint8_t *)&Treehopper_PinConfig, sizeof(pinConfigPacket_t), false);
-		USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, sizeof(Treehopper_PeripheralConfig), false);
+		USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, 64, false);
 	}
 
 

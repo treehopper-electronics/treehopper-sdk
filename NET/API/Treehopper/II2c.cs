@@ -10,6 +10,6 @@ namespace Treehopper
     {
         double Speed { get; set; }
         bool Enabled { get; set; }
-        Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead, BurstMode mode = BurstMode.NoBurst);
+        Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead);
     }
 }

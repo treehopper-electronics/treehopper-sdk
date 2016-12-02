@@ -91,12 +91,12 @@ typedef enum BurstMode {
 
 #define TREEHOPPER_NUM_PINS		20
 
-extern SI_SEGMENT_VARIABLE(Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
+//extern SI_SEGMENT_VARIABLE(Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
 extern SI_SEGMENT_VARIABLE(Treehopper_RxBuffer[255], uint8_t, SI_SEG_XDATA);
-
+extern SI_SEGMENT_VARIABLE(pins[TREEHOPPER_NUM_PINS], uint8_t, SI_SEG_XDATA);
 extern SI_SEGMENT_VARIABLE(Treehopper_ReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 extern SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA);
-extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
+extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralConfig[262], uint8_t, SI_SEG_XDATA);
 extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralResponse[64], uint8_t, SI_SEG_XDATA);
 
 #define PIN0	P0_B0
