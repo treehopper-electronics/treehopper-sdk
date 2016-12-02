@@ -35,7 +35,7 @@ void ProcessPinConfigPacket();
 void SendPinStatus();
 
 // LOCALS
-uint8_t pins[TREEHOPPER_NUM_PINS];
+SI_SEGMENT_VARIABLE(pins[TREEHOPPER_NUM_PINS], uint8_t, SI_SEG_XDATA);
 void Treehopper_Init() {
 	int i;
 	// re-init all the buffers
@@ -112,20 +112,16 @@ void SendPinStatus() {
 void ProcessPinConfigPacket() {
 	switch (Treehopper_PinConfig.PinCommand) {
 		case PinConfig_MakeDigitalInput:
-			pins[Treehopper_PinConfig.PinNumber] = DigitalInput;
 			GPIO_MakeInput(Treehopper_PinConfig.PinNumber, true);
 			break;
 		case PinConfig_MakeAnalogInput:
-			pins[Treehopper_PinConfig.PinNumber] = AnalogInput;
 			ADC_Enable(Treehopper_PinConfig.PinNumber,
 					Treehopper_PinConfig.PinConfigData[0]);
 			break;
 		case PinConfig_MakePushPullOutput:
-			pins[Treehopper_PinConfig.PinNumber] = PushPullOutput;
 			GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, PushPullOutput);
 			break;
 		case PinConfig_MakeOpenDrainOutput:
-			pins[Treehopper_PinConfig.PinNumber] = OpenDrainOutput;
 			GPIO_MakeOutput(Treehopper_PinConfig.PinNumber, OpenDrainOutput);
 			break;
 		case PinConfig_SetDigitalValue:
