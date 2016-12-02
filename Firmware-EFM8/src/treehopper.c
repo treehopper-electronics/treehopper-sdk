@@ -24,9 +24,7 @@
 SI_SEGMENT_VARIABLE( Treehopper_ReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE( lastReportData[TREEHOPPER_NUM_PINS*2+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(Treehopper_PinConfig, pinConfigPacket_t, SI_SEG_XDATA);
-SI_SEGMENT_VARIABLE( Treehopper_PeripheralConfig[64], uint8_t, SI_SEG_XDATA);
-
-SI_SEGMENT_VARIABLE( Treehopper_TxBuffer[255], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE( Treehopper_PeripheralConfig[262], uint8_t, SI_SEG_XDATA); // 255+7 bytes for larger SPI header.
 SI_SEGMENT_VARIABLE( Treehopper_RxBuffer[255], uint8_t, SI_SEG_XDATA);
 
 // PROTOTYPES
@@ -34,8 +32,11 @@ void ProcessPeripheralConfigPacket();
 void ProcessPinConfigPacket();
 void SendPinStatus();
 
+uint16_t timeout = 0;
+
 // LOCALS
 SI_SEGMENT_VARIABLE(pins[TREEHOPPER_NUM_PINS], uint8_t, SI_SEG_XDATA);
+
 void Treehopper_Init() {
 	int i;
 	// re-init all the buffers
@@ -44,7 +45,6 @@ void Treehopper_Init() {
 	memset(&Treehopper_PinConfig, 0, sizeof(pinConfigPacket_t));
 	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig));
 
-	memset(Treehopper_TxBuffer, 0, sizeof(Treehopper_TxBuffer));
 	memset(Treehopper_RxBuffer, 0, sizeof(Treehopper_RxBuffer));
 
 	SerialNumber_Init();
@@ -137,11 +137,10 @@ void ProcessPinConfigPacket() {
 
 // this gets called whenever we received peripheral config data from the host
 void ProcessPeripheralConfigPacket() {
-	uint16_t i = 0;
-	uint8_t totalWriteBytes;
+	uint8_t totalTransactionBytes;
 	uint8_t totalReadBytes;
-	uint8_t offset;
-	uint8_t count;
+	uint8_t burst;
+	SpiConfigData_t spiConfig;
 	switch (Treehopper_PeripheralConfig[0]) {
 	case ConfigureDevice:
 		configureDevice(Treehopper_PeripheralConfig[1]);
@@ -156,24 +155,35 @@ void ProcessPeripheralConfigPacket() {
 		break;
 
 	case SPIConfig:
-		SPI_SetConfig((SpiConfigData_t*) &(Treehopper_PeripheralConfig[1]));
+		SPI_SetConfig(Treehopper_PeripheralConfig[1]);
 		break;
 	case SPITransaction:
-		totalWriteBytes = Treehopper_PeripheralConfig[1];
-		offset = Treehopper_PeripheralConfig[2];
-		count = Treehopper_PeripheralConfig[3];
-		memcpy(&Treehopper_TxBuffer[offset], &(Treehopper_PeripheralConfig[5]), count);
+		spiConfig.CsPin = Treehopper_PeripheralConfig[1];
+		spiConfig.CsMode = Treehopper_PeripheralConfig[2];
+		spiConfig.CkrVal = Treehopper_PeripheralConfig[3];
+		spiConfig.SpiMode = Treehopper_PeripheralConfig[4];
 
-		// check whether we're done copying, or if we don't care about Tx data
-		if (totalWriteBytes == offset + count
-				|| Treehopper_PeripheralConfig[4] == Burst_Rx) {
-			SPI_Transaction(Treehopper_TxBuffer, Treehopper_RxBuffer,
-					totalWriteBytes);
+		burst = Treehopper_PeripheralConfig[5];
+		totalTransactionBytes = Treehopper_PeripheralConfig[6];
+
+		// check to see if we need to fetch more bytes for large transactions
+		if(totalTransactionBytes > 64-7)
+		{
+			timeout = 0;
+			// we can request all the remaining bytes at once; just hang in while() until they all come in.
+			USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig[64], (totalTransactionBytes+7)-64, false);
+			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralConfig));
+			USBD_AbortTransfer(EP_PeripheralConfig);
 		}
-//		 if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
-		if (Treehopper_PeripheralConfig[4] != Burst_Tx) {
-			while(USBD_EpIsBusy(EP_PeripheralResponse && i++ < 10000));
-			USBD_Write(EP_PeripheralResponse, Treehopper_RxBuffer, totalWriteBytes, false);
+
+		SPI_Transaction(&spiConfig, totalTransactionBytes, &Treehopper_PeripheralConfig[7], Treehopper_RxBuffer);
+
+		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
+		if (burst != Burst_Tx) {
+			timeout = 0;
+			USBD_Write(EP_PeripheralResponse, Treehopper_RxBuffer, totalTransactionBytes, false);
+			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
+			USBD_AbortTransfer(EP_PeripheralResponse);
 		}
 		break;
 
@@ -181,21 +191,31 @@ void ProcessPeripheralConfigPacket() {
 		I2C_SetConfig((I2cConfigData_t*) &(Treehopper_PeripheralConfig[1]));
 		break;
 	case I2CTransaction:
-		totalWriteBytes = Treehopper_PeripheralConfig[2];
-		offset = Treehopper_PeripheralConfig[3];
-		count = Treehopper_PeripheralConfig[4];
-		totalReadBytes = Treehopper_PeripheralConfig[5];
-		memcpy(&Treehopper_TxBuffer[offset], &(Treehopper_PeripheralConfig[7]), count);
+		totalTransactionBytes = Treehopper_PeripheralConfig[2];
+		totalReadBytes = Treehopper_PeripheralConfig[3];
 
-		// check whether we're done copying, or if we don't care about Tx data
-		if (totalWriteBytes == offset + count
-				|| Treehopper_PeripheralConfig[6] == Burst_Rx) {
-			I2C_Transaction(Treehopper_PeripheralConfig[1], Treehopper_TxBuffer,
-					Treehopper_RxBuffer, totalWriteBytes, totalReadBytes);
+		if(totalTransactionBytes > 64-4)
+		{
+			timeout = 0;
+			USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig[64], (totalTransactionBytes+4)-64, false);
+			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralConfig));
+			USBD_AbortTransfer(EP_PeripheralConfig);
 		}
-		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
-		if (Treehopper_PeripheralConfig[6] != Burst_Tx && totalReadBytes > 0) {
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes, false);
+
+		I2C_Transaction(Treehopper_PeripheralConfig[1], &Treehopper_PeripheralConfig[4],
+						Treehopper_RxBuffer, totalTransactionBytes, totalReadBytes);
+
+		if (totalReadBytes > 0) {
+			// we've got data to send back
+			timeout = 0;
+			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes+1, false);
+			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
+			USBD_AbortTransfer(EP_PeripheralResponse);
+		} else {
+			timeout = 0;
+			USBD_Write(EP2IN, Treehopper_RxBuffer, 1, false);
+			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
+			USBD_AbortTransfer(EP_PeripheralResponse);
 		}
 		break;
 
@@ -240,5 +260,5 @@ void ProcessPeripheralConfigPacket() {
 	}
 	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
-	USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, sizeof(Treehopper_PeripheralConfig), false);
+	USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, 64, false);
 }

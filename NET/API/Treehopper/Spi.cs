@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Treehopper
@@ -70,29 +72,30 @@ namespace Treehopper
     /// Defines the clock phase and polarity used for SPI communication
     /// </summary>
     /// <remarks>
-    /// The left number indicates the clock polarity (CPOL), while the right number indicates the clock phase (CPHA). Consult https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Clock_polarity_and_phase for more information.
+    /// <para>The left number indicates the clock polarity (CPOL), while the right number indicates the clock phase (CPHA). Consult https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Clock_polarity_and_phase for more information.</para>
+    /// <para>Note that the numeric values of this enum do not match the standard nomenclature, but instead match the value needed by Treehopper's MCU. Do not attempt to cast integers from/to this enum.</para>
     /// </remarks>
     public enum SPIMode
     {
         /// <summary>
         /// Clock is initially low; data is valid on the rising edge of the clock
         /// </summary>
-        Mode00,
+        Mode00 = 0x00,
 
         /// <summary>
         /// Clock is initially low; data is valid on the falling edge of the clock
         /// </summary>
-        Mode01,
+        Mode01 = 0x20,
 
         /// <summary>
         /// Clock is initially high; data is valid on the rising edge of the clock
         /// </summary>
-        Mode10,
+        Mode10 = 0x10,
 
         /// <summary>
         /// Clock is initially high; data is valid on the falling edge of the clock
         /// </summary>
-        Mode11
+        Mode11 = 0x30
     };
 
     /// <summary>
@@ -122,28 +125,6 @@ namespace Treehopper
     /// </remarks>
     public class Spi
     {
-        ChipSelectMode chipSelectPolarity = ChipSelectMode.SpiActiveLow;
-
-        /// <summary>
-        /// Gets or sets the chip select polarity of the SPI module.
-        /// </summary>
-        public ChipSelectMode ChipSelectMode
-        {
-            get
-            {
-                return chipSelectPolarity;
-            }
-            set
-            {
-                if (chipSelectPolarity == value)
-                    return;
-                chipSelectPolarity = value;
-
-                if(Enabled)
-                    SendConfig(); // only send the config when we're enabled.
-            }
-        }
-       
         TreehopperUsb device;
 
         Pin Sck { get { return device.Pins[0]; } }
@@ -152,139 +133,21 @@ namespace Treehopper
 
 
 
-        Pin chipSelect;
-
-        /// <summary>
-        /// Get or set the pin to use for chip-select duties.
-        /// </summary>
-        /// <remarks>
-        /// Almost every SPI peripheral chip has some sort of chip select (which may be called load, strobe, or enable, depending on the type of chip). You can use any <see cref="Pin"/> for chip-select duties as long as it belongs to the same board as this SPI peripheral (i.e., you can't use a pin from one Treehopper as a chip-select for the SPI port on another Treehopper).
-        /// Chip-selects are controlled at the firmware, not peripheral, level, which offers quite a bit of flexibility in choosing the behavior. Make sure to set <see cref="ChipSelectMode"/> properly for your device.
-        /// </remarks>
-        public Pin ChipSelect {
-            get
-            {
-                return chipSelect;
-            } set
-            {
-                if (value == chipSelect)
-                    return;
-
-                if(chipSelect != null)
-                    chipSelect.Mode = PinMode.Unassigned; // unassign old chip select pin
-
-                if (value.Board != device)
-                {
-                    throw new Exception("The specified ChipSelect pin does not belong to this TreehopperUsb device");
-                }
-                else if (chipSelect != null)
-                {
-                    chipSelect.Mode = PinMode.Reserved;
-                }
-
-                // finally, assign the new CS pin
-                chipSelect = value;
-
-                if (Enabled)
-                    SendConfig(); // only send the config when we're enabled.
-            }
-        }
 
         internal Spi(TreehopperUsb device)
         {
             this.device = device;
         }
 
+
+
         private void SendConfig()
         {
-
-
-            int SPI0CKR = (int)Math.Round((24.0 / _frequency) - 1);
-            if (SPI0CKR > 255.0)
-            {
-                SPI0CKR = 255;
-                Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is below the minimum frequency, and will be clipped to 0.09375 MHz (93.75 kHz).", Frequency);
-            }
-            else if(SPI0CKR < 0)
-            {
-                SPI0CKR = 0;
-                Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is above the maximum frequency, and will be clipped to 24 MHz.", Frequency);
-            }
-
-            ActualFrequency = 48.0 / (2.0 * (SPI0CKR + 1.0));
-
-            if (Math.Abs(ActualFrequency - Frequency) > 1)
-                Debug.WriteLine("NOTICE: SPI module actual frequency of {0} MHz is more than 1 MHz away from the requested frequency of {1} MHz", ActualFrequency, Frequency);
-
-            byte[] dataToSend = new byte[6];
+            byte[] dataToSend = new byte[2];
             dataToSend[0] = (byte)DeviceCommands.SpiConfig;
             dataToSend[1] = (enabled ? (byte)1 : (byte)0);
-            dataToSend[2] = (byte)Mode;
-            dataToSend[3] = (byte)SPI0CKR;
-            dataToSend[4] = (byte)(chipSelect == null ? 255 : chipSelect.PinNumber); // send an invalid pin number (255) if we're not using chipSelect
-            dataToSend[5] = (byte)(chipSelectPolarity);
             device.sendPeripheralConfigPacket(dataToSend);
         }
-
-        /// <summary>
-        /// The <see cref="Frequency" /> property's name.
-        /// </summary>
-        public const string FrequencyPropertyName = "Frequency";
-
-        private double _frequency = 6;
-
-        /// <summary>
-        /// Sets and gets the Frequency, in MHz, of the SPI module.
-        /// </summary>
-        /// <remarks>
-        /// The SPI module can operate from 0.09375 MHz (93.75 kHz) to 24 MHz. Setting Frequency outside of those limits will result in clipping, plus a debug notice.
-        /// Note that SPI transfers are managed by the CPU, as Treehopper's MCU has no DMA. As a result, there are diminishing performance returns above 8 MHz, as dead space starts appearing between bytes as the SPI module waits for the CPU to push the next byte into the register.
-        /// </remarks>
-        public double Frequency
-        {
-            get
-            {
-                return _frequency;
-            }
-
-            set
-            {
-                // if we're basically setting the same frequency, no need to update it.
-                if (Math.Abs(_frequency-value) < 0.01) return;
-                _frequency = value;
-                SendConfig();
-            }
-        }
-
-        private SPIMode mode;
-
-        /// <summary>
-        /// Get or set the SPI module's mode
-        /// </summary>
-        /// <remarks>
-        /// The SPI module supports the four SPI modes: 00, 01, 10, 11. See <see cref="SPIMode"/> for more info.
-        /// </remarks>
-        public SPIMode Mode { 
-            get
-            {
-                return mode;
-            }
-            set
-            {
-                if (mode == value) return;
-                mode = value;
-                SendConfig();
-            }
-        }
-
-        /// <summary>
-        /// Get the actual frequency the SPI module is operating at (after clipping and rounding is applied).
-        /// </summary>
-        /// <remarks>
-        /// To learn more about the SPI module's frequency capability, <see cref="Frequency"/> .
-        /// </remarks>
-        public double ActualFrequency { get; private set; } = 0;
-
 
         bool enabled;
 
@@ -319,57 +182,103 @@ namespace Treehopper
                     Miso.Mode = PinMode.Unassigned;
                     Sck.Mode = PinMode.Unassigned;
 
-                    if(chipSelect != null)
-                        chipSelect.Mode = PinMode.Unassigned;
+                    //if(chipSelect != null)
+                    //    chipSelect.Mode = PinMode.Unassigned;
                 }
 
             }
         }
 
         /// <summary>
-        /// Sends and Receives data. 
+        /// Send/receive data
         /// </summary>
-        /// <param name="address"></param>
-        /// <param name="dataToWrite"></param>
-        /// <param name="numBytesToRead"></param>
-        /// <returns>Nothing. When data is received, an event will be generated</returns>
-        public async Task<byte[]> SendReceive(byte[] dataToWrite, BurstMode mode = BurstMode.NoBurst)
+        /// <param name="dataToWrite">a byte array of the data to send. The length of the transaction is determined by the length of this array.</param>
+        /// <param name="spiMode">The SPI mode to use during this transaction.</param>
+        /// <param name="chipSelect">The chip select pin, if any, to use during this transaction.</param>
+        /// <param name="chipSelectMode">The chip select mode to use during this transaction (if a CS pin is selected)</param>
+        /// <param name="speedMhz">The speed to perform this transaction at.</param>
+        /// <param name="burstMode">Whether to use one of the burst modes</param>
+        /// <returns>An awaitable byte array with the received data.</returns>
+        public async Task<byte[]> SendReceive(byte[] dataToWrite, SPIMode spiMode, Pin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst)
         {
             int transactionLength = dataToWrite.Length;
-            if (dataToWrite.Length > 255)
-                throw new Exception("Maximum packet length is 255 bytes");
-            byte[] returnedData = new byte[dataToWrite.Length];
-            using (await device.ComsMutex.LockAsync())
+            byte[] returnedData = new byte[transactionLength];
+
+            //lock (device.ComsLock)
+            using(await device.ComsLock.LockAsync())
             {
+                int SPI0CKR = (int)Math.Round((24.0 / speedMhz) - 1);
+                if (SPI0CKR > 255.0)
+                {
+                    SPI0CKR = 255;
+                    Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is below the minimum frequency, and will be clipped to 0.09375 MHz (93.75 kHz).", speedMhz);
+                }
+                else if (SPI0CKR < 0)
+                {
+                    SPI0CKR = 0;
+                    Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is above the maximum frequency, and will be clipped to 24 MHz.", speedMhz);
+                }
+
+                double actualFrequency = 48.0 / (2.0 * (SPI0CKR + 1.0));
+
+                if (Math.Abs(actualFrequency - speedMhz) > 1)
+                    Debug.WriteLine("NOTICE: SPI module actual frequency of {0} MHz is more than 1 MHz away from the requested frequency of {1} MHz", actualFrequency, speedMhz);
+
+
+                if (dataToWrite.Length > 255)
+                    throw new Exception("Maximum packet length is 255 bytes");
+
+
                 byte[] receivedData;
                 int srcIndex = 0;
-                int bytesRemaining = transactionLength;
-                while (bytesRemaining > 0)
+                int headerLength = 8;
+
+                //int bytesRemaining = transactionLength;
+
+
+                byte[] header = new byte[7];
+                header[0] = (byte)DeviceCommands.SpiTransaction;
+                header[1] = (byte)(chipSelect?.PinNumber ?? 255);
+                header[2] = (byte)chipSelectMode;
+                header[3] = (byte)SPI0CKR;
+                header[4] = (byte)spiMode;
+                header[5] = (byte)burstMode; // burstMode
+                header[6] = (byte)transactionLength;
+
+                // just send the header
+                if (burstMode == BurstMode.BurstRx)
                 {
-                    int numBytesToTransfer = bytesRemaining > 59 ? 59 : bytesRemaining;
-                    byte[] dataToSend = new byte[5 + numBytesToTransfer]; // 2 bytes for the header
-                    dataToSend[0] = (byte)DeviceCommands.SpiTransaction;
-                    dataToSend[1] = (byte)dataToWrite.Length;
-                    dataToSend[2] = (byte)srcIndex; // offset
-                    dataToSend[3] = (byte)numBytesToTransfer; // count
-                    dataToSend[4] = (byte)mode; // burstMode
-                    Array.Copy(dataToWrite, srcIndex, dataToSend, 5, numBytesToTransfer);
-                    device.sendPeripheralConfigPacket(dataToSend);
-                    srcIndex += numBytesToTransfer;
-                    bytesRemaining -= numBytesToTransfer;
-                    if (mode == BurstMode.BurstRx) // don't send additional data, just wait for read
-                        break;
+                    device.sendPeripheralConfigPacket(header);
+                }
+                else
+                {
+                    byte[] dataToSend = new byte[transactionLength + header.Length];
+                    Array.Copy(header, dataToSend, header.Length);
+                    Array.Copy(dataToWrite, 0, dataToSend, header.Length, transactionLength);
+
+                    int bytesRemaining = dataToSend.Length;
+                    int offset = 0;
+                    while (bytesRemaining > 0)
+                    {
+                        int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
+                        var tmp = dataToSend.Skip(offset).Take(transferLength);
+                        device.sendPeripheralConfigPacket(tmp.ToArray());
+                        offset += transferLength;
+                        bytesRemaining -= transferLength;
+                    }
+
                 }
 
                 // no need to wait if we're not reading anything
-                if (mode != BurstMode.BurstTx)
+                if (burstMode != BurstMode.BurstTx)
                 {
-                    bytesRemaining = transactionLength;
+                    int bytesRemaining = transactionLength;
                     srcIndex = 0;
                     while (bytesRemaining > 0)
                     {
                         int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer);
+                        //receivedData = device.receiveCommsResponsePacket((uint)numBytesToTransfer).Result;
+                        receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
                         Array.Copy(receivedData, 0, returnedData, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;
                         bytesRemaining -= numBytesToTransfer;
@@ -379,7 +288,5 @@ namespace Treehopper
                 
             return returnedData;
         }
-
-
     }
 }
