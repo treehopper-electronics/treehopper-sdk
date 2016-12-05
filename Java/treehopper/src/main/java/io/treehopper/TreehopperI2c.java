@@ -47,7 +47,7 @@ class TreehopperI2c implements I2c {
         double TH0 = 256.0 - 4000.0 / (3.0 * speed);
         if(TH0 < 0 || TH0 > 255)
         {
-            if(TreehopperUsb.Settings.isThrowExceptions())
+            if(TreehopperUsb.Settings.shouldThrowExceptions())
             {
                 throw new IllegalArgumentException("Speed out of limits. Valid speeds are 62.5 kHz to 16000 kHz");
             }
@@ -62,12 +62,22 @@ class TreehopperI2c implements I2c {
     }
 
     @Override
-    public byte[] sendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
+    public byte[] sendReceive(byte address, byte[] dataToWrite, int numBytesToRead)
     {
         if(!enabled)
         {
             logger.error("I2c.SendReceive() called before enabling the peripheral. This call will be ignored.");
         }
+
+        if(numBytesToRead > 255)
+        {
+            logger.error("You may only receive up to 255 bytes per transaction.");
+            if(TreehopperUsb.Settings.shouldThrowExceptions())
+            {
+                throw new IllegalArgumentException("You may only receive up to 255 bytes per transaction.");
+            }
+        }
+
         byte[] receivedData = new byte[numBytesToRead];
         int txLen = dataToWrite.length;
 
@@ -77,7 +87,7 @@ class TreehopperI2c implements I2c {
             dataToSend[0] = (byte)DeviceCommands.I2cTransaction.ordinal();
             dataToSend[1] = address;
             dataToSend[2] = (byte)txLen; // total length (0-255)
-            dataToSend[3] = numBytesToRead;
+            dataToSend[3] = (byte)numBytesToRead;
 
             System.arraycopy(dataToWrite, 0, dataToSend, 4, txLen);
 
@@ -106,7 +116,7 @@ class TreehopperI2c implements I2c {
                     I2cTransferError error = I2cTransferError.values()[resultCode];
 
                     logger.error("I2C transaction resulted in an error: " + error);
-                    if(TreehopperUsb.Settings.isThrowExceptions())
+                    if(TreehopperUsb.Settings.shouldThrowExceptions())
                         throw new RuntimeException("I2C transaction resulted in an error: " + error);
                 }
 
@@ -118,7 +128,7 @@ class TreehopperI2c implements I2c {
                 while (bytesRemaining > 0)
                 {
                     int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                    //var chunk = device.receiveCommsResponsePacket((uint)numBytesToTransfer).Result;
+
                     byte[] chunk = board.receiveCommsResponsePacket(numBytesToTransfer);
                     System.arraycopy(chunk, 0, result, srcIndex, receivedData.length); // just in case we don't get what we're expecting
                     srcIndex += numBytesToTransfer;
@@ -130,7 +140,7 @@ class TreehopperI2c implements I2c {
                     I2cTransferError error = I2cTransferError.values()[resultCode];
 
                     logger.error("I2C transaction resulted in an error: " + error);
-                    if(TreehopperUsb.Settings.isThrowExceptions())
+                    if(TreehopperUsb.Settings.shouldThrowExceptions())
                         throw new RuntimeException("I2C transaction resulted in an error: " + error);
                 } else
                 {

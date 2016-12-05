@@ -3,6 +3,8 @@ package io.treehopper.desktop.demos.sandbox;
 import java.util.ArrayList;
 import io.treehopper.desktop.*;
 import io.treehopper.*;
+import io.treehopper.libraries.displays.SevenSegmentDisplay;
+import io.treehopper.libraries.displays.Tm1650;
 
 public class Sandbox {
     public static void main(String[] args) {
@@ -11,16 +13,9 @@ public class Sandbox {
         TreehopperUsb board = boards.get(0);
         board.connect();
 
-        board.i2c.setEnabled(true);
-
-        board.i2c.sendReceive((byte)0x24, new byte[] { (byte)0x01 }, (byte)0);
-        board.i2c.sendReceive((byte)0x25, new byte[] { (byte)0x01 }, (byte)0);
-        board.i2c.sendReceive((byte)0x26, new byte[] { (byte)0x01 }, (byte)0);
-        board.i2c.sendReceive((byte)0x27, new byte[] { (byte)0x01 }, (byte)0);
-
-        board.i2c.sendReceive((byte)0x34, new byte[] { (byte)0xff }, (byte)0);
-        board.i2c.sendReceive((byte)0x35, new byte[] { (byte)0xff }, (byte)0);
-        board.i2c.sendReceive((byte)0x36, new byte[] { (byte)0xff }, (byte)0);
-        board.i2c.sendReceive((byte)0x37, new byte[] { (byte)0xff }, (byte)0);
+        Tm1650 driver = new Tm1650(board.i2c);
+        SevenSegmentDisplay display = new SevenSegmentDisplay(driver.leds, false);
+        display.setText("1234");
+        board.disconnect();
     }
 }
