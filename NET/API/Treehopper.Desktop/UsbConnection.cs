@@ -19,25 +19,12 @@ namespace Treehopper
     /// </summary>
     public class UsbConnection : IConnection
     {
+
+        private Task pinListenerTask;
+
         private bool isOpen = false;
-        public UsbConnection(string devicePath, string name)
-        {
-            UpdateRate = 1000;
-            DevicePath = devicePath;
-        }
 
         UsbDevice device;
-
-        public UsbConnection(UsbRegistry regDevice)
-        {
-            this.DevicePath = regDevice.SymbolicName;
-            device = regDevice.Device;
-
-
-            SerialNumber = device.Info.SerialString;
-            Name = device.Info.ProductString;
-            Version = device.Info.Descriptor.BcdDevice;
-        }
 
         byte[] pinEventData = new byte[64];
         byte[] peripheralResponseData = new byte[64];
@@ -59,6 +46,24 @@ namespace Treehopper
         private UsbEndpointReader peripheralReceive;
         private UsbRegistry regDevice;
 
+
+        public UsbConnection(string devicePath, string name)
+        {
+            UpdateRate = 1000;
+            DevicePath = devicePath;
+        }
+
+        public UsbConnection(UsbRegistry regDevice)
+        {
+            this.DevicePath = regDevice.SymbolicName;
+            device = regDevice.Device;
+
+
+            SerialNumber = device.Info.SerialString;
+            Name = device.Info.ProductString;
+            Version = device.Info.Descriptor.BcdDevice;
+        }
+
         public int UpdateRate
         {
             get
@@ -77,6 +82,8 @@ namespace Treehopper
 
         public short Version { get; set; }
 
+
+
         public void Close()
         {
             if (!isOpen)
@@ -85,9 +92,6 @@ namespace Treehopper
 
             isOpen = false;
         }
-
-        static readonly object lockObject = new object();
-
 
         public async Task<bool> OpenAsync()
         {
@@ -113,7 +117,6 @@ namespace Treehopper
                     wholeUsbDevice.ClaimInterface(0);
                 }
 
-
                 pinConfig = device.OpenEndpointWriter(WriteEndpointID.Ep01);
                 pinState = device.OpenEndpointReader(ReadEndpointID.Ep01);
                 peripheralConfig = device.OpenEndpointWriter(WriteEndpointID.Ep02);
@@ -121,7 +124,7 @@ namespace Treehopper
 
                 isOpen = true;
 
-                pinListenerThread = new Thread(() =>
+                pinListenerTask = new Task(() =>
                 {
                     while (isOpen)
                     {
@@ -130,10 +133,7 @@ namespace Treehopper
                         try
                         {
                             ErrorCode error;
-                            lock (lockObject)
-                            {
-                                error = pinState.Read(buffer, 1, out len);
-                            }
+                            error = pinState.Read(buffer, 100, out len);
 
                             if (error == ErrorCode.Success)
                                 PinEventDataReceived?.Invoke(buffer);
@@ -151,7 +151,7 @@ namespace Treehopper
 
                 });
 
-                pinListenerThread.Start();
+                pinListenerTask.Start();
 
                 return true;
 
@@ -161,9 +161,6 @@ namespace Treehopper
             }
         }
 
-
-
-        private Thread pinListenerThread;
         public void SendDataPeripheralChannel(byte[] data)
         {
             if (!isOpen)
@@ -171,10 +168,7 @@ namespace Treehopper
 
             int transferLength;
             ErrorCode error;
-            //lock (lockObject)
-            {
-                error = peripheralConfig.Write(data, 1000, out transferLength);
-            }
+            error = peripheralConfig.Write(data, 100, out transferLength);
             if (error != ErrorCode.None && error != ErrorCode.IoCancelled)
             {
                 Debug.WriteLine("Peripheral Config Write Failure: " + error);
@@ -187,10 +181,8 @@ namespace Treehopper
                 return;
             int transferLength;
             ErrorCode error;
-            //lock (lockObject)
-            {
-                error = pinConfig.Write(data, 1000, out transferLength);
-            }
+            error = pinConfig.Write(data, 100, out transferLength);
+
             if (error != ErrorCode.None && error != ErrorCode.IoCancelled)
             {
                 Debug.WriteLine("Pin Config Write Failure: " + error);
@@ -207,14 +199,14 @@ namespace Treehopper
             if (peripheralReceive != null)
             {
                 ErrorCode error;
-                lock (lockObject)
-                {
-                    error = peripheralReceive.Read(returnVal, 1000, out transferLength);
-                }
+                    error = peripheralReceive.Read(retVal, 100, out transferLength);
                 if (error == ErrorCode.Success)
-                    Array.Copy(returnVal, retVal, bytesToRead);
+                    Array.Copy(retVal, retVal, bytesToRead);
                 else
+                {
                     Debug.WriteLine("Peripheral Response Read Failure: " + error);
+                }
+                    
 
             }
                 
@@ -226,7 +218,7 @@ namespace Treehopper
             if (!isOpen) return; // already disconnected
 
             isOpen = false;
-            pinListenerThread.Join(); // wait for the task to return
+            pinListenerTask.Wait(); // wait for the task to return
             try
             {
                 if (pinConfig != null)

@@ -231,9 +231,6 @@ namespace Treehopper
 
                 byte[] receivedData;
                 int srcIndex = 0;
-                int headerLength = 8;
-
-                //int bytesRemaining = transactionLength;
 
 
                 byte[] header = new byte[7];

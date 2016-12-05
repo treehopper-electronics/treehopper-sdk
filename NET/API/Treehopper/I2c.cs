@@ -57,11 +57,6 @@ namespace Treehopper
             }
         }
 
-        /// <summary>
-        /// Start I2C communication with the given mode and rate. SDA is on Pin 10, SCL is on pin 11
-        /// </summary>
-        /// <param name="mode">Master or slave mode</param>
-        /// <param name="rate">Communication rate, in kHz.</param>
         private void SendConfig()
         {
             double TH0 = 256 - 4000 / (3*speed);

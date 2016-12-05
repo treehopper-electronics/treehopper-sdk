@@ -30,7 +30,7 @@ namespace Treehopper
 
         int UpdateRate { get; set; }
 
-        Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead);
+        Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead);
 
         event PinEventData PinEventDataReceived;
     }
