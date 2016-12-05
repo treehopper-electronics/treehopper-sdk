@@ -1,1 +1,3 @@
-include ':treehopper.desktop', ':treehopper.android', ':treehopper', ':treehopper.libraries', ':blink'
+include ':treehopper.desktop', ':treehopper.android', ':treehopper', ':treehopper.libraries', ':blink', ':analogRead'
+project(':blink').projectDir = new File('demos/desktop/blink')
+project(':analogRead').projectDir = new File('demos/desktop/analogRead')

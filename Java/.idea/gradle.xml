@@ -9,7 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/blink" />
+            <option value="$PROJECT_DIR$/demos/desktop/analogRead" />
+            <option value="$PROJECT_DIR$/demos/desktop/blink" />
             <option value="$PROJECT_DIR$/treehopper" />
             <option value="$PROJECT_DIR$/treehopper.android" />
             <option value="$PROJECT_DIR$/treehopper.desktop" />
