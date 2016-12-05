@@ -32,8 +32,7 @@ namespace Blink
 
                 // You must explicitly connect to a board before communicating with it
                 await Board.ConnectAsync();
-                Board.Pins[0].SoftPwm.Enabled = true;
-                Board.Pins[0].SoftPwm.DutyCycle = 0.5;
+
                 Console.WriteLine("Start blinking. Press any key to stop.");
                 while (Board.IsConnected && !Console.KeyAvailable)
                 {
