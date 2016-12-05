@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
-namespace Treehopper.Libraries
+using Treehopper.Libraries.Sensors.Temperature;
+
+namespace Ds18b20Test
 {
     class Program
     {

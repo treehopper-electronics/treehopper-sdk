@@ -58,9 +58,9 @@
       <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Displays\Treehopper.Libraries.Displays.csproj">
-      <Project>{5A6C08D7-40AA-491B-9198-90C34F8F8B46}</Project>
-      <Name>Treehopper.Libraries.Displays</Name>
+    <ProjectReference Include="..\..\..\Treehopper.Libraries\Treehopper.Libraries.csproj">
+      <Project>{397b4612-9ff2-4288-a7d0-c2b2fc4f4816}</Project>
+      <Name>Treehopper.Libraries</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

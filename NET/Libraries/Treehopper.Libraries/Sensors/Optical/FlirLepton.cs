@@ -27,9 +27,9 @@ namespace Treehopper.Libraries.Sensors.Optical
         public FlirLepton(TreehopperUsb board)
         {
             spi = board.Spi;
-            spi.Mode = SPIMode.Mode11;
-            spi.Frequency = 12;
-            spi.ChipSelect.DigitalValue = true;
+            //spi.Mode = SPIMode.Mode11;
+            //spi.Frequency = 12;
+            //spi.ChipSelect.DigitalValue = true;
             spi.Enabled = true;
             blackFrame = new ushort[height, width];
             for (int i=0;i<height;i++)
@@ -42,9 +42,9 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         public async Task<ushort[,]> GetRawFrame()
         {
-            spi.ChipSelect.DigitalValue = false;
+            //spi.ChipSelect.DigitalValue = false;
             await Task.Delay(185);
-            spi.ChipSelect.DigitalValue = true;
+            //spi.ChipSelect.DigitalValue = true;
             
             ushort[,] frame = new ushort[height, width];
             bool frameAcquired = false;

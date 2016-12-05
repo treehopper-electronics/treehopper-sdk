@@ -39,7 +39,7 @@ namespace Treehopper.Libraries.Displays
             Flush(true);
         }
 
-        public Collection<LedDriver> Drivers { get; protected set; } = new Collection<LedDriver>();
+        public Collection<ILedDriver> Drivers { get; protected set; } = new Collection<ILedDriver>();
 
         private char character;
         public char Character

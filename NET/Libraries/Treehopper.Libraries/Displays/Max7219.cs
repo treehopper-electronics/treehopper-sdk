@@ -164,7 +164,7 @@ namespace Treehopper.Libraries.Displays
 
             Array.Reverse(spiData);
 
-            await dev.SendReceive(spiData);
+            await dev.SendReceive(spiData, BurstMode.BurstTx);
         }
 
         byte[] state = new byte[8];
@@ -186,7 +186,7 @@ namespace Treehopper.Libraries.Displays
         /// </remarks>
         public bool UseNativeLedOrder { get; set; } = false;
 
-        internal override void LedStateChanged(Led led)
+        public override void LedStateChanged(Led led)
         {
 
             int digit = led.Channel / 8;
@@ -209,14 +209,14 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        internal override void LedBrightnessChanged(Led led) { }
+        public override void LedBrightnessChanged(Led led) { }
         public async override Task Flush(bool force = false)
         {
             if (AutoFlush && !force) return;
 
             for (int i=0; i<8;i++)
             {
-                await Send((Opcode)(i + 1), state[i]);
+                await Send((Opcode)(i + 1), state[i]).ConfigureAwait(false);
             }
         }
     }
