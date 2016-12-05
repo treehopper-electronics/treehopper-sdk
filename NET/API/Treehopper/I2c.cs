@@ -59,8 +59,8 @@ namespace Treehopper
 
         private void SendConfig()
         {
-            double TH0 = 256 - 4000 / (3*speed);
-            if(TH0 < 0 || TH0 > 255)
+            double TH0 = 256.0 - 4000.0 / (3.0 * speed);
+            if(TH0 < 0 || TH0 > 255.0)
             {
                 throw new Exception("Rate out of limits. Valid rate is 62.5 kHz - 16000 kHz (16 MHz)");
             }
