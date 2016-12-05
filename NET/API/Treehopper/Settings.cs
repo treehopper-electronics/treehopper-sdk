@@ -44,13 +44,5 @@ namespace Treehopper
         /// The WinUSB GUID used by the librarh
         /// </summary>
         public Guid Guid { get; set; } = new Guid("{5B34B38B-F4CD-49C3-B2BB-60E47A43E12D}");
-
-        /// <summary>
-        /// Construct a new settings object with Treehopper defaults.
-        /// </summary>
-        public Settings()
-        {
-
-        }
     }
 }
