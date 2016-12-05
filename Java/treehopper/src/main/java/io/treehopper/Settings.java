@@ -43,7 +43,7 @@ public class Settings {
         this.bootloaderPid = bootloaderPid;
     }
 
-    public boolean isThrowExceptions() {
+    public boolean shouldThrowExceptions() {
         return throwExceptions;
     }
 

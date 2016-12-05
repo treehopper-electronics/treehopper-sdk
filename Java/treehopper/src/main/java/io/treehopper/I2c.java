@@ -5,7 +5,7 @@ package io.treehopper;
  */
 
 public interface I2c {
-    byte[] sendReceive(byte address, byte[] dataToWrite, byte numBytesToRead);
+    byte[] sendReceive(byte address, byte[] dataToWrite, int numBytesToRead);
 
     boolean isEnabled();
     void setEnabled(boolean enabled);
