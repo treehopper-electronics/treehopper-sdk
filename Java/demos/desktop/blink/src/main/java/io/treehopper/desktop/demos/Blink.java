@@ -16,7 +16,7 @@ public class Blink {
 
 
         while(true){
-            board.setLed(!board.getLed());
+            board.setLed(!board.isLed());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

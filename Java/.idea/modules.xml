@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Java.iml" filepath="$PROJECT_DIR$/Java.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/desktop/analogRead/analogRead.iml" filepath="$PROJECT_DIR$/demos/desktop/analogRead/analogRead.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/desktop/blink/blink.iml" filepath="$PROJECT_DIR$/demos/desktop/blink/blink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demos/desktop/sandbox/sandbox.iml" filepath="$PROJECT_DIR$/demos/desktop/sandbox/sandbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/treehopper/treehopper.iml" filepath="$PROJECT_DIR$/treehopper/treehopper.iml" />
       <module fileurl="file://$PROJECT_DIR$/treehopper.android/treehopper.android.iml" filepath="$PROJECT_DIR$/treehopper.android/treehopper.android.iml" />
       <module fileurl="file://$PROJECT_DIR$/treehopper.desktop/treehopper.desktop.iml" filepath="$PROJECT_DIR$/treehopper.desktop/treehopper.desktop.iml" />

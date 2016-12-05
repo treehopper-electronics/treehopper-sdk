@@ -1,4 +1,6 @@
 package io.treehopper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by jay on 12/27/2015.
@@ -6,18 +8,26 @@ package io.treehopper;
 
 public class TreehopperUsb {
 
-    public Pin[] Pins = new Pin[20];
+    public static Settings Settings = new Settings();
+
+    private static final Logger logger = LogManager.getLogger("TreehopperUsb");
+
+    public Pin[] pins = new Pin[20];
     private Connection usbConnection;
-    boolean led;
-    boolean connected;
+    private boolean led;
+    private boolean connected;
+
+    Object comsLock = new Object();
 
     public TreehopperUsb(Connection connection) {
         usbConnection = connection;
         usbConnection.setPinReportListener(this);
         for (int i = 0; i < 20; i++)
-            Pins[i] = new Pin(this, i);
+            pins[i] = new Pin(this, i);
 
     }
+
+    public I2c i2c = new TreehopperI2c(this);
 
     public boolean getConnected() {
         return connected;
@@ -43,7 +53,7 @@ public class TreehopperUsb {
         return usbConnection.getSerialNumber();
     }
 
-    public boolean getLed() {
+    public boolean isLed() {
         return led;
     }
 
@@ -63,10 +73,18 @@ public class TreehopperUsb {
     public void onPinReportReceived(byte[] pinReport) {
         if (DeviceResponse.values()[pinReport[0]] == DeviceResponse.CurrentReadings) {
             int i = 1;
-            for (Pin pin : Pins) {
+            for (Pin pin : pins) {
                 pin.UpdateValue(pinReport[i++], pinReport[i++]);
             }
         }
+    }
+
+    public void sendPeripheralConfigPacket(byte[] dataToSend) {
+        usbConnection.sendDataPeripheralChannel(dataToSend);
+    }
+
+    public byte[] receiveCommsResponsePacket(int numBytesToRead) {
+        return usbConnection.readPeripheralResponsePacket(numBytesToRead);
     }
 }
 
