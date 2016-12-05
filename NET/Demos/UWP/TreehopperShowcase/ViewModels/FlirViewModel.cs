@@ -38,7 +38,7 @@ namespace TreehopperShowcase.ViewModels
                 Set(ref selectedBoard, value);
                 if (selectedBoard != null)
                 {
-                    Start();
+                    Start().Forget();
                 }
 
             }
