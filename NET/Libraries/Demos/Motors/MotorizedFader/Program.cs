@@ -24,7 +24,7 @@ namespace MotorizedFaderDemo
             var fader = new MotorizedFader(board.Pins[2], hbridge);
             fader.K = 20;
             fader.Enabled = true;
-            LogPositions(fader);
+            LogPositions(fader).Forget();
             while(!Console.KeyAvailable)
             {
                 for(int i=0;i<=10;i++)

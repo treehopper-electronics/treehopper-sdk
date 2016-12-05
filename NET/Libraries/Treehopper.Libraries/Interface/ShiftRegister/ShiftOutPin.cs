@@ -8,9 +8,14 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 {
     public class ShiftOutPin : IDigitalOutPin
     {
+        /// <summary>
+        /// Construct a ShiftOutPin attached to a controller
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="pinNumber"></param>
         public ShiftOutPin(ShiftOut controller, int pinNumber)
         {
-            PinNumber = pinNumber;
+            BitNumber = pinNumber;
             this.controller = controller;
         }
 
@@ -19,7 +24,17 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 
         private ShiftOut controller;
 
-        public int PinNumber { get; protected set; }
+        /// <summary>
+        /// The bit number, 0-n, of the n-bit output.
+        /// </summary>
+        public int BitNumber { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the digital value of the pin.
+        /// </summary>
+        /// <remarks>
+        /// Since this is an output-only pin, getting its value will return the current state of the output.
+        /// </remarks>
         public bool DigitalValue
         {
             get { return digitalValue; }
@@ -32,11 +47,17 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
             }
         }
 
+        /// <summary>
+        /// Make the pin a push-pull output. This function has no effect, since all ShiftOut pins are always push-pull outputs.
+        /// </summary>
         public void MakeDigitalPushPullOut()
         {
             // nothing to do here; all pins are always outputs
         }
 
+        /// <summary>
+        /// Toggle the output
+        /// </summary>
         public void ToggleOutput()
         {
             DigitalValue = !DigitalValue;

@@ -58,9 +58,9 @@
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Motors\Motors.csproj">
-      <Project>{cba196e4-a8c2-4b84-912a-655201564013}</Project>
-      <Name>Motors</Name>
+    <ProjectReference Include="..\..\..\Treehopper.Libraries\Treehopper.Libraries.csproj">
+      <Project>{397b4612-9ff2-4288-a7d0-c2b2fc4f4816}</Project>
+      <Name>Treehopper.Libraries</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

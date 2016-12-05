@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
-using Treehopper.Libraries.ShiftRegister;
+using Treehopper.Libraries.Interface.ShiftRegister;
 
 namespace DemoSn74hc166
 {

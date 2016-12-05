@@ -9,15 +9,20 @@ namespace Treehopper.Libraries.Displays
 {
     public class BarGraph
     {
-        private Collection<Led> leds;
-        private Collection<LedDriver> drivers = new Collection<LedDriver>();
-        public BarGraph(Collection<Led> Leds)
+        private IList<Led> leds;
+        private Collection<ILedDriver> drivers = new Collection<ILedDriver>();
+        public BarGraph(IList<Led> Leds)
         {
             this.leds = Leds;
             foreach (var led in Leds)
             {
                 if (!drivers.Contains(led.Driver))
                     drivers.Add(led.Driver);
+            }
+
+            foreach(var driver in drivers)
+            {
+                driver.AutoFlush = false; // disable autoflush to speed things up
             }
         }
 

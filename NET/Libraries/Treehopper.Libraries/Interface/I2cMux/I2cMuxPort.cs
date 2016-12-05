@@ -34,7 +34,7 @@ namespace Treehopper.Libraries.Interface.I2cMux
             }
         }
 
-        public Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead, BurstMode mode = BurstMode.NoBurst)
+        public Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
             throw new NotImplementedException();
         }

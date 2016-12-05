@@ -58,9 +58,9 @@
       <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\LedDrivers\LedDrivers.csproj">
-      <Project>{c391bc7b-33bd-4f4e-8c8d-e463c60581a4}</Project>
-      <Name>LedDrivers</Name>
+    <ProjectReference Include="..\..\..\Treehopper.Libraries\Treehopper.Libraries.csproj">
+      <Project>{397B4612-9FF2-4288-A7D0-C2B2FC4F4816}</Project>
+      <Name>Treehopper.Libraries</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

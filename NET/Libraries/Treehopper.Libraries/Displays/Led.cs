@@ -8,12 +8,14 @@ namespace Treehopper.Libraries.Displays
 {
     public class Led
     {
-        public LedDriver Driver { get { return driver; } }
-        public Led(LedDriver driver)
+        public ILedDriver Driver { get; private set; }
+        public Led(ILedDriver driver, int channel = 0, bool hasBrightnessControl = false)
         {
-            this.driver = driver;
+            Driver = driver;
+            HasBrightnessControl = hasBrightnessControl;
+            Channel = channel;
         }
-        public int Channel { get; set; }
+        public int Channel { get; private set; }
         private double brightness = 1.0;
         public double Brightness
         {
@@ -23,16 +25,14 @@ namespace Treehopper.Libraries.Displays
                 if (brightness == value) return;
                 if (!HasBrightnessControl) return;
                 brightness = value;
-                driver.LedBrightnessChanged(this);
+                Driver.LedBrightnessChanged(this);
             }
         }
 
-        public bool HasBrightnessControl { get; set; }
+        public bool HasBrightnessControl { get; private set; }
 
 
         private bool state = false;
-
-        private LedDriver driver;
 
         public bool State
         {
@@ -41,7 +41,7 @@ namespace Treehopper.Libraries.Displays
             {
                 if (state == value) return;
                 state = value;
-                driver.LedStateChanged(this);
+                Driver.LedStateChanged(this);
             }
         }
     }

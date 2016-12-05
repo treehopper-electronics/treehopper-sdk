@@ -24,7 +24,6 @@ namespace Tm1650SevenSeg
             var controller = new Tm1650(board.I2c);
             var display = new SevenSegmentDisplay(controller.Leds);
             display.Text = 2345;
-
         }
     }
 }

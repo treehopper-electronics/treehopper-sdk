@@ -10,15 +10,13 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     /// Base class that all LED drivers inherit from.
     /// </summary>
-    public abstract class LedDriver
+    public abstract class LedDriver : ILedDriver
     {
         public LedDriver(int numLeds, bool HasGlobalBrightnessControl, bool HasIndividualBrightnessControl)
         {
             for (int i = 0; i < numLeds; i++)
             {
-                var led = new Led(this);
-                led.Channel = i;
-                led.HasBrightnessControl = HasIndividualBrightnessControl;
+                var led = new Led(this, i, HasIndividualBrightnessControl);
                 Leds.Add(led);
             }
         }
@@ -47,10 +45,10 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         /// The collection of LEDs that belong to this driver.
         /// </summary>
-        public Collection<Led> Leds { get; set; } = new Collection<Led>();
+        public IList<Led> Leds { get; set; } = new Collection<Led>();
 
-        internal abstract void LedStateChanged(Led led);
-        internal abstract void LedBrightnessChanged(Led led);
+        public abstract void LedStateChanged(Led led);
+        public abstract void LedBrightnessChanged(Led led);
         public async Task Clear()
         {
             bool autoflushSave = AutoFlush;

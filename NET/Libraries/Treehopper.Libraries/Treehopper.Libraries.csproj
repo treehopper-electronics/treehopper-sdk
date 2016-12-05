@@ -46,9 +46,11 @@
     <Compile Include="ArduinoShim\Sketch.cs" />
     <Compile Include="Displays\BarGraph.cs" />
     <Compile Include="Displays\CharacterDisplay.cs" />
+    <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
     <Compile Include="Displays\GraphicDisplay.cs" />
     <Compile Include="Displays\Hd44780.cs" />
+    <Compile Include="Displays\ILedDriver.cs" />
     <Compile Include="Displays\Ili9341.cs" />
     <Compile Include="Displays\Led.cs" />
     <Compile Include="Displays\LedDriver.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Interface\I2cMux\I2cMux.cs" />
     <Compile Include="Interface\I2cMux\I2cMuxPort.cs" />
     <Compile Include="Interface\I2cMux\Mux4052.cs" />
+    <Compile Include="Interface\IFlushable.cs" />
     <Compile Include="Interface\IFlushableOutputPort.cs" />
     <Compile Include="Interface\Ltc2305.cs" />
     <Compile Include="Interface\PcfSeries\Pcf8574.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Interface\PcfSeries\PcfInterface.cs" />
     <Compile Include="Interface\PortExpander.cs" />
     <Compile Include="Interface\PortExpanderPin.cs" />
+    <Compile Include="Interface\ShiftRegister\ChainableShiftRegisterOutput.cs" />
     <Compile Include="Interface\ShiftRegister\ShiftOut.cs" />
     <Compile Include="Interface\ShiftRegister\ShiftOutPin.cs" />
     <Compile Include="Interface\ShiftRegister\Sn74hc166.cs" />
@@ -87,13 +91,17 @@
     <Compile Include="Motors\HobbyServo.cs" />
     <Compile Include="Motors\ISpeedController.cs" />
     <Compile Include="Motors\MotorizedFader.cs" />
-    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sensors\Inertial\IAccelerometer.cs" />
+    <Compile Include="Sensors\Inertial\IGyroscope.cs" />
+    <Compile Include="Sensors\Inertial\IMagnetometer.cs" />
     <Compile Include="Sensors\Inertial\Mpu9150.cs" />
     <Compile Include="Sensors\Optical\Adjds311.cs" />
     <Compile Include="Sensors\Optical\FlirLepton.cs" />
     <Compile Include="Sensors\Optical\Tsl2591.cs" />
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
+    <Compile Include="Sensors\Temperature\ITemperature.cs" />
+    <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
