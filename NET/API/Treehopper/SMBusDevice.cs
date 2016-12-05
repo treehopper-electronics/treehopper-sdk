@@ -8,7 +8,7 @@ namespace Treehopper
     /// </summary>
     public class SMBusDevice
     {
-        protected II2c I2c;
+        protected I2c I2c;
         protected byte address;
         int rateKhz;
 
@@ -18,7 +18,7 @@ namespace Treehopper
         /// <param name="address">The 7-bit address of the device</param>
         /// <param name="I2CModule">The i2C module this device is connected to.</param>
         /// <param name="rateKHz">the rate, in kHz, that should be used to communicate with this device.</param>
-        public SMBusDevice(byte address, II2c I2CModule, int rateKHz = 100)
+        public SMBusDevice(byte address, I2c I2CModule, int rateKHz = 100)
         {
             if (address > 0x7f)
                 throw new ArgumentOutOfRangeException("address", "The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F");

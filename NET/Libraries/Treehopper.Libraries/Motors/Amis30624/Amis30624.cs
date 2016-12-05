@@ -19,12 +19,12 @@ namespace Treehopper.Libraries.Motors.Amis30624
         private SMBusDevice dev;
 
         public event PositionChangedHandler PositionChanged;
-        public Amis30624(II2c module, Address HardwiredAddressPin, int speed = 400) : this(module, (byte)HardwiredAddressPin, speed)
+        public Amis30624(I2c module, Address HardwiredAddressPin, int speed = 400) : this(module, (byte)HardwiredAddressPin, speed)
         {
 
         }
 
-        public Amis30624(II2c module, byte address, int speed)
+        public Amis30624(I2c module, byte address, int speed)
         {
             dev = new SMBusDevice(address, module, speed);
             ResetToDefault().ConfigureAwait(false);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface.I2cMux
 {
-    public class I2cMuxPort : II2c
+    public class I2cMuxPort : I2c
     {
         public bool Enabled
         {

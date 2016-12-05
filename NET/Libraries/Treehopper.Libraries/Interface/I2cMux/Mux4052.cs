@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Interface.I2cMux
         private IDigitalOutPin a;
         private IDigitalOutPin b;
 
-        public Mux4052(II2c MuxedPort, IDigitalOutPin a, IDigitalOutPin b) : base(MuxedPort)
+        public Mux4052(I2c MuxedPort, IDigitalOutPin a, IDigitalOutPin b) : base(MuxedPort)
         {
             this.a = a;
             this.b = b;

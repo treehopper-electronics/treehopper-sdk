@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
-    public interface II2c
+    public interface I2c
     {
         double Speed { get; set; }
         bool Enabled { get; set; }

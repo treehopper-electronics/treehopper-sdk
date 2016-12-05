@@ -10,7 +10,7 @@ namespace Treehopper.Libraries.Interface.PcfSeries
     {
         private SMBusDevice dev;
         int numBytes;
-        public PcfInterface(II2c i2c, int numPins, bool Address0, bool Address1, bool Address2, byte baseAddress) : base(numPins)
+        public PcfInterface(I2c i2c, int numPins, bool Address0, bool Address1, bool Address2, byte baseAddress) : base(numPins)
         {
             byte address = (byte)(baseAddress | (Address0 ? 1 : 0) | (Address1 ? 1 : 0) << 1 | (Address2 ? 1 : 0) << 2);
             dev = new SMBusDevice(address, i2c);

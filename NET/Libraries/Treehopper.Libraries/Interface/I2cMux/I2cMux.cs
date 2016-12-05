@@ -20,13 +20,13 @@ namespace Treehopper.Libraries.Interface.I2cMux
         /// <summary>
         /// The upstream I2C port that the selected downstream port should be connected to.
         /// </summary>
-        public II2c UpstreamPort { get; set; }
+        public I2c UpstreamPort { get; set; }
 
         /// <summary>
         /// Construct an I2cMux with a given muxed port
         /// </summary>
         /// <param name="UpstreamPort">The upstream port to mux</param>
-        public I2cMux(II2c UpstreamPort)
+        public I2cMux(I2c UpstreamPort)
         {
             this.UpstreamPort = UpstreamPort;
         }
