@@ -11,7 +11,7 @@ public class AnalogRead {
         TreehopperUsb hopper = boards.get(0);
         hopper.connect();
 
-        Pin adcPin = hopper.Pins[10];
+        Pin adcPin = hopper.pins[10];
         adcPin.setMode(PinMode.AnalogInput);
 
         while (true) {
