@@ -45,7 +45,7 @@ namespace TreehopperShowcase.ViewModels
 
         bool IsRunning = false;
 
-        public async void Start()
+        public void Start()
         {
             Board.Connection.UpdateRate = 100; // lower to 100 kHz to prevent GUI from locking up
             foreach (Pin pin in Board.Pins)
