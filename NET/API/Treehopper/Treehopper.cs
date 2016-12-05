@@ -94,7 +94,7 @@ namespace Treehopper
             PwmManager = new PwmManager(this);
 
             // Initialize modules
-            I2c = new I2c(this);
+            I2c = new TreehopperI2c(this);
             Spi = new Spi(this);
             Uart = new Uart(this);
             Pwm1 = new Pwm(Pins[7]);

@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Displays
 {
     public class Ssd1306 : GraphicDisplay
     {
-        private II2c i2c;
+        private I2c i2c;
         private byte address;
 
         public enum DisplaySize
@@ -73,7 +73,7 @@ namespace Treehopper.Libraries.Displays
 
         public bool[,] BoolBuffer { get; set; }
 
-        public Ssd1306(II2c I2c, int width = 128, int height = 32, byte address = 0x3C, VccMode mode = VccMode.SwitchCap) : base(width, height)
+        public Ssd1306(I2c I2c, int width = 128, int height = 32, byte address = 0x3C, VccMode mode = VccMode.SwitchCap) : base(width, height)
         {
             if (!((Width == 128 && Height == 32) || (Width == 128 && Height == 64) || (Width == 96 && Height == 16)))
                 throw new ArgumentException("The only supported display sizes are 128x32, 128x64, and 96x16");

@@ -19,11 +19,11 @@ namespace Treehopper
     /// <summary>
     /// The I2c class is used for interacting with the I2C module on the Treehopper Board. 
     /// </summary>
-    public class I2c : II2c
+    internal class TreehopperI2c : I2c
     {
         TreehopperUsb device;
 
-        internal I2c(TreehopperUsb device)
+        internal TreehopperI2c(TreehopperUsb device)
         {
             this.device = device;
         }

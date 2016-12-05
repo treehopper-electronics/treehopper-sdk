@@ -8,7 +8,7 @@ namespace Treehopper.Libraries.Displays
 {
     public class Tm1650 : LedDriver
     {
-        private II2c i2c;
+        private I2c i2c;
 
         private static readonly byte ControlBase = 0x24;
         private static readonly byte DisplayBase = 0x34;
@@ -17,7 +17,7 @@ namespace Treehopper.Libraries.Displays
         private byte[] newValues = new byte[4];
         private bool enable;
 
-        public Tm1650(II2c i2c) : base(32, false, false)
+        public Tm1650(I2c i2c) : base(32, false, false)
         {
             this.i2c = i2c;
             i2c.Enabled = true;

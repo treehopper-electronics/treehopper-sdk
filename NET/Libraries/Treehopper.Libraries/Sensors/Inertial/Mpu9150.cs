@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
     public class Mpu9150 : SMBusDevice
     {
         IDigitalIOPin intPin;
-        public Mpu9150(II2c i2c, MPU9160Address address) : base((byte)address, i2c)
+        public Mpu9150(I2c i2c, MPU9160Address address) : base((byte)address, i2c)
         {
             WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).Wait();
             Update();
