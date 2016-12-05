@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Java.iml" filepath="$PROJECT_DIR$/Java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/blink/blink.iml" filepath="$PROJECT_DIR$/blink/blink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/treehopper/treehopper.iml" filepath="$PROJECT_DIR$/treehopper/treehopper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/treehopper.android/treehopper.android.iml" filepath="$PROJECT_DIR$/treehopper.android/treehopper.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/treehopper.desktop/treehopper.desktop.iml" filepath="$PROJECT_DIR$/treehopper.desktop/treehopper.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/treehopper.libraries/treehopper.libraries.iml" filepath="$PROJECT_DIR$/treehopper.libraries/treehopper.libraries.iml" />
+    </modules>
+  </component>
+</project>
