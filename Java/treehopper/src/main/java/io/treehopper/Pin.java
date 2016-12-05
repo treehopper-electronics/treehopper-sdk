@@ -105,7 +105,7 @@ public class Pin extends Observable {
             }
         } else if(mode == PinMode.AnalogInput)
         {
-            adcValue = (highByte & 0xFF) << 7 | (lowByte & 0xFF) >> 1;
+            adcValue = (highByte & 0xFF) << 8 | (lowByte & 0xFF);
             RaiseAnalogInChanged();
 
         }
