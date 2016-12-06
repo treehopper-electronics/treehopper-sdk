@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
     <Compile Include="FirmwareUpdate.cs" />
-    <Compile Include="TreehopperI2c.cs" />
+    <Compile Include="HardwareI2c.cs" />
     <Compile Include="IAdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
