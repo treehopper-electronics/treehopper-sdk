@@ -9,9 +9,9 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 {
     public class Sn74hc166
     {
-        public Collection<IDigitalInPin> Pins { get; set; } = new Collection<IDigitalInPin>();
+        public Collection<DigitalInPin> Pins { get; set; } = new Collection<DigitalInPin>();
 
-        public Sn74hc166(Spi spiModule, IDigitalOutPin loadPin)
+        public Sn74hc166(Spi spiModule, DigitalOutPin loadPin)
         {
             loadPin.MakeDigitalPushPullOut();
             spiModule.Enabled = true;

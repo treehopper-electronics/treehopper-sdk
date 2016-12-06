@@ -52,7 +52,7 @@ namespace Treehopper
     /// </summary>
     /// <param name="sender">The Pin that changed</param>
     /// <param name="value">The new value of the pin</param>
-    public delegate void OnDigitalInValueChanged(IDigitalInPin sender, bool value);
+    public delegate void OnDigitalInValueChanged(DigitalInPin sender, bool value);
 
     internal enum PinConfigCommands
     {
@@ -153,7 +153,7 @@ namespace Treehopper
     /// between pins. While it cannot be instantiated directly by the user, Pin variables can reference existing pins.
     /// </para>
     /// </remarks>
-    public class Pin : INotifyPropertyChanged, IDigitalInPin, IDigitalOutPin, IAdcPin
+    public class Pin : INotifyPropertyChanged, DigitalInPin, DigitalOutPin, IAdcPin
     {
         protected string ioName;
         /// <summary>

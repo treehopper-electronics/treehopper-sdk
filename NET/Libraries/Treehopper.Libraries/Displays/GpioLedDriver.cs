@@ -7,7 +7,7 @@ using Treehopper.Libraries.Interface;
 
 namespace Treehopper.Libraries.Displays
 {
-    public class GpioLedDriver<TDigitalOutPin> : LedDriver where TDigitalOutPin : IDigitalOutPin
+    public class GpioLedDriver<TDigitalOutPin> : LedDriver where TDigitalOutPin : DigitalOutPin
     {
         private readonly IFlushable controller;
         private IList<TDigitalOutPin> Pins;
