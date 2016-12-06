@@ -9,9 +9,6 @@ namespace Treehopper.Libraries.Displays
 {
     public class Ssd1306 : GraphicDisplay
     {
-        private I2c i2c;
-        private byte address;
-
         public enum DisplaySize
         {
             Pixels128x32,
