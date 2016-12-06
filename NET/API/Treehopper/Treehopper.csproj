@@ -41,7 +41,7 @@
     <Compile Include="IAdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
-    <Compile Include="IDigitalPin.cs" />
+    <Compile Include="DigitalPin.cs" />
     <Compile Include="IFirmwareConnection.cs" />
     <Compile Include="I2c.cs" />
     <Compile Include="IOneWire.cs" />

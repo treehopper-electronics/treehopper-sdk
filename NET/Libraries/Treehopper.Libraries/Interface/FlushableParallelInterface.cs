@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface
 {
-    public class FlushableParallelInterface<T> : IWriteOnlyParallelInterface where T : IDigitalOutPin
+    public class FlushableParallelInterface<T> : IWriteOnlyParallelInterface where T : DigitalOutPin
     {
         private IFlushableOutputPort<T> port;
 
-        public Collection<IDigitalOutPin> DataBus { get; set; } = new Collection<IDigitalOutPin>();
-        public IDigitalOutPin RegisterSelectPin { get; set; }
-        public IDigitalOutPin ReadWritePin { get; set; }
+        public Collection<DigitalOutPin> DataBus { get; set; } = new Collection<DigitalOutPin>();
+        public DigitalOutPin RegisterSelectPin { get; set; }
+        public DigitalOutPin ReadWritePin { get; set; }
 
-        public IDigitalOutPin EnablePin { get; set; }
+        public DigitalOutPin EnablePin { get; set; }
 
         public int DelayMicroseconds { get; set; }
 

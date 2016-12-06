@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Interface
         DigitalOutput,
         DigitalInput
     }
-    public class PortExpanderPin : IDigitalIOPin
+    public class PortExpanderPin : DigitalIOPin
     {
         private int pinNumber;
         private PortExpander portExpander;
@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Interface
         {
             if (digitalValue == value) return;
             digitalValue = value;
-            DigitalValueChanged?.Invoke((IDigitalInPin)this, value);
+            DigitalValueChanged?.Invoke((DigitalInPin)this, value);
             digitalSignal.TrySetResult(digitalValue);
         }
         internal PortExpanderPin(PortExpander portExpander, int pinNumber)

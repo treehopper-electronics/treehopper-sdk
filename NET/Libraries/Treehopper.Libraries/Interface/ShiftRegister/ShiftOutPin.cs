@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface.ShiftRegister
 {
-    public class ShiftOutPin : IDigitalOutPin
+    public class ShiftOutPin : DigitalOutPin
     {
         /// <summary>
         /// Construct a ShiftOutPin attached to a controller

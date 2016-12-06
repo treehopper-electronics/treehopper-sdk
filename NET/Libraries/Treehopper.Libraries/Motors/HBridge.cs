@@ -9,10 +9,10 @@ namespace Treehopper.Libraries.Motors
     public class HBridge : ISpeedController
     {
         IPwm enablePwm;
-        IDigitalOutPin enable;
-        IDigitalOutPin A;
-        IDigitalOutPin B;       
-        public HBridge(IDigitalOutPin A, IDigitalOutPin B, IPwm Enable)
+        DigitalOutPin enable;
+        DigitalOutPin A;
+        DigitalOutPin B;       
+        public HBridge(DigitalOutPin A, DigitalOutPin B, IPwm Enable)
         {
             Enable.Enabled = true;
             Enable.DutyCycle = 0;
@@ -26,7 +26,7 @@ namespace Treehopper.Libraries.Motors
 
         }
 
-        public HBridge(IDigitalOutPin A, IDigitalOutPin B, IDigitalOutPin Enable)
+        public HBridge(DigitalOutPin A, DigitalOutPin B, DigitalOutPin Enable)
         {
             Enable.DigitalValue = false;
             Enable.MakeDigitalPushPullOut();
