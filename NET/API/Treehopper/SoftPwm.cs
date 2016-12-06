@@ -10,11 +10,11 @@ namespace Treehopper
     /// The period of the SoftPwm module defaults to approximately 100 Hz. Changing this period will affect all active SoftPwm pins.
     /// </para>
     /// <para>
-    /// Compared to <see cref="Pwm"/> (which is implemented in hardware), SoftPwm has relatively high jitter. However, it has relatively 
+    /// Compared to <see cref="HardwarePwm"/> (which is implemented in hardware), SoftPwm has relatively high jitter. However, it has relatively 
     /// good precision, fine-tuned period control, and works well even when many (or all!) Treehopper pins are used for SoftPwm. 
     /// </para>
     /// </remarks>
-    public class SoftPwm : IPwm
+    public class SoftPwm : Pwm
     {
         Pin Pin;
         TreehopperUsb Board;

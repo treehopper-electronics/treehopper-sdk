@@ -1,96 +1,36 @@
-﻿using System;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
-
     /// <summary>
-    /// The Pwm class manages the hardware PWM module on the Treehopper board.
+    /// This provides a generic interface to PWM operation.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Both Pwm and <see cref="SoftPwm"/> implement <see cref="IPwm"/>, which provides a useful interface to generic PWM functionality.
+    /// Since both the <see cref="SoftPwm"/> and <see cref="HardwarePwm"/> classes implement this interface, it is useful for applications 
+    /// that are agnostic to differing resolutions or amount of jitter, and only need basic <see cref="DutyCycle"/> or <see cref="PulseWidth"/> control.
     /// </para>
+    /// <para>
+    /// Since <see cref="HardwarePwm"/> and <see cref="SoftPwm"/> have different periods (and different ways of setting the period), period control is not
+    /// available in this interface. However, <see cref="HardwarePwm"/> initializes to a period of approximately 780 Hz and <see cref="SoftPwm"/> initializes with
+    /// a period of approximately 100 Hz. These values are suitable for LED dimming, motor control, and other common applications. If higher (or lower) frequencies
+    /// are desired, your library should use <see cref="HardwarePwm"/> or <see cref="SoftPwm"/> directly.
+    /// </para>
+    /// 
     /// </remarks>
-    public class Pwm : IPwm
+    public interface Pwm
     {
-        Pin Pin;
-        double dutyCycle;
-        double pulseWidth;
-        private bool isEnabled = false;
-        TreehopperUsb Board;
-        internal Pwm(Pin pin)
-        {
-            Pin = pin;
-            Board = pin.Board;
-        }
-
-        /// <summary>
-        /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
-        /// </summary>
-        public bool Enabled
-        {
-            get
-            {
-                return isEnabled;
-            }
-            set
-            {
-                if (value != isEnabled)
-                {
-                    isEnabled = value;
-                    if (isEnabled)
-                    {
-                        Board.PwmManager.StartPin(Pin);
-                        Pin.Mode = PinMode.Reserved;
-                    }
-                    else
-                    {
-                        Board.PwmManager.StopPin(Pin);
-                        Pin.Mode = PinMode.DigitalInput;
-                    }
-                }
-            }
-        }
-
-        
         /// <summary>
         /// Get or set the duty cycle (0-1) of the pin
         /// </summary>
-        public double DutyCycle
-        {
-            get
-            {
-                return dutyCycle;
-            }
-            set
-            {
-                if (value > 1.0 || value < 0.0)
-                    throw new ArgumentOutOfRangeException("DutyCycle", "DutyCycle must be between 0.0 and 1.0");
-                dutyCycle = value;
-
-                // update the pulseWidth just in case the user wants to read from the value
-                pulseWidth = (int)Math.Round(dutyCycle * Board.PwmManager.PeriodMicroseconds);
-                Board.PwmManager.SetDutyCycle(Pin, value);
-            }
-        }
+        double DutyCycle {get; set;}
 
         /// <summary>
         /// Get or set the pulse width, in microseconds, of the pin
         /// </summary>
-        public double PulseWidth
-        {
-            get
-            {
-                return pulseWidth;
-            }
-            set
-            {
-                if (value > Board.PwmManager.PeriodMicroseconds || value < 0.0)
-                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + Board.PwmManager.PeriodMicroseconds);
-                pulseWidth = value;
+        double PulseWidth { get; set; }
 
-                DutyCycle = pulseWidth / Board.PwmManager.PeriodMicroseconds;
-            }
-        }
+        /// <summary>
+        /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
+        /// </summary>
+        bool Enabled { get; set; }
     }
 }

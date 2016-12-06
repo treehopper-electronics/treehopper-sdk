@@ -8,11 +8,11 @@ namespace Treehopper.Libraries.Motors
 {
     public class HBridge : ISpeedController
     {
-        IPwm enablePwm;
+        Pwm enablePwm;
         DigitalOutPin enable;
         DigitalOutPin A;
         DigitalOutPin B;       
-        public HBridge(DigitalOutPin A, DigitalOutPin B, IPwm Enable)
+        public HBridge(DigitalOutPin A, DigitalOutPin B, Pwm Enable)
         {
             Enable.Enabled = true;
             Enable.DutyCycle = 0;

@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Displays
     public class Stp16cpc26 : ChainableShiftRegisterOutput, ILedDriver
     {
         DigitalOutPin oe;
-        IPwm oePwm;
+        Pwm oePwm;
 
         public Stp16cpc26(Spi SpiModule, Pin LatchPin, DigitalOutPin OutputEnablePin = null) : base(SpiModule, LatchPin, 2)
         {
@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Displays
             Start();
         }
 
-        public Stp16cpc26(Spi SpiModule, Pin LatchPin, IPwm OutputEnablePin) : base(SpiModule, LatchPin, 2)
+        public Stp16cpc26(Spi SpiModule, Pin LatchPin, Pwm OutputEnablePin) : base(SpiModule, LatchPin, 2)
         {
             this.oePwm = OutputEnablePin;
             Start();
@@ -33,7 +33,7 @@ namespace Treehopper.Libraries.Displays
             Start();
         }
 
-        public Stp16cpc26(ChainableShiftRegisterOutput upstreamDevice, IPwm OutputEnablePin) : base(upstreamDevice, 2)
+        public Stp16cpc26(ChainableShiftRegisterOutput upstreamDevice, Pwm OutputEnablePin) : base(upstreamDevice, 2)
         {
             this.oePwm = OutputEnablePin;
             Start();
