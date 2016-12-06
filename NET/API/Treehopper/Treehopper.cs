@@ -122,14 +122,14 @@ namespace Treehopper
         public Pwm Pwm1 { get; private set; }
         public Pwm Pwm2 { get; private set; }
         public Pwm Pwm3 { get; private set; }
-        public ParallelInterface ParallelInterface { get; private set; }
+        public ReadWriteParallelInterface ParallelInterface { get; private set; }
 
         /// <summary>
         /// Instance of SoftPwmMgr
         /// </summary>
         internal SoftPwmManager SoftPwmMgr { get; private set; }
 
-        public PwmManager PwmManager { get; private set; }
+        public HardwarePwmManager PwmManager { get; private set; }
 
 
         public bool Led

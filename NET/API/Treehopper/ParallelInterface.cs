@@ -10,7 +10,7 @@ namespace Treehopper
     /// <summary>
     /// This module is used to provide an 8080-style R/W parallel interface (especially useful for displays)
     /// </summary>
-    public class ParallelInterface : IReadWriteParallelInterface
+    public class ParallelInterface : ReadWriteParallelInterface
     {
         enum ParallelCmd
         {

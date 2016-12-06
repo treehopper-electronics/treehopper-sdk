@@ -11,7 +11,7 @@ namespace Treehopper
         Intel8080,
         //Motorola6800,
     }
-    public interface IWriteOnlyParallelInterface
+    public interface WriteOnlyParallelInterface
     {
         bool Enabled { get; set; }
         int DelayMicroseconds { get; set; }
@@ -21,7 +21,7 @@ namespace Treehopper
 
     }
 
-    public interface IReadWriteParallelInterface : IWriteOnlyParallelInterface
+    public interface ReadWriteParallelInterface : WriteOnlyParallelInterface
     {
         Task<ushort[]> ReadCommand(uint command, int length);
 
