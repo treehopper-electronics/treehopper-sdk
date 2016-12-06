@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
-    <Compile Include="Comparator.cs" />
     <Compile Include="FirmwareUpdate.cs" />
     <Compile Include="I2c.cs" />
     <Compile Include="IAdcPin.cs" />
