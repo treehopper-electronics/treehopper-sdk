@@ -91,7 +91,7 @@ namespace Treehopper
             }
 
             SoftPwmMgr = new SoftPwmManager(this);
-            PwmManager = new PwmManager(this);
+            PwmManager = new HardwarePwmManager(this);
 
             // Initialize modules
             I2c = new HardwareI2c(this);
