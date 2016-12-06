@@ -9,8 +9,8 @@ namespace Treehopper.Libraries.PortExpander.AnalogMux
 {
     class AnalogMux4051
     {
-        public Collection<IAdcPin> AnalogPins { get; set; }
-        public AnalogMux4051(IAdcPin adcInput, DigitalOutPin a, DigitalOutPin b, DigitalOutPin c)
+        public Collection<AdcPin> AnalogPins { get; set; }
+        public AnalogMux4051(AdcPin adcInput, DigitalOutPin a, DigitalOutPin b, DigitalOutPin c)
         {
 
         }

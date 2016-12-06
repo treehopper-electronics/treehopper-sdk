@@ -97,9 +97,9 @@ namespace Treehopper
             I2c = new TreehopperI2c(this);
             Spi = new Spi(this);
             Uart = new Uart(this);
-            Pwm1 = new Pwm(Pins[7]);
-            Pwm2 = new Pwm(Pins[8]);
-            Pwm3 = new Pwm(Pins[9]);
+            Pwm1 = new HardwarePwm(Pins[7]);
+            Pwm2 = new HardwarePwm(Pins[8]);
+            Pwm3 = new HardwarePwm(Pins[9]);
             ParallelInterface = new ParallelInterface(this);
         }
 
