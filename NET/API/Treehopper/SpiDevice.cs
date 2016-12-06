@@ -7,6 +7,9 @@ using Treehopper.ThirdParty;
 
 namespace Treehopper
 {
+    /// <summary>
+    /// Represents a peripheral attached to the SPI bus
+    /// </summary>
     public class SpiDevice
     {
         /// <summary>
@@ -38,7 +41,19 @@ namespace Treehopper
         /// </remarks>
         public double Frequency { get; set; }
 
+        /// <summary>
+        /// The chip select mode to use with transactions
+        /// </summary>
         public ChipSelectMode ChipSelectMode { get; protected set; }
+
+        /// <summary>
+        /// Construct an SPI device attached to a particular module
+        /// </summary>
+        /// <param name="SpiModule">The module this device is attached to</param>
+        /// <param name="ChipSelect">The chip select pin used by this device</param>
+        /// <param name="SpeedMHz">The speed to operate this device at</param>
+        /// <param name="mode">The SpiMode of this device</param>
+        /// <param name="csMode">The ChipSelectMode to use with this device</param>
         public SpiDevice(Spi SpiModule, Pin ChipSelect, double SpeedMHz = 1, SPIMode mode = SPIMode.Mode00, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow)
         {
             this.ChipSelectMode = csMode;
@@ -52,6 +67,12 @@ namespace Treehopper
             spi.Enabled = true;
         }
 
+        /// <summary>
+        /// Start an SPI transaction
+        /// </summary>
+        /// <param name="dataToSend">The data to send</param>
+        /// <param name="burst">The burst mode, if any, to use</param>
+        /// <returns>Data received by the peripheral</returns>
         public Task<byte[]> SendReceive(byte[] dataToSend, BurstMode burst = BurstMode.NoBurst)
         {
             byte[] retVal = new byte[dataToSend.Length];

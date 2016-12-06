@@ -6,11 +6,29 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Motors.Amis30624
 {
+    /// <summary>
+    /// Step mode
+    /// </summary>
     public enum StepMode
     {
+        /// <summary>
+        /// Half-stepping
+        /// </summary>
         HalfStepping,
+
+        /// <summary>
+        /// Quarter-stepping
+        /// </summary>
         QuarterStepping,
-        EigthStepping,
+
+        /// <summary>
+        /// Eighth-stepping
+        /// </summary>
+        EighthStepping,
+
+        /// <summary>
+        /// Sixteenth-stepping
+        /// </summary>
         SixteenthStepping
     }
 }

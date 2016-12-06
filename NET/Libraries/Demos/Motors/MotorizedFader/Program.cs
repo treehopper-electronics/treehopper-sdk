@@ -20,7 +20,7 @@ namespace MotorizedFaderDemo
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
-            var hbridge = new HBridge(board.Pins[0], board.Pins[1], board.Pwm1);
+            var hbridge = new DualHalfBridge(board.Pins[0], board.Pins[1], board.Pwm1);
             var fader = new MotorizedFader(board.Pins[2], hbridge);
             fader.K = 20;
             fader.Enabled = true;

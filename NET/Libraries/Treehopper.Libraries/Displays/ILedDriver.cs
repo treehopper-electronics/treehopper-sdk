@@ -8,7 +8,10 @@ using Treehopper.Libraries.Interface;
 
 namespace Treehopper.Libraries.Displays
 {
-    public interface ILedDriver : IFlushable
+    /// <summary>
+    /// Represents an LedDriver
+    /// </summary>
+    internal interface ILedDriver : IFlushable
     {
         /// <summary>
         /// Gets or sets whether this controller supports global brightness control.

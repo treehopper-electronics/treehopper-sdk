@@ -38,7 +38,7 @@
     <HelpTitle>Treehopper .NET Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <VisibleItems>InheritedMembers, ProtectedInternalAsProtected</VisibleItems>
-    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, AutoDocumentDispose</MissingTags>
+    <MissingTags>AutoDocumentCtors, AutoDocumentDispose</MissingTags>
     <RootNamespaceTitle>API Reference</RootNamespaceTitle>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">

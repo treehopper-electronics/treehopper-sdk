@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Motors.Amis30624
 {
-    public enum Command
+    internal enum Command
     {
         GetFullStatus1 = 0x81,
         GetFullStatus2 = 0xfc,

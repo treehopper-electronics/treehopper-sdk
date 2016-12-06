@@ -8,9 +8,12 @@ using Treehopper;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// A class representing a MAX7219 SPI-compatible LED driver that can drive up to 64 LED segments (typically arranged as 8 Seven-Segment digits, or a single 8x8 grid of LEDs.
+    /// </summary>
     public class Max7219 : LedDriver
     {
-        public enum Opcode
+        enum Opcode
         {
             Noop = 0,
             Digit0 = 1,
@@ -145,7 +148,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         private static int numDevices = 0;
-        protected async Task Send(Opcode opcode, byte data)
+        private async Task Send(Opcode opcode, byte data)
         {
             if (numDevices < address + 1)
                 numDevices = address + 1;
@@ -186,7 +189,7 @@ namespace Treehopper.Libraries.Displays
         /// </remarks>
         public bool UseNativeLedOrder { get; set; } = false;
 
-        public override void LedStateChanged(Led led)
+        internal override void LedStateChanged(Led led)
         {
 
             int digit = led.Channel / 8;
@@ -209,7 +212,13 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        public override void LedBrightnessChanged(Led led) { }
+        internal override void LedBrightnessChanged(Led led) { }
+
+        /// <summary>
+        /// Flush data to the display
+        /// </summary>
+        /// <param name="force">Whether to force all data to be sent, even if it appears unchanged</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         public async override Task Flush(bool force = false)
         {
             if (AutoFlush && !force) return;

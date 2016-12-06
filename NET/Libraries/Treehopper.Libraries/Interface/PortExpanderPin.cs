@@ -6,17 +6,35 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface
 {
-    public enum PinMode
+    /// <summary>
+    /// Represents a digital I/O pin's mode
+    /// </summary>
+    public enum InputOutputPinMode
     {
+        /// <summary>
+        /// Digital output mode
+        /// </summary>
         DigitalOutput,
+
+        /// <summary>
+        /// Digital input mode
+        /// </summary>
         DigitalInput
     }
+
+    /// <summary>
+    /// Construct a new Port Expander pin
+    /// </summary>
     public class PortExpanderPin : DigitalIOPin
     {
         private int pinNumber;
         private PortExpander portExpander;
-        private PinMode mode;
-        public PinMode Mode
+        private InputOutputPinMode mode;
+
+        /// <summary>
+        /// The mode of the pin
+        /// </summary>
+        public InputOutputPinMode Mode
         {
             get { return mode; }
             set
@@ -28,6 +46,10 @@ namespace Treehopper.Libraries.Interface
         }
 
         private bool digitalValue;
+
+        /// <summary>
+        /// Gets or sets the output value of the pin when an output, or get the current value of the pin when an input
+        /// </summary>
         public bool DigitalValue
         {
             get
@@ -59,28 +81,44 @@ namespace Treehopper.Libraries.Interface
 
         TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
 
+        /// <summary>
+        /// Event occurs whenever a digital input value has changed
+        /// </summary>
         public event OnDigitalInValueChanged DigitalValueChanged;
 
+        /// <summary>
+        /// Wait for the digital input to change
+        /// </summary>
+        /// <returns>The new digital value (when the wait completes)</returns>
         public Task<bool> AwaitDigitalValueChange()
         {
             digitalSignal = new TaskCompletionSource<bool>();
             return digitalSignal.Task;
         }
 
+        /// <summary>
+        /// Make the pin a digital input
+        /// </summary>
         public void MakeDigitalIn()
         {
-            Mode = PinMode.DigitalInput;
+            Mode = InputOutputPinMode.DigitalInput;
         }
 
+        /// <summary>
+        /// Toggle the pin's output value
+        /// </summary>
         public void ToggleOutput()
         {
             MakeDigitalPushPullOut();
             DigitalValue = !DigitalValue;
         }
 
+        /// <summary>
+        /// Make the pin a digital output
+        /// </summary>
         public void MakeDigitalPushPullOut()
         {
-            Mode = PinMode.DigitalOutput;
+            Mode = InputOutputPinMode.DigitalOutput;
         }
     }
 }

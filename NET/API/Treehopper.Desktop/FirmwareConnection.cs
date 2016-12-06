@@ -18,16 +18,26 @@ namespace Treehopper
         private UsbEndpointReader reader;
         private UsbEndpointWriter writer;
 
+        /// <summary>
+        /// Construct a new firmware connection
+        /// </summary>
         public FirmwareConnection()
         {
 
         }
 
+        /// <summary>
+        /// Close the connection
+        /// </summary>
         public void Close()
         {
             dev.Close();
         }
 
+        /// <summary>
+        /// Open the connection
+        /// </summary>
+        /// <returns>whether the connection was opened successfully</returns>
         public async Task<bool> OpenAsync()
         {
             dev = UsbDevice.OpenUsbDevice(new UsbDeviceFinder(0x10C4, 0xEAC9));
@@ -58,6 +68,11 @@ namespace Treehopper
             return true;
         }
 
+        /// <summary>
+        /// Read data from the connection
+        /// </summary>
+        /// <param name="numBytes">Number of bytes read</param>
+        /// <returns>The data read</returns>
         public async Task<byte[]> Read(int numBytes)
         {
             var retVal = new byte[numBytes];
@@ -75,6 +90,11 @@ namespace Treehopper
             return retVal;
         }
 
+        /// <summary>
+        /// Write data to the connection
+        /// </summary>
+        /// <param name="data">The data to write</param>
+        /// <returns>An awaitable task</returns>
         public async Task<bool> Write(byte[] data)
         {
             int transferedBytes = 0;

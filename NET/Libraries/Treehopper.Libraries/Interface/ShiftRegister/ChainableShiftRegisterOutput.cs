@@ -9,6 +9,14 @@ using Treehopper.ThirdParty;
 
 namespace Treehopper.Libraries.Interface.ShiftRegister
 {
+    /// <summary>
+    /// Any shift-register-like device that can be daisy-chained onto other shift registers.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Note that this class doesn't expose a collection of <see cref="DigitalOutPin"/>s  or <see cref="Displays.Led"/>s, and instead, represents any writable shift register device. See <see cref="ShiftOut"/> for an implementation of a pin-based shift register. 
+    /// </para>
+    /// </remarks>
     public abstract class ChainableShiftRegisterOutput : IFlushable
     {
         /// <summary>
@@ -27,6 +35,11 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
             this.numBytes = numBytes;
         }
 
+        /// <summary>
+        /// Set up a ChainableSHiftRegisterOutput connected to another ChainableShiftRegisterOutput device
+        /// </summary>
+        /// <param name="upstreamDevice">The upstream device this device is attached to</param>
+        /// <param name="numBytes">The number of bytes this device occupies in the chain</param>
         public ChainableShiftRegisterOutput(ChainableShiftRegisterOutput upstreamDevice, int numBytes = 1)
         {
             shiftRegisters.Add(this);
@@ -38,7 +51,14 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
             spiDevice = new SpiDevice(spiModule, latchPin, speedMhz, mode, csMode);
         }
 
+        /// <summary>
+        /// Whether or not written data should automatically be flushed to the controller
+        /// </summary>
         public bool AutoFlush { get; set; } = true;
+
+        /// <summary>
+        /// The current value of the port
+        /// </summary>
         public uint CurrentValue { get; protected set; }
         uint lastValues;
 
@@ -70,6 +90,11 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 
         }
 
+        /// <summary>
+        /// Flush data to the port
+        /// </summary>
+        /// <param name="force">Whether to flush all data to the port, even if it doesn't appear to have changed.</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         public async Task Flush(bool force = false)
         {
             if (CurrentValue != lastValues || force)
@@ -79,6 +104,9 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
             }
         }
 
+        /// <summary>
+        /// Update internal data structures from current value
+        /// </summary>
         protected abstract void updateFromCurrentValue();
 
         private static SpiDevice spiDevice;
@@ -87,6 +115,11 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         private int numBytes;
 
         private static readonly AsyncLock lockObject = new AsyncLock();
+
+        /// <summary>
+        /// called to request a write to the device in chain (subsequently updating all devices in the chain)
+        /// </summary>
+        /// <returns></returns>
         protected static async Task requestWrite()
         {
             using(await lockObject.LockAsync())

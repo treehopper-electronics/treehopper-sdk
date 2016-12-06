@@ -51,6 +51,11 @@ namespace Treehopper
             return x;
         }
 
+        /// <summary>
+        /// Convert 4-bit BCD nibbles into an integer
+        /// </summary>
+        /// <param name="val">The value (concatenated 4-bit nibbles) to convert.</param>
+        /// <returns>The integer number</returns>
         public static int BcdToInt(int val)
         {
             int retVal = 0;
@@ -61,6 +66,13 @@ namespace Treehopper
             return retVal;
         }
 
+        /// <summary>
+        /// Convert 4-bit BCD nibbles to a string
+        /// </summary>
+        /// <param name="val">The number (composed of 4-bit nibbles) to convert</param>
+        /// <param name="decimalPlace">Where to draw a decimal point</param>
+        /// <param name="showLeadingZeros">Whether to show leading zeros</param>
+        /// <returns>The string</returns>
         public static string BcdToString(int val, int decimalPlace = 0, bool showLeadingZeros = false)
         {
             string retVal = "";
@@ -81,6 +93,12 @@ namespace Treehopper
         }
 
         static Random random = new Random();
+
+        /// <summary>
+        /// Get a random string with alphanumeric characters
+        /// </summary>
+        /// <param name="length">The number of characters the string should have</param>
+        /// <returns>the generated string</returns>
         public static string RandomString(int length)
         {
             const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";

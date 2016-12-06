@@ -10,6 +10,9 @@ using Treehopper.Mvvm.Messages;
 
 namespace Treehopper.Mvvm.ViewModel
 {
+    /// <summary>
+    /// Base class to implement a Selector view model
+    /// </summary>
     public abstract class SelectorViewModelBase : ViewModelBase, ISelectorViewModel
     {
         private IConnectionService connectionService;
@@ -54,6 +57,9 @@ namespace Treehopper.Mvvm.ViewModel
 
         private TreehopperUsb selectedBoard;
 
+        /// <summary>
+        /// Occurs when the window closes
+        /// </summary>
         public RelayCommand WindowClosing { get; set; }
 
         /// <summary>
@@ -72,12 +78,30 @@ namespace Treehopper.Mvvm.ViewModel
 
         bool isConnected = false;
 
+        /// <summary>
+        /// Event occurs when selected board changed
+        /// </summary>
         public event SelectedBoardChangedEventHandler OnSelectedBoardChanged;
+
+        /// <summary>
+        /// Occurs when a board is connected
+        /// </summary>
         public event BoardConnectedEventHandler OnBoardConnected;
+
+        /// <summary>
+        /// Occurs when a board is disconnected
+        /// </summary>
         public event BoardDisconnectedEventHandler OnBoardDisconnected;
 
+        /// <summary>
+        /// Autoconnect serial number
+        /// </summary>
         public string AutoConnectSerialNumber { get; set; }
 
+        /// <summary>
+        /// Construct a SelectorViewModelBase
+        /// </summary>
+        /// <param name="connectionService">The connection service to use for this selector ViewModel</param>
         public SelectorViewModelBase(IConnectionService connectionService)
         {
             this.connectionService = connectionService;
@@ -100,7 +124,11 @@ namespace Treehopper.Mvvm.ViewModel
                 SelectedBoard.Dispose();
         }
 
-        // If the collection changed, we may have lost our board
+        /// <summary>
+        /// Occurs when the board collection has changed
+        /// </summary>
+        /// <param name="sender">The caller</param>
+        /// <param name="e">The new collection</param>
         protected abstract void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
 
         private bool CloseCommandCanExecute()

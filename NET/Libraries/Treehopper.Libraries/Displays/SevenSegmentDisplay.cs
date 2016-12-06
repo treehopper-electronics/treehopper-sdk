@@ -6,9 +6,17 @@ using System.Linq;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// A display comprised of one or more SevenSegment characters
+    /// </summary>
     public class SevenSegmentDisplay : CharacterDisplay
     {
-        public SevenSegmentDisplay(IList<Led> Leds, bool flipDigits = false) : base(Leds.Count/8, 1)
+        /// <summary>
+        /// Construct a SevenSegment display from a list of LEDs.
+        /// </summary>
+        /// <param name="Leds">The list of LEDs to use</param>
+        /// <param name="rightToLeftDigits">Whether the digits are right-to-left digits</param>
+        public SevenSegmentDisplay(IList<Led> Leds, bool rightToLeftDigits = false) : base(Leds.Count/8, 1)
         {
             if (Leds.Count % 8 != 0)
                 throw new ArgumentException("Leds should contain a multiple of 8 segments when using this constructor", "leds");
@@ -19,16 +27,21 @@ namespace Treehopper.Libraries.Displays
 
             for(int i=0;i<numDigits;i++)
             {
-                var leds = Leds.Skip(i * 8).Take(8);
+                var leds = Leds.Skip(i * 8).Take(8).ToList();
                 var digit = new SevenSegmentDigit(leds);
                 digits.Add(digit);
             }
 
-            if (flipDigits)
+            if (rightToLeftDigits)
                 digits = digits.Reverse().ToList();
 
             setupDigits();
         }
+
+        /// <summary>
+        /// Construct a SevenSegmentDisplay from a collection of already-created digits
+        /// </summary>
+        /// <param name="Digits"></param>
         public SevenSegmentDisplay(IList<SevenSegmentDigit> Digits) : base(Digits.Count, 1)
         {
             this.digits = Digits;
@@ -115,16 +128,29 @@ namespace Treehopper.Libraries.Displays
             }                
         }
 
+        /// <summary>
+        /// clear the display
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         protected override async Task clear()
         {
             
         }
 
+        /// <summary>
+        /// update the cursor position
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         protected override async Task updateCursorPosition()
         {
 
         }
 
+        /// <summary>
+        /// write a value to the current position of the display
+        /// </summary>
+        /// <param name="value">the value to write</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         protected override Task write(dynamic value)
         {
             throw new NotImplementedException();

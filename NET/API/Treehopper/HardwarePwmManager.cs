@@ -11,11 +11,25 @@ namespace Treehopper
     /// Defines the PWM period options
     /// </summary>
     public enum PwmFrequency { 
+        /// <summary>
+        /// 732 Hz PWM frequency
+        /// </summary>
         Freq_732Hz,
+
+        /// <summary>
+        /// 183 Hz PWM frequency
+        /// </summary>
         Freq_183Hz,
+
+        /// <summary>
+        /// 61 Hz PWM frequency
+        /// </summary>
         Freq_61Hz
     };
 
+    /// <summary>
+    /// Hardware PWM manager
+    /// </summary>
     public class HardwarePwmManager
     {
         enum PwmPinEnableMode
@@ -34,7 +48,7 @@ namespace Treehopper
         private byte[] DutyCyclePin8 = new byte[2];
         private byte[] DutyCyclePin9 = new byte[2];
 
-        public HardwarePwmManager(TreehopperUsb treehopperUSB)
+        internal HardwarePwmManager(TreehopperUsb treehopperUSB)
         {
             this.board = treehopperUSB;
         }
@@ -113,6 +127,9 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Get the number of microseconds per tick
+        /// </summary>
         public double MicrosecondsPerTick
         {
             get
@@ -121,6 +138,9 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Get the number of microseconds per period
+        /// </summary>
         public double PeriodMicroseconds
         {
             get
@@ -129,6 +149,9 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Get an integer representing the current PWM frequency
+        /// </summary>
         public int FrequencyHertz
         {
             get
@@ -147,7 +170,8 @@ namespace Treehopper
             }
         }
 
-        public void SendConfig()
+
+        internal void SendConfig()
         {
             byte[] configuration = new byte[64];
 

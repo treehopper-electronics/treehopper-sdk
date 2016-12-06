@@ -109,10 +109,14 @@ namespace Treehopper
             return retVal;
         }
 
+        /// <summary>
+        /// Load the firmware image built-in to this assembly
+        /// </summary>
+        /// <returns>An awaitable bool indicating true for success or false for failure.</returns>
         public Task<bool> LoadAsync()
         {
             var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Treehopper.treehopper.tfi");
-            return  Load(stream);
+            return Load(stream);
         }
     }
 }

@@ -17,6 +17,11 @@ namespace Treehopper.Libraries.Sensors.Optical
         const byte CommandBit = 0xA0;
         const byte ReadBit = 0x01;
 
+
+        /// <summary>
+        /// Construct a TSL2591 ambient light sensor
+        /// </summary>
+        /// <param name="I2cModule">The I2c module this sensor is attached to</param>
         public Tsl2591(I2c I2cModule) : base(0x29, I2cModule, 100)
         {
             var t = ReadByteData(CommandBit | (byte)Registers.DeviceId);
@@ -28,6 +33,10 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
         private IntegrationTime integrationTime = IntegrationTime.Time_100ms;
+
+        /// <summary>
+        /// Get or set the integration time of this sensor
+        /// </summary>
         public IntegrationTime IntegrationTimeSetting
         {
             get
@@ -44,6 +53,10 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
 
         private Gain gain = Gain.Low;
+
+        /// <summary>
+        /// Get or set the gain setting
+        /// </summary>
         public Gain GainSetting
         {
             get
@@ -65,7 +78,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             await WriteByteData((byte)Registers.Control, config);
         }
 
-        public enum Registers
+        enum Registers
         {
             Enable = 0x00,
             Control = 0x01,
@@ -87,21 +100,65 @@ namespace Treehopper.Libraries.Sensors.Optical
             Ch1HighByte = 0x17
         };
 
+        /// <summary>
+        /// Integration times
+        /// </summary>
         public enum IntegrationTime
         {
+            /// <summary>
+            /// 100 ms
+            /// </summary>
             Time_100ms,
+
+            /// <summary>
+            /// 200 ms
+            /// </summary>
             Time_200ms,
+
+            /// <summary>
+            /// 300 ms
+            /// </summary>
             Time_300ms,
+
+            /// <summary>
+            /// 400 ms
+            /// </summary>
             Time_400ms,
+
+            /// <summary>
+            /// 500 ms
+            /// </summary>
             Time_500ms,
+
+            /// <summary>
+            /// 600 ms
+            /// </summary>
             Time_600ms
         };
 
+        /// <summary>
+        /// Gain settings
+        /// </summary>
         public enum Gain
         {
+            /// <summary>
+            /// Low
+            /// </summary>
             Low,
+
+            /// <summary>
+            /// Medium
+            /// </summary>
             Medium,
+
+            /// <summary>
+            /// High
+            /// </summary>
             High,
+
+            /// <summary>
+            /// Maximum
+            /// </summary>
             Maximum
         };
     }

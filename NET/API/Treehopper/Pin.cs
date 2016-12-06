@@ -54,10 +54,21 @@ namespace Treehopper
     /// <param name="value">The new value of the pin</param>
     public delegate void OnDigitalInValueChanged(object sender, DigitalInValueChangedEventArgs value);
 
+    /// <summary>
+    /// An EventArgs that represents a digital input changing
+    /// </summary>
     public class DigitalInValueChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct the event argument with the new digital value
+        /// </summary>
+        /// <param name="newValue">The new digital value</param>
         public DigitalInValueChangedEventArgs(bool newValue) { NewValue = newValue;  }
-        bool NewValue { get; set; }
+
+        /// <summary>
+        /// A property representing the new value
+        /// </summary>
+        public bool NewValue { get; set; }
     }
 
     internal enum PinConfigCommands
@@ -161,12 +172,6 @@ namespace Treehopper
     /// </remarks>
     public class Pin : INotifyPropertyChanged, DigitalInPin, DigitalOutPin, AdcPin
     {
-        protected string ioName;
-        /// <summary>
-        /// The EFM8 I/O name of the pin
-        /// </summary>
-        public string IOName { get { return ioName; } }
-
         private TreehopperUsb board;
         /// <summary>
         /// This returns a reference to the Treehopper board this pin belongs to.

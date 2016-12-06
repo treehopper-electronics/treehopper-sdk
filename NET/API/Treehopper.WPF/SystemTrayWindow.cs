@@ -5,6 +5,9 @@ using System.Drawing;
 
 namespace Treehopper.WPF
 {
+    /// <summary>
+    /// A utility class for easily minimizing WPF windows to the system tray
+    /// </summary>
     public class MinimizeToSystemTray
     {
         NotifyIcon ni;

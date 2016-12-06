@@ -34,8 +34,7 @@ namespace Demo
                 await board.ConnectAsync();
                 Console.WriteLine("Connected. Starting application...");
 
-                var servo = new HobbyServo(board.Pins[0], 650, 2600);
-                servo.Enabled = true;
+                var servo = new HobbyServo(board.Pins[0].SoftPwm, 650, 2600);
                 while(board.IsConnected)
                 {
                     Console.WriteLine("Clockwise...");

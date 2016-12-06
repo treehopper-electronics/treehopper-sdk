@@ -7,10 +7,23 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// Represents a collection of LEDs visually arranged in a line or circle that represent a real-valued number from 0.0 to 1.0.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This class can be used to construct a wide variety of dynamic displays, including LED rings around encoders, linear displays, and animation effects.
+    /// </para>
+    /// </remarks>
     public class BarGraph
     {
         private IList<Led> leds;
         private Collection<ILedDriver> drivers = new Collection<ILedDriver>();
+
+        /// <summary>
+        /// Construct a bar graph from a list of LEDs.
+        /// </summary>
+        /// <param name="Leds">The list of LEDs to use in the bar graph</param>
         public BarGraph(IList<Led> Leds)
         {
             this.leds = Leds;
@@ -27,6 +40,10 @@ namespace Treehopper.Libraries.Displays
         }
 
         private double val = 0;
+
+        /// <summary>
+        /// THe value -- from 0.0 to 1.0 -- of the bar graph
+        /// </summary>
         public double Value
         {
             get { return val; }
@@ -60,6 +77,10 @@ namespace Treehopper.Libraries.Displays
         }
 
         private bool fill = true;
+
+        /// <summary>
+        /// Gets or sets whether the display should fill. When false, the display's current value is only indicated by a single LED.
+        /// </summary>
         public bool Fill
         {
             get { return fill; }

@@ -4,13 +4,25 @@ using System.Collections.Generic;
 
 namespace Treehopper
 {
-
+    /// <summary>
+    /// Whether to use UART or OneWire mode
+    /// </summary>
     public enum UartMode
     {
+        /// <summary>
+        /// The module is operating in UART mode
+        /// </summary>
         Uart,
+
+        /// <summary>
+        /// The module is operating in OneWire mode. Only the TX pin is used.
+        /// </summary>
         OneWire
     }
 
+    /// <summary>
+    /// Module that implements hardware UART and OneWire functionality
+    /// </summary>
     public class Uart : IOneWire
     {
         private enum UartConfig : byte
@@ -39,6 +51,10 @@ namespace Treehopper
         private TreehopperUsb device;
 
         private UartMode mode = UartMode.Uart;
+
+        /// <summary>
+        /// Gets or sets the UART mode
+        /// </summary>
         public UartMode Mode
         {
             get
@@ -56,6 +72,9 @@ namespace Treehopper
 
         }
 
+        /// <summary>
+        /// Enable or disable the UART
+        /// </summary>
         public bool Enabled
         {
             get
@@ -73,6 +92,9 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Set or get the baud of the UART
+        /// </summary>
         public int Baud
         {
             get
@@ -90,10 +112,16 @@ namespace Treehopper
             }
         }
 
-        public double ActualBaud { get; set; }
+        /// <summary>
+        /// Get the actual baud rate currently used
+        /// </summary>
+        public double ActualBaud { get; private set; }
 
         private bool useOpenDrainTx = false;
 
+        /// <summary>
+        /// Whether to use an open-drain TX pin or not.
+        /// </summary>
         public bool UseOpenDrainTx
         {
             get
@@ -175,11 +203,21 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Send a byte out of the UART
+        /// </summary>
+        /// <param name="data">The byte to send</param>
+        /// <returns>An awaitable task that completes upon transmission of the byte</returns>
         public Task Send(byte data)
         {
             return Send(new byte[] { data });
         }
 
+        /// <summary>
+        /// Send data
+        /// </summary>
+        /// <param name="dataToSend">The data to send</param>
+        /// <returns>An awaitable task that completes upon transmission of the data</returns>
         public async Task Send(byte[] dataToSend)
         {
             if(dataToSend.Length > 63)
@@ -200,7 +238,11 @@ namespace Treehopper
         }
 
         
-
+        /// <summary>
+        /// Receive bytes from the UART
+        /// </summary>
+        /// <param name="numBytes">The number of bytes to receive</param>
+        /// <returns>The bytes received</returns>
         public async Task<byte[]> Receive(int numBytes = 0)
         {
             byte[] retVal = new byte[0];
@@ -263,6 +305,10 @@ namespace Treehopper
             return retVal;
         }
 
+        /// <summary>
+        /// Search for One Wire devices on the bus
+        /// </summary>
+        /// <returns>A list of addresses found</returns>
         public async Task<List<UInt64>> OneWireSearch()
         {
             Mode = UartMode.OneWire;
@@ -291,6 +337,11 @@ namespace Treehopper
             return retVal;
         }
 
+        /// <summary>
+        /// Reset and match a device on the One-Wire bus
+        /// </summary>
+        /// <param name="address">The address to reset and match</param>
+        /// <returns></returns>
         public async Task OneWireResetAndMatchAddress(UInt64 address)
         {
             Mode = UartMode.OneWire;
@@ -304,6 +355,9 @@ namespace Treehopper
             await Send(data).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Start one-wire mode on this interface
+        /// </summary>
         public void StartOneWire()
         {
             Mode = UartMode.OneWire;

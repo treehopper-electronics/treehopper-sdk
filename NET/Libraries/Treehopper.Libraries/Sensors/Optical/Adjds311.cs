@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
+    /// <summary>
+    /// ADJDS311 ambient light sensor
+    /// </summary>
     public class Adjds311 : SMBusDevice, INotifyPropertyChanged
     {
         byte CTRL          = 0x00;
@@ -32,15 +35,20 @@ namespace Treehopper.Libraries.Sensors.Optical
         byte DATA_CLEAR_HI = 0x47;
 
         I2c _I2C;
-        Pin led;
+        DigitalOutPin led;
 
-        public Adjds311(I2c I2CDevice, Pin LedPin) : base(0x74, I2CDevice)
+        /// <summary>
+        /// Create a ADJDS311 device
+        /// </summary>
+        /// <param name="I2CDevice">The I2c port to use</param>
+        /// <param name="LedPin">The pin attached to the led</param>
+        public Adjds311(I2c I2CDevice, DigitalOutPin LedPin) : base(0x74, I2CDevice)
         {
             _I2C = I2CDevice;
             _I2C.Enabled = true;
 
             led = LedPin;
-            led.Mode = PinMode.PushPullOutput;
+            led.MakeDigitalPushPullOut();
 
             WriteByteData(CAP_RED, 15);
             WriteByteData(CAP_GREEN, 15);
@@ -59,12 +67,25 @@ namespace Treehopper.Libraries.Sensors.Optical
             
 
         }
-
+        /// <summary>
+        /// Red data
+        /// </summary>
         public ushort Red { get; set; }
+
+        /// <summary>
+        /// Green data
+        /// </summary>
         public ushort Green { get; set; }
+
+        /// <summary>
+        /// Blue data
+        /// </summary>
         public ushort Blue { get; set; }
 
-        public async void updateColor()
+        /// <summary>
+        /// Get new color data
+        /// </summary>
+        public async void UpdateColor()
         {
             led.DigitalValue = true;
             await WriteByteData(0, 1);
@@ -88,6 +109,9 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
+        /// <summary>
+        /// Occurs when any property changes
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

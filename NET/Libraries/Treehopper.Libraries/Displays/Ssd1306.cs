@@ -7,18 +7,45 @@ using Treehopper;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// An SSD1306-based OLED display
+    /// </summary>
     public class Ssd1306 : GraphicDisplay
     {
+        /// <summary>
+        /// The size of the pixel array
+        /// </summary>
         public enum DisplaySize
         {
+            /// <summary>
+            /// 128x32 display
+            /// </summary>
             Pixels128x32,
+
+            /// <summary>
+            /// 128x64 display
+            /// </summary>
             Pixels128x64,
+
+            /// <summary>
+            /// 96x16 display
+            /// </summary>
             Pixels96x16
         }
 
+        /// <summary>
+        /// Whether VCC is supplied externally or internally
+        /// </summary>
         public enum VccMode
         {
+            /// <summary>
+            /// External VCC supply
+            /// </summary>
             External,
+
+            /// <summary>
+            /// Switched-capacitor VCC supply
+            /// </summary>
             SwitchCap
         }
         enum Command
@@ -68,8 +95,19 @@ namespace Treehopper.Libraries.Displays
 
         private SMBusDevice dev;
 
+        /// <summary>
+        /// A bool array representing pixel states
+        /// </summary>
         public bool[,] BoolBuffer { get; set; }
 
+        /// <summary>
+        /// Construct a new SSD1306 OLED display
+        /// </summary>
+        /// <param name="I2c">The I2c module to use</param>
+        /// <param name="width">The number of pixels wide</param>
+        /// <param name="height">The number of pixels tall</param>
+        /// <param name="address">The address</param>
+        /// <param name="mode">The VCC mode of the display</param>
         public Ssd1306(I2c I2c, int width = 128, int height = 32, byte address = 0x3C, VccMode mode = VccMode.SwitchCap) : base(width, height)
         {
             if (!((Width == 128 && Height == 32) || (Width == 128 && Height == 64) || (Width == 96 && Height == 16)))
@@ -161,6 +199,9 @@ namespace Treehopper.Libraries.Displays
             return dev.WriteData(dat);
         }
 
+        /// <summary>
+        /// Clear the display
+        /// </summary>
         public void Clear()
         {
             //for (int i = 0; i < Width * Height/8; i++)
@@ -177,7 +218,10 @@ namespace Treehopper.Libraries.Displays
                 
                     
         }
-
+        /// <summary>
+        /// Flush the display
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         protected override async Task flush()
         {
             await sendCommand(Command.ColumnAddress).ConfigureAwait(false);

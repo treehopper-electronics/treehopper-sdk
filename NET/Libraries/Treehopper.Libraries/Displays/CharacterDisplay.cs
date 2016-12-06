@@ -7,17 +7,40 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// Represents displays that can print strings of alphanumeric characters on one or more lines
+    /// </summary>
     public abstract class CharacterDisplay
     {
+        /// <summary>
+        /// History of previously-written lines from the display
+        /// </summary>
         public Collection<string> History { get; private set; } = new Collection<string>();
+
+        /// <summary>
+        /// Current lines of the display
+        /// </summary>
         public Collection<string> Lines { get; private set; } = new Collection<string>();
+
+        /// <summary>
+        /// Number of columns of the display
+        /// </summary>
         public int Columns { get; private set; }
+
+        /// <summary>
+        /// Number of rows of the display
+        /// </summary>
         public int Rows { get; private set; }
 
         private int cursorLeft;
 
         private int cursorTop;
 
+        /// <summary>
+        /// Construct a character display
+        /// </summary>
+        /// <param name="Columns">Number of columns</param>
+        /// <param name="Rows">Number of rows</param>
         public CharacterDisplay(int Columns, int Rows)
         {
             this.Columns = Columns;
@@ -26,6 +49,9 @@ namespace Treehopper.Libraries.Displays
                 Lines.Add("");
         }
 
+        /// <summary>
+        /// Cursor left position
+        /// </summary>
         public int CusorLeft
         {
             get { return cursorLeft; }
@@ -37,6 +63,9 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
+        /// <summary>
+        /// Cursor top position
+        /// </summary>
         public int CusorTop
         {
             get { return cursorTop; }
@@ -47,6 +76,13 @@ namespace Treehopper.Libraries.Displays
                 updateCursorPosition().Wait();
             }
         }
+
+        /// <summary>
+        /// Set left/right cursor position
+        /// </summary>
+        /// <param name="left">The left position</param>
+        /// <param name="top">The top position</param>
+        /// <returns></returns>
         public Task SetCursorPosition(int left, int top)
         {
             cursorLeft = left;
@@ -54,11 +90,21 @@ namespace Treehopper.Libraries.Displays
             return updateCursorPosition();
         }
 
+        /// <summary>
+        /// Write a line of text, advancing the cursor to the next line
+        /// </summary>
+        /// <param name="value">the text to write</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task WriteLine(dynamic value)
         {
             return Write(value + "\n");
         }
 
+        /// <summary>
+        /// Write text
+        /// </summary>
+        /// <param name="value">the text to write</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         public async Task Write(dynamic value)
         {
             if(cursorTop > Rows-1)
@@ -99,6 +145,10 @@ namespace Treehopper.Libraries.Displays
             
         }
 
+        /// <summary>
+        /// Clear the display
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task Clear()
         {
             cursorLeft = 0;
@@ -112,7 +162,18 @@ namespace Treehopper.Libraries.Displays
         /// Clear the display. The driver is expected to reset the cursor to home
         /// </summary>
         protected abstract Task clear();
+
+        /// <summary>
+        /// internally updates the current cursor position
+        /// </summary>
+        /// <returns></returns>
         protected abstract Task updateCursorPosition();
+
+        /// <summary>
+        /// write text at the current cursor position
+        /// </summary>
+        /// <param name="value">the data to write</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         protected abstract Task write(dynamic value);
     }
 }
