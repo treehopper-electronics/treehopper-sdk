@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Interface
         {
             if (digitalValue == value) return;
             digitalValue = value;
-            DigitalValueChanged?.Invoke((DigitalInPin)this, value);
+            DigitalValueChanged?.Invoke((DigitalInPin)this, new DigitalInValueChangedEventArgs(digitalValue));
             digitalSignal.TrySetResult(digitalValue);
         }
         internal PortExpanderPin(PortExpander portExpander, int pinNumber)
