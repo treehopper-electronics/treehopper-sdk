@@ -60,13 +60,13 @@ namespace Treehopper.Libraries.Displays
         private BitMode bits;
         private LinesMode lines;
         private FontMode font;
-        private IWriteOnlyParallelInterface iface;
+        private WriteOnlyParallelInterface iface;
         private bool display;
         private bool cursor;
         private bool blink;
         private DigitalOutPin backlight;
 
-        public Hd44780(IWriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOutPin Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
+        public Hd44780(WriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOutPin Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
         {
             if (iface.Width == 8)
                 this.bits = BitMode.EightBit;

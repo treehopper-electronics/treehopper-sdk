@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface
 {
-    public class FlushableParallelInterface<T> : IWriteOnlyParallelInterface where T : DigitalOutPin
+    public class FlushableParallelInterface<T> : WriteOnlyParallelInterface where T : DigitalOutPin
     {
         private IFlushableOutputPort<T> port;
 
