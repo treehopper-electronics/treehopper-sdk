@@ -37,13 +37,13 @@
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
     <Compile Include="FirmwareUpdate.cs" />
-    <Compile Include="I2c.cs" />
+    <Compile Include="TreehopperI2c.cs" />
     <Compile Include="IAdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
     <Compile Include="IDigitalPin.cs" />
     <Compile Include="IFirmwareConnection.cs" />
-    <Compile Include="II2c.cs" />
+    <Compile Include="I2c.cs" />
     <Compile Include="IOneWire.cs" />
     <Compile Include="IParallelInterface.cs" />
     <Compile Include="IPwm.cs" />
