@@ -215,3 +215,4 @@ NET/Demos/UWP/TreehopperShowcase/null
 /thirdparty
 *.lock.json
 NET/Demos/UWP/TreehopperShowcase/project.lock.json
+NET/Sandbox/Program.cs
