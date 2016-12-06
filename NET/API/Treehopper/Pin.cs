@@ -52,7 +52,13 @@ namespace Treehopper
     /// </summary>
     /// <param name="sender">The Pin that changed</param>
     /// <param name="value">The new value of the pin</param>
-    public delegate void OnDigitalInValueChanged(DigitalInPin sender, bool value);
+    public delegate void OnDigitalInValueChanged(object sender, DigitalInValueChangedEventArgs value);
+
+    public class DigitalInValueChangedEventArgs : EventArgs
+    {
+        public DigitalInValueChangedEventArgs(bool newValue) { NewValue = newValue;  }
+        bool NewValue { get; set; }
+    }
 
     internal enum PinConfigCommands
     {
@@ -361,7 +367,7 @@ namespace Treehopper
 
         internal void RaiseDigitalInValueChanged()
         {
-            DigitalValueChanged?.Invoke(this, digitalValue);
+            DigitalValueChanged?.Invoke(this, new DigitalInValueChangedEventArgs(digitalValue));
 
             digitalSignal.TrySetResult(digitalValue);
         }
