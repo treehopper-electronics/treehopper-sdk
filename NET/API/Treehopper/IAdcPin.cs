@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
-    public interface IAdcPin
+    public interface AdcPin
     {
         void MakeAnalogIn();
     }
