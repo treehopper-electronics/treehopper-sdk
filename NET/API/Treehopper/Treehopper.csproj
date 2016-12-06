@@ -51,7 +51,7 @@
     <Compile Include="Pin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HardwarePwm.cs" />
-    <Compile Include="PwmManager.cs" />
+    <Compile Include="HardwarePwmManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SMBusDevice.cs" />
     <Compile Include="SoftPwm.cs" />

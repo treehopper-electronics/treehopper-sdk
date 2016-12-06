@@ -115,21 +115,10 @@ namespace Treehopper
                     }
 
                     board.sendPeripheralConfigPacket(config);
-
-                    //foreach (var pin in pins.Values.Where((pin) => pin.Ticks == UInt16.MaxValue))
-                    //{
-                    //    pin.Pin.DigitalValue = true;
-                    //}
-
-                    //foreach (var pin in pins.Values.Where((pin) => pin.Ticks == 0))
-                    //{
-                    //    pin.Pin.DigitalValue = false;
-                    //}
-
                 }
                 else
                 {
-                    // turn off the SoftPWM interrupt
+                    // disable SoftPWM
                     board.sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.SoftPwmConfig, 0 });
                 }
             

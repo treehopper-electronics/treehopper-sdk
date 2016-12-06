@@ -16,7 +16,7 @@ namespace Treehopper
         Freq_61Hz
     };
 
-    public class PwmManager
+    public class HardwarePwmManager
     {
         enum PwmPinEnableMode
         {
@@ -34,7 +34,7 @@ namespace Treehopper
         private byte[] DutyCyclePin8 = new byte[2];
         private byte[] DutyCyclePin9 = new byte[2];
 
-        public PwmManager(TreehopperUsb treehopperUSB)
+        public HardwarePwmManager(TreehopperUsb treehopperUSB)
         {
             this.board = treehopperUSB;
         }
