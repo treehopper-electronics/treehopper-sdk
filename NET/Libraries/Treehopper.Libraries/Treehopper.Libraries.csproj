@@ -64,7 +64,7 @@
     <Compile Include="Interface\FlushableParallelInterface.cs" />
     <Compile Include="Interface\I2cMux\I2cMux.cs" />
     <Compile Include="Interface\I2cMux\I2cMuxPort.cs" />
-    <Compile Include="Interface\I2cMux\Mux4052.cs" />
+    <Compile Include="Interface\I2cMux\I2cMux4052.cs" />
     <Compile Include="Interface\IFlushable.cs" />
     <Compile Include="Interface\IFlushableOutputPort.cs" />
     <Compile Include="Interface\Ltc2305.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="Interface\ShiftRegister\Sn74hc166.cs" />
     <Compile Include="Interface\ShiftRegister\Sn74hc595.cs" />
     <Compile Include="Motors\Amis30624\Acceleration.cs" />
-    <Compile Include="Motors\Amis30624\Address.cs" />
     <Compile Include="Motors\Amis30624\Amis30624.cs" />
     <Compile Include="Motors\Amis30624\Command.cs" />
     <Compile Include="Motors\Amis30624\HoldingCurrent.cs" />
@@ -87,9 +86,9 @@
     <Compile Include="Motors\Amis30624\RunningCurrent.cs" />
     <Compile Include="Motors\Amis30624\StepMode.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
-    <Compile Include="Motors\HBridge.cs" />
+    <Compile Include="Motors\DualHalfBridge.cs" />
     <Compile Include="Motors\HobbyServo.cs" />
-    <Compile Include="Motors\ISpeedController.cs" />
+    <Compile Include="Motors\MotorSpeedController.cs" />
     <Compile Include="Motors\MotorizedFader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensors\Inertial\IAccelerometer.cs" />

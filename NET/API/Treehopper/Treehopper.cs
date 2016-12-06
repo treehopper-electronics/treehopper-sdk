@@ -52,11 +52,23 @@ namespace Treehopper
 		SPIDataReceived
 	}
 
-
+    /// <summary>
+    /// An event handler for when a board is added
+    /// </summary>
+    /// <param name="BoardAdded">The new board</param>
     public delegate void TreehopperUsbAddedHandler(TreehopperUsb BoardAdded);
 
+    /// <summary>
+    /// An event handler for when a board is removed
+    /// </summary>
+    /// <param name="BoardRemoved">the removed board</param>
     public delegate void TreehopperUsbRemovedHandler(TreehopperUsb BoardRemoved);
 
+    /// <summary>
+    /// An event handler for when a new pin update report comes in
+    /// </summary>
+    /// <param name="sender">The board from where it originated</param>
+    /// <param name="e">A ference to the new pin update report</param>
     public delegate void PinValuesUpdatedHandler(object sender, EventArgs e);
 
     /// <summary>
@@ -72,6 +84,9 @@ namespace Treehopper
     /// </remarks>
     public class TreehopperUsb : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUsb>, IEqualityComparer<TreehopperUsb>
     {
+        /// <summary>
+        /// Controls the global settings used by all Treehopper libraries for this session
+        /// </summary>
         public static Settings Settings { get; set; } = new Settings();
 
 
@@ -80,6 +95,10 @@ namespace Treehopper
         private IConnection connection;
         private bool led = false;
 
+        /// <summary>
+        /// Construct a new TreehopperUsb board from a connection
+        /// </summary>
+        /// <param name="treehopperUsbConnection">the connection to construct the board with</param>
         public TreehopperUsb(IConnection treehopperUsbConnection)
         {
             this.connection = treehopperUsbConnection;
@@ -117,11 +136,29 @@ namespace Treehopper
         /// </summary>
         public Spi Spi { get; private set; }
 
+        /// <summary>
+        /// Hardware UART supporting RS-232 and OneWire-style communication.
+        /// </summary>
         public Uart Uart { get; private set; }
 
+        /// <summary>
+        /// Hardware PWM #1
+        /// </summary>
         public Pwm Pwm1 { get; private set; }
+
+        /// <summary>
+        /// Hardware PWM #2
+        /// </summary>
         public Pwm Pwm2 { get; private set; }
+
+        /// <summary>
+        /// Hardware PWM #3
+        /// </summary>
         public Pwm Pwm3 { get; private set; }
+
+        /// <summary>
+        /// 8080-style parallel interface
+        /// </summary>
         public ParallelInterface ParallelInterface { get; private set; }
 
         /// <summary>
@@ -129,9 +166,14 @@ namespace Treehopper
         /// </summary>
         internal SoftPwmManager SoftPwmMgr { get; private set; }
 
+        /// <summary>
+        /// Hardware PWM manager
+        /// </summary>
         public HardwarePwmManager PwmManager { get; private set; }
 
-
+        /// <summary>
+        /// Gets or sets the LED state
+        /// </summary>
         public bool Led
         {
             get
@@ -153,6 +195,11 @@ namespace Treehopper
 
         #endregion
 
+        /// <summary>
+        /// Quick pin accessor property
+        /// </summary>
+        /// <param name="index">The pin index to access</param>
+        /// <returns></returns>
         public Pin this[int index]
         {
             get
@@ -160,10 +207,20 @@ namespace Treehopper
                 return Pins[index];
             }
         }
+
+        /// <summary>
+        /// Get whether or not the board is connected
+        /// </summary>
         public bool IsConnected { get; internal set; }
 
-        public int NumberOfPins { get { return 20; } }
+        /// <summary>
+        /// Get the number of pins of this board
+        /// </summary>
+        public int NumberOfPins { get { return Pins.Count; } }
 
+        /// <summary>
+        /// Get the Connection used by this board
+        /// </summary>
         public IConnection Connection { get { return connection; } }
         
 
@@ -222,7 +279,9 @@ namespace Treehopper
 			}
 		}
 
-
+        /// <summary>
+        /// Get a string representation of the firmware version number
+        /// </summary>
         public string VersionString
         {
             get
@@ -231,6 +290,9 @@ namespace Treehopper
             }
         }
 
+        /// <summary>
+        /// Get the firmware version number
+        /// </summary>
         public int Version
         {
             get
@@ -256,6 +318,10 @@ namespace Treehopper
             sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.Reboot });
             Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
         }
+
+        /// <summary>
+        /// Reboot the board into bootloader mode
+        /// </summary>
         public void RebootIntoBootloader()
         {
             sendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.EnterBootloader });
@@ -305,6 +371,9 @@ namespace Treehopper
             return Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
         }
 
+        /// <summary>
+        /// Destruct a Treehopper board
+        /// </summary>
         ~TreehopperUsb()
         {
             Dispose();
@@ -341,6 +410,9 @@ namespace Treehopper
             return true;
 		}
 
+        /// <summary>
+        /// Reinitialize the board, setting all pins as digital inputs
+        /// </summary>
         public void Reinitialize()
         {
             var data = new byte[2];
@@ -393,32 +465,6 @@ namespace Treehopper
                 connection.Close();
             IsConnected = false;
 		}
-
-
-
-        public void GenerateAnalogDemoData()
-        {
-            int i = 512;
-            foreach (Pin pin in Pins)
-            {
-                pin.Mode = PinMode.AnalogInput;
-                pin.UpdateValue((byte)(i >> 8), (byte)i);
-                i += 512;
-            }
-        }
-
-        public void GenerateDigitalTestData()
-        {
-            byte i = 0;
-            foreach (Pin pin in Pins)
-            {
-                pin.Mode = PinMode.DigitalInput;
-                pin.UpdateValue(0x01, 0x00);
-                i ^= 0x01;
-            }
-        }
-
-
 
         /// <summary>
         /// Close device connection and free memory. 
@@ -473,6 +519,10 @@ namespace Treehopper
 			return (x.ToString() == y.ToString());
 		}
 
+        /// <summary>
+        /// Get the hash code of this board
+        /// </summary>
+        /// <returns>The hash code</returns>
         public override int GetHashCode()
         {
             return GetHashCode(this);
@@ -516,6 +566,14 @@ namespace Treehopper
 		/// </remarks>
 		public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Event fires whenever a new pin data report comes in (i.e., when all input pins are updated)
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// While each pin can be configured to fire events when it changes, if you're dealing with a large number of input pins, you may get better performance by subscribing to this event alone.
+        /// </para>
+        /// </remarks>
         public event PinValuesUpdatedHandler OnPinValuesUpdated;
 
 		private void RaisePropertyChanged(string property)
@@ -560,8 +618,15 @@ namespace Treehopper
 		}
 	}
 
+    /// <summary>
+    /// Task extensions
+    /// </summary>
     public static class TaskExtensions
     {
+        /// <summary>
+        /// Empty method which prevents VS from generating warnings from un-awaited calls. 
+        /// </summary>
+        /// <param name="task"></param>
         public static void Forget(this Task task)
         {
         }

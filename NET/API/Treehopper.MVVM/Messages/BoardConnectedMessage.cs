@@ -7,6 +7,9 @@ namespace Treehopper.Mvvm.Messages
     /// </summary>
     public class BoardConnectedMessage
     {
+        /// <summary>
+        /// The connected board
+        /// </summary>
         public TreehopperUsb Board { get; set; }
     }
 }

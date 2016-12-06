@@ -10,29 +10,54 @@ using Treehopper.Libraries.Interface.ShiftRegister;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// A STP16CPC26 LED driver, which is a 16-bit constant-current shift register sink.
+    /// </summary>
     public class Stp16cpc26 : ChainableShiftRegisterOutput, ILedDriver
     {
         DigitalOutPin oe;
         Pwm oePwm;
 
+        /// <summary>
+        /// Construct an STP16CPC26 attached directly to a board SPI module
+        /// </summary>
+        /// <param name="SpiModule">The board's SPI module</param>
+        /// <param name="LatchPin">The pin to use for latches</param>
+        /// <param name="OutputEnablePin">The output enable pin, if any, to use.</param>
         public Stp16cpc26(Spi SpiModule, Pin LatchPin, DigitalOutPin OutputEnablePin = null) : base(SpiModule, LatchPin, 2)
         {
             oe = OutputEnablePin;
             Start();
         }
 
+        /// <summary>
+        /// Construct an STP16CPC26 attached directly to a board SPI module
+        /// </summary>
+        /// <param name="SpiModule">The board's SPI module</param>
+        /// <param name="LatchPin">The pin to use for latches</param>
+        /// <param name="OutputEnablePin">The PWM pin to use, allowing controllable global brightness.</param>
         public Stp16cpc26(Spi SpiModule, Pin LatchPin, Pwm OutputEnablePin) : base(SpiModule, LatchPin, 2)
         {
             this.oePwm = OutputEnablePin;
             Start();
         }
 
+        /// <summary>
+        /// Construct an STP16CPC26 attached to the output of another shift register
+        /// </summary>
+        /// <param name="upstreamDevice">The upstream device this shift register is attached to</param>
+        /// <param name="OutputEnablePin">The digital pin to use, if any, to control the display state</param>
         public Stp16cpc26(ChainableShiftRegisterOutput upstreamDevice, DigitalOutPin OutputEnablePin = null) : base(upstreamDevice, 2)
         {
             oe = OutputEnablePin;
             Start();
         }
 
+        /// <summary>
+        /// Construct an STP16CPC26 attached to the output of another shift register
+        /// </summary>
+        /// <param name="upstreamDevice">The upstream device this shift register is attached to</param>
+        /// <param name="OutputEnablePin">The PWM pin to use, if any, to control the display brightness</param>
         public Stp16cpc26(ChainableShiftRegisterOutput upstreamDevice, Pwm OutputEnablePin) : base(upstreamDevice, 2)
         {
             this.oePwm = OutputEnablePin;
@@ -59,12 +84,15 @@ namespace Treehopper.Libraries.Displays
             {
                 HasGlobalBrightnessControl = false;
             }
-
+            HasIndividualBrightnessControl = false;
             Brightness = 1.0; // turn on the display
         }
 
         double brightness;
 
+        /// <summary>
+        /// Gets or sets the brightness of this driver
+        /// </summary>
         public double Brightness
         {
             get
@@ -85,10 +113,24 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
+        /// <summary>
+        /// Gets whether this driver has global brightness
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The state of this value depends if the board was constructed with a <see cref="Pwm"/> pin or not. 
+        /// </para>
+        /// </remarks>
         public bool HasGlobalBrightnessControl { get; private set; }
 
+        /// <summary>
+        /// Gets whether this driver has individual brightness control. This parameter will always return false.
+        /// </summary>
         public bool HasIndividualBrightnessControl { get; private set; }
 
+        /// <summary>
+        /// Gets the LEDs belonging to this controller
+        /// </summary>
         public IList<Led> Leds { get; private set; } = new Collection<Led>();
 
         ushort currentValue = 0x0000;
@@ -108,11 +150,18 @@ namespace Treehopper.Libraries.Displays
             
         }
 
+        /// <summary>
+        /// Clear the display
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task Clear()
         {
             return Write(0);
         }
 
+        /// <summary>
+        /// Update the LED states from the current value
+        /// </summary>
         protected override void updateFromCurrentValue()
         {
             uint currentValue = CurrentValue; // CurrentValue is an expensive read, so only read it once

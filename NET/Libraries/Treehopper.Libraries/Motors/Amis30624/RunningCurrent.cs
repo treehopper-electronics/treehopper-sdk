@@ -6,67 +6,89 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Motors.Amis30624
 {
+    /// <summary>
+    /// Motor running current
+    /// </summary>
     public enum RunningCurrent
     {
+        /// <summary>
+        /// 59 mA
+        /// </summary>
         mA_59,
+
+        /// <summary>
+        /// 71 mA
+        /// </summary>
         mA_71,
+
+        /// <summary>
+        /// 84 mA
+        /// </summary>
         mA_84,
+
+        /// <summary>
+        /// 100 mA
+        /// </summary>
         mA_100,
+
+        /// <summary>
+        /// 119 mA
+        /// </summary>
         mA_119,
+
+        /// <summary>
+        /// 141 mA
+        /// </summary>
         mA_141,
+
+        /// <summary>
+        /// 168 mA
+        /// </summary>
         mA_168,
+
+        /// <summary>
+        /// 200 mA
+        /// </summary>
         mA_200,
+
+        /// <summary>
+        /// 238 mA
+        /// </summary>
         mA_238,
+
+        /// <summary>
+        /// 283 mA
+        /// </summary>
         mA_283,
+
+        /// <summary>
+        /// 336 mA
+        /// </summary>
         mA_336,
+
+        /// <summary>
+        /// 400 mA
+        /// </summary>
         mA_400,
+
+        /// <summary>
+        /// 476 mA
+        /// </summary>
         mA_476,
+
+        /// <summary>
+        /// 566 mA
+        /// </summary>
         mA_566,
+
+        /// <summary>
+        /// 673 mA
+        /// </summary>
         mA_673,
+
+        /// <summary>
+        /// 800 mA
+        /// </summary>
         mA_800
     };
-
-    public static partial class EnumExtensions
-    {
-        public static int ToInt(this RunningCurrent current)
-        {
-            switch (current)
-            {
-                case RunningCurrent.mA_100:
-                    return 100;
-                case RunningCurrent.mA_119:
-                    return 119;
-                case RunningCurrent.mA_141:
-                    return 141;
-                case RunningCurrent.mA_168:
-                    return 168;
-                case RunningCurrent.mA_200:
-                    return 200;
-                case RunningCurrent.mA_238:
-                    return 238;
-                case RunningCurrent.mA_283:
-                    return 283;
-                case RunningCurrent.mA_336:
-                    return 336;
-                case RunningCurrent.mA_400:
-                    return 400;
-                case RunningCurrent.mA_476:
-                    return 476;
-                case RunningCurrent.mA_566:
-                    return 566;
-                case RunningCurrent.mA_59:
-                    return 59;
-                case RunningCurrent.mA_673:
-                    return 673;
-                case RunningCurrent.mA_71:
-                    return 71;
-                case RunningCurrent.mA_800:
-                    return 800;
-                case RunningCurrent.mA_84:
-                    return 84;
-                default:
-                    return 0;
-            }
-        }
-    }
 }

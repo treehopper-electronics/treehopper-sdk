@@ -8,22 +8,49 @@ using Treehopper;
 
 namespace Treehopper.Libraries.Motors.Amis30624
 {
+    /// <summary>
+    /// PositionChanged event argument
+    /// </summary>
     public class PositionChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// The new position of the shaft
+        /// </summary>
         public short Position;
     }
 
+    /// <summary>
+    /// Event handler delegate for PositionChanged events
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public delegate void PositionChangedHandler(object sender, PositionChangedEventArgs e);
+
+    /// <summary>
+    /// AMIS30624 stepper driver
+    /// </summary>
     public class Amis30624
     {
         private SMBusDevice dev;
 
-        public event PositionChangedHandler PositionChanged;
-        public Amis30624(I2c module, Address HardwiredAddressPin, int speed = 400) : this(module, (byte)HardwiredAddressPin, speed)
+        /// <summary>
+        /// Construct a new AMIS30624 stepper motor controller
+        /// </summary>
+        /// <param name="module">The I2c module this stepper motor is attached to</param>
+        /// <param name="addressPin">The hardwired address pin state</param>
+        /// <param name="speed">The speed to operate this peripheral at</param>
+        public Amis30624(I2c module, bool addressPin = false, int speed = 400) : this(module, (byte)(addressPin ? 0x61 : 0x60), speed)
         {
 
         }
 
+
+        /// <summary>
+        /// Construct a new AMIS30624 stepper motor controller
+        /// </summary>
+        /// <param name="module">The I2c module this stepper motor is attached to</param>
+        /// <param name="address">The address of the module</param>
+        /// <param name="speed">The speed to operate this peripheral at</param>
         public Amis30624(I2c module, byte address, int speed)
         {
             dev = new SMBusDevice(address, module, speed);
@@ -31,30 +58,50 @@ namespace Treehopper.Libraries.Motors.Amis30624
             GetFullStatus().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// An event that fires whenever the stepper motor's position has changed
+        /// </summary>
+        public event PositionChangedHandler PositionChanged;
+
+
+
+        /// <summary>
+        /// Reset to default
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task ResetToDefault()
         {
             return dev.WriteByte((byte)Command.ResetToDefault);
         }
 
-
+        /// <summary>
+        /// Soft stop the motor
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task SoftStop()
         {
             return dev.WriteByte((byte)Command.SoftStop);
         }
 
-
+        /// <summary>
+        /// Hard (emergency) stop the motor
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task HardStop()
         {
             return dev.WriteByte((byte)Command.HardStop);
         }
 
-
+        /// <summary>
+        /// Run the motor continuously with the given velocity settings
+        /// </summary>
+        /// <returns>An awaitable task that completes when finished</returns>
         public Task RunVelocity()
         {
             return dev.WriteByte((byte)Command.RunVelocity);
         }
 
-        public async Task GetFullStatus()
+        private async Task GetFullStatus()
         {
             var data = await dev.ReadBufferData((byte)Command.GetFullStatus1, 9);
             int irun = (data[1] >> 4) & 0x0f;
@@ -82,7 +129,7 @@ namespace Treehopper.Libraries.Motors.Amis30624
             await GetPositionStatus();
         }
 
-        public async Task GetPositionStatus()
+        private async Task GetPositionStatus()
         {
             var data = await dev.ReadBufferData((byte)Command.GetFullStatus2, 8);
             ActualPosition = (short)(data[1] << 8 | data[2]);
@@ -92,6 +139,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private short actualPosition;
+
+        /// <summary>
+        /// Get the actual position of the shaft
+        /// </summary>
         public short ActualPosition
         {
             get
@@ -107,6 +158,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private short targetPosition;
+
+        /// <summary>
+        /// Get or set the target position
+        /// </summary>
         public short TargetPosition
         {
             get { return targetPosition; }
@@ -119,6 +174,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private short securePosition;
+
+        /// <summary>
+        /// Get or set the secure position
+        /// </summary>
         public short SecurePosition
         {
             get { return targetPosition; }
@@ -130,6 +189,11 @@ namespace Treehopper.Libraries.Motors.Amis30624
             }
         }
 
+        /// <summary>
+        /// Move the motor to a target position
+        /// </summary>
+        /// <param name="position">The new position</param>
+        /// <returns>An awaitable task that completes when the motor reaches the target position</returns>
         public async Task MoveAsync(short position)
         {
             await SetPosition(position);
@@ -169,6 +233,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private bool accelShape;
+
+        /// <summary>
+        /// get or set the acceleration shape
+        /// </summary>
         public bool AccelShape
         {
             get { return accelShape; }
@@ -181,6 +249,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private int minVelocityFactorThirtySeconds;
+
+        /// <summary>
+        /// Get or set the minimum velocity factor, in 1/32nds. 
+        /// </summary>
         public int MinVelocityFactorThirtySeconds {
             get { return minVelocityFactorThirtySeconds; }
             set
@@ -192,6 +264,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private Acceleration acceleration;
+
+        /// <summary>
+        /// Get or set the acceleration curve to use
+        /// </summary>
         public Acceleration Acceleration
         {
             get { return acceleration;  }
@@ -204,6 +280,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private RunningCurrent runningCurrent;
+
+        /// <summary>
+        /// Get or set the running current
+        /// </summary>
         public RunningCurrent RunningCurrent
         {
             get { return runningCurrent; }
@@ -215,6 +295,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
             }
         }
         private HoldingCurrent holdingCurrent;
+
+        /// <summary>
+        /// Get or set the holding current
+        /// </summary>
         public HoldingCurrent HoldingCurrent
         {
             get { return holdingCurrent; }
@@ -227,6 +311,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
         }
 
         private MaxVelocity maxVelocity;
+
+        /// <summary>
+        /// Get or set the maximum velocity
+        /// </summary>
         public MaxVelocity MaxVelocity
         {
             get { return maxVelocity;  }
@@ -241,6 +329,10 @@ namespace Treehopper.Libraries.Motors.Amis30624
 
 
         private StepMode stepMode;
+
+        /// <summary>
+        /// Get or set the step mode
+        /// </summary>
         public StepMode StepMode
         {
             get { return stepMode; }

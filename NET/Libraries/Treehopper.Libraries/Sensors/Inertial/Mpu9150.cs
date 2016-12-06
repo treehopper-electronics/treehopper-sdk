@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
+    /// <summary>
+    /// An MPU9150 device
+    /// </summary>
     public class Mpu9150 : SMBusDevice
     {
-        DigitalIOPin intPin;
-        public Mpu9150(I2c i2c, MPU9160Address address) : base((byte)address, i2c)
+        /// <summary>
+        /// Construct an MPU9150 9-Dof IMU
+        /// </summary>
+        /// <param name="i2c">The I2c module this module is connected to.</param>
+        /// <param name="addressPin">The address of the module</param>
+        public Mpu9150(I2c i2c, bool addressPin = false) : base((byte)(addressPin ? 0x68 : 0x69), i2c)
         {
             WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).Wait();
             Update();
@@ -37,8 +44,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 await Task.Delay(1);
             }
         }
+        /// <summary>
+        /// Get the accelerometer data
+        /// </summary>
+        public Vector Accel { get; private set; }
 
-        public Vector Accel { get; set; }
+        /// <summary>
+        /// Vet the gyroscope data
+        /// </summary>
         public Vector Gyro { get; set; }
 
         enum Registers
@@ -160,16 +173,25 @@ namespace Treehopper.Libraries.Sensors.Inertial
             FIFO_R_W = 0x74,
             WHO_AM_I = 0x75,
         }
-        public enum MPU9160Address
-        {
-            AD0_LOW = 0x68,
-            AD0_HIGH = 0x69
-        }
 
+        /// <summary>
+        /// A 3D vector data type
+        /// </summary>
         public struct Vector
         {
+            /// <summary>
+            /// X component
+            /// </summary>
             public double X;
+
+            /// <summary>
+            /// Y component
+            /// </summary>
             public double Y;
+
+            /// <summary>
+            /// Z component
+            /// </summary>
             public double Z;
         }
     }

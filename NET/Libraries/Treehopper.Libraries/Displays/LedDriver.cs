@@ -12,6 +12,12 @@ namespace Treehopper.Libraries.Displays
     /// </summary>
     public abstract class LedDriver : ILedDriver
     {
+        /// <summary>
+        /// Construct an LedDriver
+        /// </summary>
+        /// <param name="numLeds">The number of LEDs to construct</param>
+        /// <param name="HasGlobalBrightnessControl">Whether the controller can globally adjust the LED brightness</param>
+        /// <param name="HasIndividualBrightnessControl">Whether the controller has individual LED brightness control</param>
         public LedDriver(int numLeds, bool HasGlobalBrightnessControl, bool HasIndividualBrightnessControl)
         {
             for (int i = 0; i < numLeds; i++)
@@ -20,6 +26,10 @@ namespace Treehopper.Libraries.Displays
                 Leds.Add(led);
             }
         }
+
+        /// <summary>
+        /// Gets or sets whether the display should auto-flush whenever an LED state is changed
+        /// </summary>
         public bool AutoFlush { get; set; } = true;
 
         /// <summary>
@@ -47,8 +57,26 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public IList<Led> Leds { get; set; } = new Collection<Led>();
 
-        public abstract void LedStateChanged(Led led);
-        public abstract void LedBrightnessChanged(Led led);
+
+        /// <summary>
+        /// Called by the LED when the state changes
+        /// </summary>
+        /// <param name="led">The LED whose state changed</param>
+        internal abstract void LedStateChanged(Led led);
+        void ILedDriver.LedStateChanged(Led led) { LedStateChanged(led); }
+
+
+        /// <summary>
+        /// Called by the LED when the brightness changed
+        /// </summary>
+        /// <param name="led">The LED whose brightness changed</param>
+        internal abstract void LedBrightnessChanged(Led led);
+        void ILedDriver.LedBrightnessChanged(Led led) { LedBrightnessChanged(led); }
+
+        /// <summary>
+        /// Clear the display
+        /// </summary>
+        /// <returns>An awaitable task that completes when the display is cleared</returns>
         public async Task Clear()
         {
             bool autoflushSave = AutoFlush;

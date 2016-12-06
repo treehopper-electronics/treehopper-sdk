@@ -8,8 +8,19 @@ namespace Treehopper
     /// </summary>
     public class SMBusDevice
     {
+        /// <summary>
+        /// The I2c port used by the device
+        /// </summary>
         protected I2c I2c;
+
+        /// <summary>
+        /// The address of the device
+        /// </summary>
         protected byte address;
+
+        /// <summary>
+        /// The frequency to use
+        /// </summary>
         int rateKhz;
 
         /// <summary>
@@ -62,7 +73,7 @@ namespace Treehopper
         /// <summary>
         /// Write a single byte to the device
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">the data to write</param>
         /// <returns></returns>
         public Task WriteByte(byte data)
         {

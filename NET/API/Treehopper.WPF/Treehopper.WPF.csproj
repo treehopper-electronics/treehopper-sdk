@@ -72,7 +72,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lib\MTObservableCollection.cs" />
     <Compile Include="SystemTrayWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\SelectorViewModel.cs" />
@@ -102,6 +101,9 @@
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Lib\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

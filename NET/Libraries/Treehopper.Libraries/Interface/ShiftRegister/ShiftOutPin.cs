@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface.ShiftRegister
 {
+    /// <summary>
+    /// A digital output pin part of a shift register output
+    /// </summary>
     public class ShiftOutPin : DigitalOutPin
     {
-        /// <summary>
-        /// Construct a ShiftOutPin attached to a controller
-        /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="pinNumber"></param>
-        public ShiftOutPin(ShiftOut controller, int pinNumber)
+        internal ShiftOutPin(ShiftOut controller, int pinNumber)
         {
             BitNumber = pinNumber;
             this.controller = controller;

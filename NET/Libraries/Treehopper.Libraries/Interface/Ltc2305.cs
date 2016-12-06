@@ -7,19 +7,30 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface
 {
-
-
+    /// <summary>
+    /// A two-channel, 12-bit I2c ADC
+    /// </summary>
     public class Ltc2305 : SMBusDevice
     {
+        /// <summary>
+        /// Construct a new LTC2305
+        /// </summary>
+        /// <param name="address">The address to use</param>
+        /// <param name="I2cModule">The I2c module this ADC is attached to</param>
         public Ltc2305(byte address, I2c I2cModule) : base(address, I2cModule, 100)
         {
 
         }
 
-        public async Task<double> Read(Ltc2305Channels channelNumber = Ltc2305Channels.Channel0)
+        /// <summary>
+        /// Read the specified channel from this ADC
+        /// </summary>
+        /// <param name="channel">The channel to read</param>
+        /// <returns>An awaitable double value representing the voltage of the ADC</returns>
+        public async Task<double> Read(Channel channel = Channel.Channel0)
         {
            //  SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
-            byte[] data = await I2c.SendReceive(this.address, new byte[] { (byte)((byte)channelNumber | (byte)Ltc2305ConfigBits.UnipolarMode) }, 2);
+            byte[] data = await I2c.SendReceive(this.address, new byte[] { (byte)((byte)channel | (byte)Ltc2305ConfigBits.UnipolarMode) }, 2);
             int code = data[1] | (data[0]<<8);
             double retVal = CodeToVoltage(code, 5.0, Ltc2305ConfigBits.UnipolarMode);
             return retVal;
@@ -51,7 +62,7 @@ namespace Treehopper.Libraries.Interface
             return (voltage);
         }
 
-        public enum Ltc2305ConfigBits
+        enum Ltc2305ConfigBits
         {
             SleepMode = 0x04,
             ExitSleepMode = 0x00,
@@ -63,9 +74,19 @@ namespace Treehopper.Libraries.Interface
             P1_N0 = 0x40
         }
 
-        public enum Ltc2305Channels
+        /// <summary>
+        /// The ADC channels
+        /// </summary>
+        public enum Channel
         {
+            /// <summary>
+            /// Channel 0
+            /// </summary>
             Channel0 = 0xC0,
+
+            /// <summary>
+            /// Channel 1
+            /// </summary>
             Channel1 = 0x80
         }
     }

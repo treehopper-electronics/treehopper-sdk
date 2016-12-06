@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
+    /// <summary>
+    /// Base temperature sensor functionality
+    /// </summary>
     public class TemperatureSensor : ITemperature
     {
+        /// <summary>
+        /// Get the temperature, in Celsius
+        /// </summary>
         public virtual double TemperatureCelsius { get; protected set; }
 
+        /// <summary>
+        /// Get the temperature, in Fahrenheit
+        /// </summary>
         public double TemperatureFahrenheit
         {
             get
@@ -18,6 +27,9 @@ namespace Treehopper.Libraries.Sensors.Temperature
             }
         }
 
+        /// <summary>
+        /// Get the temperature, in Kelvin
+        /// </summary>
         public double TemperatureKelvin
         {
             get

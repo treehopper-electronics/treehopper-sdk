@@ -7,18 +7,43 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface
 {
+    /// <summary>
+    /// A class that represents a WriteOnlyParallelInterface constructed from a <see cref="IFlushableOutputPort{TDigitalPin}"/>
+    /// </summary>
+    /// <typeparam name="T">A type that implements <see cref="DigitalOutPin"/></typeparam>
     public class FlushableParallelInterface<T> : WriteOnlyParallelInterface where T : DigitalOutPin
     {
         private IFlushableOutputPort<T> port;
 
+        /// <summary>
+        /// A collection of pins to use for the data bus
+        /// </summary>
         public Collection<DigitalOutPin> DataBus { get; set; } = new Collection<DigitalOutPin>();
+
+        /// <summary>
+        /// The Register Select (RS) pin to use
+        /// </summary>
         public DigitalOutPin RegisterSelectPin { get; set; }
+
+        /// <summary>
+        /// The Read/Write (R/W) pin to use
+        /// </summary>
         public DigitalOutPin ReadWritePin { get; set; }
 
+        /// <summary>
+        /// The enable (E) pin to use
+        /// </summary>
         public DigitalOutPin EnablePin { get; set; }
 
+        /// <summary>
+        /// The number of microseconds to delay between transactions.
+        /// </summary>
         public int DelayMicroseconds { get; set; }
 
+        /// <summary>
+        /// Construct a FlushableParallelInterface from a <see cref="IFlushableOutputPort{TDigitalPin}"/>. 
+        /// </summary>
+        /// <param name="outputPort"></param>
         public FlushableParallelInterface(IFlushableOutputPort<T> outputPort)
         {
             this.port = outputPort;
@@ -26,6 +51,10 @@ namespace Treehopper.Libraries.Interface
 
         private bool enabled;
         private bool oldAutoflushSettings;
+
+        /// <summary>
+        /// Whether this parallel interface is enabled or disabled
+        /// </summary>
         public bool Enabled
         {
             get
@@ -60,6 +89,9 @@ namespace Treehopper.Libraries.Interface
             }
         }
 
+        /// <summary>
+        /// Gets the width of the bus
+        /// </summary>
         public int Width
         {
             get
@@ -68,12 +100,17 @@ namespace Treehopper.Libraries.Interface
             }
         }
 
+        /// <summary>
+        /// Write one or more bytes to the command register
+        /// </summary>
+        /// <param name="command">The command data to write</param>
+        /// <returns>An awaitable task that completes when the write operation finishes</returns>
         public Task WriteCommand(uint[] command)
         {
             return WriteDataOrCommand(command, false);
         }
 
-        public async Task Pulse()
+        private async Task Pulse()
         {
             EnablePin.DigitalValue = false;
             await port.Flush().ConfigureAwait(false);
@@ -83,7 +120,7 @@ namespace Treehopper.Libraries.Interface
             await port.Flush().ConfigureAwait(false);
         }
 
-        public void SetDataBus(uint value)
+        private void SetDataBus(uint value)
         {
             for (int i = 0; i < Width; i++)
             {
@@ -94,6 +131,11 @@ namespace Treehopper.Libraries.Interface
             }
         }
 
+        /// <summary>
+        /// Write one or more bytes to the data register
+        /// </summary>
+        /// <param name="data">The data to write</param>
+        /// <returns>An awaitable task that completes when the write operation finishes</returns>
         public Task WriteData(uint[] data)
         {
              return WriteDataOrCommand(data, true);

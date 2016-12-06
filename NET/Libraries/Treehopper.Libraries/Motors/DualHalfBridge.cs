@@ -6,13 +6,23 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Motors
 {
-    public class HBridge : ISpeedController
+    /// <summary>
+    /// Construct a dual half-bridge-style H-bridge driver with an enable pin
+    /// </summary>
+    public class DualHalfBridge : MotorSpeedController
     {
         Pwm enablePwm;
         DigitalOutPin enable;
         DigitalOutPin A;
-        DigitalOutPin B;       
-        public HBridge(DigitalOutPin A, DigitalOutPin B, Pwm Enable)
+        DigitalOutPin B;
+        
+        /// <summary>
+        /// Construct a dual half bridge with PWM speed control
+        /// </summary>
+        /// <param name="A">The "A" channel half-bridge input</param>
+        /// <param name="B">The "B" channel half-bridge input</param>
+        /// <param name="Enable">The PWM input used to control the output enable</param>
+        public DualHalfBridge(DigitalOutPin A, DigitalOutPin B, Pwm Enable)
         {
             Enable.Enabled = true;
             Enable.DutyCycle = 0;
@@ -26,18 +36,33 @@ namespace Treehopper.Libraries.Motors
 
         }
 
-        public HBridge(DigitalOutPin A, DigitalOutPin B, DigitalOutPin Enable)
+        /// <summary>
+        /// Construct a dual half bridge with no speed control
+        /// </summary>
+        /// <param name="A">The "A" channel half-bridge input</param>
+        /// <param name="B">The "B" channel half-bridge input</param>
+        /// <param name="Enable">An optional Enable pin of the H-bridge</param>
+        public DualHalfBridge(DigitalOutPin A, DigitalOutPin B, DigitalOutPin Enable = null)
         {
-            Enable.DigitalValue = false;
-            Enable.MakeDigitalPushPullOut();
+            if(Enable != null)
+            {
+                Enable.DigitalValue = false;
+                Enable.MakeDigitalPushPullOut();
+                enable = Enable;
+            }
+            
             A.MakeDigitalPushPullOut();
             B.MakeDigitalPushPullOut();
 
-            enable = Enable;
+
             this.A = A;
             this.B = B;
         }
         private bool enabled;
+
+        /// <summary>
+        /// Enable or disable the H-bridge outputs
+        /// </summary>
         public bool Enabled
         {
             get
@@ -59,17 +84,30 @@ namespace Treehopper.Libraries.Motors
             if (enablePwm != null)
             {
                 enablePwm.DutyCycle = value;
-            } else
+            } else if(enable != null)
             {
                 if (value > 0.5)
                     enable.DigitalValue = true;
                 else
                     enable.DigitalValue = false;
+            } else if(value < 0.5)
+            {
+                // no enable pin; just set both inputs to zero to at least stop the motor
+                A.DigitalValue = false;
+                B.DigitalValue = false;
             }
         }
+
+        /// <summary>
+        /// Whether to brake -- drive both H-bridge outputs to the same value -- on zero speed
+        /// </summary>
         public bool BrakeOnZeroSpeed { get; set; }
 
-        public double speed;
+        private double speed;
+
+        /// <summary>
+        /// Get or set the speed of the motor driver
+        /// </summary>
         public double Speed
         {
             get

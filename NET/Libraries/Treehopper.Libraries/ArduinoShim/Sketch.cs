@@ -37,6 +37,9 @@ namespace Treehopper.Libraries.ArduinoShim
             Serial = new SerialShim(board);
         }
 
+        /// <summary>
+        /// Run the sketch synchronously
+        /// </summary>
         public void Run()
         {
             sw.Start();
@@ -219,11 +222,19 @@ namespace Treehopper.Libraries.ArduinoShim
             }
         }
 
+        /// <summary>
+        /// Set the number of bits used for PWM resolution
+        /// </summary>
+        /// <param name="bits">The number of bits to use</param>
         public void analogWriteResolution(int bits)
         {
             pwmResolution = bits;
         }
 
+        /// <summary>
+        /// Sets the number of bits used for ADC resolution
+        /// </summary>
+        /// <param name="bits">The number of bits to use</param>
         public void analogReadResolution(int bits)
         {
             adcResolution = bits;
@@ -281,53 +292,5 @@ namespace Treehopper.Libraries.ArduinoShim
         {
             return Utilities.Constrain(x, a, b);
         }
-
-
-        #region unimplementedFuncs
-
-        public void delayMicroseconds(int us)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("delayMicroseconds() is not implemented in this library, since timing precision greater than about 15 milliseconds cannot be guaranteed.");
-        }
-
-        public void tone(int pin, int frequency)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("tone() is not implemented on Treehopper");
-        }
-
-        public void noTone(int pin)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("noTone() is not implemented on Treehopper");
-        }
-
-        public void shiftOut(int dataPin, int clockPin, bool bitOrder, byte value)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("shiftOut() is not implemented on Treehopper");
-        }
-
-        public byte shiftIn(int dataPin, int clockPin, bool bitOrder)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("shiftIn() is not implemented on Treehopper");
-            return 0;
-        }
-
-        public int pulseIn(int pin, bool value, int timeout = 0)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("pulseIn() is not implemented on Treehopper");
-            return 0;
-        }
-
-        public void analogReference(int type)
-        {
-            if (throwExceptions)
-                throw new NotImplementedException("analogReference() is not implemented on Treehopper");
-        }
-        #endregion
     }
 }

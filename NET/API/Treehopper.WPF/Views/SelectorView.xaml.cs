@@ -21,6 +21,9 @@ namespace Treehopper.Mvvm.Views
     /// </summary>
     public partial class SelectorView : UserControl
     {
+        /// <summary>
+        /// Construct a SelectorView
+        /// </summary>
         public SelectorView()
         {
             InitializeComponent();

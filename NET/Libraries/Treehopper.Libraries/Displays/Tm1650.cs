@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// Represents a TM1650 LED driver designed for driving up to 4 seven-segment digits, or 32 individual common-anode LEDs
+    /// </summary>
     public class Tm1650 : LedDriver
     {
         private I2c i2c;
@@ -17,6 +20,10 @@ namespace Treehopper.Libraries.Displays
         private byte[] newValues = new byte[4];
         private bool enable;
 
+        /// <summary>
+        /// Construct a new TM1650 with a given I2c interface
+        /// </summary>
+        /// <param name="i2c">The I2c interface to use</param>
         public Tm1650(I2c i2c) : base(32, false, false)
         {
             this.i2c = i2c;
@@ -24,6 +31,9 @@ namespace Treehopper.Libraries.Displays
             Enable = true;
         }
 
+        /// <summary>
+        /// Enable or disable the display
+        /// </summary>
         public bool Enable
         {
             get { return enable; }
@@ -52,6 +62,11 @@ namespace Treehopper.Libraries.Displays
             return i2c.SendReceive((byte)(DisplayBase + digit), new byte[] { data }, 0);
         }
 
+        /// <summary>
+        /// Flush data to the driver
+        /// </summary>
+        /// <param name="force">Whether or not to force all data to be flushed, even if it doesn't appear to have changed</param>
+        /// <returns>An awaitable task that completes when finished</returns>
         public override async Task Flush(bool force = false)
         {
             for(int i=0;i<4;i++)
@@ -64,12 +79,12 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        public override void LedBrightnessChanged(Led led)
+        internal override void LedBrightnessChanged(Led led)
         {
             
         }
 
-        public override void LedStateChanged(Led led)
+        internal override void LedStateChanged(Led led)
         {
             int digit = led.Channel / 8;
             int segment = led.Channel % 8;

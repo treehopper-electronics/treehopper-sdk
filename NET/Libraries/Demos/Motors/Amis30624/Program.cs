@@ -21,7 +21,7 @@ namespace Demo
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
-            var stepper = new Amis30624(board.I2c, Address.Hw0, 100);
+            var stepper = new Amis30624(board.I2c, false, 100);
 
             stepper.MinVelocityFactorThirtySeconds = 1;
             stepper.RunningCurrent = RunningCurrent.mA_800;

@@ -8,25 +8,33 @@ using Treehopper;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
-    public struct VoSPI
-    {
-        public ushort Id;
-        public ushort Crc;
-        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
-        public ushort[] Payload;
-    }
+    /// <summary>
+    /// FLIR Lepton
+    /// </summary>
     public class FlirLepton
     {
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
+        struct VoSPI
+        {
+            public ushort Id;
+            public ushort Crc;
+            //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
+            public ushort[] Payload;
+        }
 
         int height = 40;
         int width = 80;
         Spi spi;
         ushort[,] blackFrame;
 
-        public FlirLepton(TreehopperUsb board)
+        /// <summary>
+        /// Construct a FLIR Lepton
+        /// </summary>
+        /// <param name="spi">The Spi module to use</param>
+        public FlirLepton(Spi spi)
         {
-            spi = board.Spi;
+            this.spi = spi;
             //spi.Mode = SPIMode.Mode11;
             //spi.Frequency = 12;
             //spi.ChipSelect.DigitalValue = true;
@@ -40,6 +48,10 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         }
 
+        /// <summary>
+        /// Get the raw frame from the sensor
+        /// </summary>
+        /// <returns>An awaitable 2D-array of values</returns>
         public async Task<ushort[,]> GetRawFrame()
         {
             //spi.ChipSelect.DigitalValue = false;
@@ -107,6 +119,11 @@ namespace Treehopper.Libraries.Sensors.Optical
 //            return frame;
 //        }
 //#endif
+
+            /// <summary>
+            /// Get the corrected raster frame 
+            /// </summary>
+            /// <returns>A byte[] raster</returns>
         public async Task<byte[]> GetCorrectedRasterFrameArray()
         {
             ushort[,] rawFrame = await GetRawFrame();
@@ -154,7 +171,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
     }
 
-    public static class Crc16
+    static class Crc16
     {
         const ushort polynomial = 0xA001;
         static readonly ushort[] table = new ushort[256];

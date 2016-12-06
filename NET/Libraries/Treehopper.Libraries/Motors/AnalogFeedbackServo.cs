@@ -7,12 +7,20 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Motors
 {
+    /// <summary>
+    /// A servo motor controlled by an analog potentiometer
+    /// </summary>
     public class AnalogFeedbackServo : IDisposable
     {
-        protected Pin analogIn;
-        protected ISpeedController controller;
+        Pin analogIn;
+        MotorSpeedController controller;
 
-        public AnalogFeedbackServo(Pin analogIn, ISpeedController Controller) 
+        /// <summary>
+        /// Construct a new analog feedback servo from an analog pin and a speed controller
+        /// </summary>
+        /// <param name="analogIn">The analog in pin to use for position feedback</param>
+        /// <param name="Controller">The speed controller to use to control the motor</param>
+        public AnalogFeedbackServo(Pin analogIn, MotorSpeedController Controller) 
         {
             this.analogIn = analogIn;
             this.controller = Controller;
@@ -45,18 +53,38 @@ namespace Treehopper.Libraries.Motors
 
         private Task controlLoopTask;
 
+        /// <summary>
+        /// The K value to use in the proportional control loop
+        /// </summary>
         public double K { get; set; } = 2;
+
+        /// <summary>
+        /// The goal position
+        /// </summary>
         public double GoalPosition { get; set; }
+
+        /// <summary>
+        /// The actual position of the motor
+        /// </summary>
         public double ActualPosition { get; private set; }
 
+        /// <summary>
+        /// The error threshold
+        /// </summary>
         public double ErrorThreshold = 0.01;
 
+        /// <summary>
+        /// Whether to enable or disable the servo
+        /// </summary>
         public bool Enabled
         {
             get { return controller.Enabled; }
             set { controller.Enabled = value; }
         }
 
+        /// <summary>
+        /// Dispose the servo object
+        /// </summary>
         public void Dispose()
         {
             isRunning = false;

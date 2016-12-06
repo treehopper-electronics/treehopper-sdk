@@ -8,6 +8,10 @@ using Treehopper;
 
 namespace Treehopper.Libraries.ArduinoShim
 {
+    /// <summary>
+    /// A delegate used to represent when write data was requested
+    /// </summary>
+    /// <param name="message">The message written</param>
     public delegate void SerialShimWriter(string message);
 
     /// <summary>
@@ -19,6 +23,9 @@ namespace Treehopper.Libraries.ArduinoShim
         TreehopperUsb board;
         bool redirectToDebug = true;
 
+        /// <summary>
+        /// An event that fires when data was written
+        /// </summary>
         public event SerialShimWriter WriteRequested;
 
         /// <summary>

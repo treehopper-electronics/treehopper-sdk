@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Interface
 {
+    /// <summary>
+    /// Represents any object that has a flushable interface
+    /// </summary>
     public interface IFlushable
     {
+        /// <summary>
+        /// Whether this interface should automatically flush new values or not
+        /// </summary>
         bool AutoFlush { get; set; }
 
         /// <summary>
