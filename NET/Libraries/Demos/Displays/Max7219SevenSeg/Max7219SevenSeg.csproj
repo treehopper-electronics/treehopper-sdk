@@ -62,10 +62,6 @@
       <Project>{397B4612-9FF2-4288-A7D0-C2B2FC4F4816}</Project>
       <Name>Treehopper.Libraries</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Displays\Treehopper.Libraries.Displays.csproj">
-      <Project>{5a6c08d7-40aa-491b-9198-90c34f8f8b46}</Project>
-      <Name>Treehopper.Libraries.Displays</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

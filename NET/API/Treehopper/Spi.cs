@@ -53,22 +53,6 @@ namespace Treehopper
     };
 
     /// <summary>
-    /// Defines when incoming data is sampled
-    /// </summary>
-    public enum SPISampleMode
-    {
-        /// <summary>
-        /// Incoming data is sampled in the middle of the period where outgoing data is valid (default)
-        /// </summary>
-        Middle,
-
-        /// <summary>
-        /// Incoming data is sampled at the end of the period where outgoing data is valid.
-        /// </summary>
-        End
-    };
-
-    /// <summary>
     /// Defines the clock phase and polarity used for SPI communication
     /// </summary>
     /// <remarks>
