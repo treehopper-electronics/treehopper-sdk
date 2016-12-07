@@ -27,7 +27,7 @@ public class TreehopperUsb {
 
     }
 
-    public I2c i2c = new TreehopperI2c(this);
+    public I2c i2c = new HardwareI2c(this);
 
     public boolean getConnected() {
         return connected;

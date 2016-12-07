@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
  * Created by jay on 12/4/2016.
  */
 
-class TreehopperI2c implements I2c {
+class HardwareI2c implements I2c {
 
     static final Logger logger = LogManager.getLogger("TreehopperUsb");
 
@@ -15,7 +15,7 @@ class TreehopperI2c implements I2c {
     double speed = 100.0;
     TreehopperUsb board;
 
-    TreehopperI2c(TreehopperUsb board)
+    HardwareI2c(TreehopperUsb board)
     {
         this.board = board;
     }
