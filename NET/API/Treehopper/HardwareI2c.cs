@@ -155,7 +155,7 @@ namespace Treehopper
                         int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
                         //var chunk = device.receiveCommsResponsePacket((uint)numBytesToTransfer).Result;
                         var chunk = await device.receiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
-                        Array.Copy(chunk, 0, result, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
+                        Array.Copy(chunk, 0, result, srcIndex, chunk.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;
                         bytesRemaining -= numBytesToTransfer;
                     }
