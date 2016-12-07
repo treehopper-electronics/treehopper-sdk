@@ -179,7 +179,7 @@ namespace Treehopper
             I2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
-            return I2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data << 8) }, 0);
+            return I2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data >> 8) }, 0);
         }
 
         /// <summary>
