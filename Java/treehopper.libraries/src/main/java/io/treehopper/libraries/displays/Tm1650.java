@@ -1,6 +1,6 @@
 package io.treehopper.libraries.displays;
 
-import io.treehopper.*;
+import io.treehopper.interfaces.I2c;
 
 /**
  * Created by jay on 12/5/2016.

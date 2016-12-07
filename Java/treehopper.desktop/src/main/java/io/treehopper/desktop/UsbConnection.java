@@ -16,7 +16,7 @@ import javax.usb.UsbNotClaimedException;
 import javax.usb.UsbNotOpenException;
 import javax.usb.UsbPipe;
 
-import io.treehopper.Connection;
+import io.treehopper.interfaces.Connection;
 
 public class UsbConnection implements Connection {
 

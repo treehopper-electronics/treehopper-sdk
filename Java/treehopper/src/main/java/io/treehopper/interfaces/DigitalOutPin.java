@@ -1,4 +1,4 @@
-package io.treehopper;
+package io.treehopper.interfaces;
 
 /**
  * Created by jay on 12/6/2016.

@@ -7,7 +7,7 @@ import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import io.treehopper.TreehopperEventsListener;
+import io.treehopper.events.TreehopperEventsListener;
 import io.treehopper.TreehopperUsb;
 
 /**

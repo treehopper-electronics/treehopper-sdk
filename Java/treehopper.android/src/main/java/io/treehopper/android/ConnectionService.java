@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import io.treehopper.TreehopperEventsListener;
+import io.treehopper.events.TreehopperEventsListener;
 import io.treehopper.TreehopperUsb;
 
 /**

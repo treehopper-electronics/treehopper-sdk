@@ -3,13 +3,15 @@ package io.treehopper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import io.treehopper.interfaces.I2c;
+
 /**
  * Created by jay on 12/4/2016.
  */
 
-class HardwareI2c implements I2c {
+public class HardwareI2c implements I2c {
 
-    static final Logger logger = LogManager.getLogger("TreehopperUsb");
+    static final Logger logger = LogManager.getLogger("HardwareI2c");
 
     boolean enabled;
     double speed = 100.0;
@@ -55,7 +57,7 @@ class HardwareI2c implements I2c {
             logger.error("Speed out of limits. Valid rate is 62.5 kHz - 16000 kHz (16 MHz)");
         }
         byte[] dataToSend = new byte[3];
-        dataToSend[0] = (byte)DeviceCommands.I2cConfig.ordinal();
+        dataToSend[0] = (byte) DeviceCommands.I2cConfig.ordinal();
         dataToSend[1] = (byte)(enabled ? 0x01 : 0x00);
         dataToSend[2] = (byte)Math.round(TH0);
         board.sendPeripheralConfigPacket(dataToSend);
@@ -66,7 +68,12 @@ class HardwareI2c implements I2c {
     {
         if(!enabled)
         {
-            logger.error("I2c.SendReceive() called before enabling the peripheral. This call will be ignored.");
+            String message = "I2c.SendReceive() called before enabling the peripheral. This call will be ignored.";
+            logger.error(message);
+            if(TreehopperUsb.Settings.shouldThrowExceptions())
+            {
+                throw new RuntimeException(message);
+            }
         }
 
         if(numBytesToRead > 255)
