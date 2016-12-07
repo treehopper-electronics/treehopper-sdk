@@ -100,7 +100,7 @@ namespace Treehopper
             }
 
             SoftPwmMgr = new SoftPwmManager(this);
-            PwmManager = new HardwarePwmManager(this);
+            HardwarePwmManager = new HardwarePwmManager(this);
 
             // Initialize modules
             I2c = new HardwareI2c(this);
@@ -159,7 +159,7 @@ namespace Treehopper
         /// <summary>
         /// Hardware PWM manager
         /// </summary>
-        public HardwarePwmManager PwmManager { get; private set; }
+        public HardwarePwmManager HardwarePwmManager { get; private set; }
 
         /// <summary>
         /// Gets or sets the LED state

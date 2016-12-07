@@ -10,7 +10,7 @@ namespace Treehopper
     /// <summary>
     /// Defines the PWM period options
     /// </summary>
-    public enum PwmFrequency { 
+    public enum HardwarePwmFrequency { 
         /// <summary>
         /// 732 Hz PWM frequency
         /// </summary>
@@ -107,11 +107,11 @@ namespace Treehopper
             SendConfig();
         }
 
-        private PwmFrequency frequency = PwmFrequency.Freq_732Hz;
+        private HardwarePwmFrequency frequency = HardwarePwmFrequency.Freq_732Hz;
         /// <summary>
-        /// Gets or sets the PWM frequency of the pin, selected from <see cref="PwmFrequency"/>
+        /// Gets or sets the PWM frequency of the pin, selected from <see cref="HardwarePwmFrequency"/>
         /// </summary>
-        public PwmFrequency Frequency
+        public HardwarePwmFrequency Frequency
         {
             get
             {
@@ -158,11 +158,11 @@ namespace Treehopper
             {
                 switch(frequency)
                 {
-                    case PwmFrequency.Freq_183Hz:
+                    case HardwarePwmFrequency.Freq_183Hz:
                         return 183;
-                    case PwmFrequency.Freq_61Hz:
+                    case HardwarePwmFrequency.Freq_61Hz:
                         return 61;
-                    case PwmFrequency.Freq_732Hz:
+                    case HardwarePwmFrequency.Freq_732Hz:
                         return 732;
                     default:
                         return 0;

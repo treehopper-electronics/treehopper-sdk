@@ -40,13 +40,13 @@ namespace Treehopper
                     isEnabled = value;
                     if (isEnabled)
                     {
-                        Board.PwmManager.StartPin(Pin);
+                        Board.HardwarePwmManager.StartPin(Pin);
                         Pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
-                        Board.PwmManager.StopPin(Pin);
-                        Pin.Mode = PinMode.DigitalInput;
+                        Board.HardwarePwmManager.StopPin(Pin);
+                        Pin.Mode = PinMode.Unassigned;
                     }
                 }
             }
@@ -69,8 +69,8 @@ namespace Treehopper
                 dutyCycle = value;
 
                 // update the pulseWidth just in case the user wants to read from the value
-                pulseWidth = (int)Math.Round(dutyCycle * Board.PwmManager.PeriodMicroseconds);
-                Board.PwmManager.SetDutyCycle(Pin, value);
+                pulseWidth = (int)Math.Round(dutyCycle * Board.HardwarePwmManager.PeriodMicroseconds);
+                Board.HardwarePwmManager.SetDutyCycle(Pin, value);
             }
         }
 
@@ -85,11 +85,11 @@ namespace Treehopper
             }
             set
             {
-                if (value > Board.PwmManager.PeriodMicroseconds || value < 0.0)
-                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + Board.PwmManager.PeriodMicroseconds);
+                if (value > Board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
+                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + Board.HardwarePwmManager.PeriodMicroseconds);
                 pulseWidth = value;
 
-                DutyCycle = pulseWidth / Board.PwmManager.PeriodMicroseconds;
+                DutyCycle = pulseWidth / Board.HardwarePwmManager.PeriodMicroseconds;
             }
         }
     }
