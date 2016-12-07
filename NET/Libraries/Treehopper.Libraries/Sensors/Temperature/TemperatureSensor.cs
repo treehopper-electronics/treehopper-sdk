@@ -9,12 +9,12 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// <summary>
     /// Base temperature sensor functionality
     /// </summary>
-    public class TemperatureSensor : ITemperature
+    public abstract class TemperatureSensor : Temperature
     {
         /// <summary>
         /// Get the temperature, in Celsius
         /// </summary>
-        public virtual double TemperatureCelsius { get; protected set; }
+        public abstract double TemperatureCelsius { get; }
 
         /// <summary>
         /// Get the temperature, in Fahrenheit

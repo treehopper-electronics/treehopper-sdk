@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
-    interface ITemperature
+    public interface Temperature
     {
         double TemperatureCelsius { get; }
         double TemperatureFahrenheit { get; }
