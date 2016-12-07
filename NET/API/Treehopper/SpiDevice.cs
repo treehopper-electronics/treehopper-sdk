@@ -51,10 +51,10 @@ namespace Treehopper
         /// </summary>
         /// <param name="SpiModule">The module this device is attached to</param>
         /// <param name="ChipSelect">The chip select pin used by this device</param>
+        /// <param name="csMode">The ChipSelectMode to use with this device</param>
         /// <param name="SpeedMHz">The speed to operate this device at</param>
         /// <param name="mode">The SpiMode of this device</param>
-        /// <param name="csMode">The ChipSelectMode to use with this device</param>
-        public SpiDevice(Spi SpiModule, Pin ChipSelect, double SpeedMHz = 1, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow)
+        public SpiDevice(Spi SpiModule, Pin ChipSelect, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow, double SpeedMHz = 1, SpiMode mode = SpiMode.Mode00)
         {
             this.ChipSelectMode = csMode;
             this.ChipSelect = ChipSelect;

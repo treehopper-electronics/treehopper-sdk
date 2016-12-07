@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 
         private void setupSpi(Spi spiModule, Pin latchPin, double speedMhz, SpiMode mode, ChipSelectMode csMode)
         {
-            spiDevice = new SpiDevice(spiModule, latchPin, speedMhz, mode, csMode);
+            spiDevice = new SpiDevice(spiModule, latchPin, csMode, speedMhz, mode);
         }
 
         /// <summary>
