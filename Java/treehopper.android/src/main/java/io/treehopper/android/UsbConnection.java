@@ -3,9 +3,8 @@ package io.treehopper.android;
 import android.content.Context;
 import android.hardware.usb.*;
 
-import java.util.concurrent.TimeUnit;
-
 import io.treehopper.*;
+import io.treehopper.interfaces.Connection;
 
 /**
  * Created by jay on 12/27/2015.

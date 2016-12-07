@@ -2,9 +2,18 @@ package io.treehopper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-import io.treehopper.events.*;
+import io.treehopper.enums.AdcReferenceLevel;
+import io.treehopper.events.AdcValueChangedEventArgs;
+import io.treehopper.events.AdcValueChangedEventHandler;
+import io.treehopper.events.AnalogValueChangedEventArgs;
+import io.treehopper.events.AnalogValueChangedEventHandler;
+import io.treehopper.events.AnalogVoltageChangedEventArgs;
+import io.treehopper.events.AnalogVoltageChangedEventHandler;
+import io.treehopper.events.DigitalInValueChangedEventArgs;
+import io.treehopper.events.DigitalInValueChangedEventHandler;
+import io.treehopper.enums.PinMode;
+import io.treehopper.interfaces.DigitalIOPin;
 
 import static java.lang.Math.abs;
 
@@ -14,6 +23,11 @@ import static java.lang.Math.abs;
 
 public class Pin implements DigitalIOPin {
     private TreehopperUsb board;
+
+    public int getPinNumber() {
+        return pinNumber;
+    }
+
     private int pinNumber;
 
     // digital members
@@ -44,8 +58,7 @@ public class Pin implements DigitalIOPin {
         if (value == mode)
             return;
         if (mode == PinMode.Reserved && value != PinMode.Unassigned) {
-            // throw new Exception("This pin is reserved; you must disable the peripheral using it before interacting with it");
-            return;
+            throw new RuntimeException("This pin is reserved; you must disable the peripheral using it before interacting with it");
         }
 
         mode = value;

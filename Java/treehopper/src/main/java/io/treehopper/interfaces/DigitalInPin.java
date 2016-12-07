@@ -1,5 +1,5 @@
-package io.treehopper;
-import io.treehopper.events.*;
+package io.treehopper.interfaces;
+import io.treehopper.events.DigitalInValueChangedEventHandler;
 
 /**
  * Created by jay on 12/6/2016.

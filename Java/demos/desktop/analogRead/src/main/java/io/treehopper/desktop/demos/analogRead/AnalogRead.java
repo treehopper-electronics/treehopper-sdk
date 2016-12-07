@@ -3,6 +3,8 @@ package io.treehopper.desktop.demos.analogRead;
 import java.util.ArrayList;
 import io.treehopper.desktop.*;
 import io.treehopper.*;
+import io.treehopper.Pin;
+import io.treehopper.enums.PinMode;
 
 public class AnalogRead {
     public static void main(String[] args) {

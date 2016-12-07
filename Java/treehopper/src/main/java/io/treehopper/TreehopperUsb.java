@@ -2,6 +2,9 @@ package io.treehopper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import io.treehopper.interfaces.Connection;
+import io.treehopper.interfaces.I2c;
+
 /**
  * Created by jay on 12/27/2015.
  */
@@ -28,6 +31,7 @@ public class TreehopperUsb {
     }
 
     public I2c i2c = new HardwareI2c(this);
+    public Spi spi = new Spi(this);
 
     public boolean getConnected() {
         return connected;
@@ -71,7 +75,7 @@ public class TreehopperUsb {
 
 
     public void onPinReportReceived(byte[] pinReport) {
-        if (DeviceResponse.values()[pinReport[0]] == DeviceResponse.CurrentReadings) {
+        if (pinReport[0] != 0x00) {
             int i = 1;
             for (Pin pin : pins) {
                 pin.UpdateValue(pinReport[i++], pinReport[i++]);
@@ -86,31 +90,4 @@ public class TreehopperUsb {
     public byte[] receiveCommsResponsePacket(int numBytesToRead) {
         return usbConnection.readPeripheralResponsePacket(numBytesToRead);
     }
-}
-
-enum DeviceCommands {
-    Reserved,    // Not implemented
-    ConfigureDevice,    // Sent upon device connect/disconnect
-    PwmConfig,    // Configures the hardware DAC
-    UartConfig,    // Not implemented
-    I2cConfig,    // Configures i2C master
-    SpiConfig,    // Configures SPI master
-    I2cTransaction,    // (Endpoint 2) Performs an i2C transaction
-    SpiTransaction,    // (Endpoint 2) Performs an SPI transaction
-    SoftPwmConfig,    //
-    ServoControllerConfig,
-    FirmwareUpdateSerial,    //
-    FirmwareUpdateName,    //
-    Reboot,    //
-    EnterBootloader,    //
-    LedConfig
-}
-
-enum DeviceResponse {
-    Reserved,
-    DeviceInfo,
-    CurrentReadings,
-    UARTDataReceived,
-    I2CDataReceived,
-    SPIDataReceived
 }

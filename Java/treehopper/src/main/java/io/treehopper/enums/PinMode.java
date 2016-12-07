@@ -1,4 +1,4 @@
-package io.treehopper;
+package io.treehopper.enums;
 
 /**
  * Created by jay on 12/28/2015.

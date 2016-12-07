@@ -1,4 +1,6 @@
-package io.treehopper;
+package io.treehopper.interfaces;
+
+import io.treehopper.TreehopperUsb;
 
 public interface Connection {
     boolean open();
