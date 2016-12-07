@@ -85,7 +85,21 @@ namespace Treehopper
                 throw new Exception("You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
             if (Pin.PinNumber == 7 & mode != PwmPinEnableMode.Pin7)
                 throw new Exception("You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
-            
+
+            switch (Pin.PinNumber)
+            {
+                case 7:
+                    mode = PwmPinEnableMode.None;
+                    break;
+                case 8:
+                    mode = PwmPinEnableMode.Pin7;
+                    break;
+                case 9:
+                    mode = PwmPinEnableMode.Pin7_Pin8;
+                    break;
+            }
+
+            SendConfig();
         }
 
         internal void SetDutyCycle(Pin Pin, double value)
@@ -98,7 +112,7 @@ namespace Treehopper
                     DutyCyclePin7 = newValue;
                     break;
                 case 8:
-                    DutyCyclePin9 = newValue;
+                    DutyCyclePin8 = newValue;
                     break;
                 case 9:
                     DutyCyclePin9 = newValue;
@@ -134,7 +148,7 @@ namespace Treehopper
         {
             get
             {
-                return 1000000 / (FrequencyHertz * 65536);
+                return 1000000 / (FrequencyHz * 65536);
             }
         }
 
@@ -145,14 +159,14 @@ namespace Treehopper
         {
             get
             {
-                return 1000000 / FrequencyHertz;
+                return 1000000 / FrequencyHz;
             }
         }
 
         /// <summary>
         /// Get an integer representing the current PWM frequency
         /// </summary>
-        public int FrequencyHertz
+        public int FrequencyHz
         {
             get
             {
@@ -183,8 +197,8 @@ namespace Treehopper
             configuration[3] = DutyCyclePin7[0];
             configuration[4] = DutyCyclePin7[1];
 
-            configuration[5] = DutyCyclePin9[0];
-            configuration[6] = DutyCyclePin9[1];
+            configuration[5] = DutyCyclePin8[0];
+            configuration[6] = DutyCyclePin8[1];
 
             configuration[7] = DutyCyclePin9[0];
             configuration[8] = DutyCyclePin9[1];
