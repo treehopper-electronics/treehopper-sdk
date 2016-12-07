@@ -179,9 +179,6 @@ namespace Treehopper
                     Mosi.Mode = PinMode.Unassigned;
                     Miso.Mode = PinMode.Unassigned;
                     Sck.Mode = PinMode.Unassigned;
-
-                    //if(chipSelect != null)
-                    //    chipSelect.Mode = PinMode.Unassigned;
                 }
 
             }
