@@ -61,9 +61,6 @@ namespace Treehopper
         /// The SPI transaction takes place, and once finished, CS is pulsed low
         /// </summary>
         PulseLowAtEnd
-
-
-
     };
 
     /// <summary>
@@ -188,13 +185,13 @@ namespace Treehopper
         /// Send/receive data
         /// </summary>
         /// <param name="dataToWrite">a byte array of the data to send. The length of the transaction is determined by the length of this array.</param>
-        /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <param name="chipSelect">The chip select pin, if any, to use during this transaction.</param>
         /// <param name="chipSelectMode">The chip select mode to use during this transaction (if a CS pin is selected)</param>
         /// <param name="speedMhz">The speed to perform this transaction at.</param>
         /// <param name="burstMode">Whether to use one of the burst modes</param>
+        /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <returns>An awaitable byte array with the received data.</returns>
-        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiMode spiMode, Pin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst)
+        public async Task<byte[]> SendReceive(byte[] dataToWrite, Pin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
         {
             int transactionLength = dataToWrite.Length;
             byte[] returnedData = new byte[transactionLength];

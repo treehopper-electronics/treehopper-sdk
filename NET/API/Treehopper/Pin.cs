@@ -233,12 +233,12 @@ namespace Treehopper
         /// <summary>
         /// The pin number of the pin.
         /// </summary>
-        public int PinNumber { get; set; }
+        public int PinNumber { get; internal set; }
 
         /// <summary>
         /// The SoftPwm functions associated with this pin.
         /// </summary>
-        public SoftPwm SoftPwm { get; set;}
+        public SoftPwm SoftPwm { get; internal set;}
         
         internal Pin(TreehopperUsb board, byte pinNumber)
         {
