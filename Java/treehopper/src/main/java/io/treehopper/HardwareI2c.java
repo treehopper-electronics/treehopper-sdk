@@ -137,7 +137,7 @@ public class HardwareI2c implements I2c {
                     int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
 
                     byte[] chunk = board.receiveCommsResponsePacket(numBytesToTransfer);
-                    System.arraycopy(chunk, 0, result, srcIndex, receivedData.length); // just in case we don't get what we're expecting
+                    System.arraycopy(chunk, 0, result, srcIndex, chunk.length); // just in case we don't get what we're expecting
                     srcIndex += numBytesToTransfer;
                     bytesRemaining -= numBytesToTransfer;
                 }
