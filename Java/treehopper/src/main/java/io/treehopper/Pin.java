@@ -1,7 +1,10 @@
 package io.treehopper;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+
+import io.treehopper.events.*;
 
 import static java.lang.Math.abs;
 
@@ -9,7 +12,7 @@ import static java.lang.Math.abs;
  * Created by jay on 12/28/2015.
  */
 
-public class Pin extends Observable {
+public class Pin implements DigitalIOPin {
     private TreehopperUsb board;
     private int pinNumber;
 
@@ -19,10 +22,10 @@ public class Pin extends Observable {
 
     // analog members
     int adcValueChangedThreshold = 2;
-    double analogValueChangedThreshold = 0.05;
     double analogVoltageChangedThreshold = 0.1;
     AdcReferenceLevel referenceLevel = AdcReferenceLevel.VREF_3V3;
 
+    double analogValueChangedThreshold = 0.05;
     int adcValue;
     double analogVoltage;
     double analogValue;
@@ -63,8 +66,21 @@ public class Pin extends Observable {
         }
     }
 
+
     public PinMode getMode() {
         return mode;
+    }
+
+    //// DIGITAL
+
+    private List<DigitalInValueChangedEventHandler> digitalInValueListeners = new ArrayList<>();
+
+    public void addDigitalInValueChangedEventHandler(DigitalInValueChangedEventHandler handler) {
+        digitalInValueListeners.add(handler);
+    }
+
+    public void removeDigitalInValueChangedEventHandler(DigitalInValueChangedEventHandler handler) {
+        digitalInValueListeners.remove(handler);
     }
 
     public void setDigitalValue(boolean value) {
@@ -83,6 +99,15 @@ public class Pin extends Observable {
         setDigitalValue(!getDigitalValue());
     }
 
+    @Override
+    public void makeDigitalPushPullOutput() {
+        setMode(PinMode.PushPullOutput);
+    }
+
+    @Override
+    public void makeDigitalIn() {
+        setMode(PinMode.DigitalInput);
+    }
     private void sendCommand(byte[] cmd) {
         byte[] data = new byte[6];
         data[0] = (byte) pinNumber;
@@ -99,9 +124,6 @@ public class Pin extends Observable {
                 digitalValue = newVal;
 
                 RaiseDigitalInValueChanged();
-
-                // TODO: How do I do this in Java?
-                // RaisePropertyChanged("DigitalValue");
             }
         } else if(mode == PinMode.AnalogInput)
         {
@@ -113,38 +135,99 @@ public class Pin extends Observable {
 
     void RaiseDigitalInValueChanged()
     {
-        // TODO: how do I do this in Java?
-        // DigitalValueChanged?.Invoke(this, digitalValue);
+        DigitalInValueChangedEventArgs eventArgs = new DigitalInValueChangedEventArgs(digitalValue);
+        for(DigitalInValueChangedEventHandler handler : digitalInValueListeners)
+            handler.DigitalValueChanged(this, eventArgs);
+    }
+
+//// ANALOG
+
+    private List<AdcValueChangedEventHandler> adcValueListeners = new ArrayList<>();
+    private List<AnalogValueChangedEventHandler> analogValueListeners = new ArrayList<>();
+    private List<AnalogVoltageChangedEventHandler> analogVoltageListeners = new ArrayList<>();
+
+    public void addAdcValueChangedEventHandler(AdcValueChangedEventHandler handler) {
+        adcValueListeners.add(handler);
+    }
+
+    public void removeAdcValueChangedEventHandler(AdcValueChangedEventHandler handler) {
+        adcValueListeners.remove(handler);
+    }
+
+    public void addAnalogValueChangedEventHandler(AnalogValueChangedEventHandler handler) {
+        analogValueListeners.add(handler);
+    }
+
+    public void removeAnalogValueChangedEventHandler(AnalogValueChangedEventHandler handler) {
+        analogValueListeners.remove(handler);
+    }
+
+    public void addAnalogVoltageChangedEventHandler(AnalogVoltageChangedEventHandler handler) {
+        analogVoltageListeners.add(handler);
+    }
+
+    public void removeAnalogVoltageChangedEventHandler(AnalogVoltageChangedEventHandler handler) {
+        analogVoltageListeners.remove(handler);
+    }
+
+    public int getAdcValueChangedThreshold() {
+        return adcValueChangedThreshold;
+    }
+
+    public void setAdcValueChangedThreshold(int adcValueChangedThreshold) {
+        this.adcValueChangedThreshold = adcValueChangedThreshold;
+    }
+
+
+    public double getAnalogValueChangedThreshold() {
+        return analogValueChangedThreshold;
+    }
+
+    public void setAnalogValueChangedThreshold(double analogValueChangedThreshold) {
+        this.analogValueChangedThreshold = analogValueChangedThreshold;
+    }
+
+
+    public double getAnalogVoltageChangedThreshold() {
+        return analogVoltageChangedThreshold;
+    }
+
+    public void setAnalogVoltageChangedThreshold(double analogVoltageChangedThreshold) {
+        this.analogVoltageChangedThreshold = analogVoltageChangedThreshold;
     }
 
     void RaiseAnalogInChanged()
     {
         if (abs(prevAdcValue - adcValue) > adcValueChangedThreshold)
         {
+            AdcValueChangedEventArgs eventArgs = new AdcValueChangedEventArgs(adcValue, prevAdcValue);
+            for(AdcValueChangedEventHandler handler : adcValueListeners)
+                handler.analogValueChanged(this, eventArgs);
+
             prevAdcValue = adcValue;
-            // TODO
-            // AdcValueChanged?.Invoke(this, adcValue);
-            // RaisePropertyChanged("AdcValue");
         }
 
         if (abs(prevAnalogVoltage - getAnalogVoltage()) > analogVoltageChangedThreshold)
         {
+            AnalogVoltageChangedEventArgs eventArgs = new AnalogVoltageChangedEventArgs(getAnalogVoltage(), prevAnalogVoltage);
+            for(AnalogVoltageChangedEventHandler handler: analogVoltageListeners)
+                handler.analogVoltageChanged(this, eventArgs);
+
             prevAnalogVoltage = getAnalogVoltage();
-            // TODO
-            // AnalogVoltageChanged?.Invoke(this, AnalogVoltage);
-            // RaisePropertyChanged("AnalogVoltage");
         }
 
         if(abs(prevAnalogValue - getAnalogValue()) > analogValueChangedThreshold)
         {
+            AnalogValueChangedEventArgs eventArgs = new AnalogValueChangedEventArgs(getAnalogValue(), prevAnalogValue);
+            for(AnalogValueChangedEventHandler handler: analogValueListeners)
+                handler.analogValueChanged(this, eventArgs);
+
             prevAnalogValue = getAnalogValue();
-            // TODO
-            // AnalogValueChanged?.Invoke(this, AnalogValue);
-            // RaisePropertyChanged("AnalogValue");
         }
     }
 
-    public double getAdcValue()
+
+    public int getAdcValue()
     {
         return adcValue;
     }
@@ -157,6 +240,15 @@ public class Pin extends Observable {
     public double getAnalogValue()
     {
         return adcValue / 4092.0;
+    }
+
+
+    public AdcReferenceLevel getReferenceLevel() {
+        return referenceLevel;
+    }
+
+    public void setReferenceLevel(AdcReferenceLevel referenceLevel) {
+        this.referenceLevel = referenceLevel;
     }
 
     double getReferenceLevelVoltage()
