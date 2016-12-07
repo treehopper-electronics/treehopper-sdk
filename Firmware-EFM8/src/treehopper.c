@@ -205,18 +205,10 @@ void ProcessPeripheralConfigPacket() {
 		I2C_Transaction(Treehopper_PeripheralConfig[1], &Treehopper_PeripheralConfig[4],
 						Treehopper_RxBuffer, totalTransactionBytes, totalReadBytes);
 
-		if (totalReadBytes > 0) {
-			// we've got data to send back
-			timeout = 0;
-			USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes+1, false);
-			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
-			USBD_AbortTransfer(EP_PeripheralResponse);
-		} else {
-			timeout = 0;
-			USBD_Write(EP2IN, Treehopper_RxBuffer, 1, false);
-			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
-			USBD_AbortTransfer(EP_PeripheralResponse);
-		}
+		timeout = 0;
+		USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes+1, false);
+		while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
+		USBD_AbortTransfer(EP_PeripheralResponse);
 		break;
 
 	case UARTConfig:
