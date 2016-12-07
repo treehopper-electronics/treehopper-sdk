@@ -32,10 +32,5 @@ public enum ChipSelectMode
     /// <summary>
     /// CS is pulsed low, and then the SPI transaction takes place.
     /// </summary>
-    PulseLowAtBeginning,
-
-    /// <summary>
-    /// The SPI transaction takes place, and once finished, CS is pulsed low
-    /// </summary>
-    PulseLowAtEnd
+    PulseLowAtBeginning
 };
