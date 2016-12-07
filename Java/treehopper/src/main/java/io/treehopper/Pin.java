@@ -54,6 +54,10 @@ public class Pin implements DigitalIOPin {
         this.pinNumber = pinNumber;
     }
 
+    public TreehopperUsb getBoard() {
+        return this.board;
+    }
+
     public void setMode(PinMode value) {
         if (value == mode)
             return;

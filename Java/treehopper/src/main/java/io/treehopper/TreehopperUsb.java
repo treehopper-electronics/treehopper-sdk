@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import io.treehopper.interfaces.Connection;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.interfaces.Pwm;
 
 /**
  * Created by jay on 12/27/2015.
@@ -28,10 +29,21 @@ public class TreehopperUsb {
         for (int i = 0; i < 20; i++)
             pins[i] = new Pin(this, i);
 
+        pwm1 = new HardwarePwm(pins[7]);
+        pwm2 = new HardwarePwm(pins[8]);
+        pwm3 = new HardwarePwm(pins[9]);
+
+        i2c = new HardwareI2c(this);
+        spi = new Spi(this);
+        hardwarePwmManager = new HardwarePwmManager(this);
     }
 
-    public I2c i2c = new HardwareI2c(this);
-    public Spi spi = new Spi(this);
+    public I2c i2c;
+    public Spi spi;
+    public Pwm pwm1;
+    public Pwm pwm2;
+    public Pwm pwm3;
+    public HardwarePwmManager hardwarePwmManager;
 
     public boolean getConnected() {
         return connected;
