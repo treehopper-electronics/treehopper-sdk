@@ -78,7 +78,7 @@ namespace Treehopper
             byte[] retVal = new byte[dataToSend.Length];
 
             // We need to lock this in case another thread tries to step in and do a transaction with different settings
-            return spi.SendReceive(dataToSend, Mode, ChipSelect, ChipSelectMode, Frequency, burst);
+            return spi.SendReceive(dataToSend, ChipSelect, ChipSelectMode, Frequency, burst, Mode);
         }
     }
 }

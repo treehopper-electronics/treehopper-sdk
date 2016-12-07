@@ -206,7 +206,7 @@ namespace Treehopper
         /// <summary>
         /// Get the number of pins of this board
         /// </summary>
-        public int NumberOfPins { get { return Pins.Count; } }
+        public int NumberOfPins { get; private set; } = 20;
 
         /// <summary>
         /// Get the Connection used by this board
