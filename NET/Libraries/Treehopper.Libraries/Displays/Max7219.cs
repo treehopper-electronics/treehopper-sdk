@@ -43,7 +43,7 @@ namespace Treehopper.Libraries.Displays
             if (SpeedMHz > 10)
                 throw new ArgumentOutOfRangeException("SpeedMhz", "The MAX7219 supports a maximum clock rate of 10 MHz.");
 
-            dev = new SpiDevice(SpiModule, LoadPin, SpeedMHz);
+            dev = new SpiDevice(SpiModule, LoadPin, SpeedMHz: SpeedMHz);
 
             this.address = Address;
             sendTest(false);
