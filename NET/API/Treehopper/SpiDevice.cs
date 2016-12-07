@@ -28,9 +28,9 @@ namespace Treehopper
         /// Get or set the SPI module's mode
         /// </summary>
         /// <remarks>
-        /// The SPI module supports the four SPI modes: 00, 01, 10, 11. See <see cref="SPIMode"/> for more info.
+        /// The SPI module supports the four SPI modes: 00, 01, 10, 11. See <see cref="SpiMode"/> for more info.
         /// </remarks>
-        public SPIMode Mode { get; protected set; }
+        public SpiMode Mode { get; protected set; }
 
         /// <summary>
         /// Gets or sets the Frequency, in MHz, that this device will use for SPI communication.
@@ -54,7 +54,7 @@ namespace Treehopper
         /// <param name="SpeedMHz">The speed to operate this device at</param>
         /// <param name="mode">The SpiMode of this device</param>
         /// <param name="csMode">The ChipSelectMode to use with this device</param>
-        public SpiDevice(Spi SpiModule, Pin ChipSelect, double SpeedMHz = 1, SPIMode mode = SPIMode.Mode00, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow)
+        public SpiDevice(Spi SpiModule, Pin ChipSelect, double SpeedMHz = 1, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow)
         {
             this.ChipSelectMode = csMode;
             this.ChipSelect = ChipSelect;

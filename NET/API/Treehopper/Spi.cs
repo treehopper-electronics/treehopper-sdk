@@ -73,7 +73,7 @@ namespace Treehopper
     /// <para>The left number indicates the clock polarity (CPOL), while the right number indicates the clock phase (CPHA). Consult https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Clock_polarity_and_phase for more information.</para>
     /// <para>Note that the numeric values of this enum do not match the standard nomenclature, but instead match the value needed by Treehopper's MCU. Do not attempt to cast integers from/to this enum.</para>
     /// </remarks>
-    public enum SPIMode
+    public enum SpiMode
     {
         /// <summary>
         /// Clock is initially low; data is valid on the rising edge of the clock
@@ -194,7 +194,7 @@ namespace Treehopper
         /// <param name="speedMhz">The speed to perform this transaction at.</param>
         /// <param name="burstMode">Whether to use one of the burst modes</param>
         /// <returns>An awaitable byte array with the received data.</returns>
-        public async Task<byte[]> SendReceive(byte[] dataToWrite, SPIMode spiMode, Pin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst)
+        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiMode spiMode, Pin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst)
         {
             int transactionLength = dataToWrite.Length;
             byte[] returnedData = new byte[transactionLength];
