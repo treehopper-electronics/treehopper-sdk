@@ -42,16 +42,6 @@ namespace Treehopper
         ParallelTransaction
     }
 
-	internal enum DeviceResponse : byte
-	{
-		Reserved = 0,
-		DeviceInfo,
-		CurrentReadings,
-		UARTDataReceived,
-		I2CDataReceived,
-		SPIDataReceived
-	}
-
     /// <summary>
     /// An event handler for when a board is added
     /// </summary>
@@ -422,7 +412,7 @@ namespace Treehopper
 
         private void Connection_PinEventDataReceived(byte[] pinStateBuffer)
         {
-            if (pinStateBuffer[0] == (byte)DeviceResponse.CurrentReadings)
+            if (pinStateBuffer[0] != 0x00)
             {
                 int i = 1;
                 foreach(Pin pin in Pins)
