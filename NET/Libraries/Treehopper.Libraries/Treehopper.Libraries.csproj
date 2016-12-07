@@ -99,7 +99,8 @@
     <Compile Include="Sensors\Optical\FlirLepton.cs" />
     <Compile Include="Sensors\Optical\Tsl2591.cs" />
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
-    <Compile Include="Sensors\Temperature\ITemperature.cs" />
+    <Compile Include="Sensors\Temperature\Temperature.cs" />
+    <Compile Include="Sensors\Temperature\Mlx90615.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
   </ItemGroup>
   <ItemGroup />
