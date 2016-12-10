@@ -42,6 +42,8 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public bool HasIndividualBrightnessControl { get; private set; }
 
+        private double brightness = 1.0;
+
         /// <summary>
         /// The brightness, from 0.0-1.0, of the LED.
         /// </summary>
@@ -50,7 +52,22 @@ namespace Treehopper.Libraries.Displays
         /// This property is meaningless when <see cref="HasGlobalBrightnessControl"/>  is false
         /// </para>
         /// </remarks>
-        public virtual double Brightness { get; set; }
+        public double Brightness
+        {
+            get { return brightness; }
+
+            set
+            {
+                if (Math.Abs(brightness - value) < 0.05) return;
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException("Valid brightness is from 0 to 1");
+                brightness = value;
+
+                setBrightness(brightness);
+            }
+        }
+
+        internal abstract void setBrightness(double brightness);
 
         /// <summary>
         /// The collection of LEDs that belong to this driver.
