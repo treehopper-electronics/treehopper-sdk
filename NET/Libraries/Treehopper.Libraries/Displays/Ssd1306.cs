@@ -10,7 +10,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     /// An SSD1306-based OLED display
     /// </summary>
-    public class Ssd1306 : GraphicDisplay
+    public class Ssd1306 : MonoGraphicDisplay
     {
         /// <summary>
         /// The size of the pixel array
@@ -200,25 +200,6 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Clear the display
-        /// </summary>
-        public void Clear()
-        {
-            //for (int i = 0; i < Width * Height/8; i++)
-            //    RawBuffer[i] = 0x00;
-            var val = false;
-            for (int i = 0; i < Width; i++)
-            {
-                for (int j = 0; j < Height; j++)
-                {
-                    BoolBuffer[i, j] = val;
-                    //val = !val;
-                }
-            }
-                
-                    
-        }
-        /// <summary>
         /// Flush the display
         /// </summary>
         /// <returns>An awaitable task that completes when finished</returns>
@@ -243,22 +224,6 @@ namespace Treehopper.Libraries.Displays
                     break;
             }
 
-            //for (int i = 0; i < Width * Height / 8; i++)
-            //    RawBuffer[i] = 0x00;
-
-            // copy the bool data to the byte buffer
-            for (int i = 0; i < Width; i++)
-            {
-
-                for (int j = 0; j < Height; j++)
-                {
-                    if (BoolBuffer[i, j])
-                        RawBuffer[i + (Width * (j / 8))] |= (byte)(1 << (j % 8));
-                    else
-                        RawBuffer[i + (Width * (j / 8))] &= (byte)(~(1 << (j % 8)));
-                }
-            }
-
             for (int i=0;i < (Width*Height / 8); i++)
             {
                 var dat = new byte[128+1];
@@ -274,5 +239,9 @@ namespace Treehopper.Libraries.Displays
 
         }
 
+        protected override void setBrightness(double brightness)
+        {
+            
+        }
     }
 }

@@ -25,47 +25,16 @@ namespace Ssd1306Oled128x32
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
             var display = new Ssd1306(board.I2c);
-            for (int i = 0; i < display.Height * display.Width / 8; i++)
+
+            Console.WriteLine("Press any key to clear display and exit...");
+
+            while (!Console.KeyAvailable)
             {
-                display.RawBuffer[i++] = 0x55;
-                display.RawBuffer[i] = 0xAA;
-            }
-            await display.Flush().ConfigureAwait(false);
-
-            var bitmap = new Bitmap(display.Width, display.Height, PixelFormat.Format32bppArgb);
-
-            RectangleF rectf = new RectangleF(0, 0, display.Width, display.Height);
-
-            Graphics g = Graphics.FromImage(bitmap);
-            g.SmoothingMode = SmoothingMode.None;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            int count = 0;
-            while(!Console.KeyAvailable)
-            {
-                g.FillRectangle(Brushes.Black, 0, 0, display.Width, display.Height);
-                g.DrawString("COUNTING UP: " + count++, new Font("Segoe UI Light", 10), Brushes.White, rectf);
-
-                g.Flush();
-
-                for (int i = 0; i < display.Width; i++)
-                {
-                    for (int j = 0; j < display.Height; j++)
-                    {
-                        var color = bitmap.GetPixel(i, j);
-                        if (color.G > 0)
-                            display.BoolBuffer[i, j] = true;
-                        else
-                            display.BoolBuffer[i, j] = false;
-                    }
-                }
-
-                await display.Flush().ConfigureAwait(false);
-                //await Task.Delay(500);
+                await display.Print(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
+                await Task.Delay(250);
             }
 
-
-            //bitmap.PixelBuffer
+            await display.Clear();
         }
     }
 }

@@ -67,5 +67,40 @@ namespace Treehopper.Libraries.Displays
 
             return new Hd44780(parallelInterface, columns, rows, ioExpander.Pins[3]);
         }
+
+        public static LedGraphicDisplay GetMax7219GraphicLedDisplay(Spi port, Pin latch, int numDevices)
+        {
+            IEnumerable<Led> finalList = new List<Led>();
+            for (int i = 0; i < numDevices; i++)
+            {
+                Max7219 driver;
+
+                driver = new Max7219(port, latch, i);
+
+                var tempList = new List<Led>();
+
+                // We have to re-order the LEDs from the Max7219
+                {
+                    for (int k = 62; k >= 56; k--)
+                    {
+                        for (int m = k; m >= 0; m -= 8)
+                        {
+                            tempList.Add(driver.Leds[m]);
+                        }
+                    }
+
+                    for (int k = 63; k >= 0; k -= 8)
+                    {
+                        tempList.Add(driver.Leds[k]);
+                    }
+                }
+
+                finalList = finalList.Concat(tempList);
+            }
+
+            var display = new LedGraphicDisplay(finalList.ToList(), 8 * numDevices, 8);
+
+            return display;
+        }
     }
 }
