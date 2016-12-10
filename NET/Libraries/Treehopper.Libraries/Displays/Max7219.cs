@@ -43,7 +43,7 @@ namespace Treehopper.Libraries.Displays
             if (SpeedMHz > 10)
                 throw new ArgumentOutOfRangeException("SpeedMhz", "The MAX7219 supports a maximum clock rate of 10 MHz.");
 
-            dev = new SpiDevice(SpiModule, LoadPin, SpeedMHz: SpeedMHz);
+            dev = new SpiDevice(SpiModule, LoadPin, SpeedMHz: SpeedMHz, csMode: ChipSelectMode.PulseHighAtEnd);
 
             this.address = Address;
             sendTest(false);
@@ -52,7 +52,7 @@ namespace Treehopper.Libraries.Displays
             sendDecodeMode(0);
             Clear().Wait();
             Shutdown = false;
-            Intensity = 1;
+            setBrightness(1);
         }
 
         int address;
@@ -126,24 +126,6 @@ namespace Treehopper.Libraries.Displays
                 if (scanLimit == value) return;
                 scanLimit = value;
                 Send(Opcode.ScanLimit, scanLimit).Wait();
-            }
-        }
-
-
-        private double intensity = 0;
-        /// <summary>
-        /// Gets or sets the intensity (0-1) of the display.
-        /// </summary>
-        public double Intensity
-        {
-            get { return intensity; }
-            set
-            {
-                if (intensity == value) return;
-                if (intensity < 0 || intensity > 1)
-                    throw new ArgumentOutOfRangeException("Valid Intensity is from 0 to 1");
-                intensity = value;
-                Send(Opcode.Intensity, (byte)(intensity*15.0)).Wait();
             }
         }
 
@@ -227,6 +209,11 @@ namespace Treehopper.Libraries.Displays
             {
                 await Send((Opcode)(i + 1), state[i]).ConfigureAwait(false);
             }
+        }
+
+        internal override void setBrightness(double brightness)
+        {
+            Send(Opcode.Intensity, (byte)(brightness * 15.0)).Wait();
         }
     }
 

@@ -62,5 +62,10 @@ namespace Treehopper.Libraries.Displays
             else
                 Pins[idx].DigitalValue = led.State;
         }
+
+        internal override void setBrightness(double brightness)
+        {
+            
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="Width">The width of the display, in pixels</param>
         /// <param name="Height">The height of the display, in pixels</param>
-        public Ili9341(int Width, int Height) : base(Width, Height)
+        public Ili9341(int Width, int Height) : base(Width, Height, 2*Width)
         {
         }
 
@@ -27,6 +27,11 @@ namespace Treehopper.Libraries.Displays
         protected override Task flush()
         {
             throw new NotImplementedException();
+        }
+
+        protected override void setBrightness(double brightness)
+        {
+            
         }
     }
 }
