@@ -33,7 +33,7 @@ namespace I2cDeviceScanner
 
                 for (byte i = 1; i < 127; i++)
                 {
-                    Console.Write("{0}: ", i);
+                    Console.Write("{0:X}: ", i);
                     for (int j = 0; j < 3; j++)
                     {
                         try
