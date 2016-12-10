@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
-    interface IAccelerometer
+    interface IAccelerometer : ISensor
     {
+        Vector Accelerometer { get; }
     }
 }
