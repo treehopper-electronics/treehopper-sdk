@@ -9,8 +9,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// <summary>
     /// Base temperature sensor functionality
     /// </summary>
-    public abstract class TemperatureSensor : Temperature
+    public abstract class TemperatureSensor : Temperature, IPollable
     {
+        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
+
         /// <summary>
         /// Get the temperature, in Celsius
         /// </summary>
@@ -37,5 +39,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 return TemperatureCelsius + 273.15;
             }
         }
+
+        public abstract Task Update();
     }
 }

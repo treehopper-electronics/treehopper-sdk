@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors
 {
-    public interface ISensor
+    public interface IPollable
     {
         bool AutoUpdateWhenPropertyRead { get; set; }
-        void Update();
+        Task Update();
     }
 }

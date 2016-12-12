@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
-    interface IGyroscope : ISensor
+    public interface IGyroscope : IPollable
     {
-        Vector Gyroscope { get; }
+        Vector3D Gyroscope { get; }
     }
 }

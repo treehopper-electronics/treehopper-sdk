@@ -48,7 +48,9 @@
     <Compile Include="Displays\CharacterDisplay.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
+    <Compile Include="Displays\LedGraphicDisplay.cs" />
     <Compile Include="Displays\GraphicDisplay.cs" />
+    <Compile Include="Displays\MonoGraphicDisplay.cs" />
     <Compile Include="Displays\Hd44780.cs" />
     <Compile Include="Displays\ILedDriver.cs" />
     <Compile Include="Displays\Ili9341.cs" />
@@ -91,19 +93,27 @@
     <Compile Include="Motors\MotorSpeedController.cs" />
     <Compile Include="Motors\MotorizedFader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sensors\Inertial\ComplementaryFilter.cs" />
     <Compile Include="Sensors\Inertial\IAccelerometer.cs" />
     <Compile Include="Sensors\Inertial\IGyroscope.cs" />
     <Compile Include="Sensors\Inertial\IMagnetometer.cs" />
+    <Compile Include="Sensors\Inertial\Mpu6050.cs" />
     <Compile Include="Sensors\Inertial\Mpu9150.cs" />
+    <Compile Include="Sensors\IPollable.cs" />
     <Compile Include="Sensors\Optical\Adjds311.cs" />
     <Compile Include="Sensors\Optical\FlirLepton.cs" />
     <Compile Include="Sensors\Optical\Tsl2591.cs" />
+    <Compile Include="Sensors\Poller.cs" />
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
     <Compile Include="Sensors\Temperature\Temperature.cs" />
     <Compile Include="Sensors\Temperature\Mlx90615.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\PresentationCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

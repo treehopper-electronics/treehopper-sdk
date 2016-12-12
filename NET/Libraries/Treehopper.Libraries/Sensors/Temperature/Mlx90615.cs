@@ -33,15 +33,24 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 this.dev = dev;
             }
 
+            private double temp = 0;
+
             public override double TemperatureCelsius
             {
                 get
                 {
-                    var data = dev.ReadWordData(register).Result;
+                    if (AutoUpdateWhenPropertyRead) Update().Wait();
 
-                    data &= 0x7FFF; // chop off the error bit of the high byte
-                    return (data * 0.02 - 273.15);
+                    return temp;
                 }
+            }
+
+            public override async Task Update()
+            {
+                var data = await dev.ReadWordData(register);
+
+                data &= 0x7FFF; // chop off the error bit of the high byte
+                temp = data * 0.02 - 273.15;
             }
         }
     }
