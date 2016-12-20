@@ -48,6 +48,7 @@
     <Compile Include="Displays\CharacterDisplay.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
+    <Compile Include="Displays\Is31fl3218.cs" />
     <Compile Include="Displays\LedGraphicDisplay.cs" />
     <Compile Include="Displays\GraphicDisplay.cs" />
     <Compile Include="Displays\MonoGraphicDisplay.cs" />
