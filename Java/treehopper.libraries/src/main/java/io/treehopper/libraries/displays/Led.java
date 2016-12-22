@@ -30,11 +30,12 @@ public class Led {
         return driver;
     }
 
-    double getBrightness() {
+    public double getBrightness() {
         return brightness;
     }
+    
 
-    void setBrightness(double value) {
+    public void setBrightness(double value) {
         if (brightness == value) return;
         if (!hasBrightnessControl()) return;
         brightness = value;
