@@ -4,7 +4,6 @@ import io.treehopper.enums.BurstMode;
 import io.treehopper.enums.ChipSelectMode;
 import io.treehopper.enums.PinMode;
 import io.treehopper.enums.SpiMode;
-import javafx.concurrent.Task;
 
 /**
  * Created by jay on 12/7/2016.
