@@ -11,18 +11,28 @@ import java.util.List;
 public abstract class LedDriver implements ILedDriver, IFlushable {
 
 
-    private boolean autoFlush = true;
+    private boolean autoFlush;
+    private double brightness;
+    private List<Led> leds;
+    
 
 
     public LedDriver(int numLeds, boolean HasGlobalBrightnessControl, boolean HasIndividualBrightnessControl)
     {
+    	this.autoFlush = true;
+    	this.brightness = 1.0;
+    	this.leds = new ArrayList<>();
         for (int i = 0; i < numLeds; i++)
         {
             Led led = new Led(this, i, HasIndividualBrightnessControl);
-            leds.add(led);
+            this.leds.add(led);
         }
     }
 
+    public List<Led> getLeds(){
+    	return leds;
+    }   
+    
     @Override
     public boolean isAutoFlushEnabled() {
         return autoFlush;
@@ -32,7 +42,7 @@ public abstract class LedDriver implements ILedDriver, IFlushable {
         this.autoFlush = autoFlush;
     }
 
-    public List<Led> leds  = new ArrayList<>();
+
 
 
     @Override
@@ -42,10 +52,23 @@ public abstract class LedDriver implements ILedDriver, IFlushable {
     public abstract boolean hasIndividualBrightnessControl();
 
     @Override
-    public abstract double getBrightness();
+    public double getBrightness(){
+    	return brightness;
+    }
 
     @Override
-    public abstract void setBrightness(double brightness);
+    public void setBrightness(double brightness){
+        if (Math.abs(this.brightness - brightness) < 0.0005) return;
+        if (this.brightness < 0 || brightness > 1)
+			try {
+				throw new Exception("Valid brightness is from 0 to 1");
+			} catch (Exception e) {
+
+			}
+        this.brightness = brightness;
+
+        setBrightness(brightness);
+    }
 
     public abstract void ledStateChanged(Led led);
     public abstract void ledBrightnessChanged(Led led);
@@ -54,7 +77,7 @@ public abstract class LedDriver implements ILedDriver, IFlushable {
     {
         boolean autoflushSave = isAutoFlushEnabled();
         setAutoFlushEnabled(false);
-        for(Led led : leds)
+        for(Led led : this.leds)
         {
             led.setState(false);
         }
