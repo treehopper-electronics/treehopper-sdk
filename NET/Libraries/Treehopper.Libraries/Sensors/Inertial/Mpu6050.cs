@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
 using Treehopper.Libraries.Sensors.Temperature;
 
 namespace Treehopper.Libraries.Sensors.Inertial
@@ -45,12 +45,12 @@ namespace Treehopper.Libraries.Sensors.Inertial
             dev.WriteByteData((byte)Registers.ACCEL_CONFIG2, c).Wait();
         }
 
-        protected Vector3D accelerometer = new Vector3D();
-        protected Vector3D gyroscope = new Vector3D();
+        protected Vector3 accelerometer = new Vector3();
+        protected Vector3 gyroscope = new Vector3();
 
         protected SMBusDevice dev;
 
-        public Vector3D Accelerometer
+        public Vector3 Accelerometer
         {
             get
             {
@@ -95,7 +95,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        public Vector3D Gyroscope
+        public Vector3 Gyroscope
         {
             get
             {
@@ -123,24 +123,24 @@ namespace Treehopper.Libraries.Sensors.Inertial
             var data = await dev.ReadBufferData((byte)Registers.ACCEL_XOUT_H, 14);
             double accelScale = getAccelScale();
             double gyroScale = getGyroScale();
-            accelerometer.X = ((short)(data[0] << 8 | data[1])) * accelScale - accelerometerOffset.X;
-            accelerometer.Y = ((short)(data[2] << 8 | data[3])) * accelScale - accelerometerOffset.Y;
-            accelerometer.Z = ((short)(data[4] << 8 | data[5])) * accelScale - accelerometerOffset.Z;
+            accelerometer.X = (float)(((short)(data[0] << 8 | data[1])) * accelScale - accelerometerOffset.X);
+            accelerometer.Y = (float)(((short)(data[2] << 8 | data[3])) * accelScale - accelerometerOffset.Y);
+            accelerometer.Z = (float)(((short)(data[4] << 8 | data[5])) * accelScale - accelerometerOffset.Z);
 
             temperature = (data[6] << 8 | data[7]) / 333.87 + 21.0;
 
-            gyroscope.X = ((short)(data[8] << 8 | data[9])) * gyroScale - gyroscopeOffset.X;
-            gyroscope.Y = ((short)(data[10] << 8 | data[11])) * gyroScale - gyroscopeOffset.Y;
-            gyroscope.Z = ((short)(data[12] << 8 | data[13])) * gyroScale - gyroscopeOffset.Z;
+            gyroscope.X = (float)(((short)(data[8] << 8 | data[9])) * gyroScale - gyroscopeOffset.X);
+            gyroscope.Y = (float)(((short)(data[10] << 8 | data[11])) * gyroScale - gyroscopeOffset.Y);
+            gyroscope.Z = (float)(((short)(data[12] << 8 | data[13])) * gyroScale - gyroscopeOffset.Z);
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Accelerometer"));
         }
-        Vector3D accelerometerOffset = new Vector3D();
-        Vector3D gyroscopeOffset = new Vector3D();
+        Vector3 accelerometerOffset = new Vector3();
+        Vector3 gyroscopeOffset = new Vector3();
         public virtual async Task Calibrate()
         {
-            Vector3D accelOffset = new Vector3D();
-            Vector3D gyroOffset = new Vector3D();
+            Vector3 accelOffset = new Vector3();
+            Vector3 gyroOffset = new Vector3();
 
             accelOffset.X = 0;
             accelOffset.Y = 0;
@@ -163,17 +163,17 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 await Task.Delay(10);
             }
 
-            accelOffset.X /= 80.0;
-            accelOffset.Y /= 80.0;
-            accelOffset.Z /= 80.0;
+            accelOffset.X /= 80.0f;
+            accelOffset.Y /= 80.0f;
+            accelOffset.Z /= 80.0f;
 
             // subtract off gravity
-            if (accelOffset.Z > 0.5) accelOffset.Z -= 1.0;
-            else if (accelOffset.Z < -0.5) accelOffset.Z += 1.0;
+            if (accelOffset.Z > 0.5) accelOffset.Z -= 1.0f;
+            else if (accelOffset.Z < -0.5) accelOffset.Z += 1.0f;
 
-            gyroOffset.X /= 80.0;
-            gyroOffset.Y /= 80.0;
-            gyroOffset.Z /= 80.0;
+            gyroOffset.X /= 80.0f;
+            gyroOffset.Y /= 80.0f;
+            gyroOffset.Z /= 80.0f;
 
             accelerometerOffset = accelOffset;
             gyroscopeOffset = gyroOffset;
