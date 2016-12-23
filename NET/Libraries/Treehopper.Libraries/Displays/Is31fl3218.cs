@@ -21,8 +21,7 @@ namespace Treehopper.Libraries.Displays
         {
             dev = new SMBusDevice(0x54, i2c, rateKhz);
             dev.WriteByteData((byte)Registers.Shutdown, 0x01).Wait();
-            setBrightness(0);
-
+			setBrightness(1.0);
         }
 
         bool shutdown;
