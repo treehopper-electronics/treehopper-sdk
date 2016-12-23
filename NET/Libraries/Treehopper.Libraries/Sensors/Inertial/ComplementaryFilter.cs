@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
@@ -93,7 +93,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Pitch = Pitch * gyroContrib + pitchAcc * accelContrib;
 
             //Transform = Quaternion.Multiply(new Quaternion(axisX, Roll), new Quaternion(axisY, Pitch));
-            Transform = Quaternion.Multiply(new Quaternion(Xaxis, Roll), new Quaternion(Yaxis, Pitch));
+            //Transform = Quaternion.Multiply(new Quaternion(Xaxis, Roll), new Quaternion(Yaxis, Pitch));
 
             //       matrix.Rotate(new Quaternion(axisZ, Yaw));
 
@@ -107,9 +107,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
             this.FilterUpdate?.Invoke(this, new EventArgs());
         }
 
-        Vector3D Xaxis = new Vector3D(1, 0, 0);
-        Vector3D Yaxis = new Vector3D(0, 1, 0);
-        Vector3D Zaxis = new Vector3D(0, 0, 1);
+        Vector3 Xaxis = new Vector3(1, 0, 0);
+        Vector3 Yaxis = new Vector3(0, 1, 0);
+        Vector3 Zaxis = new Vector3(0, 0, 1);
 
         public void Dispose()
         {

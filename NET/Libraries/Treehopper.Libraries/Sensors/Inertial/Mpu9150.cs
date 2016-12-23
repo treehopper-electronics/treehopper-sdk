@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     public class Mpu9150 : Mpu6050
@@ -16,8 +16,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         private SMBusDevice mag;
 
-        protected Vector3D magnetometer = new Vector3D();
-        public Vector3D Magnetometer
+        protected Vector3 magnetometer = new Vector3();
+        public Vector3 Magnetometer
         {
             get
             {
