@@ -67,7 +67,7 @@ public class Tm1650 extends LedDriver {
     }
 
     @Override
-    public void setBrightness(double brightness) {
+    protected void _setBrightness(double brightness) {
 
     }
 

@@ -10,7 +10,7 @@ public class Led {
     private boolean brightnessControl;
     int channel;
     private boolean state = false;
-    private double brightness = 1.0;
+    private double brightness = 0.0;
 
     public Led(ILedDriver driver, int channel) {
         this(driver, channel, false);

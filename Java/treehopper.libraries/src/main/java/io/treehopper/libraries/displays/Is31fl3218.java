@@ -1,12 +1,8 @@
 package io.treehopper.libraries.displays;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.usb4java.Device;
-
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
-import io.treehopper.libraries.displays.Led;
-import io.treehopper.libraries.displays.LedDriver;
+
 
 public class Is31fl3218 extends LedDriver {
 	
@@ -29,7 +25,6 @@ public class Is31fl3218 extends LedDriver {
 		byte shutdown = 0x00;
 		byte data = 0x01;
 		dev.WriteByteData((byte)shutdown, (byte)data);
-		setBrightness(1.0);
 	}
 
 	@Override
@@ -45,13 +40,9 @@ public class Is31fl3218 extends LedDriver {
                 stateBytes[theByte] &= (byte)~(1 << theBit);
         }
 
-        byte[] temp = new byte[1];
-        temp[0] = 0x00;
-//        byte[] dataToWrite = (byte[])(ArrayUtils.addAll(currentValues, stateBytes, temp));
-        byte[] dataToWrite = new byte[currentValues.length + stateBytes.length + temp.length];
+		byte[] dataToWrite = new byte[currentValues.length + stateBytes.length + 1];
         System.arraycopy(currentValues, 0, dataToWrite, 0, currentValues.length);
         System.arraycopy(stateBytes, 0, dataToWrite, currentValues.length, stateBytes.length);
-        System.arraycopy(temp, 0, dataToWrite, stateBytes.length, temp.length);
         dev.WriteBufferData((byte)0x01, dataToWrite);
 		
 	}
@@ -64,6 +55,19 @@ public class Is31fl3218 extends LedDriver {
 	@Override
 	public boolean hasIndividualBrightnessControl() {
 		return true;
+	}
+
+	@Override
+	protected void _setBrightness(double brightness) {
+		boolean autoflushSave = isAutoFlushEnabled();
+		setAutoFlushEnabled(false);
+		for(Led led : this.getLeds())
+			led.setBrightness(brightness);
+
+		if(autoflushSave)
+			flush(false);
+
+		setAutoFlushEnabled(autoflushSave);
 	}
 
 	@Override
