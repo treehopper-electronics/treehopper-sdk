@@ -20,7 +20,7 @@ public abstract class LedDriver implements ILedDriver, IFlushable {
     public LedDriver(int numLeds, boolean HasGlobalBrightnessControl, boolean HasIndividualBrightnessControl)
     {
     	this.autoFlush = true;
-    	this.brightness = 1.0;
+    	this.brightness = 0.0;
     	this.leds = new ArrayList<>();
         for (int i = 0; i < numLeds; i++)
         {
@@ -51,25 +51,21 @@ public abstract class LedDriver implements ILedDriver, IFlushable {
     @Override
     public abstract boolean hasIndividualBrightnessControl();
 
-    @Override
     public double getBrightness(){
     	return brightness;
     }
 
-    @Override
     public void setBrightness(double brightness){
         if (Math.abs(this.brightness - brightness) < 0.0005) return;
         if (this.brightness < 0 || brightness > 1)
-			try {
-				throw new Exception("Valid brightness is from 0 to 1");
-			} catch (Exception e) {
+            throw new RuntimeException("Valid brightness is from 0 to 1");
 
-			}
         this.brightness = brightness;
 
-        setBrightness(brightness);
+        _setBrightness(brightness);
     }
 
+    protected abstract void _setBrightness(double brightness);
     public abstract void ledStateChanged(Led led);
     public abstract void ledBrightnessChanged(Led led);
 
