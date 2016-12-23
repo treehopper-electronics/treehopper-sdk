@@ -4,6 +4,7 @@ import io.treehopper.TreehopperUsb;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.usb.UsbAbortException;
 import javax.usb.UsbClaimException;
 import javax.usb.UsbConfiguration;
 import javax.usb.UsbDevice;
@@ -213,6 +214,8 @@ public class UsbConnection implements Connection {
 
 	public void close() {
 		pinListenerThreadRunning = false;
+		pinReportPipe.abortAllSubmissions();
+
 		try {
 			pinListenerThread.join(); // wait for the thread to finish
 		} catch (InterruptedException e) {
