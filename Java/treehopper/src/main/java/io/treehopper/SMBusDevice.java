@@ -211,8 +211,10 @@ public class SMBusDevice {
         I2c.setSpeed(rateKhz);
 
         byte[] data = new byte[buffer.length + 1];
-        data[0] = register;
+//        data[0] = register;
         System.arraycopy(buffer, 0, data, 1, buffer.length);
+        data[0] = register;
+        
         I2c.sendReceive(address, data, 0);
     }
 }
