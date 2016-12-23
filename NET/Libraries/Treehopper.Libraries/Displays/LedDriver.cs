@@ -42,7 +42,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public bool HasIndividualBrightnessControl { get; private set; }
 
-        private double brightness = 1.0;
+        private double brightness = 0.0;
 
         /// <summary>
         /// The brightness, from 0.0-1.0, of the LED.
