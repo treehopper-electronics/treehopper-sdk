@@ -45,6 +45,7 @@
     <Compile Include="ArduinoShim\SerialShim.cs" />
     <Compile Include="ArduinoShim\Sketch.cs" />
     <Compile Include="Displays\BarGraph.cs" />
+    <Compile Include="Displays\Cat4016.cs" />
     <Compile Include="Displays\CharacterDisplay.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
