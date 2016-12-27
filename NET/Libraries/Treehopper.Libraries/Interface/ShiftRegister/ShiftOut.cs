@@ -32,7 +32,7 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <param name="mode">THe SPI mode to use with this shift register (and subsequent ones on this chain)</param>
         /// <param name="csMode">The chip select mode to use with this shift register (and subsequent ones on this chain)</param>
         /// <param name="speedMhz">The speed to operate this shift register (and subsequent ones on this chain) with</param>
-        public ShiftOut(Spi spiModule, Pin latchPin, int numPins = 8, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd, double speedMhz = 1)
+        public ShiftOut(Spi spiModule, SpiChipSelectPin latchPin, int numPins = 8, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd, double speedMhz = 1)
             : base(spiModule, latchPin, numPins/8, mode, csMode, speedMhz)
         {
             setup(numPins);

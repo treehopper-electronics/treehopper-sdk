@@ -20,7 +20,7 @@ namespace Treehopper
         /// Chip-selects are controlled at the firmware, not peripheral, level, which offers quite a bit of flexibility in choosing the behavior. Make sure to set <see cref="ChipSelectMode"/> properly for your device.
         /// </remarks>
 
-        public Pin ChipSelect { get; protected set; }
+        public SpiChipSelectPin ChipSelect { get; protected set; }
 
         private Spi spi;
 
@@ -54,7 +54,7 @@ namespace Treehopper
         /// <param name="csMode">The ChipSelectMode to use with this device</param>
         /// <param name="SpeedMHz">The speed to operate this device at</param>
         /// <param name="mode">The SpiMode of this device</param>
-        public SpiDevice(Spi SpiModule, Pin ChipSelect, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow, double SpeedMHz = 1, SpiMode mode = SpiMode.Mode00)
+        public SpiDevice(Spi SpiModule, SpiChipSelectPin ChipSelect, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow, double SpeedMHz = 1, SpiMode mode = SpiMode.Mode00)
         {
             this.ChipSelectMode = csMode;
             this.ChipSelect = ChipSelect;
@@ -62,7 +62,7 @@ namespace Treehopper
             this.Frequency = SpeedMHz;
             this.Mode = mode;
 
-            this.ChipSelect.Mode = PinMode.PushPullOutput;
+            this.ChipSelect.MakeDigitalPushPullOut();
 
             spi.Enabled = true;
         }

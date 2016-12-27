@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -113,6 +114,37 @@ namespace Treehopper
             T dataStruct = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
             handle.Free();
             return dataStruct;
+        }
+
+        internal static void Error(string message)
+        {
+            Debug.WriteLine("ERROR: " + message);
+            if (TreehopperUsb.Settings.ThrowExceptions)
+                throw new TreehopperRuntimeException(message);
+        }
+
+        internal static void Error(Exception ex)
+        {
+            Debug.WriteLine("ERROR: " + ex.Message);
+            if (TreehopperUsb.Settings.ThrowExceptions)
+                throw ex;
+        }
+    }
+
+    public class TreehopperRuntimeException : Exception
+    {
+        private string message;
+        public TreehopperRuntimeException(string message)
+        {
+            this.message = message;
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return message;
+            }
         }
     }
 }

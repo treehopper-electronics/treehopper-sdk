@@ -38,7 +38,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="LoadPin">The pin attached tot he LOAD input</param>
         /// <param name="Address">The index of the Max7219 device attached to this bus</param>
         /// <param name="SpeedMHz">The SPI speed to use. The maximum is 10 MHz.</param>
-        public Max7219(Spi SpiModule, Pin LoadPin, int Address = 0, double SpeedMHz = 1) : base(64, true, false)
+        public Max7219(Spi SpiModule, SpiChipSelectPin LoadPin, int Address = 0, double SpeedMHz = 1) : base(64, true, false)
         {
             if (SpeedMHz > 10)
                 throw new ArgumentOutOfRangeException("SpeedMhz", "The MAX7219 supports a maximum clock rate of 10 MHz.");

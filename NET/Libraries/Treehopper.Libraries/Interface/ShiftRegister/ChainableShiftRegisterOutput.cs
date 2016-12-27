@@ -28,7 +28,7 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <param name="mode">The SPI mode to use for all shift registers in this chain</param>
         /// <param name="csMode">The ChipSelectMode to use for all shift registers in this chain</param>
         /// <param name="speedMhz">The speed to use for all shift registers in this chain</param>
-        public ChainableShiftRegisterOutput(Spi spiModule, Pin latchPin, int numBytes = 1, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd, double speedMhz = 1)
+        public ChainableShiftRegisterOutput(Spi spiModule, SpiChipSelectPin latchPin, int numBytes = 1, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd, double speedMhz = 1)
         {
             setupSpi(spiModule, latchPin, speedMhz, mode, csMode);
             shiftRegisters.Add(this);
@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
             this.numBytes = numBytes;
         }
 
-        private void setupSpi(Spi spiModule, Pin latchPin, double speedMhz, SpiMode mode, ChipSelectMode csMode)
+        private void setupSpi(Spi spiModule, SpiChipSelectPin latchPin, double speedMhz, SpiMode mode, ChipSelectMode csMode)
         {
             spiDevice = new SpiDevice(spiModule, latchPin, csMode, speedMhz, mode);
         }
