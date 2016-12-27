@@ -215,7 +215,7 @@ namespace Treehopper
         {
             if (PollingTimerIsEnabled)
                 return;
-            if (e.Device.IdVendor != TreehopperUsb.Settings.Vid || e.Device.IdProduct != TreehopperUsb.Settings.Pid)
+            if (e.Device?.IdVendor != TreehopperUsb.Settings.Vid || e.Device?.IdProduct != TreehopperUsb.Settings.Pid)
                 return;
 
             if(e.EventType == EventType.DeviceArrival) // board added
