@@ -104,7 +104,7 @@ namespace Treehopper
 
             // Initialize modules
             I2c = new HardwareI2c(this);
-            Spi = new Spi(this);
+            Spi = new HardwareSpi(this);
             Uart = new Uart(this);
             Pwm1 = new HardwarePwm(Pins[7]);
             Pwm2 = new HardwarePwm(Pins[8]);
@@ -124,7 +124,7 @@ namespace Treehopper
         /// <summary>
         /// SPI module
         /// </summary>
-        public Spi Spi { get; private set; }
+        public HardwareSpi Spi { get; private set; }
 
         /// <summary>
         /// Hardware UART supporting RS-232 and OneWire-style communication.

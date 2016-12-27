@@ -56,8 +56,10 @@
     <Compile Include="SMBusDevice.cs" />
     <Compile Include="SoftPwm.cs" />
     <Compile Include="SoftPwmManager.cs" />
+    <Compile Include="HardwareSpi.cs" />
     <Compile Include="Spi.cs" />
     <Compile Include="SpiDevice.cs" />
+    <Compile Include="SpiChipSelectPin.cs" />
     <Compile Include="Treehopper.cs" />
     <Compile Include="Uart.cs" />
     <Compile Include="Utilities.cs" />

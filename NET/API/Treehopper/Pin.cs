@@ -170,7 +170,7 @@ namespace Treehopper
     /// between pins. While it cannot be instantiated directly by the user, Pin variables can reference existing pins.
     /// </para>
     /// </remarks>
-    public class Pin : INotifyPropertyChanged, DigitalInPin, DigitalOutPin, AdcPin
+    public class Pin : INotifyPropertyChanged, DigitalInPin, DigitalOutPin, AdcPin, SpiChipSelectPin
     {
         private TreehopperUsb board;
         /// <summary>
@@ -554,6 +554,14 @@ namespace Treehopper
                 // if we're already an analog input, re-send the command to set the new reference level
                 if (Mode == PinMode.AnalogInput)
                     SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
+            }
+        }
+
+        public Spi SpiModule
+        {
+            get
+            {
+                return board.Spi;
             }
         }
 

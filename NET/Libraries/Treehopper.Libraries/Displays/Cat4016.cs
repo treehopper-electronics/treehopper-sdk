@@ -15,7 +15,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="BlankPin">The digital pin, if any, to control the display state (via the Blank input)</param>
-        public Cat4016(Spi SpiModule, Pin LatchPin, DigitalOutPin BlankPin = null) : base(SpiModule, LatchPin, BlankPin)
+        public Cat4016(Spi SpiModule, SpiChipSelectPin LatchPin, DigitalOutPin BlankPin = null) : base(SpiModule, LatchPin, BlankPin)
         {
 
         }
@@ -26,7 +26,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="BlankPin">The PWM pin to use, allowing controllable global brightness (via the Blank input)</param>
-        public Cat4016(Spi SpiModule, Pin LatchPin, Pwm BlankPin) : base(SpiModule, LatchPin, BlankPin)
+        public Cat4016(Spi SpiModule, SpiChipSelectPin LatchPin, Pwm BlankPin) : base(SpiModule, LatchPin, BlankPin)
         {
         }
 

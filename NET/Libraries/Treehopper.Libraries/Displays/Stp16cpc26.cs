@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="OutputEnablePin">The output enable pin, if any, to use.</param>
-        public Stp16cpc26(Spi SpiModule, Pin LatchPin, DigitalOutPin OutputEnablePin = null) : base(SpiModule, LatchPin, 2)
+        public Stp16cpc26(Spi SpiModule, SpiChipSelectPin LatchPin, DigitalOutPin OutputEnablePin = null) : base(SpiModule, LatchPin, 2)
         {
             oe = OutputEnablePin;
             Start();
@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="OutputEnablePin">The PWM pin to use, allowing controllable global brightness.</param>
-        public Stp16cpc26(Spi SpiModule, Pin LatchPin, Pwm OutputEnablePin) : base(SpiModule, LatchPin, 2)
+        public Stp16cpc26(Spi SpiModule, SpiChipSelectPin LatchPin, Pwm OutputEnablePin) : base(SpiModule, LatchPin, 2)
         {
             this.oePwm = OutputEnablePin;
             Start();
