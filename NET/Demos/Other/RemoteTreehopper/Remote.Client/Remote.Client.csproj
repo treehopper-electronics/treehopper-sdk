@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteI2c.cs" />
     <Compile Include="RemotePin.cs" />
+    <Compile Include="RemoteSpi.cs" />
     <Compile Include="RemoteTreehopper.cs" />
   </ItemGroup>
   <ItemGroup>

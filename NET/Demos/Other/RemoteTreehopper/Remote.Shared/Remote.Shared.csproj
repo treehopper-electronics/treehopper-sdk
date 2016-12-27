@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="RemoteBoard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpiTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\API\Treehopper\Treehopper.csproj">

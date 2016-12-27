@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Charlotte, Version=0.1.50.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Charlotte.0.1.50\lib\Charlotte.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="M2Mqtt, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\M2Mqtt.3.6\lib\net45\M2Mqtt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\API\Treehopper.Desktop\Treehopper.Desktop.csproj">
@@ -57,6 +66,10 @@
     <ProjectReference Include="..\API\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Demos\Other\RemoteTreehopper\Remote.Client\Remote.Client.csproj">
+      <Project>{658415F1-494B-43E2-B484-9FCA3A0531AD}</Project>
+      <Name>Remote.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj">
       <Project>{397b4612-9ff2-4288-a7d0-c2b2fc4f4816}</Project>

@@ -26,6 +26,8 @@ namespace Remote.Client
             for (int i = 0; i < 20; i++)
                 Pins.Add(new RemotePin(this, i));
             I2c = new RemoteI2c(this);
+            Spi = new RemoteSpi(this);
+
         }
         public void Open()
         {
@@ -51,6 +53,8 @@ namespace Remote.Client
         }
 
         public RemoteI2c I2c { get; private set; }
+
+        public RemoteSpi Spi { get; private set; }
 
         internal void RegisterCallback(string pattern, Action<dynamic> action)
         {

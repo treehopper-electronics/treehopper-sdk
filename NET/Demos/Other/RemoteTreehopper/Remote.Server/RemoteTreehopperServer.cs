@@ -26,7 +26,9 @@ namespace Remote.Server
 
             On["treehopper/connection/{board}/state"] = msg =>
             {
-                if(msg.Message == "connect")
+                if (!Boards.ContainsKey(msg.board)) return; // these aren't the boards you're looking for
+
+                if (msg.Message == "connect")
                     Boards[msg.board].ConnectAsync();
                 else
                     Boards[msg.board].Disconnect();
@@ -39,12 +41,15 @@ namespace Remote.Server
 
             wirePins();
             wireI2c();
+            wireSpi();
         }
 
         void wirePins()
         {
             On["treehopper/connection/{board}/pins/{pinNumber}/digital"] = msg =>
             {
+                if (!Boards.ContainsKey(msg.board)) return;
+
                 string serial = msg.board;
                 int pinNumber = int.Parse(msg.pinNumber);
 
@@ -55,6 +60,8 @@ namespace Remote.Server
 
             On["treehopper/connection/{board}/pins/{pinNumber}/mode"] = msg =>
             {
+                if (!Boards.ContainsKey(msg.board)) return;
+
                 string serial = msg.board;
                 int pinNumber = int.Parse(msg.pinNumber);
 
@@ -66,14 +73,17 @@ namespace Remote.Server
         {
             On["treehopper/connection/{board}/i2c/enabled"] = msg =>
             {
+                if (!Boards.ContainsKey(msg.board)) return;
+
                 string serial = msg.board;
                 bool enabled = bool.Parse(msg.Message);
-
                 Boards[serial].I2c.Enabled = enabled;
             };
 
             On["treehopper/connection/{board}/i2c/speed"] = msg =>
             {
+                if (!Boards.ContainsKey(msg.board)) return;
+
                 string serial = msg.board;
                 double speed = double.Parse(msg.Message);
 
@@ -82,6 +92,8 @@ namespace Remote.Server
 
             On["treehopper/connection/{board}/i2c/send"] = msg =>
             {
+                if (!Boards.ContainsKey(msg.board)) return;
+
                 string serial = msg.board;
                 var data = Convert.FromBase64String(msg.Message);
                 byte address = data[0];
@@ -91,6 +103,31 @@ namespace Remote.Server
 
                 var response = Boards[serial].I2c.SendReceive(address, dataToSend, numBytesToRead).Result;
                 Publish(string.Format("treehopper/connection/{0}/i2c/received", serial), Convert.ToBase64String(response));
+            };
+        }
+
+        void wireSpi()
+        {
+            On["treehopper/connection/{board}/spi/enabled"] = msg =>
+            {
+                if (!Boards.ContainsKey(msg.board)) return;
+
+                string serial = msg.board;
+                bool enabled = bool.Parse(msg.Message);
+                Boards[serial].Spi.Enabled = enabled;
+            };
+
+            On["treehopper/connection/{board}/spi/send"] = msg =>
+            {
+                if (!Boards.ContainsKey(msg.board)) return;
+
+                string serial = msg.board;
+                var transaction = new SpiTransaction(msg.Message);
+
+                var response = Boards[serial].Spi.SendReceive(transaction.DataToWrite, Boards[serial].Pins[transaction.ChipSelectPinNumber], transaction.ChipSelectMode, transaction.Speed, transaction.Burst, transaction.SpiMode).Result;
+
+                if(transaction.Burst != BurstMode.BurstTx)
+                    Publish(string.Format("treehopper/connection/{0}/spi/received", serial), Convert.ToBase64String(response));
             };
         }
 
