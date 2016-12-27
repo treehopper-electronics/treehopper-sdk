@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Remote.Shared;
+using Newtonsoft.Json;
 
 namespace Remote.Client
 {
@@ -21,17 +23,19 @@ namespace Remote.Client
             this.username = username;
             this.password = password;
 
-            On["added/{board}"] = msg =>
+            On["treehopper/board/added"] = msg =>
             {
-                BoardAddedHandler(msg.board, msg.Message);
+                BoardAddedHandler(new RemoteBoardInfo(msg.Message));
             };
 
-            On["removed/{board}"] = msg =>
+            On["treehopper/board/removed"] = msg =>
             {
-                BoardRemovedHandler(msg.board);
+                BoardRemovedHandler(new RemoteBoardInfo(msg.Message));
             };
 
             Run();
+
+            Publish("treehopper/board/scan", "");
         }
 
 
@@ -49,15 +53,15 @@ namespace Remote.Client
         public event BoardAddedEventHandler BoardAdded;
         public event BoardRemovedEventHandler BoardRemoved;
 
-        private void BoardRemovedHandler(string board)
+        private void BoardRemovedHandler(RemoteBoardInfo board)
         {
-            BoardRemoved?.Invoke(this, new RemoteBoardRemovedEventArgs() { BoardRemoved = new RemoteTreehopper(board, "", hostname, port, username, password) });
+            BoardRemoved?.Invoke(this, new RemoteBoardRemovedEventArgs() { BoardRemoved = new RemoteTreehopper(board, hostname, port, username, password) });
         }
 
-        private void BoardAddedHandler(string board, string name)
+        private void BoardAddedHandler(RemoteBoardInfo board)
         {
-            BoardAdded?.Invoke(this, new RemoteBoardAddedEventArgs() { BoardAdded = new RemoteTreehopper(board, name, hostname, port, username, password) });
-            waitForFirstBoard.TrySetResult(new RemoteTreehopper(board, name, hostname, port, username, password));
+            BoardAdded?.Invoke(this, new RemoteBoardAddedEventArgs() { BoardAdded = new RemoteTreehopper(board, hostname, port, username, password) });
+            waitForFirstBoard.TrySetResult(new RemoteTreehopper(board, hostname, port, username, password));
         }
     }
 

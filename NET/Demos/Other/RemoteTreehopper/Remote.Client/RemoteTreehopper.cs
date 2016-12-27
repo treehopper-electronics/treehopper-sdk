@@ -1,4 +1,5 @@
 ﻿using Charlotte;
+using Remote.Shared;
 using System;
 
 using System.Collections.Generic;
@@ -18,10 +19,10 @@ namespace Remote.Client
 
         public Collection<RemotePin> Pins { get; set; } = new Collection<RemotePin>();
 
-        public RemoteTreehopper(string boardSerialNumber, string name, string hostname, int port, string username, string password) : base(hostname, port, username, password)
+        public RemoteTreehopper(RemoteBoardInfo board, string hostname, int port, string username, string password) : base(hostname, port, username, password)
         {
-            SerialNumber = boardSerialNumber;
-            Name = name;
+            SerialNumber = board.Serial;
+            Name = board.Name;
             for (int i = 0; i < 20; i++)
                 Pins.Add(new RemotePin(this, i));
             I2c = new RemoteI2c(this);
@@ -29,12 +30,12 @@ namespace Remote.Client
         public void Open()
         {
             this.Run();
-            this.Publish(string.Format("connection/{0}/state", SerialNumber), "connect");
+            this.Publish(string.Format("treehopper/connection/{0}/state", SerialNumber), "connect");
         }
 
         public void Close()
         {
-            this.Publish(string.Format("connection/{0}/state", SerialNumber), "disconnect");
+            this.Publish(string.Format("treehopper/connection/{0}/state", SerialNumber), "disconnect");
         }
 
         private bool led = false;
@@ -45,7 +46,7 @@ namespace Remote.Client
             {
                 if (led == value) return;
                 led = value;
-                this.Publish(string.Format("connection/{0}/led", SerialNumber), led.ToString());
+                this.Publish(string.Format("treehopper/connection/{0}/led", SerialNumber), led.ToString());
             }
         }
 
@@ -53,13 +54,13 @@ namespace Remote.Client
 
         internal void RegisterCallback(string pattern, Action<dynamic> action)
         {
-            pattern = string.Format("connection/{0}/", SerialNumber) + pattern;
+            pattern = string.Format("treehopper/connection/{0}/", SerialNumber) + pattern;
             On[pattern] = action;
         }
 
         internal void Write(string topicFragment, dynamic message)
         {
-            this.Publish(string.Format("connection/{0}/", SerialNumber) + topicFragment, message.ToString());
+            this.Publish(string.Format("treehopper/connection/{0}/", SerialNumber) + topicFragment, message.ToString());
         }
 
         public override string ToString()

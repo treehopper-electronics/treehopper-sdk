@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
+using Remote.Shared;
 
 namespace Remote.Server
 {
@@ -14,7 +15,16 @@ namespace Remote.Server
         Dictionary<string, TreehopperUsb> Boards { get; set; } = new Dictionary<string, TreehopperUsb>();
         public RemoteTreehopperServer(string hostname, int port = 1883, string username = "", string password = "") : base(hostname, port, username, password)
         {
-            On["connection/{board}/state"] = msg =>
+            On["treehopper/board/scan"] = msg =>
+            {
+                foreach (var board in Boards.Values)
+                {
+                    Publish("treehopper/board/added", new RemoteBoardInfo(board).ToJsonString());
+                }
+
+            };
+
+            On["treehopper/connection/{board}/state"] = msg =>
             {
                 if(msg.Message == "connect")
                     Boards[msg.board].ConnectAsync();
@@ -22,7 +32,7 @@ namespace Remote.Server
                     Boards[msg.board].Disconnect();
             };
 
-            On["connection/{board}/led"] = msg =>
+            On["treehopper/connection/{board}/led"] = msg =>
             {
                 Boards[msg.board].Led = bool.Parse(msg.Message);
             };
@@ -31,10 +41,9 @@ namespace Remote.Server
             wireI2c();
         }
 
-
         void wirePins()
         {
-            On["connection/{board}/pins/{pinNumber}/digital"] = msg =>
+            On["treehopper/connection/{board}/pins/{pinNumber}/digital"] = msg =>
             {
                 string serial = msg.board;
                 int pinNumber = int.Parse(msg.pinNumber);
@@ -44,7 +53,7 @@ namespace Remote.Server
                 Boards[serial].Pins[pinNumber].DigitalValue = bool.Parse(msg.Message);
             };
 
-            On["connection/{board}/pins/{pinNumber}/mode"] = msg =>
+            On["treehopper/connection/{board}/pins/{pinNumber}/mode"] = msg =>
             {
                 string serial = msg.board;
                 int pinNumber = int.Parse(msg.pinNumber);
@@ -55,7 +64,7 @@ namespace Remote.Server
 
         void wireI2c()
         {
-            On["connection/{board}/i2c/enabled"] = msg =>
+            On["treehopper/connection/{board}/i2c/enabled"] = msg =>
             {
                 string serial = msg.board;
                 bool enabled = bool.Parse(msg.Message);
@@ -63,7 +72,7 @@ namespace Remote.Server
                 Boards[serial].I2c.Enabled = enabled;
             };
 
-            On["connection/{board}/i2c/speed"] = msg =>
+            On["treehopper/connection/{board}/i2c/speed"] = msg =>
             {
                 string serial = msg.board;
                 double speed = double.Parse(msg.Message);
@@ -71,7 +80,7 @@ namespace Remote.Server
                 Boards[serial].I2c.Speed = speed;
             };
 
-            On["connection/{board}/i2c/send"] = msg =>
+            On["treehopper/connection/{board}/i2c/send"] = msg =>
             {
                 string serial = msg.board;
                 var data = Convert.FromBase64String(msg.Message);
@@ -81,7 +90,7 @@ namespace Remote.Server
                 Array.Copy(data, 2, dataToSend, 0, dataToSend.Length);
 
                 var response = Boards[serial].I2c.SendReceive(address, dataToSend, numBytesToRead).Result;
-                Publish(string.Format("connection/{0}/i2c/received", serial), Convert.ToBase64String(response));
+                Publish(string.Format("treehopper/connection/{0}/i2c/received", serial), Convert.ToBase64String(response));
             };
         }
 
@@ -120,14 +129,14 @@ namespace Remote.Server
         private void RemoveBoard(TreehopperUsb board)
         {
             Boards.Remove(board.SerialNumber);
-            Publish("removed/"+board.SerialNumber, board.Name, true);
+            Publish("treehopper/board/removed", new RemoteBoardInfo(board).ToJsonString());
             Console.WriteLine("Removing board: " + board);
         }
 
         internal void AddBoard(TreehopperUsb board)
         {
             Boards.Add(board.SerialNumber, board);
-            Publish("added/"+board.SerialNumber, board.Name, true);
+            Publish("treehopper/board/added", new RemoteBoardInfo(board).ToJsonString());
             Console.WriteLine("Adding board: " + board);
         }
     }
