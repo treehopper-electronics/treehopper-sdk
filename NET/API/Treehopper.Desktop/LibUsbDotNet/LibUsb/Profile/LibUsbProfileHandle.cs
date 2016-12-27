@@ -83,7 +83,6 @@ namespace LibUsb.Profile
                     LibUsbApi.UnrefDevice(handle);
                     mDeviceProfileRefCount--;
                     SetHandleAsInvalid();
-                    Debug.Print(GetType().Name + " : ReleaseHandle #{0}", mDeviceProfileRefCount);
                 }
                 return true;
             }
