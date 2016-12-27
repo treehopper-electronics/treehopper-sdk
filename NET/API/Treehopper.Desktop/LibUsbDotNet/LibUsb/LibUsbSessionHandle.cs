@@ -106,8 +106,6 @@ namespace LibUsb
                     LibUsbApi.Exit(handle);
                     SetHandleAsInvalid();
                     mSessionCount--;
-                    Debug.Print(GetType().Name + " : ReleaseHandle #{0}", mSessionCount);
-
                 }
             }
             return true;

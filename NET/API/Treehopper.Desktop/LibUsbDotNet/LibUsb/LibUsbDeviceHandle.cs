@@ -113,9 +113,7 @@ namespace LibUsb
         {
             if (!IsInvalid)
             {
-                Debug.WriteLine(GetType().Name + ".ReleaseHandle() Before", "Libusb-1.0");
                 LibUsbApi.Close(handle);
-                Debug.WriteLine(GetType().Name + ".ReleaseHandle() After", "Libusb-1.0");
                 SetHandleAsInvalid();
             }
             return true;
