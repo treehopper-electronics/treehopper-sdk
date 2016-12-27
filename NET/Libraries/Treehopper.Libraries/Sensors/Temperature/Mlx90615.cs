@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
             public override async Task Update()
             {
-                var data = await dev.ReadWordData(register);
+                var data = await dev.ReadWordData(register).ConfigureAwait(false);
 
                 data &= 0x7FFF; // chop off the error bit of the high byte
                 temp = data * 0.02 - 273.15;
