@@ -148,12 +148,15 @@ namespace Treehopper
 
         internal double GetDutyCycle(Pin pin)
         {
+            if (!pins.ContainsKey(pin.PinNumber)) return 0;
             return pins[pin.PinNumber].DutyCycle;
         }
 
         internal double GetPulseWidth(Pin pin)
         {
+            if (!pins.ContainsKey(pin.PinNumber)) return 0;
             return pins[pin.PinNumber].PulseWidthUs;
+
         }
 
         public void Dispose()
