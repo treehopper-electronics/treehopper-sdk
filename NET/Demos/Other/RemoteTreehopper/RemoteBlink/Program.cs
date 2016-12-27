@@ -1,9 +1,13 @@
 ﻿using Remote.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Treehopper.Libraries.Sensors.Temperature;
+using Treehopper;
 
 namespace RemoteBlink
 {
@@ -11,30 +15,29 @@ namespace RemoteBlink
     {
         static void Main(string[] args)
         {
-            App().Wait();
+            App();
         }
 
         static async Task App()
         {
             Console.WriteLine("Starting connection...");
-            //var connection = new RemoteConnectionService("http://localhost:8080");
-            var connection = new RemoteConnectionService("http://raspberrypi:8080");
+            var connection = new RemoteConnectionService("raspberrypi");
             var board = await connection.GetFirstDeviceAsync();
             Console.WriteLine("Board found: {0}", board);
-            await board.ConnectAsync();
+            board.Open();
+
+            var temp = new Mlx90615(board.I2c);
             Console.WriteLine("Connected.");
-
-
-            bool led = false;
-            while(!Console.KeyAvailable)
+            Stopwatch sw = new Stopwatch();
+            Task.Run(async() =>
             {
-                //board.Led = !board.Led;
-                await board.hub.Invoke("SetLed", board.board, led);
-                led = !led;
-                //await Task.Delay(100);
-            }
-
-            board.Disconnect();
+                while (!Console.KeyAvailable)
+                {
+                    Console.WriteLine("the current temperature is: " + temp.Ambient.TemperatureFahrenheit);
+                    await Task.Delay(1000);
+                }
+                board.Disconnect();
+            }).Forget();
         }
 
     }
