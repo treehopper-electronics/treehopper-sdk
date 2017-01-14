@@ -7,23 +7,27 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
-    public class Mlx90615
+    public class Mlx90614
     {
-        private SMBusDevice dev;
+        protected SMBusDevice dev;
 
-        public Mlx90615(I2c module)
+        public Mlx90614(I2c module)
         {
-            this.dev = new SMBusDevice(0x5B, module, 30);
-            Object =  new TempRegister(dev, 0x27);
-            Ambient = new TempRegister(dev, 0x26);
+            this.dev = new SMBusDevice(0x5A, module);
+            Object =  new TempRegister(dev, 0x07);
+            Ambient = new TempRegister(dev, 0x06);
         }
-        public Temperature Ambient { get; private set; }
-        public Temperature Object { get; private set; }
+        public Temperature Ambient { get; protected set; }
+        public Temperature Object { get; protected set; }
 
         public int RawIrData { get { return dev.ReadWordData(0x25).Result;  } }
 
-        internal class TempRegister : TemperatureSensor
+        protected class TempRegister : TemperatureSensor
         {
+            public override string ToString()
+            {
+                return TemperatureCelsius.ToString();
+            }
             private SMBusDevice dev;
             private byte register;
 
@@ -52,6 +56,16 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 data &= 0x7FFF; // chop off the error bit of the high byte
                 temp = data * 0.02 - 273.15;
             }
+        }
+    }
+
+    public class Mlx90615 : Mlx90614
+    {
+        public Mlx90615(I2c module) : base(module)
+        {
+            this.dev = new SMBusDevice(0x5B, module);
+            Object = new TempRegister(dev, 0x27);
+            Ambient = new TempRegister(dev, 0x26);
         }
     }
 }
