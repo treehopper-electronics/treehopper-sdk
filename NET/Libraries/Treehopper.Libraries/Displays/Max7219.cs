@@ -52,7 +52,7 @@ namespace Treehopper.Libraries.Displays
             sendDecodeMode(0);
             Clear().Wait();
             Shutdown = false;
-            setBrightness(1);
+            setGlobalBrightness(1);
         }
 
         int address;
@@ -211,7 +211,7 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        internal override void setBrightness(double brightness)
+        internal override void setGlobalBrightness(double brightness)
         {
             Send(Opcode.Intensity, (byte)(brightness * 15.0)).Wait();
         }
