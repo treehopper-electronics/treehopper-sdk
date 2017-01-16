@@ -16,10 +16,12 @@ namespace Treehopper.Libraries.Displays
         /// Construct an LedDriver
         /// </summary>
         /// <param name="numLeds">The number of LEDs to construct</param>
-        /// <param name="HasGlobalBrightnessControl">Whether the controller can globally adjust the LED brightness</param>
+        /// <param name="HasGlobalBrightnessControl">Whether the controller can globally adjust the LED brightness.</param>
         /// <param name="HasIndividualBrightnessControl">Whether the controller has individual LED brightness control</param>
         public LedDriver(int numLeds, bool HasGlobalBrightnessControl, bool HasIndividualBrightnessControl)
         {
+            this.HasGlobalBrightnessControl = HasGlobalBrightnessControl;
+            this.HasIndividualBrightnessControl = HasIndividualBrightnessControl;
             for (int i = 0; i < numLeds; i++)
             {
                 var led = new Led(this, i, HasIndividualBrightnessControl);
@@ -42,10 +44,10 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public bool HasIndividualBrightnessControl { get; private set; }
 
-        private double brightness = 0.0;
+        protected double brightness = 0.0;
 
         /// <summary>
-        /// The brightness, from 0.0-1.0, of the LED.
+        /// The global brightness, from 0.0-1.0, of the LEDs attached to this driver
         /// </summary>
         /// <remarks>
         /// <para>
@@ -62,12 +64,22 @@ namespace Treehopper.Libraries.Displays
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException("Valid brightness is from 0 to 1");
                 brightness = value;
-
-                setBrightness(brightness);
+                
+                if(HasGlobalBrightnessControl) // might be more efficient
+                    setGlobalBrightness(brightness); 
+                else if(HasIndividualBrightnessControl)
+                {
+                    bool savedAutoflushState = AutoFlush;
+                    AutoFlush = false;
+                    foreach (var led in Leds)
+                        led.Brightness = brightness;
+                    Flush().Wait();
+                    AutoFlush = savedAutoflushState;
+                }
             }
         }
 
-        internal abstract void setBrightness(double brightness);
+        internal abstract void setGlobalBrightness(double brightness);
 
         /// <summary>
         /// The collection of LEDs that belong to this driver.
