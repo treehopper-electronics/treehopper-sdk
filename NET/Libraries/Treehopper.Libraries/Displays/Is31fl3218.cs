@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Displays
         {
             dev = new SMBusDevice(0x54, i2c, rateKhz);
             dev.WriteByteData((byte)Registers.Shutdown, 0x01).Wait();
-			setBrightness(1.0);
+			setGlobalBrightness(1.0);
         }
 
         bool shutdown;
@@ -83,7 +83,7 @@ namespace Treehopper.Libraries.Displays
             if (AutoFlush) Flush().Wait();
         }
 
-        internal override void setBrightness(double brightness)
+        internal override void setGlobalBrightness(double brightness)
         {
             bool savedAutoflushState = AutoFlush;
             AutoFlush = false;
