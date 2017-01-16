@@ -47,6 +47,7 @@
     <Compile Include="Displays\BarGraph.cs" />
     <Compile Include="Displays\Cat4016.cs" />
     <Compile Include="Displays\CharacterDisplay.cs" />
+    <Compile Include="Displays\PwmLedDriver.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
     <Compile Include="Displays\Is31fl3218.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Displays\Led.cs" />
     <Compile Include="Displays\LedDriver.cs" />
     <Compile Include="Displays\Max7219.cs" />
+    <Compile Include="Displays\RgbLed.cs" />
     <Compile Include="Displays\SevenSegmentDigit.cs" />
     <Compile Include="Displays\SevenSegmentDisplay.cs" />
     <Compile Include="Displays\Ssd1306.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Interface\IFlushable.cs" />
     <Compile Include="Interface\IFlushableOutputPort.cs" />
     <Compile Include="Interface\Ltc2305.cs" />
+    <Compile Include="Interface\Pca9685.cs" />
     <Compile Include="Interface\PcfSeries\Pcf8574.cs" />
     <Compile Include="Interface\PcfSeries\Pcf8575.cs" />
     <Compile Include="Interface\PcfSeries\PcfInterface.cs" />
@@ -108,7 +111,7 @@
     <Compile Include="Sensors\Poller.cs" />
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
     <Compile Include="Sensors\Temperature\Temperature.cs" />
-    <Compile Include="Sensors\Temperature\Mlx90615.cs" />
+    <Compile Include="Sensors\Temperature\Mlx9061x.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
   </ItemGroup>
   <ItemGroup>
