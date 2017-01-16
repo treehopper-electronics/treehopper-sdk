@@ -53,7 +53,7 @@ namespace Treehopper.Libraries.Displays
             get { return brightness; }
             set
             {
-                if (brightness == value) return;
+                if (brightness.CloseTo(value)) return;
                 if (!HasBrightnessControl) return;
                 brightness = value;
                 Driver.LedBrightnessChanged(this);

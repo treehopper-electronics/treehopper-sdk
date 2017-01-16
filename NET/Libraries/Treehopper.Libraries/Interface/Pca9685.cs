@@ -85,6 +85,7 @@ namespace Treehopper.Libraries.Interface
         {
             get { return frequency; }
             set {
+                if (frequency.CloseTo(value)) return;
                 frequency = value;
                 updateConfig();
             }

@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Displays
 
             set
             {
-                if (Math.Abs(brightness - value) < 0.0005) return;
+                if (value.CloseTo(brightness)) return;
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException("Valid brightness is from 0 to 1");
                 brightness = value;
