@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Libraries.Displays;
 
-namespace Stp16cpc26Demo
+namespace LedShiftRegisterDemo
 {
     class Program
     {
@@ -20,7 +20,7 @@ namespace Stp16cpc26Demo
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
             Console.WriteLine("Connected to " + board);
-            var driver = new Stp16cpc26(board.Spi, board.Pins[5], board.Pwm1);
+            var driver = new LedShiftRegister(board.Spi, board.Pins[5], board.Pwm1);
             driver.Brightness = 0.01;
             var bar = new BarGraph(driver.Leds);
             while (!Console.KeyAvailable)
