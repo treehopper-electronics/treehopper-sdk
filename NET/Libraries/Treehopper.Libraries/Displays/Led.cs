@@ -84,20 +84,5 @@ namespace Treehopper.Libraries.Displays
                 Driver.LedStateChanged(this);
             }
         }
-
-        /// <summary>
-        /// Returns the CIE 1976 relative luminance, normalized to a 0-1 scale.
-        /// </summary>
-        /// <returns>The CIE 1976 relative luminance</returns>
-        /// <remarks>
-        /// <para>The <see cref="Brightness"/> of the LED is perception oriented for intuitiveness. This function can be used to convert the perceptual value to a normalized luminance value that an LED driver can use to determine the correct PWM duty cycle or analog current drive strength needed to produce the associated brightness.</para>
-        /// </remarks>
-        public double GetCieLuminance()
-        {
-            if (Brightness > 0.008856)
-                return (15625 * Math.Pow(Brightness, 3) + 7500 * Math.Pow(Brightness, 2) + 1200 * Brightness + 64) / 24389.0;
-            else
-                return 1000 * Brightness / 9033.0;
-        }
     }
 }
