@@ -379,7 +379,7 @@ namespace Treehopper
 
         internal void RaiseAnalogInChanged()
         {
-            if (Math.Abs(prevAdcValue - adcValue) > AdcValueChangedThreshold)
+            if (!prevAdcValue.CloseTo(adcValue, AdcValueChangedThreshold))
             {
                 prevAdcValue = adcValue;
                 AdcValueChanged?.Invoke(this, adcValue);
@@ -389,7 +389,7 @@ namespace Treehopper
                 RaisePropertyChanged("AdcValue");
             }
 
-            if (Math.Abs(prevAnalogVoltage - AnalogVoltage) > AnalogVoltageChangedThreshold)
+            if (!prevAnalogVoltage.CloseTo(AnalogVoltage, AnalogVoltageChangedThreshold))
             {
                 prevAnalogVoltage = AnalogVoltage;
                 AnalogVoltageChanged?.Invoke(this, AnalogVoltage);
@@ -399,7 +399,7 @@ namespace Treehopper
                 RaisePropertyChanged("AnalogVoltage");
             }
 
-            if(Math.Abs(prevAnalogValue - AnalogValue) > AnalogValueChangedThreshold)
+            if(!prevAnalogValue.CloseTo(AnalogValue, AnalogValueChangedThreshold))
             {
                 prevAnalogValue = AnalogValue;
                 AnalogValueChanged?.Invoke(this, AnalogValue);

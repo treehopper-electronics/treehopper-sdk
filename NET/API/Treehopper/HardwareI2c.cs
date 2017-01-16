@@ -72,8 +72,7 @@ namespace Treehopper
             }
             set
             {
-                if (speed == value)
-                    return;
+                if (speed.CloseTo(value)) return;
                 speed = value;
                 SendConfig();
             }

@@ -39,6 +39,7 @@ namespace Treehopper.Libraries.Motors
             }
             set
             {
+                if (minPulseWidth.CloseTo(value)) return;
                 minPulseWidth = value;
                 Angle = Angle; // force angle calculations to be updated
             }
@@ -57,6 +58,7 @@ namespace Treehopper.Libraries.Motors
             }
             set
             {
+                if (maxPulseWidth.CloseTo(value)) return;
                 maxPulseWidth = value;
                 Angle = Angle; // force angle calculations to be updated
             }
@@ -72,6 +74,7 @@ namespace Treehopper.Libraries.Motors
             get { return angle; }
             set
             {
+                if (angle.CloseTo(value)) return;
                 angle = value;
 
                 if (angle < 0 || angle > 180)

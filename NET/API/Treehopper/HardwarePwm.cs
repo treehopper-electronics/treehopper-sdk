@@ -64,6 +64,7 @@ namespace Treehopper
             }
             set
             {
+                if (dutyCycle.CloseTo(value)) return;
                 if (value > 1.0 || value < 0.0)
                     throw new ArgumentOutOfRangeException("DutyCycle", "DutyCycle must be between 0.0 and 1.0");
                 dutyCycle = value;
@@ -85,6 +86,7 @@ namespace Treehopper
             }
             set
             {
+                if (pulseWidth.CloseTo(value)) return;
                 if (value > Board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
                     throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + Board.HardwarePwmManager.PeriodMicroseconds);
                 pulseWidth = value;

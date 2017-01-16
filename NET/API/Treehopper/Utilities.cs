@@ -82,6 +82,44 @@ namespace Treehopper
             else
                 return 1000 * Brightness / 9033.0;
         }
+
+        /// <summary>
+        /// Determines if this number is close to another. Useful for comparing doubles and floats
+        /// </summary>
+        /// <param name="val">This number</param>
+        /// <param name="comparedTo">The other number</param>
+        /// <param name="error">The allowable error; defaults to something sensible</param>
+        /// <returns>True if the two numbers are within "error" of each other; false otherwise</returns>
+        public static bool CloseTo(this double val, double comparedTo, double error = 0.0001)
+        {
+            return Math.Abs(val - comparedTo) < error;
+        }
+
+        /// <summary>
+        /// Determines if this number is close to another. Useful for comparing doubles and floats
+        /// </summary>
+        /// <param name="val">This number</param>
+        /// <param name="comparedTo">The other number</param>
+        /// <param name="error">The allowable error; defaults to something sensible</param>
+        /// <returns>True if the two numbers are within "error" of each other; false otherwise</returns>
+        public static bool CloseTo(this float val, float comparedTo, double error = 0.0001)
+        {
+            return Math.Abs(val - comparedTo) < error;
+        }
+
+        /// <summary>
+        /// Determines if this number is close to another. Useful for comparing doubles and floats
+        /// </summary>
+        /// <param name="val">This number</param>
+        /// <param name="comparedTo">The other number</param>
+        /// <param name="error">The allowable error; defaults to something sensible</param>
+        /// <returns>True if the two numbers are within "error" of each other; false otherwise</returns>
+        public static bool CloseTo(this int val, int comparedTo, double error = 0.0001)
+        {
+            return Math.Abs(val - comparedTo) < error;
+        }
+
+        /// <summary>
         /// Convert 4-bit BCD nibbles to a string
         /// </summary>
         /// <param name="val">The number (composed of 4-bit nibbles) to convert</param>
