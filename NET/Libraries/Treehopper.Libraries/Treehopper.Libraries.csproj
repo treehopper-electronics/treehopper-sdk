@@ -45,7 +45,6 @@
     <Compile Include="ArduinoShim\SerialShim.cs" />
     <Compile Include="ArduinoShim\Sketch.cs" />
     <Compile Include="Displays\BarGraph.cs" />
-    <Compile Include="Displays\Cat4016.cs" />
     <Compile Include="Displays\CharacterDisplay.cs" />
     <Compile Include="Displays\PwmLedDriver.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
@@ -64,7 +63,7 @@
     <Compile Include="Displays\SevenSegmentDigit.cs" />
     <Compile Include="Displays\SevenSegmentDisplay.cs" />
     <Compile Include="Displays\Ssd1306.cs" />
-    <Compile Include="Displays\Stp16cpc26.cs" />
+    <Compile Include="Displays\LedShiftRegister.cs" />
     <Compile Include="Displays\Tm1650.cs" />
     <Compile Include="Interface\AnalogMux\AnalogMux4051.cs" />
     <Compile Include="Interface\FlushableParallelInterface.cs" />
