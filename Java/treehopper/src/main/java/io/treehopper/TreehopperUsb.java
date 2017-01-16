@@ -12,14 +12,18 @@ import io.treehopper.interfaces.Pwm;
 
 public class TreehopperUsb {
 
-    public static Settings Settings = new Settings();
-
     private static final Logger logger = LogManager.getLogger("TreehopperUsb");
-
+    public static Settings Settings = new Settings();
     public Pin[] pins = new Pin[20];
     private Connection usbConnection;
     private boolean led;
     private boolean connected;
+    public I2c i2c;
+    public Spi spi;
+    public Pwm pwm1;
+    public Pwm pwm2;
+    public Pwm pwm3;
+    public HardwarePwmManager hardwarePwmManager;
 
     Object comsLock = new Object();
 
@@ -38,12 +42,7 @@ public class TreehopperUsb {
         hardwarePwmManager = new HardwarePwmManager(this);
     }
 
-    public I2c i2c;
-    public Spi spi;
-    public Pwm pwm1;
-    public Pwm pwm2;
-    public Pwm pwm3;
-    public HardwarePwmManager hardwarePwmManager;
+
 
     public boolean getConnected() {
         return connected;
