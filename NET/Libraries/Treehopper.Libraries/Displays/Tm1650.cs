@@ -24,9 +24,10 @@ namespace Treehopper.Libraries.Displays
         /// Construct a new TM1650 with a given I2c interface
         /// </summary>
         /// <param name="i2c">The I2c interface to use</param>
-        public Tm1650(I2c i2c) : base(32, false, false)
+        public Tm1650(I2c i2c) : base(32, true, false)
         {
             this.i2c = i2c;
+            brightness = 1.0;
             i2c.Enabled = true;
             Enable = true;
         }
@@ -47,7 +48,8 @@ namespace Treehopper.Libraries.Displays
 
         private async Task sendControlUpdate()
         {
-            byte controlByte = (byte)(enable ? 0x01 : 0x00);
+            int bright = (int)(Brightness < 1.0 ? Math.Ceiling(Brightness * 7.0) : 0);
+            byte controlByte = (byte)((bright << 4) | ((enable && Brightness > 0) ? 0x01 : 0x00));
             for (int i = 0; i < 4; i++)
                 await sendControl(controlByte, i);
         }
@@ -100,9 +102,9 @@ namespace Treehopper.Libraries.Displays
                 Flush().Wait();
         }
 
-        internal override void setBrightness(double brightness)
+        internal override void setGlobalBrightness(double brightness)
         {
-            
+            sendControlUpdate().Wait();
         }
     }
 }
