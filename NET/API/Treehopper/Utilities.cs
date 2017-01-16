@@ -37,13 +37,13 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// Constrains a number to be within a range
+        /// Constrains a number to be within a range. Default range is 0-1
         /// </summary>
         /// <param name="x">the number to constrain</param>
         /// <param name="a">the lower end of the range</param>
         /// <param name="b">the upper end of the range</param>
         /// <returns>the constrained number</returns>
-        public static double Constrain(double x, double a, double b)
+        public static double Constrain(double x, double a = 0.0, double b = 1.0)
         {
             if (x < a)
                 return a;
