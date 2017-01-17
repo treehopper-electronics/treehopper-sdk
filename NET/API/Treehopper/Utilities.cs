@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -117,6 +118,20 @@ namespace Treehopper
         public static bool CloseTo(this int val, int comparedTo, double error = 0.0001)
         {
             return Math.Abs(val - comparedTo) < error;
+        }
+
+        /// <summary>
+        /// Do something with each item in a list, collection, or enumerable
+        /// </summary>
+        /// <typeparam name="T">The type of the enumerable</typeparam>
+        /// <param name="enumeration">The collection, list, etc to operate over</param>
+        /// <param name="action">The Action to perform on each item</param>
+        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
+        {
+            foreach (T item in enumeration)
+            {
+                action(item);
+            }
         }
 
         /// <summary>
