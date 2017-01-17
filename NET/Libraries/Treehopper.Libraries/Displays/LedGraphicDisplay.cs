@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Displays
         public LedCollection Leds { get; private set; }
 
         public IFlushable Parent { get; set; }
-        public bool AutoFlush { get; set; }
+        public bool AutoFlush { get; set; } = true;
 
         public LedGraphicDisplay(IList<Led> leds, int width, int height) : base(width, height)
         {
