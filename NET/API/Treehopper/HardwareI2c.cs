@@ -59,6 +59,16 @@ namespace Treehopper
                 if (value == enabled)
                     return;
                 enabled = value;
+                if(enabled)
+                {
+                    Sda.Mode = PinMode.Reserved;
+                    Scl.Mode = PinMode.Reserved;
+                } else
+                {
+                    Sda.Mode = PinMode.Unassigned;
+                    Scl.Mode = PinMode.Unassigned;
+                }
+
                 SendConfig();
             }
         }
@@ -77,6 +87,9 @@ namespace Treehopper
                 SendConfig();
             }
         }
+
+        Pin Sda { get { return device.Pins[3]; } }
+        Pin Scl { get { return device.Pins[4]; } }
 
         private void SendConfig()
         {

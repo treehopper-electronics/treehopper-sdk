@@ -217,10 +217,10 @@ namespace Treehopper
                         SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0x00 });
                         break;
                 }
-
-
             }
         }
+
+        public string Name { get; internal set; }
 
         /// <summary>
         /// Occurs when the input on the pin changes.
@@ -249,6 +249,7 @@ namespace Treehopper
             AnalogVoltageChangedThreshold = 0.1;
             AnalogValueChangedThreshold = 0.05;
             this.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
+            Name = "Pin " + pinNumber; // default name
         }
 
         /// <summary>
@@ -603,23 +604,23 @@ namespace Treehopper
         public override string ToString()
         {
             if (SoftPwm.Enabled)
-                return SoftPwm.ToString();
+                return Name + ": " + SoftPwm.ToString();
             switch(Mode)
             {
                 case PinMode.AnalogInput:
-                    return string.Format("Analog input, {0:0.00} volts", AnalogVoltage);
+                    return Name + ": " + string.Format("Analog input, {0:0.00} volts", AnalogVoltage);
                 case PinMode.DigitalInput:
-                    return string.Format("Digital input, {0}", DigitalValue);
+                    return Name + ": " + string.Format("Digital input, {0}", DigitalValue);
                 case PinMode.OpenDrainOutput:
-                    return string.Format("Open-drain output, {0}", DigitalValue);
+                    return Name + ": " + string.Format("Open-drain output, {0}", DigitalValue);
                 case PinMode.PushPullOutput:
-                    return string.Format("Push-pull output, {0}", DigitalValue);
+                    return Name + ": " + string.Format("Push-pull output, {0}", DigitalValue);
                 case PinMode.Reserved:
-                    return "In use by peripheral";
+                    return Name + ": In use by peripheral";
 
                 default:
                 case PinMode.Unassigned:
-                    return "Unassigned";
+                    return Name + ": Unassigned";
             }
         }
     }
