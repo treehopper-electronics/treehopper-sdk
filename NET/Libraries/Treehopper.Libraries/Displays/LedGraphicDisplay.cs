@@ -4,53 +4,50 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treehopper.Libraries.Interface;
 
 namespace Treehopper.Libraries.Displays
 {
-    public class LedGraphicDisplay : MonoGraphicDisplay
+    public class LedGraphicDisplay : MonoGraphicDisplay, LedDisplay
     {
-        private IList<Led> leds;
+        public LedCollection Leds { get; private set; }
 
-        private IList<ILedDriver> drivers = new List<ILedDriver>();
+        public IFlushable Parent { get; set; }
+        public bool AutoFlush { get; set; }
 
         public LedGraphicDisplay(IList<Led> leds, int width, int height) : base(width, height)
         {
-            this.leds = leds;
-
-
-
-            foreach(var led in leds)
-            {
-                if (!drivers.Contains(led.Driver))
-                    drivers.Add(led.Driver);
-            }
-
-            foreach (var driver in drivers)
-                driver.AutoFlush = false;
+            Leds = new LedCollection(leds);
         }
 
         protected override async Task flush()
         {
-            for(int i=0;i< RawBuffer.Length;i++)
-            {
-                byte data = RawBuffer[i];
-                for (int j = 0; j < 8; j++)
-                {
-                    int idx = (8*i) + j;
-                    leds[idx].State = (((data >> j) & 0x01) == 0x01) ? true : false;
-                }
-                    
-            }
-            foreach(var driver in drivers)
-            {
-                await driver.Flush();
-            }
+            if (AutoFlush)
+                await Flush().ConfigureAwait(false);
         }
 
         protected override void setBrightness(double brightness)
         {
-            foreach (var driver in drivers)
-                driver.Brightness = brightness;
+            Leds.Select(x => x.Driver).Distinct().ForEach(drv => drv.Brightness = brightness);
+        }
+
+        public void WriteLeds()
+        {
+            for (int i = 0; i < RawBuffer.Length; i++)
+            {
+                byte data = RawBuffer[i];
+                for (int j = 0; j < 8; j++)
+                {
+                    int idx = (8 * i) + j;
+                    Leds[idx].State = (((data >> j) & 0x01) == 0x01) ? true : false;
+                }
+            }
+        }
+
+        public Task Flush(bool force = false)
+        {
+            WriteLeds();
+            return Leds.Flush(force);
         }
     }
 }

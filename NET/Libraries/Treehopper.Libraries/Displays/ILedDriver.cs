@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     /// Represents an LedDriver
     /// </summary>
-    internal interface ILedDriver : IFlushable
+    public interface ILedDriver : IFlushable
     {
         /// <summary>
         /// Gets or sets whether this controller supports global brightness control.
