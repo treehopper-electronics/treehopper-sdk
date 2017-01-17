@@ -104,8 +104,8 @@ namespace Treehopper.Libraries.Displays
                 HasGlobalBrightnessControl = false;
             } else if(oePwm != null)
             {
-                oePwm.PulseWidth = 0;
                 oePwm.Enabled = true;
+                oePwm.PulseWidth = 0;
                 HasGlobalBrightnessControl = true;
               } else
             {
