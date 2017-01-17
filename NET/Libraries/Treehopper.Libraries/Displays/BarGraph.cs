@@ -39,7 +39,7 @@ namespace Treehopper.Libraries.Displays
             get { return val; }
             set
             {
-                if (val == value) return;
+                if (val.CloseTo(value)) return;
                 if (val < 0 || val > 1)
                     throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
 
@@ -54,7 +54,7 @@ namespace Treehopper.Libraries.Displays
             int number = (int)Math.Round(val * Leds.Count);
             for (int i = 0; i < Leds.Count; i++)
             {
-                if ((fill & i <= number) || i == (number - 1))
+                if ((fill & i <= number-1) || i == (number - 1))
                     Leds[i].State = true;
                 else
                     Leds[i].State = false;
