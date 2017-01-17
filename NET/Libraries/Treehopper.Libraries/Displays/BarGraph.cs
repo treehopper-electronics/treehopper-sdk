@@ -86,6 +86,6 @@ namespace Treehopper.Libraries.Displays
         }
 
         public IFlushable Parent { get; set; }
-        public bool AutoFlush { get; set; }
+        public bool AutoFlush { get; set; } = true;
     }
 }
