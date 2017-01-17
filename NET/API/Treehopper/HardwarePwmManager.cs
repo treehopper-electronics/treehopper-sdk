@@ -205,5 +205,22 @@ namespace Treehopper
 
             board.sendPeripheralConfigPacket(configuration);
         }
+
+        public override string ToString()
+        {
+            switch(mode)
+            {
+                case PwmPinEnableMode.Pin7:
+                    return "channel 1 enabled";
+                case PwmPinEnableMode.Pin7_Pin8:
+                    return "channels 1 and 2 enabled";
+                case PwmPinEnableMode.Pin7_Pin8_Pin9:
+                    return "channels 1, 2, and 3 enabled";
+                default:
+                case PwmPinEnableMode.None:
+                    return "No channels enabled";
+
+            }
+        }
     }
 }

@@ -94,5 +94,13 @@ namespace Treehopper
                 DutyCycle = pulseWidth / Board.HardwarePwmManager.PeriodMicroseconds;
             }
         }
+
+        public override string ToString()
+        {
+            if (Enabled)
+                return string.Format("{0:0.00}% duty cycle ({1:0.00} us pulse width)", DutyCycle*100, PulseWidth);
+            else
+                return "Not enabled";
+        }
     }
 }

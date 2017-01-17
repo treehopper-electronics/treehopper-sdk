@@ -176,6 +176,15 @@ namespace Treehopper
 
             return receivedData;
         }
+
+        public override string ToString()
+        {
+            if (enabled)
+                return string.Format("Enabled, {0:0.00} kHz", speed);
+            else
+                return "Not enabled";
+        }
+    
     }
 
     /// <summary>

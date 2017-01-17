@@ -159,6 +159,16 @@ namespace Treehopper
 
         }
 
+        public override string ToString()
+        {
+            if (pins.Count > 1)
+                return string.Format("{0} SoftPwm pins running", pins.Count);
+            else if (pins.Count == 1)
+                return "1 SoftPwm pin running";
+            else
+                return "No SoftPwm pins running";
+        }
+
         public void Dispose()
         {
             Stop();

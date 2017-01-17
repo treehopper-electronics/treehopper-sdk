@@ -363,5 +363,13 @@ namespace Treehopper
             Mode = UartMode.OneWire;
             Enabled = true;
         }
+
+        public override string ToString()
+        {
+            if (Enabled)
+                return string.Format("{0}, running at {1:0.00} baud", Mode, Baud);
+            else
+                return "Not enabled";
+        }
     }
 }

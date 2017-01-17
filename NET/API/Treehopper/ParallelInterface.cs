@@ -224,5 +224,13 @@ namespace Treehopper
             //}
             //return receivedData;
         }
+
+        public override string ToString()
+        {
+            if (enabled)
+                return string.Format("Enabled, {0}-bit width, {1} us clock period", Width, DelayMicroseconds);
+            else
+                return "Not enabled";
+        }
     }
 }

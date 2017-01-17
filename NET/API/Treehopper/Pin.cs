@@ -599,5 +599,28 @@ namespace Treehopper
         {
             Mode = PinMode.AnalogInput;
         }
+
+        public override string ToString()
+        {
+            if (SoftPwm.Enabled)
+                return SoftPwm.ToString();
+            switch(Mode)
+            {
+                case PinMode.AnalogInput:
+                    return string.Format("Analog input, {0:0.00} volts", AnalogVoltage);
+                case PinMode.DigitalInput:
+                    return string.Format("Digital input, {0}", DigitalValue);
+                case PinMode.OpenDrainOutput:
+                    return string.Format("Open-drain output, {0}", DigitalValue);
+                case PinMode.PushPullOutput:
+                    return string.Format("Push-pull output, {0}", DigitalValue);
+                case PinMode.Reserved:
+                    return "In use by peripheral";
+
+                default:
+                case PinMode.Unassigned:
+                    return "Unassigned";
+            }
+        }
     }
 }
