@@ -39,6 +39,11 @@ namespace Treehopper.Libraries.Displays
             b.State = true;
         }
 
+        public RgbLed(IList<Led> Leds) : this(Leds[0], Leds[1], Leds[2])
+        {
+
+        }
+
         public bool AutoFlush { get; set; } = true;
 
         public async Task Flush(bool force = false)
