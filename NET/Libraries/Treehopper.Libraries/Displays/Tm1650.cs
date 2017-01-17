@@ -9,6 +9,9 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     /// Represents a TM1650 LED driver designed for driving up to 4 seven-segment digits, or 32 individual common-anode LEDs
     /// </summary>
+    /// <remarks>
+    /// <para>Instead of using standard SMBus-style register/value pairs, this IC's individual registers are all accessed directly from different I2C addresses. Consequently, be aware that this IC uses quite a few I2C addresses — 0x24, 0x25, 0x26, 0x27 (for control), and 0x34, 0x35, 0x36, and 0x37 (for display).</para>
+    /// </remarks>
     public class Tm1650 : LedDriver
     {
         private I2c i2c;
