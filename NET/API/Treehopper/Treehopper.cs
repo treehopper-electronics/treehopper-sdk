@@ -99,6 +99,18 @@ namespace Treehopper
                 Pins.Add(new Pin(this, (byte)i));
             }
 
+            // set special names
+            Pins[0].Name = "Pin 0 (SCK)";
+            Pins[1].Name = "Pin 1 (MISO)";
+            Pins[2].Name = "Pin 2 (MOSI)";
+            Pins[3].Name = "Pin 3 (SDA)";
+            Pins[4].Name = "Pin 4 (SCL)";
+            Pins[5].Name = "Pin 5 (TX)";
+            Pins[6].Name = "Pin 6 (RX)";
+            Pins[7].Name = "Pin 7 (PWM1)";
+            Pins[8].Name = "Pin 8 (PWM2)";
+            Pins[9].Name = "Pin 9 (PWM3)";
+
             SoftPwmMgr = new SoftPwmManager(this);
             HardwarePwmManager = new HardwarePwmManager(this);
 
