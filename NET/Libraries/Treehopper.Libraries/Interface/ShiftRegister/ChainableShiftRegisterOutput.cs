@@ -42,6 +42,11 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <param name="numBytes">The number of bytes this device occupies in the chain</param>
         public ChainableShiftRegisterOutput(ChainableShiftRegisterOutput upstreamDevice, int numBytes = 1)
         {
+            if (upstreamDevice.Parent != null)
+                this.Parent = upstreamDevice.Parent;
+            else
+                this.Parent = upstreamDevice;
+
             shiftRegisters.Add(this);
             this.numBytes = numBytes;
         }
@@ -60,6 +65,9 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// The current value of the port
         /// </summary>
         public uint CurrentValue { get; protected set; }
+
+        public IFlushable Parent { get; protected set; }
+
         uint lastValues;
 
 

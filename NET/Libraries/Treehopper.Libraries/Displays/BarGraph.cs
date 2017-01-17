@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treehopper.Libraries.Interface;
 
 namespace Treehopper.Libraries.Displays
 {
@@ -15,10 +16,9 @@ namespace Treehopper.Libraries.Displays
     /// This class can be used to construct a wide variety of dynamic displays, including LED rings around encoders, linear displays, and animation effects.
     /// </para>
     /// </remarks>
-    public class BarGraph
+    public class BarGraph : LedDisplay
     {
-        private IList<Led> leds;
-        private Collection<ILedDriver> drivers = new Collection<ILedDriver>();
+        public LedCollection Leds { get; private set; }
 
         /// <summary>
         /// Construct a bar graph from a list of LEDs.
@@ -26,17 +26,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="Leds">The list of LEDs to use in the bar graph</param>
         public BarGraph(IList<Led> Leds)
         {
-            this.leds = Leds;
-            foreach (var led in Leds)
-            {
-                if (!drivers.Contains(led.Driver))
-                    drivers.Add(led.Driver);
-            }
-
-            foreach(var driver in drivers)
-            {
-                driver.AutoFlush = false; // disable autoflush to speed things up
-            }
+            this.Leds = new LedCollection(Leds);
         }
 
         private double val = 0;
@@ -54,26 +44,27 @@ namespace Treehopper.Libraries.Displays
                     throw new ArgumentOutOfRangeException("Value must be between 0 and 1");
 
                 val = value;
-
-                Flush();
+                if(AutoFlush)               
+                    Flush().Wait();
             }
         }
 
-        private void Flush()
+        public void WriteLeds()
         {
-            int number = (int)Math.Round(val * leds.Count);
-            for(int i=0;i<leds.Count;i++)
+            int number = (int)Math.Round(val * Leds.Count);
+            for (int i = 0; i < Leds.Count; i++)
             {
-                if ((fill & i < number) || i == (number - 1))
-                    leds[i].State = true;
+                if ((fill & i <= number) || i == (number - 1))
+                    Leds[i].State = true;
                 else
-                    leds[i].State = false;
+                    Leds[i].State = false;
             }
-            foreach(var driver in drivers)
-            {
-                if (!driver.AutoFlush)
-                    driver.Flush().Wait();
-            }
+        }
+
+        public Task Flush(bool force = false)
+        {
+            WriteLeds();
+            return Leds.Flush(force);
         }
 
         private bool fill = true;
@@ -89,8 +80,12 @@ namespace Treehopper.Libraries.Displays
                 if (fill == value) return;
                 fill = value;
 
-                Flush();
+                if(AutoFlush)
+                    Flush().Wait();
             }
         }
+
+        public IFlushable Parent { get; set; }
+        public bool AutoFlush { get; set; }
     }
 }
