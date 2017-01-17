@@ -28,6 +28,8 @@ namespace Treehopper.Libraries.Interface
         /// </summary>
         public Collection<PortExpanderPin> Pins { get; set; } = new Collection<PortExpanderPin>();
 
+        public IFlushable Parent { get; private set; }
+
         /// <summary>
         /// Whether this port expander should auto-flush
         /// </summary>

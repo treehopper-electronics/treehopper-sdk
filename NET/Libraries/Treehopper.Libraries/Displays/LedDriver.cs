@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treehopper.Libraries.Interface;
 
 namespace Treehopper.Libraries.Displays
 {
@@ -85,6 +86,8 @@ namespace Treehopper.Libraries.Displays
         /// The collection of LEDs that belong to this driver.
         /// </summary>
         public IList<Led> Leds { get; set; } = new Collection<Led>();
+
+        public IFlushable Parent { get; protected set; }
 
 
         /// <summary>
