@@ -124,7 +124,7 @@ namespace Treehopper
         /// <summary>
         /// SPI module
         /// </summary>
-        public HardwareSpi Spi { get; private set; }
+        public Spi Spi { get; private set; }
 
         /// <summary>
         /// Hardware UART supporting RS-232 and OneWire-style communication.

@@ -280,5 +280,13 @@ namespace Treehopper
                 
             return returnedData;
         }
+
+        public override string ToString()
+        {
+            if (Enabled)
+                return "Enabled";
+            else
+                return "Not enabled";
+        }
     }
 }
