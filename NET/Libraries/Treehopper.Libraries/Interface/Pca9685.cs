@@ -46,6 +46,8 @@ namespace Treehopper.Libraries.Interface
         private bool useExternalClock = false;
         private bool invertOutput;
 
+        public IFlushable Parent { get; private set; }
+
         public bool UseExternalClock
         {
             get { return useExternalClock; }

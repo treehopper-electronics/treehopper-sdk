@@ -54,6 +54,7 @@ namespace Treehopper.Libraries.Displays
         public double GreenGain { get; set; } = 1.0;
         public double BlueGain { get; set; } = 1.0;
 
+        public IFlushable Parent { get; private set; }
 
         public void SetRgb(double red, double green, double blue)
         {
