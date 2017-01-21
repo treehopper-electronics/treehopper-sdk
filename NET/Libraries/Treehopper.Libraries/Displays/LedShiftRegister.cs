@@ -20,6 +20,7 @@ namespace Treehopper.Libraries.Displays
     /// <item><term>Texas Instruments TLC591x</term><description>8-channel, up to 120 mA, 20V</description></item>
     /// <item><term>Texas Instruments TLC5928</term><description>16-channel, up to 35 mA, 17V</description></item>
     /// <item><term>Texas Instruments TLC5928x</term><description>16-channel, up to 45 mA, 10V</description></item>
+    /// <item><term>Silicon Touch (SiTI) ST2221A</term><description>8-channel, up to 90 mA, 9V</description></item>
     /// <item><term>Silicon Touch (SiTI) ST2221C</term><description>16-channel, up to 90 mA, 9V</description></item>
     /// <item><term>Macroblock MBI502x</term><description>16-channel, up to 90 mA, 17V</description></item>
     /// <item><term>Allegro A6282</term><description>16-channel, up to 50 mA, 12V</description></item>
