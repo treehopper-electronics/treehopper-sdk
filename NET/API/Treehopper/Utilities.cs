@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -132,6 +133,17 @@ namespace Treehopper
             {
                 action(item);
             }
+        }
+
+        public static byte[] GetBytes(this BitArray array)
+        {
+            var returnedData = new byte[array.Length / 8];
+            for(int i=0;i<array.Length;i++)
+            {
+                if (array.Get(i))
+                    returnedData[i / 8] |= (byte)(1 << i % 8);
+            }
+            return returnedData;
         }
 
         /// <summary>
