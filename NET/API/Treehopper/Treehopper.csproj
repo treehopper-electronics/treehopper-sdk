@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AsyncHelpers.cs" />
+    <Compile Include="ChipSelectMode.cs" />
     <Compile Include="FirmwareUpdate.cs" />
     <Compile Include="HardwareI2c.cs" />
     <Compile Include="IAdcPin.cs" />
@@ -58,9 +59,11 @@
     <Compile Include="SoftPwmManager.cs" />
     <Compile Include="HardwareSpi.cs" />
     <Compile Include="Spi.cs" />
+    <Compile Include="SpiBurstMode.cs" />
     <Compile Include="SpiDevice.cs" />
     <Compile Include="SpiChipSelectPin.cs" />
-    <Compile Include="Treehopper.cs" />
+    <Compile Include="SpiMode.cs" />
+    <Compile Include="TreehopperUsb.cs" />
     <Compile Include="Uart.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
