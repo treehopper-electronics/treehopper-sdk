@@ -25,18 +25,18 @@ namespace Treehopper
 	{
 		Reserved = 0,	// Not implemented
 		ConfigureDevice,	// Sent upon device connect/disconnect
-		PwmConfig,	// Configures the hardware DAC
-		UartConfig,	// Not implemented
-		I2cConfig,	// Configures i2C master
-		SpiConfig,	// Configures SPI master
-		I2cTransaction,	// (Endpoint 2) Performs an i2C transaction 
-		SpiTransaction,	// (Endpoint 2) Performs an SPI transaction
+		PwmConfig,
+		UartConfig,	
+		I2cConfig,
+		SpiConfig,
+		I2cTransaction,
+		SpiTransaction,
         UartTransaction,
-		SoftPwmConfig,	// 
-		FirmwareUpdateSerial,	//
-		FirmwareUpdateName,	//
-		Reboot,	//
-		EnterBootloader,	//
+		SoftPwmConfig,
+		FirmwareUpdateSerial,
+		FirmwareUpdateName,
+		Reboot,
+		EnterBootloader,
         LedConfig,
         ParallelConfig,
         ParallelTransaction
