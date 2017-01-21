@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <param name="csMode">The chip select mode to use with this shift register (and subsequent ones on this chain)</param>
         /// <param name="speedMhz">The speed to operate this shift register (and subsequent ones on this chain) with</param>
         public ShiftOut(Spi spiModule, SpiChipSelectPin latchPin, int numPins = 8, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd, double speedMhz = 1)
-            : base(spiModule, latchPin, numPins/8, mode, csMode, speedMhz)
+            : base(spiModule, latchPin, numPins/8, speedMhz, mode, csMode)
         {
             setup(numPins);
         }
@@ -41,6 +42,8 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 
         private void setup(int numPins)
         {
+            currentValue = new BitArray(numPins);
+
             if (numPins > 32)
                 throw new Exception("This library only supports shift registers up to 32-bit wide");
 
@@ -55,13 +58,12 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// </summary>
         public Collection<ShiftOutPin> Pins { get; protected set; } = new Collection<ShiftOutPin>();
 
+        BitArray currentValue;
 
         internal void UpdateOutput(ShiftOutPin shiftOutPin)
         {
-            if (shiftOutPin.DigitalValue)
-                CurrentValue |= (uint)(1 << shiftOutPin.BitNumber);
-            else
-                CurrentValue &= (uint)~(1 << shiftOutPin.BitNumber);
+            currentValue.Set(shiftOutPin.BitNumber, shiftOutPin.DigitalValue);
+            CurrentValue = currentValue.GetBytes();
 
             FlushIfAutoFlushEnabled().Wait();
         }
@@ -71,10 +73,10 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// </summary>
         protected override void updateFromCurrentValue()
         {
-            uint currentValue = CurrentValue; // CurrentValue is an expensive read, so only read it once
+            currentValue = new BitArray(CurrentValue);
             for (int i = 0; i < Pins.Count; i++)
             {
-                Pins[i].DigitalValue = ((currentValue >> i) & 1) == 0x01 ? true : false;
+                Pins[i].DigitalValue = currentValue.Get(i);
             }
         }
     }

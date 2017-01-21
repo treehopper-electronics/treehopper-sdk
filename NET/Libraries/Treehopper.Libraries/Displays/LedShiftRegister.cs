@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ namespace Treehopper.Libraries.Displays
     /// <item><term>Texas Instruments TLC5928</term><description>16-channel, up to 35 mA, 17V</description></item>
     /// <item><term>Texas Instruments TLC5928x</term><description>16-channel, up to 45 mA, 10V</description></item>
     /// <item><term>Silicon Touch (SiTI) ST2221C</term><description>16-channel, up to 90 mA, 9V</description></item>
-    /// <item><term>Macroblock MBI5026</term><description>16-channel, up to 90 mA, 17V</description></item>
+    /// <item><term>Macroblock MBI502x</term><description>16-channel, up to 90 mA, 17V</description></item>
     /// <item><term>Allegro A6282</term><description>16-channel, up to 50 mA, 12V</description></item>
     /// <item><term>ON Semiconductor CAT4016</term><description>16-channel, up to 100 mA, 5.5V</description></item>
     /// <item><term>ST STP16C596</term><description>16-channel, up to 120 mA, 16V</description></item>
@@ -43,6 +44,7 @@ namespace Treehopper.Libraries.Displays
     {
         DigitalOutPin oe;
         Pwm oePwm;
+        int channels;
 
         /// <summary>
         /// Construct an STP16CPC26 attached directly to a board SPI module
@@ -94,7 +96,9 @@ namespace Treehopper.Libraries.Displays
 
         private void Start(LedChannelCount channelCount)
         {
-            for (int i = 0; i < (int)channelCount; i++)
+            channels = (int)channelCount;
+            currentValue = new BitArray(channels);
+            for (int i = 0; i < channels; i++)
                 Leds.Add(new Led(this, i));
 
             if (oe != null)
@@ -160,15 +164,12 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public IList<Led> Leds { get; private set; } = new Collection<Led>();
 
-        ushort currentValue = 0x0000;
-
+        // Use a BitArray to hold onto our current values
+        BitArray currentValue;
         void ILedDriver.LedStateChanged(Led led)
         {
-            if (led.State)
-                CurrentValue |= (uint)(1 << led.Channel);
-            else
-                CurrentValue &= (uint)~(1 << led.Channel);
-
+            currentValue.Set(led.Channel, led.State);
+            CurrentValue = currentValue.GetBytes();
             FlushIfAutoFlushEnabled().Wait();
         }
 
@@ -183,7 +184,7 @@ namespace Treehopper.Libraries.Displays
         /// <returns>An awaitable task that completes when finished</returns>
         public Task Clear()
         {
-            return Write(0);
+            return Write(new byte[channels / 8]);
         }
 
         /// <summary>
@@ -191,10 +192,9 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         protected override void updateFromCurrentValue()
         {
-            uint currentValue = CurrentValue; // CurrentValue is an expensive read, so only read it once
             for (int i = 0; i < Leds.Count; i++)
             {
-                Leds[i].State = ((currentValue >> i) & 1) == 0x01 ? true : false;
+                Leds[i].State = currentValue.Get(i);
             }
         }
 
