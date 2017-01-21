@@ -28,11 +28,13 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <param name="mode">The SPI mode to use for all shift registers in this chain</param>
         /// <param name="csMode">The ChipSelectMode to use for all shift registers in this chain</param>
         /// <param name="speedMhz">The speed to use for all shift registers in this chain</param>
-        public ChainableShiftRegisterOutput(Spi spiModule, SpiChipSelectPin latchPin, int numBytes = 1, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd, double speedMhz = 1)
+        public ChainableShiftRegisterOutput(Spi spiModule, SpiChipSelectPin latchPin, int numBytes = 1, double speedMhz = 5, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd)
         {
             setupSpi(spiModule, latchPin, speedMhz, mode, csMode);
             shiftRegisters.Add(this);
             this.numBytes = numBytes;
+            CurrentValue = new byte[numBytes];
+            lastValues = new byte[numBytes];
         }
 
         /// <summary>
@@ -49,6 +51,8 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
 
             shiftRegisters.Add(this);
             this.numBytes = numBytes;
+            CurrentValue = new byte[numBytes];
+            lastValues = new byte[numBytes];
         }
 
         private void setupSpi(Spi spiModule, SpiChipSelectPin latchPin, double speedMhz, SpiMode mode, ChipSelectMode csMode)
@@ -64,26 +68,26 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <summary>
         /// The current value of the port
         /// </summary>
-        public uint CurrentValue { get; protected set; }
+        public byte[] CurrentValue { get; protected set; }
 
         public IFlushable Parent { get; protected set; }
 
-        uint lastValues;
+        byte[] lastValues;
 
 
         /// <summary>
-        /// Immediately update all the pins at once with the given value
+        /// Immediately update all the pins at once with the given value. Flush() will be implicity called.
         /// </summary>
         /// <param name="value">A value representing the data to write to the port</param>
         /// <returns>An awaitable task that completes upon successfully writing the value.</returns>
-        public async Task Write(uint value)
+        public async Task Write(byte[] value)
         {
             bool savedAutoFlushValue = AutoFlush;
             AutoFlush = false;
             CurrentValue = value;
             updateFromCurrentValue(); // tell our parent to update its pins, LEDs, or whatever.
 
-            await Flush();
+            await Flush(true);
             AutoFlush = savedAutoFlushValue;
         }
 
@@ -105,10 +109,10 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <returns>An awaitable task that completes when finished</returns>
         public async Task Flush(bool force = false)
         {
-            if (CurrentValue != lastValues || force)
+            if (!CurrentValue.SequenceEqual(lastValues) || force)
             {
                 await ShiftOut.requestWrite();
-                lastValues = CurrentValue;
+                CurrentValue.CopyTo(lastValues, 0);
             }
         }
 
@@ -137,25 +141,8 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
                 var reversedList = shiftRegisters.Reverse(); // we push out the last device's data first
                 foreach (var shift in reversedList)
                 {
-                    var shiftBytes = BitConverter.GetBytes(shift.CurrentValue);
-
-                    // who knows, maybe we're not on x86? Check just to be sure!
-                    if (BitConverter.IsLittleEndian)
-                    {
-                        shiftBytes = shiftBytes.Reverse().ToArray();
-                    }
-                    else
-                    {
-
-                    }
-
-
-                    // We'll always end up with 4 bytes, but we can't send more bytes than our shift register is expecting (8, 16, etc)
-                    // note that the 
-                    for (int i = 4 - shift.numBytes; i < 4; i++)
-                    {
-                        bytes.Add(shiftBytes[i]);
-                    }
+                    var shiftBytes = shift.CurrentValue;
+                    bytes.AddRange(shiftBytes.Reverse());
                 }
 
                 await spiDevice.SendReceive(bytes.ToArray(), BurstMode.BurstTx);
