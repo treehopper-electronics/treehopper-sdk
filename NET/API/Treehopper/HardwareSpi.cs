@@ -7,93 +7,6 @@ using System.Threading.Tasks;
 namespace Treehopper
 {
     /// <summary>
-    /// The SPI burst mode to use
-    /// </summary>
-    public enum BurstMode
-    {
-        /// <summary>
-        /// No burst -- always read the same number of bytes as transmitted
-        /// </summary>
-        NoBurst,
-
-        /// <summary>
-        /// Transmit burst -- don't return any data read from the bus
-        /// </summary>
-        BurstTx,
-
-        /// <summary>
-        /// Receive burst -- ignore transmitted data above 53 bytes long, but receive the full number of bytes specified
-        /// </summary>
-        BurstRx
-    }
-
-    /// <summary>
-    /// Defines whether a signal is active high (rising-edge) or active low (falling-edge)
-    /// </summary>
-    public enum ChipSelectMode
-    {
-
-        /// <summary>
-        /// CS is asserted low, the SPI transaction takes place, and then the signal is returned high.
-        /// </summary>
-        SpiActiveLow,
-        /// <summary>
-        /// CS is asserted high, the SPI transaction takes place, and then the signal is returned low.
-        /// </summary>
-        SpiActiveHigh,
-
-        /// <summary>
-        /// CS is pulsed high, and then the SPI transaction takes place.
-        /// </summary>
-        PulseHighAtBeginning,
-
-        /// <summary>
-        /// The SPI transaction takes place, and once finished, CS is pulsed high
-        /// </summary>
-        PulseHighAtEnd,
-
-        /// <summary>
-        /// CS is pulsed low, and then the SPI transaction takes place.
-        /// </summary>
-        PulseLowAtBeginning,
-
-        /// <summary>
-        /// The SPI transaction takes place, and once finished, CS is pulsed low
-        /// </summary>
-        PulseLowAtEnd
-    };
-
-    /// <summary>
-    /// Defines the clock phase and polarity used for SPI communication
-    /// </summary>
-    /// <remarks>
-    /// <para>The left number indicates the clock polarity (CPOL), while the right number indicates the clock phase (CPHA). Consult https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Clock_polarity_and_phase for more information.</para>
-    /// <para>Note that the numeric values of this enum do not match the standard nomenclature, but instead match the value needed by Treehopper's MCU. Do not attempt to cast integers from/to this enum.</para>
-    /// </remarks>
-    public enum SpiMode
-    {
-        /// <summary>
-        /// Clock is initially low; data is valid on the rising edge of the clock
-        /// </summary>
-        Mode00 = 0x00,
-
-        /// <summary>
-        /// Clock is initially low; data is valid on the falling edge of the clock
-        /// </summary>
-        Mode01 = 0x20,
-
-        /// <summary>
-        /// Clock is initially high; data is valid on the rising edge of the clock
-        /// </summary>
-        Mode10 = 0x10,
-
-        /// <summary>
-        /// Clock is initially high; data is valid on the falling edge of the clock
-        /// </summary>
-        Mode11 = 0x30
-    };
-
-    /// <summary>
     /// Provides access to SPI communication.
     /// </summary>
     /// <remarks>
@@ -108,10 +21,13 @@ namespace Treehopper
     /// <item><term>CS</term><description>Short for "Chip Select." Treehopper asserts this pin when communication begins, and de-asserts when communication is done.</description></item>
     /// </list>
     /// The SPI specification allows for many different configuration options, so the datasheet for the device must be consulted to determine the communication rate, the
-    /// clock phase and polarity, as well as the chip select polarity.
+    /// clock phase and polarity, as well as the chip select polarity. Not all devices use all pins, but the SPI peripheral will always allocate the SCK, MISO, and MOSI pin once the peripheral is enabled.
     /// </para>
     /// <para>
-    /// Many simple devices that contain latches or shift registers may also be interfaced with using the SPI module.
+    /// The clock rate to operate the SPI bus at is specified by the <see cref="SendReceive(byte[], SpiChipSelectPin, ChipSelectMode, double, BurstMode, SpiMode)"/> function. The minimum clock rate is 93.75 kHz (0.093.75 MHz), while the maximum clock rate is 24 MHz, but there are no performance gains above 6 MHz. Since Treehopper's MCU has no internal DMA, bytes are placed into the SPI buffer one by one by the processor; it takes 8 cycles to perform this operation, and since the processor runs at 48 MHz, the fastest effective data transfer rate is 6 MHz.
+    /// </para>
+    /// <para>
+    /// Many simple devices that contain shift registers may also be interfaced with using the SPI module. The <see cref="ChipSelectMode"/> configuration contains pulse modes compatible with these devices.
     /// </para>
     /// <para>
     /// Before implementing SPI communication for a given device, check the Treehopper.Libraries assembly, which contains support for popular hobbyist devices, as well as generic
@@ -120,31 +36,17 @@ namespace Treehopper
     /// </remarks>
     public class HardwareSpi : Spi
     {
-        TreehopperUsb device;
-
-        Pin Sck { get { return device.Pins[0]; } }
-        Pin Miso { get { return device.Pins[1]; } }
-        Pin Mosi { get { return device.Pins[2]; } }
-
-
-
-
         internal HardwareSpi(TreehopperUsb device)
         {
             this.device = device;
         }
 
-
-
-        private void SendConfig()
-        {
-            byte[] dataToSend = new byte[2];
-            dataToSend[0] = (byte)DeviceCommands.SpiConfig;
-            dataToSend[1] = (enabled ? (byte)1 : (byte)0);
-            device.sendPeripheralConfigPacket(dataToSend);
-        }
-
+        TreehopperUsb device;
         bool enabled;
+
+        Pin Sck { get { return device.Pins[0]; } }
+        Pin Miso { get { return device.Pins[1]; } }
+        Pin Mosi { get { return device.Pins[2]; } }
 
         /// <summary>
         /// Enable or disable the SPI module.
@@ -177,8 +79,15 @@ namespace Treehopper
                     Miso.Mode = PinMode.Unassigned;
                     Sck.Mode = PinMode.Unassigned;
                 }
-
             }
+        }
+
+        private void SendConfig()
+        {
+            byte[] dataToSend = new byte[2];
+            dataToSend[0] = (byte)DeviceCommands.SpiConfig;
+            dataToSend[1] = (enabled ? (byte)1 : (byte)0);
+            device.sendPeripheralConfigPacket(dataToSend);
         }
 
         /// <summary>
