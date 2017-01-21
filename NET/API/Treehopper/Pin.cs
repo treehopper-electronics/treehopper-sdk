@@ -41,10 +41,6 @@ namespace Treehopper
         /// 3.6V reference derived from the 1.8V LDO. Accuracy TBD.
         /// </summary>
         VREF_3V6
-
-        // These are pointless, since ADC voltage is clamped to 3.6V
-        //VREF_4V8,
-        //VREF_6V6,
     }
 
     /// <summary>
