@@ -51,7 +51,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="ChannelCount">Whether the driver is 16 or 8-channel</param>
         /// <param name="OutputEnablePin">The output enable pin, if any, to use.</param>
-        public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOutPin OutputEnablePin = null) : base(SpiModule, LatchPin, (int)ChannelCount/8)
+        public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOutPin OutputEnablePin = null, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount/8, speedMhz)
         {
             oe = OutputEnablePin;
             Start(ChannelCount);
@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="OutputEnablePin">The PWM pin to use, allowing controllable global brightness.</param>
-        public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, Pwm OutputEnablePin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel) : base(SpiModule, LatchPin, (int)ChannelCount / 8)
+        public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, Pwm OutputEnablePin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount / 8, speedMhz)
         {
             this.oePwm = OutputEnablePin;
             Start(ChannelCount);
