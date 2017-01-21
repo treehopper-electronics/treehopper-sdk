@@ -28,6 +28,9 @@ namespace Treehopper.Libraries.Displays
             if (!drivers.Contains(blue.Driver))
                 drivers.Add(blue.Driver);
 
+            // if all the drivers have autoflush disabled, we'll disable it, too
+            if (drivers.Where(drv => drv.AutoFlush == true).Count() == 0)
+                AutoFlush = false;
 
             r.Brightness = 0.0;
             r.State = true;
