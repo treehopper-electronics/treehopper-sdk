@@ -86,7 +86,7 @@
             }
 
             byte[] receivedData = new byte[numBytesToRead];
-            int txLen = dataToWrite.Length;
+            int txLen = dataToWrite?.Length ?? 0;
 
             using (await device.ComsLock.LockAsync())
             {
@@ -96,7 +96,8 @@
                 dataToSend[2] = (byte)txLen; // total length (0-255)
                 dataToSend[3] = numBytesToRead;
 
-                Array.Copy(dataToWrite, 0, dataToSend, 4, txLen);
+                if(txLen > 0)
+                    Array.Copy(dataToWrite, 0, dataToSend, 4, txLen);
 
                 int bytesRemaining = dataToSend.Length;
                 int offset = 0;
