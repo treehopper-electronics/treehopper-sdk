@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Utilities;
 
     /// <summary>
     /// The I2c class is used for interacting with the I2C module on the Treehopper Board. 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Treehopper;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Motors
 {
@@ -82,7 +83,7 @@ namespace Treehopper.Libraries.Motors
                     throw new Exception("Angle must be between 0 and 180 degrees");
                 }
 
-                Pwm.PulseWidth = Utilities.Map(angle, 0, 180, MinPulseWidth, MaxPulseWidth);
+                Pwm.PulseWidth = Numbers.Map(angle, 0, 180, MinPulseWidth, MaxPulseWidth);
             }
         }
     }

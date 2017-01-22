@@ -1,6 +1,7 @@
 ﻿namespace Treehopper
 {
     using System;
+    using Utilities;
 
     /// <summary>
     /// The Pwm class manages the hardware PWM module on the Treehopper board.

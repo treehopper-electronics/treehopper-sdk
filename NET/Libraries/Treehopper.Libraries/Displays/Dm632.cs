@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Interface.ShiftRegister;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
@@ -99,8 +100,8 @@ namespace Treehopper.Libraries.Displays
         {
             if (led.State)
             {
-                CurrentValue[led.Channel * 2 + 1] = (byte)((int)Math.Round(Utilities.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535) >> 8);
-                CurrentValue[led.Channel * 2] = (byte)((int)Math.Round(Utilities.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535) & 0xFF);
+                CurrentValue[led.Channel * 2 + 1] = (byte)((int)Math.Round(Utility.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535) >> 8);
+                CurrentValue[led.Channel * 2] = (byte)((int)Math.Round(Utility.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535) & 0xFF);
             } else
             {
                 CurrentValue[led.Channel * 2] = 0x00;

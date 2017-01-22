@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Utilities;
 
     /// <summary>
     /// Provides access to SPI communication.
@@ -109,7 +110,7 @@
             byte[] returnedData = new byte[transactionLength];
 
             if (chipSelect.SpiModule != this)
-                Utilities.Error("Chip select pin must belong to this SPI module");
+                Utility.Error("Chip select pin must belong to this SPI module");
 
             using (await device.ComsLock.LockAsync())
             {

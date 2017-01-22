@@ -61,7 +61,7 @@ namespace DeviceManager.ViewModels
                     async () =>
                     {
                         await SelectedBoard.UpdateDeviceName(Name);
-                        await SelectedBoard.UpdateSerialNumber(Utilities.RandomString(8));
+                        await SelectedBoard.UpdateSerialNumber(Utility.RandomString(8));
                         SelectedBoard.Reboot();
                     },
                     () => CanEdit));
@@ -81,7 +81,7 @@ namespace DeviceManager.ViewModels
                     ?? (updateSerialCommand = new RelayCommand(
                     async () =>
                     {
-                        await SelectedBoard.UpdateSerialNumber(Utilities.RandomString(8));
+                        await SelectedBoard.UpdateSerialNumber(Utility.RandomString(8));
                         SelectedBoard.Reboot();
                     },
                     () => CanEdit));

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Interface;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
