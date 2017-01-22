@@ -35,9 +35,6 @@
             this.board = board;
             this.PinNumber = pinNumber;
             SoftPwm = new SoftPwm(Board, this);
-            AdcValueChangedThreshold = 10;
-            AnalogVoltageChangedThreshold = 0.1;
-            AnalogValueChangedThreshold = 0.05;
             this.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
             Name = "Pin " + pinNumber; // default name
         }
@@ -153,17 +150,17 @@
         /// <summary>
         /// Gets or sets the voltage threshold required to fire the AnalogVoltageChanged event.
         /// </summary>
-        public double AnalogVoltageChangedThreshold { get; set; }
+        public double AnalogVoltageChangedThreshold { get; set; } = 0.05;
 
         /// <summary>
         /// Gets or sets the value threshold required to fire the AdcValueChanged event.
         /// </summary>
-        public int AdcValueChangedThreshold { get; set; }
+        public int AdcValueChangedThreshold { get; set; } = 10;
 
         /// <summary>
         /// Gets or sets the value threshold required to fire the AnalogValueChanged event.
         /// </summary>
-        public double AnalogValueChangedThreshold { get; set; }
+        public double AnalogValueChangedThreshold { get; set; } = 0.01;
 
         /// <summary>
         /// Gets or sets the digital value of the pin.
