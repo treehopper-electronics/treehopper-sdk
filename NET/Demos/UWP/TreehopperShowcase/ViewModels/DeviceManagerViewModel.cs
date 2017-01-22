@@ -60,7 +60,7 @@ namespace TreehopperShowcase.ViewModels
                     ?? (generateSerial = new RelayCommand(
                     async () =>
                     {
-                        await SelectedBoard.UpdateSerialNumber(Utilities.RandomString(8));
+                        await SelectedBoard.UpdateSerialNumber(Utility.RandomString(8));
                         SelectedBoard.Reboot();
                     },
                     () => SelectedBoard != null));
@@ -78,7 +78,7 @@ namespace TreehopperShowcase.ViewModels
                     async () =>
                     {
                         await SelectedBoard.UpdateDeviceName(newName);
-                        await SelectedBoard.UpdateSerialNumber(Utilities.RandomString(8));
+                        await SelectedBoard.UpdateSerialNumber(Utility.RandomString(8));
                         SelectedBoard.Reboot();
                     },
                     () => SelectedBoard != null));

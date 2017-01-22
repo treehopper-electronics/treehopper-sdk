@@ -62,9 +62,9 @@ namespace Treehopper.Libraries.Displays
         private void update(Led led)
         {
             if (useActiveLowOutput)
-                Pins[led.Channel].DutyCycle = led.State ? 1.0 - Utilities.BrightnessToCieLuminance(led.Brightness) : 1.0;
+                Pins[led.Channel].DutyCycle = led.State ? 1.0 - Utility.BrightnessToCieLuminance(led.Brightness) : 1.0;
             else
-                Pins[led.Channel].DutyCycle = led.State ? Utilities.BrightnessToCieLuminance(led.Brightness) : 0.0;
+                Pins[led.Channel].DutyCycle = led.State ? Utility.BrightnessToCieLuminance(led.Brightness) : 0.0;
         }
 
         /// <summary>

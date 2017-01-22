@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Threading.Tasks;
+    using Utilities;
 
     public class Ht16k33 : LedDriver
     {

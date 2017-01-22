@@ -71,6 +71,7 @@
     <Compile Include="Displays\Ssd1306.cs" />
     <Compile Include="Displays\LedShiftRegister.cs" />
     <Compile Include="Displays\Tm1650.cs" />
+    <Compile Include="Displays\Utility.cs" />
     <Compile Include="Interface\AnalogMux\AnalogMux4051.cs" />
     <Compile Include="Interface\FlushableParallelInterface.cs" />
     <Compile Include="Interface\I2cMux\I2cMux.cs" />

@@ -4,6 +4,7 @@
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Utilities;
 
     /// <summary>
     /// Pin is the base class for all Treehopper pins. It provides core digital I/O (GPIO) functionality.

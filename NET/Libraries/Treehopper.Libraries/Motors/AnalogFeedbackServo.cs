@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Motors
 {
@@ -37,7 +38,7 @@ namespace Treehopper.Libraries.Motors
                     var error = GoalPosition - ActualPosition;
 
                     if (Math.Abs(error) > ErrorThreshold)
-                        controller.Speed = Utilities.Constrain(K * error, -1.0, 1.0);
+                        controller.Speed = Numbers.Constrain(K * error, -1.0, 1.0);
                     else
                     {
                         controller.Speed = 0;

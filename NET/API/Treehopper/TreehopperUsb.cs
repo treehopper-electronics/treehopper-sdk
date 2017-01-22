@@ -8,6 +8,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using ThirdParty;
+    using Utilities;
 
     /// <summary>
     /// TreehopperBoard is the main class for interacting with Treehopper. Once constructed, it contains instances of all pins and peripherals. 
@@ -240,7 +241,7 @@
         {
             get
             {
-                return Utilities.BcdToString(connection.Version, 2);
+                return Utility.BcdToString(connection.Version, 2);
             }
         }
 
@@ -251,7 +252,7 @@
         {
             get
             {
-                return Utilities.BcdToInt(connection.Version);
+                return Numbers.BcdToInt(connection.Version);
             }
         }
 

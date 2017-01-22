@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Libraries.Interface.ShiftRegister;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
@@ -138,7 +139,7 @@ namespace Treehopper.Libraries.Displays
                 brightness = value;
 
                 if (oePwm != null)
-                    oePwm.DutyCycle = 1 - Utilities.BrightnessToCieLuminance(brightness);
+                    oePwm.DutyCycle = 1 - Utility.BrightnessToCieLuminance(brightness);
                 else if (oe != null)
                     oe.DigitalValue = brightness > 0.5 ? false : true;
 

@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 using Treehopper;
 using System.Threading.Tasks;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.ArduinoShim
 {
@@ -278,7 +279,7 @@ namespace Treehopper.Libraries.ArduinoShim
         /// <returns>the mapped value</returns>
         public double map(double value, double fromLow, double fromHigh, double toLow, double toHigh)
         {
-            return Utilities.Map(value, fromLow, fromHigh, toLow, toHigh);
+            return Numbers.Map(value, fromLow, fromHigh, toLow, toHigh);
         }
 
         /// <summary>
@@ -290,7 +291,7 @@ namespace Treehopper.Libraries.ArduinoShim
         /// <returns>the constrained number</returns>
         public double constrain(double x, double a, double b)
         {
-            return Utilities.Constrain(x, a, b);
+            return Numbers.Constrain(x, a, b);
         }
     }
 }

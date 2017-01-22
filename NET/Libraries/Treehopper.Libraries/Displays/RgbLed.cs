@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Interface;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
@@ -66,9 +67,9 @@ namespace Treehopper.Libraries.Displays
 
         public void SetRgb(double red, double green, double blue)
         {
-            r.Brightness = Utilities.Constrain(red / 255.0 * RedGain);
-            g.Brightness = Utilities.Constrain(green / 255.0 * GreenGain);
-            b.Brightness = Utilities.Constrain(blue / 255.0 * BlueGain);
+            r.Brightness = Numbers.Constrain(red / 255.0 * RedGain);
+            g.Brightness = Numbers.Constrain(green / 255.0 * GreenGain);
+            b.Brightness = Numbers.Constrain(blue / 255.0 * BlueGain);
 
             if (AutoFlush) Flush().Wait();
         }
