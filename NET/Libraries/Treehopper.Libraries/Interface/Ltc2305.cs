@@ -10,16 +10,18 @@ namespace Treehopper.Libraries.Interface
     /// <summary>
     /// A two-channel, 12-bit I2c ADC
     /// </summary>
-    public class Ltc2305 : SMBusDevice
+    public class Ltc2305
     {
+        private SMBusDevice dev;
+
         /// <summary>
         /// Construct a new LTC2305
         /// </summary>
         /// <param name="address">The address to use</param>
         /// <param name="I2cModule">The I2c module this ADC is attached to</param>
-        public Ltc2305(byte address, I2c I2cModule) : base(address, I2cModule, 100)
+        public Ltc2305(byte address, I2c I2cModule)
         {
-
+            this.dev = new SMBusDevice(address, I2cModule, 100);
         }
 
         /// <summary>
@@ -29,10 +31,9 @@ namespace Treehopper.Libraries.Interface
         /// <returns>An awaitable double value representing the voltage of the ADC</returns>
         public async Task<double> Read(Channel channel = Channel.Channel0)
         {
-           //  SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
-            byte[] data = await I2c.SendReceive(this.address, new byte[] { (byte)((byte)channel | (byte)Ltc2305ConfigBits.UnipolarMode) }, 2);
-            int code = data[1] | (data[0]<<8);
-            double retVal = CodeToVoltage(code, 5.0, Ltc2305ConfigBits.UnipolarMode);
+            //  SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
+            int data = await dev.ReadWordData((byte)((byte)channel | (byte)Ltc2305ConfigBits.UnipolarMode));
+            double retVal = CodeToVoltage(data, 5.0, Ltc2305ConfigBits.UnipolarMode);
             return retVal;
         }
 
