@@ -155,6 +155,20 @@
         }
 
         /// <summary>
+        /// Read a 16-bit value from the device
+        /// </summary>
+        /// <returns>the 16-bit value</returns>
+        public async Task<ushort> ReadWord()
+        {
+            // set the speed for this device, just in case another device mucked with these settings
+            i2c.Speed = rateKhz;
+
+            // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
+            byte[] result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
+            return (ushort)((result[1] << 8) | result[0]);
+        }
+
+        /// <summary>
         /// Write a byte to a register
         /// </summary>
         /// <param name="register">the register to write the byte to</param>
