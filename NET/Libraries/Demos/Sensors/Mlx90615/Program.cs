@@ -24,10 +24,10 @@ namespace Mlx90615Demo
             while(true)
             {
                 Console.Write("Ambient temperature: ");
-                Console.WriteLine(tempSensor.Ambient.TemperatureFahrenheit);
+                Console.WriteLine(tempSensor.Ambient.Fahrenheit);
 
                 Console.Write("Object temperature: ");
-                Console.WriteLine(tempSensor.Object.TemperatureFahrenheit);
+                Console.WriteLine(tempSensor.Object.Fahrenheit);
 
                 Console.Write("Raw IR data: ");
                 Console.WriteLine(tempSensor.RawIrData);

@@ -32,7 +32,7 @@
         public override async Task Update()
         {
             short data = (short)await dev.ReadWord();
-            TemperatureCelsius = (data / 32.0) / 8.0;
+            Celsius = (data / 32.0) / 8.0;
         }
     }
 }

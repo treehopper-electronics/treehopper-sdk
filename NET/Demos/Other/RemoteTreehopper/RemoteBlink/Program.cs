@@ -33,7 +33,7 @@ namespace RemoteBlink
             {
                 while (!Console.KeyAvailable)
                 {
-                    Console.WriteLine("the current temperature is: " + temp.Ambient.TemperatureFahrenheit);
+                    Console.WriteLine("the current temperature is: " + temp.Ambient.Fahrenheit);
                     await Task.Delay(1000);
                 }
                 board.Disconnect();

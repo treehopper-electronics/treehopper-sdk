@@ -115,7 +115,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             accelerometer.Y = (float)(((short)(data[2] << 8 | data[3])) * accelScale - accelerometerOffset.Y);
             accelerometer.Z = (float)(((short)(data[4] << 8 | data[5])) * accelScale - accelerometerOffset.Z);
 
-            TemperatureCelsius = (data[6] << 8 | data[7]) / 333.87 + 21.0;
+            Celsius = (data[6] << 8 | data[7]) / 333.87 + 21.0;
 
             gyroscope.X = (float)(((short)(data[8] << 8 | data[9])) * gyroScale - gyroscopeOffset.X);
             gyroscope.Y = (float)(((short)(data[10] << 8 | data[11])) * gyroScale - gyroscopeOffset.Y);

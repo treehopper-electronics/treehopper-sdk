@@ -47,7 +47,7 @@
             double voltage = pin.AnalogVoltage;
             double v0 = (type == Type.Mcp9700) ? 0.5 : 0.4;
             double tc = (type == Type.Mcp9700) ? 0.01 : 0.0195;
-            TemperatureCelsius = (voltage - v0) / tc;
+            Celsius = (voltage - v0) / tc;
         }
 
         private void Pin_AnalogVoltageChanged(Pin sender, double voltage)

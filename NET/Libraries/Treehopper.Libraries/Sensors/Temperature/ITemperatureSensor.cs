@@ -8,8 +8,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
 {
     public interface ITemperatureSensor : IPollable
     {
-        double TemperatureCelsius { get; }
-        double TemperatureFahrenheit { get; }
-        double TemperatureKelvin { get; }
+        double Celsius { get; }
+
+        double Fahrenheit { get; }
+
+        double Kelvin { get; }
     }
 }
