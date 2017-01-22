@@ -117,6 +117,7 @@
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
     <Compile Include="Sensors\Temperature\Lm75.cs" />
     <Compile Include="Sensors\Temperature\ITemperature.cs" />
+    <Compile Include="Sensors\Temperature\Mcp9808.cs" />
     <Compile Include="Sensors\Temperature\Mlx9061x.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
   </ItemGroup>
