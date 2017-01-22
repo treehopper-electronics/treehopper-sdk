@@ -117,7 +117,7 @@
     <Compile Include="Sensors\Poller.cs" />
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
     <Compile Include="Sensors\Temperature\Lm75.cs" />
-    <Compile Include="Sensors\Temperature\ITemperature.cs" />
+    <Compile Include="Sensors\Temperature\ITemperatureSensor.cs" />
     <Compile Include="Sensors\Temperature\Mcp9700.cs" />
     <Compile Include="Sensors\Temperature\Mcp9808.cs" />
     <Compile Include="Sensors\Temperature\Mlx9061x.cs" />

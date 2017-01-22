@@ -1,5 +1,6 @@
 ﻿namespace Treehopper.Libraries.Sensors.Temperature
 {
+    using System;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -14,7 +15,7 @@
         /// <summary>
         /// Get the temperature, in Celsius
         /// </summary>
-        public double TemperatureCelsius
+        public double Celsius
         {
             get
             {
@@ -33,25 +34,45 @@
         /// <summary>
         /// Get the temperature, in Fahrenheit
         /// </summary>
-        public double TemperatureFahrenheit
+        public double Fahrenheit
         {
             get
             {
-                return ((TemperatureCelsius * 9.0) / 5.0) + 32.0;
+                return ToFahrenheit(Celsius);
             }
         }
 
         /// <summary>
         /// Get the temperature, in Kelvin
         /// </summary>
-        public double TemperatureKelvin
+        public double Kelvin
         {
             get
             {
-                return TemperatureCelsius + 273.15;
+                return ToKelvin(Celsius);
             }
         }
 
         public abstract Task Update();
+
+        /// <summary>
+        /// Utility method to convert any Celsius temperature to Kelvin
+        /// </summary>
+        /// <param name="temperatureCelsius">The original Celsius temperature</param>
+        /// <returns>the Kelvin equivalent</returns>
+        public static double ToKelvin(double temperatureCelsius)
+        {
+            return temperatureCelsius + 273.15;
+        }
+
+        /// <summary>
+        /// Utility method to convert any Celsius temperature to Fahrenheit
+        /// </summary>
+        /// <param name="temperatureCelsius">The original Celsius temperature</param>
+        /// <returns>the Fahrenheit equivalent</returns>
+        public static double ToFahrenheit(double temperatureCelsius)
+        {
+            return ((temperatureCelsius * 9.0) / 5.0) + 32.0;
+        }
     }
 }
