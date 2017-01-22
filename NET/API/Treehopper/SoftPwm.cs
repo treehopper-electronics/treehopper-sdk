@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
+
     /// <summary>
     /// This class provides software-based pulse-width modulation (PWM) on any pin.
     /// </summary>
@@ -16,13 +16,14 @@ namespace Treehopper
     /// </remarks>
     public class SoftPwm : Pwm
     {
-        Pin Pin;
-        TreehopperUsb Board;
-        bool isEnabled;
+        private Pin pin;
+        private TreehopperUsb board;
+        private bool isEnabled;
+
         internal SoftPwm(TreehopperUsb board, Pin pin)
         {
-            this.Board = board;
-            this.Pin = pin;
+            this.board = board;
+            this.pin = pin;
         }
 
         /// <summary>
@@ -34,20 +35,21 @@ namespace Treehopper
             {
                 return isEnabled;
             }
+
             set
             {
-                if(value != isEnabled)
+                if (value != isEnabled)
                 {
                     isEnabled = value;
-                    if(isEnabled)
+                    if (isEnabled)
                     {
-                        Board.SoftPwmMgr.StartPin(Pin);
-                        Pin.Mode = PinMode.PushPullOutput;
+                        board.SoftPwmMgr.StartPin(pin);
+                        pin.Mode = PinMode.PushPullOutput;
                     }
                     else
                     {
-                        Board.SoftPwmMgr.StopPin(Pin);
-                        Pin.Mode = PinMode.DigitalInput;
+                        board.SoftPwmMgr.StopPin(pin);
+                        pin.Mode = PinMode.DigitalInput;
                     }
                 }
             }
@@ -63,14 +65,18 @@ namespace Treehopper
         /// </remarks>
         public double DutyCycle
         {
-            get { return Board.SoftPwmMgr.GetDutyCycle(Pin); }
-            set {
+            get
+            {
+                return board.SoftPwmMgr.GetDutyCycle(pin);
+            }
+
+            set
+            {
                 if (value > 1.0 || value < 0.0)
                     throw new ArgumentOutOfRangeException("DutyCycle", "DutyCycle must be between 0.0 and 1.0");
-                Board.SoftPwmMgr.SetDutyCycle(Pin, value);
+                board.SoftPwmMgr.SetDutyCycle(pin, value);
             }
         }
-
 
         /// <summary>
         /// Get or set the pulse width, in microseconds, of the pin. This property has a range between 0 and 16409. 
@@ -81,18 +87,23 @@ namespace Treehopper
         /// </remarks>
         public double PulseWidth
         {
-            get { return Board.SoftPwmMgr.GetPulseWidth(Pin); }
-            set {
+            get
+            {
+                return board.SoftPwmMgr.GetPulseWidth(pin);
+            }
+
+            set
+            {
                 if (value > 16409 || value < 0.0)
                     throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0 and 16409");
-                Board.SoftPwmMgr.SetPulseWidth(Pin, value);
+                board.SoftPwmMgr.SetPulseWidth(pin, value);
             }
         }
 
         public override string ToString()
         {
             if (Enabled)
-                return string.Format("{0:0.00}% duty cycle ({1:0.00} us pulse width)", DutyCycle*100, PulseWidth);
+                return string.Format("{0:0.00}% duty cycle ({1:0.00} us pulse width)", DutyCycle * 100, PulseWidth);
             else
                 return "Not enabled";
         }

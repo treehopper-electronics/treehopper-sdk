@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents a OneWire-capable host.
     /// </summary>
@@ -21,13 +19,13 @@ namespace Treehopper
         /// </summary>
         /// <param name="address">The address to address</param>
         /// <returns>An awaitable Task that completes upon success.</returns>
-        Task OneWireResetAndMatchAddress(UInt64 address);
+        Task OneWireResetAndMatchAddress(ulong address);
 
         /// <summary>
         /// Search all attached devices to discover addresses
         /// </summary>
         /// <returns>A list of addresses of devices on the OneWire bus</returns>
-        Task<List<UInt64>> OneWireSearch();
+        Task<List<ulong>> OneWireSearch();
 
         /// <summary>
         /// Reset the OneWire bus to put all devices in a known state.
@@ -55,6 +53,5 @@ namespace Treehopper
         /// <param name="data">The byte to send</param>
         /// <returns>An awaitable task that completes when the send is finished.</returns>
         Task Send(byte data);
-        
     }
 }

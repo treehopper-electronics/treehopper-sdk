@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// This is a utility class that contains convenient static methods.
     /// </summary>
     public static class Utilities
     {
+        private static Random random = new Random();
+
         /// <summary>
         /// Map an input value from the specified range to an alternative range.
         /// </summary>
@@ -35,7 +38,7 @@ namespace Treehopper
         /// </example>
         public static double Map(double input, double fromMin, double fromMax, double toMin, double toMax)
         {
-            return (input - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
+            return (((input - fromMin) * (toMax - toMin)) / (fromMax - fromMin)) + toMin;
         }
 
         /// <summary>
@@ -62,27 +65,28 @@ namespace Treehopper
         public static int BcdToInt(int val)
         {
             int retVal = 0;
-            for(int i=0;i<8;i++)
+            for (int i = 0; i < 8; i++)
             {
                 retVal += (int)Math.Pow(10, i) * (val >> (i * 4) & 0xF);
             }
+
             return retVal;
         }
 
         /// <summary>
         /// Returns the CIE 1976 relative luminance calculated from an input intensity (brightness)
         /// </summary>
-        /// <param name="Brightness">The input intensity, from 0.0-1.0, to convert</param>
+        /// <param name="brightness">The input intensity, from 0.0-1.0, to convert</param>
         /// <returns>The CIE 1976 relative luminance, normalized to a 0-1 scale</returns>
         /// <remarks>
         /// <para>"Brightness" is perception oriented for intuitiveness. This function can be used to convert the perceptual value to a normalized luminance value that an LED driver can use to determine the correct PWM duty cycle or analog current drive strength needed to produce the associated brightness.</para>
         /// </remarks>
-        public static double BrightnessToCieLuminance(double Brightness)
+        public static double BrightnessToCieLuminance(double brightness)
         {
-            if (Brightness > 0.008856)
-                return (15625 * Math.Pow(Brightness, 3) + 7500 * Math.Pow(Brightness, 2) + 1200 * Brightness + 64) / 24389.0;
+            if (brightness > 0.008856)
+                return ((15625 * Math.Pow(brightness, 3)) + (7500 * Math.Pow(brightness, 2)) + (1200 * brightness) + 64) / 24389.0;
             else
-                return 1000 * Brightness / 9033.0;
+                return 1000 * brightness / 9033.0;
         }
 
         /// <summary>
@@ -138,11 +142,12 @@ namespace Treehopper
         public static byte[] GetBytes(this BitArray array)
         {
             var returnedData = new byte[array.Length / 8];
-            for(int i=0;i<array.Length;i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 if (array.Get(i))
-                    returnedData[i / 8] |= (byte)(1 << i % 8);
+                    returnedData[i / 8] |= (byte)(1 << (i % 8));
             }
+
             return returnedData;
         }
 
@@ -155,12 +160,12 @@ namespace Treehopper
         /// <returns>The string</returns>
         public static string BcdToString(int val, int decimalPlace = 0, bool showLeadingZeros = false)
         {
-            string retVal = "";
+            string retVal = string.Empty;
             bool nonZeroFound = false;
             for (int i = 7; i >= 0; i--)
             {
-                int num = (val >> (i * 4) & 0xF);
-                if(showLeadingZeros || num != 0 || nonZeroFound || i == decimalPlace)
+                int num = val >> (i * 4) & 0xF;
+                if (showLeadingZeros || num != 0 || nonZeroFound || i == decimalPlace)
                     retVal += num.ToString();
 
                 if (num != 0 || i == decimalPlace)
@@ -169,10 +174,17 @@ namespace Treehopper
                 if (i == decimalPlace)
                     retVal += ".";
             }
+
             return retVal;
         }
 
-        static Random random = new Random();
+        /// <summary>
+        /// Empty method which prevents VS from generating warnings from un-awaited calls. 
+        /// </summary>
+        /// <param name="task"></param>
+        public static void Forget(this Task task)
+        {
+        }
 
         /// <summary>
         /// Get a random string with alphanumeric characters
@@ -181,13 +193,13 @@ namespace Treehopper
         /// <returns>the generated string</returns>
         public static string RandomString(int length)
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(chars, length)
+            const string Characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(Characters, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         // adapted from stackoverflow.com/questions/2871/reading-a-c-c-data-structure-in-c-sharp-from-a-byte-array
-        static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
+        public static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
         {
             GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
             T dataStruct = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
@@ -207,23 +219,6 @@ namespace Treehopper
             Debug.WriteLine("ERROR: " + ex.Message);
             if (TreehopperUsb.Settings.ThrowExceptions)
                 throw ex;
-        }
-    }
-
-    public class TreehopperRuntimeException : Exception
-    {
-        private string message;
-        public TreehopperRuntimeException(string message)
-        {
-            this.message = message;
-        }
-
-        public override string Message
-        {
-            get
-            {
-                return message;
-            }
         }
     }
 }

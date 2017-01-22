@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
     /// <summary>
     /// Defines whether a signal is active high (rising-edge) or active low (falling-edge)
     /// </summary>
     public enum ChipSelectMode
     {
-
         /// <summary>
         /// CS is asserted low, the SPI transaction takes place, and then the signal is returned high.
         /// </summary>
         SpiActiveLow,
+
         /// <summary>
         /// CS is asserted high, the SPI transaction takes place, and then the signal is returned low.
         /// </summary>
@@ -40,5 +34,5 @@ namespace Treehopper
         /// The SPI transaction takes place, and once finished, CS is pulsed low
         /// </summary>
         PulseLowAtEnd
-    };
+    }
 }

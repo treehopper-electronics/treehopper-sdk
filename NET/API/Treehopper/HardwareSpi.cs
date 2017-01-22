@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Provides access to SPI communication.
     /// </summary>
@@ -36,17 +35,13 @@ namespace Treehopper
     /// </remarks>
     public class HardwareSpi : Spi
     {
+        private TreehopperUsb device;
+        private bool enabled;
+
         internal HardwareSpi(TreehopperUsb device)
         {
             this.device = device;
         }
-
-        TreehopperUsb device;
-        bool enabled;
-
-        Pin Sck { get { return device.Pins[0]; } }
-        Pin Miso { get { return device.Pins[1]; } }
-        Pin Mosi { get { return device.Pins[2]; } }
 
         /// <summary>
         /// Enable or disable the SPI module.
@@ -60,6 +55,7 @@ namespace Treehopper
             {
                 return enabled;
             }
+
             set
             {
                 if (enabled == value) return;
@@ -82,12 +78,19 @@ namespace Treehopper
             }
         }
 
-        private void SendConfig()
+        private Pin Sck
         {
-            byte[] dataToSend = new byte[2];
-            dataToSend[0] = (byte)DeviceCommands.SpiConfig;
-            dataToSend[1] = (enabled ? (byte)1 : (byte)0);
-            device.sendPeripheralConfigPacket(dataToSend);
+            get { return device.Pins[0]; }
+        }
+
+        private Pin Miso
+        {
+            get { return device.Pins[1]; }
+        }
+
+        private Pin Mosi
+        {
+            get { return device.Pins[2]; }
         }
 
         /// <summary>
@@ -108,40 +111,35 @@ namespace Treehopper
             if (chipSelect.SpiModule != this)
                 Utilities.Error("Chip select pin must belong to this SPI module");
 
-            //lock (device.ComsLock)
-            using(await device.ComsLock.LockAsync())
+            using (await device.ComsLock.LockAsync())
             {
-                int SPI0CKR = (int)Math.Round((24.0 / speedMhz) - 1);
-                if (SPI0CKR > 255.0)
+                int spi0ckr = (int)Math.Round((24.0 / speedMhz) - 1);
+                if (spi0ckr > 255.0)
                 {
-                    SPI0CKR = 255;
+                    spi0ckr = 255;
                     Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is below the minimum frequency, and will be clipped to 0.09375 MHz (93.75 kHz).", speedMhz);
                 }
-                else if (SPI0CKR < 0)
+                else if (spi0ckr < 0)
                 {
-                    SPI0CKR = 0;
+                    spi0ckr = 0;
                     Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is above the maximum frequency, and will be clipped to 24 MHz.", speedMhz);
                 }
 
-                double actualFrequency = 48.0 / (2.0 * (SPI0CKR + 1.0));
+                double actualFrequency = 48.0 / (2.0 * (spi0ckr + 1.0));
 
                 if (Math.Abs(actualFrequency - speedMhz) > 1)
                     Debug.WriteLine("NOTICE: SPI module actual frequency of {0} MHz is more than 1 MHz away from the requested frequency of {1} MHz", actualFrequency, speedMhz);
 
-
                 if (dataToWrite.Length > 255)
                     throw new Exception("Maximum packet length is 255 bytes");
 
-
                 byte[] receivedData;
                 int srcIndex = 0;
-
-
                 byte[] header = new byte[7];
                 header[0] = (byte)DeviceCommands.SpiTransaction;
                 header[1] = (byte)(chipSelect?.PinNumber ?? 255);
                 header[2] = (byte)chipSelectMode;
-                header[3] = (byte)SPI0CKR;
+                header[3] = (byte)spi0ckr;
                 header[4] = (byte)spiMode;
                 header[5] = (byte)burstMode; // burstMode
                 header[6] = (byte)transactionLength;
@@ -149,7 +147,7 @@ namespace Treehopper
                 // just send the header
                 if (burstMode == BurstMode.BurstRx)
                 {
-                    device.sendPeripheralConfigPacket(header);
+                    device.SendPeripheralConfigPacket(header);
                 }
                 else
                 {
@@ -163,11 +161,10 @@ namespace Treehopper
                     {
                         int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var tmp = dataToSend.Skip(offset).Take(transferLength);
-                        device.sendPeripheralConfigPacket(tmp.ToArray());
+                        device.SendPeripheralConfigPacket(tmp.ToArray());
                         offset += transferLength;
                         bytesRemaining -= transferLength;
                     }
-
                 }
 
                 // no need to wait if we're not reading anything
@@ -178,15 +175,14 @@ namespace Treehopper
                     while (bytesRemaining > 0)
                     {
                         int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        //receivedData = device.receiveCommsResponsePacket((uint)numBytesToTransfer).Result;
-                        receivedData = await device.receiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
+                        receivedData = await device.ReceiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
                         Array.Copy(receivedData, 0, returnedData, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;
                         bytesRemaining -= numBytesToTransfer;
                     }
                 }
             }
-                
+
             return returnedData;
         }
 
@@ -196,6 +192,14 @@ namespace Treehopper
                 return "Enabled";
             else
                 return "Not enabled";
+        }
+
+        private void SendConfig()
+        {
+            byte[] dataToSend = new byte[2];
+            dataToSend[0] = (byte)DeviceCommands.SpiConfig;
+            dataToSend[1] = (byte)(enabled ? 0x01 : 0x00);
+            device.SendPeripheralConfigPacket(dataToSend);
         }
     }
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Base interface that describes a pin with a DigitalValue property
     /// </summary>
@@ -39,15 +35,15 @@ namespace Treehopper
     public interface DigitalInPin : DigitalPinBase
     {
         /// <summary>
+        /// Fires whenever the digital pin's input changes value
+        /// </summary>
+        event OnDigitalInValueChanged DigitalValueChanged;
+
+        /// <summary>
         /// Awaits until the digital value changes
         /// </summary>
         /// <returns>An awaitable bool of the new value</returns>
         Task<bool> AwaitDigitalValueChange();
-
-        /// <summary>
-        /// Fires whenever the digital pin's input changes value
-        /// </summary>
-        event OnDigitalInValueChanged DigitalValueChanged;
 
         /// <summary>
         /// Make the pin a digital input
@@ -60,6 +56,5 @@ namespace Treehopper
     /// </summary>
     public interface DigitalIOPin : DigitalInPin, DigitalOutPin
     {
-
     }
 }

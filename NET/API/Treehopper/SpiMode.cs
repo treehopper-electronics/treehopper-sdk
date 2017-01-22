@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
     /// <summary>
     /// Defines the clock phase and polarity used for SPI communication
@@ -34,5 +28,5 @@ namespace Treehopper
         /// Clock is initially high; data is valid on the falling edge of the clock
         /// </summary>
         Mode11 = 0x30
-    };
+    }
 }
