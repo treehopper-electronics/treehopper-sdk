@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
+
     /// <summary>
     /// This class represents global settings used by the Treehopper API
     /// </summary>
@@ -20,6 +16,7 @@ namespace Treehopper
         /// </para>
         /// </remarks>
         public bool ThrowExceptions { get; set; }
+
         /// <summary>
         /// The VID to search for
         /// </summary>

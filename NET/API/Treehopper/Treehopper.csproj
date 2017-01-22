@@ -35,10 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AdcReferenceLevel.cs" />
     <Compile Include="AsyncHelpers.cs" />
     <Compile Include="ChipSelectMode.cs" />
+    <Compile Include="DeviceCommands.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="FirmwareUpdate.cs" />
     <Compile Include="HardwareI2c.cs" />
+    <Compile Include="HardwarePwmFrequency.cs" />
+    <Compile Include="I2cTransferError.cs" />
+    <Compile Include="I2cTransferException.cs" />
     <Compile Include="IAdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
@@ -47,8 +53,11 @@
     <Compile Include="I2c.cs" />
     <Compile Include="IOneWire.cs" />
     <Compile Include="IParallelInterface.cs" />
+    <Compile Include="PinMode.cs" />
     <Compile Include="Pwm.cs" />
-    <Compile Include="ParallelInterface.cs" />
+    <Compile Include="ParallelInterface.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Pin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HardwarePwm.cs" />
@@ -56,6 +65,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="SMBusDevice.cs" />
     <Compile Include="SoftPwm.cs" />
+    <Compile Include="SoftPwmConfig.cs" />
     <Compile Include="SoftPwmManager.cs" />
     <Compile Include="HardwareSpi.cs" />
     <Compile Include="Spi.cs" />
@@ -63,8 +73,11 @@
     <Compile Include="SpiDevice.cs" />
     <Compile Include="SpiChipSelectPin.cs" />
     <Compile Include="SpiMode.cs" />
+    <Compile Include="TreehopperBoardEqualityComparer.cs" />
+    <Compile Include="TreehopperRuntimeException.cs" />
     <Compile Include="TreehopperUsb.cs" />
     <Compile Include="Uart.cs" />
+    <Compile Include="UartMode.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

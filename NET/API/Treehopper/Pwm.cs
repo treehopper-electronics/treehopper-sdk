@@ -21,7 +21,7 @@
         /// <summary>
         /// Get or set the duty cycle (0-1) of the pin
         /// </summary>
-        double DutyCycle {get; set;}
+        double DutyCycle { get; set; }
 
         /// <summary>
         /// Get or set the pulse width, in microseconds, of the pin

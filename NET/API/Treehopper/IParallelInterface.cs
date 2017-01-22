@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents an 8080-style parallel interface that can write data
     /// </summary>
@@ -39,8 +35,8 @@ namespace Treehopper
         /// <param name="data">The data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
         Task WriteData(uint[] data);
-
     }
+
     /// <summary>
     /// A parallel interface that can read and write data
     /// </summary>
@@ -60,6 +56,5 @@ namespace Treehopper
         /// <param name="length">The number of words to read</param>
         /// <returns>The words read</returns>
         Task<ushort[]> ReadData(int length);
-
     }
 }

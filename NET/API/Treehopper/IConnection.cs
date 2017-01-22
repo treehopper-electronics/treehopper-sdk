@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
+    using System.ComponentModel;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Pin event data delegate
     /// </summary>
@@ -31,15 +28,9 @@ namespace Treehopper
     public interface IConnection : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
-        /// Open the connection
+        /// Fires whenever pin event data is received
         /// </summary>
-        /// <returns></returns>
-        Task<bool> OpenAsync();
-
-        /// <summary>
-        /// Close the connection
-        /// </summary>
-        void Close();
+        event PinEventData PinEventDataReceived;
 
         /// <summary>
         /// Get the serial number of the device
@@ -62,6 +53,22 @@ namespace Treehopper
         string DevicePath { get; set; }
 
         /// <summary>
+        /// Gets or sets the update rate of the board
+        /// </summary>
+        int UpdateRate { get; set; }
+
+        /// <summary>
+        /// Close the connection
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// Open the connection
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> OpenAsync();
+
+        /// <summary>
         /// Send pin configuration data
         /// </summary>
         /// <param name="data">The data to send</param>
@@ -74,20 +81,10 @@ namespace Treehopper
         void SendDataPeripheralChannel(byte[] data);
 
         /// <summary>
-        /// Gets or sets the update rate of the board
-        /// </summary>
-        int UpdateRate { get; set; }
-
-        /// <summary>
         /// Read peripheral data from the board
         /// </summary>
         /// <param name="numBytesToRead">The number of bytes to read</param>
         /// <returns>The bytes read</returns>
         Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead);
-
-        /// <summary>
-        /// Fires whenever pin event data is received
-        /// </summary>
-        event PinEventData PinEventDataReceived;
     }
 }

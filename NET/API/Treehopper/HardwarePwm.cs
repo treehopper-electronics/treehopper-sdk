@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System;
 
     /// <summary>
     /// The Pwm class manages the hardware PWM module on the Treehopper board.
@@ -13,15 +12,16 @@ namespace Treehopper
     /// </remarks>
     public class HardwarePwm : Pwm
     {
-        Pin Pin;
-        double dutyCycle;
-        double pulseWidth;
+        private Pin pin;
+        private double dutyCycle;
+        private double pulseWidth;
         private bool isEnabled = false;
-        TreehopperUsb Board;
+        private TreehopperUsb board;
+
         internal HardwarePwm(Pin pin)
         {
-            Pin = pin;
-            Board = pin.Board;
+            this.pin = pin;
+            board = pin.Board;
         }
 
         /// <summary>
@@ -33,6 +33,7 @@ namespace Treehopper
             {
                 return isEnabled;
             }
+
             set
             {
                 if (value != isEnabled)
@@ -40,19 +41,18 @@ namespace Treehopper
                     isEnabled = value;
                     if (isEnabled)
                     {
-                        Board.HardwarePwmManager.StartPin(Pin);
-                        Pin.Mode = PinMode.Reserved;
+                        board.HardwarePwmManager.StartPin(pin);
+                        pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
-                        Board.HardwarePwmManager.StopPin(Pin);
-                        Pin.Mode = PinMode.Unassigned;
+                        board.HardwarePwmManager.StopPin(pin);
+                        pin.Mode = PinMode.Unassigned;
                     }
                 }
             }
         }
 
-        
         /// <summary>
         /// Get or set the duty cycle (0-1) of the pin
         /// </summary>
@@ -62,6 +62,7 @@ namespace Treehopper
             {
                 return dutyCycle;
             }
+
             set
             {
                 if (dutyCycle.CloseTo(value)) return;
@@ -70,8 +71,8 @@ namespace Treehopper
                 dutyCycle = value;
 
                 // update the pulseWidth just in case the user wants to read from the value
-                pulseWidth = (int)Math.Round(dutyCycle * Board.HardwarePwmManager.PeriodMicroseconds);
-                Board.HardwarePwmManager.SetDutyCycle(Pin, value);
+                pulseWidth = (int)Math.Round(dutyCycle * board.HardwarePwmManager.PeriodMicroseconds);
+                board.HardwarePwmManager.SetDutyCycle(pin, value);
             }
         }
 
@@ -84,21 +85,22 @@ namespace Treehopper
             {
                 return pulseWidth;
             }
+
             set
             {
                 if (pulseWidth.CloseTo(value)) return;
-                if (value > Board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
-                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + Board.HardwarePwmManager.PeriodMicroseconds);
+                if (value > board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
+                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + board.HardwarePwmManager.PeriodMicroseconds);
                 pulseWidth = value;
 
-                DutyCycle = pulseWidth / Board.HardwarePwmManager.PeriodMicroseconds;
+                DutyCycle = pulseWidth / board.HardwarePwmManager.PeriodMicroseconds;
             }
         }
 
         public override string ToString()
         {
             if (Enabled)
-                return string.Format("{0:0.00}% duty cycle ({1:0.00} us pulse width)", DutyCycle*100, PulseWidth);
+                return string.Format("{0:0.00}% duty cycle ({1:0.00} us pulse width)", DutyCycle * 100, PulseWidth);
             else
                 return "Not enabled";
         }

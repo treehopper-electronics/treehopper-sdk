@@ -1,17 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.ThirdParty;
-
-namespace Treehopper
+﻿namespace Treehopper
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents a peripheral attached to the SPI bus
     /// </summary>
     public class SpiDevice
     {
+        private Spi spi;
+
+        /// <summary>
+        /// Construct an SPI device attached to a particular module
+        /// </summary>
+        /// <param name="spiModule">The module this device is attached to</param>
+        /// <param name="chipSelect">The chip select pin used by this device</param>
+        /// <param name="chipSelectMode">The ChipSelectMode to use with this device</param>
+        /// <param name="speedMhz">The speed to operate this device at</param>
+        /// <param name="mode">The SpiMode of this device</param>
+        public SpiDevice(Spi spiModule, SpiChipSelectPin chipSelect, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, SpiMode mode = SpiMode.Mode00)
+        {
+            this.ChipSelectMode = chipSelectMode;
+            this.ChipSelect = chipSelect;
+            this.spi = spiModule;
+            this.Frequency = speedMhz;
+            this.Mode = mode;
+
+            this.ChipSelect.MakeDigitalPushPullOut();
+
+            spi.Enabled = true;
+        }
+
         /// <summary>
         /// Get or set the pin to use for chip-select duties.
         /// </summary>
@@ -19,10 +37,7 @@ namespace Treehopper
         /// Almost every SPI peripheral chip has some sort of chip select (which may be called load, strobe, or enable, depending on the type of chip). You can use any <see cref="Pin"/> for chip-select duties as long as it belongs to the same board as this SPI peripheral (i.e., you can't use a pin from one Treehopper as a chip-select for the SPI port on another Treehopper).
         /// Chip-selects are controlled at the firmware, not peripheral, level, which offers quite a bit of flexibility in choosing the behavior. Make sure to set <see cref="ChipSelectMode"/> properly for your device.
         /// </remarks>
-
         public SpiChipSelectPin ChipSelect { get; protected set; }
-
-        private Spi spi;
 
         /// <summary>
         /// Get or set the SPI module's mode
@@ -45,27 +60,6 @@ namespace Treehopper
         /// The chip select mode to use with transactions
         /// </summary>
         public ChipSelectMode ChipSelectMode { get; protected set; }
-
-        /// <summary>
-        /// Construct an SPI device attached to a particular module
-        /// </summary>
-        /// <param name="SpiModule">The module this device is attached to</param>
-        /// <param name="ChipSelect">The chip select pin used by this device</param>
-        /// <param name="csMode">The ChipSelectMode to use with this device</param>
-        /// <param name="SpeedMHz">The speed to operate this device at</param>
-        /// <param name="mode">The SpiMode of this device</param>
-        public SpiDevice(Spi SpiModule, SpiChipSelectPin ChipSelect, ChipSelectMode csMode = ChipSelectMode.SpiActiveLow, double SpeedMHz = 1, SpiMode mode = SpiMode.Mode00)
-        {
-            this.ChipSelectMode = csMode;
-            this.ChipSelect = ChipSelect;
-            this.spi = SpiModule;
-            this.Frequency = SpeedMHz;
-            this.Mode = mode;
-
-            this.ChipSelect.MakeDigitalPushPullOut();
-
-            spi.Enabled = true;
-        }
 
         /// <summary>
         /// Start an SPI transaction
