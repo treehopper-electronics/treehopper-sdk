@@ -48,8 +48,8 @@ void ADC_Init() {
 void ADC_Enable(uint8_t pinNumber, AdcReferenceLevel_t referenceLevel) {
 	uint8_t SFRPAGE_save = SFRPAGE;
 	SFRPAGE = 0x00;
+	referenceLevels[pinNumber] = referenceLevel; // always update referenceLevel, even if the pin is already an ADC pin
 	if(pins[pinNumber] == AnalogInput) return;
-	referenceLevels[pinNumber] = referenceLevel;
 	GPIO_MakeInput(pinNumber, false);
 	SFRPAGE = SFRPAGE_save;
 	pins[pinNumber] = AnalogInput;
