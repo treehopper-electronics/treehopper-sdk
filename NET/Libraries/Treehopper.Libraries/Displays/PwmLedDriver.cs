@@ -71,7 +71,7 @@ namespace Treehopper.Libraries.Displays
         /// Unused, since this driver doesn't implement global brightness control
         /// </summary>
         /// <param name="brightness"></param>
-        internal override void setGlobalBrightness(double brightness)
+        internal override void SetGlobalBrightness(double brightness)
         {
             
         }

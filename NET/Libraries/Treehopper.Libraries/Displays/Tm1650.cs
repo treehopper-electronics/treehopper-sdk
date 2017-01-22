@@ -105,7 +105,7 @@ namespace Treehopper.Libraries.Displays
                 Flush().Wait();
         }
 
-        internal override void setGlobalBrightness(double brightness)
+        internal override void SetGlobalBrightness(double brightness)
         {
             sendControlUpdate().Wait();
         }

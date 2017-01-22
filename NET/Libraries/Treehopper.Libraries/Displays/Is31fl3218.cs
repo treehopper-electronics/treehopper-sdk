@@ -81,7 +81,7 @@ namespace Treehopper.Libraries.Displays
             if (AutoFlush) Flush().Wait();
         }
 
-        internal override void setGlobalBrightness(double brightness)
+        internal override void SetGlobalBrightness(double brightness)
         {
 
         }

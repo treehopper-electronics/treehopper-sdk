@@ -67,7 +67,7 @@ namespace Treehopper.Libraries.Displays
                 brightness = value;
                 
                 if(HasGlobalBrightnessControl) // might be more efficient
-                    setGlobalBrightness(brightness); 
+                    SetGlobalBrightness(brightness); 
                 else if(HasIndividualBrightnessControl)
                 {
                     bool savedAutoflushState = AutoFlush;
@@ -80,7 +80,7 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        internal abstract void setGlobalBrightness(double brightness);
+        internal abstract void SetGlobalBrightness(double brightness);
 
         /// <summary>
         /// The collection of LEDs that belong to this driver.
