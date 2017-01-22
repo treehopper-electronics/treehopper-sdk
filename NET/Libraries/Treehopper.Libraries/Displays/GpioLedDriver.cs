@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Displays
                 Pins[idx].DigitalValue = led.State;
         }
 
-        internal override void setGlobalBrightness(double brightness)
+        internal override void SetGlobalBrightness(double brightness)
         {
             
         }
