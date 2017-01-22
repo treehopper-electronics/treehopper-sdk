@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Libraries.Sensors.Temperature;
 
-namespace Lm75Demo
+namespace TemperatureDemo
 {
     /// <summary>
-    /// This demo prints current temperature data every second
+    /// This demo prints current temperature data every second. 
     /// </summary>
     class Program
     {
@@ -22,13 +22,18 @@ namespace Lm75Demo
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
-            var temp = new Lm75(board.I2c);
+
+            // SENSOR SELECTION
+            // Change this line depending on your temperature sensor
+            var sensor = new Mcp9700(board.Pins[0], Mcp9700.Type.Mcp9701);
+            //var sensor = new Lm75(board.I2c);
+            //var sensor = new Mcp9808(board.I2c);
 
             Console.WriteLine("Starting temperature reading. Press any key to stop.");
 
             while (!Console.KeyAvailable)
             {
-                Console.WriteLine(string.Format("Current temperature: {0:0.00} Celsius ({1:0.00} Fahrenheit)", temp.TemperatureCelsius, temp.TemperatureFahrenheit));
+                Console.WriteLine(string.Format("Current temperature: {0:0.00} Celsius ({1:0.00} Fahrenheit)", sensor.TemperatureCelsius, sensor.TemperatureFahrenheit));
                 await Task.Delay(1000);
             }
 

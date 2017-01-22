@@ -194,7 +194,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dm632", "NET\Libraries\Demo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ht16k33Demo", "NET\Libraries\Demos\Displays\Ht16k33Demo\Ht16k33Demo.csproj", "{FF194CD7-12E6-4669-8A4A-8C235D8BB7A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm75Demo", "NET\Libraries\Demos\Sensors\Lm75Demo\Lm75Demo.csproj", "{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temperature", "NET\Libraries\Demos\Sensors\Temperature\Temperature.csproj", "{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
