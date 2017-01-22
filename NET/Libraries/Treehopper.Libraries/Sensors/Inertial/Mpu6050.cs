@@ -105,19 +105,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
-        public double temperature = 0;
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public override double TemperatureCelsius
-        {
-            get
-            {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
-
-                return temperature;
-            }
-        }
         public override async Task Update()
         {
             var data = await dev.ReadBufferData((byte)Registers.ACCEL_XOUT_H, 14);
@@ -127,7 +115,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             accelerometer.Y = (float)(((short)(data[2] << 8 | data[3])) * accelScale - accelerometerOffset.Y);
             accelerometer.Z = (float)(((short)(data[4] << 8 | data[5])) * accelScale - accelerometerOffset.Z);
 
-            temperature = (data[6] << 8 | data[7]) / 333.87 + 21.0;
+            TemperatureCelsius = (data[6] << 8 | data[7]) / 333.87 + 21.0;
 
             gyroscope.X = (float)(((short)(data[8] << 8 | data[9])) * gyroScale - gyroscopeOffset.X);
             gyroscope.Y = (float)(((short)(data[10] << 8 | data[11])) * gyroScale - gyroscopeOffset.Y);
