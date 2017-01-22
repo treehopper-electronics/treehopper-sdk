@@ -45,7 +45,7 @@
     <Compile Include="HardwarePwmFrequency.cs" />
     <Compile Include="I2cTransferError.cs" />
     <Compile Include="I2cTransferException.cs" />
-    <Compile Include="IAdcPin.cs" />
+    <Compile Include="AdcPin.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionService.cs" />
     <Compile Include="DigitalPin.cs" />
