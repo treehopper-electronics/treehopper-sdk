@@ -115,6 +115,7 @@
     <Compile Include="Sensors\Optical\Tsl2591.cs" />
     <Compile Include="Sensors\Poller.cs" />
     <Compile Include="Sensors\Temperature\Ds18b20.cs" />
+    <Compile Include="Sensors\Temperature\Lm75.cs" />
     <Compile Include="Sensors\Temperature\ITemperature.cs" />
     <Compile Include="Sensors\Temperature\Mlx9061x.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
