@@ -1,22 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Sensors.Temperature
+﻿namespace Treehopper.Libraries.Sensors.Temperature
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Base temperature sensor functionality
     /// </summary>
-    public abstract class TemperatureSensor : Temperature, IPollable
+    public abstract class TemperatureSensor : ITemperatureSensor
     {
+        private double temperatureCelsius;
+
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         /// <summary>
         /// Get the temperature, in Celsius
         /// </summary>
-        public abstract double TemperatureCelsius { get; }
+        public double TemperatureCelsius
+        {
+            get
+            {
+                if (AutoUpdateWhenPropertyRead)
+                    Update().Wait();
+
+                return temperatureCelsius;
+            }
+
+            protected set
+            {
+                temperatureCelsius = value;
+            }
+        }
 
         /// <summary>
         /// Get the temperature, in Fahrenheit
@@ -25,7 +37,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         {
             get
             {
-                return TemperatureCelsius * 9.0 / 5.0 + 32.0;
+                return ((TemperatureCelsius * 9.0) / 5.0) + 32.0;
             }
         }
 

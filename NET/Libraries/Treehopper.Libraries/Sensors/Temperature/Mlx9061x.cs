@@ -17,8 +17,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
             Object =  new TempRegister(dev, 0x07);
             Ambient = new TempRegister(dev, 0x06);
         }
-        public Temperature Ambient { get; protected set; }
-        public Temperature Object { get; protected set; }
+        public ITemperatureSensor Ambient { get; protected set; }
+        public ITemperatureSensor Object { get; protected set; }
 
         public int RawIrData { get { return dev.ReadWordData(0x25).Result;  } }
 
@@ -37,24 +37,12 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 this.dev = dev;
             }
 
-            private double temp = 0;
-
-            public override double TemperatureCelsius
-            {
-                get
-                {
-                    if (AutoUpdateWhenPropertyRead) Update().Wait();
-
-                    return temp;
-                }
-            }
-
             public override async Task Update()
             {
                 var data = await dev.ReadWordData(register).ConfigureAwait(false);
 
                 data &= 0x7FFF; // chop off the error bit of the high byte
-                temp = data * 0.02 - 273.15;
+                TemperatureCelsius = data * 0.02 - 273.15;
             }
         }
     }
