@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Interface;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
     /// Base class representing an I/O port expander

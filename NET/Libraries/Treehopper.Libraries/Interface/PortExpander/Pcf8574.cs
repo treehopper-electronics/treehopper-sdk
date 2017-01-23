@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.PcfSeries
+namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
-    /// Base class for all PCF-series I2c I/O expanders
+    /// An 8-bit I2c I/O expander
     /// </summary>
-    public class PcfInterface : PortExpander
+    public class Pcf8574 : PortExpander
     {
         private SMBusDevice dev;
         int numBytes;
@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Interface.PcfSeries
         /// <param name="Address1">The state of the Address1 pin</param>
         /// <param name="Address2">The state of the Address2 pin</param>
         /// <param name="baseAddress">The base address of the chip</param>
-        public PcfInterface(I2c i2c, int numPins, bool Address0, bool Address1, bool Address2, byte baseAddress) : base(numPins)
+        public Pcf8574(I2c i2c, int numPins, bool Address0, bool Address1, bool Address2, byte baseAddress) : base(numPins)
         {
             byte address = (byte)(baseAddress | (Address0 ? 1 : 0) | (Address1 ? 1 : 0) << 1 | (Address2 ? 1 : 0) << 2);
             dev = new SMBusDevice(address, i2c);
@@ -32,11 +32,11 @@ namespace Treehopper.Libraries.Interface.PcfSeries
 
             oldValues = new byte[numBytes];
             newValues = new byte[numBytes];
-            
+
             // make all pins inputs by default
             AutoFlush = false;
             foreach (var pin in Pins)
-                pin.Mode = InputOutputPinMode.DigitalInput;
+                pin.Mode = PortExpanderPinMode.DigitalInput;
             AutoFlush = true;
             Flush(true).Wait();
 
@@ -55,7 +55,7 @@ namespace Treehopper.Libraries.Interface.PcfSeries
             for (int i = 0; i < Pins.Count; i++)
             {
                 // recall that we make a pin a digital input by setting it high and reading from it
-                if (Pins[i].DigitalValue == true || Pins[i].Mode == InputOutputPinMode.DigitalInput)
+                if (Pins[i].DigitalValue == true || Pins[i].Mode == PortExpanderPinMode.DigitalInput)
                     newValues[i / 8] |= (byte)(1 << (i % 8));
                 else
                     newValues[i / 8] &= (byte)~(1 << (i % 8));
@@ -75,7 +75,7 @@ namespace Treehopper.Libraries.Interface.PcfSeries
 
                 await dev.WriteData(newValues);
             }
-                
+
         }
         /// <summary>
         /// Called when the output value of any pin has changed and should be written to the port
@@ -104,7 +104,7 @@ namespace Treehopper.Libraries.Interface.PcfSeries
         protected override async Task readPort()
         {
             var data = await dev.ReadData((byte)numBytes);
-            for(int i = 0;i<Pins.Count;i++)
+            for (int i = 0; i < Pins.Count; i++)
             {
                 int bank = i / 8;
                 int bit = i % 8;

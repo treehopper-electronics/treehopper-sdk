@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Interface;
-using Treehopper.Libraries.Interface.PcfSeries;
-
-namespace Treehopper.Libraries.Displays
+﻿namespace Treehopper.Libraries.Displays
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Treehopper.Libraries.Interface;
+    using Treehopper.Libraries.Interface.PortExpander;
+
     /// <summary>
     /// Contains static methods useful for constructing commonly-available display modules.
     /// </summary>

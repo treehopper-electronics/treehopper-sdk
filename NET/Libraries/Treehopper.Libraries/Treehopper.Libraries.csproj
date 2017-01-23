@@ -88,11 +88,10 @@
     <Compile Include="Interface\IFlushableOutputPort.cs" />
     <Compile Include="Interface\Adc\Ltc2305.cs" />
     <Compile Include="Interface\Pca9685.cs" />
-    <Compile Include="Interface\PcfSeries\Pcf8574.cs" />
-    <Compile Include="Interface\PcfSeries\Pcf8575.cs" />
-    <Compile Include="Interface\PcfSeries\PcfInterface.cs" />
-    <Compile Include="Interface\PortExpander.cs" />
-    <Compile Include="Interface\PortExpanderPin.cs" />
+    <Compile Include="Interface\PortExpander\Pcf8574.cs" />
+    <Compile Include="Interface\PortExpander\Pcf8575.cs" />
+    <Compile Include="Interface\PortExpander\PortExpander.cs" />
+    <Compile Include="Interface\PortExpander\PortExpanderPin.cs" />
     <Compile Include="Interface\ShiftRegister\ChainableShiftRegisterOutput.cs" />
     <Compile Include="Interface\ShiftRegister\ShiftOut.cs" />
     <Compile Include="Interface\ShiftRegister\ShiftOutPin.cs" />
