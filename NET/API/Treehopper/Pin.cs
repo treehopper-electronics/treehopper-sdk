@@ -438,7 +438,7 @@
             if (!prevAdcValue.CloseTo(adcValue, AdcValueChangedThreshold))
             {
                 prevAdcValue = adcValue;
-                AdcValueChanged?.Invoke(this, adcValue);
+                AdcValueChanged?.Invoke(this, new AdcValueChangedEventArgs(adcValue));
 
                 adcValueSignal.TrySetResult(adcValue);
 
@@ -448,7 +448,7 @@
             if (!prevAnalogVoltage.CloseTo(AnalogVoltage, AnalogVoltageChangedThreshold))
             {
                 prevAnalogVoltage = AnalogVoltage;
-                AnalogVoltageChanged?.Invoke(this, AnalogVoltage);
+                AnalogVoltageChanged?.Invoke(this, new AnalogVoltageChangedEventArgs(AnalogVoltage));
 
                 analogVoltageSignal.TrySetResult(AnalogVoltage);
 
@@ -458,7 +458,7 @@
             if (!prevAnalogValue.CloseTo(AnalogValue, AnalogValueChangedThreshold))
             {
                 prevAnalogValue = AnalogValue;
-                AnalogValueChanged?.Invoke(this, AnalogValue);
+                AnalogValueChanged?.Invoke(this, new AnalogValueChangedEventArgs(AnalogValue));
 
                 analogValueSignal.TrySetResult(AnalogValue);
 
