@@ -63,6 +63,22 @@ namespace Treehopper.Utilities
         }
 
         /// <summary>
+        /// Constrains a number to be within a range. Default range is 0-1
+        /// </summary>
+        /// <param name="x">the number to constrain</param>
+        /// <param name="a">the lower end of the range</param>
+        /// <param name="b">the upper end of the range</param>
+        /// <returns>the constrained number</returns>
+        public static int Constrain(this int x, int a = 0, int b = 255)
+        {
+            if (x < a)
+                return a;
+            if (x > b)
+                return b;
+            return x;
+        }
+
+        /// <summary>
         /// Convert 4-bit BCD nibbles into an integer
         /// </summary>
         /// <param name="val">The value (concatenated 4-bit nibbles) to convert.</param>

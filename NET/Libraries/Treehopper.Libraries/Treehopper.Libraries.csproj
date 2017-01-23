@@ -73,6 +73,8 @@
     <Compile Include="Displays\Tm1650.cs" />
     <Compile Include="Displays\Utility.cs" />
     <Compile Include="Interface\AnalogMux\AnalogMux4051.cs" />
+    <Compile Include="Interface\Dac\IDac.cs" />
+    <Compile Include="Interface\Dac\Mcp4725.cs" />
     <Compile Include="Interface\FlushableParallelInterface.cs" />
     <Compile Include="Interface\I2cMux\I2cMux.cs" />
     <Compile Include="Interface\I2cMux\I2cMuxPort.cs" />
