@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
     /// Represents a digital I/O pin's mode
     /// </summary>
-    public enum InputOutputPinMode
+    public enum PortExpanderPinMode
     {
         /// <summary>
         /// Digital output mode
@@ -29,12 +29,12 @@ namespace Treehopper.Libraries.Interface
     {
         private int pinNumber;
         private PortExpander portExpander;
-        private InputOutputPinMode mode;
+        private PortExpanderPinMode mode;
 
         /// <summary>
         /// The mode of the pin
         /// </summary>
-        public InputOutputPinMode Mode
+        public PortExpanderPinMode Mode
         {
             get { return mode; }
             set
@@ -101,7 +101,7 @@ namespace Treehopper.Libraries.Interface
         /// </summary>
         public void MakeDigitalIn()
         {
-            Mode = InputOutputPinMode.DigitalInput;
+            Mode = PortExpanderPinMode.DigitalInput;
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Treehopper.Libraries.Interface
         /// </summary>
         public void MakeDigitalPushPullOut()
         {
-            Mode = InputOutputPinMode.DigitalOutput;
+            Mode = PortExpanderPinMode.DigitalOutput;
         }
     }
 }
