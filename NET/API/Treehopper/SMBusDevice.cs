@@ -140,7 +140,7 @@
         }
 
         /// <summary>
-        /// Read a 16-bit register value from the device
+        /// Read a 16-bit little-endian register value from the device
         /// </summary>
         /// <param name="register">the 8-bit register address to read from</param>
         /// <returns>the register's 16-bit value</returns>
@@ -155,7 +155,22 @@
         }
 
         /// <summary>
-        /// Read a 16-bit value from the device
+        /// Read a 16-bit big-endian register value from the device
+        /// </summary>
+        /// <param name="register">the 8-bit register address to read from</param>
+        /// <returns>the register's 16-bit value</returns>
+        public async Task<ushort> ReadWordDataBE(byte register)
+        {
+            // set the speed for this device, just in case another device mucked with these settings
+            i2c.Speed = rateKhz;
+
+            // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
+            byte[] result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
+            return (ushort)((result[0] << 8) | result[1]);
+        }
+
+        /// <summary>
+        /// Read a 16-bit little-endian value from the device
         /// </summary>
         /// <returns>the 16-bit value</returns>
         public async Task<ushort> ReadWord()
@@ -166,6 +181,20 @@
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
             byte[] result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
             return (ushort)((result[1] << 8) | result[0]);
+        }
+
+        /// <summary>
+        /// Read a 16-bit little-endian value from the device
+        /// </summary>
+        /// <returns>the 16-bit value</returns>
+        public async Task<ushort> ReadWordBE()
+        {
+            // set the speed for this device, just in case another device mucked with these settings
+            i2c.Speed = rateKhz;
+
+            // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataHigh] A [DataLow] NA P
+            byte[] result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
+            return (ushort)((result[0] << 8) | result[1]);
         }
 
         /// <summary>
@@ -184,7 +213,7 @@
         }
 
         /// <summary>
-        /// Write a 16-bit word to a register
+        /// Write a 16-bit little-endian word to a register
         /// </summary>
         /// <param name="register">the register to write the 16-bit word to</param>
         /// <param name="data">the 16-bit word to write to the specified register</param>
@@ -196,6 +225,21 @@
 
             // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
             return i2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data >> 8) }, 0);
+        }
+
+        /// <summary>
+        /// Write a 16-bit big-endian word to a register
+        /// </summary>
+        /// <param name="register">the register to write the 16-bit word to</param>
+        /// <param name="data">the 16-bit word to write to the specified register</param>
+        /// <returns>an awaitable task</returns>
+        public Task WriteWordDataBE(byte register, ushort data)
+        {
+            // set the speed for this device, just in case another device mucked with these settings
+            i2c.Speed = rateKhz;
+
+            // S Addr Wr [A] Comm [A] DataHigh [A] DataLow [A] P
+            return i2c.SendReceive(address, new byte[] { register, (byte)(data >> 8), (byte)(data & 0xFF) }, 0);
         }
 
         /// <summary>
