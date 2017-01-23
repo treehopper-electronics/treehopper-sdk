@@ -72,6 +72,11 @@
     <Compile Include="Displays\LedShiftRegister.cs" />
     <Compile Include="Displays\Tm1650.cs" />
     <Compile Include="Displays\Utility.cs" />
+    <Compile Include="Interface\Adc\AdcPeripheral.cs" />
+    <Compile Include="Interface\Adc\AdcPeripheralPin.cs" />
+    <Compile Include="Interface\Adc\Ads1115.cs" />
+    <Compile Include="Interface\Adc\AdsPin.cs" />
+    <Compile Include="Interface\Adc\IAdcPeripheral.cs" />
     <Compile Include="Interface\AnalogMux\AnalogMux4051.cs" />
     <Compile Include="Interface\Dac\IDac.cs" />
     <Compile Include="Interface\Dac\Mcp4725.cs" />
@@ -81,7 +86,7 @@
     <Compile Include="Interface\I2cMux\I2cMux4052.cs" />
     <Compile Include="Interface\IFlushable.cs" />
     <Compile Include="Interface\IFlushableOutputPort.cs" />
-    <Compile Include="Interface\Ltc2305.cs" />
+    <Compile Include="Interface\Adc\Ltc2305.cs" />
     <Compile Include="Interface\Pca9685.cs" />
     <Compile Include="Interface\PcfSeries\Pcf8574.cs" />
     <Compile Include="Interface\PcfSeries\Pcf8575.cs" />
