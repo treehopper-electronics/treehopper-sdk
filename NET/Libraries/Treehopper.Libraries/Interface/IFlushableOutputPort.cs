@@ -16,6 +16,6 @@ namespace Treehopper.Libraries.Interface
         /// <summary>
         /// Collection of pins associated with this output port
         /// </summary>
-        Collection<TDigitalPin> Pins { get; }
+        IList<TDigitalPin> Pins { get; }
     }
 }

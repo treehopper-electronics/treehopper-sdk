@@ -57,7 +57,7 @@ namespace Treehopper.Libraries.Interface.ShiftRegister
         /// <summary>
         /// Collection of pins for this shift register
         /// </summary>
-        public Collection<ShiftOutPin> Pins { get; protected set; } = new Collection<ShiftOutPin>();
+        public IList<ShiftOutPin> Pins { get; protected set; } = new Collection<ShiftOutPin>();
 
         BitArray currentValue;
 

@@ -88,6 +88,9 @@
     <Compile Include="Interface\IFlushableOutputPort.cs" />
     <Compile Include="Interface\Adc\Ltc2305.cs" />
     <Compile Include="Interface\Pca9685.cs" />
+    <Compile Include="Interface\PortExpander\IPortExpander.cs" />
+    <Compile Include="Interface\PortExpander\IPortExpanderPin.cs" />
+    <Compile Include="Interface\PortExpander\Mcp23008.cs" />
     <Compile Include="Interface\PortExpander\Pcf8574.cs" />
     <Compile Include="Interface\PortExpander\Pcf8575.cs" />
     <Compile Include="Interface\PortExpander\PortExpander.cs" />

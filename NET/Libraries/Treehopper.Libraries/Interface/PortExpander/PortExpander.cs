@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// <summary>
     /// Base class representing an I/O port expander
     /// </summary>
-    public abstract class PortExpander : IFlushableOutputPort<PortExpanderPin>
+    public abstract class PortExpander : IPortExpander<PortExpanderPin>, IPortExpanderParent
     {
         /// <summary>
         /// Construct a port expander with the supplied number of pins
@@ -26,7 +26,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// The collection of pins that belong to this port expander
         /// </summary>
-        public Collection<PortExpanderPin> Pins { get; set; } = new Collection<PortExpanderPin>();
+        public IList<PortExpanderPin> Pins { get; set; } = new Collection<PortExpanderPin>();
 
         public IFlushable Parent { get; private set; }
 
@@ -34,6 +34,10 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// Whether this port expander should auto-flush
         /// </summary>
         public bool AutoFlush { get; set; }
+
+        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
+
+        public int AwaitPollingInterval { get; set; }
 
         /// <summary>
         /// Flush output data to the port
@@ -43,42 +47,37 @@ namespace Treehopper.Libraries.Interface.PortExpander
         public abstract Task Flush(bool force = false);
 
         /// <summary>
-        /// Read all input pins
-        /// </summary>
-        /// <returns>An awaitable task that completes when the read is finished.</returns>
-        public Task ReadAll()
-        {
-            return readPort();
-        }
-
-        internal void OutputValueChanged(PortExpanderPin portExpanderPin)
-        {
-            if (AutoFlush)
-                outputValueChanged(portExpanderPin);
-        }
-        internal void OutputModeChanged(PortExpanderPin portExpanderPin)
-        {
-            if (AutoFlush)
-                outputModeChanged(portExpanderPin);
-        }
-
-        /// <summary>
         /// Called whenever an output changes
         /// </summary>
         /// <param name="portExpanderPin">The pin whose output changed</param>
-        protected abstract void outputValueChanged(PortExpanderPin portExpanderPin);
+        protected abstract void outputValueChanged(IPortExpanderPin portExpanderPin);
 
         /// <summary>
         /// Called whenever the mode of a pin changes
         /// </summary>
         /// <param name="portExpanderPin">The pin who has a new mode</param>
-        protected abstract void outputModeChanged(PortExpanderPin portExpanderPin);
+        protected abstract void outputModeChanged(IPortExpanderPin portExpanderPin);
 
         /// <summary>
         /// Called whenever a read is requested from the bus of the current input values
         /// </summary>
         /// <returns>An awaitable task that completes when the read is finished</returns>
         protected abstract Task readPort();
+
+        void IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
+        {
+            outputValueChanged(portExpanderPin);
+        }
+
+        void IPortExpanderParent.OutputModeChanged(IPortExpanderPin portExpanderPin)
+        {
+            outputModeChanged(portExpanderPin);
+        }
+
+        public Task Update()
+        {
+            return readPort();
+        }
     }
 
 }
