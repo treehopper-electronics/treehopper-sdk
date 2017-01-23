@@ -19,7 +19,7 @@
             this.pin = pin;
             pin.MakeAnalogIn();
             pin.AnalogVoltageChangedThreshold = 0.01;
-            pin.AnalogVoltageChanged += Pin_AnalogVoltageChanged;
+            pin.AnalogVoltageChanged += Pin_AnalogVoltageChanged; ;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@
             Celsius = (voltage - v0) / tc;
         }
 
-        private void Pin_AnalogVoltageChanged(Pin sender, double voltage)
+        private void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)
         {
             Update();
         }

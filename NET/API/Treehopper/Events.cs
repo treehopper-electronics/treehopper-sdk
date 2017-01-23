@@ -26,28 +26,28 @@
     /// </summary>
     /// <param name="sender">The Pin that changed</param>
     /// <param name="value">The new value of the pin</param>
-    public delegate void OnDigitalInValueChanged(object sender, DigitalInValueChangedEventArgs value);
+    public delegate void OnDigitalInValueChanged(object sender, DigitalInValueChangedEventArgs e);
 
     /// <summary>
     /// Used to send VoltageChanged events from the AnalogIn pin.
     /// </summary>
     /// <param name="sender">The AnalogIn pin that sent that message</param>
     /// <param name="voltage">The new voltage of the AnalogIn pin</param>
-    public delegate void OnAnalogVoltageChanged(Pin sender, double voltage);
+    public delegate void OnAnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e);
 
     /// <summary>
     /// Used to send ValueChanged events from the AnalogIn pin.
     /// </summary>
     /// <param name="sender">The AnalogIn pin that sent that message</param>
     /// <param name="value">The new voltage of the AnalogIn pin</param>
-    public delegate void OnAdcValueChanged(Pin sender, int value);
+    public delegate void OnAdcValueChanged(object sender, AdcValueChangedEventArgs e);
 
     /// <summary>
     /// Used to send ValueChanged events from the pin.
     /// </summary>
     /// <param name="sender">The pin that sent that message</param>
     /// <param name="value">The new normalized value of the pin</param>
-    public delegate void OnAnalogValueChanged(Pin sender, double value);
+    public delegate void OnAnalogValueChanged(object sender, AnalogValueChangedEventArgs e);
 
     /// <summary>
     /// An EventArgs that represents a digital input changing
@@ -67,5 +67,35 @@
         /// A property representing the new value
         /// </summary>
         public bool NewValue { get; set; }
+    }
+
+    public class AnalogValueChangedEventArgs : EventArgs
+    {
+        public AnalogValueChangedEventArgs(double newValue)
+        {
+            NewValue = newValue;
+        }
+
+        public double NewValue { get; set; }
+    }
+
+    public class AnalogVoltageChangedEventArgs : EventArgs
+    {
+        public AnalogVoltageChangedEventArgs(double newValue)
+        {
+            NewValue = newValue;
+        }
+
+        public double NewValue { get; set; }
+    }
+
+    public class AdcValueChangedEventArgs : EventArgs
+    {
+        public AdcValueChangedEventArgs(int newValue)
+        {
+            NewValue = newValue;
+        }
+
+        public int NewValue { get; set; }
     }
 }
