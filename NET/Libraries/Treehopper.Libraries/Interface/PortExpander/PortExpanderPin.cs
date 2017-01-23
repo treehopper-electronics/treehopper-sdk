@@ -25,11 +25,11 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// <summary>
     /// Construct a new Port Expander pin
     /// </summary>
-    public class PortExpanderPin : DigitalIOPin
+    public class PortExpanderPin : IPortExpanderPin
     {
-        private int pinNumber;
-        private PortExpander portExpander;
-        private PortExpanderPinMode mode;
+        protected int pinNumber;
+        protected IPortExpanderParent portExpander;
+        protected PortExpanderPinMode mode = PortExpanderPinMode.DigitalInput;
 
         /// <summary>
         /// The mode of the pin
@@ -54,6 +54,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         {
             get
             {
+                if (mode == PortExpanderPinMode.DigitalInput && portExpander.AutoUpdateWhenPropertyRead) portExpander.Update().Wait();
                 return digitalValue;
             }
 
@@ -66,6 +67,14 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
+        public int PinNumber
+        {
+            get
+            {
+                return pinNumber;
+            }
+        }
+
         internal void UpdateInputValue(bool value)
         {
             if (digitalValue == value) return;
@@ -73,7 +82,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
             DigitalValueChanged?.Invoke((DigitalInPin)this, new DigitalInValueChangedEventArgs(digitalValue));
             digitalSignal.TrySetResult(digitalValue);
         }
-        internal PortExpanderPin(PortExpander portExpander, int pinNumber)
+        internal PortExpanderPin(IPortExpanderParent portExpander, int pinNumber)
         {
             this.portExpander = portExpander;
             this.pinNumber = pinNumber;
@@ -92,8 +101,28 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <returns>The new digital value (when the wait completes)</returns>
         public Task<bool> AwaitDigitalValueChange()
         {
-            digitalSignal = new TaskCompletionSource<bool>();
-            return digitalSignal.Task;
+            if(portExpander.AutoUpdateWhenPropertyRead)
+            {
+                return Task.Run(async() =>
+                {
+                    bool oldValue = DigitalValue;
+                    // poll the device
+                    while(DigitalValue == oldValue)
+                    {
+                        await portExpander.Update().ConfigureAwait(false);
+                        await Task.Delay(portExpander.AwaitPollingInterval);
+                    }
+
+                    return DigitalValue;
+
+                });
+            } else
+            {
+                // The app is updating
+                digitalSignal = new TaskCompletionSource<bool>();
+                return digitalSignal.Task;
+            }
+            
         }
 
         /// <summary>
