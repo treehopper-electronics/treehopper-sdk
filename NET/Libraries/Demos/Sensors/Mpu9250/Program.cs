@@ -22,6 +22,12 @@ namespace Mpu9250Demo
 
             var imu = new Mpu6050(board.I2c);
 
+            while(!Console.KeyAvailable)
+            {
+                Console.WriteLine(string.Format("{0:0.00}, {1:0.00}, {2:0.00}", imu.Accelerometer.X, imu.Accelerometer.Y, imu.Accelerometer.Z));
+                await Task.Delay(100);
+            }
+
             board.Disconnect();
         }
     }
