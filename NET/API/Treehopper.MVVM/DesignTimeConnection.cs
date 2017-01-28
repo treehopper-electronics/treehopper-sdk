@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treehopper.Utilities;
 
 namespace Treehopper
 {
@@ -21,8 +22,8 @@ namespace Treehopper
         /// </summary>
         public DesignTimeConnection()
         {
-            SerialNumber = Utilities.RandomString(16);
-            Name = "MyTreehopper "+Utilities.RandomString(2);
+            SerialNumber = Utility.RandomString(16);
+            Name = "MyTreehopper "+ Utility.RandomString(2);
             
         }
 
