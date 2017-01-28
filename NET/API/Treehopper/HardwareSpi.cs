@@ -109,7 +109,10 @@
             int transactionLength = dataToWrite.Length;
             byte[] returnedData = new byte[transactionLength];
 
-            if (chipSelect.SpiModule != this)
+            if (Enabled != true)
+                Utility.Error("SPI module must be enabled before starting transaction");
+
+            if (chipSelect != null && chipSelect.SpiModule != this)
                 Utility.Error("Chip select pin must belong to this SPI module");
 
             using (await device.ComsLock.LockAsync())
