@@ -8,7 +8,7 @@ using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
-    public class RgbLed : IFlushable
+    public class RgbLed : IFlushable, IRgbLed
     {
         private Led b;
         private Led g;
@@ -59,19 +59,24 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        public double RedGain { get; set; } = 1.0;
-        public double GreenGain { get; set; } = 1.0;
-        public double BlueGain { get; set; } = 1.0;
+        public float RedGain { get; set; } = 1f;
+        public float GreenGain { get; set; } = 1f;
+        public float BlueGain { get; set; } = 1f;
 
         public IFlushable Parent { get; private set; }
 
-        public void SetRgb(double red, double green, double blue)
+        public void SetRgb(float red, float green, float blue)
         {
-            r.Brightness = Numbers.Constrain(red / 255.0 * RedGain);
-            g.Brightness = Numbers.Constrain(green / 255.0 * GreenGain);
-            b.Brightness = Numbers.Constrain(blue / 255.0 * BlueGain);
+            r.Brightness = Numbers.Constrain(red / 255f * RedGain);
+            g.Brightness = Numbers.Constrain(green / 255f * GreenGain);
+            b.Brightness = Numbers.Constrain(blue / 255f * BlueGain);
 
             if (AutoFlush) Flush().Wait();
+        }
+
+        public void SetRgb(Color color)
+        {
+            SetRgb(color.R, color.G, color.B);
         }
 
         /// <summary>
@@ -81,39 +86,9 @@ namespace Treehopper.Libraries.Displays
         /// <param name="saturation"></param>
         /// <param name="luminance"></param>
         /// <remarks><para>This is adapted from http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c </para></remarks>
-        public void SetHsl(double hue, double saturation, double luminance)
+        public void SetHsl(float hue, float saturation, float luminance)
         {
-            var h = hue / 360.0;
-            var s = saturation / 100.0;
-            var l = luminance / 100.0;
-
-            double r, g, b;
-
-            if (s == 0)
-            {
-                r = g = b = l; // achromatic
-            } else
-            {
-                var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-
-                var p = 2 * l - q;
-                r = hue2rgb(p, q, h + (1d/3));
-                g = hue2rgb(p, q, h);
-                b = hue2rgb(p, q, h - (1d/3));
-            }
-
-
-            SetRgb(255.0*r, 255.0*g, 255.0*b);
-        }
-
-        private double hue2rgb(double p, double q, double t)
-        {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1d/6) return p + (q - p) * 6d * t;
-            if (t < 1d/2) return q;
-            if (t < 2d/3) return p + (q - p) * (2d/3 - t) * 6;
-            return p;
+            SetRgb(Color.FromHsl(hue, saturation, luminance));
         }
     }
 }

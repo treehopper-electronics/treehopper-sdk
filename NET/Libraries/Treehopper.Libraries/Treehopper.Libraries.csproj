@@ -46,8 +46,10 @@
     <Compile Include="ArduinoShim\Sketch.cs" />
     <Compile Include="Displays\BarGraph.cs" />
     <Compile Include="Displays\CharacterDisplay.cs" />
+    <Compile Include="Displays\Color.cs" />
     <Compile Include="Displays\Dm632.cs" />
     <Compile Include="Displays\Ht16k33.cs" />
+    <Compile Include="Displays\IRgbLed.cs" />
     <Compile Include="Displays\LedCollection.cs" />
     <Compile Include="Displays\LedDisplay.cs" />
     <Compile Include="Displays\LedDisplayCollection.cs" />
