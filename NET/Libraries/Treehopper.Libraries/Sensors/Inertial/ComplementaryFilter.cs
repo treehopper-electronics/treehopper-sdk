@@ -20,6 +20,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public ComplementaryFilter(IAccelerometer accelerometer, IGyroscope gyroscope, int samplePeriodMs = 10, bool usePerformanceTimer = false)
         {
+            RollQuaternion = new Quaternion(Xaxis, 0);
+            PitchQuaternion = new Quaternion(Yaxis, 0);
+
             this.accel = accelerometer;
             this.gyro = gyroscope;
 
@@ -48,8 +51,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public double Roll { get; private set; } = 0;
         public double Yaw { get; private set; } = 0;
 
-        public Quaternion RollQuaternion { get; private set; } = new Quaternion();
-        public Quaternion PitchQuaternion { get; private set; } = new Quaternion();
+        public Quaternion RollQuaternion { get; private set; }
+        public Quaternion PitchQuaternion { get; private set; }
         public Quaternion YawQuaternion { get; private set; } = new Quaternion();
 
         public Quaternion Transform { get; private set; } = new Quaternion();
@@ -62,24 +65,12 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             double pitchAcc, rollAcc;
 
-            double accelContrib = 0.15;
+            double accelContrib = 0.01;
             double gyroContrib = 1 - accelContrib;
 
+            // SCALAR IMPLEMENTATION
 
             // Integrate the gyroscope data -> int(angularSpeed) = angle
-
-            //RollQuaternion = Quaternion.Multiply(RollQuaternion, new Quaternion(Xaxis, gyro.Gyroscope.X * dt));
-            //PitchQuaternion = Quaternion.Multiply(PitchQuaternion, new Quaternion(Yaxis, gyro.Gyroscope.Y * dt));
-
-            
-            //Roll = RollQuaternion.Angle;
-            //if (RollQuaternion.Axis.X == -1)
-            //    Roll = -Roll;
-
-            //Pitch = PitchQuaternion.Angle;
-            //if (PitchQuaternion.Axis.Y == -1)
-            //    Pitch = -Pitch;
-
             Roll += gyro.Gyroscope.X * dt;
             Pitch += gyro.Gyroscope.Y * dt;
             Yaw += gyro.Gyroscope.Z * dt;
@@ -92,13 +83,19 @@ namespace Treehopper.Libraries.Sensors.Inertial
             pitchAcc = Math.Atan2(accel.Accelerometer.X, Math.Sqrt(accel.Accelerometer.Y * accel.Accelerometer.Y + accel.Accelerometer.Z * accel.Accelerometer.Z)) * 180.0 / Math.PI;
             Pitch = Pitch * gyroContrib + pitchAcc * accelContrib;
 
-            //Transform = Quaternion.Multiply(new Quaternion(axisX, Roll), new Quaternion(axisY, Pitch));
-            //Transform = Quaternion.Multiply(new Quaternion(Xaxis, Roll), new Quaternion(Yaxis, Pitch));
+            //// quaternion implementation
+            //RollQuaternion = Quaternion.Multiply(RollQuaternion, new Quaternion(Xaxis, (float)(gyro.Gyroscope.X * dt)));
+            //PitchQuaternion = Quaternion.Multiply(PitchQuaternion, new Quaternion(Yaxis, (float)(gyro.Gyroscope.Y * dt)));
 
-            //       matrix.Rotate(new Quaternion(axisZ, Yaw));
+            //Roll = RollQuaternion.Angle;
+            //if (RollQuaternion.Axis.X == -1)
+            //    Roll = -Roll;
 
+            //Pitch = PitchQuaternion.Angle;
+            //if (PitchQuaternion.Axis.Y == -1)
+            //    Pitch = -Pitch;
 
-
+            //Transform = Quaternion.Multiply(new Quaternion(Xaxis, (float)Roll), new Quaternion(Yaxis, (float)Pitch));
 
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
