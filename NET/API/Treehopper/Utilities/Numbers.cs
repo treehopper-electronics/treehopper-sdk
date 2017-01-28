@@ -63,17 +63,18 @@ namespace Treehopper.Utilities
         }
 
         /// <summary>
-        /// Constrains a number to be within a range. Default range is 0-1
+        /// Constrains a number to be within a range.
         /// </summary>
         /// <param name="x">the number to constrain</param>
         /// <param name="a">the lower end of the range</param>
         /// <param name="b">the upper end of the range</param>
         /// <returns>the constrained number</returns>
-        public static int Constrain(this int x, int a = 0, int b = 255)
+        public static T Constrain<T>(T x, T a, T b) where T : IComparable
         {
-            if (x < a)
+            int i;
+            if (x.CompareTo(a) < 0)
                 return a;
-            if (x > b)
+            if (x.CompareTo(b) > 0)
                 return b;
             return x;
         }
