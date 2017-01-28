@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ArduinoShim\SerialShim.cs" />
     <Compile Include="ArduinoShim\Sketch.cs" />
+    <Compile Include="Displays\Apa102.cs" />
     <Compile Include="Displays\BarGraph.cs" />
     <Compile Include="Displays\CharacterDisplay.cs" />
     <Compile Include="Displays\Color.cs" />
