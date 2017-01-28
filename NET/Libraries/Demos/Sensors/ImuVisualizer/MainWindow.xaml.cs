@@ -66,47 +66,22 @@ namespace ImuVisualizer
 
         private void Filter_FilterUpdate(object sender, EventArgs e)
         {
-            Quaternion corrected = new Quaternion();
-            corrected.X = filter.Transform.Y;
-            corrected.Y = filter.Transform.Z;
-            corrected.Z = -filter.Transform.X;
-            corrected.W = filter.Transform.W;
-
-            var transform = new QuaternionRotation3D(corrected);
             Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
             {
-                var rot = new RotateTransform3D();
-                rot.Rotation = transform;
+                var pitchRotation = new Quaternion(new Vector3D(1, 0, 0), -filter.Pitch);
+                var rollRotation = new Quaternion(new Vector3D(0, 0, 1), filter.Roll);
+                var quat = Quaternion.Multiply(pitchRotation, rollRotation);
+                var transform = new QuaternionRotation3D(quat);
+                var rot = new RotateTransform3D(transform);
                 Transform = new MatrixTransform3D(rot.Value);
 
-                
+                Pitch = filter.Pitch;
+                Roll = filter.Roll;
 
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Transform"));
             }));
         }
-
-        //private void ImuPoller_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-            
-        //    //ComplementaryFilter(ImuPoller.Sensor.Accelerometer, ImuPoller.Sensor.Gyroscope);
-
-        //    //var axisX = new Vector3D(1, 0, 0);
-        //    //var axisY = new Vector3D(0, 1, 0);
-        //    //var axisZ = new Vector3D(0, 0, 1);
-        //    //var matrix = Matrix3D.Identity;
-        //    //matrix.Rotate(new Quaternion(axisX, Pitch));
-        //    //matrix.Rotate(new Quaternion(axisZ, Roll));
-
-        //    //Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
-        //    //{
-        //    //    Transform = new MatrixTransform3D(matrix);
-        //    //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImuPoller"));
-        //    //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
-        //    //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
-        //    //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Transform"));
-        //    //}));
-
-        //}
-
     }
 }
