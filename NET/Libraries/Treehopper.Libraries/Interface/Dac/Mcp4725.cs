@@ -108,7 +108,7 @@ namespace Treehopper.Libraries.Interface.Dac
                 if (dacValue > 4095 || dacValue < 0)
                 {
                     Utility.Error("The maximum DAC value supported is 4095. Clipping will occur");
-                    dacValue = dacValue.Constrain(0, 4095);
+                    dacValue = Numbers.Constrain(dacValue, 0, 4095);
                 }
 
                 // update the other properties
