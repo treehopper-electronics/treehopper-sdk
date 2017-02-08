@@ -24,6 +24,10 @@ public:
 	void close();
 	void sendDataPinConfigChannel(uint8_t* data, int len);
 	void sendDataPeripheralChannel(uint8_t* data, int len);
+	wstring getSerialNumber();
+	wstring getName();
+	wstring getDevicePath();
+	bool receivePinReportPacket(uint8_t* data);
 
 private:
 	DEVICE_DATA deviceData;
