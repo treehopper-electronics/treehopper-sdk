@@ -50,13 +50,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectionService.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WinUsbConnection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UsbConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TreehopperUsb.cpp">
@@ -66,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Pin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinConnectionService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
