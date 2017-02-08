@@ -52,7 +52,7 @@ bool Pin::getDigitalValue()
 {
 	return digitalValue;
 }
-void Pin::ToggleOutput()
+void Pin::toggleOutput()
 {
 	setDigitalValue(!getDigitalValue());
 }
