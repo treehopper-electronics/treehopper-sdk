@@ -19,6 +19,7 @@ Pin::Pin(TreehopperUsb* board, uint8_t pinNumber)
 	PinNumber = pinNumber;
 	this->board = board;
 	pinMode = PinModeReservedPin;
+	referenceLevel = VREF_3V3;
 }
 void Pin::makePushPullOutput()
 {
@@ -92,7 +93,35 @@ void Pin::updateValue(uint8_t high, uint8_t low)
 	{
 		int val = ((int)high) << 8;
 		val += (int)low;
-		double voltage = (double)val / 204.8f;
+		double voltage = 0;
+		
+		switch (referenceLevel)
+		{
+		case VREF_3V3:
+			voltage = (double)val * 3.3 / 4092;
+			break;
+
+		case VREF_1V65:
+			voltage = (double)val * 1.65 / 4092;
+			break;
+
+		case VREF_1V8:
+			voltage = (double)val * 1.8 / 4092;
+			break;
+
+		case VREF_2V4:
+			voltage = (double)val * 2.4 / 4092;
+			break;
+
+		case VREF_3V6:
+			voltage = (double)val * 3.6 / 4092;
+			break;
+
+		case VREF_3V3_DERIVED:
+			voltage = (double)val * 3.3 / 4092;
+			break;
+		}
+		
 
 		if (AnalogValue != val) // compare the actual ADC values, not the floating-point conversions.
 		{
