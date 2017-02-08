@@ -1,47 +1,54 @@
 #pragma once
 
-#include "Property.h"
+#include "Treehopper.h"
 #include <stdint.h>
-
-#ifdef TREEHOPPER_EXPORTS
-#define EXPORT __declspec(dllexport)
-#else
-#define EXPORT __declspec(dllimport)
-#endif
+#include <functional>
 
 using namespace std;
 
-class TreehopperBoard;
-enum PinState;
+class TreehopperUsb;
+enum PinMode;
 
-enum PinState
+enum AdcReferenceLevel
 {
-	PinStateReservedPin,
-	PinStateDigitalInput,
-	PinStateDigitalOutput,
-	PinStateAnalogInput,
-	PinStateAnalogOutput,
-	PinStatePWM
+	VREF_3V3,
+	VREF_1V65,
+	VREF_1V8,
+	VREF_2V4,
+	VREF_3V3_DERIVED,
+	VREF_3V6
 };
 
-class EXPORT Pin
+
+enum PinMode
 {
-	friend class TreehopperBoard;
-	friend class AnalogIn;
+	PinModeReservedPin,
+	PinModeDigitalInput,
+	PinModePushPullOutput,
+	PinModeOpenDrainOutput,
+	PinModeAnalogInput,
+	Unassigned
+};
+
+class TREEHOPPER_API Pin
+{
+	friend class TreehopperUsb;
+	
 public:
-	 Pin(uint8_t pinNumber, TreehopperBoard* board);
-	 void MakeDigitalOutput();
-	 void MakeDigitalInput();
-	 void MakeAnalogInput();
-	 void SetDigitalValue(bool val);
-	 bool GetDigitalValue();
+	 Pin(TreehopperUsb* board, uint8_t pinNumber);
+	 void setMode(PinMode value);
+	 void makePushPullOutput();
+	 void makeDigitalInput();
+	 void makeAnalogInput();
+	 void setDigitalValue(bool val);
+	 bool getDigitalValue();
 	 void ToggleOutput();
 
-	 PinState State;
+	 AdcReferenceLevel getReferenceLevel();
+	 void setReferenceLevel(AdcReferenceLevel value);
 
 	 // Digital stuff
 	function<void(bool)> DigitalValueChanged;
-	Property<bool> DigitalValue;
 
 	// analog stuff
 	int AnalogValue;
@@ -52,9 +59,10 @@ public:
 	void SendCommand(uint8_t* data, int length);
 
 protected:
-	TreehopperBoard* Board;
+	TreehopperUsb* board;
 	uint8_t PinNumber;
-	virtual void UpdateValue(uint8_t high, uint8_t low);
+	virtual void updateValue(uint8_t high, uint8_t low);
 	bool digitalValue;
-	
+	PinMode pinMode;
+	AdcReferenceLevel referenceLevel;
 };

@@ -15,42 +15,42 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Treehopper\Pin.cpp">
+    <ClCompile Include="Pin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Treehopper\Pins.cpp">
+    <ClCompile Include="TreehopperBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Treehopper\TreehopperBoard.cpp">
+    <ClCompile Include="TreehopperManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Treehopper\TreehopperManager.cpp">
+    <ClCompile Include="Pins.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Treehopper\Pwm.cpp">
+    <ClCompile Include="Pwm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Treehopper\TreehopperManager.h">
+    <ClInclude Include="Pin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\TreehopperBoard.h">
+    <ClInclude Include="TreehopperBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\Treehopper.h">
+    <ClInclude Include="TreehopperManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\Property.h">
+    <ClInclude Include="Pins.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\Pins.h">
+    <ClInclude Include="Property.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\Pin.h">
+    <ClInclude Include="Treehopper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Treehopper\Pwm.h">
+    <ClInclude Include="Pwm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
