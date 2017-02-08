@@ -13,11 +13,12 @@ public:
 	}
 	virtual bool open() = 0;
 	virtual void close() = 0;
-	wstring getSerialNumber();
-	wstring getName();
-	wstring getDevicePath();
+	virtual wstring getSerialNumber() = 0;
+	virtual wstring getName() = 0;
+	virtual wstring getDevicePath() = 0;
 	virtual void sendDataPinConfigChannel(uint8_t* data, int len) = 0;
 	virtual void sendDataPeripheralChannel(uint8_t* data, int len) = 0;
+	virtual bool receivePinReportPacket(uint8_t* data) = 0;
 	//virtual unique_ptr<
 	
 protected:
