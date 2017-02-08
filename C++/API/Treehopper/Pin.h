@@ -42,7 +42,7 @@ public:
 	 void makeAnalogInput();
 	 void setDigitalValue(bool val);
 	 bool getDigitalValue();
-	 void ToggleOutput();
+	 void toggleOutput();
 
 	 AdcReferenceLevel getReferenceLevel();
 	 void setReferenceLevel(AdcReferenceLevel value);
