@@ -59,7 +59,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Unused for this method</param>
         /// <returns>An awaitable task</returns>
-        public Task Flush(bool force = false)
+        public async Task Flush(bool force = false)
         {
             var header = new byte[] { 0x00, 0x00, 0x00, 0x00};
             List<byte> bytes = new List<byte>();
@@ -81,8 +81,17 @@ namespace Treehopper.Libraries.Displays
 
             var message = header.Concat(bytes).ToArray();
 
-            // TODO: split message into multiple transactions if >255 bytes
-            return spi.SendReceive(message, null, ChipSelectMode.SpiActiveLow, 8, BurstMode.BurstTx, SpiMode.Mode11);
+            int chunkCount = 0;
+            while(true)
+            {
+                var chunk = message.Skip(chunkCount * 255).Take(255).ToArray();
+                if (chunk.Length == 0)
+                    break;
+
+                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, 8, BurstMode.BurstTx, SpiMode.Mode11);
+                chunkCount++;
+                
+            }
         }
 
         /// <summary>
