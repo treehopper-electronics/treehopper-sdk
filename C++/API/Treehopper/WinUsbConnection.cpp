@@ -43,7 +43,14 @@ bool WinUsbConnection::open()
 	}
 
 	deviceData.HandlesOpen = true;
+
+	// Fill the "name" property from the descriptor
+	wchar_t buffer[64];
+	ULONG transfered;
+	WinUsb_GetDescriptor(deviceData.WinusbHandle, 0x03, 0x02, 0x0409, (PUCHAR)buffer, 64, &transfered); 	// The 0x02-index 0x03 (string) descriptor stores the name
+	name.assign(&buffer[1], transfered / 2 - 1);
 	OutputDebugString(L"Device Opened");
+
 	return true;
 }
 
@@ -72,6 +79,33 @@ void WinUsbConnection::sendDataPeripheralChannel(uint8_t* data, int len)
 	WinUsb_WritePipe(deviceData.WinusbHandle, peripheralConfigEndpoint, data, len, &sent, 0);
 	if (sent != len)
 		throw - 1;
+}
+
+wstring WinUsbConnection::getSerialNumber()
+{
+	int offset = 26;
+	wstring result = devicePath.substr(offset, devicePath.length() - offset);
+	offset = result.find('#', 0);
+	return result.substr(0, offset);
+}
+
+wstring WinUsbConnection::getName()
+{
+	return name;
+}
+
+wstring WinUsbConnection::getDevicePath()
+{
+	return devicePath;
+}
+
+bool WinUsbConnection::receivePinReportPacket(uint8_t* data)
+{
+	ULONG transferred;
+	WinUsb_ReadPipe(deviceData.WinusbHandle, pinReportEndpoint, data, 64, &transferred, 0);
+	if (transferred > 0) return true;
+
+	return false;
 }
 
 
