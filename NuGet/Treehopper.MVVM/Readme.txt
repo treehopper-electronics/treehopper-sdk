@@ -1,1 +1,0 @@
-﻿Provides shared code to Treehopper.UWP and Treehopper.WPF used to build MVVM-style apps.
