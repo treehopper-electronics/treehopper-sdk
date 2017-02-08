@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DD7AC9FF-EB17-4C1E-BC87-AFC42F9B9A90}</ProjectGuid>
+    <ProjectGuid>{94B38DC9-ECC0-4FA3-9E69-5BA5F57C7851}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Blink</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
