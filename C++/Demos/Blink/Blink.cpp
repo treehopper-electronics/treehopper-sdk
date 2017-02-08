@@ -1,26 +1,30 @@
-// Blink.cpp
-// This example blinks an LED hooked up to the Treehopper's pin 1.
+// Blink.cpp : Defines the entry point for the console application.
+//
 
 #include "stdafx.h"
-#include <Treehopper.h>
-#include <chrono>
-#include <thread>
+#include "ConnectionService.h"
+#include "TreehopperUsb.h"
+#include <string>
+#include <vector>
 
 using namespace std;
 
-int _tmain(int argc, _TCHAR* argv[])
+int main()
 {
-	chrono::milliseconds duration(1000);
-	TreehopperBoard &board = *(new TreehopperBoard());
+	ConnectionService service;
+	TreehopperUsb& board = *service.boards[0];
+	board.connect();
 
-	board.Open();
-	while (true)
+	for(int i=0;i<20;i++)
 	{
-		board.Pin1.Value = !board.Pin1.Value;
-		std::this_thread::sleep_for(duration);
+		board.setLed(true);
+		board.pins[1].setDigitalValue(true);
+		Sleep(100);
+		board.setLed(false);
+		board.pins[1].setDigitalValue(false);
+		Sleep(100);
 	}
-	
-	board.Close();
-	return 0;
+	board.disconnect();
+    return 0;
 }
 
