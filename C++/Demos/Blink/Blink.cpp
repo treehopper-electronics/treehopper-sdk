@@ -12,7 +12,7 @@ using namespace std;
 int main()
 {
 	ConnectionService service;
-	TreehopperUsb& board = *service.boards.at(0);
+	TreehopperUsb& board = *service.boards[0];
 	board.connect();
 
 	for(int i=0;i<20;i++)
