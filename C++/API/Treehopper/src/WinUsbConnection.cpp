@@ -10,9 +10,9 @@ namespace Treehopper
 
 	WinUsbConnection::WinUsbConnection(wstring devPath)
 	{
-		devicePath = wstring(devPath);
+		_devicePath = wstring(devPath);
 		OutputDebugString(L"Adding board: ");
-		OutputDebugString(devicePath.c_str());
+		OutputDebugString(_devicePath.c_str());
 		OutputDebugString(L"\n");
 	}
 
@@ -22,7 +22,7 @@ namespace Treehopper
 
 	bool WinUsbConnection::open()
 	{
-		deviceData.DeviceHandle = CreateFile(devicePath.c_str(),
+		deviceData.DeviceHandle = CreateFile(_devicePath.c_str(),
 			GENERIC_WRITE | GENERIC_READ,
 			FILE_SHARE_WRITE | FILE_SHARE_READ,
 			NULL,
@@ -48,7 +48,7 @@ namespace Treehopper
 		wchar_t buffer[64];
 		ULONG transfered;
 		WinUsb_GetDescriptor(deviceData.WinusbHandle, 0x03, 0x02, 0x0409, (PUCHAR)buffer, 64, &transfered); 	// The 0x02-index 0x03 (string) descriptor stores the name
-		name.assign(&buffer[1], transfered / 2 - 1);
+		_name.assign(&buffer[1], transfered / 2 - 1);
 		OutputDebugString(L"Device Opened");
 
 		return true;
@@ -81,22 +81,22 @@ namespace Treehopper
 			throw - 1;
 	}
 
-	wstring WinUsbConnection::getSerialNumber()
+	wstring WinUsbConnection::serialNumber()
 	{
 		int offset = 26;
-		wstring result = devicePath.substr(offset, devicePath.length() - offset);
+		wstring result = _devicePath.substr(offset, _devicePath.length() - offset);
 		offset = result.find('#', 0);
 		return result.substr(0, offset);
 	}
 
-	wstring WinUsbConnection::getName()
+	wstring WinUsbConnection::name()
 	{
-		return name;
+		return _name;
 	}
 
-	wstring WinUsbConnection::getDevicePath()
+	wstring WinUsbConnection::devicePath()
 	{
-		return devicePath;
+		return _devicePath;
 	}
 
 	bool WinUsbConnection::receivePinReportPacket(uint8_t* data)

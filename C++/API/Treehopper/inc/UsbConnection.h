@@ -15,9 +15,9 @@ namespace Treehopper
 		}
 		virtual bool open() = 0;
 		virtual void close() = 0;
-		virtual wstring getSerialNumber() = 0;
-		virtual wstring getName() = 0;
-		virtual wstring getDevicePath() = 0;
+		virtual wstring serialNumber() = 0;
+		virtual wstring name() = 0;
+		virtual wstring devicePath() = 0;
 		virtual void sendDataPinConfigChannel(uint8_t* data, size_t len) = 0;
 		virtual void sendDataPeripheralChannel(uint8_t* data, size_t len) = 0;
 		virtual bool receiveDataPeripheralChannel(uint8_t* data, size_t len) = 0;
@@ -25,9 +25,9 @@ namespace Treehopper
 		//virtual unique_ptr<
 
 	protected:
-		wstring serialNumber;
-		wstring name;
-		wstring devicePath;
+		wstring _serialNumber;
+		wstring _name;
+		wstring _devicePath;
 		uint8_t pinReportEndpoint = 0x81;
 		uint8_t peripheralResponseEndpoint = 0x82;
 		uint8_t pinConfigEndpoint = 0x01;

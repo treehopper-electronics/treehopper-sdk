@@ -26,9 +26,9 @@ namespace Treehopper
 		void close();
 		void sendDataPinConfigChannel(uint8_t* data, size_t len);
 		void sendDataPeripheralChannel(uint8_t* data, size_t len);
-		wstring getSerialNumber();
-		wstring getName();
-		wstring getDevicePath();
+		wstring serialNumber();
+		wstring name();
+		wstring devicePath();
 		bool receivePinReportPacket(uint8_t* data);
 		bool receiveDataPeripheralChannel(uint8_t* data, size_t len);
 	private:

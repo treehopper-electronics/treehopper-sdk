@@ -11,7 +11,7 @@ namespace Treehopper {
 	HardwareI2c::HardwareI2c(TreehopperUsb* board)
 	{
 		this->device = board;
-		this->speed = 100;
+		this->_speed = 100;
 	}
 
 
@@ -20,27 +20,27 @@ namespace Treehopper {
 
 	}
 
-	void HardwareI2c::setSpeed(double value)
+	void HardwareI2c::speed(double value)
 	{
-		this->speed = value;
+		this->_speed = value;
 		sendConfig();
 	}
 
-	double HardwareI2c::getSpeed()
+	double HardwareI2c::speed()
 	{
-		return this->speed;
+		return this->_speed;
 	}
 
-	void HardwareI2c::setEnabled(bool value)
+	void HardwareI2c::enabled(bool value)
 	{
-		if (this->enabled == value) return;
+		if (this->_enabled == value) return;
 
-		this->enabled = value;
+		this->_enabled = value;
 
 		sendConfig();
 	}
 
-	bool HardwareI2c::getEnabled()
+	bool HardwareI2c::enabled()
 	{
 		return false;
 	}
@@ -110,7 +110,7 @@ namespace Treehopper {
 
 	void HardwareI2c::sendConfig()
 	{
-		double th0 = round(256.0 - (4000.0 / (3.0 * speed)));
+		double th0 = round(256.0 - (4000.0 / (3.0 * _speed)));
 		if (th0 < 0 || th0 > 255.0)
 		{
 			throw "Rate out of limits. Valid rate is 62.5 kHz - 16000 kHz (16 MHz)";
@@ -118,7 +118,7 @@ namespace Treehopper {
 
 		uint8_t dataToSend[3];
 		dataToSend[0] = (uint8_t)DeviceCommands::I2cConfig;
-		dataToSend[1] = enabled;
+		dataToSend[1] = _enabled;
 		dataToSend[2] = (uint8_t)th0;
 		device->sendPeripheralConfigPacket(dataToSend, 3);
 	}

@@ -42,12 +42,12 @@ namespace Treehopper
 		bool isConnected;
 		bool connect();
 		void disconnect();
-		wstring getSerialNumber();
-		wstring getName();
-		void setLed(bool value);
+		wstring serialNumber();
+		wstring name();
+		void led(bool value);
 		friend wostream& operator<<(wostream& wos, TreehopperUsb& board)
 		{
-			wos << board.getName() << " (" << board.getSerialNumber() << ")";
+			wos << board.name() << " (" << board.serialNumber() << ")";
 			return wos;
 		}
 		vector<Pin> pins;
