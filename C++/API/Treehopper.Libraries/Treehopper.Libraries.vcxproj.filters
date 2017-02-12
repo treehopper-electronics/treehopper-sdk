@@ -13,9 +13,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="inc\stdafx.h" />
     <ClInclude Include="inc\targetver.h" />
     <ClInclude Include="inc\Treehopper.Libraries.h" />

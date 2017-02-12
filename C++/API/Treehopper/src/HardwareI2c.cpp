@@ -103,6 +103,9 @@ namespace Treehopper {
 				copy(receivedData + 1, receivedData + numBytesToRead + 1, readBuffer);
 			}
 		}
+
+		delete[] receivedData;
+		delete[] dataToSend;
 	}
 
 	void HardwareI2c::sendConfig()

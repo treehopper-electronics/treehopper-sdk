@@ -59,6 +59,7 @@ namespace Treehopper
 		unique_ptr<UsbConnection> connection;
 		thread pinListenerThread;
 		void pinStateListener();
+		uint8_t buffer[41];
 	protected:
 		void sendPinConfigPacket(uint8_t* data, size_t len);
 		void sendPeripheralConfigPacket(uint8_t* data, size_t len);
