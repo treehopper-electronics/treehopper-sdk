@@ -11,6 +11,7 @@ using System.Windows;
 using Treehopper;
 using Treehopper.Mvvm.ViewModel;
 using Treehopper.Mvvm.Messages;
+using Treehopper.Utilities;
 
 namespace TreehopperShowcase.ViewModels
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Libraries.Displays;
 using Treehopper.Libraries.Interface;
-using Treehopper.Libraries.Interface.PcfSeries;
+using Treehopper.Libraries.Interface.PortExpander;
 
 namespace CharacterLcd16x2Pcf8574
 {
@@ -22,7 +22,7 @@ namespace CharacterLcd16x2Pcf8574
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
 
             await board.ConnectAsync();
-            var ioExpander = new Pcf8574(board.I2c, false, false, false);
+            var ioExpander = new Pcf8574(board.I2c, 8, false, false, false, 0x40);
             var display = HobbyDisplayFactories.GetCharacterDisplayFromPcf8574(ioExpander, 20, 4);
             await display.WriteLine("The current date is:").ConfigureAwait(false);
             while (true)

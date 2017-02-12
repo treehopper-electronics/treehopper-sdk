@@ -36,9 +36,6 @@
     <OutputPath>$(SolutionDir)Output\NuGet\$(Configuration)</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\NET\API\Treehopper.Desktop\Treehopper.Desktop.csproj" />
     <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
   </ItemGroup>
