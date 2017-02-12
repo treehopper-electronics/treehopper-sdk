@@ -10,19 +10,19 @@ namespace Treehopper
 	public:
 		HardwareI2c(TreehopperUsb* board);
 		~HardwareI2c();
-		void setSpeed(double value);
-		double getSpeed();
+		void speed(double value);
+		double speed();
 
-		void setEnabled(bool value);
-		bool getEnabled();
+		void enabled(bool value);
+		bool enabled();
 
 		void sendReceive(uint8_t address, uint8_t* writeBuffer, size_t numBytesToWrite,
 			uint8_t* readBuffer = NULL, size_t numBytesToRead = 0);
 
 	private:
 		TreehopperUsb* device;
-		double speed;
-		bool enabled;
+		double _speed;
+		bool _enabled;
 		void sendConfig();
 	};
 }

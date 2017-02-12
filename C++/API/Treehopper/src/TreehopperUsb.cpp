@@ -38,17 +38,17 @@ namespace Treehopper
 		connection->close();
 	}
 
-	wstring TreehopperUsb::getSerialNumber()
+	wstring TreehopperUsb::serialNumber()
 	{
-		return connection->getSerialNumber();
+		return connection->serialNumber();
 	}
 
-	wstring TreehopperUsb::getName()
+	wstring TreehopperUsb::name()
 	{
-		return connection->getName();
+		return connection->name();
 	}
 
-	void TreehopperUsb::setLed(bool value)
+	void TreehopperUsb::led(bool value)
 	{
 		uint8_t data[2];
 		data[0] = (uint8_t)DeviceCommands::LedConfig;
