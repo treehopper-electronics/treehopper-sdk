@@ -190,6 +190,7 @@ void ProcessPeripheralConfigPacket() {
 	case I2CConfig:
 		I2C_SetConfig((I2cConfigData_t*) &(Treehopper_PeripheralConfig[1]));
 		break;
+
 	case I2CTransaction:
 		totalTransactionBytes = Treehopper_PeripheralConfig[2];
 		totalReadBytes = Treehopper_PeripheralConfig[3];
@@ -218,23 +219,28 @@ void ProcessPeripheralConfigPacket() {
 	case UARTTransaction:
 		UART_Transaction(&(Treehopper_PeripheralConfig[1]));
 		break;
+
 	case FirmwareUpdateSerial:
 		SerialNumber_update(&(Treehopper_PeripheralConfig[2]),
 				Treehopper_PeripheralConfig[1]);
 		break;
+
 	case FirmwareUpdateName:
 		SerialNumber_updateName(&(Treehopper_PeripheralConfig[2]),
 				Treehopper_PeripheralConfig[1]);
 		break;
+
 	case SoftPwmConfig:
 		SoftPwm_SetConfig((softPwmPinConfig_t*)&(Treehopper_PeripheralConfig[2]),
 				Treehopper_PeripheralConfig[1]);
 		break;
+
 	case Reboot:
 		USBD_Stop();
 		SFRPAGE = 0x00;
 		RSTSRC = RSTSRC_SWRSF__SET | RSTSRC_PORSF__SET;
 		break;
+
 	case EnterBootloader:
 		USBD_Stop();
 		*((uint8_t SI_SEG_DATA *) 0x00) = 0xA5;
@@ -250,6 +256,7 @@ void ProcessPeripheralConfigPacket() {
 		Parallel_Transaction(&(Treehopper_PeripheralConfig[1]));
 		break;
 	}
+
 	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, 64, false);
