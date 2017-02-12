@@ -31,7 +31,7 @@
         /// <returns>An awaitable task</returns>
         public override async Task Update()
         {
-            short data = (short)await dev.ReadWord();
+            short data = (short)await dev.ReadWordBE();
             Celsius = (data / 32.0) / 8.0;
         }
     }
