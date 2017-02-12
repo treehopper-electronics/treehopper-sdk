@@ -38,12 +38,10 @@ namespace Treehopper
 		connection->close();
 	}
 
-
 	wstring TreehopperUsb::getSerialNumber()
 	{
 		return connection->getSerialNumber();
 	}
-
 
 	wstring TreehopperUsb::getName()
 	{
@@ -63,7 +61,6 @@ namespace Treehopper
 		connection->sendDataPinConfigChannel(data, len);
 	}
 
-
 	void TreehopperUsb::sendPeripheralConfigPacket(uint8_t* data, size_t len)
 	{
 		connection->sendDataPeripheralChannel(data, len);
@@ -74,12 +71,8 @@ namespace Treehopper
 		connection->receiveDataPeripheralChannel(data, numBytesToRead);
 	}
 
-
-
-
 	void TreehopperUsb::pinStateListener()
 	{
-		uint8_t buffer[41];
 		while (isConnected)
 		{
 			connection->receivePinReportPacket(buffer);
