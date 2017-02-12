@@ -9,6 +9,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace Treehopper;
 
 int main()
 {
@@ -18,7 +19,7 @@ int main()
 
 	wcout << "Connected to " << board << endl;
 
-	board.pins[5].setMode(PinModeAnalogInput);
+	board.pins[5].setMode(PinMode::AnalogInput);
 
 	for (int i = 0; i<50; i++)
 	{
