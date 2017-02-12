@@ -27,7 +27,7 @@ namespace Is31Fl3218Demo
                 Leds.Add(new RgbLed(display.Leds.Skip(3 * i).Take(3).Reverse().ToList())
                 {
                     AutoFlush = false,
-                    BlueGain = 0.4,
+                    BlueGain = 0.4f,
                 });
 
             while(!Console.KeyAvailable)

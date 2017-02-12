@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Libraries.Interface.ShiftRegister;
 using Treehopper.Libraries.Displays;
+using Treehopper.Utilities;
 
 namespace Sn74hc595Demo
 {
@@ -36,7 +37,7 @@ namespace Sn74hc595Demo
 
             var ledController1 = new GpioLedDriver<ShiftOutPin>(shift1.Pins, false, shift1);
             var ledController2 = new GpioLedDriver<ShiftOutPin>(shift2.Pins, false, shift2);
-            var ledController3 = new Stp16cpc26(shift2, board.Pwm1);
+            var ledController3 = new LedShiftRegister(shift2, board.Pwm1);
 
             ledController3.Brightness = 0.5;
 

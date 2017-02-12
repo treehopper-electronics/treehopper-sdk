@@ -32,8 +32,8 @@ namespace Pca9685Demo
             var ledDriver = new PwmLedDriver<PcaPin>(driver.Pins);
 
             var rgb = new RgbLed(ledDriver.Leds[0], ledDriver.Leds[1], ledDriver.Leds[2]);
-            rgb.BlueGain = 0.7;
-            rgb.GreenGain = 0.95;
+            rgb.BlueGain = 0.7f;
+            rgb.GreenGain = 0.95f;
 
             while (!Console.KeyAvailable)
             {

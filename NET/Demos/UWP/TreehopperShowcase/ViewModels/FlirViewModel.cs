@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
+using Treehopper.Utilities;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace TreehopperShowcase.ViewModels
