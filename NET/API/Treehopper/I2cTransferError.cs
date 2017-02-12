@@ -26,5 +26,5 @@ public enum I2cTransferError
     /// <summary>
     /// Successful transaction
     /// </summary>
-    Success = 0x255
+    Success = 255
 }
