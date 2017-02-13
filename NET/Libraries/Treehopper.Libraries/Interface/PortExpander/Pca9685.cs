@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Treehopper.Libraries.Displays;
 using Treehopper.Utilities;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
     /// NXP PCA9685 16-channel, 12-bit PWM interface
