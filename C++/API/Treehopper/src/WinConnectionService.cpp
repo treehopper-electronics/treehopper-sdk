@@ -110,7 +110,8 @@ namespace Treehopper
 			if (vid.compare(L"10c4") == 0 && pid.compare(L"8a7e") == 0)
 			{
 				// this is a Treehopper!
-				boards.push_back(new TreehopperUsb(make_unique<WinUsbConnection>(devicePath)));
+				//TreehopperUsb* board = new TreehopperUsb(new WinUsbConnection(devicePath));
+				boards.emplace_back(new WinUsbConnection(devicePath));
 			}
 
 			LocalFree(detailData);

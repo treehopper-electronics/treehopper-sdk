@@ -9,6 +9,7 @@
 #include <thread>
 
 using namespace std;
+
 namespace Treehopper 
 {
 	class Pwm;
@@ -42,10 +43,18 @@ namespace Treehopper
 		friend class UsbConnection;
 		friend class HardwarePwmManager;
 	public:
-		TreehopperUsb(unique_ptr<UsbConnection> connection);
+		TreehopperUsb(UsbConnection* connection);
 		~TreehopperUsb();
-		TreehopperUsb(const TreehopperUsb& rhs) = delete;
-		TreehopperUsb& operator= (const TreehopperUsb& rhs) = delete;
+		TreehopperUsb& operator=(const TreehopperUsb& rhs)
+		{
+			connection = rhs.connection;
+			return *this;
+		}
+		TreehopperUsb(const TreehopperUsb& rhs) : TreehopperUsb(rhs.connection)
+		{
+
+		}
+
 		bool isConnected;
 		bool connect();
 		void disconnect();
@@ -59,7 +68,7 @@ namespace Treehopper
 			return wos;
 		}
 		vector<Pin> pins;
-		int numberOfPins = 20;
+		const int numberOfPins = 20;
 
 		HardwareI2c i2c;
 		HardwarePwm pwm1;
@@ -67,7 +76,7 @@ namespace Treehopper
 		HardwarePwm pwm3;
 		HardwarePwmManager pwmManager;
 	private:
-		unique_ptr<UsbConnection> connection;
+		UsbConnection* connection;
 		thread pinListenerThread;
 		void pinStateListener();
 		uint8_t buffer[41];

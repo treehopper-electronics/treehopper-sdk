@@ -14,7 +14,7 @@ using namespace Treehopper;
 int main()
 {
 	ConnectionService service;
-	TreehopperUsb& board = *service.boards[0];
+	TreehopperUsb& board = service.boards[0];
 	board.connect();
 
 	wcout << "Connected to " << board << endl;

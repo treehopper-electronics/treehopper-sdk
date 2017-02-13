@@ -5,8 +5,8 @@
 
 namespace Treehopper 
 {
-	TreehopperUsb::TreehopperUsb(unique_ptr<UsbConnection> connection) :
-		connection(move(connection)),
+	TreehopperUsb::TreehopperUsb(UsbConnection* connection) :
+		connection(connection),
 		pwmManager(this),
 		i2c(this),
 		pwm1(this, 7),

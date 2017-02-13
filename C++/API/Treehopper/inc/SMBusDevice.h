@@ -5,7 +5,7 @@ namespace Treehopper
 	class TREEHOPPER_API SMBusDevice
 	{
 	public:
-		SMBusDevice(uint8_t address, I2c* i2cModule, int rateKHz = 100);
+		SMBusDevice(uint8_t address, I2c& i2cModule, int rateKHz = 100);
 		~SMBusDevice();
 
 		uint8_t readByte();
@@ -27,6 +27,6 @@ namespace Treehopper
 	private:
 		uint8_t address;
 		int rateKhz;
-		I2c* i2c;
+		I2c& i2c;
 	};
 }
