@@ -32,7 +32,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <returns>An awaitable task</returns>
         public override async Task Update()
         {
-            var data = await dev.ReadWord();
+            var data = await dev.ReadWordBE();
             Celsius = (short)(data << 3) / 128.0;
         }
     }
