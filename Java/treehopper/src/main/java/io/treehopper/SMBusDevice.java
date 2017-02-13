@@ -74,6 +74,36 @@ public class SMBusDevice {
     }
 
     /// <summary>
+    /// Write a 16-bit word to a register
+    /// </summary>
+    /// <param name="register">the register to write the 16-bit word to</param>
+    /// <param name="data">the 16-bit word to write to the specified register</param>
+    /// <returns>an awaitable task</returns>
+    public void WriteWordBE(int data)
+    {
+        // set the speed for this device, just in case another device mucked with these settings
+        I2c.setSpeed(rateKhz);
+
+        // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
+        I2c.sendReceive(address, new byte[] { (byte)((data >> 8) & 0xFF), (byte)(data & 0xFF) }, 0);
+    }
+
+    /// <summary>
+    /// Read a 16-bit register value from the device
+    /// </summary>
+    /// <param name="register">the 8-bit register address to read from</param>
+    /// <returns>the register's 16-bit value</returns>
+    public int ReadWordBE()
+    {
+        // set the speed for this device, just in case another device mucked with these settings
+        I2c.setSpeed(rateKhz);
+
+        // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
+        byte[] result = I2c.sendReceive(address, new byte[] { }, 2);
+        return (((int)(0xff & result[0]) << 8) | (int)(result[1] & 0xFF));
+    }
+
+    /// <summary>
     /// Write a single byte to the device
     /// </summary>
     /// <param name="data">the data to write</param>
@@ -156,6 +186,21 @@ public class SMBusDevice {
     }
 
     /// <summary>
+    /// Read a 16-bit register value from the device
+    /// </summary>
+    /// <param name="register">the 8-bit register address to read from</param>
+    /// <returns>the register's 16-bit value</returns>
+    public int ReadWordDataBE(byte register)
+    {
+        // set the speed for this device, just in case another device mucked with these settings
+        I2c.setSpeed(rateKhz);
+
+        // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
+        byte[] result = I2c.sendReceive(address, new byte[] { register }, 2);
+        return (((int)(0xff & result[0]) << 8) | (int)(result[1] & 0xFF));
+    }
+
+    /// <summary>
     /// Write a byte to a register
     /// </summary>
     /// <param name="register">the register to write the byte to</param>
@@ -183,6 +228,21 @@ public class SMBusDevice {
 
         // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
         I2c.sendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)((data >> 8) & 0xFF) }, 0);
+    }
+
+    /// <summary>
+    /// Write a 16-bit word to a register
+    /// </summary>
+    /// <param name="register">the register to write the 16-bit word to</param>
+    /// <param name="data">the 16-bit word to write to the specified register</param>
+    /// <returns>an awaitable task</returns>
+    public void WriteWordDataBE(byte register, int data)
+    {
+        // set the speed for this device, just in case another device mucked with these settings
+        I2c.setSpeed(rateKhz);
+
+        // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
+        I2c.sendReceive(address, new byte[] { register, (byte)((data >> 8) & 0xFF), (byte)(data & 0xFF) }, 0);
     }
 
     /// <summary>
