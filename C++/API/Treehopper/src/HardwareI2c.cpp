@@ -53,8 +53,8 @@ namespace Treehopper {
 		uint8_t* dataToSend = new uint8_t[4 + numBytesToWrite];
 		dataToSend[0] = (uint8_t)DeviceCommands::I2cTransaction;
 		dataToSend[1] = address;
-		dataToSend[2] = numBytesToWrite; // total length (0-255)
-		dataToSend[3] = numBytesToRead;
+		dataToSend[2] = (uint8_t)numBytesToWrite; // total length (0-255)
+		dataToSend[3] = (uint8_t)numBytesToRead;
 
 		if (numBytesToWrite > 0)
 			copy(writeBuffer, writeBuffer + numBytesToWrite, dataToSend + 4);

@@ -1,15 +1,20 @@
 #include "stdafx.h"
 #include "TreehopperUsb.h"
+#include "HardwarePwm.h"
+#include "hardwareI2c.h"
+
 namespace Treehopper 
 {
-	TreehopperUsb::TreehopperUsb(unique_ptr<UsbConnection> connection)
+	TreehopperUsb::TreehopperUsb(unique_ptr<UsbConnection> connection) :
+		connection(move(connection)),
+		pwmManager(this),
+		i2c(this),
+		pwm1(this, 7),
+		pwm2(this, 8),
+		pwm3(this, 9)
 	{
-		this->connection = move(connection);
-		i2c = new HardwareI2c(this);
 		for (int i = 0; i < numberOfPins; i++)
-		{
 			pins.emplace_back(this, i);
-		}
 	}
 
 	TreehopperUsb::~TreehopperUsb()
@@ -25,7 +30,6 @@ namespace Treehopper
 		}
 
 		isConnected = true;
-
 		pinListenerThread = thread(&TreehopperUsb::pinStateListener, this);
 		pinListenerThread.detach();
 		return true;
@@ -50,10 +54,16 @@ namespace Treehopper
 
 	void TreehopperUsb::led(bool value)
 	{
+		_led = value;
 		uint8_t data[2];
 		data[0] = (uint8_t)DeviceCommands::LedConfig;
-		data[1] = value;
+		data[1] = _led;
 		connection->sendDataPeripheralChannel(data, 2);
+	}
+
+	bool TreehopperUsb::led()
+	{
+		return _led;
 	}
 
 	void TreehopperUsb::sendPinConfigPacket(uint8_t* data, size_t len)

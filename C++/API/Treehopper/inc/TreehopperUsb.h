@@ -3,11 +3,17 @@
 #include <memory>
 #include <vector>
 #include "Pin.h"
-#include "HardwareI2c.h"
+#include "HardwarePwmManager.h"
+#include "HardwarePwm.h"
+#include "hardwareI2c.h"
 #include <thread>
+
 using namespace std;
 namespace Treehopper 
 {
+	class Pwm;
+	class I2c;
+
 	enum class DeviceCommands
 	{
 		Reserved = 0,   // Not implemented
@@ -34,6 +40,7 @@ namespace Treehopper
 		friend class Pin;
 		friend class HardwareI2c;
 		friend class UsbConnection;
+		friend class HardwarePwmManager;
 	public:
 		TreehopperUsb(unique_ptr<UsbConnection> connection);
 		~TreehopperUsb();
@@ -45,6 +52,7 @@ namespace Treehopper
 		wstring serialNumber();
 		wstring name();
 		void led(bool value);
+		bool led();
 		friend wostream& operator<<(wostream& wos, TreehopperUsb& board)
 		{
 			wos << board.name() << " (" << board.serialNumber() << ")";
@@ -53,13 +61,17 @@ namespace Treehopper
 		vector<Pin> pins;
 		int numberOfPins = 20;
 
-		I2c* i2c;
-
+		HardwareI2c i2c;
+		HardwarePwm pwm1;
+		HardwarePwm pwm2;
+		HardwarePwm pwm3;
+		HardwarePwmManager pwmManager;
 	private:
 		unique_ptr<UsbConnection> connection;
 		thread pinListenerThread;
 		void pinStateListener();
 		uint8_t buffer[41];
+		bool _led;
 	protected:
 		void sendPinConfigPacket(uint8_t* data, size_t len);
 		void sendPeripheralConfigPacket(uint8_t* data, size_t len);

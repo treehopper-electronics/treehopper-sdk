@@ -110,9 +110,9 @@
         internal void StartPin(Pin pin)
         {
             // first check to make sure the previous PWM pins have been enabled first.
-            if (pin.PinNumber == 8 & mode != PwmPinEnableMode.Pin7)
+            if (pin.PinNumber == 8 && mode != PwmPinEnableMode.Pin7)
                 throw new Exception("You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm");
-            if (pin.PinNumber == 9 & mode != PwmPinEnableMode.Pin7_Pin8)
+            if (pin.PinNumber == 9 && mode != PwmPinEnableMode.Pin7_Pin8)
                 throw new Exception("You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm");
 
             switch (pin.PinNumber)
@@ -134,9 +134,9 @@
         internal void StopPin(Pin pin)
         {
             // first check to make sure the higher PWM pins have been disabled first
-            if (pin.PinNumber == 8 & mode != PwmPinEnableMode.Pin7_Pin8)
+            if (pin.PinNumber == 8 && mode != PwmPinEnableMode.Pin7_Pin8)
                 throw new Exception("You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
-            if (pin.PinNumber == 7 & mode != PwmPinEnableMode.Pin7)
+            if (pin.PinNumber == 7 && mode != PwmPinEnableMode.Pin7)
                 throw new Exception("You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
 
             switch (pin.PinNumber)
@@ -158,7 +158,7 @@
         internal void SetDutyCycle(Pin pin, double value)
         {
             ushort registerValue = (ushort)Math.Round(value * ushort.MaxValue);
-            byte[] newValue = BitConverter.GetBytes(registerValue);
+            byte[] newValue = BitConverter.GetBytes(registerValue); // TODO: is this endian-safe?
             switch (pin.PinNumber)
             {
                 case 7:
@@ -177,7 +177,7 @@
 
         internal void SendConfig()
         {
-            byte[] configuration = new byte[64];
+            byte[] configuration = new byte[9];
 
             configuration[0] = (byte)DeviceCommands.PwmConfig;
 

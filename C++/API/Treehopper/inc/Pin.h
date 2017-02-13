@@ -56,10 +56,9 @@ namespace Treehopper
 		function<void(double)> AnalogVoltageChanged;
 
 		void SendCommand(uint8_t* data, size_t length);
-
-	protected:
 		TreehopperUsb* board;
 		uint8_t PinNumber;
+	protected:
 		virtual void updateValue(uint8_t high, uint8_t low);
 		bool digitalValue;
 		PinMode pinMode;
