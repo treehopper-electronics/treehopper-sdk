@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Libraries.Displays;
-using Treehopper.Libraries.Interface;
+using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Libraries.Motors;
 
 namespace Pca9685Demo
