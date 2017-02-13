@@ -12,7 +12,7 @@ namespace Treehopper
 	public:
 		ConnectionService();
 		~ConnectionService();
-		vector<TreehopperUsb*> boards;
+		vector<TreehopperUsb> boards;
 	private:
 		void scan();
 

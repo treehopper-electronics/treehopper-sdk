@@ -14,23 +14,15 @@ namespace Treehopper
 			return instance;
 		}
 
-		bool throwExceptions;
-		bool printExceptions;
-		uint16_t vid;
-		uint16_t pid;
-		uint16_t bootloaderPid;
-		uint16_t bootloaderVid;
+		bool throwExceptions = false;
+		bool printExceptions = false;
+		uint16_t vid = 0x10c4;
+		uint16_t pid = 0x8a7e;
+		uint16_t bootloaderPid = 0xeac9;
+		uint16_t bootloaderVid = 0x10c4;
 
 	private:
-		Settings()
-		{
-			throwExceptions = false;
-			printExceptions = false;
-			vid = 0x10c4;
-			pid = 0x8a7e;
-			bootloaderPid = 0xeac9;
-			bootloaderVid = 0x10c4;
-		}
+		Settings() { }
 	};
 }
 

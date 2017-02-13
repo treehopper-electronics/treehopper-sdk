@@ -35,6 +35,7 @@ namespace Treehopper
 				return string("I2c Tx underrun error");
 				break;
 
+			default:
 			case I2cTransferError::UnknownError:
 				return string("I2c unknown error");
 			}

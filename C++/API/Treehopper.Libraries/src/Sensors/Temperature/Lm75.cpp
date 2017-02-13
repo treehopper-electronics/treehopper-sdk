@@ -9,10 +9,10 @@ namespace Treehopper
 		{
 			namespace Temperature
 			{
-				Lm75::Lm75(I2c* i2c, bool a0, bool a1, bool a2)
+				Lm75::Lm75(I2c& i2c, bool a0, bool a1, bool a2)
+					: dev((0x48 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c)
 				{
-					dev = make_unique<SMBusDevice>(SMBusDevice((0x48 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c));
-					dev->writeByte(0x00);
+					dev.writeByte(0x00);
 				}
 
 				Lm75::~Lm75()
@@ -21,7 +21,7 @@ namespace Treehopper
 
 				void Lm75::update()
 				{
-					auto data = dev->readWordBE();
+					auto data = dev.readWordBE();
 					celsius = ((int16_t)data / 32.0) / 8.0;
 				}
 			}
