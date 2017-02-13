@@ -138,5 +138,6 @@ namespace Treehopper
 		data[0] = reg;
 		copy(outBuffer, outBuffer + count, data + 1);
 		i2c.sendReceive(address, data, count + 1, NULL, 0);
+		delete[] data;
 	}
 }
