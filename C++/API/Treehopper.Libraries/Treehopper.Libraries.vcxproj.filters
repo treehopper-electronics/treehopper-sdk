@@ -23,6 +23,9 @@
       <Filter>Sensors\Temperature</Filter>
     </ClInclude>
     <ClInclude Include="inc\Pollable.h" />
+    <ClInclude Include="inc\Sensors\Temperature\Mcp9808.h">
+      <Filter>Sensors\Temperature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
@@ -34,5 +37,8 @@
       <Filter>Sensors\Temperature</Filter>
     </ClCompile>
     <ClCompile Include="src\Pollable.cpp" />
+    <ClCompile Include="src\Sensors\Temperature\Mcp9808.cpp">
+      <Filter>Sensors\Temperature</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

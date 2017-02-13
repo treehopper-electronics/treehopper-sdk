@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="inc\Pollable.h" />
     <ClInclude Include="inc\Sensors\Temperature\Lm75.h" />
+    <ClInclude Include="inc\Sensors\Temperature\Mcp9808.h" />
     <ClInclude Include="inc\Sensors\Temperature\TemperatureSensor.h" />
     <ClInclude Include="inc\stdafx.h" />
     <ClInclude Include="inc\targetver.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Pollable.cpp" />
     <ClCompile Include="src\Sensors\Temperature\Lm75.cpp" />
+    <ClCompile Include="src\Sensors\Temperature\Mcp9808.cpp" />
     <ClCompile Include="src\Sensors\Temperature\TemperatureSensor.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
