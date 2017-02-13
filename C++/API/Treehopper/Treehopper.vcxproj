@@ -22,10 +22,13 @@
     <ClInclude Include="inc\ConnectionService.h" />
     <ClInclude Include="inc\HardwareI2c.h" />
     <ClInclude Include="inc\HardwarePwm.h" />
+    <ClInclude Include="inc\HardwarePwmFrequency.h" />
+    <ClInclude Include="inc\HardwarePwmManager.h" />
     <ClInclude Include="inc\I2c.h" />
     <ClInclude Include="inc\I2cTransferError.h" />
     <ClInclude Include="inc\I2cTransferException.h" />
     <ClInclude Include="inc\Pin.h" />
+    <ClInclude Include="inc\Pwm.h" />
     <ClInclude Include="inc\Settings.h" />
     <ClInclude Include="inc\SMBusDevice.h" />
     <ClInclude Include="inc\stdafx.h" />
@@ -40,6 +43,7 @@
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\HardwareI2c.cpp" />
     <ClCompile Include="src\HardwarePwm.cpp" />
+    <ClCompile Include="src\HardwarePwmManager.cpp" />
     <ClCompile Include="src\Pin.cpp" />
     <ClCompile Include="src\SMBusDevice.cpp" />
     <ClCompile Include="src\stdafx.cpp">

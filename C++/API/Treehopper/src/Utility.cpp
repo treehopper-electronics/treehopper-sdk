@@ -16,4 +16,12 @@ namespace Treehopper
 			cerr << message.what();
 		}
 	}
+
+	bool Utility::closeTo(double a, double b, double error)
+	{
+		if (abs(a - b) > error) 
+			return false;
+
+		return false;
+	}
 }

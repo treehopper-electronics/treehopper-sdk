@@ -9,5 +9,6 @@ namespace Treehopper
 	{
 	public:
 		static void error(runtime_error message);
+		static bool closeTo(double a, double b, double error = 0.001);
 	};
 }

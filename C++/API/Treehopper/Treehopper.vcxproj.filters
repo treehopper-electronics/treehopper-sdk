@@ -63,6 +63,15 @@
     <ClInclude Include="inc\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Pwm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\HardwarePwmFrequency.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\HardwarePwmManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -93,6 +102,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HardwarePwmManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

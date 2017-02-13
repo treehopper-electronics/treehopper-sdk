@@ -80,53 +80,51 @@ namespace Treehopper
 
 	void Pin::updateValue(uint8_t high, uint8_t low)
 	{
+		uint16_t newVal = (((uint16_t)high) << 8) | low;
 		if (pinMode == PinMode::DigitalInput)
 		{
-			bool newVal = (((uint16_t)high) << 8) + low;
-			if (newVal != digitalValue)
+			if ((newVal > 0) != digitalValue)
 			{
-				digitalValue = newVal;
+				digitalValue = (newVal > 0);
 				if (DigitalValueChanged != NULL)
-					DigitalValueChanged(digitalValue > 0);
+					DigitalValueChanged(digitalValue);
 			}
 		}
 		else if (pinMode == PinMode::AnalogInput)
 		{
-			int val = ((int)high) << 8;
-			val += (int)low;
 			double voltage = 0;
 
 			switch (referenceLevel)
 			{
 			case AdcReferenceLevel::VREF_3V3:
-				voltage = (double)val * 3.3 / 4092;
+				voltage = (double)newVal * 3.3 / 4092;
 				break;
 
 			case AdcReferenceLevel::VREF_1V65:
-				voltage = (double)val * 1.65 / 4092;
+				voltage = (double)newVal * 1.65 / 4092;
 				break;
 
 			case AdcReferenceLevel::VREF_1V8:
-				voltage = (double)val * 1.8 / 4092;
+				voltage = (double)newVal * 1.8 / 4092;
 				break;
 
 			case AdcReferenceLevel::VREF_2V4:
-				voltage = (double)val * 2.4 / 4092;
+				voltage = (double)newVal * 2.4 / 4092;
 				break;
 
 			case AdcReferenceLevel::VREF_3V6:
-				voltage = (double)val * 3.6 / 4092;
+				voltage = (double)newVal * 3.6 / 4092;
 				break;
 
 			case AdcReferenceLevel::VREF_3V3_DERIVED:
-				voltage = (double)val * 3.3 / 4092;
+				voltage = (double)newVal * 3.3 / 4092;
 				break;
 			}
 
 
-			if (AnalogValue != val) // compare the actual ADC values, not the floating-point conversions.
+			if (AnalogValue != newVal) // compare the actual ADC values, not the floating-point conversions.
 			{
-				AnalogValue = val;
+				AnalogValue = newVal;
 				AnalogVoltage = voltage;
 				if (AnalogValueChanged != NULL)
 				{

@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "ConnectionService.h"
-#include "TreehopperUsb.h"
+#include "Treehopper/inc/ConnectionService.h"
+#include "Treehopper/inc/TreehopperUsb.h"
 #include <string>
 #include <vector>
 #include <iostream>
