@@ -26,7 +26,11 @@ public class Mcp9808 extends TemperatureSensor {
 
     @Override
     public double getTemperatureCelsius() {
-        int data = device.ReadWordDataBE((byte)0x05);
-        return (short)(data << 3) / 128.0;
+        int data = device.ReadWordBE();
+        double temp = data & 0x0FFF;
+        temp /= 16.0;
+        if ((data & 0x1000) > 0)
+            temp -= 256;
+        return temp;
     }
 }
