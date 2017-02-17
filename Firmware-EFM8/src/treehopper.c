@@ -57,8 +57,21 @@ void Treehopper_Init() {
 
 	for(i=0; i<TREEHOPPER_NUM_PINS;i++)
 	{
-		pins[i] = DigitalInput;
 		GPIO_MakeInput(i, true);
+
+		// While we want all the pins to be weakly-pulled-up inputs by default, we don't actually want to send
+		// input reports on these pins, since this unnecessarily calls GPIO_ReadValue() continuously on each pin.
+		//
+		// More importantly, if they're DigitalInputs, it prevents missing the first pin change when it *is* a digital input,
+		// since SendPinStatus() will certainly send at least once before we receive any pin config packets
+		// (and thus, get discarded by an unexpecting host API that doesn't think any pins are DigitalInputs).
+		// Since SendPinStatus() only sends when pins change, we'll never get our initial digital value to the host.
+		//
+		// To remedy this, make the inputs anything other than an input so that SendPinStatus() sends (and records) 0xff
+		// current values. Then, when the pin mode is changed to a DigitalInput, we're guaranteed to get a pin report packet
+		// flushed out (since the high byte of a DigitalInput report is always 0, and never 0xff).
+		pins[i] = ReservedPin;
+
 	}
 
 }
@@ -97,14 +110,16 @@ void SendPinStatus() {
 			Treehopper_ReportData[i * 2 + 2] = val & 0xFF;
 			break;
 		default:
-			Treehopper_ReportData[i * 2 + 1] = 0;
-			Treehopper_ReportData[i * 2 + 2] = 0;
+			Treehopper_ReportData[i * 2 + 1] = 0xff;
+			Treehopper_ReportData[i * 2 + 2] = 0xff;
 		}
 	}
 	// if the pins have changed, send the update. Otherwise no need!
 	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
 	{
 		USBD_Write(EP1IN, Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
+
+		// save the old report so we can compare to it next time around to see if anything has changed
 		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
 	}
 }
