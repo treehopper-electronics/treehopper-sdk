@@ -75,6 +75,7 @@
     <Compile Include="Displays\LedShiftRegister.cs" />
     <Compile Include="Displays\Tm1650.cs" />
     <Compile Include="Displays\Utility.cs" />
+    <Compile Include="Input\RotaryEncoder.cs" />
     <Compile Include="Interface\Adc\AdcPeripheral.cs" />
     <Compile Include="Interface\Adc\AdcPeripheralPin.cs" />
     <Compile Include="Interface\Adc\Ads1115.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="Interface\IFlushable.cs" />
     <Compile Include="Interface\IFlushableOutputPort.cs" />
     <Compile Include="Interface\Adc\Ltc2305.cs" />
-    <Compile Include="Interface\Pca9685.cs" />
+    <Compile Include="Interface\PortExpander\Pca9685.cs" />
     <Compile Include="Interface\PortExpander\IPortExpander.cs" />
     <Compile Include="Interface\PortExpander\IPortExpanderPin.cs" />
     <Compile Include="Interface\PortExpander\Mcp23008.cs" />
