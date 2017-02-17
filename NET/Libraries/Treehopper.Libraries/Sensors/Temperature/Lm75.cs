@@ -22,7 +22,6 @@
         public Lm75(I2c i2c, bool a0 = false, bool a1 = false, bool a2 = false)
         {
             dev = new SMBusDevice((byte)(0x48 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c);
-            dev.WriteByte(0x00);
         }
 
         /// <summary>
@@ -31,7 +30,7 @@
         /// <returns>An awaitable task</returns>
         public override async Task Update()
         {
-            short data = (short)await dev.ReadWordBE();
+            short data = (short)await dev.ReadWordDataBE(0x00);
             Celsius = (data / 32.0) / 8.0;
         }
     }

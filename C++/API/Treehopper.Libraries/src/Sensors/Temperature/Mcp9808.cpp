@@ -12,17 +12,15 @@ namespace Treehopper
 				Mcp9808::Mcp9808(I2c& i2c, bool a0, bool a1, bool a2)
 					: Mcp9808(i2c, (uint8_t)((0x18 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2))))
 				{
-					
 				}
 
 				Mcp9808::Mcp9808(I2c& i2c, uint8_t address) : dev(address, i2c)
 				{
-					dev.writeByte(0x05);
 				}
 
 				void Mcp9808::update()
 				{
-					auto data = dev.readWordBE();
+					auto data = dev.readWordDataBE(0x05);
 					celsius = ((int16_t)(data << 3)) / 128.0;
 				}
 			}

@@ -26,7 +26,7 @@ public class Lm75 extends TemperatureSensor {
     }
     @Override
     public double getTemperatureCelsius() {
-        short data = (short)device.ReadWordBE();
+        short data = (short)device.ReadWordDataBE((byte)0x00);
         return (data / 32.0) / 8.0;
     }
 }

@@ -23,7 +23,6 @@ namespace Treehopper.Libraries.Sensors.Temperature
         public Mcp9808(I2c i2c, bool a0 = false, bool a1 = false, bool a2 = false)
         {
             dev = new SMBusDevice((byte)(0x18 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c);
-            dev.WriteByte(0x05);
         }
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <returns>An awaitable task</returns>
         public override async Task Update()
         {
-            var data = await dev.ReadWordBE();
+            var data = await dev.ReadWordDataBE(0x05);
             Celsius = (short)(data << 3) / 128.0;
         }
     }
