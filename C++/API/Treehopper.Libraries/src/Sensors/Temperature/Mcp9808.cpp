@@ -21,7 +21,11 @@ namespace Treehopper
 				void Mcp9808::update()
 				{
 					auto data = dev.readWordDataBE(0x05);
-					celsius = ((int16_t)(data << 3)) / 128.0;
+					double temp = data & 0x0FFF;
+					temp /= 16.0;
+					if ((data & 0x1000) > 0) 
+						temp -= 256;
+					celsius = temp;
 				}
 			}
 		}
