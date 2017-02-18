@@ -58,8 +58,51 @@ namespace Treehopper.Libraries.Input
 
             Position = 0;
 
-            a.DigitalValueChanged += inputsChanged;
-            b.DigitalValueChanged += inputsChanged;
+            a.DigitalValueChanged += A_DigitalValueChanged;
+            b.DigitalValueChanged += B_DigitalValueChanged;
+        }
+
+        private void B_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
+        {
+            if (b.DigitalValue && a.DigitalValue)
+            {
+                position--;
+            }
+            else if (b.DigitalValue && !a.DigitalValue)
+            {
+                position++;
+            }
+            else if (!b.DigitalValue && a.DigitalValue)
+            {
+                position++;
+            }
+            else if (!b.DigitalValue && !a.DigitalValue)
+            {
+                position--;
+            }
+            updatePosition();
+        }
+
+        private void A_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
+        {
+            // A changed
+            if (b.DigitalValue && a.DigitalValue)
+            {
+                position++;
+            }
+            else if (b.DigitalValue && !a.DigitalValue)
+            {
+                position--;
+            }
+            else if (!b.DigitalValue && a.DigitalValue)
+            {
+                position--;
+            }
+            else if (!b.DigitalValue && !a.DigitalValue)
+            {
+                position++;
+            }
+            updatePosition();
         }
 
         /// <summary>
@@ -85,51 +128,10 @@ namespace Treehopper.Libraries.Input
         public long MaxValue { get; set; } = long.MaxValue;
         public long MinValue { get; set; } = long.MinValue;
 
-        private void inputsChanged(object sender, DigitalInValueChangedEventArgs e)
+        private void updatePosition()
         {
-            if(sender == a)
-            {
-                // A changed
-                if(b.DigitalValue && a.DigitalValue)
-                {
-                    position++;
-                }
-                else if(b.DigitalValue && !a.DigitalValue)
-                {
-                    position--;
-                }
-                else if(!b.DigitalValue && a.DigitalValue)
-                {
-                    position--;
-                }
-                else if (!b.DigitalValue && !a.DigitalValue)
-                {
-                    position++;
-                }
-            }
-            else
-            {
-                // B changed
-                if (b.DigitalValue && a.DigitalValue)
-                {
-                    position--;
-                }
-                else if (b.DigitalValue && !a.DigitalValue)
-                {
-                    position++;
-                }
-                else if (!b.DigitalValue && a.DigitalValue)
-                {
-                    position++;
-                }
-                else if (!b.DigitalValue && !a.DigitalValue)
-                {
-                    position--;
-                }
-            }
             if (position % stepsPerTick == 0)
             {
-
                 Position = Utilities.Numbers.Constrain(Position, MinValue, MaxValue);
 
                 if (Position == oldPosition) return;
@@ -137,7 +139,6 @@ namespace Treehopper.Libraries.Input
                 PositionChanged?.Invoke(this, new PositionChangedEventArgs() { NewPosition = Position });
                 oldPosition = Position;
             }
-                
         }
     }
 }
