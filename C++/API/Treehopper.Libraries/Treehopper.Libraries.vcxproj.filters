@@ -11,6 +11,9 @@
     <Filter Include="Sensors\Temperature">
       <UniqueIdentifier>{94b8b959-ea3f-4e6b-b418-7e5b2a33143a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{7923d35e-c9d3-4a72-afcd-4b3761a62789}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\stdafx.h" />
@@ -26,6 +29,9 @@
     <ClInclude Include="inc\Sensors\Temperature\Mcp9808.h">
       <Filter>Sensors\Temperature</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Input\RotaryEncoder.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
@@ -39,6 +45,9 @@
     <ClCompile Include="src\Pollable.cpp" />
     <ClCompile Include="src\Sensors\Temperature\Mcp9808.cpp">
       <Filter>Sensors\Temperature</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\RotaryEncoder.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
