@@ -19,43 +19,43 @@ namespace Treehopper
 	{
 		PinNumber = pinNumber;
 		this->board = board;
-		pinMode = PinMode::Reserved;
+		_mode = PinMode::Reserved;
 		referenceLevel = AdcReferenceLevel::VREF_3V3;
 	}
 	void Pin::makePushPullOutput()
 	{
-		setMode(PinMode::PushPullOutput);
+		mode(PinMode::PushPullOutput);
 	}
 
 	void Pin::makeDigitalInput()
 	{
-		setMode(PinMode::DigitalInput);
+		mode(PinMode::DigitalInput);
 	}
 
 	void Pin::makeAnalogInput()
 	{
-		setMode(PinMode::AnalogInput);
+		mode(PinMode::AnalogInput);
 	}
 
-	void Pin::setDigitalValue(bool value)
+	void Pin::digitalValue(bool value)
 	{
-		if (value == digitalValue) return;
-
-		digitalValue = value;
-
-		if (pinMode != PinMode::PushPullOutput && pinMode != PinMode::OpenDrainOutput)
+		if (_mode != PinMode::PushPullOutput && _mode != PinMode::OpenDrainOutput)
 			makePushPullOutput();
 
-		uint8_t cmd[] = { (uint8_t)PinConfigCommands::SetDigitalValue, value };
-		SendCommand(cmd, 2);
+		DigitalOut::digitalValue(value);
 	}
-	bool Pin::getDigitalValue()
+
+	bool Pin::digitalValue()
 	{
-		return digitalValue;
+		if (_mode == PinMode::DigitalInput) {
+			return DigitalIn::_digitalValue;
+		} else {
+			return DigitalOut::_digitalValue;
+		}
 	}
 	void Pin::toggleOutput()
 	{
-		setDigitalValue(!getDigitalValue());
+		digitalValue(!digitalValue());
 	}
 
 	AdcReferenceLevel Pin::getReferenceLevel()
@@ -69,7 +69,7 @@ namespace Treehopper
 
 		referenceLevel = value;
 
-		if (pinMode == PinMode::AnalogInput)
+		if (_mode == PinMode::AnalogInput)
 		{
 			uint8_t cmd[2];
 			cmd[0] = (uint8_t)PinConfigCommands::MakeAnalogInput;
@@ -81,16 +81,11 @@ namespace Treehopper
 	void Pin::updateValue(uint8_t high, uint8_t low)
 	{
 		uint16_t newVal = (((uint16_t)high) << 8) | low;
-		if (pinMode == PinMode::DigitalInput)
+		if (_mode == PinMode::DigitalInput)
 		{
-			if ((newVal > 0) != digitalValue)
-			{
-				digitalValue = (newVal > 0);
-				if (DigitalValueChanged != NULL)
-					DigitalValueChanged(digitalValue);
-			}
+			DigitalIn::update(newVal > 0);
 		}
-		else if (pinMode == PinMode::AnalogInput)
+		else if (_mode == PinMode::AnalogInput)
 		{
 			double voltage = 0;
 
@@ -138,14 +133,14 @@ namespace Treehopper
 		}
 	}
 
-	void Pin::setMode(PinMode value)
+	void Pin::mode(PinMode value)
 	{
-		if (value == pinMode) return;
+		if (value == _mode) return;
 
-		pinMode = value;
+		_mode = value;
 
 		uint8_t cmd[2];
-		switch (pinMode)
+		switch (_mode)
 		{
 		case PinMode::AnalogInput:
 			cmd[0] = (uint8_t)PinConfigCommands::MakeAnalogInput;
@@ -168,6 +163,17 @@ namespace Treehopper
 			SendCommand(cmd, 2);
 			break;
 		}
+	}
+
+	PinMode Pin::mode()
+	{
+		return _mode;
+	}
+
+	void Pin::writeOutputValue()
+	{
+		uint8_t cmd[] = { (uint8_t)PinConfigCommands::SetDigitalValue, DigitalOut::_digitalValue };
+		SendCommand(cmd, 2);
 	}
 
 	void Pin::SendCommand(uint8_t* cmd, size_t len)

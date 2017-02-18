@@ -3,8 +3,12 @@
 #include "Treehopper.h"
 #include <stdint.h>
 #include <functional>
+#include "DigitalIn.h"
+#include "DigitalOut.h"
+#include "Event.h"
 
 using namespace std;
+
 namespace Treehopper 
 {
 	class TreehopperUsb;
@@ -29,25 +33,24 @@ namespace Treehopper
 		Unassigned
 	};
 
-	class TREEHOPPER_API Pin
+	class TREEHOPPER_API Pin : public DigitalIn, public DigitalOut
 	{
 		friend class TreehopperUsb;
 
 	public:
 		Pin(TreehopperUsb* board, uint8_t pinNumber);
-		void setMode(PinMode value);
+		void mode(PinMode value);
+		PinMode mode();
 		void makePushPullOutput();
 		void makeDigitalInput();
 		void makeAnalogInput();
-		void setDigitalValue(bool val);
-		bool getDigitalValue();
+		void digitalValue(bool val);
+		bool digitalValue();
 		void toggleOutput();
 
 		AdcReferenceLevel getReferenceLevel();
 		void setReferenceLevel(AdcReferenceLevel value);
 
-		// Digital stuff
-		function<void(bool)> DigitalValueChanged;
 
 		// analog stuff
 		int AnalogValue;
@@ -60,8 +63,8 @@ namespace Treehopper
 		uint8_t PinNumber;
 	protected:
 		virtual void updateValue(uint8_t high, uint8_t low);
-		bool digitalValue;
-		PinMode pinMode;
+		virtual void writeOutputValue();
+		PinMode _mode;
 		AdcReferenceLevel referenceLevel;
 	};
 }
