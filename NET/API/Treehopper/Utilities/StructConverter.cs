@@ -20,7 +20,7 @@ namespace Treehopper.Utilities
     /// This class solves both of these issues by allowing the user to select the desired endianness, then converting (if necessary) by using Reflection to inspect the struct's fields.</para>
     /// <para>This class is adapted from http://stackoverflow.com/questions/2480116.</para>
     /// </remarks>
-    public class StructConverter
+    public static class StructConverter
     {
         private static void MaybeAdjustEndianness(Type type, byte[] data, Endianness endianness, int startOffset = 0)
         {
@@ -48,7 +48,7 @@ namespace Treehopper.Utilities
                     fieldType = Enum.GetUnderlyingType(fieldType);
 
                 // check for sub-fields to recurse if necessary
-                var subFields = fieldType.GetRuntimeFields().Where(subField => subField.IsStatic == false).ToArray();
+                var subFields = fieldType.GetRuntimeFields().Where(subField => (subField.IsStatic == false && subField.IsPublic == true)).ToArray();
 
                 var effectiveOffset = startOffset + offset;
 
@@ -64,7 +64,7 @@ namespace Treehopper.Utilities
             }
         }
 
-        public static T BytesToStruct<T>(byte[] rawData, Endianness endianness) where T : struct
+        public static T BytesToStruct<T>(this byte[] rawData, Endianness endianness) where T : struct
         {
             T result = default(T);
 
@@ -85,7 +85,7 @@ namespace Treehopper.Utilities
             return result;
         }
 
-        public static byte[] StructToBytes<T>(T data, Endianness endianness) where T : struct
+        public static byte[] StructToBytes<T>(this T data, Endianness endianness) where T : struct
         {
             byte[] rawData = new byte[Marshal.SizeOf(data)];
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
