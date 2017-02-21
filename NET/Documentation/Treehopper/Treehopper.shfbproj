@@ -27,6 +27,7 @@
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\API\Treehopper\Treehopper.csproj" />
       <DocumentationSource sourceFile="..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj" />
+      <DocumentationSource sourceFile="..\..\API\Treehopper.MVVM\Treehopper.MVVM.csproj" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
