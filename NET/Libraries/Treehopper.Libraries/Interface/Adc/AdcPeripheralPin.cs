@@ -7,6 +7,9 @@ using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Interface.Adc
 {
+    /// <summary>
+    /// Base class for ADC peripherals
+    /// </summary>
     public class AdcPeripheralPin : AdcPin
     {
         private double analogVoltage;
@@ -15,6 +18,12 @@ namespace Treehopper.Libraries.Interface.Adc
         private IAdcPeripheral parent;
         private int bitDepth;
 
+        /// <summary>
+        /// Construct a new ADC pin that's part of the specified peripheral
+        /// </summary>
+        /// <param name="parent">The peripheral</param>
+        /// <param name="bitDepth">The ADC bitdepth</param>
+        /// <param name="refVoltage">The reference voltage used to compare</param>
         public AdcPeripheralPin(IAdcPeripheral parent, int bitDepth, double refVoltage)
         {
             this.parent = parent;
@@ -22,7 +31,14 @@ namespace Treehopper.Libraries.Interface.Adc
             ReferenceVoltage = refVoltage;
         }
 
+        /// <summary>
+        /// The amount the ADC value should change before triggering an event
+        /// </summary>
         public int AdcValueChangedThreshold { get; set; }
+
+        /// <summary>
+        /// The raw ADC value
+        /// </summary>
         public int AdcValue
         {
             internal set
@@ -48,8 +64,14 @@ namespace Treehopper.Libraries.Interface.Adc
             }
         }
 
+        /// <summary>
+        /// The amount that the analog value (0-1) should change before triggering an event
+        /// </summary>
         public double AnalogValueChangedThreshold { get; set; }
 
+        /// <summary>
+        /// The analog value (from 0-1) of the ADC pin
+        /// </summary>
         public double AnalogValue
         {
             internal set
@@ -72,8 +94,14 @@ namespace Treehopper.Libraries.Interface.Adc
             }
         }
 
+        /// <summary>
+        /// The change in voltage required to trigger an event
+        /// </summary>
         public double AnalogVoltageChangedThreshold { get; set; }
 
+        /// <summary>
+        /// The analog voltage of the pin
+        /// </summary>
         public double AnalogVoltage
         {
             internal set
@@ -96,12 +124,29 @@ namespace Treehopper.Libraries.Interface.Adc
             }
         }
 
+        /// <summary>
+        /// The reference voltage used for calculating analog voltage
+        /// </summary>
         public double ReferenceVoltage { get; protected set; }
 
+        /// <summary>
+        /// Fires whenever the ADC value changes by the specified threshold
+        /// </summary>
         public event OnAdcValueChanged AdcValueChanged;
+
+        /// <summary>
+        /// Fires whenever the analog value changes by the specified threshold
+        /// </summary>
         public event OnAnalogValueChanged AnalogValueChanged;
+
+        /// <summary>
+        /// Fires whenever the analog voltage changes by the specified threshold
+        /// </summary>
         public event OnAnalogVoltageChanged AnalogVoltageChanged;
 
+        /// <summary>
+        /// Make the pin an analog input. This is unused in most implementations
+        /// </summary>
         public void MakeAnalogIn()
         {
 

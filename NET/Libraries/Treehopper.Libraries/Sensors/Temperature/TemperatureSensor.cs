@@ -10,6 +10,9 @@
     {
         private double temperatureCelsius;
 
+        /// <summary>
+        /// Gets or sets whether this temperature sensor should be updated when read from
+        /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         /// <summary>
@@ -53,6 +56,10 @@
             }
         }
 
+        /// <summary>
+        /// Update the temperature from the current value reported by the sensor
+        /// </summary>
+        /// <returns>An awaitable task</returns>
         public abstract Task Update();
 
         /// <summary>
@@ -73,6 +80,15 @@
         public static double ToFahrenheit(double temperatureCelsius)
         {
             return ((temperatureCelsius * 9.0) / 5.0) + 32.0;
+        }
+
+        /// <summary>
+        /// Returns a string representing the current temperature, in Celsius
+        /// </summary>
+        /// <returns>A string representing the current temperature</returns>
+        public override string ToString()
+        {
+            return string.Format("{0:0.00} °C", Celsius);
         }
     }
 }

@@ -19,6 +19,9 @@ namespace Treehopper.Libraries.Displays
     /// </remarks>
     public class BarGraph : LedDisplay
     {
+        /// <summary>
+        /// The collection of LEDs belonging to this bar graph
+        /// </summary>
         public LedCollection Leds { get; private set; }
 
         /// <summary>
@@ -50,6 +53,9 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
+        /// <summary>
+        /// Write the LEDs without flushing the drivers
+        /// </summary>
         public void WriteLeds()
         {
             int number = (int)Math.Round(val * Leds.Count);
@@ -62,6 +68,11 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
+        /// <summary>
+        /// Flush data to the drivers
+        /// </summary>
+        /// <param name="force">Whether to force all data to flush, even if it appears to be unchanged</param>
+        /// <returns>An awaitable task</returns>
         public Task Flush(bool force = false)
         {
             WriteLeds();
@@ -86,7 +97,14 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        public IFlushable Parent { get; set; }
+        /// <summary>
+        /// The parent object. Unused, returns null.
+        /// </summary>
+        public IFlushable Parent { get { return null; } }
+
+        /// <summary>
+        /// Whether to automatically flush this LED widget whenever a value is written to it
+        /// </summary>
         public bool AutoFlush { get; set; } = true;
     }
 }

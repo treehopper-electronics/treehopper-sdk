@@ -18,37 +18,65 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// </remarks>
     public class Pca9685 : IFlushable
     {
-        public Collection<PcaPin> Pins { get; private set; } = new Collection<PcaPin>();
-        public Pca9685(I2c port, int speedKHz = 100, bool A0 = false, bool A1 = false, bool A2 = false, bool A3 = false, bool A4 = false, bool A5 = false)
-            : this(port, (byte)(0x40 | 
-                  (A0 ? 1 : 0) << 0 | 
-                  (A1 ? 1 : 0) << 1 |
-                  (A2 ? 1 : 0) << 2 |
-                  (A3 ? 1 : 0) << 3 |
-                  (A4 ? 1 : 0) << 4 |
-                  (A5 ? 1 : 0) << 5), speedKHz)
+        /// <summary>
+        /// Construct a new PCA9685
+        /// </summary>
+        /// <param name="i2c">The i2c port this chip is attached to</param>
+        /// <param name="speed">The speed, in kHz, to use with this chip</param>
+        /// <param name="a0">The state of the A0 pin</param>
+        /// <param name="a1">The state of the A1 pin</param>
+        /// <param name="a2">The state of the A2 pin</param>
+        /// <param name="a3">The state of the A3 pin</param>
+        /// <param name="a4">The state of the A4 pin</param>
+        /// <param name="a5">The state of the A5 pin</param>
+        public Pca9685(I2c i2c, int speed = 100, bool a0 = false, bool a1 = false, bool a2 = false, bool a3 = false, bool a4 = false, bool a5 = false)
+            : this(i2c, (byte)(0x40 | 
+                  (a0 ? 1 : 0) << 0 | 
+                  (a1 ? 1 : 0) << 1 |
+                  (a2 ? 1 : 0) << 2 |
+                  (a3 ? 1 : 0) << 3 |
+                  (a4 ? 1 : 0) << 4 |
+                  (a5 ? 1 : 0) << 5), speed)
         {
             
         }
 
-        public Pca9685(I2c port, byte address, int speedKHz = 100)
+        /// <summary>
+        /// Construct a new PCA9685
+        /// </summary>
+        /// <param name="i2c">The i2c port this chip is attached to</param>
+        /// <param name="address">The 7-bit address to use</param>
+        /// <param name="speed">The speed, in kHz, to use with this chip</param>
+        public Pca9685(I2c i2c, byte address, int speed = 100)
         {
-            this.dev = new SMBusDevice(address, port, speedKHz);
+            this.dev = new SMBusDevice(address, i2c, speed);
             for (int i = 0; i < 16; i++)
             {
-                Pins.Add(new PcaPin(this, i));
+                Pins.Add(new Pin(this, i));
             }
             updateConfig();
         }
 
+        byte[] pinRegisters = new byte[16 * 4];
         private OutputDriveMode outputDrive = OutputDriveMode.TotemPole;
         private SMBusDevice dev;
         private double frequency = 100;
         private bool useExternalClock = false;
         private bool invertOutput;
 
-        public IFlushable Parent { get; private set; }
+        /// <summary>
+        /// The collection of PWM-capable pins that belong to this instance
+        /// </summary>
+        public Collection<Pin> Pins { get; private set; } = new Collection<Pin>();
 
+        /// <summary>
+        /// The parent object. Always returns null.
+        /// </summary>
+        public IFlushable Parent { get { return null; } }
+
+        /// <summary>
+        /// Whether to use the external clock
+        /// </summary>
         public bool UseExternalClock
         {
             get { return useExternalClock; }
@@ -59,8 +87,9 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
-
-
+        /// <summary>
+        /// Invert the output
+        /// </summary>
         public bool InvertOutput
         {
             get { return invertOutput; }
@@ -71,7 +100,9 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the output drive mode
+        /// </summary>
         public OutputDriveMode OutputDrive
         {
             get { return outputDrive; }
@@ -82,8 +113,14 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
+        /// <summary>
+        /// Whether to automatically write updates to the pins immediately
+        /// </summary>
         public bool AutoFlush { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets the PWM frequency to use
+        /// </summary>
         public double Frequency
         {
             get { return frequency; }
@@ -94,6 +131,9 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
+        /// <summary>
+        /// Output drive modes
+        /// </summary>
         public enum OutputDriveMode
         {
             /// <summary>
@@ -134,7 +174,11 @@ namespace Treehopper.Libraries.Interface.PortExpander
             Flush(true).Wait(); // we have to rewrite the PWM values (why?)
         }
 
-        byte[] pinRegisters = new byte[16 * 4];
+        /// <summary>
+        /// Flush the data to the PCA9685
+        /// </summary>
+        /// <param name="force">Whether to force the update</param>
+        /// <returns>An awaitable task</returns>
         public async Task Flush(bool force = false)
         {
             foreach (var pin in Pins)
@@ -144,27 +188,27 @@ namespace Treehopper.Libraries.Interface.PortExpander
             dev.WriteBufferData((byte)Registers.LedOnLowBase, pinRegisters).Wait();
         }
 
-        private void setPinValue(PcaPin pin)
+        private void setPinValue(Pin pin)
         {
             double dc = pin.DutyCycle;
             int onTicks = (int)Math.Round(dc * 4096);
             if (onTicks == 4096)
             {
-                pinRegisters[4 * pin.PinNumber] = 0x00; // ON_L
-                pinRegisters[4 * pin.PinNumber + 1] = 0x10; // ON_H
-                pinRegisters[4 * pin.PinNumber + 2] = 0x00; // OFF_L
-                pinRegisters[4 * pin.PinNumber + 3] = 0x00; // OFF_H
+                pinRegisters[4 * pin.pinNumber] = 0x00; // ON_L
+                pinRegisters[4 * pin.pinNumber + 1] = 0x10; // ON_H
+                pinRegisters[4 * pin.pinNumber + 2] = 0x00; // OFF_L
+                pinRegisters[4 * pin.pinNumber + 3] = 0x00; // OFF_H
             }
             else if (onTicks == 0)
             {
-                pinRegisters[4 * pin.PinNumber] = 0x00; // ON_L
-                pinRegisters[4 * pin.PinNumber + 1] = 0x00; // ON_H
-                pinRegisters[4 * pin.PinNumber + 2] = 0x00; // OFF_L
-                pinRegisters[4 * pin.PinNumber + 3] = 0x10; // OFF_H
+                pinRegisters[4 * pin.pinNumber] = 0x00; // ON_L
+                pinRegisters[4 * pin.pinNumber + 1] = 0x00; // ON_H
+                pinRegisters[4 * pin.pinNumber + 2] = 0x00; // OFF_L
+                pinRegisters[4 * pin.pinNumber + 3] = 0x10; // OFF_H
             }
             else
             {
-                int delayTicks = pin.PinNumber * 4096 / 16; // stagger the outputs to reduce current inrush
+                int delayTicks = pin.pinNumber * 4096 / 16; // stagger the outputs to reduce current inrush
 
                 int offTicks;
                 if (delayTicks + onTicks < 4096)
@@ -176,19 +220,19 @@ namespace Treehopper.Libraries.Interface.PortExpander
                     offTicks = delayTicks + onTicks - 4096;
                 }
 
-                pinRegisters[4*pin.PinNumber] = (byte)(delayTicks & 0xFF);
-                pinRegisters[4*pin.PinNumber+1] = (byte)(delayTicks >> 8);
-                pinRegisters[4*pin.PinNumber+2] = (byte)(offTicks & 0xFF);
-                pinRegisters[4*pin.PinNumber+3] = (byte)(offTicks >> 8);
+                pinRegisters[4*pin.pinNumber] = (byte)(delayTicks & 0xFF);
+                pinRegisters[4*pin.pinNumber+1] = (byte)(delayTicks >> 8);
+                pinRegisters[4*pin.pinNumber+2] = (byte)(offTicks & 0xFF);
+                pinRegisters[4*pin.pinNumber+3] = (byte)(offTicks >> 8);
             }
         }
 
-        internal void Update(PcaPin pin)
+        internal void Update(Pin pin)
         {
             if (!AutoFlush) return;
 
             setPinValue(pin);
-            dev.WriteBufferData((byte)((byte)Registers.LedOnLowBase + (4*pin.PinNumber)), pinRegisters.Skip(4*pin.PinNumber).Take(4).ToArray()).Wait();
+            dev.WriteBufferData((byte)((byte)Registers.LedOnLowBase + (4*pin.pinNumber)), pinRegisters.Skip(4*pin.pinNumber).Take(4).ToArray()).Wait();
         }
 
         private enum Registers
@@ -212,19 +256,26 @@ namespace Treehopper.Libraries.Interface.PortExpander
         }
     }
 
-    public class PcaPin : Pwm
+    /// <summary>
+    /// PCA9685 pin
+    /// </summary>
+    public class Pin : Pwm
     {
         private Pca9685 driver;
-        public int PinNumber { get; private set; }
 
-        public PcaPin(Pca9685 driver, int pinNumber)
+        internal int pinNumber;
+
+        internal Pin(Pca9685 driver, int pinNumber)
         {
             this.driver = driver;
-            this.PinNumber = pinNumber;
+            this.pinNumber = pinNumber;
         }
 
         private double dutyCycle;
 
+        /// <summary>
+        /// Gets or sets the duty cycle of this pin
+        /// </summary>
         public double DutyCycle
         {
             get { return dutyCycle; }
@@ -233,7 +284,6 @@ namespace Treehopper.Libraries.Interface.PortExpander
                 driver.Update(this);
             }
         }
-
 
         /// <summary>
         /// Whether the PWM pin is enabled. Writes to this value are ignored, and will always read as "true"

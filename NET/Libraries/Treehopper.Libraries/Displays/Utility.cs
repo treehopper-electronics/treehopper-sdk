@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// Utility functions useful for Display classes
+    /// </summary>
     public class Utility
     {
         /// <summary>

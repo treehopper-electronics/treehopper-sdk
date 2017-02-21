@@ -27,8 +27,19 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// </summary>
     public class PortExpanderPin : IPortExpanderPin
     {
+        /// <summary>
+        /// Pin (bit) number
+        /// </summary>
         protected int pinNumber;
+
+        /// <summary>
+        /// Port expander this pin belongs to
+        /// </summary>
         protected IPortExpanderParent portExpander;
+
+        /// <summary>
+        /// Pin mode for this pin
+        /// </summary>
         protected PortExpanderPinMode mode = PortExpanderPinMode.DigitalInput;
 
         /// <summary>
@@ -67,6 +78,9 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
+        /// <summary>
+        /// The pin number of this port expander pin
+        /// </summary>
         public int PinNumber
         {
             get

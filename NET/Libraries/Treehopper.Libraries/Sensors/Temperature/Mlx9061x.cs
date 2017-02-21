@@ -7,36 +7,58 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
+    /// <summary>
+    /// MLX90614 non-contact IR thermopile temperature sensor
+    /// </summary>
     public class Mlx90614
     {
+        /// <summary>
+        /// The SMBus device
+        /// </summary>
         protected SMBusDevice dev;
 
-        public Mlx90614(I2c module)
+        /// <summary>
+        /// Construct a new MLX90614 attached to the given i2c port
+        /// </summary>
+        /// <param name="i2c">The i2c module to use</param>
+        public Mlx90614(I2c i2c)
         {
-            this.dev = new SMBusDevice(0x5A, module);
+            this.dev = new SMBusDevice(0x5A, i2c);
             Object =  new TempRegister(dev, 0x07);
             Ambient = new TempRegister(dev, 0x06);
         }
+
+        /// <summary>
+        /// The ambient temperature sensor
+        /// </summary>
         public TemperatureSensor Ambient { get; protected set; }
+
+        /// <summary>
+        /// The non-contact thermopile temperature sensor
+        /// </summary>
         public TemperatureSensor Object { get; protected set; }
 
+        /// <summary>
+        /// Raw (uncorrected) IR data from the thermopile array
+        /// </summary>
         public int RawIrData { get { return dev.ReadWordData(0x25).Result;  } }
 
-        protected class TempRegister : TemperatureSensor
+        internal class TempRegister : TemperatureSensor
         {
-            public override string ToString()
-            {
-                return Celsius.ToString();
-            }
+
             private SMBusDevice dev;
             private byte register;
 
-            public TempRegister(SMBusDevice dev, byte register)
+            internal TempRegister(SMBusDevice dev, byte register)
             {
                 this.register = register;
                 this.dev = dev;
             }
 
+            /// <summary>
+            /// Update the temperature register
+            /// </summary>
+            /// <returns>An awaitable task</returns>
             public override async Task Update()
             {
                 var data = await dev.ReadWordData(register).ConfigureAwait(false);
@@ -47,8 +69,15 @@ namespace Treehopper.Libraries.Sensors.Temperature
         }
     }
 
+    /// <summary>
+    /// MLX90615 non-contact IR thermopile temperature sensor
+    /// </summary>
     public class Mlx90615 : Mlx90614
     {
+        /// <summary>
+        /// Construct a new MLX90615 attached to the given i2c port
+        /// </summary>
+        /// <param name="module"></param>
         public Mlx90615(I2c module) : base(module)
         {
             this.dev = new SMBusDevice(0x5B, module);

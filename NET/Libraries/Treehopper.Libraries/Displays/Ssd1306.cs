@@ -239,6 +239,10 @@ namespace Treehopper.Libraries.Displays
 
         }
 
+        /// <summary>
+        /// Set the global brightness of this display
+        /// </summary>
+        /// <param name="brightness">The brightness, from 0-1, of this display</param>
         protected override void setBrightness(double brightness)
         {
             

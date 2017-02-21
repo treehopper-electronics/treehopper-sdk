@@ -29,6 +29,10 @@ namespace Treehopper.Libraries.Displays
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Set the global brightness of the Ili9341 graphic display
+        /// </summary>
+        /// <param name="brightness">The brightness of the display</param>
         protected override void setBrightness(double brightness)
         {
             

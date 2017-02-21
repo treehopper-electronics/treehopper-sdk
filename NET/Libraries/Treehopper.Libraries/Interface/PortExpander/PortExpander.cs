@@ -28,15 +28,24 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// </summary>
         public IList<PortExpanderPin> Pins { get; set; } = new Collection<PortExpanderPin>();
 
-        public IFlushable Parent { get; private set; }
+        /// <summary>
+        /// The parent device. Always returns null.
+        /// </summary>
+        public IFlushable Parent { get { return null; } }
 
         /// <summary>
         /// Whether this port expander should auto-flush
         /// </summary>
         public bool AutoFlush { get; set; }
 
+        /// <summary>
+        /// Whether to read the port expander when a pin is read from
+        /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
+        /// <summary>
+        /// The polling interval to use for AwaitDigitalValueChanged() calls
+        /// </summary>
         public int AwaitPollingInterval { get; set; }
 
         /// <summary>
@@ -74,6 +83,10 @@ namespace Treehopper.Libraries.Interface.PortExpander
             outputModeChanged(portExpanderPin);
         }
 
+        /// <summary>
+        /// Read the port's value
+        /// </summary>
+        /// <returns>An awaitable task</returns>
         public Task Update()
         {
             return readPort();

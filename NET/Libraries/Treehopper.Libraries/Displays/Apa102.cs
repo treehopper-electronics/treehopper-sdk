@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Interface;
-using Treehopper.Libraries.Interface.ShiftRegister;
+using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
@@ -20,19 +20,31 @@ namespace Treehopper.Libraries.Displays
     {
         private Spi spi;
 
+        /// <summary>
+        /// Gets the LEDs belonging to this APA102 instance.
+        /// </summary>
         public IList<Led> Leds { get; private set; } = new List<Led>();
 
+        /// <summary>
+        /// Whether this strip of LEDs should be updated immediately, or only when <see cref="Flush(bool)"/> is called.
+        /// </summary>
         public bool AutoFlush { get; set; } = true;
 
+        /// <summary>
+        /// The parent Flushable interface.
+        /// </summary>
         public IFlushable Parent { get { return null; } }
 
+        /// <summary>
+        /// Gets or sets the global brightness of the LED strip
+        /// </summary>
         public double Brightness { get; set; } = 1.0;
 
         /// <summary>
-        /// Construct a new APA102
+        /// Construct a new chain of APA102-based smart LEDs.
         /// </summary>
-        /// <param name="spi"></param>
-        /// <param name="numLeds"></param>
+        /// <param name="spi">The SPI port to use</param>
+        /// <param name="numLeds">The number of APA102 smart LEDs in this chain</param>
         public Apa102(Spi spi, int numLeds)
         {
             this.spi = spi;
@@ -102,10 +114,19 @@ namespace Treehopper.Libraries.Displays
             private Apa102 driver;
             internal float red, green, blue;
 
+            /// <summary>
+            /// The red gain to apply
+            /// </summary>
             public float RedGain { get; set; }
 
+            /// <summary>
+            /// The green gain to apply
+            /// </summary>
             public float GreenGain { get; set; }
 
+            /// <summary>
+            /// The blue gain to apply
+            /// </summary>
             public float BlueGain { get; set; }
 
             internal Led(Apa102 driver)
@@ -113,6 +134,12 @@ namespace Treehopper.Libraries.Displays
                 this.driver = driver;
             }
 
+            /// <summary>
+            /// Set the RGB value of this RGB LED
+            /// </summary>
+            /// <param name="red">The red intensity, from 0-255</param>
+            /// <param name="green">The green intensity, from 0-255</param>
+            /// <param name="blue">The blue intensity, from 0-255</param>
             public void SetRgb(float red, float green, float blue)
             {
                 this.red = red;
@@ -123,11 +150,21 @@ namespace Treehopper.Libraries.Displays
                     driver.Flush().Wait();
             }
 
+            /// <summary>
+            /// Set the hue, saturation, and luminance of this RGB LED
+            /// </summary>
+            /// <param name="hue">The hue, from 0-360 degrees, of the desired color</param>
+            /// <param name="saturation">The saturation, from 0-100, of the desired color</param>
+            /// <param name="luminance">The luminance, from 0-100, of the desired color</param>
             public void SetHsl(float hue, float saturation, float luminance)
             {
                 SetRgb(Color.FromHsl(hue, saturation, luminance));
             }
 
+            /// <summary>
+            /// Set the color of the RGB LED
+            /// </summary>
+            /// <param name="color">The desired color</param>
             public void SetRgb(Color color)
             {
                 SetRgb(color.R, color.G, color.B);

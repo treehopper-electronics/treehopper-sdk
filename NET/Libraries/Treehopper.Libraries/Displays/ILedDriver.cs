@@ -38,8 +38,22 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         IList<Led> Leds { get; }
 
+        /// <summary>
+        /// This is called by the LEDs to force the driver to update the LED state
+        /// </summary>
+        /// <param name="led">The LED to update</param>
         void LedStateChanged(Led led);
+
+        /// <summary>
+        /// This is called by the LEDs to force the driver to update the LED brightness
+        /// </summary>
+        /// <param name="led">The LED to update</param>
         void LedBrightnessChanged(Led led);
+
+        /// <summary>
+        /// Clear (turn off) all LEDs
+        /// </summary>
+        /// <returns></returns>
         Task Clear();
     }
 }

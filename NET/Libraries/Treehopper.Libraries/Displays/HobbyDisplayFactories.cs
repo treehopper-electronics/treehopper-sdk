@@ -65,7 +65,14 @@
             return new Hd44780(parallelInterface, columns, rows, ioExpander.Pins[3]);
         }
 
-        public static LedGraphicDisplay GetMax7219GraphicLedDisplay(Spi port, Pin latch, int numDevices)
+        /// <summary>
+        /// Get a GraphicDisplay built from one or more 8x8 MAX7219-powered LED displays commonly available from hobbyist vendors.
+        /// </summary>
+        /// <param name="port">The SPI port these displays are attached to</param>
+        /// <param name="latch">The latch pin to use with these displays</param>
+        /// <param name="numDevices">The number of 8x8 units that are daisy-chained together</param>
+        /// <returns></returns>
+        public static LedGraphicDisplay GetMax7219GraphicLedDisplay(Spi port, Treehopper.Pin latch, int numDevices)
         {
             IEnumerable<Led> finalList = new List<Led>();
             for (int i = 0; i < numDevices; i++)

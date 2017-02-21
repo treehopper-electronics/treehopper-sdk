@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
+    /// <summary>
+    /// A simple filter for fusing accelerometer and gyroscope data together to determine roll and pitch.
+    /// </summary>
     public class ComplementaryFilter : IDisposable, INotifyPropertyChanged
     {
         IAccelerometer accel;
@@ -16,21 +19,33 @@ namespace Treehopper.Libraries.Sensors.Inertial
         Poller<IAccelerometer> accelPoller;
         Poller<IAccelerometer> gyroPoller;
 
+        /// <summary>
+        /// Delegate of the callback function to be invoked when the filter is updated
+        /// </summary>
+        /// <param name="sender">The filter that called this function</param>
+        /// <param name="e">An empty EventArgs object</param>
         public delegate void FilterUpdateEventHandler(object sender, EventArgs e);
 
-        public ComplementaryFilter(IAccelerometer accelerometer, IGyroscope gyroscope, int samplePeriodMs = 10, bool usePerformanceTimer = false)
+        /// <summary>
+        /// Construct a new Complementary filter with the specified accelerometer and gyroscope (which is often the same IC)
+        /// </summary>
+        /// <param name="accelerometer">The accelerometer to use</param>
+        /// <param name="gyroscope">The gyroscope to use</param>
+        /// <param name="samplePeriodMs">The sample period to poll these devices at</param>
+        /// <param name="useHighResolutionTimer">Whether to use an accurate (but CPU-hungry) timer</param>
+        public ComplementaryFilter(IAccelerometer accelerometer, IGyroscope gyroscope, int samplePeriodMs = 10, bool useHighResolutionTimer = false)
         {
-            RollQuaternion = new Quaternion(Xaxis, 0);
-            PitchQuaternion = new Quaternion(Yaxis, 0);
+            //RollQuaternion = new Quaternion(Xaxis, 0);
+            //PitchQuaternion = new Quaternion(Yaxis, 0);
 
             this.accel = accelerometer;
             this.gyro = gyroscope;
 
-            accelPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, usePerformanceTimer);
+            accelPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, useHighResolutionTimer);
             accelPoller.OnSensorValueChanged += PollerEvent;
             if (accelerometer != gyroscope) // if we have two different sensors
             {
-                gyroPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, usePerformanceTimer);
+                gyroPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, useHighResolutionTimer);
                 gyroPoller.OnSensorValueChanged += PollerEvent;
             }
                 
@@ -43,19 +58,36 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         Stopwatch sw = new Stopwatch();
 
+        /// <summary>
+        /// Fires whenever a property has been updated
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Fires after the filter update function has executed
+        /// </summary>
         public event FilterUpdateEventHandler FilterUpdate;
 
-        public bool AutoUpdateWhenPropertyRead { get; set; }
+        /// <summary>
+        /// The current calculated pitch
+        /// </summary>
         public double Pitch { get; private set; } = 0;
+
+        /// <summary>
+        /// The current calculated roll
+        /// </summary>
         public double Roll { get; private set; } = 0;
+
+        /// <summary>
+        /// The yaw reported by the gyroscope. This value will drift, as the accelerometer cannot correct for it
+        /// </summary>
         public double Yaw { get; private set; } = 0;
 
-        public Quaternion RollQuaternion { get; private set; }
-        public Quaternion PitchQuaternion { get; private set; }
-        public Quaternion YawQuaternion { get; private set; } = new Quaternion();
+        //public Quaternion RollQuaternion { get; private set; }
+        //public Quaternion PitchQuaternion { get; private set; }
+        //public Quaternion YawQuaternion { get; private set; } = new Quaternion();
 
-        public Quaternion Transform { get; private set; } = new Quaternion();
+        //public Quaternion Transform { get; private set; } = new Quaternion();
 
         void update()
         {
@@ -108,6 +140,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
         Vector3 Yaxis = new Vector3(0, 1, 0);
         Vector3 Zaxis = new Vector3(0, 0, 1);
 
+        /// <summary>
+        /// Shut down the polling loop and dispose of this filter
+        /// </summary>
         public void Dispose()
         {
             accelPoller.Dispose();

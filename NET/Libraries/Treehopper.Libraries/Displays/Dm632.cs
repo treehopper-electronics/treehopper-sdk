@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.ShiftRegister;
+using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// Library for the SiTI DM632, DM633, and DM634 16-channel, 16-bit PWM-capable shift-register-type LED driver
+    /// </summary>
     public class Dm632 : ChainableShiftRegisterOutput, ILedDriver
     {
         /// <summary>
@@ -110,6 +113,12 @@ namespace Treehopper.Libraries.Displays
             FlushIfAutoFlushEnabled().Wait();
         }
 
+        /// <summary>
+        /// Set the individual LED brightness values based on the direct value written to this register
+        /// </summary>
+        /// <remarks>
+        /// <para>Note that the state is always set to true when this is called; only the brightness is adjusted</para>
+        /// </remarks>
         protected override void updateFromCurrentValue()
         {
             for (int i = 0; i < Leds.Count; i++)

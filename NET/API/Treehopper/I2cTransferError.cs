@@ -1,30 +1,33 @@
-﻿/// <summary>
-/// Describes the transfer error, if not Success, that occured
-/// </summary>
-public enum I2cTransferError
+﻿namespace Treehopper
 {
     /// <summary>
-    /// Bus arbitration was lost
+    /// Describes the transfer error, if not Success, that occured
     /// </summary>
-    ArbitrationLostError,
+    public enum I2cTransferError
+    {
+        /// <summary>
+        /// Bus arbitration was lost
+        /// </summary>
+        ArbitrationLostError,
 
-    /// <summary>
-    /// The slave device failed to Nack back.
-    /// </summary>
-    NackError,
+        /// <summary>
+        /// The slave device failed to Nack back.
+        /// </summary>
+        NackError,
 
-    /// <summary>
-    /// Unknown error
-    /// </summary>
-    UnknownError,
+        /// <summary>
+        /// Unknown error
+        /// </summary>
+        UnknownError,
 
-    /// <summary>
-    /// Tx buffer underrun error
-    /// </summary>
-    TxunderError,
+        /// <summary>
+        /// Tx buffer underrun error
+        /// </summary>
+        TxunderError,
 
-    /// <summary>
-    /// Successful transaction
-    /// </summary>
-    Success = 255
+        /// <summary>
+        /// Successful transaction
+        /// </summary>
+        Success = 255
+    }
 }
