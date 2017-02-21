@@ -28,6 +28,7 @@
     </TransformComponentArguments>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\API\Treehopper.Desktop\Treehopper.Desktop.csproj" />
+      <DocumentationSource sourceFile="..\..\API\Treehopper.WPF\Treehopper.WPF.csproj" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
