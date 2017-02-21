@@ -125,7 +125,14 @@ namespace Treehopper.Libraries.Input
             }
         }
 
+        /// <summary>
+        /// The maximum value this encoder should report
+        /// </summary>
         public long MaxValue { get; set; } = long.MaxValue;
+
+        /// <summary>
+        /// The minimum value this encoder should report
+        /// </summary>
         public long MinValue { get; set; } = long.MinValue;
 
         private void updatePosition()

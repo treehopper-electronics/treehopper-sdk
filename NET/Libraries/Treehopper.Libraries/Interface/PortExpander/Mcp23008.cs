@@ -71,6 +71,9 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// </summary>
         public bool AutoFlush { get; set; } = true;
 
+        /// <summary>
+        /// The parent device. Unused and always returns null.
+        /// </summary>
         public IFlushable Parent { get { return null; } }
 
         /// <summary>
@@ -93,6 +96,10 @@ namespace Treehopper.Libraries.Interface.PortExpander
             return dev.WriteByteData((byte)Registers.OutputLatch, olat.GetBytes()[0]);
         }
 
+        /// <summary>
+        /// Read the current values of the port and update the pins
+        /// </summary>
+        /// <returns></returns>
         protected async Task readPort()
         {
             byte data = await dev.ReadByteData((byte)Registers.Gpio);

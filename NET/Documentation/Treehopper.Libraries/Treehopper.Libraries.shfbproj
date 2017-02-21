@@ -28,6 +28,7 @@
     </TransformComponentArguments>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj" xmlns="" />
+      <DocumentationSource sourceFile="..\..\API\Treehopper\Treehopper.csproj" />
     </DocumentationSources>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
@@ -49,6 +50,7 @@
     <HelpTitle>Treehopper Libraries API Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <RootNamespaceTitle>API Reference</RootNamespaceTitle>
+    <MissingTags>AutoDocumentCtors, AutoDocumentDispose</MissingTags>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

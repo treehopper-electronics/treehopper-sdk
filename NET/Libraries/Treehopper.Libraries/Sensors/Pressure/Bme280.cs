@@ -7,6 +7,9 @@ using Treehopper.Libraries.Sensors.Humidity;
 
 namespace Treehopper.Libraries.Sensors.Pressure
 {
+    /// <summary>
+    /// BME280 barometric pressure, temperature, and humidity sensor
+    /// </summary>
     public class Bme280 : Bmp280, IHumiditySensor
     {
         private byte H1;
@@ -38,6 +41,9 @@ namespace Treehopper.Libraries.Sensors.Pressure
             Start();
         }
 
+        /// <summary>
+        /// The relative humidity
+        /// </summary>
         public double RelativeHumidity
         {
             get
@@ -47,6 +53,10 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
         }
 
+        /// <summary>
+        /// Reads current data from the BME280
+        /// </summary>
+        /// <returns></returns>
         public override async Task Update()
         {
             // first the BMP280 stuff

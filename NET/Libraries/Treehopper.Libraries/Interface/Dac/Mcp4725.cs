@@ -10,7 +10,7 @@ namespace Treehopper.Libraries.Interface.Dac
     /// <summary>
     /// MCP4725 12-bit DAC library
     /// </summary>
-    public class Mcp4725 : IDac
+    public class Mcp4725 : Dac
     {
         private SMBusDevice dev;
         private double voltage;

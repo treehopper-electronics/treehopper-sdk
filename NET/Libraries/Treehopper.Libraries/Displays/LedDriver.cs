@@ -46,6 +46,9 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public bool HasIndividualBrightnessControl { get; private set; }
 
+        /// <summary>
+        /// The internally-referenced global brightness of the LED driver
+        /// </summary>
         protected double brightness = 0.0;
 
         /// <summary>
@@ -88,6 +91,9 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public IList<Led> Leds { get; set; } = new Collection<Led>();
 
+        /// <summary>
+        /// Gets the parent device of this LED driver
+        /// </summary>
         public IFlushable Parent { get; protected set; }
 
 

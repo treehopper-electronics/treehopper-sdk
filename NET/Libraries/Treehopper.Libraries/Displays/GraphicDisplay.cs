@@ -34,6 +34,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="Width">The width, in pixels, of the display</param>
         /// <param name="Height">The height, in pixels, of the display</param>
+        /// <param name="bytesPerRow">The number of bytes per row (stride) of the display</param>
         public GraphicDisplay(int Width, int Height, int bytesPerRow)
         {
             this.Width = Width;
@@ -42,6 +43,10 @@ namespace Treehopper.Libraries.Displays
             RawBuffer = new byte[bytesPerRow * Height];
         }
 
+        /// <summary>
+        /// Clear the display
+        /// </summary>
+        /// <returns>An awaitable task</returns>
         public Task Clear()
         {
             for (int i = 0; i < RawBuffer.Length; i++)
@@ -52,6 +57,9 @@ namespace Treehopper.Libraries.Displays
 
         private double brightness = 1.0;
 
+        /// <summary>
+        /// Gets or sets the global brightness of the display
+        /// </summary>
         public double Brightness
         {
             get { return brightness; }
@@ -64,6 +72,11 @@ namespace Treehopper.Libraries.Displays
 
             }
         }
+
+        /// <summary>
+        /// Sets the global brightness of the graphic display
+        /// </summary>
+        /// <param name="brightness">The brightness of the display</param>
         protected abstract void setBrightness(double brightness);
 
         /// <summary>

@@ -86,6 +86,10 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
+        /// <summary>
+        /// Gets a string representation of the LED's current state
+        /// </summary>
+        /// <returns>A string representing the state and brightness of the LED</returns>
         public override string ToString()
         {
             return string.Format("{0} ({1:0.00})", state, brightness);

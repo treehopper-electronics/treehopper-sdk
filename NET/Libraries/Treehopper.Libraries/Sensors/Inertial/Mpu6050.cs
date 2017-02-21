@@ -12,13 +12,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
     /// <summary>
     /// An MPU9150 device
     /// </summary>
-    public class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope, INotifyPropertyChanged
+    public class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
     {
         /// <summary>
         /// Construct an MPU9150 9-Dof IMU
         /// </summary>
         /// <param name="i2c">The I2c module this module is connected to.</param>
         /// <param name="addressPin">The address of the module</param>
+        /// <param name="ratekHz">The rate, in kHz, to use with this IC</param>
         public Mpu6050(I2c i2c, bool addressPin = false, int ratekHz = 400)
         {
             this.dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
@@ -45,11 +46,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
             dev.WriteByteData((byte)Registers.ACCEL_CONFIG2, c).Wait();
         }
 
-        protected Vector3 accelerometer = new Vector3();
-        protected Vector3 gyroscope = new Vector3();
+        internal Vector3 accelerometer = new Vector3();
+        internal Vector3 gyroscope = new Vector3();
 
-        protected SMBusDevice dev;
+        internal SMBusDevice dev;
 
+        /// <summary>
+        /// Gets the accelerometer data
+        /// </summary>
         public Vector3 Accelerometer
         {
             get
@@ -61,6 +65,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         private AccelScale ascale;
+
+        /// <summary>
+        /// Gets or sets the accelerometer scale
+        /// </summary>
         public AccelScale AccelerometerScale
         {
             get { return ascale; }
@@ -77,6 +85,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         private GyroScale gscale;
+
+        /// <summary>
+        /// Gets or sets the gyroscope scale
+        /// </summary>
         public GyroScale GyroscopeScale
         {
             get { return gscale; }
@@ -93,8 +105,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
-        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-
+        /// <summary>
+        /// Gets the gyroscope data
+        /// </summary>
         public Vector3 Gyroscope
         {
             get
@@ -105,7 +118,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// Read the current sensor data
+        /// </summary>
+        /// <returns></returns>
         public override async Task Update()
         {
             var data = await dev.ReadBufferData((byte)Registers.ACCEL_XOUT_H, 14);
@@ -120,11 +136,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
             gyroscope.X = (float)(((short)(data[8] << 8 | data[9])) * gyroScale - gyroscopeOffset.X);
             gyroscope.Y = (float)(((short)(data[10] << 8 | data[11])) * gyroScale - gyroscopeOffset.Y);
             gyroscope.Z = (float)(((short)(data[12] << 8 | data[13])) * gyroScale - gyroscopeOffset.Z);
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Accelerometer"));
         }
         Vector3 accelerometerOffset = new Vector3();
         Vector3 gyroscopeOffset = new Vector3();
+
+        /// <summary>
+        /// Calibrate IMU relative to gravity
+        /// </summary>
+        /// <returns></returns>
         public virtual async Task Calibrate()
         {
             Vector3 accelOffset = new Vector3();
@@ -170,7 +189,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
 
 
-        protected double getAccelScale()
+        internal double getAccelScale()
         {
             switch(AccelerometerScale)
             {
@@ -187,7 +206,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
-        protected double getGyroScale()
+        internal double getGyroScale()
         {
             switch (GyroscopeScale)
             {
@@ -204,23 +223,59 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
+        /// <summary>
+        /// Accelerometer scales
+        /// </summary>
         public enum AccelScale
         {
+            /// <summary>
+            /// 2G scale
+            /// </summary>
             AFS_2G = 0,
+
+            /// <summary>
+            /// 4G scale
+            /// </summary>
             AFS_4G,
+
+            /// <summary>
+            /// 8G scale
+            /// </summary>
             AFS_8G,
+
+            /// <summary>
+            /// 16G scale
+            /// </summary>
             AFS_16G
         };
 
+        /// <summary>
+        /// The gyroscope scale
+        /// </summary>
         public enum GyroScale
         {
+            /// <summary>
+            /// 250 degrees per second
+            /// </summary>
             GFS_250DPS = 0,
+
+            /// <summary>
+            /// 500 degrees per second
+            /// </summary>
             GFS_500DPS,
+
+            /// <summary>
+            /// 1000 degrees per second
+            /// </summary>
             GFS_1000DPS,
+
+            /// <summary>
+            /// 2000 degrees per second
+            /// </summary>
             GFS_2000DPS
         };
 
-        protected enum Registers
+        internal enum Registers
         {
             // Gyroscope and accelerometer
             SELF_TEST_X = 0x0D,

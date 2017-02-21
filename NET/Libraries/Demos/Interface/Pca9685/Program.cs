@@ -29,7 +29,7 @@ namespace Pca9685Demo
             driver.InvertOutput = true;
             driver.OutputDrive = Pca9685.OutputDriveMode.OpenDrain;
 
-            var ledDriver = new PwmLedDriver<PcaPin>(driver.Pins);
+            var ledDriver = new PwmLedDriver<Treehopper.Libraries.Interface.PortExpander.Pin>(driver.Pins);
 
             var rgb = new RgbLed(ledDriver.Leds[0], ledDriver.Leds[1], ledDriver.Leds[2]);
             rgb.BlueGain = 0.7f;

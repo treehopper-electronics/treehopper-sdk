@@ -56,7 +56,7 @@ namespace ImuVisualizer
 
         private async void Selector_OnBoardConnected(object sender, Treehopper.Mvvm.BoardConnectedEventArgs e)
         {
-            var imu = new Mpu9150(e.Board.I2c);
+            var imu = new Mpu9250(e.Board.I2c);
             imu.EnableMagnetometer = false;
             await imu.Calibrate();
 

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
-using Treehopper.Libraries.Interface.ShiftRegister;
+using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
@@ -49,12 +49,13 @@ namespace Treehopper.Libraries.Displays
         int channels;
 
         /// <summary>
-        /// Construct an STP16CPC26 attached directly to a board SPI module
+        /// Construct an LED shift register attached directly to a board SPI module
         /// </summary>
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="ChannelCount">Whether the driver is 16 or 8-channel</param>
         /// <param name="OutputEnablePin">The output enable pin, if any, to use.</param>
+        /// <param name="speedMhz">The speed, in MHz, to use when communicating</param>
         public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOutPin OutputEnablePin = null, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount/8, speedMhz)
         {
             oe = OutputEnablePin;
@@ -62,11 +63,13 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Construct an STP16CPC26 attached directly to a board SPI module
+        /// Construct an LED shift register attached directly to a board SPI module
         /// </summary>
         /// <param name="SpiModule">The board's SPI module</param>
         /// <param name="LatchPin">The pin to use for latches</param>
         /// <param name="OutputEnablePin">The PWM pin to use, allowing controllable global brightness.</param>
+        /// <param name="ChannelCount">The number of channels this LED shift register has</param>
+        /// <param name="speedMhz">The speed, in MHz, to use when communicating</param>
         public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, Pwm OutputEnablePin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount / 8, speedMhz)
         {
             this.oePwm = OutputEnablePin;
@@ -74,10 +77,11 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Construct an STP16CPC26 attached to the output of another shift register
+        /// Construct an LED shift register attached to the output of another shift register
         /// </summary>
         /// <param name="upstreamDevice">The upstream device this shift register is attached to</param>
         /// <param name="OutputEnablePin">The digital pin to use, if any, to control the display state</param>
+        /// <param name="ChannelCount">The number of channels this LED shift register has</param>
         public LedShiftRegister(ChainableShiftRegisterOutput upstreamDevice, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOutPin OutputEnablePin = null) : base(upstreamDevice, (int)ChannelCount / 8)
         {
             oe = OutputEnablePin;
@@ -85,10 +89,11 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Construct an STP16CPC26 attached to the output of another shift register
+        /// Construct an LED shift register attached to the output of another shift register
         /// </summary>
         /// <param name="upstreamDevice">The upstream device this shift register is attached to</param>
         /// <param name="OutputEnablePin">The PWM pin to use, if any, to control the display brightness</param>
+        /// <param name="ChannelCount">The number of channels this LED shift register has</param>
         public LedShiftRegister(ChainableShiftRegisterOutput upstreamDevice, Pwm OutputEnablePin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel) : base(upstreamDevice, (int)ChannelCount / 8)
         {
             this.oePwm = OutputEnablePin;
@@ -200,9 +205,19 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
+        /// <summary>
+        /// The number of channels of this shift register
+        /// </summary>
         public enum LedChannelCount
         {
+            /// <summary>
+            /// A 16-channel LED shift register
+            /// </summary>
             SixteenChannel = 16,
+
+            /// <summary>
+            /// An 8-channel LED shift register
+            /// </summary>
             EightChannel = 8
         }
     }

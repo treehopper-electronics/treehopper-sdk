@@ -19,7 +19,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         private SMBusDevice i2cDev;
         private SpiDevice spiDev;
         private Trimming trimming;
-        protected int tFine;
+        internal int tFine;
 
         /// <summary>
         /// Construct a BMP280 hooked up to the i2C bus
@@ -44,16 +44,16 @@ namespace Treehopper.Libraries.Sensors.Pressure
             Start();
         }
 
-        public enum FilterDefinition
-        {
-            FilterOff,
-            Filter2,
-            Filter4,
-            Filter8,
-            Filter16
-        }
+        //public enum Filter
+        //{
+        //    FilterOff,
+        //    Filter2,
+        //    Filter4,
+        //    Filter8,
+        //    Filter16
+        //}
 
-        protected enum Registers
+        internal enum Registers
         {
             ChipId = 0xD0,
             Rst = 0xE0,
@@ -69,7 +69,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
             TrimmingStart = 0x88,
         }
 
-        protected struct Trimming
+        internal struct Trimming
         {
             public ushort T1;
             public short T2;
@@ -85,12 +85,18 @@ namespace Treehopper.Libraries.Sensors.Pressure
             public short P9;
         }
 
-        protected byte ChipId { get { return 0x58; } }
+        internal byte ChipId { get { return 0x58; } }
 
+        /// <summary>
+        /// Temperature, in degrees Celsius
+        /// </summary>
         public double Celsius { get; protected set; }
 
         private double altitude;
 
+        /// <summary>
+        /// Altitude, in meters
+        /// </summary>
         public double Altitude
         {
             get
@@ -105,6 +111,9 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
         }
 
+        /// <summary>
+        /// Temperature, in degrees Fahrenheit
+        /// </summary>
         public double Fahrenheit
         {
             get
@@ -113,6 +122,9 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
         }
 
+        /// <summary>
+        /// Temperature, in Kelvin
+        /// </summary>
         public double Kelvin
         {
             get
@@ -121,8 +133,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
         }
 
-        protected int PayloadSize { get; set; } = 6;
-        protected byte[] LastReceivedData { get; set; }
+        internal int PayloadSize { get; set; } = 6;
+        internal byte[] LastReceivedData { get; set; }
 
         private void Start()
         {
@@ -134,16 +146,20 @@ namespace Treehopper.Libraries.Sensors.Pressure
             trimming = StructConverter.BytesToStruct<Trimming>(trimmingParameters, Endianness.LittleEndian);
         }
 
-        protected Task Write(byte reg, byte val)
+        internal Task Write(byte reg, byte val)
         {
             return i2cDev?.WriteByteData(reg, val) ?? spiDev?.SendReceive(new byte[] { (byte)(reg | 0x80), val });
         }
 
-        protected async Task<byte[]> Read(byte reg, int numBytesToRead)
+        internal async Task<byte[]> Read(byte reg, int numBytesToRead)
         {
             return (await i2cDev?.ReadBufferData(reg, numBytesToRead)) ?? (await spiDev?.SendReceive(new byte[] { (byte)Registers.TrimmingStart }.Concat(new byte[24]).ToArray())).Skip(1).Take(numBytesToRead).ToArray();
         }
 
+        /// <summary>
+        /// Update the sensor's value
+        /// </summary>
+        /// <returns>An awaitable task</returns>
         public override async Task Update()
         {
             // do a burst read
