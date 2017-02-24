@@ -7,14 +7,8 @@
     using Utilities;
 
     /// <summary>
-    /// Pin is the base class for all Treehopper pins. It provides core digital I/O (GPIO) functionality.
+    /// Represents an I/O pin on Treehopper; it provides core digital I/O (GPIO) and ADC functionality.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This class is useful when only core GPIO functions are needed, and the user wishes to make code portable
-    /// between pins. While it cannot be instantiated directly by the user, Pin variables can reference existing pins.
-    /// </para>
-    /// </remarks>
     public class Pin : INotifyPropertyChanged, DigitalInPin, DigitalOutPin, AdcPin, SpiChipSelectPin
     {
         private TreehopperUsb board;

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 
-namespace Treehopper
+namespace Treehopper.Desktop
 {
     /// <summary>
     /// This platform-specific class is used for discovering Treehopper boards booted into firmware upload mode.

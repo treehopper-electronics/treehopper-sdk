@@ -13,7 +13,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Hardware.Usb;
 
-namespace Treehopper
+namespace Treehopper.Android
 {
     public class ConnectionService : BroadcastReceiver, IConnectionService
     {

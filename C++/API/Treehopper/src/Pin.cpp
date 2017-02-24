@@ -117,20 +117,35 @@ namespace Treehopper
 			}
 
 
-			if (AnalogValue != newVal) // compare the actual ADC values, not the floating-point conversions.
+			if (_adcValue != newVal) // compare the actual ADC values, not the floating-point conversions.
 			{
-				AnalogValue = newVal;
-				AnalogVoltage = voltage;
+				_adcValue = newVal;
+				_analogVoltage = voltage;
 				if (AnalogValueChanged != NULL)
 				{
-					AnalogValueChanged(AnalogValue);
+					AnalogValueChanged(_adcValue);
 				}
 				if (AnalogVoltageChanged != NULL)
 				{
-					AnalogVoltageChanged(AnalogVoltage);
+					AnalogVoltageChanged(_analogVoltage);
 				}
 			}
 		}
+	}
+
+	double Pin::analogValue()
+	{
+		return _analogValue;
+	}
+
+	double Pin::analogVoltage()
+	{
+		return _analogVoltage;
+	}
+
+	int Pin::adcValue()
+	{
+		return _adcValue;
 	}
 
 	void Pin::mode(PinMode value)

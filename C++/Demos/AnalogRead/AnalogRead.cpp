@@ -13,8 +13,7 @@ using namespace Treehopper;
 
 int main()
 {
-	ConnectionService service;
-	TreehopperUsb& board = service.boards[0];
+	TreehopperUsb& board = ConnectionService::instance().boards[0];
 	board.connect();
 
 	wcout << "Connected to " << board << endl;
@@ -23,7 +22,7 @@ int main()
 
 	for (int i = 0; i<50; i++)
 	{
-		wcout << "Analog value: " << board.pins[5].AnalogVoltage << endl;
+		wcout << "Analog value: " << board.pins[5].analogVoltage() << endl;
 		Sleep(100);
 	}
 	board.disconnect();

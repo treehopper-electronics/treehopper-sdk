@@ -8,7 +8,7 @@ namespace Treehopper
 	public:
 		Settings(Settings const&) = delete;
 		void operator=(Settings const&) = delete;
-		static Settings& getInstance()
+		static Settings& instance()
 		{
 			static Settings instance;
 			return instance;

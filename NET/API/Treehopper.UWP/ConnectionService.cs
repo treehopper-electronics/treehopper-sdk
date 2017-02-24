@@ -11,7 +11,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.Usb;
 using Windows.Foundation;
 
-namespace Treehopper
+namespace Treehopper.Uwp
 {
     public sealed class ConnectionService : IConnectionService, INotifyPropertyChanged
     {

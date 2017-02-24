@@ -12,7 +12,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Treehopper
+namespace Treehopper.Uwp
 {
     public class UsbConnection : IConnection, INotifyPropertyChanged
     {

@@ -13,8 +13,7 @@ using namespace Treehopper;
 
 int main()
 {
-	ConnectionService service;
-	TreehopperUsb& board = *service.boards[0];
+	TreehopperUsb& board = ConnectionService::instance().boards[0];
 	board.connect();
 	board.pwm1.enabled(true);
 		for (int i = 0; i <= 20; i++)

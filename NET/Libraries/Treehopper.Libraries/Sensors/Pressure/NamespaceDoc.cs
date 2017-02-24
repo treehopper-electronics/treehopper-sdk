@@ -1,4 +1,7 @@
-﻿namespace Treehopper.Libraries.Sensors.Pressure
+﻿/// <summary>
+/// Pressure sensors
+/// </summary>
+namespace Treehopper.Libraries.Sensors.Pressure
 {
     /// <summary>
     /// Pressure sensors

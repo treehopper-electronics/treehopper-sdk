@@ -1,4 +1,7 @@
-﻿namespace Treehopper.Libraries.Sensors.Temperature
+﻿/// <summary>
+/// Temperature sensors
+/// </summary>
+namespace Treehopper.Libraries.Sensors.Temperature
 {
     /// <summary>
     /// Temperature sensors
