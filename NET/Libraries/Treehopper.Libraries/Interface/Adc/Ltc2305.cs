@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.Interface.Adc
 {
     /// <summary>
     /// A two-channel, 12-bit I2c ADC

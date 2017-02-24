@@ -8,8 +8,7 @@ using namespace Treehopper::Libraries::Sensors::Temperature;
 
 int main()
 {
-	ConnectionService service;
-	TreehopperUsb& board = service.boards[0];
+	TreehopperUsb& board = ConnectionService::instance().boards[0];
 	board.connect();
 
 	Lm75 temp(board.i2c, true, true, true);

@@ -1,4 +1,7 @@
-﻿namespace Treehopper.Libraries.Sensors.Optical
+﻿/// <summary>
+/// Optical sensors
+/// </summary>
+namespace Treehopper.Libraries.Sensors.Optical
 {
     /// <summary>
     /// Optical sensors

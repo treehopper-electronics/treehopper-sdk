@@ -19,8 +19,7 @@ void pin1inputHandler(DigitalIn* sender, PinChangedEventArgs e) {
 
 int main()
 {
-	ConnectionService service;
-	TreehopperUsb& board = service.boards[0];
+	TreehopperUsb& board = ConnectionService::instance().boards[0];
 	board.connect();
 
 	board.pins[0].mode(PinMode::DigitalInput);

@@ -12,9 +12,8 @@ using namespace Treehopper;
 
 int main()
 {
-	ConnectionService service;
-	TreehopperUsb& board = service.boards[0];
-	Settings::getInstance().throwExceptions = true;
+	TreehopperUsb& board = ConnectionService::instance().boards[0];
+	Settings::instance().throwExceptions = true;
 	board.connect();
 	board.i2c.enabled(true);
 	for (int i = 1; i < 127; i++) {

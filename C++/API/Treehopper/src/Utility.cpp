@@ -6,12 +6,12 @@ namespace Treehopper
 {
 	void Utility::error(runtime_error message)
 	{
-		if (Settings::getInstance().throwExceptions)
+		if (Settings::instance().throwExceptions)
 		{
 			throw message;
 		}
 
-		if(Settings::getInstance().printExceptions)
+		if(Settings::instance().printExceptions)
 		{
 			cerr << message.what();
 		}

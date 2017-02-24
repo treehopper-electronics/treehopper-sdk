@@ -11,7 +11,7 @@ using LibUsbDotNet;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace Treehopper
+namespace Treehopper.Desktop
 {
     /// <summary>
     /// This class represents the platform-specific implementation of <see cref="IConnection"/>, 

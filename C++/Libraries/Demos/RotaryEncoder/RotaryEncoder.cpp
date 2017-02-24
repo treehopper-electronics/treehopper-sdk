@@ -8,8 +8,7 @@ using namespace Treehopper::Libraries::Input;
 
 int main()
 {
-	ConnectionService service;
-	TreehopperUsb& board = service.boards[0];
+	TreehopperUsb& board = ConnectionService::instance().boards[0];
 	board.connect();
 
 	RotaryEncoder encoder(board.pins[0], board.pins[1], 4);

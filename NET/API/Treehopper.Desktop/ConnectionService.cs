@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using LibUsbDotNet;
 
-namespace Treehopper
+namespace Treehopper.Desktop
 {
     /// <summary>
     /// This class is used for discovering <see cref="TreehopperUsb"/> devices attached to this computer.

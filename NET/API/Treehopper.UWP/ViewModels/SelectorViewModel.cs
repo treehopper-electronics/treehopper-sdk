@@ -4,12 +4,12 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
-
 using Treehopper.Mvvm.Messages;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using System;
 using System.Collections.Specialized;
+using Treehopper.Uwp;
 
 namespace Treehopper.Mvvm.ViewModel
 {
