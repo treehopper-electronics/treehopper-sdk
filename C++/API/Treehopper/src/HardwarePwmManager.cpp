@@ -22,11 +22,6 @@ namespace Treehopper {
 		return HardwarePwmFrequency();
 	}
 
-	double HardwarePwmManager::frequencyHz()
-	{
-		return 0.0;
-	}
-
 	void HardwarePwmManager::updateDutyCycle(HardwarePwm* pin)
 	{
 		uint16_t registerValue = (uint16_t)round(pin->dutyCycle() * (double)(UINT16_MAX));

@@ -8,15 +8,19 @@ namespace Treehopper
 {
 	class TreehopperUsb;
 
+	/** Manages the HardwarePwm pins */
 	class TREEHOPPER_API HardwarePwmManager
 	{
 		friend class HardwarePwm;
 
 	public:
 		HardwarePwmManager(TreehopperUsb* board);
+
+		/** Sets the HardwarePwmFrequency to be used by the HardwarePwm pins */
 		void frequency(HardwarePwmFrequency value);
+
+		/** Gets the current HardwarePwmFrequency being used */
 		HardwarePwmFrequency frequency();
-		double frequencyHz();
 
 	protected:
 		enum class EnableMode : uint8_t
