@@ -8,6 +8,7 @@ using System.Windows;
 using Treehopper.Mvvm.Messages;
 using System;
 using System.Collections.Specialized;
+using Treehopper.Desktop;
 
 namespace Treehopper.Mvvm.ViewModel
 {
