@@ -27,6 +27,12 @@
             <TextBlock Text="Pitch"/>
             <TextBlock Text="{Binding Pitch}" />
             <ProgressBar Minimum="-180" Maximum="180"  Value="{Binding Pitch}" Height="20" />
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding EnableYaw}" />
+                <TextBlock Text="Enable (drifty) yaw"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Yaw}" />
+            <ProgressBar Minimum="-180" Maximum="180"  Value="{Binding Yaw}" Height="20" />
         </StackPanel>
 
         <h:HelixViewport3D ShowCoordinateSystem="True">

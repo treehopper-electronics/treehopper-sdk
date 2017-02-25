@@ -31,7 +31,9 @@ namespace ImuVisualizer
 
         public double Pitch { get; set; }
         public double Roll { get; set; }
+        public double Yaw { get; set; }
 
+        public bool EnableYaw { get; set; } = true;
         public MatrixTransform3D Transform { get; set; } = new MatrixTransform3D();
 
         ComplementaryFilter filter;
@@ -68,18 +70,26 @@ namespace ImuVisualizer
         {
             Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
             {
-                var pitchRotation = new Quaternion(new Vector3D(1, 0, 0), -filter.Pitch);
-                var rollRotation = new Quaternion(new Vector3D(0, 0, 1), filter.Roll);
-                var quat = Quaternion.Multiply(pitchRotation, rollRotation);
+                Pitch = filter.Pitch;
+                Roll = filter.Roll;
+                if (EnableYaw)
+                    Yaw = filter.Yaw;
+                else
+                    Yaw = 0;
+
+                var pitchRotation = new Quaternion(new Vector3D(1, 0, 0), -Pitch);
+                var rollRotation = new Quaternion(new Vector3D(0, 0, 1), Roll);
+                var yawRotation = new Quaternion(new Vector3D(0, 1, 0), -Yaw);
+                var quat = Quaternion.Multiply(Quaternion.Multiply(pitchRotation, rollRotation), yawRotation);
                 var transform = new QuaternionRotation3D(quat);
                 var rot = new RotateTransform3D(transform);
                 Transform = new MatrixTransform3D(rot.Value);
 
-                Pitch = filter.Pitch;
-                Roll = filter.Roll;
+
 
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Yaw"));
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Transform"));
             }));
         }
