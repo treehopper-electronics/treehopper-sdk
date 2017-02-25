@@ -116,6 +116,7 @@
     <Compile Include="Motors\MotorSpeedController.cs" />
     <Compile Include="Motors\MotorizedFader.cs" />
     <Compile Include="Motors\NamespaceDoc.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensors\Humidity\IHumiditySensor.cs" />
     <Compile Include="Sensors\Humidity\NamespaceDoc.cs" />
