@@ -26,8 +26,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             byte result = dev.ReadByteData((byte)Registers.WHO_AM_I).Result;
 
-            if (result != 0x71)
-                throw new Exception("Incorrect part number attached to bus");
+            //if (result != 0x71)
+            //    throw new Exception("Incorrect part number attached to bus");
 
 
             dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).Wait(); // wake up
