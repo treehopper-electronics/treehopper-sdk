@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using Treehopper.Libraries.Displays;
+using Treehopper.Desktop;
 
 namespace Ssd1306Oled128x32
 {

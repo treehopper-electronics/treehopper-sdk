@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
+using Treehopper.Desktop;
 using Treehopper.Libraries.Displays;
 using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Libraries.Motors;

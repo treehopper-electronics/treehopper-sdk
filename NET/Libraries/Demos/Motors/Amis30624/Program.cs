@@ -7,7 +7,8 @@ using System.Threading;
 using Treehopper;
 using System.Diagnostics;
 using Treehopper.Libraries;
-using Treehopper.Libraries.Motors.Amis30624;
+using Treehopper.Libraries.Motors;
+using Treehopper.Desktop;
 
 namespace Demo
 {
@@ -24,9 +25,9 @@ namespace Demo
             var stepper = new Amis30624(board.I2c, false, 100);
 
             stepper.MinVelocityFactorThirtySeconds = 1;
-            stepper.RunningCurrent = RunningCurrent.mA_800;
-            stepper.Acceleration = Acceleration.StepsPerSec2_1004;
-            stepper.MaxVelocity = MaxVelocity.StepsPerSecond_973;
+            stepper.RunCurrent = Amis30624.RunningCurrent.mA_800;
+            stepper.Acceleration = Amis30624.Accel.StepsPerSec2_1004;
+            stepper.MaxVelocity = Amis30624.MaxVelocityType.StepsPerSecond_973;
 
             while (!Console.KeyAvailable)
             {

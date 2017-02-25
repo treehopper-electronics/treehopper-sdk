@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Management.Automation;
 using Treehopper;
 using System.Text.RegularExpressions;
+using Treehopper.Desktop;
 
 namespace Treehopper.PS
 {

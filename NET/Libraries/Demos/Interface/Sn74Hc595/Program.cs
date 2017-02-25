@@ -7,6 +7,7 @@ using Treehopper;
 using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Libraries.Displays;
 using Treehopper.Utilities;
+using Treehopper.Desktop;
 
 namespace Sn74hc595Demo
 {
@@ -20,7 +21,7 @@ namespace Sn74hc595Demo
 
         static BarGraph bar1;
         static BarGraph bar2;
-        static Pin adcPin;
+        static Treehopper.Pin adcPin;
         static async Task App()
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();

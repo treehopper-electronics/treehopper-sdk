@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Utilities;
 using Treehopper.Libraries.Displays;
+using Treehopper.Desktop;
 
 namespace Dm632Demo
 {
