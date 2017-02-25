@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
-using Treehopper.Libraries;
-using Treehopper.Libraries.Interface.I2cMux;
+using Treehopper.Libraries.Interface.Mux;
 using Treehopper.Libraries.Sensors.Temperature;
 
 namespace I2cAnalogMuxDemo

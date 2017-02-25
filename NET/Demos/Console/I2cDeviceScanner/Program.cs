@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
+using Treehopper.Desktop;
 
 namespace I2cDeviceScanner
 {

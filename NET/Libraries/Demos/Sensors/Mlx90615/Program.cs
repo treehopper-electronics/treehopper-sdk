@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
+using Treehopper.Desktop;
 using Treehopper.Libraries.Sensors.Temperature;
 namespace Mlx90615Demo
 {

@@ -12,6 +12,7 @@ using Treehopper;
 using Treehopper.Mvvm.ViewModel;
 using Treehopper.Mvvm.Messages;
 using Treehopper.Utilities;
+using Treehopper.Desktop;
 
 namespace DeviceManager.ViewModels
 {
