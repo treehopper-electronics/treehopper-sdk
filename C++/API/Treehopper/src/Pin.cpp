@@ -17,8 +17,9 @@ namespace Treehopper
 
 	Pin::Pin(TreehopperUsb* board, uint8_t pinNumber)
 	{
-		PinNumber = pinNumber;
+		this->pinNumber = pinNumber;
 		this->board = board;
+		this->spiModule = &board->spi;
 		_mode = PinMode::Reserved;
 		referenceLevel = AdcReferenceLevel::VREF_3V3;
 	}
@@ -194,7 +195,7 @@ namespace Treehopper
 	void Pin::SendCommand(uint8_t* cmd, size_t len)
 	{
 		uint8_t data[6];
-		data[0] = PinNumber;
+		data[0] = pinNumber;
 		memcpy(&data[1], cmd, len);
 		board->sendPinConfigPacket(data, 6);
 	}
