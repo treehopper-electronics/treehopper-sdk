@@ -5,7 +5,8 @@
 #include "Pin.h"
 #include "HardwarePwmManager.h"
 #include "HardwarePwm.h"
-#include "hardwareI2c.h"
+#include "HardwareI2c.h"
+#include "HardwareSpi.h"
 #include <thread>
 
 using namespace std;
@@ -15,33 +16,13 @@ namespace Treehopper
 	class Pwm;
 	class I2c;
 
-	enum class DeviceCommands
-	{
-		Reserved = 0,   // Not implemented
-		ConfigureDevice,    // Sent upon device connect/disconnect
-		PwmConfig,
-		UartConfig,
-		I2cConfig,
-		SpiConfig,
-		I2cTransaction,
-		SpiTransaction,
-		UartTransaction,
-		SoftPwmConfig,
-		FirmwareUpdateSerial,
-		FirmwareUpdateName,
-		Reboot,
-		EnterBootloader,
-		LedConfig,
-		ParallelConfig,
-		ParallelTransaction
-	};
-
 	class TREEHOPPER_API TreehopperUsb
 	{
-		friend class Pin;
-		friend class HardwareI2c;
-		friend class UsbConnection;
-		friend class HardwarePwmManager;
+		friend Pin;
+		friend HardwareI2c;
+		friend UsbConnection;
+		friend HardwarePwmManager;
+		friend HardwareSpi;
 	public:
 		TreehopperUsb(UsbConnection* connection);
 		~TreehopperUsb();
@@ -71,11 +52,32 @@ namespace Treehopper
 		const int numberOfPins = 20;
 
 		HardwareI2c i2c;
+		HardwareSpi spi;
 		HardwarePwm pwm1;
 		HardwarePwm pwm2;
 		HardwarePwm pwm3;
 		HardwarePwmManager pwmManager;
 	private:
+		enum class DeviceCommands
+		{
+			Reserved = 0,   // Not implemented
+			ConfigureDevice,    // Sent upon board connect/disconnect
+			PwmConfig,
+			UartConfig,
+			I2cConfig,
+			SpiConfig,
+			I2cTransaction,
+			SpiTransaction,
+			UartTransaction,
+			SoftPwmConfig,
+			FirmwareUpdateSerial,
+			FirmwareUpdateName,
+			Reboot,
+			EnterBootloader,
+			LedConfig,
+			ParallelConfig,
+			ParallelTransaction
+		};
 		UsbConnection* connection;
 		thread pinListenerThread;
 		void pinStateListener();
