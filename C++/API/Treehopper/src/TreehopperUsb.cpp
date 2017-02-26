@@ -5,14 +5,14 @@
 
 namespace Treehopper 
 {
-	TreehopperUsb::TreehopperUsb(UsbConnection* connection) :
+	TreehopperUsb::TreehopperUsb(UsbConnection& connection) :
 		connection(connection),
-		pwmManager(this),
+		pwmManager(*this),
 		i2c(*this),
 		spi(*this),
-		pwm1(this, 7),
-		pwm2(this, 8),
-		pwm3(this, 9)
+		pwm1(*this, 7),
+		pwm2(*this, 8),
+		pwm3(*this, 9)
 	{
 		for (int i = 0; i < numberOfPins; i++)
 			pins.emplace_back(this, i);
@@ -25,7 +25,7 @@ namespace Treehopper
 
 	bool TreehopperUsb::connect()
 	{
-		if (!connection->open())
+		if (!connection.open())
 		{
 			return false;
 		}
@@ -40,17 +40,17 @@ namespace Treehopper
 	{
 		isConnected = false;
 		//pinListenerThread.join(); // block this thread until the listener exits
-		connection->close();
+		connection.close();
 	}
 
 	wstring TreehopperUsb::serialNumber()
 	{
-		return connection->serialNumber();
+		return connection.serialNumber();
 	}
 
 	wstring TreehopperUsb::name()
 	{
-		return connection->name();
+		return connection.name();
 	}
 
 	void TreehopperUsb::led(bool value)
@@ -59,7 +59,7 @@ namespace Treehopper
 		uint8_t data[2];
 		data[0] = (uint8_t)DeviceCommands::LedConfig;
 		data[1] = _led;
-		connection->sendDataPeripheralChannel(data, 2);
+		connection.sendDataPeripheralChannel(data, 2);
 	}
 
 	bool TreehopperUsb::led()
@@ -69,24 +69,24 @@ namespace Treehopper
 
 	void TreehopperUsb::sendPinConfigPacket(uint8_t* data, size_t len)
 	{
-		connection->sendDataPinConfigChannel(data, len);
+		connection.sendDataPinConfigChannel(data, len);
 	}
 
 	void TreehopperUsb::sendPeripheralConfigPacket(uint8_t* data, size_t len)
 	{
-		connection->sendDataPeripheralChannel(data, len);
+		connection.sendDataPeripheralChannel(data, len);
 	}
 
 	void TreehopperUsb::receivePeripheralConfigPacket(uint8_t * data, size_t numBytesToRead)
 	{
-		connection->receiveDataPeripheralChannel(data, numBytesToRead);
+		connection.receiveDataPeripheralChannel(data, numBytesToRead);
 	}
 
 	void TreehopperUsb::pinStateListener()
 	{
 		while (isConnected)
 		{
-			connection->receivePinReportPacket(buffer);
+			connection.receivePinReportPacket(buffer);
 
 			for (int i = 0; i < numberOfPins; i++)
 				pins[i].updateValue(buffer[i * 2 + 1], buffer[i * 2 + 2]);

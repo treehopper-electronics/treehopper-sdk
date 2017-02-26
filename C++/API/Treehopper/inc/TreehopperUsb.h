@@ -24,7 +24,7 @@ namespace Treehopper
 		friend HardwarePwmManager;
 		friend HardwareSpi;
 	public:
-		TreehopperUsb(UsbConnection* connection);
+		TreehopperUsb(UsbConnection& connection);
 		~TreehopperUsb();
 		TreehopperUsb& operator=(const TreehopperUsb& rhs)
 		{
@@ -78,7 +78,7 @@ namespace Treehopper
 			ParallelConfig,
 			ParallelTransaction
 		};
-		UsbConnection* connection;
+		UsbConnection& connection;
 		thread pinListenerThread;
 		void pinStateListener();
 		uint8_t buffer[41];
