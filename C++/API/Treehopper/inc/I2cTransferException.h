@@ -7,7 +7,7 @@ using namespace std;
 
 namespace Treehopper 
 {
-	class TREEHOPPER_API I2cTransferException : public std::runtime_error
+	class I2cTransferException : public std::runtime_error
 	{
 	public:
 		I2cTransferException(I2cTransferError responseCode) : runtime_error(GetError(responseCode))

@@ -9,7 +9,7 @@ namespace Treehopper {
 	class SpiChipSelectPin;
 
 	/** An SPI port */
-	class TREEHOPPER_API Spi
+	class Spi
 	{
 	public:
 		/** Gets whether the port is enabled */

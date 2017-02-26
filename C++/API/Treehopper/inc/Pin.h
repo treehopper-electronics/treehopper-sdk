@@ -38,7 +38,7 @@ namespace Treehopper
 
 	Each Pin can function as a digital input, digital output (in either push-pull or open-drain configurations), or an analog input. Configure this by calling Pin::mode(). Many Treehopper pins are also used by peripherals (Spi, I2c, Uart, or Pwm); when these peripherals are active, the respective pins is set to PinMode::Reserved.
 	*/
-	class TREEHOPPER_API Pin : public DigitalIn, public DigitalOut, public SpiChipSelectPin
+	class TREEHOPPER_API Pin : public DigitalIn, public SpiChipSelectPin
 	{
 		friend class TreehopperUsb;
 
