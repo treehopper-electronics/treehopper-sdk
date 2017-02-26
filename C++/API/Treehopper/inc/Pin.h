@@ -6,6 +6,7 @@
 #include "DigitalIn.h"
 #include "DigitalOut.h"
 #include "Event.h"
+#include "SpiChipSelectPin.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ namespace Treehopper
 
 	Each Pin can function as a digital input, digital output (in either push-pull or open-drain configurations), or an analog input. Configure this by calling Pin::mode(). Many Treehopper pins are also used by peripherals (Spi, I2c, Uart, or Pwm); when these peripherals are active, the respective pins is set to PinMode::Reserved.
 	*/
-	class TREEHOPPER_API Pin : public DigitalIn, public DigitalOut
+	class TREEHOPPER_API Pin : public DigitalIn, public DigitalOut, public SpiChipSelectPin
 	{
 		friend class TreehopperUsb;
 
@@ -93,7 +94,6 @@ namespace Treehopper
 
 		void SendCommand(uint8_t* data, size_t length);
 		TreehopperUsb* board;
-		uint8_t PinNumber;
 	protected:
 		int _adcValue;
 		double _analogValue;

@@ -8,7 +8,8 @@ namespace Treehopper
 	TreehopperUsb::TreehopperUsb(UsbConnection* connection) :
 		connection(connection),
 		pwmManager(this),
-		i2c(this),
+		i2c(*this),
+		spi(*this),
 		pwm1(this, 7),
 		pwm2(this, 8),
 		pwm3(this, 9)
