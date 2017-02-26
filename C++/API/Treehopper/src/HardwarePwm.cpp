@@ -6,10 +6,8 @@
 
 namespace Treehopper 
 {
-	HardwarePwm::HardwarePwm(TreehopperUsb* board, int pinNumber)
+	HardwarePwm::HardwarePwm(TreehopperUsb& board, int pinNumber) : board(board), pinNumber(pinNumber)
 	{
-		this->pinNumber = pinNumber;
-		this->board = board;
 	}
 
 	bool HardwarePwm::enabled() { return _enabled; }
@@ -19,9 +17,9 @@ namespace Treehopper
 
 		_enabled = value;
 		if (_enabled)
-			board->pwmManager.start(this);
+			board.pwmManager.start(*this);
 		else
-			board->pwmManager.stop(this);
+			board.pwmManager.stop(*this);
 	}
 
 	HardwarePwm::~HardwarePwm()
@@ -30,6 +28,6 @@ namespace Treehopper
 
 	void HardwarePwm::updateDutyCycle()
 	{
-		board->pwmManager.updateDutyCycle(this);
+		board.pwmManager.updateDutyCycle(*this);
 	}
 }

@@ -6,9 +6,8 @@
 
 namespace Treehopper {
 
-	HardwarePwmManager::HardwarePwmManager(TreehopperUsb * board)
+	HardwarePwmManager::HardwarePwmManager(TreehopperUsb& board) : board(board)
 	{
-		this->board = board;
 		config.opcode = (uint8_t)TreehopperUsb::DeviceCommands::PwmConfig;
 	}
 
@@ -22,10 +21,10 @@ namespace Treehopper {
 		return HardwarePwmFrequency();
 	}
 
-	void HardwarePwmManager::updateDutyCycle(HardwarePwm* pin)
+	void HardwarePwmManager::updateDutyCycle(HardwarePwm& pin)
 	{
-		uint16_t registerValue = (uint16_t)round(pin->dutyCycle() * (double)(UINT16_MAX));
-		switch (pin->pinNumber)
+		uint16_t registerValue = (uint16_t)round(pin.dutyCycle() * (double)(UINT16_MAX));
+		switch (pin.pinNumber)
 		{
 		case 7:
 			config.DutyCycle7_Lo = registerValue & 0xFF;
@@ -44,15 +43,15 @@ namespace Treehopper {
 		sendConfig();
 	}
 
-	void HardwarePwmManager::start(HardwarePwm* pin)
+	void HardwarePwmManager::start(HardwarePwm& pin)
 	{
 		// first check to make sure the previous PWM pins have been enabled first.
-		if ((pin->pinNumber == 8) && (config.mode != EnableMode::Pin7))
+		if ((pin.pinNumber == 8) && (config.mode != EnableMode::Pin7))
 			throw "You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm";
-		if ((pin->pinNumber == 9) && (config.mode != EnableMode::Pin7_Pin8))
+		if ((pin.pinNumber == 9) && (config.mode != EnableMode::Pin7_Pin8))
 			throw "You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm";
 
-			switch (pin->pinNumber)
+			switch (pin.pinNumber)
 			{
 			case 7:
 				config.mode = EnableMode::Pin7;
@@ -68,15 +67,15 @@ namespace Treehopper {
 			sendConfig();
 	}
 
-	void HardwarePwmManager::stop(HardwarePwm * pin)
+	void HardwarePwmManager::stop(HardwarePwm& pin)
 	{
 		// first check to make sure the higher PWM pins have been disabled first
-		if ((pin->pinNumber == 8) && (config.mode != EnableMode::Pin7_Pin8))
+		if ((pin.pinNumber == 8) && (config.mode != EnableMode::Pin7_Pin8))
 			throw "You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm";
-		if ((pin->pinNumber == 7) && (config.mode != EnableMode::Pin7))
+		if ((pin.pinNumber == 7) && (config.mode != EnableMode::Pin7))
 			throw "You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm";
 
-		switch (pin->pinNumber)
+		switch (pin.pinNumber)
 		{
 		case 7:
 			config.mode = EnableMode::None;
@@ -94,7 +93,7 @@ namespace Treehopper {
 
 	void HardwarePwmManager::sendConfig()
 	{
-		board->sendPeripheralConfigPacket((uint8_t*)&config, sizeof(config));
+		board.sendPeripheralConfigPacket((uint8_t*)&config, sizeof(config));
 	}
 
 }
