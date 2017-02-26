@@ -8,10 +8,8 @@
 using namespace std;
 
 namespace Treehopper {
-	HardwareI2c::HardwareI2c(TreehopperUsb* board)
+	HardwareI2c::HardwareI2c(TreehopperUsb& board) : board(board), _speed(100)
 	{
-		this->device = board;
-		this->_speed = 100;
 	}
 
 
@@ -38,6 +36,15 @@ namespace Treehopper {
 		this->_enabled = value;
 
 		sendConfig();
+
+		if (_enabled) {
+			board.pins[3].mode(PinMode::Reserved);
+			board.pins[4].mode(PinMode::Reserved);
+		}
+		else {
+			board.pins[3].mode(PinMode::Unassigned);
+			board.pins[4].mode(PinMode::Unassigned);
+		}
 	}
 
 	bool HardwareI2c::enabled()
@@ -51,7 +58,7 @@ namespace Treehopper {
 		uint8_t* receivedData = new uint8_t[numBytesToRead+1];
 
 		uint8_t* dataToSend = new uint8_t[4 + numBytesToWrite];
-		dataToSend[0] = (uint8_t)DeviceCommands::I2cTransaction;
+		dataToSend[0] = (uint8_t)TreehopperUsb::DeviceCommands::I2cTransaction;
 		dataToSend[1] = address;
 		dataToSend[2] = (uint8_t)numBytesToWrite; // total length (0-255)
 		dataToSend[3] = (uint8_t)numBytesToRead;
@@ -65,7 +72,7 @@ namespace Treehopper {
 		while (bytesRemaining > 0)
 		{
 			int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
-			device->sendPeripheralConfigPacket(&dataToSend[offset], transferLength);
+			board.sendPeripheralConfigPacket(&dataToSend[offset], transferLength);
 			offset += transferLength;
 			bytesRemaining -= transferLength;
 		}
@@ -73,7 +80,7 @@ namespace Treehopper {
 		if (numBytesToRead == 0)
 		{
 			uint8_t responseCode;
-			device->receivePeripheralConfigPacket(&responseCode, 1);
+			board.receivePeripheralConfigPacket(&responseCode, 1);
 			if (responseCode != 255)
 			{
 				I2cTransferException ex((I2cTransferError)responseCode);
@@ -88,7 +95,7 @@ namespace Treehopper {
 			while (bytesRemaining > 0)
 			{
 				int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-				device->receivePeripheralConfigPacket(&receivedData[offset], numBytesToTransfer);
+				board.receivePeripheralConfigPacket(&receivedData[offset], numBytesToTransfer);
 				offset += numBytesToTransfer;
 				bytesRemaining -= numBytesToTransfer;
 			}
@@ -117,9 +124,9 @@ namespace Treehopper {
 		}
 
 		uint8_t dataToSend[3];
-		dataToSend[0] = (uint8_t)DeviceCommands::I2cConfig;
+		dataToSend[0] = (uint8_t)TreehopperUsb::DeviceCommands::I2cConfig;
 		dataToSend[1] = _enabled;
 		dataToSend[2] = (uint8_t)th0;
-		device->sendPeripheralConfigPacket(dataToSend, 3);
+		board.sendPeripheralConfigPacket(dataToSend, 3);
 	}
 }

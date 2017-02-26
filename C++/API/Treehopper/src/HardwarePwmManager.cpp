@@ -9,7 +9,7 @@ namespace Treehopper {
 	HardwarePwmManager::HardwarePwmManager(TreehopperUsb * board)
 	{
 		this->board = board;
-		config.opcode = (uint8_t)DeviceCommands::PwmConfig;
+		config.opcode = (uint8_t)TreehopperUsb::DeviceCommands::PwmConfig;
 	}
 
 	void HardwarePwmManager::frequency(HardwarePwmFrequency value)
