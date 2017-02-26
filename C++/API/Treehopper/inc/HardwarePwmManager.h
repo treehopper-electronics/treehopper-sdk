@@ -14,7 +14,7 @@ namespace Treehopper
 		friend class HardwarePwm;
 
 	public:
-		HardwarePwmManager(TreehopperUsb* board);
+		HardwarePwmManager(TreehopperUsb& board);
 
 		/** Sets the HardwarePwmFrequency to be used by the HardwarePwm pins */
 		void frequency(HardwarePwmFrequency value);
@@ -43,10 +43,10 @@ namespace Treehopper
 			uint8_t DutyCycle9_Hi;
 		} config;
 
-		TreehopperUsb* board;
+		TreehopperUsb& board;
 		void sendConfig();
-		void updateDutyCycle(HardwarePwm* pin);
-		void start(HardwarePwm* pin);
-		void stop(HardwarePwm* pin);
+		void updateDutyCycle(HardwarePwm& pin);
+		void start(HardwarePwm& pin);
+		void stop(HardwarePwm& pin);
 	};
 }

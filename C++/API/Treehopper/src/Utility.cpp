@@ -4,9 +4,9 @@
 #include <iostream>
 namespace Treehopper 
 {
-	void Utility::error(runtime_error message)
+	void Utility::error(runtime_error& message, bool fatal)
 	{
-		if (Settings::instance().throwExceptions)
+		if (Settings::instance().throwExceptions || fatal)
 		{
 			throw message;
 		}

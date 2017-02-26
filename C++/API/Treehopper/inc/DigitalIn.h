@@ -24,7 +24,7 @@ namespace Treehopper
 	class TREEHOPPER_API DigitalIn
 	{
 	public:
-		DigitalIn() :pinChanged(this) { }
+		DigitalIn() :pinChanged(*this) { }
 
 		/** Fires whenever the digital input changes. */
 		Event<DigitalIn, PinChangedEventArgs> pinChanged;

@@ -111,7 +111,7 @@ namespace Treehopper
 			{
 				// this is a Treehopper!
 				//TreehopperUsb* board = new TreehopperUsb(new WinUsbConnection(devicePath));
-				boards.emplace_back(new WinUsbConnection(devicePath));
+				boards.emplace_back(*(new WinUsbConnection(devicePath)));
 			}
 
 			LocalFree(detailData);

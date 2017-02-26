@@ -12,7 +12,7 @@ namespace Treehopper
 	{
 		friend class HardwarePwmManager;
 	public:
-		HardwarePwm(TreehopperUsb* board, int pinNumber);
+		HardwarePwm(TreehopperUsb& board, int pinNumber);
 		~HardwarePwm();
 		/** Gets whether this hardware PWM pin is enabled */
 		virtual bool enabled();
@@ -23,7 +23,7 @@ namespace Treehopper
 		void updateDutyCycle();
 		bool _enabled;
 		int pinNumber;
-		TreehopperUsb* board;
+		TreehopperUsb& board;
 	};
 }
 

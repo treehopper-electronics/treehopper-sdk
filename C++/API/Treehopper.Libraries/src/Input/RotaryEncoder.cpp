@@ -3,12 +3,12 @@
 
 namespace Treehopper { namespace Libraries { namespace Input {
 
-	RotaryEncoder::RotaryEncoder(DigitalIn& channelA, DigitalIn& channelB, int stepsPerTick) : positionChanged(this), a(channelA), b(channelB), stepsPerTick(stepsPerTick), _position(0), oldPosition(0)
+	RotaryEncoder::RotaryEncoder(DigitalIn& channelA, DigitalIn& channelB, int stepsPerTick) : positionChanged(*this), a(channelA), b(channelB), stepsPerTick(stepsPerTick), _position(0), oldPosition(0)
 	{
 		a.makeDigitalInput();
 		b.makeDigitalInput();
 
-		a.pinChanged += [&](DigitalIn* object, PinChangedEventArgs e) {
+		a.pinChanged += [&](DigitalIn& object, PinChangedEventArgs e) {
 			if (b.digitalValue() && a.digitalValue())
 			{
 				_position++;
@@ -29,7 +29,7 @@ namespace Treehopper { namespace Libraries { namespace Input {
 			updatePosition();
 		};
 
-		b.pinChanged += [&](DigitalIn* object, PinChangedEventArgs e) {
+		b.pinChanged += [&](DigitalIn& object, PinChangedEventArgs e) {
 			if (b.digitalValue() && a.digitalValue())
 			{
 				_position--;

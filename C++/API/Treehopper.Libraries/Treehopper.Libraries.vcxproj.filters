@@ -14,6 +14,15 @@
     <Filter Include="Input">
       <UniqueIdentifier>{7923d35e-c9d3-4a72-afcd-4b3761a62789}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Displays">
+      <UniqueIdentifier>{fcfa051f-9ebb-42c8-bbee-128feb43a4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{b8c8226f-b802-45a9-ad45-b299e7862a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\PortExpander">
+      <UniqueIdentifier>{a415ea51-4699-40e1-97b8-c18eca08b42c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\stdafx.h" />
@@ -32,6 +41,14 @@
     <ClInclude Include="inc\Input\RotaryEncoder.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Interface\PortExpander\ChainableShiftRegisterOutput.h">
+      <Filter>Interface\PortExpander</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Interface\Flushable.h" />
+    <ClInclude Include="inc\Displays\Dm632.h" />
+    <ClInclude Include="inc\Displays\LedDriver.h" />
+    <ClInclude Include="inc\Displays\Led.h" />
+    <ClInclude Include="inc\Displays\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
@@ -49,5 +66,9 @@
     <ClCompile Include="src\Input\RotaryEncoder.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="src\Interface\PortExpander\ChainableShiftRegisterOutput.cpp" />
+    <ClCompile Include="src\Displays\Dm632.cpp" />
+    <ClCompile Include="src\Displays\Led.cpp" />
+    <ClCompile Include="src\Displays\LedDriver.cpp" />
   </ItemGroup>
 </Project>

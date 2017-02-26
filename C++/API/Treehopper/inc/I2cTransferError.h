@@ -2,12 +2,34 @@
 #include "Treehopper.h"
 namespace Treehopper 
 {
-	enum class TREEHOPPER_API I2cTransferError
+	/// <summary>
+	/// Describes the transfer error, if not Success, that occured
+	/// </summary>
+	enum class I2cTransferError
 	{
-		ArbitrationLostError = 0,
-		NackError = 1,
-		UnknownError = 2,
-		TxunderError = 3,
+		/// <summary>
+		/// Bus arbitration was lost
+		/// </summary>
+		ArbitrationLostError,
+
+		/// <summary>
+		/// The slave board failed to Nack back.
+		/// </summary>
+		NackError,
+
+		/// <summary>
+		/// Unknown error
+		/// </summary>
+		UnknownError,
+
+		/// <summary>
+		/// Tx buffer underrun error
+		/// </summary>
+		TxunderError,
+
+		/// <summary>
+		/// Successful transaction
+		/// </summary>
 		Success = 255
 	};
 }
