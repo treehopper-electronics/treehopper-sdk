@@ -72,29 +72,29 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)inc;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)inc;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)inc;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)inc;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)Output\C++\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)C++\API\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -110,7 +110,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)C++\API\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -128,7 +128,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)C++\API\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -148,7 +148,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;TREEHOPPERLIBRARIES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)C++\API\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -162,7 +162,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Displays\Dm632.h" />
+    <ClInclude Include="inc\Displays\Led.h" />
+    <ClInclude Include="inc\Displays\LedDriver.h" />
+    <ClInclude Include="inc\Displays\Utility.h" />
     <ClInclude Include="inc\Input\RotaryEncoder.h" />
+    <ClInclude Include="inc\Interface\Flushable.h" />
+    <ClInclude Include="inc\Interface\PortExpander\ChainableShiftRegisterOutput.h" />
     <ClInclude Include="inc\Pollable.h" />
     <ClInclude Include="inc\Sensors\Temperature\Lm75.h" />
     <ClInclude Include="inc\Sensors\Temperature\Mcp9808.h" />
@@ -172,8 +178,12 @@
     <ClInclude Include="inc\Treehopper.Libraries.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Displays\Dm632.cpp" />
+    <ClCompile Include="src\Displays\Led.cpp" />
+    <ClCompile Include="src\Displays\LedDriver.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Input\RotaryEncoder.cpp" />
+    <ClCompile Include="src\Interface\PortExpander\ChainableShiftRegisterOutput.cpp" />
     <ClCompile Include="src\Pollable.cpp" />
     <ClCompile Include="src\Sensors\Temperature\Lm75.cpp" />
     <ClCompile Include="src\Sensors\Temperature\Mcp9808.cpp" />
