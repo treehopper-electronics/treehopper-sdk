@@ -12,7 +12,7 @@ int main()
 	board.connect();
 
 	RotaryEncoder encoder(board.pins[0], board.pins[1], 4);
-	encoder.positionChanged += [](RotaryEncoder* sender, PositionChangedEventArgs e)
+	encoder.positionChanged += [](RotaryEncoder& sender, PositionChangedEventArgs e)
 	{
 		cout << "New position: " << e.newPosition << endl;
 	};
@@ -23,4 +23,3 @@ int main()
 	board.disconnect();
     return 0;
 }
-

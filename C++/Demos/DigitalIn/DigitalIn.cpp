@@ -13,7 +13,7 @@
 using namespace std;
 using namespace Treehopper;
 
-void pin1inputHandler(DigitalIn* sender, PinChangedEventArgs e) {
+void pin1inputHandler(DigitalIn& sender, PinChangedEventArgs e) {
 	cout << "Pin 0 event: " << e.newValue << endl;
 };
 
@@ -29,7 +29,7 @@ int main()
 	board.pins[0].pinChanged += pin1inputHandler;
 
 	// ... or by defining an in-place lambda expression
-	board.pins[1].pinChanged += [](DigitalIn* sender, PinChangedEventArgs e) {
+	board.pins[1].pinChanged += [](DigitalIn& sender, PinChangedEventArgs e) {
 		cout << "Pin 1 event: " << e.newValue << endl;
 	};
 

@@ -71,24 +71,23 @@ namespace Treehopper
 		/** Create a new Event that belongs to a Sender, and takes an EventArgs event object type. 
 		@param[in] sender The parent object that fired this event.
 		*/
-		Event<Sender, EventArgs>(Sender* sender) : handlers()
+		Event<Sender, EventArgs>(Sender& sender) : sender(sender), handlers()
 		{
-			this->sender = sender;
 		}
 
 		/** Subscribe to an event */
-		void operator+=(function<void(Sender* sender, EventArgs e)> pin1inputHandler)
+		void operator+=(function<void(Sender& sender, EventArgs e)> pin1inputHandler)
 		{
 			handlers.push_back(pin1inputHandler);
 		}
 
-		void operator-=(function<void(Sender* sender, EventArgs e)> pin1inputHandler)
+		void operator-=(function<void(Sender& sender, EventArgs e)> pin1inputHandler)
 		{
 			int idx = -1;
 			for(int i=0;i<handlers.size();i++)
 			{
-				void* testHandlerAddress = *(handlers[i]).target<void(*)(Sender* sender, EventArgs e)>();
-				void* handlerAddress = *(pin1inputHandler).target<void(*)(Sender* sender, EventArgs e)>();
+				void* testHandlerAddress = *(handlers[i]).target<void(*)(Sender& sender, EventArgs e)>();
+				void* handlerAddress = *(pin1inputHandler).target<void(*)(Sender& sender, EventArgs e)>();
 				if (testHandlerAddress == handlerAddress)
 					idx = i;
 			}
@@ -97,7 +96,7 @@ namespace Treehopper
 		}
 
 	protected:
-		vector<function<void(Sender* sender, EventArgs e)>> handlers;
+		vector<function<void(Sender& sender, EventArgs e)>> handlers;
 
 		void invoke(EventArgs arg)
 		{
@@ -107,7 +106,7 @@ namespace Treehopper
 			}
 		}
 
-		Sender* sender;
+		Sender& sender;
 	};
 }
 
