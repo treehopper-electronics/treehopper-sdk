@@ -8,15 +8,6 @@ using namespace std;
 
 namespace Treehopper 
 {
-	typedef struct _DEVICE_DATA {
-
-		BOOL                    HandlesOpen;
-		WINUSB_INTERFACE_HANDLE WinusbHandle;
-		HANDLE                  DeviceHandle;
-		TCHAR                   DevicePath[MAX_PATH];
-
-	} DEVICE_DATA, *PDEVICE_DATA;
-
 	class TREEHOPPER_API  WinUsbConnection : public UsbConnection
 	{
 	public:
@@ -32,6 +23,14 @@ namespace Treehopper
 		bool receivePinReportPacket(uint8_t* data);
 		bool receiveDataPeripheralChannel(uint8_t* data, size_t len);
 	private:
+		typedef struct _DEVICE_DATA {
+
+			BOOL                    HandlesOpen;
+			WINUSB_INTERFACE_HANDLE WinusbHandle;
+			HANDLE                  DeviceHandle;
+			TCHAR                   DevicePath[MAX_PATH];
+
+		} DEVICE_DATA, *PDEVICE_DATA;
 		DEVICE_DATA deviceData;
 	};
 }
