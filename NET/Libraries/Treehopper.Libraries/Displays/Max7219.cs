@@ -149,7 +149,7 @@ namespace Treehopper.Libraries.Displays
 
             Array.Reverse(spiData);
 
-            await dev.SendReceive(spiData, BurstMode.BurstTx);
+            await dev.SendReceive(spiData, SpiBurstMode.BurstTx);
         }
 
         byte[] state = new byte[8];

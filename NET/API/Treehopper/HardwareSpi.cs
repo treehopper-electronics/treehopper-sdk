@@ -24,7 +24,7 @@
     /// clock phase and polarity, as well as the chip select polarity. Not all devices use all pins, but the SPI peripheral will always allocate the SCK, MISO, and MOSI pin once the peripheral is enabled.
     /// </para>
     /// <para>
-    /// The clock rate to operate the SPI bus at is specified by the <see cref="SendReceive(byte[], SpiChipSelectPin, ChipSelectMode, double, BurstMode, SpiMode)"/> function. The minimum clock rate is 93.75 kHz (0.093.75 MHz), while the maximum clock rate is 24 MHz, but there are no performance gains above 6 MHz. Since Treehopper's MCU has no internal DMA, bytes are placed into the SPI buffer one by one by the processor; it takes 8 cycles to perform this operation, and since the processor runs at 48 MHz, the fastest effective data transfer rate is 6 MHz.
+    /// The clock rate to operate the SPI bus at is specified by the <see cref="SendReceive(byte[], SpiChipSelectPin, ChipSelectMode, double, SpiBurstMode, SpiMode)"/> function. The minimum clock rate is 93.75 kHz (0.093.75 MHz), while the maximum clock rate is 24 MHz, but there are no performance gains above 6 MHz. Since Treehopper's MCU has no internal DMA, bytes are placed into the SPI buffer one by one by the processor; it takes 8 cycles to perform this operation, and since the processor runs at 48 MHz, the fastest effective data transfer rate is 6 MHz.
     /// </para>
     /// <para>
     /// Many simple devices that contain shift registers may also be interfaced with using the SPI module. The <see cref="ChipSelectMode"/> configuration contains pulse modes compatible with these devices.
@@ -104,16 +104,18 @@
         /// <param name="burstMode">Whether to use one of the burst modes</param>
         /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <returns>An awaitable byte array with the received data.</returns>
-        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
+        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, SpiBurstMode burstMode = SpiBurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
         {
             int transactionLength = dataToWrite.Length;
             byte[] returnedData = new byte[transactionLength];
 
             if (Enabled != true)
-                Utility.Error("SPI module must be enabled before starting transaction");
+            {
+                Utility.Error("SPI module must be enabled before starting transaction", true);
+            }
 
             if (chipSelect != null && chipSelect.SpiModule != this)
-                Utility.Error("Chip select pin must belong to this SPI module");
+                Utility.Error("Chip select pin must belong to this SPI module", true);
 
             using (await device.ComsLock.LockAsync())
             {
@@ -145,11 +147,11 @@
                 header[2] = (byte)chipSelectMode;
                 header[3] = (byte)spi0ckr;
                 header[4] = (byte)spiMode;
-                header[5] = (byte)burstMode; // burstMode
+                header[5] = (byte)burstMode;
                 header[6] = (byte)transactionLength;
 
                 // just send the header
-                if (burstMode == BurstMode.BurstRx)
+                if (burstMode == SpiBurstMode.BurstRx)
                 {
                     device.SendPeripheralConfigPacket(header);
                 }
@@ -172,7 +174,7 @@
                 }
 
                 // no need to wait if we're not reading anything
-                if (burstMode != BurstMode.BurstTx)
+                if (burstMode != SpiBurstMode.BurstTx)
                 {
                     int bytesRemaining = transactionLength;
                     srcIndex = 0;

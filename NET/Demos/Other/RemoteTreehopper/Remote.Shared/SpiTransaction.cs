@@ -46,7 +46,7 @@ namespace Remote.Shared
         public double Speed { get; set; }
 
         [JsonProperty("b")]
-        public BurstMode Burst { get; set; }
+        public SpiBurstMode Burst { get; set; }
 
         [JsonProperty("m")]
         public SpiMode SpiMode { get; set; }

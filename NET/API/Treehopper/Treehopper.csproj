@@ -70,7 +70,7 @@
     <Compile Include="SoftPwmManager.cs" />
     <Compile Include="HardwareSpi.cs" />
     <Compile Include="Spi.cs" />
-    <Compile Include="BurstMode.cs" />
+    <Compile Include="SpiBurstMode.cs" />
     <Compile Include="SpiDevice.cs" />
     <Compile Include="SpiChipSelectPin.cs" />
     <Compile Include="SpiMode.cs" />

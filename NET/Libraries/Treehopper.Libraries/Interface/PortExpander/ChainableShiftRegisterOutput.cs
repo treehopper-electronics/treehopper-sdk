@@ -114,7 +114,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         {
             if (!CurrentValue.SequenceEqual(lastValues) || force)
             {
-                await ShiftOut.requestWrite();
+                await requestWrite();
                 CurrentValue.CopyTo(lastValues, 0);
             }
         }
@@ -148,7 +148,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
                     bytes.AddRange(shiftBytes.Reverse());
                 }
 
-                await spiDevice.SendReceive(bytes.ToArray(), BurstMode.BurstTx);
+                await spiDevice.SendReceive(bytes.ToArray(), SpiBurstMode.BurstTx);
             }
             
 

@@ -67,11 +67,8 @@
         /// <param name="dataToSend">The data to send</param>
         /// <param name="burst">The burst mode, if any, to use</param>
         /// <returns>Data received by the peripheral</returns>
-        public Task<byte[]> SendReceive(byte[] dataToSend, BurstMode burst = BurstMode.NoBurst)
+        public Task<byte[]> SendReceive(byte[] dataToSend, SpiBurstMode burst = SpiBurstMode.NoBurst)
         {
-            byte[] retVal = new byte[dataToSend.Length];
-
-            // We need to lock this in case another thread tries to step in and do a transaction with different settings
             return spi.SendReceive(dataToSend, ChipSelect, ChipSelectMode, Frequency, burst, Mode);
         }
     }
