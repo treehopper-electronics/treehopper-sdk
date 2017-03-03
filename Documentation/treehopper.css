@@ -4,6 +4,10 @@ body {
 	font-family: "Segoe UI";
 }
 
+p {
+	margin: 0 0 10px 0;
+}
+
 h1, h2 {
 	font-weight: lighter;
 }
@@ -23,10 +27,9 @@ h1.groupheader {
 }
 
 .title {
-	font: 20px/28px;
-	font-size: 150%;
+	font-size: 38px;
 	font-weight: lighter;
-	margin: 10px 2px;
+	margin: 10px 0 0 12px;
 }
 
 h2.groupheader {
@@ -45,6 +48,7 @@ h3.groupheader {
 
 h1, h2, h3, h4, h5, h6 {
 	margin-right: 15px;
+	margin-bottom: 0px;
 }
 
 h1.glow, h2.glow, h3.glow, h4.glow, h5.glow, h6.glow {
@@ -53,6 +57,7 @@ h1.glow, h2.glow, h3.glow, h4.glow, h5.glow, h6.glow {
 
 dt {
 	font-weight: bold;
+	margin-left:10px;
 }
 
 div.multicol {
@@ -282,7 +287,7 @@ body {
 }
 
 div.contents {
-	margin-top: 10px;
+	margin-top: 0px;
 	margin-left: 12px;
 	margin-right: 8px;
 }
@@ -964,17 +969,15 @@ div.ingroups a
 
 div.header
 {
-        /*background-image:url('nav_h.png');*/
-        background-repeat:repeat-x;
-	background-color: #fafafa;
-	margin:  0px;
-	border-bottom: 10px solid #ddd;
+	/*background-color: #fafafa;*/
+	/*margin:  10px 0 0 0;*/
+	/*border-bottom: 10px solid #ddd;*/
 }
 
-div.headertitle
+/*div.headertitle
 {
 	padding: 5px 5px 5px 10px;
-}
+}*/
 
 dl
 {
@@ -1046,6 +1049,7 @@ dl.bug
 
 dl.section dd {
 	margin-bottom: 6px;
+	margin-left:10px;
 }
 
 
@@ -1519,3 +1523,13 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter {
 	text-shadow: none;
 }
 /* @end */
+
+@media only screen and (max-width: 480px) {
+	#projectname {
+		font-size:30px;
+	}
+
+	.sm-dox a {
+		font-size: 15px;
+	}
+}
