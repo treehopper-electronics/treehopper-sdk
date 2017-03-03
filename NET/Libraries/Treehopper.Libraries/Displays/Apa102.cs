@@ -100,7 +100,7 @@ namespace Treehopper.Libraries.Displays
                 if (chunk.Length == 0)
                     break;
 
-                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, 8, BurstMode.BurstTx, SpiMode.Mode11);
+                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, 8, SpiBurstMode.BurstTx, SpiMode.Mode11);
                 chunkCount++;
                 
             }

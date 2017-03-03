@@ -127,7 +127,7 @@ namespace Remote.Server
 
                 var response = Boards[serial].Spi.SendReceive(transaction.DataToWrite, Boards[serial].Pins[transaction.ChipSelectPinNumber], transaction.ChipSelectMode, transaction.Speed, transaction.Burst, transaction.SpiMode).Result;
 
-                if(transaction.Burst != BurstMode.BurstTx)
+                if(transaction.Burst != SpiBurstMode.BurstTx)
                     Publish(string.Format("treehopper/connection/{0}/spi/received", serial), Convert.ToBase64String(response));
             };
         }

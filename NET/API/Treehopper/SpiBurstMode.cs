@@ -3,7 +3,7 @@
     /// <summary>
     /// The SPI burst mode to use
     /// </summary>
-    public enum BurstMode
+    public enum SpiBurstMode
     {
         /// <summary>
         /// No burst -- always read the same number of bytes as transmitted

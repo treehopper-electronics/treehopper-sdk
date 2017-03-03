@@ -37,11 +37,11 @@ namespace Remote.Client
             }
         }
 
-        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, BurstMode burstMode = BurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
+        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, SpiBurstMode burstMode = SpiBurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
         {
             var transaction = new SpiTransaction() { DataToWrite = dataToWrite, ChipSelectPinNumber = chipSelect.PinNumber, ChipSelectMode = chipSelectMode, Burst = burstMode, Speed = speedMhz, SpiMode = spiMode };
             board.Write("spi/send", transaction.ToJsonString());
-            if (burstMode == BurstMode.BurstTx)
+            if (burstMode == SpiBurstMode.BurstTx)
                 return new byte[0];
 
             return await dataReceived.Task;

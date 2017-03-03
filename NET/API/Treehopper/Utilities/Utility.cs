@@ -76,31 +76,15 @@
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        //// adapted from stackoverflow.com/questions/2871/reading-a-c-c-data-structure-in-c-sharp-from-a-byte-array
-        //public static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
-        //{
-        //    GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-        //    T dataStruct = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-        //    handle.Free();
-        //    return dataStruct;
-        //}
-
-        //public static byte[] StructureToByteArray<T>(T structure) where T : struct
-        //{
-        //    int size = Marshal.SizeOf(structure);
-        //    byte[] data = new byte[size];
-
-        //    IntPtr ptr = Marshal.AllocHGlobal(size);
-        //    Marshal.StructureToPtr(structure, ptr, true);
-        //    Marshal.Copy(ptr, data, 0, size);
-        //    Marshal.FreeHGlobal(ptr);
-        //    return data;
-        //}
-
-        public static void Error(string message)
+        /// <summary>
+        /// Emit an error message
+        /// </summary>
+        /// <param name="message">The error to emit</param>
+        /// <param name="fatal">Whether this error is fatal, and should throw an exception</param>
+        public static void Error(string message, bool fatal = false)
         {
             Debug.WriteLine("ERROR: " + message);
-            if (TreehopperUsb.Settings.ThrowExceptions)
+            if (TreehopperUsb.Settings.ThrowExceptions || fatal)
                 throw new TreehopperRuntimeException(message);
         }
 
