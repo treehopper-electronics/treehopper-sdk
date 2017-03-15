@@ -42,10 +42,17 @@ namespace DeviceManager.ViewModels
                 UpdateNameCommand.RaiseCanExecuteChanged();
                 UpdateSerialCommand.RaiseCanExecuteChanged();
                 UpdateFirmwareFromEmbeddedImage.RaiseCanExecuteChanged();
-                FirmwareString = "Current firmware: " + board.VersionString;
 
                 if (board != null)
+                {
                     Name = board.Name;
+                    FirmwareString = "Current firmware: " + board.VersionString;
+                }
+                else
+                {
+                    Name = "";
+                    FirmwareString = "";
+                }
             }
         }
 
@@ -65,6 +72,7 @@ namespace DeviceManager.ViewModels
                         await SelectedBoard.UpdateDeviceName(Name);
                         await SelectedBoard.UpdateSerialNumber(Utility.RandomString(8));
                         SelectedBoard.Reboot();
+                        SelectedBoard.Dispose();
                     },
                     () => CanEdit));
             }
@@ -85,6 +93,7 @@ namespace DeviceManager.ViewModels
                     {
                         await SelectedBoard.UpdateSerialNumber(Utility.RandomString(8));
                         SelectedBoard.Reboot();
+                        SelectedBoard.Dispose();
                     },
                     () => CanEdit));
             }
@@ -126,10 +135,6 @@ namespace DeviceManager.ViewModels
                         isUpdating = false;
                         Progress = 0;
                         UpdateFirmwareFromEmbeddedImage.RaiseCanExecuteChanged();
-
-
-
-
                     },
                     () => SelectedBoard != null && isUpdating == false));
             }
@@ -158,6 +163,7 @@ namespace DeviceManager.ViewModels
                 Selector = new SelectorViewModel();
 
             Messenger.Default.Register<BoardConnectedMessage>(this, (msg) => { SelectedBoard = msg.Board; });
+            Messenger.Default.Register<BoardDisconnectedMessage>(this, (msg) => { SelectedBoard = null; });
         }
     }
 }
