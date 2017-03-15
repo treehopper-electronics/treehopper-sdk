@@ -126,12 +126,19 @@ namespace LibUsbDotNet.Main
         /// </summary>
         public virtual void Dispose()
         {
-            if (!IsCancelled) Cancel();
+            try
+            {
+                if (!IsCancelled) Cancel();
 
-            int dummy;
-            if (!mHasWaitBeenCalled) Wait(out dummy);
-            if (mPinnedHandle != null) mPinnedHandle.Dispose();
-            mPinnedHandle = null;
+                int dummy;
+                if (!mHasWaitBeenCalled) Wait(out dummy);
+                if (mPinnedHandle != null) mPinnedHandle.Dispose();
+                mPinnedHandle = null;
+            } catch(Exception ex)
+            {
+
+            }
+
         }
 
         #endregion
