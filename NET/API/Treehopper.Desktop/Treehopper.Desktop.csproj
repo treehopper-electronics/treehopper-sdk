@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\Output\NET\Release\Treehopper.Desktop.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +36,7 @@
     <Optimize>false</Optimize>
     <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.Desktop.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -185,6 +187,7 @@
     <Compile Include="LibUsbDotNet\WinHid\DeviceManagementDeclarations.cs" />
     <Compile Include="LibUsbDotNet\WinHid\FileIODeclarations.cs" />
     <Compile Include="LibUsbDotNet\WinHid\HidDeclarations.cs" />
+    <Compile Include="WinUsb\Kernel32.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\Internal\SafeWinUsbInterfaceHandle.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\Internal\WinUsbAPI.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\PipeInformation.cs" />
@@ -195,11 +198,17 @@
     <Compile Include="LibUsbDotNet\WinUsb\WinUsbDevice.cs" />
     <Compile Include="LibUsbDotNet\WinUsb\WinUsbRegistry.cs" />
     <Compile Include="ConnectionService.cs" />
+    <Compile Include="LibUsb\LibUsbConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsbConnection.cs" />
     <Compile Include="LibUsbDotNet\LibUsb\LibUsbRegistry.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\MacUsbDevice.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\MacUsbRegistry.cs" />
+    <Compile Include="WinUsb\SafeWinUsbHandle.cs" />
+    <Compile Include="WinUsb\UsbAsyncResult.cs" />
+    <Compile Include="WinUsb\WinUsb.cs" />
+    <Compile Include="WinUsb\WinUsbConnection.cs" />
+    <Compile Include="WinUsb\WinUsbConnectionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />
@@ -210,7 +219,9 @@
       <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MacUsb\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
