@@ -32,7 +32,7 @@ namespace Treehopper.Desktop
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string SerialNumber { get; set; }
+        public string Serial { get; set; }
 
         public string Name { get; set; }
 
@@ -59,7 +59,7 @@ namespace Treehopper.Desktop
             device = regDevice.Device;
 
 
-            SerialNumber = device.Info.SerialString;
+            Serial = device.Info.SerialString;
             Name = device.Info.ProductString;
             Version = device.Info.Descriptor.BcdDevice;
         }
@@ -161,7 +161,7 @@ namespace Treehopper.Desktop
             }
         }
 
-        public void SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannel(byte[] data)
         {
             if (!isOpen)
                 return;
@@ -175,7 +175,7 @@ namespace Treehopper.Desktop
             }
         }
 
-        public void SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannel(byte[] data)
         {
             if (!isOpen)
                 return;

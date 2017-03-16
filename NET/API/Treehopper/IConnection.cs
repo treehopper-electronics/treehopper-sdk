@@ -35,7 +35,7 @@
         /// <summary>
         /// Get the serial number of the device
         /// </summary>
-        string SerialNumber { get; } 
+        string Serial { get; } 
 
         /// <summary>
         /// Get the name of the device
@@ -50,7 +50,7 @@
         /// <summary>
         /// Get the system path of the device
         /// </summary>
-        string DevicePath { get; set; }
+        string DevicePath { get; }
 
         /// <summary>
         /// Gets or sets the update rate of the board
@@ -72,13 +72,13 @@
         /// Send pin configuration data
         /// </summary>
         /// <param name="data">The data to send</param>
-        void SendDataPinConfigChannel(byte[] data);
+        Task SendDataPinConfigChannel(byte[] data);
 
         /// <summary>
         /// Send peripheral configuration data
         /// </summary>
         /// <param name="data">The data to send</param>
-        void SendDataPeripheralChannel(byte[] data);
+        Task SendDataPeripheralChannel(byte[] data);
 
         /// <summary>
         /// Read peripheral data from the board
