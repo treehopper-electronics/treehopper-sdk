@@ -46,7 +46,7 @@ namespace Treehopper.Android
             }
         }
 
-        public string SerialNumber
+        public string Serial
         {
             get
             {

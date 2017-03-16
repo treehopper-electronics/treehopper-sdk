@@ -206,7 +206,7 @@
         {
             get
             {
-                return connection.SerialNumber;
+                return connection.Serial;
             }
         }
 
