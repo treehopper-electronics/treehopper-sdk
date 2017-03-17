@@ -107,16 +107,31 @@
                 switch (mode)
                 {
                     case PinMode.AnalogInput:
-                        SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            MakeAnalogIn().Forget();
+                        else
+                            MakeAnalogIn().Wait();
                         break;
+
                     case PinMode.DigitalInput:
-                        SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, 0x00 });
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            MakeDigitalIn().Forget();
+                        else
+                            MakeDigitalIn().Wait();
                         break;
+
                     case PinMode.OpenDrainOutput:
-                        SendCommand(new byte[] { (byte)PinConfigCommands.MakeOpenDrainOutput, 0x00 });
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            MakeDigitalOpenDrainOut().Forget();
+                        else
+                            MakeDigitalOpenDrainOut().Wait();
                         break;
+
                     case PinMode.PushPullOutput:
-                        SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0x00 });
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            MakeDigitalPushPullOut().Forget();
+                        else
+                            MakeDigitalPushPullOut().Wait();
                         break;
                 }
             }
@@ -181,12 +196,32 @@
 
             set
             {
+                if (digitalValue == value) return;
                 digitalValue = value;
-                if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
-                    Mode = PinMode.PushPullOutput; // assume they want push-pull
-                byte byteVal = (byte)(digitalValue ? 0x01 : 0x00);
-                SendCommand(new byte[] { (byte)PinConfigCommands.SetDigitalValue, byteVal });
+                if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                    WriteDigitalValueAsync(digitalValue).Forget(); // send off the request and move on.
+                else
+                    WriteDigitalValueAsync(digitalValue).Wait(); // wait for it to complete
             }
+        }
+
+        /// <summary>
+        /// Write a value to a pin
+        /// </summary>
+        /// <param name="value">The value to write</param>
+        /// <returns>An awaitable task that completes upon success</returns>
+        /// <remarks>
+        /// <para>This method is functionally equivalent of calling "<see cref="DigitalValue"/>=value", however, it provides finer-grained control over asynchronous behavior. You may choose to await it, block it synchronously, or "forget" it (continue execution without waiting at all).
+        /// </para>
+        /// </remarks>
+        public async Task WriteDigitalValueAsync(bool value)
+        {
+            digitalValue = value;
+            if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
+                await MakeDigitalPushPullOut().ConfigureAwait(false); // assume they want push-pull
+
+            byte byteVal = (byte)(digitalValue ? 0x01 : 0x00);
+            await SendCommand(new byte[] { (byte)PinConfigCommands.SetDigitalValue, byteVal }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -300,9 +335,9 @@
         /// }
         /// </code>
         /// </example>
-        public void ToggleOutput()
+        public Task ToggleOutputAsync()
         {
-            DigitalValue = !DigitalValue;
+            return WriteDigitalValueAsync(!DigitalValue);
         }
 
         /// <summary>
@@ -348,25 +383,37 @@
         /// <summary>
         /// Make the pin a push-pull output.
         /// </summary>
-        public void MakeDigitalPushPullOut()
+        public Task MakeDigitalOpenDrainOut()
         {
-            Mode = PinMode.PushPullOutput;
+            mode = PinMode.OpenDrainOutput;
+            return SendCommand(new byte[] { (byte)PinConfigCommands.MakeOpenDrainOutput, 0 });
+        }
+
+        /// <summary>
+        /// Make the pin a push-pull output.
+        /// </summary>
+        public Task MakeDigitalPushPullOut()
+        {
+            mode = PinMode.PushPullOutput;
+            return SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0 });
         }
 
         /// <summary>
         /// Make the pin a digital input.
         /// </summary>
-        public void MakeDigitalIn()
+        public Task MakeDigitalIn()
         {
-            Mode = PinMode.DigitalInput;
+            mode = PinMode.DigitalInput;
+            return SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, 0 });
         }
 
         /// <summary>
         /// Make the pin an analog input.
         /// </summary>
-        public void MakeAnalogIn()
+        public Task MakeAnalogIn()
         {
-            Mode = PinMode.AnalogInput;
+            mode = PinMode.AnalogInput;
+            return SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
         }
 
         public override string ToString()
@@ -460,12 +507,12 @@
             }
         }
 
-        internal void SendCommand(byte[] cmd)
+        internal Task SendCommand(byte[] cmd)
         {
             byte[] data = new byte[6];
             data[0] = (byte)PinNumber;
             cmd.CopyTo(data, 1);
-            Board.SendPinConfigPacket(data);
+            return Board.SendPinConfigPacket(data);
         }
     }
 }

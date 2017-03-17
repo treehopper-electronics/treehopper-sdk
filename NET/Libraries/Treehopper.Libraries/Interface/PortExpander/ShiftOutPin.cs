@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// Make the pin a push-pull output. This function has no effect, since all ShiftOut pins are always push-pull outputs.
         /// </summary>
-        public void MakeDigitalPushPullOut()
+        public async Task MakeDigitalPushPullOut()
         {
             // nothing to do here; all pins are always outputs
         }
@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// Toggle the output
         /// </summary>
-        public void ToggleOutput()
+        public async Task ToggleOutputAsync()
         {
             DigitalValue = !DigitalValue;
         }

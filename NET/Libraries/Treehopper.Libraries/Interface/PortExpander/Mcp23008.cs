@@ -110,21 +110,22 @@ namespace Treehopper.Libraries.Interface.PortExpander
             }
         }
 
-        void IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
+        async Task IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
         {
             olat.Set(portExpanderPin.PinNumber, portExpanderPin.DigitalValue);
-            if (AutoFlush) Flush().Wait();
+            if (AutoFlush)
+                await Flush().ConfigureAwait(false);
         }
 
-        void IPortExpanderParent.OutputModeChanged(IPortExpanderPin portExpanderPin)
+        async Task IPortExpanderParent.OutputModeChanged(IPortExpanderPin portExpanderPin)
         {
             int pinNumber = portExpanderPin.PinNumber;
             iodir.Set(pinNumber, portExpanderPin.Mode == PortExpanderPinMode.DigitalInput);
-            dev.WriteByteData((byte)Registers.IoDirection, iodir.GetBytes()[0]).Wait();
+            await dev.WriteByteData((byte)Registers.IoDirection, iodir.GetBytes()[0]).ConfigureAwait(false);
 
             var pin = Pins[pinNumber];
             gppu.Set(pinNumber, pin.PullUpEnabled);
-            dev.WriteByteData((byte)Registers.GpPullUp, gppu.GetBytes()[0]).Wait();
+            await dev.WriteByteData((byte)Registers.GpPullUp, gppu.GetBytes()[0]).ConfigureAwait(false);
         }
 
         /// <summary>

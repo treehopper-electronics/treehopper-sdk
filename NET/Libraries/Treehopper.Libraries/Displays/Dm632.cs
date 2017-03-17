@@ -103,7 +103,7 @@ namespace Treehopper.Libraries.Displays
         {
             if (led.State)
             {
-                ushort brightness = Math.Round(Utility.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535);
+                ushort brightness = (ushort)Math.Round(Utility.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535);
                 CurrentValue[led.Channel * 2 + 1] = (byte)(brightness >> 8);
                 CurrentValue[led.Channel * 2] = (byte)(brightness & 0xFF);
             } else

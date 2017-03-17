@@ -161,9 +161,9 @@ namespace Treehopper.Libraries.Interface.Mux
             /// <summary>
             /// Make the pin an input (unused)
             /// </summary>
-            public void MakeAnalogIn()
+            public Task MakeAnalogIn()
             {
-                
+                return Task.FromResult<object>(null);
             }
         }
     }

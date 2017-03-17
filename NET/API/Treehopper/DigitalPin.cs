@@ -21,12 +21,12 @@
         /// <summary>
         /// Toggle the output's value
         /// </summary>
-        void ToggleOutput();
+        Task ToggleOutputAsync();
 
         /// <summary>
         /// Make the pin a push-pull output
         /// </summary>
-        void MakeDigitalPushPullOut();
+        Task MakeDigitalPushPullOut();
     }
 
     /// <summary>
@@ -48,7 +48,7 @@
         /// <summary>
         /// Make the pin a digital input
         /// </summary>
-        void MakeDigitalIn();
+        Task MakeDigitalIn();
     }
 
     /// <summary>
