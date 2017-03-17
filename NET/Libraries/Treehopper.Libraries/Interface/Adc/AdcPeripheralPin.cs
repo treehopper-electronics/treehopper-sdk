@@ -147,9 +147,9 @@ namespace Treehopper.Libraries.Interface.Adc
         /// <summary>
         /// Make the pin an analog input. This is unused in most implementations
         /// </summary>
-        public void MakeAnalogIn()
+        public Task MakeAnalogIn()
         {
-
+            return Task.FromResult<object>(null);
         }
     }
 }

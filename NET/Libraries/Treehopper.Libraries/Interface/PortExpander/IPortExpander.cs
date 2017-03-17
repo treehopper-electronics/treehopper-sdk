@@ -24,13 +24,13 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// Called by a port expander pin when its value needs to be updated
         /// </summary>
         /// <param name="portExpanderPin">The port expander pin to update</param>
-        void OutputValueChanged(IPortExpanderPin portExpanderPin);
+        Task OutputValueChanged(IPortExpanderPin portExpanderPin);
 
         /// <summary>
         /// Called by a port expander pin when its value needs to be updated
         /// </summary>
         /// <param name="portExpanderPin"></param>
-        void OutputModeChanged(IPortExpanderPin portExpanderPin);
+        Task OutputModeChanged(IPortExpanderPin portExpanderPin);
 
         /// <summary>
         /// Gets or sets the polling period used when AwaitDigitalValueChanged() is used by the port expander

@@ -16,7 +16,6 @@ namespace Treehopper.Desktop.WinUsb
         {
             internal const string WIN_USB_DLL = "winusb.dll";
 
-
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_AbortPipe", SetLastError = true)]
             internal static extern bool WinUsb_AbortPipe([In] SafeHandle InterfaceHandle, byte PipeID);
 
@@ -122,17 +121,17 @@ namespace Treehopper.Desktop.WinUsb
             //internal static extern bool WinUsb_SetPowerPolicy([In] SafeHandle InterfaceHandle, PowerPolicyType policyType, int ValueLength, IntPtr Value);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_WritePipe", SetLastError = true)]
-            internal static extern bool WinUsb_WritePipe([In] SafeHandle InterfaceHandle,
+            internal unsafe static extern bool WinUsb_WritePipe([In] SafeHandle InterfaceHandle,
                                                         byte PipeID,
                                                         Byte[] Buffer,
                                                         int BufferLength,
                                                         out int LengthTransferred,
-                                                        IntPtr pOVERLAPPED);
+                                                        NativeOverlapped* pOVERLAPPED);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_WritePipe", SetLastError = true)]
             internal static extern bool WinUsb_WritePipe([In] SafeHandle InterfaceHandle,
                                                         byte PipeID,
-                                                        IntPtr pBuffer,
+                                                        Byte[] pBuffer,
                                                         int BufferLength,
                                                         out int LengthTransferred,
                                                         IntPtr pOVERLAPPED);

@@ -28,6 +28,8 @@ namespace Dm632Demo
             var driver = new Dm632(board.Spi, board.Pins[5], 6);
             await driver.Clear();
 
+            driver.Leds[0].Brightness = 1;
+
             var fader1 = new LedFadeAnimation(true);
             var fader2 = new LedFadeAnimation(true);
             fader1.Duration = 500;

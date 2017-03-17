@@ -41,5 +41,13 @@
         /// The WinUSB GUID used by the librarh
         /// </summary>
         public Guid Guid { get; set; } = new Guid("{5B34B38B-F4CD-49C3-B2BB-60E47A43E12D}");
+
+        /// <summary>
+        /// Whether or not writing to properties should return immediately, or only upon successfully sending to the board.
+        /// </summary>
+        /// <remarks>
+        /// <para>Properties provide a useful abstraction for the state of peripherals (i.e., <see cref="Pin.DigitalValue"/>), but they are inherently synchronous. This setting allows you to control how writes to properties behave; when true, a write to one of these properties will queue up a request to the board but will return immediately --- setting this property to false will synchronously wait for the message to be sent to the board.</para>
+        /// </remarks>
+        public bool PropertyWritesReturnImmediately { get; set; } = true;
     }
 }

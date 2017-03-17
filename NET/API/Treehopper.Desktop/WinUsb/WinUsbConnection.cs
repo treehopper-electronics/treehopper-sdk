@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,11 +16,14 @@ namespace Treehopper.Desktop.WinUsb
         private string name;
         private string serial;
         private SafeFileHandle deviceHandle;
-        private SafeWinUsbHandle winUsbHandle = new SafeWinUsbHandle();
+        private SafeWinUsbHandle winUsbHandle;
+        private Task pinListenerTask;
+        private bool _disposed = false;
         const byte pinReportEndpoint = 0x81;
         const byte peripheralResponseEndpoint = 0x82;
         const byte pinConfigEndpoint = 0x01;
         const byte peripheralConfigEndpoint = 0x02;
+
         public WinUsbConnection(string path, string name, string serial, short version)
         {
             DevicePath = path;
@@ -27,6 +31,8 @@ namespace Treehopper.Desktop.WinUsb
             Serial = serial;
             Version = version;
         }
+
+        public bool UseOverlappedTransfers { get; set; } = true;
 
         public bool IsOpen { get; private set; } = false;
 
@@ -45,12 +51,50 @@ namespace Treehopper.Desktop.WinUsb
 
         public void Close()
         {
-            throw new NotImplementedException();
+            if (!IsOpen)
+                return;
+
+            if (winUsbHandle != null && !winUsbHandle.IsInvalid)
+            {
+                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, peripheralConfigEndpoint);
+                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, peripheralResponseEndpoint);
+                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, pinConfigEndpoint);
+                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, pinReportEndpoint);
+                winUsbHandle.Dispose();
+            }
+
+            if (deviceHandle != null && !deviceHandle.IsInvalid)
+            {
+                deviceHandle.Dispose();
+                deviceHandle = null;
+            }
+
+            IsOpen = false;
+        }
+
+        ~WinUsbConnection()
+        {
+            Dispose(false);
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                // Cleanup managed resources
+                Close();
+            }
+
+            _disposed = true;
         }
 
         public async Task<bool> OpenAsync()
@@ -64,38 +108,103 @@ namespace Treehopper.Desktop.WinUsb
                         NativeFileFlag.FILE_ATTRIBUTE_NORMAL | NativeFileFlag.FILE_FLAG_OVERLAPPED,
                         IntPtr.Zero);
 
-            if(!deviceHandle.IsInvalid && !deviceHandle.IsClosed)
-            {
-                if( WinUsb.NativeMethods.WinUsb_Initialize(deviceHandle, ref winUsbHandle) == false)
-                {
-                    return false;
-                }
-                else
-                {
-                    IsOpen = true;
-                    return true;
-                }
-            }
-            else
+            if (deviceHandle.IsInvalid || deviceHandle.IsClosed)
             {
                 return false;
             }
+            if (UseOverlappedTransfers)
+                ThreadPool.BindHandle(deviceHandle); // needed for overlapped I/O
+
+            winUsbHandle = new SafeWinUsbHandle();
+            if ( WinUsb.NativeMethods.WinUsb_Initialize(deviceHandle, ref winUsbHandle) == false)
+            {
+                return false;
+            }
+
+            IsOpen = true;
+            //BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback, null); // kick off our first pin read
+            return true;
         }
 
-
-        public Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
+        byte[] pinReportBuffer = new byte[41];
+        private void pinStateCallback(IAsyncResult result)
         {
-            throw new NotImplementedException();
+            EndRead(result);
+            PinEventDataReceived?.Invoke(pinReportBuffer);
+            try
+            {
+                BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback, null); // start another read
+            } catch(Exception ex)
+            {
+                Debug.WriteLine("Exception: " + ex.Message);
+            }
+        }
+
+        public async Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
+        {
+            byte[] array = new byte[numBytesToRead];
+            if (UseOverlappedTransfers)
+            {
+                await Task.Factory.FromAsync((callback, stateObject) => BeginRead(peripheralResponseEndpoint, array, array.Length, callback, stateObject), EndRead, null).ConfigureAwait(false);
+
+            } else
+            {
+                int bytesWritten = 0;
+                WinUsb.NativeMethods.WinUsb_ReadPipe(winUsbHandle, peripheralResponseEndpoint, array, array.Length,
+                                out bytesWritten, IntPtr.Zero);
+            }
+            return array;
+        }
+
+        public async Task<byte[]> ReadPinReportPacket(uint numBytesToRead)
+        {
+            byte[] array = new byte[numBytesToRead];
+            if (UseOverlappedTransfers)
+            {
+                await Task.Factory.FromAsync((callback, stateObject) => BeginRead(pinReportEndpoint, array, array.Length, callback, stateObject), EndRead, null).ConfigureAwait(false);
+            }
+            else
+            {
+                int bytesWritten = 0;
+                WinUsb.NativeMethods.WinUsb_ReadPipe(winUsbHandle, pinReportEndpoint, array, array.Length,
+                                out bytesWritten, IntPtr.Zero);
+            }
+            return array;
         }
 
         public Task SendDataPeripheralChannel(byte[] data)
         {
-            return Task.Factory.FromAsync((callback, stateObject) => BeginWrite(peripheralConfigEndpoint, data, data.Length, callback, stateObject), EndWrite, null);
+            if (UseOverlappedTransfers)
+            {
+                return Task.Factory.FromAsync((callback, stateObject) => BeginWrite(peripheralConfigEndpoint, data, data.Length, callback, stateObject), EndWrite, null);
+            }
+            else
+            {
+                return Task.Run(() =>
+                {
+                    int bytesWritten = 0;
+                    WinUsb.NativeMethods.WinUsb_WritePipe(winUsbHandle, peripheralResponseEndpoint, data, data.Length,
+                out bytesWritten, IntPtr.Zero);
+                });
+            }
         }
 
         public Task SendDataPinConfigChannel(byte[] data)
         {
-            return Task.Factory.FromAsync((callback, stateObject) => BeginWrite(pinConfigEndpoint, data, data.Length, callback, stateObject), EndWrite, null);
+            if (UseOverlappedTransfers)
+            {
+                return Task.Factory.FromAsync((callback, stateObject) => BeginWrite(pinConfigEndpoint, data, data.Length, callback, stateObject), EndWrite, null);
+            }
+            else
+            {
+                return Task.Run(() =>
+                {
+                    int bytesWritten = 0;
+                    WinUsb.NativeMethods.WinUsb_WritePipe(winUsbHandle, pinConfigEndpoint, data, data.Length,
+                out bytesWritten, IntPtr.Zero);
+                });
+            }
+
         }
 
         private IAsyncResult BeginWrite(byte endpoint, byte[] buffer, int length, AsyncCallback userCallback, object stateObject)
@@ -121,7 +230,6 @@ namespace Treehopper.Desktop.WinUsb
                                 out bytesWritten, (IntPtr)pOverlapped);
                     }
                     HandleOverlappedAPI(success, "Failed to asynchronously write pipe on WinUSB device.", pOverlapped, result, (int)bytesWritten);
-
                 }
             }
             catch (Exception e)
@@ -188,6 +296,31 @@ namespace Treehopper.Desktop.WinUsb
                 throw new Exception("Failed to read from pipe.", e);
             }
             return result;
+        }
+
+        private int EndRead(IAsyncResult asyncResult)
+        {
+            if (asyncResult == null)
+                throw new NullReferenceException("asyncResult cannot be null");
+            if (!(asyncResult is USBAsyncResult))
+                throw new ArgumentException("AsyncResult object was not created by calling BeginRead on this class.");
+
+            // todo: check duplicate end reads?
+            USBAsyncResult result = (USBAsyncResult)asyncResult;
+            try
+            {
+                if (!result.IsCompleted)
+                    result.AsyncWaitHandle.WaitOne();
+
+                if (result.Error != null)
+                    throw new Exception("Asynchronous read from pipe has failed.", result.Error);
+
+                return result.BytesTransfered;
+            }
+            finally
+            {
+                result.Dispose();
+            }
         }
 
         private unsafe void PipeIOCallback(uint errorCode, uint numBytes, NativeOverlapped* pOverlapped)
