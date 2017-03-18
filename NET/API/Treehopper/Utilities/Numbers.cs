@@ -9,17 +9,6 @@ namespace Treehopper.Utilities
 {
     public static class Numbers
     {
-        public static byte[] GetBytes(this BitArray array)
-        {
-            var returnedData = new byte[array.Length / 8];
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array.Get(i))
-                    returnedData[i / 8] |= (byte)(1 << (i % 8));
-            }
-
-            return returnedData;
-        }
         /// <summary>
         /// Map an input value from the specified range to an alternative range.
         /// </summary>

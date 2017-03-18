@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper;
-using Treehopper.Libraries.Interface.PortExpander;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Displays
+﻿namespace Treehopper.Libraries.Displays
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Treehopper;
+    using Treehopper.Libraries.Interface.PortExpander;
+    using Treehopper.Utilities;
+    using Utilities;
     /// <summary>
     /// Supports generic 8-bit or 16-bit LED shift register drivers, such as the STP16CPC26, CAT4016, TLC5916, etc
     /// </summary>

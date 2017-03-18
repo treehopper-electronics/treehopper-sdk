@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Utilities
+namespace Treehopper.Libraries.Utilities
 {
     [global::System.AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class BitfieldAttribute : Attribute
@@ -18,8 +19,20 @@ namespace Treehopper.Utilities
         }
         public uint Length { get { return length; } }
     }
-    public static class BitFieldConverter
+    public static class BinaryConverters
     {
+        public static byte[] GetBytes(this BitArray array)
+        {
+            var returnedData = new byte[array.Length / 8];
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array.Get(i))
+                    returnedData[i / 8] |= (byte)(1 << (i % 8));
+            }
+
+            return returnedData;
+        }
+
         public static byte ToByte<T>(this T t) where T : struct
         {
             long r = 0;
