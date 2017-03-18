@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Interface.Adc
     public class AdcPeripheralPin : AdcPin
     {
         private int adcValue;
-        private IAdcPeripheral parent;
+        protected IAdcPeripheral parent;
         private int bitDepth;
 
         /// <summary>

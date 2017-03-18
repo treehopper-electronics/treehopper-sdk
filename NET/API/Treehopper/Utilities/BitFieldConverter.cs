@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace Treehopper.Utilities
 {
     [global::System.AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class BitFieldAttribute : Attribute
+    public sealed class BitfieldAttribute : Attribute
     {
         uint length;
 
-        public BitFieldAttribute(uint length)
+        public BitfieldAttribute(uint length)
         {
             this.length = length;
         }
@@ -28,10 +28,10 @@ namespace Treehopper.Utilities
             // For every field suitably attributed with a BitfieldLength
             foreach (FieldInfo f in t.GetType().GetRuntimeFields())
             {
-                var attrs = f.GetCustomAttributes(typeof(BitFieldAttribute), false);
+                var attrs = f.GetCustomAttributes(typeof(BitfieldAttribute), false);
                 if (attrs.Count() == 1)
                 {
-                    uint fieldLength = ((BitFieldAttribute)attrs.First()).Length;
+                    uint fieldLength = ((BitfieldAttribute)attrs.First()).Length;
 
                     // Calculate a bitmask of the desired length
                     int mask = 0;
