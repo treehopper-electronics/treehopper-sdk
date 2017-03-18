@@ -79,12 +79,9 @@
     <Compile Include="TreehopperUsb.cs" />
     <Compile Include="Uart.cs" />
     <Compile Include="UartMode.cs" />
-    <Compile Include="Utilities\BitFieldConverter.cs" />
     <Compile Include="Utilities\NamespaceDoc.cs" />
     <Compile Include="Utilities\Numbers.cs" />
     <Compile Include="Utilities\Utility.cs" />
-    <Compile Include="Utilities\Endianness.cs" />
-    <Compile Include="Utilities\StructConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

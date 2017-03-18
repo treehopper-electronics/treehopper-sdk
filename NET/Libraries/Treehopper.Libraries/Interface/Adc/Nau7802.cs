@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
-using Treehopper.Utilities;
+using Treehopper.Libraries.Utilities;
 
 namespace Treehopper.Libraries.Interface.Adc
 {
@@ -56,6 +57,14 @@ namespace Treehopper.Libraries.Interface.Adc
             DevRevision = 0x1F
         };
 
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct CalData
+        {
+            UInt24 Ocal1;
+            UInt32 GCal1;
+            UInt24 Ocal2;
+            UInt32 GCal2;
+        }
 
         public enum LdoVoltage
         {
@@ -79,7 +88,6 @@ namespace Treehopper.Libraries.Interface.Adc
             x32,
             x64,
             x128,
-            PgaBypass
         };
 
         public enum ConversionRate
@@ -312,7 +320,7 @@ namespace Treehopper.Libraries.Interface.Adc
             double ldoVoltage = 4.5 - (int)ctrl1.LdoVoltage * 0.3;
             double gain = 1 << ((int)ctrl1.Gains);
 
-            ReferenceVoltage = ldoVoltage / gain;
+            ReferenceVoltage = 2 * ldoVoltage / gain;
         }
 
         public async Task<bool> Calibrate()
@@ -323,7 +331,19 @@ namespace Treehopper.Libraries.Interface.Adc
             while ((await dev.ReadByteData((byte)Registers.Ctrl2) & 0x04) > 0)
             {
             }
-            return (await dev.ReadByteData((byte)Registers.Ctrl2) & 0x08) == 0;
+
+            return ((await dev.ReadByteData((byte)Registers.Ctrl2) & 0x08) == 0);
+
+        }
+
+        public CalData CalibrationData
+        {
+            get
+            {
+                var calData = dev.ReadBufferData((byte)Registers.Ocal1_B2, 14).Result;
+                var result = calData.BytesToStruct<CalData>(Endianness.BigEndian);
+                return result;
+            }
         }
 
         bool autoUpdate = true;
@@ -358,6 +378,10 @@ namespace Treehopper.Libraries.Interface.Adc
                 PowerUpAnalogCircuit = true
             };
             UpdatePuCtrl().Wait();
+
+            ctrl1.LdoVoltage = LdoVoltage.mV_3000;
+            UpdateCtrl1().Wait();
+
             UpdateReferenceVoltage(); // set the pins up with the default gains
 
             pga.BypassPga = true;
@@ -368,7 +392,7 @@ namespace Treehopper.Libraries.Interface.Adc
             adc.EnableAdcClockDelay = true;
             UpdateAdc().Wait();
 
-            ctrl2.SampleRate = ConversionRate.SPS_320;
+            ctrl2.SampleRate = ConversionRate.SPS_10;
             UpdateCtrl2();
 
             puCtrl.CycleStart = true;

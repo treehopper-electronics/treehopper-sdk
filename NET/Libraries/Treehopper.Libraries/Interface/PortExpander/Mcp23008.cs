@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Treehopper.Utilities;
+    using Utilities;
     /// <summary>
     /// MCP23008 8-bit GPIO expander library
     /// </summary>

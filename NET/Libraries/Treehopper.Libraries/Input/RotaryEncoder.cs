@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Input
+﻿namespace Treehopper.Libraries.Input
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Treehopper.Utilities;
     /// <summary>
     /// Library for interfacing with a standard a/b-input quadrature rotary encoder
     /// </summary>
@@ -139,7 +139,7 @@ namespace Treehopper.Libraries.Input
         {
             if (position % stepsPerTick == 0)
             {
-                Position = Utilities.Numbers.Constrain(Position, MinValue, MaxValue);
+                Position = Numbers.Constrain(Position, MinValue, MaxValue);
 
                 if (Position == oldPosition) return;
 

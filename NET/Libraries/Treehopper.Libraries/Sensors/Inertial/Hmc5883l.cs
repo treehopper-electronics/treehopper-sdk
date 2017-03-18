@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Sensors.Inertial
+﻿namespace Treehopper.Libraries.Sensors.Inertial
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Numerics;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Utilities;
     /// <summary>
     /// The HMC5883L is a three-axis magnetometer useful for digital compass applications
     /// </summary>

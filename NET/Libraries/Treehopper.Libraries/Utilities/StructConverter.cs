@@ -6,8 +6,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Utilities
+namespace Treehopper.Libraries.Utilities
 {
+    public enum Endianness
+    {
+        BigEndian,
+        LittleEndian
+    }
+
     /// <summary>
     /// Convert structs between byte arrays, with controlled endianness.
     /// </summary>

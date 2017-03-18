@@ -2,13 +2,13 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
-using System.Text;
-using System.Runtime.Serialization;
-using System.Diagnostics;
-
 namespace Treehopper.Libraries.Displays
 {
+    using System;
+    using System.Text;
+    using System.Runtime.Serialization;
+    using System.Diagnostics;
+    using Treehopper.Utilities;
     /// <summary>
     /// Describes a 32-bit packed color.
     /// </summary>
@@ -188,7 +188,7 @@ namespace Treehopper.Libraries.Displays
         {
             if ((alpha & 0xFFFFFF00) != 0)
             {
-                var clampedA = (uint)Utilities.Numbers.Constrain(alpha, Byte.MinValue, Byte.MaxValue);
+                var clampedA = (uint)Numbers.Constrain(alpha, Byte.MinValue, Byte.MaxValue);
 
                 _packedValue = (color._packedValue & 0x00FFFFFF) | (clampedA << 24);
             }
@@ -243,9 +243,9 @@ namespace Treehopper.Libraries.Displays
 
             if (((r | g | b) & 0xFFFFFF00) != 0)
             {
-                var clampedR = (uint)Utilities.Numbers.Constrain(r, Byte.MinValue, Byte.MaxValue);
-                var clampedG = (uint)Utilities.Numbers.Constrain(g, Byte.MinValue, Byte.MaxValue);
-                var clampedB = (uint)Utilities.Numbers.Constrain(b, Byte.MinValue, Byte.MaxValue);
+                var clampedR = (uint)Numbers.Constrain(r, Byte.MinValue, Byte.MaxValue);
+                var clampedG = (uint)Numbers.Constrain(g, Byte.MinValue, Byte.MaxValue);
+                var clampedB = (uint)Numbers.Constrain(b, Byte.MinValue, Byte.MaxValue);
 
                 _packedValue |= (clampedB << 16) | (clampedG << 8) | (clampedR);
             }
@@ -266,10 +266,10 @@ namespace Treehopper.Libraries.Displays
         {
             if (((r | g | b | alpha) & 0xFFFFFF00) != 0)
             {
-                var clampedR = (uint)Utilities.Numbers.Constrain(r, Byte.MinValue, Byte.MaxValue);
-                var clampedG = (uint)Utilities.Numbers.Constrain(g, Byte.MinValue, Byte.MaxValue);
-                var clampedB = (uint)Utilities.Numbers.Constrain(b, Byte.MinValue, Byte.MaxValue);
-                var clampedA = (uint)Utilities.Numbers.Constrain(alpha, Byte.MinValue, Byte.MaxValue);
+                var clampedR = (uint)Numbers.Constrain(r, Byte.MinValue, Byte.MaxValue);
+                var clampedG = (uint)Numbers.Constrain(g, Byte.MinValue, Byte.MaxValue);
+                var clampedB = (uint)Numbers.Constrain(b, Byte.MinValue, Byte.MaxValue);
+                var clampedA = (uint)Numbers.Constrain(alpha, Byte.MinValue, Byte.MaxValue);
 
                 _packedValue = (clampedA << 24) | (clampedB << 16) | (clampedG << 8) | (clampedR);
             }
@@ -1707,12 +1707,12 @@ namespace Treehopper.Libraries.Displays
         /// <returns>Interpolated <see cref="Color"/>.</returns>
         public static Color Lerp(Color value1, Color value2, Single amount)
         {
-            amount = Utilities.Numbers.Constrain(amount, 0, 1);
+            amount = Numbers.Constrain(amount, 0, 1);
             return new Color(
-                (int)Utilities.Numbers.Lerp(value1.R, value2.R, amount),
-                (int)Utilities.Numbers.Lerp(value1.G, value2.G, amount),
-                (int)Utilities.Numbers.Lerp(value1.B, value2.B, amount),
-                (int)Utilities.Numbers.Lerp(value1.A, value2.A, amount));
+                (int)Numbers.Lerp(value1.R, value2.R, amount),
+                (int)Numbers.Lerp(value1.G, value2.G, amount),
+                (int)Numbers.Lerp(value1.B, value2.B, amount),
+                (int)Numbers.Lerp(value1.A, value2.A, amount));
         }
 
         /// <summary>

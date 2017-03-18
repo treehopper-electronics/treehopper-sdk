@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Sensors.Temperature;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Sensors.Pressure
+﻿namespace Treehopper.Libraries.Sensors.Pressure
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Treehopper.Libraries.Sensors.Temperature;
+    using Utilities;
+    using Treehopper.Utilities;
     /// <summary>
     /// Library for the BMP280 barometric pressure / altitude / temperature sensor.
     /// </summary>
