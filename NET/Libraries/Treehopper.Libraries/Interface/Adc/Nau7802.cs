@@ -9,41 +9,53 @@ using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Interface.Adc
 {
-    public class Nau7802 : TemperatureSensor, IAdcPeripheral
+    public class Nau7802 : AdcPeripheralPin, IAdcPeripheral
     {
         SMBusDevice dev;
         Ctrl1 ctrl1;
         Ctrl2 ctrl2;
         I2cCtrl i2cCtrl = new I2cCtrl();
         PowerUpControl puCtrl;
+        Pga pga = new Pga();
+        Adc adc = new Adc();
+        private DigitalInPin drdy;
+
+        public enum Channel
+        {
+            Ch0,
+            Ch1
+        }
 
         enum Registers
         {
-            PuCtrl,
-            Ctrl1,
-            Ctrl2,
-            Ocal1_B2,
-            Ocal1_B1,
-            Ocal1_B0,
-            GCal1_B3,
-            GCal1_B2,
-            GCal1_B1,
-            GCal1_B0,
-            Ocal2_B2,
-            Ocal2_B1,
-            Ocal2_B0,
-            GCal2_B3,
-            GCal2_B2,
-            GCal2_B1,
-            GCal2_B0,
-            I2cCtrl,
-            Adco_B2,
-            Adco_B1,
-            Adco_B0,
-            Otp_B1,
-            Otp_B0,
-            DevRevision
+            PuCtrl = 0x00,
+            Ctrl1 = 0x01,
+            Ctrl2 = 0x02,
+            Ocal1_B2 = 0x03,
+            Ocal1_B1 = 0x04,
+            Ocal1_B0 = 0x05,
+            GCal1_B3 = 0x06,
+            GCal1_B2 = 0x07,
+            GCal1_B1 = 0x08,
+            GCal1_B0 = 0x09,
+            Ocal2_B2 = 0x0A,
+            Ocal2_B1 = 0x0B,
+            Ocal2_B0 = 0x0C,
+            GCal2_B3 = 0x0D,
+            GCal2_B2 = 0x0E,
+            GCal2_B1 = 0x0F,
+            GCal2_B0 = 0x10,
+            I2cCtrl = 0x11,
+            Adco_B2 = 0x12,
+            Adco_B1 = 0x13,
+            Adco_B0 = 0x14,
+            Adc = 0x15,
+            Otp_B0 = 0x16,
+            Pga = 0x1B,
+            PwerCtrl = 0x1C,
+            DevRevision = 0x1F
         };
+
 
         public enum LdoVoltage
         {
@@ -66,16 +78,17 @@ namespace Treehopper.Libraries.Interface.Adc
             x16,
             x32,
             x64,
-            x128
+            x128,
+            PgaBypass
         };
 
         public enum ConversionRate
         {
-            SPS_10,
-            SPS_20,
-            SPS_40,
-            SPS_80,
-            SPS_320
+            SPS_10 = 0x00,
+            SPS_20 = 0x01,
+            SPS_40 = 0x02,
+            SPS_80 = 0x03,
+            SPS_320 = 0x07
         }
 
         public enum CalibrationMode
@@ -86,104 +99,152 @@ namespace Treehopper.Libraries.Interface.Adc
             GainCalibrationSystem
         }
 
+        public enum AdcCommonModeConfiguration
+        {
+            DisableExtendedCommonMode = 0x00,
+            EnableExtendedCommonModeWhenCloseToRefN = 0x02,
+            EnableExtendedCommonModeWhenCloseToRefP = 0x03
+        }
+
+        public enum AdcClockChopFrequency
+        {
+            Reserved = 0x0,
+            TurnedOff = 0x03
+        }
+
+        struct Pga
+        {
+            [Bitfield(1)]
+            public bool DisableChopper;
+            [Bitfield(2)]
+            int Reserved;
+            [Bitfield(1)]
+            public bool InvertPgaInputPhase;
+            [Bitfield(1)]
+            public bool BypassPga;
+            [Bitfield(1)]
+            public bool OutputBufferEnable;
+            [Bitfield(1)]
+            public bool LdoImproveStability;
+            [Bitfield(1)]
+            public bool AdcReadWillReadOtp;
+        }
+
+        struct Adc
+        {
+            [Bitfield(1)]
+            public bool EnableAdcClockDelay;
+            [Bitfield(2)]
+            public AdcCommonModeConfiguration commonMode;
+            [Bitfield(2)]
+            public AdcClockChopFrequency chopFrequency;
+        }
+
         struct PowerUpControl
         {
-            [BitField(1)]
+            [Bitfield(1)]
             public bool RegisterReset;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool PowerUpDigitalCircuit;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool PowerUpAnalogCircuit;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool PowerUpReady;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool CycleStart;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool CycleReady;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool UseExternalCrystal;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool UseInternalLdo;
         }
 
         struct Ctrl1
         {
-            [BitField(3)]
+            [Bitfield(3)]
             public GainSelect Gains;
 
-            [BitField(3)]
+            [Bitfield(3)]
             public LdoVoltage LdoVoltage;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool DrdyOutputClockOrConversionReady;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool ConversionReadyWhenCrdyLow;
         }
 
         struct Ctrl2
         {
-            [BitField(2)]
+            [Bitfield(2)]
             public CalibrationMode CalMod;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool CalStart;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool CalError;
 
-            [BitField(3)]
+            [Bitfield(3)]
             public ConversionRate SampleRate;
 
-            [BitField(1)]
-            public int Channel;
+            [Bitfield(1)]
+            public Channel Channel;
 
         }
 
         struct I2cCtrl
         {
-            [BitField(1)]
+            [Bitfield(1)]
             public bool DisableBandgapChopper;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool ReadTemperatureSensor;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool EnableBurnoutCurrentSource;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool ShortInputTogether;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool DisableWeakPullUp;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool EnableStrongPullUp;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool EnableFastReadAdcData;
 
-            [BitField(1)]
+            [Bitfield(1)]
             public bool EnablePullSdaLowOnConversionComplete;
         }
 
         public GainSelect Gain
         {
             get { return ctrl1.Gains; }
-            set { ctrl1.Gains = value; UpdateCtrl1().Wait(); UpdatePinGains(); }
+            set {
+                ctrl1.Gains = value; UpdateCtrl1().Wait(); UpdateReferenceVoltage(); }
+        }
+
+        public bool BypassPga
+        {
+            get { return pga.BypassPga; }
+            set { pga.BypassPga = value; UpdatePga().Wait(); }
         }
 
         public LdoVoltage Ldo
         {
             get { return ctrl1.LdoVoltage; }
-            set { ctrl1.LdoVoltage = value; UpdateCtrl1().Wait(); UpdatePinGains(); }
+            set { ctrl1.LdoVoltage = value; UpdateCtrl1().Wait(); UpdateReferenceVoltage(); }
         }
 
         public bool UseInternalLdo
@@ -213,32 +274,23 @@ namespace Treehopper.Libraries.Interface.Adc
             return dev.WriteByteData((byte)Registers.I2cCtrl, i2cCtrl.ToByte());
         }
 
-        public async override Task Update()
+        private Task UpdatePga()
         {
-            // update temperature sensor
-            i2cCtrl.ReadTemperatureSensor = true;
-            await UpdateI2cCtrl();
-            var result = await PerformConversion();
-            i2cCtrl.ReadTemperatureSensor = false;
-            await UpdateI2cCtrl();
+            return dev.WriteByteData((byte)Registers.Pga, pga.ToByte());
+        }
 
-            for (int i=0;i<2;i++)
-            {
-                ctrl2.Channel = i;
-                await UpdateCtrl2();
-                result = await PerformConversion();
-                Channels[i].AdcValue = result;
-            }
-            
+        private Task UpdateAdc()
+        {
+            return dev.WriteByteData((byte)Registers.Adc, adc.ToByte());
         }
 
         private async Task<int> PerformConversion()
         {
-            puCtrl.CycleStart = true;
-            await UpdatePuCtrl();
-            while (!await ConversionDone()) { }
-            puCtrl.CycleStart = false;
-            await UpdatePuCtrl();
+            if(drdy == null)
+            {
+                while (!await ConversionDone()) { }
+            }
+                
             var adcResult = await dev.ReadBufferData((byte)Registers.Adco_B2, 3);
             int result = adcResult[0] << 24 | adcResult[1] << 16 | adcResult[2] << 8;
             result /= 256;
@@ -255,29 +307,47 @@ namespace Treehopper.Libraries.Interface.Adc
             return (result & 0x20) > 0 ? true : false;
         }
 
-        private void UpdatePinGains()
+        private void UpdateReferenceVoltage()
         {
             double ldoVoltage = 4.5 - (int)ctrl1.LdoVoltage * 0.3;
             double gain = 1 << ((int)ctrl1.Gains);
 
-            foreach(var channel in Channels)
-            {
-                channel.ReferenceVoltage = ldoVoltage / gain;
-            }
+            ReferenceVoltage = ldoVoltage / gain;
         }
 
-        public IList<NauPin> Channels { get; private set; } = new List<NauPin>();
-
-        public Nau7802(I2c i2c)
+        public async Task<bool> Calibrate()
         {
-            Channels.Add(new NauPin(this));
-            Channels.Add(new NauPin(this));
+            ctrl2.CalStart = true;
+            await UpdateCtrl2();
+            ctrl2.CalStart = false;
+            while ((await dev.ReadByteData((byte)Registers.Ctrl2) & 0x04) > 0)
+            {
+            }
+            return (await dev.ReadByteData((byte)Registers.Ctrl2) & 0x08) == 0;
+        }
+
+        bool autoUpdate = true;
+        public bool AutoUpdateWhenPropertyRead {
+            get { return autoUpdate; }
+            set { if (drdy != null) return;  autoUpdate = value; } // if the user constructed us with a DRDY pin, we should *never* update when property read.
+        }
+
+        public Nau7802(I2c i2c, DigitalInPin drdy = null) : base(null, 24, 0)
+        {
+            if(drdy != null)
+            {
+                this.drdy = drdy;
+                drdy.MakeDigitalIn();
+                drdy.DigitalValueChanged += Drdy_DigitalValueChanged;
+                autoUpdate = false;
+            }
 
             dev = new SMBusDevice(0x2A, i2c);
             puCtrl = new PowerUpControl() { RegisterReset = true }; // reset all registers
             UpdatePuCtrl().Wait();
             puCtrl = new PowerUpControl() { PowerUpDigitalCircuit = true }; // power up digital
             UpdatePuCtrl().Wait();
+            Task.Delay(10).Wait();
 
             // useful defaults
             puCtrl = new PowerUpControl()
@@ -288,15 +358,40 @@ namespace Treehopper.Libraries.Interface.Adc
                 PowerUpAnalogCircuit = true
             };
             UpdatePuCtrl().Wait();
-            UpdatePinGains(); // set the pins up with the default gains
+            UpdateReferenceVoltage(); // set the pins up with the default gains
+
+            pga.BypassPga = true;
+            pga.DisableChopper = true;
+            UpdatePga().Wait();
+
+            adc.chopFrequency = AdcClockChopFrequency.TurnedOff;
+            adc.EnableAdcClockDelay = true;
+            UpdateAdc().Wait();
+
+            ctrl2.SampleRate = ConversionRate.SPS_320;
+            UpdateCtrl2();
+
+            puCtrl.CycleStart = true;
+            UpdatePuCtrl().Wait();
+
+            this.parent = this;
         }
 
-        public class NauPin : AdcPeripheralPin
+        private async void Drdy_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
         {
-            public NauPin(IAdcPeripheral parent) : base(parent, 24, 0)
-            {
+            if(e.NewValue == true) // only convert on rising edge, plz
+                AdcValue = await PerformConversion();
+        }
 
-            }
+        public async Task SetChannel(Channel channel)
+        {
+            ctrl2.Channel = channel;
+            await UpdateCtrl2();
+            await Calibrate();
+        }
+        public async Task Update()
+        {
+            AdcValue = await PerformConversion();
         }
     }
 }
