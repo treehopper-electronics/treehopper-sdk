@@ -12,8 +12,6 @@ namespace Treehopper.Libraries.Interface.Adc
     /// </summary>
     public class AdcPeripheralPin : AdcPin
     {
-        private double analogVoltage;
-        private double analogValue;
         private int adcValue;
         private IAdcPeripheral parent;
         private int bitDepth;
@@ -43,23 +41,26 @@ namespace Treehopper.Libraries.Interface.Adc
         {
             internal set
             {
-                if (adcValue.CloseTo(value, AdcValueChangedThreshold))
+                if (value.CloseTo(adcValue, AdcValueChangedThreshold))
                 {
-                    adcValue = value;
                     AdcValueChanged?.Invoke(this, new AdcValueChangedEventArgs(adcValue));
                 }
-                else
+                if (analogValueFromAdc(value).CloseTo(analogValueFromAdc(adcValue), AnalogValueChangedThreshold))
                 {
-                    adcValue = value;
+                    AnalogValueChanged?.Invoke(this, new AnalogValueChangedEventArgs(analogValueFromAdc(adcValue)));
                 }
-
-                analogValue = ((double)adcValue / ((2 << (bitDepth - 1)) - 1));
-                analogVoltage = ReferenceVoltage * analogValue;
+                if (analogVoltageFromAdc(value).CloseTo(analogVoltageFromAdc(adcValue), AnalogVoltageChangedThreshold))
+                {
+                    AnalogVoltageChanged?.Invoke(this, new AnalogVoltageChangedEventArgs(analogVoltageFromAdc(adcValue)));
+                }
+                adcValue = value;
             }
 
             get
             {
-                if (parent.AutoUpdateWhenPropertyRead) parent.Update().Wait();
+                if (parent.AutoUpdateWhenPropertyRead)
+                    parent.Update().Wait();
+
                 return adcValue;
             }
         }
@@ -74,24 +75,15 @@ namespace Treehopper.Libraries.Interface.Adc
         /// </summary>
         public double AnalogValue
         {
-            internal set
-            {
-                if (analogValue.CloseTo(value, AnalogValueChangedThreshold))
-                {
-                    analogValue = value;
-                    AnalogValueChanged?.Invoke(this, new AnalogValueChangedEventArgs(analogValue));
-                }
-                else
-                {
-                    analogValue = value;
-                }
-            }
-
             get
             {
-                if (parent.AutoUpdateWhenPropertyRead) parent.Update().Wait();
-                return analogValue;
+                return analogValueFromAdc(AdcValue);
             }
+        }
+
+        private double analogValueFromAdc(int adcValue)
+        {
+            return((double)adcValue / ((1 << bitDepth) - 1));
         }
 
         /// <summary>
@@ -104,30 +96,21 @@ namespace Treehopper.Libraries.Interface.Adc
         /// </summary>
         public double AnalogVoltage
         {
-            internal set
-            {
-                if (analogVoltage.CloseTo(value, AnalogVoltageChangedThreshold))
-                {
-                    analogVoltage = value;
-                    AnalogVoltageChanged?.Invoke(this, new AnalogVoltageChangedEventArgs(analogVoltage));
-                }
-                else
-                {
-                    analogValue = value;
-                }
-            }
-
             get
             {
-                if (parent.AutoUpdateWhenPropertyRead) parent.Update().Wait();
-                return analogVoltage;
+                return analogVoltageFromAdc(AdcValue);
             }
+        }
+
+        private double analogVoltageFromAdc(int adcValue)
+        {
+            return ReferenceVoltage * analogValueFromAdc(adcValue);
         }
 
         /// <summary>
         /// The reference voltage used for calculating analog voltage
         /// </summary>
-        public double ReferenceVoltage { get; protected set; }
+        public double ReferenceVoltage { get; internal set; }
 
         /// <summary>
         /// Fires whenever the ADC value changes by the specified threshold

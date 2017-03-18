@@ -103,7 +103,7 @@ namespace Treehopper.Libraries.Displays
         {
             if (led.State)
             {
-                ushort brightness = Math.Round(Utility.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535);
+                ushort brightness = (ushort)Math.Round(Utility.BrightnessToCieLuminance(led.Brightness * globalBrightness) * 65535);
                 CurrentValue[led.Channel * 2 + 1] = (byte)(brightness >> 8);
                 CurrentValue[led.Channel * 2] = (byte)(brightness & 0xFF);
             } else
@@ -124,7 +124,7 @@ namespace Treehopper.Libraries.Displays
         {
             for (int i = 0; i < Leds.Count; i++)
             {
-                UInt16 val = BitConverter.ToUInt16(CurrentValue, i * 2);
+                var val = BitConverter.ToUInt16(CurrentValue, i * 2);
                 Leds[i].State = true;
                 Leds[i].Brightness = (double)val / UInt16.MaxValue;
             }

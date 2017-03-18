@@ -82,6 +82,7 @@
     <Compile Include="Interface\Adc\Ads1115.cs" />
     <Compile Include="Interface\Adc\IAdcPeripheral.cs" />
     <Compile Include="Interface\Adc\NamespaceDoc.cs" />
+    <Compile Include="Interface\Adc\Nau7802.cs" />
     <Compile Include="Interface\Dac\NamespaceDoc.cs" />
     <Compile Include="Interface\Mux\AdcAnalogMux.cs" />
     <Compile Include="Interface\Mux\NamespaceDoc.cs" />
