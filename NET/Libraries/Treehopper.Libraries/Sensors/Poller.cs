@@ -68,7 +68,7 @@ namespace Treehopper.Libraries.Sensors
             {
                 while(isRunning)
                 {
-                    await sensor.Update();
+                    await sensor.Update().ConfigureAwait(false);
                     OnSensorValueChanged?.Invoke(this, new EventArgs());
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Sensor"));
                     if(usePrecisionTimer)
@@ -78,7 +78,7 @@ namespace Treehopper.Libraries.Sensors
                         sw.Stop();
                     } else
                     {
-                        await Task.Delay(samplePeriod);
+                        await Task.Delay(samplePeriod).ConfigureAwait(false);
                     }
                     
                 }
@@ -108,6 +108,9 @@ namespace Treehopper.Libraries.Sensors
         {
             isRunning = false;
             sampleTask.Wait();
+            // Hack alert: maybe Wait() doesn't guarantee that all awaits in sampleTask are done? 
+            // Regardless, if we don't wait "a little longer" then we may exit out of Dispose() before the task is done running. This is problematic if the next line of code in the caller is something like board.Disconnect();
+            Task.Delay(sampleDelay * 2).Wait();
         }
     }
 }
