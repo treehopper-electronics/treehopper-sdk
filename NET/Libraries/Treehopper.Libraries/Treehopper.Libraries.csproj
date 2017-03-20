@@ -51,6 +51,7 @@
     <Compile Include="Displays\CharacterDisplay.cs" />
     <Compile Include="Displays\Color.cs" />
     <Compile Include="Displays\Dm632.cs" />
+    <Compile Include="Displays\GroveI2cLcd.cs" />
     <Compile Include="Displays\Ht16k33.cs" />
     <Compile Include="Displays\IRgbLed.cs" />
     <Compile Include="Displays\LedCollection.cs" />
