@@ -140,8 +140,8 @@ namespace Treehopper.Libraries.Interface.Adc
 
         struct Adc
         {
-            [Bitfield(1)]
-            public bool EnableAdcClockDelay;
+            [Bitfield(2)]
+            public int EnableAdcClockDelay;
             [Bitfield(2)]
             public AdcCommonModeConfiguration commonMode;
             [Bitfield(2)]
@@ -320,7 +320,7 @@ namespace Treehopper.Libraries.Interface.Adc
             double ldoVoltage = 4.5 - (int)ctrl1.LdoVoltage * 0.3;
             double gain = 1 << ((int)ctrl1.Gains);
 
-            ReferenceVoltage = 2 * ldoVoltage / gain;
+            ReferenceVoltage = ldoVoltage / gain;
         }
 
         public async Task<bool> Calibrate()
@@ -384,12 +384,12 @@ namespace Treehopper.Libraries.Interface.Adc
 
             UpdateReferenceVoltage(); // set the pins up with the default gains
 
-            pga.BypassPga = true;
+            pga.BypassPga = false;
             pga.DisableChopper = true;
             UpdatePga().Wait();
 
             adc.chopFrequency = AdcClockChopFrequency.TurnedOff;
-            adc.EnableAdcClockDelay = true;
+            adc.EnableAdcClockDelay = 0;
             UpdateAdc().Wait();
 
             ctrl2.SampleRate = ConversionRate.SPS_10;
