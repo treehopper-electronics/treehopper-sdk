@@ -80,6 +80,7 @@
     <Compile Include="Displays\Utility.cs" />
     <Compile Include="Input\NamespaceDoc.cs" />
     <Compile Include="Input\RotaryEncoder.cs" />
+    <Compile Include="Input\WiiNunchuk.cs" />
     <Compile Include="Interface\Adc\AdcPeripheralPin.cs" />
     <Compile Include="Interface\Adc\Ads1115.cs" />
     <Compile Include="Interface\Adc\IAdcPeripheral.cs" />
