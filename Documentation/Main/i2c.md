@@ -1,6 +1,8 @@
 \page i2c I2C
 I<sup>2</sup>C (<i>I2C</i>, or <i>IIC</i>) is a low-speed synchronous serial protocol that allows up to 127 ICs to communicate with each other over a shared two-wire open-drain bus. It has largely replaced \ref spi for many sensors and peripherals.
 
+The Treehopper.Libraries distribution for your language/platform has support for many different peripherals you can use with the I<sup>2</sup>C peripheral; see the \ref libraries documentation for more details.
+
 Here's an example of a typical I<sup>2</sup>C arrangement:
 ![Typical I2C interfacing with Treehopper](images/i2c-overview.svg)
 
