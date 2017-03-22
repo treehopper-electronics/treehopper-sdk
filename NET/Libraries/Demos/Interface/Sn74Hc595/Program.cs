@@ -30,11 +30,11 @@ namespace Sn74hc595Demo
             adcPin = board.Pins[10];
             adcPin.Mode = PinMode.AnalogInput;
             // connect the first shift register to our board.
-            var shift1 = new Sn74hc595(board.Spi, board.Pins[6], 8);
+            var shift1 = new Hc595(board.Spi, board.Pins[6], 8);
 
             // connect the second one to the first one. 
             // Up to 255shift registers can be connected at once
-            var shift2 = new Sn74hc595(shift1);
+            var shift2 = new Hc595(shift1);
 
             var ledController1 = new GpioLedDriver<ShiftOutPin>(shift1.Pins, false, shift1);
             var ledController2 = new GpioLedDriver<ShiftOutPin>(shift2.Pins, false, shift2);
