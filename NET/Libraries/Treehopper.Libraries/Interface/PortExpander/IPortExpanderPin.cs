@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// <summary>
     /// A port expander pin
     /// </summary>
-    public interface IPortExpanderPin : DigitalIOPin
+    public interface IPortExpanderPin : DigitalIO
     {
         /// <summary>
         /// The mode to use with this port expander pin

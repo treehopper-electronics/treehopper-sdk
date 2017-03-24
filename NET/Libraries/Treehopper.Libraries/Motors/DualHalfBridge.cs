@@ -12,9 +12,9 @@ namespace Treehopper.Libraries.Motors
     public class DualHalfBridge : MotorSpeedController
     {
         Pwm enablePwm;
-        DigitalOutPin enable;
-        DigitalOutPin A;
-        DigitalOutPin B;
+        DigitalOut enable;
+        DigitalOut A;
+        DigitalOut B;
         
         /// <summary>
         /// Construct a dual half bridge with PWM speed control
@@ -22,7 +22,7 @@ namespace Treehopper.Libraries.Motors
         /// <param name="A">The "A" channel half-bridge input</param>
         /// <param name="B">The "B" channel half-bridge input</param>
         /// <param name="Enable">The PWM input used to control the output enable</param>
-        public DualHalfBridge(DigitalOutPin A, DigitalOutPin B, Pwm Enable)
+        public DualHalfBridge(DigitalOut A, DigitalOut B, Pwm Enable)
         {
             Enable.Enabled = true;
             Enable.DutyCycle = 0;
@@ -42,7 +42,7 @@ namespace Treehopper.Libraries.Motors
         /// <param name="A">The "A" channel half-bridge input</param>
         /// <param name="B">The "B" channel half-bridge input</param>
         /// <param name="Enable">An optional Enable pin of the H-bridge</param>
-        public DualHalfBridge(DigitalOutPin A, DigitalOutPin B, DigitalOutPin Enable = null)
+        public DualHalfBridge(DigitalOut A, DigitalOut B, DigitalOut Enable = null)
         {
             if(Enable != null)
             {

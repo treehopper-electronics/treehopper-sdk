@@ -35,14 +35,14 @@ namespace Treehopper.Libraries.Sensors.Optical
         byte DATA_CLEAR_HI = 0x47;
 
         I2c _I2C;
-        DigitalOutPin led;
+        DigitalOut led;
 
         /// <summary>
         /// Create a ADJDS311 device
         /// </summary>
         /// <param name="I2CDevice">The I2c port to use</param>
         /// <param name="LedPin">The pin attached to the led</param>
-        public Adjds311(I2c I2CDevice, DigitalOutPin LedPin) : base(0x74, I2CDevice)
+        public Adjds311(I2c I2CDevice, DigitalOut LedPin) : base(0x74, I2CDevice)
         {
             _I2C = I2CDevice;
             _I2C.Enabled = true;

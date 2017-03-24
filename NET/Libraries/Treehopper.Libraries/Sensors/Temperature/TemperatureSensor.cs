@@ -56,6 +56,8 @@
             }
         }
 
+        public int AwaitPollingInterval { get; set; }
+
         /// <summary>
         /// Update the temperature from the current value reported by the sensor
         /// </summary>

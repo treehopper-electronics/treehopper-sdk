@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// <summary>
     /// A digital output pin part of a shift register output
     /// </summary>
-    public class ShiftOutPin : DigitalOutPin
+    public class ShiftOutPin : DigitalOut
     {
         internal ShiftOutPin(ShiftOut controller, int pinNumber)
         {
