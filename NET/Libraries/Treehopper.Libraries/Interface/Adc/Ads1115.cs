@@ -37,6 +37,8 @@ namespace Treehopper.Libraries.Interface.Adc
         /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
+        public int AwaitPollingInterval { get; set; }
+
         /// <summary>
         /// The channel mode this ADC is using
         /// </summary>

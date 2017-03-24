@@ -10,7 +10,7 @@
     using Treehopper.Utilities;
     using Utilities;
     /// <summary>
-    /// Represents standard <see cref="DigitalOutPin"/>-equipped shift registers
+    /// Represents standard <see cref="DigitalOut"/>-equipped shift registers
     /// </summary>
     public class ShiftOut : ChainableShiftRegisterOutput, IFlushableOutputPort<ShiftOutPin>
     {

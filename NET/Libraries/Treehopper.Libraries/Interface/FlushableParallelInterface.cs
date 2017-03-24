@@ -10,30 +10,30 @@ namespace Treehopper.Libraries.Interface
     /// <summary>
     /// A class that represents a WriteOnlyParallelInterface constructed from a <see cref="IFlushableOutputPort{TDigitalPin}"/>
     /// </summary>
-    /// <typeparam name="T">A type that implements <see cref="DigitalOutPin"/></typeparam>
-    public class FlushableParallelInterface<T> : WriteOnlyParallelInterface where T : DigitalOutPin
+    /// <typeparam name="T">A type that implements <see cref="DigitalOut"/></typeparam>
+    public class FlushableParallelInterface<T> : WriteOnlyParallelInterface where T : DigitalOut
     {
         private IFlushableOutputPort<T> port;
 
         /// <summary>
         /// A collection of pins to use for the data bus
         /// </summary>
-        public Collection<DigitalOutPin> DataBus { get; set; } = new Collection<DigitalOutPin>();
+        public Collection<DigitalOut> DataBus { get; set; } = new Collection<DigitalOut>();
 
         /// <summary>
         /// The Register Select (RS) pin to use
         /// </summary>
-        public DigitalOutPin RegisterSelectPin { get; set; }
+        public DigitalOut RegisterSelectPin { get; set; }
 
         /// <summary>
         /// The Read/Write (R/W) pin to use
         /// </summary>
-        public DigitalOutPin ReadWritePin { get; set; }
+        public DigitalOut ReadWritePin { get; set; }
 
         /// <summary>
         /// The enable (E) pin to use
         /// </summary>
-        public DigitalOutPin EnablePin { get; set; }
+        public DigitalOut EnablePin { get; set; }
 
         /// <summary>
         /// The number of microseconds to delay between transactions.

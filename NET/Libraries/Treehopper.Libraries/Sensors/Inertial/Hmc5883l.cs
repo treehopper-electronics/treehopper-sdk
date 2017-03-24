@@ -193,6 +193,8 @@
             }
         }
 
+        public int AwaitPollingInterval { get; set; }
+
         /// <summary>
         /// Force an update of <see cref="Magnetometer"/>. This method is called automatically when <see cref="AutoUpdateWhenPropertyRead"/> is true.
         /// </summary>

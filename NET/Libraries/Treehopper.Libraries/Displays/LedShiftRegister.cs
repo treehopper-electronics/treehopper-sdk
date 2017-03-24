@@ -44,7 +44,7 @@
     /// </remarks>
     public class LedShiftRegister : ChainableShiftRegisterOutput, ILedDriver
     {
-        DigitalOutPin oe;
+        DigitalOut oe;
         Pwm oePwm;
         int channels;
 
@@ -56,7 +56,7 @@
         /// <param name="ChannelCount">Whether the driver is 16 or 8-channel</param>
         /// <param name="OutputEnablePin">The output enable pin, if any, to use.</param>
         /// <param name="speedMhz">The speed, in MHz, to use when communicating</param>
-        public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOutPin OutputEnablePin = null, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount/8, speedMhz)
+        public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOut OutputEnablePin = null, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount/8, speedMhz)
         {
             oe = OutputEnablePin;
             Start(ChannelCount);
@@ -82,7 +82,7 @@
         /// <param name="upstreamDevice">The upstream device this shift register is attached to</param>
         /// <param name="OutputEnablePin">The digital pin to use, if any, to control the display state</param>
         /// <param name="ChannelCount">The number of channels this LED shift register has</param>
-        public LedShiftRegister(ChainableShiftRegisterOutput upstreamDevice, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOutPin OutputEnablePin = null) : base(upstreamDevice, (int)ChannelCount / 8)
+        public LedShiftRegister(ChainableShiftRegisterOutput upstreamDevice, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, DigitalOut OutputEnablePin = null) : base(upstreamDevice, (int)ChannelCount / 8)
         {
             oe = OutputEnablePin;
             Start(ChannelCount);

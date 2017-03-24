@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
 using Treehopper.Libraries.Input;
+using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Libraries.Sensors;
 
 namespace WiiNunchukDemo
@@ -29,8 +30,8 @@ namespace WiiNunchukDemo
             {
                 // Hook onto some fun events
                 nunchuk.JoystickChanged += Nunchuk_JoystickChanged;
-                nunchuk.C.DigitalValueChanged += C_DigitalValueChanged;
-                nunchuk.Z.DigitalValueChanged += Z_DigitalValueChanged;
+                nunchuk.C.OnPressed += C_OnPressed;
+                nunchuk.Z.OnPressed += Z_OnPressed;
 
                 Console.WriteLine("Starting demo. Press any key to stop...");
 
@@ -41,16 +42,17 @@ namespace WiiNunchukDemo
             }
         }
 
-        private static void C_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
+        private static void C_OnPressed(object sender, Button.ButtonPressedEventArgs e)
         {
             // the implicity-called ToString() method on the button object (sender, in this context) will print "pressed" or "not pressed" -- handy for console/debug logging!
-            Console.WriteLine("Button C: " + sender); 
+            Console.WriteLine("Button C: " + sender);
         }
 
-        private static void Z_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
+        private static void Z_OnPressed(object sender, Button.ButtonPressedEventArgs e)
         {
             Console.WriteLine("Button Z: " + sender);
         }
+
 
         private static void Nunchuk_JoystickChanged(object sender, WiiNunchuk.JoystickEventArgs e)
         {

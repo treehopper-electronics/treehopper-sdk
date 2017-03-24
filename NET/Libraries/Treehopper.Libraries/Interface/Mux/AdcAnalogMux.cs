@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Interface.Mux
     public class AdcAnalogMux
     {
         internal AdcPin pin { get; set; }
-        private DigitalOutPin[] pins;
+        private DigitalOut[] pins;
         internal int settlingTime;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Treehopper.Libraries.Interface.Mux
         /// </summary>
         /// <param name="muxedPin">The upstream Adc pin to mux</param>
         /// <param name="pins">The pin(s) to use to control the mux, starting with the least-significant bit</param>
-        public AdcAnalogMux(AdcPin muxedPin, int settlingTime, params DigitalOutPin[] pins)
+        public AdcAnalogMux(AdcPin muxedPin, int settlingTime, params DigitalOut[] pins)
         {
             this.pins = pins;
             this.pin = muxedPin;

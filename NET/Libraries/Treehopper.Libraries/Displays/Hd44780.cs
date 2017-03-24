@@ -161,7 +161,7 @@ namespace Treehopper.Libraries.Displays
         private bool display;
         private bool cursor;
         private bool blink;
-        private DigitalOutPin backlight;
+        private DigitalOut backlight;
 
         /// <summary>
         /// Construct a new HD44780-compatible display
@@ -171,7 +171,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="Rows">The number of rows of the display</param>
         /// <param name="Backlight">The active-high pin to use for the backlight</param>
         /// <param name="font">The font mode to use</param>
-        public Hd44780(WriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOutPin Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
+        public Hd44780(WriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOut Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
         {
             if (iface.Width == 8)
                 this.bits = BitMode.EightBit;

@@ -7,7 +7,7 @@ using Treehopper;
 
 namespace Remote.Client
 {
-    public class RemotePin : DigitalIOPin, SpiChipSelectPin
+    public class RemotePin : DigitalIO, SpiChipSelectPin
     {
         internal RemotePin(RemoteTreehopper board, int pinNumber)
         {

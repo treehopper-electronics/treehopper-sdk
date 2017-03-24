@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Displays
     /// An LedDriver implemented using plain digital output pins
     /// </summary>
     /// <typeparam name="TDigitalOutPin">The DigitalOutPin type that should be used.</typeparam>
-    public class GpioLedDriver<TDigitalOutPin> : LedDriver where TDigitalOutPin : DigitalOutPin
+    public class GpioLedDriver<TDigitalOutPin> : LedDriver where TDigitalOutPin : DigitalOut
     {
         private readonly IFlushable controller;
         private IList<TDigitalOutPin> Pins;

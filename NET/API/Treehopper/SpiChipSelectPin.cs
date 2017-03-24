@@ -1,6 +1,6 @@
 ﻿namespace Treehopper
 {
-    public interface SpiChipSelectPin : DigitalOutPin
+    public interface SpiChipSelectPin : DigitalOut
     {
         int PinNumber { get; }
 

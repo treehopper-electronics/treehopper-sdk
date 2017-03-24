@@ -42,11 +42,11 @@ namespace Treehopper.Libraries.Sensors.Inertial
             this.gyro = gyroscope;
 
             accelPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, useHighResolutionTimer);
-            accelPoller.OnSensorValueChanged += PollerEvent;
+            accelPoller.OnNewSensorValue += PollerEvent;
             if (accelerometer != gyroscope) // if we have two different sensors
             {
                 gyroPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, useHighResolutionTimer);
-                gyroPoller.OnSensorValueChanged += PollerEvent;
+                gyroPoller.OnNewSensorValue += PollerEvent;
             }
                 
         }

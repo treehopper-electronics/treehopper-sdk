@@ -133,6 +133,8 @@
             }
         }
 
+        public int AwaitPollingInterval { get; set; }
+
         internal int PayloadSize { get; set; } = 6;
         internal byte[] LastReceivedData { get; set; }
 

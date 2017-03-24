@@ -19,7 +19,7 @@ namespace Treehopper.Libraries.Interface.Adc
         PowerUpControl puCtrl;
         Pga pga = new Pga();
         Adc adc = new Adc();
-        private DigitalInPin drdy;
+        private DigitalIn drdy;
 
         public enum Channel
         {
@@ -352,7 +352,9 @@ namespace Treehopper.Libraries.Interface.Adc
             set { if (drdy != null) return;  autoUpdate = value; } // if the user constructed us with a DRDY pin, we should *never* update when property read.
         }
 
-        public Nau7802(I2c i2c, DigitalInPin drdy = null) : base(null, 24, 0)
+        public int AwaitPollingInterval { get; set; }
+
+        public Nau7802(I2c i2c, DigitalIn drdy = null) : base(null, 24, 0)
         {
             if(drdy != null)
             {

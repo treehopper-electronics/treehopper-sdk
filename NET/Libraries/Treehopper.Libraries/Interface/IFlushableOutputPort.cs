@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Interface
     /// Represents a flushable output port
     /// </summary>
     /// <typeparam name="TDigitalPin"></typeparam>
-    public interface IFlushableOutputPort<TDigitalPin> : IFlushable where TDigitalPin : DigitalOutPin
+    public interface IFlushableOutputPort<TDigitalPin> : IFlushable where TDigitalPin : DigitalOut
     {
         /// <summary>
         /// Collection of pins associated with this output port

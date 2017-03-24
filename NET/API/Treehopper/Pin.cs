@@ -9,7 +9,7 @@
     /// <summary>
     /// Represents an I/O pin on Treehopper; it provides core digital I/O (GPIO) and ADC functionality.
     /// </summary>
-    public class Pin : INotifyPropertyChanged, DigitalInPin, DigitalOutPin, AdcPin, SpiChipSelectPin
+    public class Pin : INotifyPropertyChanged, DigitalIn, DigitalOut, AdcPin, SpiChipSelectPin
     {
         private TreehopperUsb board;
         private PinMode mode = PinMode.Unassigned;

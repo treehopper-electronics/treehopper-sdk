@@ -59,6 +59,9 @@
     <Compile Include="Displays\LedDisplayCollection.cs" />
     <Compile Include="Displays\LedFadeAnimation.cs" />
     <Compile Include="Displays\NamespaceDoc.cs" />
+    <Compile Include="Input\Button.cs" />
+    <Compile Include="Input\WiiClassicController.cs" />
+    <Compile Include="Interface\PortExpander\DigitalInPin.cs" />
     <Compile Include="Interface\PortExpander\Pca9632.cs" />
     <Compile Include="Displays\PwmLedDriver.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
@@ -114,7 +117,7 @@
     <Compile Include="Interface\PortExpander\ShiftOut.cs" />
     <Compile Include="Interface\PortExpander\ShiftOutPin.cs" />
     <Compile Include="Interface\PortExpander\Sn74hc166.cs" />
-    <Compile Include="Interface\PortExpander\Sn74hc595.cs" />
+    <Compile Include="Interface\PortExpander\Hc595.cs" />
     <Compile Include="Motors\Amis30624.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
     <Compile Include="Motors\DualHalfBridge.cs" />

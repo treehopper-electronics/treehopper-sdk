@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Note that this class doesn't expose a collection of <see cref="DigitalOutPin"/>s  or <see cref="Displays.Led"/>s, and instead, represents any writable shift register device. See <see cref="ShiftOut"/> for an implementation of a pin-based shift register. 
+    /// Note that this class doesn't expose a collection of <see cref="DigitalOut"/>s  or <see cref="Displays.Led"/>s, and instead, represents any writable shift register device. See <see cref="ShiftOut"/> for an implementation of a pin-based shift register. 
     /// </para>
     /// </remarks>
     public abstract class ChainableShiftRegisterOutput : IFlushable

@@ -5,7 +5,7 @@
     /// <summary>
     /// Base interface that describes a pin with a DigitalValue property
     /// </summary>
-    public interface DigitalPinBase
+    public interface DigitalBase
     {
         /// <summary>
         /// Get or set the DigitalValue of the pin
@@ -16,7 +16,7 @@
     /// <summary>
     /// Interface for digital output pins
     /// </summary>
-    public interface DigitalOutPin : DigitalPinBase
+    public interface DigitalOut : DigitalBase
     {
         /// <summary>
         /// Toggle the output's value
@@ -34,7 +34,7 @@
     /// <summary>
     /// Interface for digital pins supporting input functionality
     /// </summary>
-    public interface DigitalInPin : DigitalPinBase
+    public interface DigitalIn : DigitalBase
     {
         /// <summary>
         /// Fires whenever the digital pin's input changes value
@@ -56,7 +56,7 @@
     /// <summary>
     /// Helper interface to describe pins that are both inputs and outputs
     /// </summary>
-    public interface DigitalIOPin : DigitalInPin, DigitalOutPin
+    public interface DigitalIO : DigitalIn, DigitalOut
     {
     }
 }

@@ -24,11 +24,11 @@ namespace Treehopper.Libraries.Sensors
     public class Poller<TPollable> : INotifyPropertyChanged, IDisposable where TPollable : IPollable
     {
         /// <summary>
-        /// The signature of the callback to use with the <see cref="OnSensorValueChanged"/> event
+        /// The signature of the callback to use with the <see cref="OnNewSensorValue"/> event
         /// </summary>
         /// <param name="sender">The Poller where this call originated from</param>
         /// <param name="e">An empty EventArgs</param>
-        public delegate void SensorValueChanged(object sender, EventArgs e);
+        public delegate void NewSensorValueEventHandler(object sender, EventArgs e);
 
         private int sampleDelay;
         private TPollable sensor;
@@ -39,7 +39,7 @@ namespace Treehopper.Libraries.Sensors
         /// <summary>
         /// Fires whenever the sensor value is updated
         /// </summary>
-        public event SensorValueChanged OnSensorValueChanged;
+        public event NewSensorValueEventHandler OnNewSensorValue;
 
         /// <summary>
         /// Fires whenever the sensor value is updated
@@ -69,7 +69,7 @@ namespace Treehopper.Libraries.Sensors
                 while(isRunning)
                 {
                     await sensor.Update().ConfigureAwait(false);
-                    OnSensorValueChanged?.Invoke(this, new EventArgs());
+                    OnNewSensorValue?.Invoke(this, new EventArgs());
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Sensor"));
                     if(usePrecisionTimer)
                     {

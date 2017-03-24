@@ -41,5 +41,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// </summary>
         /// <returns>An awaitable task</returns>
         public abstract Task Update();
+
+        public int AwaitPollingInterval { get; set; }
+
     }
 }
