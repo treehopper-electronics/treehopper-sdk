@@ -14,19 +14,6 @@ namespace Treehopper.Libraries.Input
 {
     public class WiiClassicController : IPollable
     {
-        public class DPadStateEventArgs { public DPadState NewValue { get; set; } }
-
-        public delegate void DPadStateEventHandler(object sender, DPadStateEventArgs e);
-
-        public enum DPadState
-        {
-            None,
-            Left,
-            Right,
-            Up,
-            Down
-        }
-
         private SMBusDevice dev;
         private Vector2 rightStick;
         private Vector2 leftStick;
@@ -40,8 +27,8 @@ namespace Treehopper.Libraries.Input
             dev.WriteData(new byte[] { 0xF0, 0x55 }).Wait();
             dev.WriteData(new byte[] { 0xFB, 0x00 }).Wait();
 
-            LeftTrigger = new Button(new DigitalInPeripheralPin(this), false);
-            RightTrigger = new Button(new DigitalInPeripheralPin(this), false);
+            L = new Button(new DigitalInPeripheralPin(this), false);
+            R = new Button(new DigitalInPeripheralPin(this), false);
             ZL = new Button(new DigitalInPeripheralPin(this), false);
             ZR = new Button(new DigitalInPeripheralPin(this), false);
             Home = new Button(new DigitalInPeripheralPin(this), false);
@@ -55,8 +42,8 @@ namespace Treehopper.Libraries.Input
 
         public event DPadStateEventHandler DPadStateChanged;
 
-        public Button RightTrigger { get; private set; }
-        public Button LeftTrigger { get; private set; }
+        public Button R { get; private set; }
+        public Button L { get; private set; }
         public Button ZL { get; private set; }
         public Button ZR { get; private set; }
         public Button Home { get; private set; }
@@ -140,11 +127,11 @@ namespace Treehopper.Libraries.Input
             rightTriggerForce = rt / 31f;
 
             BitArray array = new BitArray(response.Skip(4).Take(2).ToArray());
-            ((DigitalInPeripheralPin)(RightTrigger.Input)).DigitalValue = !array[1];
+            ((DigitalInPeripheralPin)(R.Input)).DigitalValue = !array[1];
             ((DigitalInPeripheralPin)(Plus.Input)).DigitalValue = !array[2];
             ((DigitalInPeripheralPin)(Home.Input)).DigitalValue = !array[3];
             ((DigitalInPeripheralPin)(Minus.Input)).DigitalValue = !array[4];
-            ((DigitalInPeripheralPin)(LeftTrigger.Input)).DigitalValue = !array[5];
+            ((DigitalInPeripheralPin)(L.Input)).DigitalValue = !array[5];
 
             // D-Pad stuff
             var temp = dPad;
