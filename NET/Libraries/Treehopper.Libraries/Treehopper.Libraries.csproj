@@ -119,7 +119,7 @@
     <Compile Include="Interface\PortExpander\ChainableShiftRegisterOutput.cs" />
     <Compile Include="Interface\PortExpander\ShiftOut.cs" />
     <Compile Include="Interface\PortExpander\ShiftOutPin.cs" />
-    <Compile Include="Interface\PortExpander\Sn74hc166.cs" />
+    <Compile Include="Interface\PortExpander\Hc166.cs" />
     <Compile Include="Interface\PortExpander\Hc595.cs" />
     <Compile Include="Motors\Amis30624.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
@@ -128,6 +128,7 @@
     <Compile Include="Motors\MotorSpeedController.cs" />
     <Compile Include="Motors\MotorizedFader.cs" />
     <Compile Include="Motors\NamespaceDoc.cs" />
+    <Compile Include="Motors\SeeedGroveI2cMotorDriver.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensors\Humidity\IHumiditySensor.cs" />

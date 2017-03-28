@@ -169,6 +169,7 @@
     <ClInclude Include="inc\Input\RotaryEncoder.h" />
     <ClInclude Include="inc\Interface\Flushable.h" />
     <ClInclude Include="inc\Interface\PortExpander\ChainableShiftRegisterOutput.h" />
+    <ClInclude Include="inc\Motors\SeeedGroveI2cMotorDriver.h" />
     <ClInclude Include="inc\Pollable.h" />
     <ClInclude Include="inc\Sensors\Temperature\Lm75.h" />
     <ClInclude Include="inc\Sensors\Temperature\Mcp9808.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Input\RotaryEncoder.cpp" />
     <ClCompile Include="src\Interface\PortExpander\ChainableShiftRegisterOutput.cpp" />
+    <ClCompile Include="src\Motors\SeeedGroveI2cMotorDriver.cpp" />
     <ClCompile Include="src\Pollable.cpp" />
     <ClCompile Include="src\Sensors\Temperature\Lm75.cpp" />
     <ClCompile Include="src\Sensors\Temperature\Mcp9808.cpp" />

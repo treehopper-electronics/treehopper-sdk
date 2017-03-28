@@ -49,6 +49,7 @@
     <ClInclude Include="inc\Displays\LedDriver.h" />
     <ClInclude Include="inc\Displays\Led.h" />
     <ClInclude Include="inc\Displays\Utility.h" />
+    <ClInclude Include="inc\Motors\SeeedGroveI2cMotorDriver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp" />
@@ -70,5 +71,6 @@
     <ClCompile Include="src\Displays\Dm632.cpp" />
     <ClCompile Include="src\Displays\Led.cpp" />
     <ClCompile Include="src\Displays\LedDriver.cpp" />
+    <ClCompile Include="src\Motors\SeeedGroveI2cMotorDriver.cpp" />
   </ItemGroup>
 </Project>
