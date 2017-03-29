@@ -202,15 +202,15 @@ public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyros
     	double accelScale = getAccelScale();
     	double gyroScale = getGyrosScale();
     	
-    	getAccelerometer().x = (float)(((short)(data[0] << 8 | data[1])/32768.0) * accelScale - getAccelOffset().x);
-    	getAccelerometer().y = (float)(((short)(data[2] << 8 | data[3])/32768.0) * accelScale - getAccelOffset().y);
-    	getAccelerometer().z = (float)(((short)(data[4] << 8 | data[5])/32768.0) * accelScale - getAccelOffset().z);
+    	getAccelerometer().x = (float)(((short)((data[0] & 0xff) << 8 |(data[1] & 0xff))/32768.0) * accelScale - getAccelOffset().x);
+    	getAccelerometer().y = (float)(((short)((data[2] & 0xff) << 8 | (data[3] & 0xff))/32768.0) * accelScale - getAccelOffset().y);
+    	getAccelerometer().z = (float)(((short)((data[4] & 0xff) << 8 | (data[5] & 0xff))/32768.0) * accelScale - getAccelOffset().z);
     	
     	setTemperature((data[6] << 8 | data[7]) / 333.87 + 21.0);
     	
-    	getGyroscope().x = (float)(((short)(data[8] << 8 | data[9])) * gyroScale - getGyroOffset().x);
-    	getGyroscope().y = (float)(((short)(data[10] << 8 | data[11])) * gyroScale - getGyroOffset().y);
-    	getGyroscope().z = (float)(((short)(data[12] << 8 | data[13])) * gyroScale - getGyroOffset().z);
+    	getGyroscope().x = (float)(((short)((data[8] & 0xff) << 8 | (data[9] & 0xff))) * gyroScale - getGyroOffset().x);
+    	getGyroscope().y = (float)(((short)((data[10] & 0xff) << 8 | (data[11] & 0xff))) * gyroScale - getGyroOffset().y);
+    	getGyroscope().z = (float)(((short)((data[12] & 0xff) << 8 | (data[13] & 0xff))) * gyroScale - getGyroOffset().z);
     }
 
 	public Vector3 getAccelOffset() {
