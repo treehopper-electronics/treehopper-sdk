@@ -2,12 +2,28 @@ package io.treehopper.blink;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
-public class MainActivity extends AppCompatActivity {
+import io.treehopper.TreehopperUsb;
+import io.treehopper.android.TreehopperActivity;
+
+public class MainActivity extends TreehopperActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void boardAdded(TreehopperUsb boardAdded) {
+        boardAdded.connect();
+        boardAdded.setLed(true);
+        boardAdded.setLed(false);
+    }
+
+    @Override
+    protected void boardRemoved(TreehopperUsb boardRemoved) {
+
     }
 }
