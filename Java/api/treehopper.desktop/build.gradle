@@ -2,8 +2,8 @@ apply plugin: 'java'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':api:treehopper.desktop')
-    compile project(path: ':api:treehopper.libraries')
+    compile project(':api:treehopper')
+    compile 'org.usb4java:usb4java-javax:1.2.0'
 }
 
 sourceCompatibility = "1.7"
