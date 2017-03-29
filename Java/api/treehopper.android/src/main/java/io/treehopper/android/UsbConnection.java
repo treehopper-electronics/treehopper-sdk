@@ -56,8 +56,8 @@ public class UsbConnection implements Connection {
                         byte[] data = new byte[64];
                         pinListenerThreadRunning = true;
                         while (pinListenerThreadRunning) {
-                            connection.bulkTransfer(pinReportEndpoint, data, 41, 0); // pin reports are 41 bytes long now
-                            if (board != null)
+                            int res = connection.bulkTransfer(pinReportEndpoint, data, 41, 100); // pin reports are 41 bytes long now
+                            if (board != null && res > 0)
                                 board.onPinReportReceived(data);
                         }
                     }
@@ -109,7 +109,7 @@ public class UsbConnection implements Connection {
             return;
         }
 
-        connection.bulkTransfer(pinConfigEndpoint, data, data.length, 1000);
+        int res = connection.bulkTransfer(pinConfigEndpoint, data, data.length, 1000);
     }
 
     public void sendDataPeripheralChannel(byte[] data) {
@@ -118,13 +118,13 @@ public class UsbConnection implements Connection {
             return;
         }
 
-        connection.bulkTransfer(peripheralConfigEndpoint, data, data.length, 1000);
+        int res = connection.bulkTransfer(peripheralConfigEndpoint, data, data.length, 1000);
     }
 
     @Override
     public byte[] readPeripheralResponsePacket(int numBytesToRead) {
         byte[] data = new byte[numBytesToRead];
-        connection.bulkTransfer(peripheralResponseEndpoint, data, numBytesToRead, 0);
+        int res = connection.bulkTransfer(peripheralResponseEndpoint, data, numBytesToRead, 1000);
         return data;
     }
 
