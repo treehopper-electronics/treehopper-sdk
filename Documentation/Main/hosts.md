@@ -5,7 +5,6 @@ All Treehopper APIs are designed to run on USB-equipped hosts -- you can't progr
 Treehopper supports essentially all desktops and laptops with USB ports. The only software requirements are that the device runs either:
  - <b>Windows 7 or newer.</b> This is needed for automatic WinUSB installation, but an adventurous user may be able to get older Windows systems working.
  - <b>Some form of LibUSB-supported operating system.</b> All Treehopper language APIs use LibUSB in non-Windows systems for USB interfacing. *We regularly test on Linux and macOS, but LibUSB also supports OpenBSD, NetBSD, and FreeBSD, so our libraries should work there, too.*
- - <b>Android Lollipop or higher</b>.
 
 # Embedded Devices {#embedded-linux}
 Many embedded devices running Linux or Windows can be used with Treehopper. The [Raspberry Pi](https://www.raspberrypi.org/) is one such device, and, when running Linux, it works well as a host for apps that use Treehopper -- whether written in C# (via mono), Java, or C++. We also support Raspberry Pi under [Windows 10 IoT Core](https://developer.microsoft.com/en-us/windows/iot/explore/iotcore) through our C# UWP API.
