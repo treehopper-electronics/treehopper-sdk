@@ -33,14 +33,28 @@ namespace Treehopper
 		isConnected = true;
 		pinListenerThread = thread(&TreehopperUsb::pinStateListener, this);
 		pinListenerThread.detach();
+
+		reinitialize();
 		return true;
 	}
 
 	void TreehopperUsb::disconnect()
 	{
+		if (!isConnected) return;
+
+		reinitialize(); // leave the board where we found it
+
 		isConnected = false;
-		//pinListenerThread.join(); // block this thread until the listener exits
+		if(pinListenerThread.joinable())
+			pinListenerThread.join(); // block this thread until the listener exits
 		connection.close();
+	}
+
+	void TreehopperUsb::reinitialize()
+	{
+		uint8_t data[2];
+		data[0] = (uint8_t)DeviceCommands::ConfigureDevice;
+		sendPeripheralConfigPacket(data, 2);
 	}
 
 	wstring TreehopperUsb::serialNumber()

@@ -36,6 +36,8 @@ namespace Treehopper
 
 		}
 
+		void reinitialize();
+
 		bool isConnected;
 		bool connect();
 		void disconnect();

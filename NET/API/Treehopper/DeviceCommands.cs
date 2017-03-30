@@ -2,8 +2,8 @@
 {
     internal enum DeviceCommands : byte
     {
-        Reserved = 0,   // Not implemented
-        ConfigureDevice,    // Sent upon device connect/disconnect
+        Reserved = 0,
+        ConfigureDevice,
         PwmConfig,
         UartConfig,
         I2cConfig,
