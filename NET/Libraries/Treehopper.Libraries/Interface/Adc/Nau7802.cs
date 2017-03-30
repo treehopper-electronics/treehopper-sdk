@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Sensors.Temperature;
-using Treehopper.Libraries.Utilities;
-
-namespace Treehopper.Libraries.Interface.Adc
+﻿namespace Treehopper.Libraries.Interface.Adc
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
+    using Utilities;
+
+    /// <summary>
+    /// Nuvoton NAU7802 24-bit dual-channel ADC for bridge sensors
+    /// </summary>
     public class Nau7802 : AdcPeripheralPin, IAdcPeripheral
     {
         SMBusDevice dev;

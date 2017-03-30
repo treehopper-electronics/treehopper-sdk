@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Input
+﻿namespace Treehopper.Libraries.Input
 {
     public class DPadStateEventArgs { public DPadState NewValue { get; set; } }
 

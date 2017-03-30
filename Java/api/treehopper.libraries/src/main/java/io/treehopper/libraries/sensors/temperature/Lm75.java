@@ -4,9 +4,8 @@ import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
 
 /**
- * Created by jay on 2/12/2017.
+ * LM75 I2c temperature sensor
  */
-
 public class Lm75 extends TemperatureSensor {
     private final SMBusDevice device;
 
@@ -26,7 +25,7 @@ public class Lm75 extends TemperatureSensor {
     }
     @Override
     public double getTemperatureCelsius() {
-        short data = (short)device.ReadWordDataBE((byte)0x00);
+        short data = (short)device.readWordDataBE((byte)0x00);
         return (data / 32.0) / 8.0;
     }
 }

@@ -1,7 +1,7 @@
 package io.treehopper.enums;
 
 /**
- * Created by jay on 12/28/2015.
+ * ADC reference level
  */
 public enum AdcReferenceLevel {
     /**
@@ -9,28 +9,28 @@ public enum AdcReferenceLevel {
      */
     VREF_3V3,
 
-    /// <summary>
-    /// 1.65V reference rated at 1.8% accuracy.
-    /// </summary>
+    /**
+     * 1.65V reference rated at 1.8% accuracy.
+     */
     VREF_1V65,
 
-    /// <summary>
-    /// 1.8V reference. Accuracy TBD.
-    /// </summary>
+    /**
+     * 1.8V reference. Accuracy TBD.
+     */
     VREF_1V8,
 
-    /// <summary>
-    /// 2.4V reference rated at 2.1% accuracy.
-    /// </summary>
+    /**
+     * 2.4V reference rated at 2.1% accuracy.
+     */
     VREF_2V4,
 
-    /// <summary>
-    /// 3.3V supply derived from the 1.65V reference rated at 3.6% accuracy.
-    /// </summary>
+    /**
+     * 3.3V supply derived from the 1.65V reference rated at 3.6% accuracy.
+     */
     VREF_3V3_DERIVED,
 
-    /// <summary>
-    /// 3.6V reference derived from the 1.8V LDO. Accuracy TBD.
-    /// </summary>
+    /**
+     * 3.6V reference derived from the 1.8V LDO. Accuracy TBD.
+     */
     VREF_3V6
 }

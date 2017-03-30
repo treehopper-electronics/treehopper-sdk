@@ -19,6 +19,9 @@ import javax.usb.UsbPipe;
 
 import io.treehopper.interfaces.Connection;
 
+/**
+ * javax-usb Connection
+ */
 public class UsbConnection implements Connection {
 
 	private UsbDevice device; // private reference to the javax-usb device

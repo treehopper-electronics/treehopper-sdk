@@ -1,15 +1,14 @@
 package io.treehopper.events;
 
 /**
- * Created by jay on 12/6/2016.
+ * Analog value changed EventArgs
  */
-
 public class AnalogValueChangedEventArgs {
+    public double newAnalogValue;
+    public double oldAnalogValue;
+
     public AnalogValueChangedEventArgs(double newAnalogValue, double oldAnalogValue) {
         this.newAnalogValue = newAnalogValue;
         this.oldAnalogValue = oldAnalogValue;
     }
-
-    public double newAnalogValue;
-    public double oldAnalogValue;
 }

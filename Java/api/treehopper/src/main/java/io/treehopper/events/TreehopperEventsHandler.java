@@ -1,13 +1,12 @@
 package io.treehopper.events;
 
-import java.util.HashMap;
-
 import io.treehopper.TreehopperUsb;
 
 /**
- * Created by jay on 12/28/2015.
+ * Handler for TreehopperEvents
  */
-public interface TreehopperEventsListener {
+public interface TreehopperEventsHandler {
     void onBoardAdded(TreehopperUsb board);
+
     void onBoardRemoved(TreehopperUsb board);
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// An ILI9341-based display
+    /// Ilitek ILI9341 320x240 color TFT controller
     /// </summary>
     public class Ili9341 : GraphicDisplay
     {

@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import io.treehopper.events.TreehopperEventsListener;
+import io.treehopper.events.TreehopperEventsHandler;
 import io.treehopper.TreehopperUsb;
 
 /**
- * Created by jay on 12/27/2015.
+ * Android-based ConnectionService
  */
 public class ConnectionService extends BroadcastReceiver {
 
@@ -121,15 +121,15 @@ public class ConnectionService extends BroadcastReceiver {
         return boards;
     }
 
-    private ArrayList<TreehopperEventsListener> listeners = new ArrayList<TreehopperEventsListener>();
+    private ArrayList<TreehopperEventsHandler> listeners = new ArrayList<TreehopperEventsHandler>();
 
-    public void addEventsListener(TreehopperEventsListener listener) {
+    public void addEventsListener(TreehopperEventsHandler listener) {
         if (listeners.contains(listener)) // no double-subscribing, plz
             return;
         listeners.add(listener);
     }
 
-    public void removeEventsListener(TreehopperEventsListener listener) {
+    public void removeEventsListener(TreehopperEventsHandler listener) {
         if (!listeners.contains(listener))
             return;
         listeners.remove(listener);
@@ -148,7 +148,7 @@ public class ConnectionService extends BroadcastReceiver {
                 Iterator<TreehopperUsb> it = boards.values().iterator();
                 TreehopperUsb removedBoard = it.next();
                 removedBoard.disconnect();
-                for (TreehopperEventsListener listener : listeners) {
+                for (TreehopperEventsHandler listener : listeners) {
                     listener.onBoardRemoved(removedBoard);
                 }
                 boards.clear();
@@ -164,7 +164,7 @@ public class ConnectionService extends BroadcastReceiver {
                 removedBoard.disconnect();
                 boards.remove(device.getSerialNumber());
                 Log.i(TAG, "calling " + listeners.size() + " listeners");
-                for (TreehopperEventsListener listener : listeners) {
+                for (TreehopperEventsHandler listener : listeners) {
                     listener.onBoardRemoved(removedBoard);
                 }
             }
@@ -211,7 +211,7 @@ public class ConnectionService extends BroadcastReceiver {
                 if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                     if (device != null) {
                         Log.i(TAG, "calling " + listeners.size() + " listeners.");
-                        for (TreehopperEventsListener listener : listeners) {
+                        for (TreehopperEventsHandler listener : listeners) {
                             listener.onBoardAdded(boards.get(device.getSerialNumber()));
                         }
                     }

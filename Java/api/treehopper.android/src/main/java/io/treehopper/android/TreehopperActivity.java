@@ -7,17 +7,17 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 
-import io.treehopper.events.TreehopperEventsListener;
+import io.treehopper.events.TreehopperEventsHandler;
 import io.treehopper.TreehopperUsb;
 
 /**
- * Created by jay on 12/28/2015.
+ * Activity class that provides Board added/removed functions
  */
 public abstract class TreehopperActivity extends Activity {
 
     protected ConnectionService connectionService = ConnectionService.getInstance();
 
-    TreehopperEventsListener listener = new TreehopperEventsListener() {
+    TreehopperEventsHandler listener = new TreehopperEventsHandler() {
         @Override
         public void onBoardAdded(TreehopperUsb board) {
             boardAdded(board);

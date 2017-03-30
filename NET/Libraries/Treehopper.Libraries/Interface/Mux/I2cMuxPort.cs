@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Interface.Mux
+﻿namespace Treehopper.Libraries.Interface.Mux
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// I2C mux port
     /// </summary>

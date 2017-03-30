@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// LM75 I2c temperature sensor library
+    /// LM75 I2c temperature sensor
     /// </summary>
     /// <remarks>
     /// <para>This library should work with all variants of the ubiquitous LM75, manufactured by NXP, ST, Texas Instruments, and Maxim. Note that some of these variants provide 0.5 degree Celsius resolution, while others provide as high as 0.125 degree resolution.</para>

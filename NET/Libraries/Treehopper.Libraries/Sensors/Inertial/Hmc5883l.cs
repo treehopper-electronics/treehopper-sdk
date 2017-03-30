@@ -9,7 +9,7 @@
     using System.Threading.Tasks;
     using Utilities;
     /// <summary>
-    /// The HMC5883L is a three-axis magnetometer useful for digital compass applications
+    /// Honeywell HMC5883L 3-axis digital compass
     /// </summary>
     public class Hmc5883l : IMagnetometer
     {

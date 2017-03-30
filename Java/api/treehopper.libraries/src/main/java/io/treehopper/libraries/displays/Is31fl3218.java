@@ -3,7 +3,9 @@ package io.treehopper.libraries.displays;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
 
-
+/**
+ * ISSI IS31F13218 I2c 18-channel 16-bit PWM constant-current LED driver
+ */
 public class Is31fl3218 extends LedDriver {
 	
     private I2c i2c;
@@ -24,7 +26,7 @@ public class Is31fl3218 extends LedDriver {
 		dev = new SMBusDevice((byte)address, i2c, rateKhz);
 		byte shutdown = 0x00;
 		byte data = 0x01;
-		dev.WriteByteData((byte)shutdown, (byte)data);
+		dev.writeByteData((byte)shutdown, (byte)data);
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class Is31fl3218 extends LedDriver {
 		byte[] dataToWrite = new byte[currentValues.length + stateBytes.length + 1];
         System.arraycopy(currentValues, 0, dataToWrite, 0, currentValues.length);
         System.arraycopy(stateBytes, 0, dataToWrite, currentValues.length, stateBytes.length);
-        dev.WriteBufferData((byte)0x01, dataToWrite);
+        dev.writeBufferData((byte)0x01, dataToWrite);
 		
 	}
 

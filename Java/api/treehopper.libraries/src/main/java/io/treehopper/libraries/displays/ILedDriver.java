@@ -6,9 +6,8 @@ import java.util.List;
 import io.treehopper.libraries.io.IFlushable;
 
 /**
- * Created by jay on 12/5/2016.
+ * LED driver interface
  */
-
 public interface ILedDriver extends IFlushable {
     boolean hasGlobalBrightnessControl();
     boolean hasIndividualBrightnessControl();

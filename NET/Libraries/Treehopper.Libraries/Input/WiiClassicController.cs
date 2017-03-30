@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.PortExpander;
-using Treehopper.Libraries.Sensors;
-using Treehopper.Libraries.Utilities;
-
-namespace Treehopper.Libraries.Input
+﻿namespace Treehopper.Libraries.Input
 {
+    using System.Collections;
+    using System.Linq;
+    using System.Numerics;
+    using System.Threading.Tasks;
+    using Interface.PortExpander;
+    using Sensors;
+
+    /// <summary>
+    /// Nintendo Wii Classic Controller
+    /// </summary>
     public class WiiClassicController : IPollable
     {
         private SMBusDevice dev;

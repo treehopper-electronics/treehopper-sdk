@@ -1,13 +1,12 @@
 package io.treehopper.events;
 
 /**
- * Created by jay on 12/6/2016.
+ * Digital value changed EventArgs
  */
-
 public class DigitalInValueChangedEventArgs {
+    public boolean newDigitalValue;
+
     public DigitalInValueChangedEventArgs(boolean newDigitalValue) {
         this.newDigitalValue = newDigitalValue;
     }
-
-    public boolean newDigitalValue;
 }

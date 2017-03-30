@@ -8,7 +8,7 @@ using Treehopper;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// Construct a HD44780-compatible character display
+    /// HD44780-compatible character display
     /// </summary>
     public class Hd44780 : CharacterDisplay
     {

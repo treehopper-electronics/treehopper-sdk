@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper;
-
-namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
+    using Treehopper;
+
     /// <summary>
-    /// 595-type 8-bit parallel-output shift register. 
+    /// 74HC595 serial-in, parallel-out shift register. 
     /// </summary>
     public class Hc595 : ShiftOut
     {

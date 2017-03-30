@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Sensors.Temperature
 {
     /// <summary>
-    /// DS18B20 One-Wire temperature sensor
+    /// Maxim DS18B20 One-Wire temperature sensor
     /// </summary>
     public class Ds18b20
     {

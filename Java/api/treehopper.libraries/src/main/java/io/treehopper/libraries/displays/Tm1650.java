@@ -3,9 +3,8 @@ package io.treehopper.libraries.displays;
 import io.treehopper.interfaces.I2c;
 
 /**
- * Created by jay on 12/5/2016.
+ * Titan Micro TM1650 4x8 LED driver
  */
-
 public class Tm1650 extends LedDriver {
     private I2c i2c;
     private static final byte ControlBase = 0x24;

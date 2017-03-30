@@ -6,9 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by jay on 12/5/2016.
+ * 7-Segment LED display
  */
-
 public class SevenSegmentDisplay {
     private String text = "";
     private List<SevenSegmentDigit> digits;

@@ -10,7 +10,7 @@ using Treehopper.Utilities;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// APA102 Smart RGB LED library
+    /// Shiji Lighting Co. iPixel APA102 (DotStar) Smart RGB LED
     /// </summary>
     /// <remarks><para>
     /// The APA102

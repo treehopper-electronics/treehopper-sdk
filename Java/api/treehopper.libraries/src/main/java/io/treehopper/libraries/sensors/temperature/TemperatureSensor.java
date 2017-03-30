@@ -1,9 +1,8 @@
 package io.treehopper.libraries.sensors.temperature;
 
 /**
- * Created by jay on 12/7/2016.
+ * Temperature sensor
  */
-
 public abstract class TemperatureSensor implements Temperature {
 
     @Override

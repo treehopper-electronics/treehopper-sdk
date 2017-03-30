@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Microchip MCP9700 and MCP9701 analog temperature sensor library
+    /// Microchip MCP9700 and MCP9701 analog temperature sensor
     /// </summary>
     public class Mcp9700 : TemperatureSensor
     {

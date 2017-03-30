@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Sensors.Temperature
 {
     /// <summary>
-    /// Microchip MCP9808 I2c temperature sensor library
+    /// Microchip MCP9808 I2c temperature sensor
     /// </summary>
     public class Mcp9808 : TemperatureSensor
     {

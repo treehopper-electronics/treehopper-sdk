@@ -1,6 +1,5 @@
 package io.treehopper.sandbox;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -8,10 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import io.treehopper.TreehopperUsb;
 import io.treehopper.android.TreehopperActivity;
-import io.treehopper.libraries.motors.SeeedGroveI2cMotorDriver;
 import io.treehopper.libraries.sensors.imu.Mpu6050;
-import io.treehopper.libraries.sensors.imu.Mpu9150;
-import io.treehopper.libraries.sensors.temperature.Mlx90615;
 
 public class MainActivity extends TreehopperActivity {
 

@@ -2,9 +2,8 @@ package io.treehopper.libraries.sensors.temperature;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
 /**
- * Created by jay on 2/12/2017.
+ * Microchip MCP9808 I2c temperature sensor
  */
-
 public class Mcp9808 extends TemperatureSensor {
 
     private final SMBusDevice device;
@@ -26,7 +25,7 @@ public class Mcp9808 extends TemperatureSensor {
 
     @Override
     public double getTemperatureCelsius() {
-        int data = device.ReadWordDataBE((byte)0x05);
+        int data = device.readWordDataBE((byte)0x05);
         double temp = data & 0x0FFF;
         temp /= 16.0;
         if ((data & 0x1000) > 0)

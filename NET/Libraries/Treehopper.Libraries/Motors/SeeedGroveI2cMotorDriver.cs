@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Motors
+﻿namespace Treehopper.Libraries.Motors
 {
+    using System;
+    using System.Threading.Tasks;
+    using Treehopper.Utilities;
+
     /// <summary>
     /// Seeed Grove I2c Motor Driver
     /// </summary>

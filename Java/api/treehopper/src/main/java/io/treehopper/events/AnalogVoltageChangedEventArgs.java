@@ -1,14 +1,14 @@
 package io.treehopper.events;
 
 /**
- * Created by jay on 12/6/2016.
+ * Analog voltage changed EventArgs
  */
 public class AnalogVoltageChangedEventArgs {
+    public double newAnalogVoltage;
+    public double oldAnalogVoltage;
+
     public AnalogVoltageChangedEventArgs(double newAnalogVoltage, double oldAnalogVoltage) {
         this.newAnalogVoltage = newAnalogVoltage;
         this.oldAnalogVoltage = oldAnalogVoltage;
     }
-
-    public double newAnalogVoltage;
-    public double oldAnalogVoltage;
 }

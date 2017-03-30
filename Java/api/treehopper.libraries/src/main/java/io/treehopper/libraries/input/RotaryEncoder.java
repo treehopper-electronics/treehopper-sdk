@@ -4,21 +4,20 @@ import java.util.ArrayList;
 
 import io.treehopper.events.DigitalInValueChangedEventArgs;
 import io.treehopper.events.DigitalInValueChangedEventHandler;
-import io.treehopper.interfaces.DigitalInPin;
+import io.treehopper.interfaces.DigitalIn;
 
 /**
- * Created by jay on 2/17/2017.
+ * Quadrature rotary encoder
  */
-
 public class RotaryEncoder {
     private final int stepsPerTick;
-    private final DigitalInPin a;
-    private final DigitalInPin b;
+    private final DigitalIn a;
+    private final DigitalIn b;
     private long position = 0;
     long oldPosition;
     private ArrayList<PositionChangedEventHandler> positionChangedEventHandlers = new ArrayList<>();
 
-    public RotaryEncoder(DigitalInPin channelA, DigitalInPin channelB, int stepsPerTick)
+    public RotaryEncoder(DigitalIn channelA, DigitalIn channelB, int stepsPerTick)
     {
         this.stepsPerTick = stepsPerTick;
         a = channelA;
@@ -114,10 +113,16 @@ public class RotaryEncoder {
         this.positionChangedEventHandlers.remove(handler);
     }
 
+    /**
+     * Rotary encoder position changed event handler
+     */
     public interface PositionChangedEventHandler {
         void PositionChanged(Object sender, PositionChangedEventArgs e);
     }
 
+    /**
+     * Rotary encoder position changed EventArgs
+     */
     public class PositionChangedEventArgs
     {
         public long newPosition;

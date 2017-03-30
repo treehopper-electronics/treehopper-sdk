@@ -10,7 +10,7 @@ using Treehopper.Libraries.Sensors.Temperature;
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
-    /// An MPU9150 device
+    /// InvenSense MPU6050 6-DoF IMU
     /// </summary>
     public class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
     {

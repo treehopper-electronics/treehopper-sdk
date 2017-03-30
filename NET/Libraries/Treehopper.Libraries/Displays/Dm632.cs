@@ -9,7 +9,7 @@ using Treehopper.Utilities;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// Library for the SiTI DM632, DM633, and DM634 16-channel, 16-bit PWM-capable shift-register-type LED driver
+    /// SiTI DM632/DM633/DM634 16-channel, 16-bit PWM constant-current LED driver
     /// </summary>
     public class Dm632 : ChainableShiftRegisterOutput, ILedDriver
     {

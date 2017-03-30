@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jay on 12/5/2016.
+ * Base ILedDriver implementation
  */
-
 public abstract class LedDriver implements ILedDriver, IFlushable {
 
 

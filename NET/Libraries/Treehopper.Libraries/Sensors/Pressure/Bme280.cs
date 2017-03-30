@@ -8,7 +8,7 @@ using Treehopper.Libraries.Sensors.Humidity;
 namespace Treehopper.Libraries.Sensors.Pressure
 {
     /// <summary>
-    /// BME280 barometric pressure, temperature, and humidity sensor
+    /// Bosch BME280 barometric pressure, temperature, and humidity sensor
     /// </summary>
     public class Bme280 : Bmp280, IHumiditySensor
     {

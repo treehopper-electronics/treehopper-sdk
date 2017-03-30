@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Interface.Dac
+﻿namespace Treehopper.Libraries.Interface.Dac
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Treehopper.Utilities;
+
     /// <summary>
-    /// MCP4725 12-bit DAC library
+    /// Microchip MCP4725 12-bit DAC
     /// </summary>
     public class Mcp4725 : Dac
     {
