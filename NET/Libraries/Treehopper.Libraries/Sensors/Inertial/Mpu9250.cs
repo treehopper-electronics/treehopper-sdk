@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
-    /// A 9-DoF IMU providing 3-axis accelerometer, 3-axis gyroscope, and 3-axis magnetometer data
+    /// InvenSense MPU9250 9-DoF IMU
     /// </summary>
     public class Mpu9250 : Mpu6050, IMagnetometer
     {

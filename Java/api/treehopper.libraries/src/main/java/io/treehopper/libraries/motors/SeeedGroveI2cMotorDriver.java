@@ -148,7 +148,7 @@ public class SeeedGroveI2cMotorDriver {
      */
     public void setFrequency(PrescalerFrequency frequency) {
         this.frequency = frequency;
-        dev.WriteBufferData(Registers.PwmFrequencySet.getVal(), new byte[] { frequency.getVal(), 0x01 });
+        dev.writeBufferData(Registers.PwmFrequencySet.getVal(), new byte[] { frequency.getVal(), 0x01 });
     }
 
 
@@ -156,15 +156,15 @@ public class SeeedGroveI2cMotorDriver {
     {
         byte m1speed = (byte)Math.round(Math.abs(motor1) * 255);
         byte m2speed = (byte)Math.round(Math.abs(motor2) * 255);
-        dev.WriteBufferData(Registers.MotorSpeedSet.getVal(), new byte[] { m1speed, m2speed });
+        dev.writeBufferData(Registers.MotorSpeedSet.getVal(), new byte[] { m1speed, m2speed });
 
         if (motor1 >= 0 && motor2 >= 0)
-            dev.WriteBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.BothClockwise.getVal(), 0x01 });
+            dev.writeBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.BothClockwise.getVal(), 0x01 });
         else if (motor1 >= 0 && motor2 < 0)
-            dev.WriteBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.Motor1ClockwiseMotor2CounterClockwise.getVal(), 0x01 });
+            dev.writeBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.Motor1ClockwiseMotor2CounterClockwise.getVal(), 0x01 });
         else if (motor1 < 0 && motor2 < 0)
-            dev.WriteBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.BothCounterClockwise.getVal(), 0x01 });
+            dev.writeBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.BothCounterClockwise.getVal(), 0x01 });
         else if (motor1 < 0 && motor2 >= 0)
-            dev.WriteBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.Motor1CounterClockwiseMotor2Clockwise.getVal(), 0x01 });
+            dev.writeBufferData(Registers.DirectionSet.getVal(), new byte[] { MotorSetDirection.Motor1CounterClockwiseMotor2Clockwise.getVal(), 0x01 });
     }
 }

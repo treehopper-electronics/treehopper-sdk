@@ -8,7 +8,7 @@ using Treehopper.Libraries.Sensors;
 namespace Treehopper.Libraries.Interface.Adc
 {
     /// <summary>
-    /// Represents an ADC (analog-to-digital converter) peripheral IC
+    /// ADC peripheral IC
     /// </summary>
     public interface IAdcPeripheral : IPollable
     {

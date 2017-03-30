@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using Treehopper;
-
-namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
+    using System.Collections.ObjectModel;
+    using Treehopper;
+
     /// <summary>
-    /// 74HC166-series shift input register
+    /// 74HC166 parallel-in, serial-out shift register
     /// </summary>
-    public class Sn74hc166
+    public class Hc166
     {
         /// <summary>
         /// Collection of pins
@@ -22,7 +18,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// </summary>
         /// <param name="spiModule">SPI module to use</param>
         /// <param name="loadPin">latch pin</param>
-        public Sn74hc166(Spi spiModule, DigitalOut loadPin)
+        public Hc166(Spi spiModule, DigitalOut loadPin)
         {
             loadPin.MakeDigitalPushPullOut();
             spiModule.Enabled = true;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// IS31FL3218 18-channel LED constant-current PWM driver
+    /// ISSI IS31F13218 I2c 18-channel 16-bit PWM constant-current LED driver
     /// </summary>
     public class Is31fl3218 : LedDriver
     {

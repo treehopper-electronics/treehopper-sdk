@@ -4,67 +4,91 @@ import io.treehopper.enums.PinMode;
 import io.treehopper.interfaces.Pwm;
 
 /**
- * Created by jay on 12/6/2016.
+ * Hardware PWM pin
  */
-
 public class HardwarePwm implements Pwm {
-    public HardwarePwm(Pin pin) {
+    Pin pin;
+    TreehopperUsb board;
+    boolean enabled = false;
+    double dutyCycle = 0.0;
+
+    HardwarePwm(Pin pin) {
         this.pin = pin;
         this.board = pin.getBoard();
     }
 
-    Pin pin;
-    TreehopperUsb board;
-    boolean enabled = false;
-    double pulseWidth = 0.0;
-    double dutyCycle = 0.0;
-
+    /**
+     * Gets whether this PWM pin is enabled
+     *
+     * @return whether this PWM pin is enabled
+     */
     @Override
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * Sets whether this PWM pin is enabled
+     *
+     * @param enabled whether this PWM pin is enabled
+     */
     @Override
     public void setEnabled(boolean enabled) {
-        if(this.enabled == enabled) return;
+        if (this.enabled == enabled) return;
 
         this.enabled = enabled;
 
-        if (enabled)
-        {
+        if (enabled) {
             board.hardwarePwmManager.startPin(pin);
             pin.setMode(PinMode.Reserved);
-        }
-        else
-        {
+        } else {
             board.hardwarePwmManager.stopPin(pin);
             pin.setMode(PinMode.Unassigned);
         }
     }
 
+    /**
+     * Gets the pulse width of the pin
+     *
+     * @return the pulse width, in microseconds
+     */
     @Override
     public double getPulseWidth() {
-        return pulseWidth;
+        return dutyCycle * board.hardwarePwmManager.getPeriodMicroseconds();
     }
 
+    /**
+     * Sets the pulse width of the pin
+     *
+     * @param pulseWidth the pulse width, in microseconds
+     */
     @Override
     public void setPulseWidth(double pulseWidth) {
-        if(Math.abs(this.pulseWidth - pulseWidth) < 0.001) return;
+        if (Utilities.CloseTo(pulseWidth, getPulseWidth())) return;
 
-        this.pulseWidth = pulseWidth;
+        setDutyCycle(pulseWidth / board.hardwarePwmManager.getPeriodMicroseconds());
     }
 
+    /**
+     * Gets the duty cycle of the pin
+     *
+     * @return the duty cycle, 0-1.
+     */
     @Override
     public double getDutyCycle() {
         return dutyCycle;
     }
 
+    /**
+     * Sets the duty cycle of the pin
+     *
+     * @param dutyCycle the duty cycle, 0-1.
+     */
     @Override
     public void setDutyCycle(double dutyCycle) {
-        if(Math.abs(this.dutyCycle - dutyCycle) < 0.001) return;
+        if (Utilities.CloseTo(dutyCycle, this.dutyCycle)) return;
 
         this.dutyCycle = dutyCycle;
-
         board.hardwarePwmManager.setDutyCycle(pin, dutyCycle);
     }
 }

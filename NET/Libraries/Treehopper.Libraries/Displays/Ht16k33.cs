@@ -6,7 +6,7 @@
     using Utilities;
 
     /// <summary>
-    /// Library for the HT16K33 16x8 LED driver, commonly used on Adafruit matrix displays
+    /// Holtek HT16K33 16x8 LED driver
     /// </summary>
     public class Ht16k33 : LedDriver
     {

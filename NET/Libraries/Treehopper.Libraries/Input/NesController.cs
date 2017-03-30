@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.PortExpander;
-using Treehopper.Libraries.Sensors;
-
-namespace Treehopper.Libraries.Input
+﻿namespace Treehopper.Libraries.Input
 {
+    using System.Collections;
+    using System.Threading.Tasks;
+    using Treehopper.Libraries.Interface.PortExpander;
+    using Sensors;
+
+    /// <summary>
+    /// Nintendo Entertainment System (NES) Controller
+    /// </summary>
     public class NesController : IPollable
     {
         protected SpiDevice dev;

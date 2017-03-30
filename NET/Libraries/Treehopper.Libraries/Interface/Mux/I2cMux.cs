@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Interface.Mux
+﻿namespace Treehopper.Libraries.Interface.Mux
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Base class for any circuit that implements an i2C mux
     /// </summary>

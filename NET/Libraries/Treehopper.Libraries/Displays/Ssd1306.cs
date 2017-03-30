@@ -8,7 +8,7 @@ using Treehopper;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// An SSD1306-based OLED display
+    /// Solomon SSD1306 128x64 OLED display controller
     /// </summary>
     public class Ssd1306 : MonoGraphicDisplay
     {

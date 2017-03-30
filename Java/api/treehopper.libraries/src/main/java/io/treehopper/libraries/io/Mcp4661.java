@@ -3,7 +3,10 @@ package io.treehopper.libraries.io;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
 
-public class Mcp4661 implements IPotentiometer{
+/**
+ * Microchip MCP4661 8-bit digital pot
+ */
+public class Mcp4661 implements IDigitalPot {
 	private SMBusDevice device;
 	private boolean useNonVolatile;
 	private int wiperSelect;
@@ -34,9 +37,9 @@ public class Mcp4661 implements IPotentiometer{
 		byte byteWiper = (byte) wiper;
 		
 		if(getWiperSelect() == 0) {
-			device.WriteByteData((byte)0x00, byteWiper);
+			device.writeByteData((byte)0x00, byteWiper);
 		} else {
-			device.WriteByteData((byte)0x10, byteWiper);
+			device.writeByteData((byte)0x10, byteWiper);
 		}
 		
 	}
@@ -44,18 +47,18 @@ public class Mcp4661 implements IPotentiometer{
 	@Override
 	public int getWiper() {
 		if(getWiperSelect() == 0) {
-			return device.ReadWordDataBE((byte)0x0c);
+			return device.readWordDataBE((byte)0x0c);
 		} 
-		return device.ReadWordDataBE((byte)0x1c);
+		return device.readWordDataBE((byte)0x1c);
 		
 	}
 
 	@Override
 	public void increment() {
 		if(getWiperSelect() == 0) {
-			device.WriteByte((byte)0x14);
+			device.writeByte((byte)0x14);
 		} else {
-			device.WriteByte((byte)0x14);
+			device.writeByte((byte)0x14);
 		}
 		
 	}
@@ -63,9 +66,9 @@ public class Mcp4661 implements IPotentiometer{
 	@Override
 	public void decrement() {
 		if(getWiperSelect() == 0) {
-			device.WriteByte((byte)0x18);
+			device.writeByte((byte)0x18);
 		} else {
-			device.WriteByte((byte)0x18);
+			device.writeByte((byte)0x18);
 		}
 		
 	}

@@ -8,6 +8,9 @@ using Treehopper.Libraries.Interface.PortExpander;
 
 namespace Treehopper.Libraries.Displays
 {
+    /// <summary>
+    /// Seeed Studio Grove I2c LCD with RGB backlight
+    /// </summary>
     public class GroveI2cLcd : Hd44780
     {
         Pca9632 backlight;

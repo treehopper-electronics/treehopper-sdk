@@ -6,6 +6,9 @@ import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
 import io.treehopper.libraries.sensors.temperature.TemperatureSensor;
 
+/**
+ * InvenSense MPU6050 6-DoF IMU
+ */
 public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyroscope{
 	private SMBusDevice dev;
 	private Vector3 accelerometer;
@@ -126,29 +129,29 @@ public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyros
     	
 
     	
-    	dev.WriteByteData(PWR_MGMT_1, (byte)0x00); // Wake up
+    	dev.writeByteData(PWR_MGMT_1, (byte)0x00); // Wake up
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	dev.WriteByteData(PWR_MGMT_1, (byte)0x01); // Auto select clock source to be PLL gyroscope reference if ready else
+    	dev.writeByteData(PWR_MGMT_1, (byte)0x01); // Auto select clock source to be PLL gyroscope reference if ready else
     	try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
     	
-    	dev.WriteByteData(CONFIG, (byte) 0x03);
-    	dev.WriteByteData(SMPLRT_DIV, (byte) 0x04);
+    	dev.writeByteData(CONFIG, (byte) 0x03);
+    	dev.writeByteData(SMPLRT_DIV, (byte) 0x04);
     	
     	this.accelScale = 2;
     	this.gyroScale = 250;
     	
-    	byte accelConfigResult = dev.ReadByteData((byte) ACCEL_CONFIG2);
+    	byte accelConfigResult = dev.readByteData((byte) ACCEL_CONFIG2);
     	accelConfigResult &= (byte)~0x0f & (byte)0xff;
     	accelConfigResult |= 0x03;
-    	dev.WriteByteData(ACCEL_CONFIG2, accelConfigResult);
+    	dev.writeByteData(ACCEL_CONFIG2, accelConfigResult);
     }
     
 	public SMBusDevice getDev() {
@@ -198,7 +201,7 @@ public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyros
 	}
     
     public void update() {
-    	byte[] data = getDev().ReadBufferData(ACCEL_XOUT_H, 14);
+    	byte[] data = getDev().readBufferData(ACCEL_XOUT_H, 14);
     	double accelScale = getAccelScale();
     	double gyroScale = getGyrosScale();
     	

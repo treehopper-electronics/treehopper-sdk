@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Interface.Mux
+﻿namespace Treehopper.Libraries.Interface.Mux
 {
+    using System.Collections;
+
     /// <summary>
     /// Use a standard analog mux as a I2c mux
     /// </summary>

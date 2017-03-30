@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Treehopper.Libraries.Sensors.Optical
 {
     /// <summary>
-    /// ADJDS311 ambient light sensor
+    /// Avago ADJD-S311 ambient light sensor
     /// </summary>
     public class Adjds311 : SMBusDevice, INotifyPropertyChanged
     {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper;
-
-namespace Treehopper.Libraries.Motors
+﻿namespace Treehopper.Libraries.Motors
 {
+    using System;
+    using System.Threading.Tasks;
+    using Treehopper;
+
     /// <summary>
     /// PositionChanged event argument
     /// </summary>
@@ -27,7 +23,7 @@ namespace Treehopper.Libraries.Motors
     public delegate void PositionChangedHandler(object sender, PositionChangedEventArgs e);
 
     /// <summary>
-    /// AMIS30624 stepper driver
+    /// Allegro AMIS30624 I2c stepper motor driver
     /// </summary>
     public class Amis30624
     {

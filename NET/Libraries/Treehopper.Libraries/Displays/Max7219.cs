@@ -9,7 +9,7 @@ using Treehopper;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// A class representing a MAX7219 SPI-compatible LED driver that can drive up to 64 LED segments (typically arranged as 8 Seven-Segment digits, or a single 8x8 grid of LEDs.
+    /// Maxim MAX7219 SPI 8x8 matrix LED driver
     /// </summary>
     public class Max7219 : LedDriver
     {

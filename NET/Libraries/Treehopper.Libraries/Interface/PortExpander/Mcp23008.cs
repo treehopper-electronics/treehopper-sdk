@@ -9,7 +9,7 @@
     using Treehopper.Utilities;
     using Utilities;
     /// <summary>
-    /// MCP23008 8-bit GPIO expander library
+    /// Microchip MCP23008 8-bit I/O expander with I2c interface
     /// </summary>
     public class Mcp23008 : IPortExpander<Mcp23008.Pin>, IPortExpanderParent
     {

@@ -1,36 +1,32 @@
 package io.treehopper.enums;
 
 /**
- * Created by jay on 12/6/2016.
+ * Defines whether a signal is active high (rising-edge) or active low (falling-edge)
  */
+public enum ChipSelectMode {
 
-/// <summary>
-/// Defines whether a signal is active high (rising-edge) or active low (falling-edge)
-/// </summary>
-public enum ChipSelectMode
-{
-
-    /// <summary>
-    /// CS is asserted low, the SPI transaction takes place, and then the signal is returned high.
-    /// </summary>
+    /**
+     * CS is asserted low, the SPI transaction takes place, and then the signal is returned high.
+     */
     SpiActiveLow,
-    /// <summary>
-    /// CS is asserted high, the SPI transaction takes place, and then the signal is returned low.
-    /// </summary>
+
+    /**
+     * CS is asserted high, the SPI transaction takes place, and then the signal is returned low.
+     */
     SpiActiveHigh,
 
-    /// <summary>
-    /// CS is pulsed high, and then the SPI transaction takes place.
-    /// </summary>
+    /**
+     * CS is pulsed high, and then the SPI transaction takes place.
+     */
     PulseHighAtBeginning,
 
-    /// <summary>
-    /// The SPI transaction takes place, and once finished, CS is pulsed high
-    /// </summary>
+    /**
+     * The SPI transaction takes place, and once finished, CS is pulsed high
+     */
     PulseHighAtEnd,
 
-    /// <summary>
-    /// CS is pulsed low, and then the SPI transaction takes place.
-    /// </summary>
+    /**
+     * CS is pulsed low, and then the SPI transaction takes place.
+     */
     PulseLowAtBeginning
 };

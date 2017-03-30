@@ -72,7 +72,7 @@
                 dutyCycle = value;
 
                 // update the pulseWidth just in case the user wants to read from the value
-                pulseWidth = (int)Math.Round(dutyCycle * board.HardwarePwmManager.PeriodMicroseconds);
+                pulseWidth = dutyCycle * board.HardwarePwmManager.PeriodMicroseconds;
                 board.HardwarePwmManager.SetDutyCycle(pin, value);
             }
         }

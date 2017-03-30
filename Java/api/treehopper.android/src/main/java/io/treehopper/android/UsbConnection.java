@@ -7,7 +7,7 @@ import io.treehopper.*;
 import io.treehopper.interfaces.Connection;
 
 /**
- * Created by jay on 12/27/2015.
+ * Android Connection implementation
  */
 public class UsbConnection implements Connection {
     private UsbDeviceConnection connection;

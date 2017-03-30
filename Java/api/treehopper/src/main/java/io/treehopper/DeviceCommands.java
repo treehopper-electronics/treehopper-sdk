@@ -1,8 +1,5 @@
 package io.treehopper;
 
-/**
- * Created by jay on 12/6/2016.
- */
 enum DeviceCommands {
     Reserved,
     ConfigureDevice,

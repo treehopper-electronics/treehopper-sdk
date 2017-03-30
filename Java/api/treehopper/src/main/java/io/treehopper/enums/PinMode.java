@@ -1,13 +1,37 @@
 package io.treehopper.enums;
 
 /**
- * Created by jay on 12/28/2015.
+ * Pin mode
  */
 public enum PinMode {
+
+    /**
+     * Pin is reserved for other use
+     */
     Reserved,
+
+    /**
+     * Pin is a digital input
+     */
     DigitalInput,
+
+    /**
+     * Pin is a push-pull output
+     */
     PushPullOutput,
+
+    /**
+     * Pin is an open-drain output
+     */
     OpenDrainOutput,
+
+    /**
+     * Pin is an analog input
+     */
     AnalogInput,
+
+    /**
+     * Pin is unassigned
+     */
     Unassigned
 }

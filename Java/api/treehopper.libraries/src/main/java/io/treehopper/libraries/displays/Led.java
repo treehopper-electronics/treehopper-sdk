@@ -1,7 +1,7 @@
 package io.treehopper.libraries.displays;
 
 /**
- * Created by jay on 12/5/2016.
+ * LED
  */
 
 public class Led {

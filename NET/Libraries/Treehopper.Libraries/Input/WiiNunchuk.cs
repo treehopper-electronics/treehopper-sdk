@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Input
     using Interface.PortExpander;
 
     /// <summary>
-    /// Supports Nintendo Wii Nunchuk controllers (and 3rd-party Wii-compatible Nunchuk controllers) attached via <see cref="I2c"/>.
+    /// Nintendo Wii Nunchuk
     /// </summary>
     /// <remarks>
     /// <para>

@@ -1,32 +1,38 @@
 package io.treehopper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import io.treehopper.interfaces.Connection;
 import io.treehopper.interfaces.I2c;
 import io.treehopper.interfaces.Pwm;
+import io.treehopper.interfaces.Spi;
 
 /**
- * Created by jay on 12/27/2015.
+ * Main Treehopper USB board class
  */
-
 public class TreehopperUsb {
 
     private static final Logger logger = LogManager.getLogger("TreehopperUsb");
     public static Settings Settings = new Settings();
+
     public Pin[] pins = new Pin[20];
-    private Connection usbConnection;
-    private boolean led;
-    private boolean connected;
     public I2c i2c;
     public Spi spi;
     public Pwm pwm1;
     public Pwm pwm2;
     public Pwm pwm3;
     public HardwarePwmManager hardwarePwmManager;
-
     Object comsLock = new Object();
+    private Connection usbConnection;
+    private boolean led;
+    private boolean connected;
 
+    /**
+     * Construct a Treehopper from a Connection
+     *
+     * @param connection the connection to use
+     */
     public TreehopperUsb(Connection connection) {
         usbConnection = connection;
         usbConnection.setPinReportListener(this);
@@ -38,21 +44,29 @@ public class TreehopperUsb {
         pwm3 = new HardwarePwm(pins[9]);
 
         i2c = new HardwareI2c(this);
-        spi = new Spi(this);
+        spi = new HardwareSpi(this);
         hardwarePwmManager = new HardwarePwmManager(this);
     }
 
 
-
+    /**
+     * Get whether the board is connected
+     *
+     * @return the connection state of the board
+     */
     public boolean getConnected() {
         return connected;
     }
 
+    /**
+     * Connect to the board and reinitialize all peripherals
+     *
+     * @return
+     */
     public boolean connect() {
-        if(connected) return true;
+        if (connected) return true;
         connected = true;
-        if(!usbConnection.open())
-        {
+        if (!usbConnection.open()) {
             return false;
         }
 
@@ -60,8 +74,11 @@ public class TreehopperUsb {
         return true;
     }
 
+    /**
+     * Disconnect from the board
+     */
     public void disconnect() {
-        if(!connected) return;
+        if (!connected) return;
 
         reinitialize(); // reset all pins to inputs
 
@@ -72,10 +89,9 @@ public class TreehopperUsb {
     /**
      * Reinitialize the board, setting all pins as digital inputs
      */
-    public void reinitialize()
-    {
+    public void reinitialize() {
         byte[] data = new byte[2];
-        data[0] = (byte)DeviceCommands.ConfigureDevice.ordinal();
+        data[0] = (byte) DeviceCommands.ConfigureDevice.ordinal();
         sendPeripheralConfigPacket(data);
     }
 
@@ -99,11 +115,21 @@ public class TreehopperUsb {
         usbConnection.sendDataPeripheralChannel(DataToSend);
     }
 
+    /**
+     * Get the connection associated with this Treehopper board
+     *
+     * @return the Connection associated with this board
+     */
     public Connection getConnection() {
         return usbConnection;
     }
 
 
+    /**
+     * Internal event used by the Connection to report pin changes
+     *
+     * @param pinReport the pin report received
+     */
     public void onPinReportReceived(byte[] pinReport) {
         if (pinReport[0] != 0x00) {
             int i = 1;
@@ -113,10 +139,21 @@ public class TreehopperUsb {
         }
     }
 
+    /**
+     * Send a peripheral configuration packet directly to the connection
+     *
+     * @param dataToSend The data to send
+     */
     public void sendPeripheralConfigPacket(byte[] dataToSend) {
         usbConnection.sendDataPeripheralChannel(dataToSend);
     }
 
+    /**
+     * Receive a peripheral response packet from the connection
+     *
+     * @param numBytesToRead the number of bytes to read
+     * @return the data
+     */
     public byte[] receiveCommsResponsePacket(int numBytesToRead) {
         return usbConnection.readPeripheralResponsePacket(numBytesToRead);
     }

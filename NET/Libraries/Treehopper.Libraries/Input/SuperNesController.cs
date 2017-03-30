@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.PortExpander;
-
-namespace Treehopper.Libraries.Input
+﻿namespace Treehopper.Libraries.Input
 {
+    using System.Collections;
+    using System.Threading.Tasks;
+    using Interface.PortExpander;
+
+    /// <summary>
+    /// Nintendo Super NES (SNES) Controller
+    /// </summary>
     public class SuperNesController : NesController
     {
         public Button X { get; private set; }

@@ -9,7 +9,7 @@
     using Utilities;
     using Treehopper.Utilities;
     /// <summary>
-    /// Library for the BMP280 barometric pressure / altitude / temperature sensor.
+    /// Bosch BMP280 barometric pressure / altitude / temperature sensor.
     /// </summary>
     /// <remarks>
     /// <para>This library supports both 4-wire SPI and 2-wire I2c operation

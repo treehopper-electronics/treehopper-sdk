@@ -1,9 +1,8 @@
 package io.treehopper.events;
 
 /**
- * Created by jay on 12/6/2016.
+ * An event handler for the AdcValueChanged event
  */
-
 public interface AdcValueChangedEventHandler {
-    void analogValueChanged(Object sender, AdcValueChangedEventArgs e);
+    void adcValueChanged(Object sender, AdcValueChangedEventArgs e);
 }

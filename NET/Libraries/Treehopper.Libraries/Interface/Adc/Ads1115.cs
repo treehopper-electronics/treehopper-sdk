@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Interface.Adc
 {
     /// <summary>
-    /// ADS1115 ADC, supporting 4 single-ended or 2 differential channels
+    /// Texas Instruments ADS1115 16-bit 4-channel ADC
     /// </summary>
     public class Ads1115 : IAdcPeripheral
     {

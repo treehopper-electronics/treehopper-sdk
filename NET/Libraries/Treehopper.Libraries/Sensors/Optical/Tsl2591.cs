@@ -10,7 +10,7 @@ namespace Treehopper.Libraries.Sensors.Optical
 
 
     /// <summary>
-    /// High-dynamic range digital light sensor
+    /// ams TSL2591 High-dynamic range digital light sensor
     /// </summary>
     public class Tsl2591 : SMBusDevice
     {

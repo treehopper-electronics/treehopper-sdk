@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Utilities;
-
-namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Utilities;
+
+    /// <summary>
+    /// NXP PCA9632 4 channel, 8-bit PWM driver
+    /// </summary>
     public class Pca9632
     {
         enum Registers

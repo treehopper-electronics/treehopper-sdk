@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Interface.Dac
+﻿namespace Treehopper.Libraries.Interface.Dac
 {
     /// <summary>
     /// Represents a single DAC channel

@@ -12,9 +12,9 @@ import javax.usb.UsbHub;
 
 import io.treehopper.TreehopperUsb;
 
-// This is a super simple ConnectionService. For now, just scan connected devices when the class is
-// instantiated. In the future, monitor for new devices continuously
-
+/**
+ * javax-usb ConnectionService
+ */
 public class ConnectionService {
 	// these are the Treehopper USB VID/PID
 	private int vendorId = 0x10c4;

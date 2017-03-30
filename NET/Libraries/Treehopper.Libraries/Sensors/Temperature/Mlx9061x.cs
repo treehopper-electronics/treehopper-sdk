@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Sensors.Temperature
 {
     /// <summary>
-    /// MLX90614 non-contact IR thermopile temperature sensor
+    /// Melexis MLX90614 non-contact IR thermopile temperature sensor
     /// </summary>
     public class Mlx90614
     {

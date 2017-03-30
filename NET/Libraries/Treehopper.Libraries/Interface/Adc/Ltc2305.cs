@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Interface.Adc
 {
     /// <summary>
-    /// A two-channel, 12-bit I2c ADC
+    /// Linear LTC2305 12-bit two-channel ADC
     /// </summary>
     public class Ltc2305
     {

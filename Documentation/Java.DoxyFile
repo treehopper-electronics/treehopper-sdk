@@ -790,10 +790,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../Java/treehopper.desktop/src/main/java \
-                         ../Java/treehopper/src/main/java \
-                         ../Java/treehopper.android/src/main/java \
-                         ../Java/treehopper.libraries/src/main/java \
+INPUT                  = ../Java/api \
                          Java
 
 # This tag can be used to specify the character encoding of the source files
@@ -905,7 +902,8 @@ EXCLUDE_PATTERNS       =
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories use the pattern */test/*
 
-EXCLUDE_SYMBOLS        = 
+EXCLUDE_SYMBOLS        = android::app \
+                         android::support
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include

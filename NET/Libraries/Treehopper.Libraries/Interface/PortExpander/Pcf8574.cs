@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
-    /// An 8-bit I2c I/O expander
+    /// PCF8574 8-bit I/O expander
     /// </summary>
     public class Pcf8574 : PortExpander
     {

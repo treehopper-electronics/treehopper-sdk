@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treehopper.Libraries.Displays;
-using Treehopper.Utilities;
-
-namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Treehopper.Libraries.Displays;
+    using Treehopper.Utilities;
+
     /// <summary>
-    /// NXP PCA9685 16-channel, 12-bit PWM interface
+    /// NXP PCA9685 16-channel, 12-bit PWM driver
     /// </summary>
     /// <remarks>
     /// <para>You'll notice this driver lives in <see cref="Treehopper.Libraries.Interface"/>, and not <see cref="Treehopper.Libraries.Displays"/> (as other LED drivers do). While the PCA9685 is advertised as an LED controller, it has several unique features not found in most LED drivers, such as adjustable PWM frequency (via <see cref="Frequency"/>), configurable output drive modes (via <see cref="Pca9685.OutputDrive"/>) supporting push-pull and open-drain outputs, and invertible output logic allowing this driver to be used with both common-anode and common-cathode LED arrangements. The PCA9685 also lacks two important feature found in most LED drivers: programmable constant-current outputs (usually via an external resistor), and built-in high-current open-drain output drivers. As a result, this IC is better suited as a general-purpose PWM-capable GPIO port expander than as an LED driver, both in terms of electronic design and API interfacing design. To this end, this library provides a collection of <see cref="Pwm"/>-capable <see cref="Pins"/>), instead of a collection of <see cref="Treehopper.Libraries.Displays.Led"/>s, found in other LED drivers. You can obtain a collection of <see cref="Treehopper.Libraries.Displays.Led"/>s with the  </para>

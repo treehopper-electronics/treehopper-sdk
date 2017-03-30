@@ -7,8 +7,9 @@
     using System.Text;
     using System.Threading.Tasks;
     using Treehopper.Utilities;
+
     /// <summary>
-    /// Library for interfacing with a standard a/b-input quadrature rotary encoder
+    /// Quadrature rotary encoder
     /// </summary>
     /// <remarks>
     /// <para>This class is designed to interface with standard, two-channel quadrature-style incremental rotary encoders. These are often used as infinite-turn knobs for human interfaces, motor feedback, measuring wheels, and other rotary/linear motion measurement applications.</para>

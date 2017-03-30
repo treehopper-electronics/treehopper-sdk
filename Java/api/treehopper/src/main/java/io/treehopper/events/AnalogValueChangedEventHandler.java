@@ -1,7 +1,7 @@
 package io.treehopper.events;
 
 /**
- * Created by jay on 12/6/2016.
+ * Handler for AnalogValueChanged
  */
 
 public interface AnalogValueChangedEventHandler {
