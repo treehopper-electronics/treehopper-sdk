@@ -51,13 +51,32 @@ public class TreehopperUsb {
     public boolean connect() {
         if(connected) return true;
         connected = true;
-        return usbConnection.open();
+        if(!usbConnection.open())
+        {
+            return false;
+        }
+
+        reinitialize();
+        return true;
     }
 
     public void disconnect() {
         if(!connected) return;
+
+        reinitialize(); // reset all pins to inputs
+
         connected = false;
         usbConnection.close();
+    }
+
+    /**
+     * Reinitialize the board, setting all pins as digital inputs
+     */
+    public void reinitialize()
+    {
+        byte[] data = new byte[2];
+        data[0] = (byte)DeviceCommands.ConfigureDevice.ordinal();
+        sendPeripheralConfigPacket(data);
     }
 
     public String getName() {
