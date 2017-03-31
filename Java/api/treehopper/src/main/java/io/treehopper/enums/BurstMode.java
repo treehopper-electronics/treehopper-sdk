@@ -16,7 +16,7 @@ public enum BurstMode {
     BurstTx,
 
     /**
-     * Receive burst -- ignore transmitted data above 53 bytes long, but receive the full number of bytes specified
+     * receive burst -- ignore transmitted data above 53 bytes long, but receive the full number of bytes specified
      */
     BurstRx
 }

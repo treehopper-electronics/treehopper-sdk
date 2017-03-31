@@ -23,6 +23,7 @@ public class TreehopperUsb {
     public Pwm pwm2;
     public Pwm pwm3;
     public HardwarePwmManager hardwarePwmManager;
+    public Uart uart;
     Object comsLock = new Object();
     private Connection usbConnection;
     private boolean led;
@@ -45,6 +46,8 @@ public class TreehopperUsb {
 
         i2c = new HardwareI2c(this);
         spi = new HardwareSpi(this);
+        uart = new Uart(this);
+
         hardwarePwmManager = new HardwarePwmManager(this);
     }
 
@@ -140,7 +143,7 @@ public class TreehopperUsb {
     }
 
     /**
-     * Send a peripheral configuration packet directly to the connection
+     * send a peripheral configuration packet directly to the connection
      *
      * @param dataToSend The data to send
      */
@@ -149,7 +152,7 @@ public class TreehopperUsb {
     }
 
     /**
-     * Receive a peripheral response packet from the connection
+     * receive a peripheral response packet from the connection
      *
      * @param numBytesToRead the number of bytes to read
      * @return the data
