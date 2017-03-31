@@ -38,7 +38,7 @@
         /// </summary>
         /// <param name="numBytes">The number of bytes to receive</param>
         /// <returns>The bytes received</returns>
-        Task<byte[]> Receive(int numBytes = 0);
+        Task<byte[]> Receive(int numBytes);
 
         /// <summary>
         /// Send an array of bytes to the OneWire bus
