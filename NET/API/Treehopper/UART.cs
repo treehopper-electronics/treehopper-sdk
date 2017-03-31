@@ -97,11 +97,6 @@
         }
 
         /// <summary>
-        /// Get the actual baud rate currently used
-        /// </summary>
-        public double ActualBaud { get; private set; }
-
-        /// <summary>
         /// Whether to use an open-drain TX pin or not.
         /// </summary>
         public bool UseOpenDrainTx
