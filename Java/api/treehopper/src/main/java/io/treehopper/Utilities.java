@@ -26,4 +26,12 @@ public class Utilities {
     static boolean CloseTo(double a, double b) {
         return CloseTo(a, b, 0.00001);
     }
+
+    static void error(String message) {
+        System.err.print(message);
+
+        if (TreehopperUsb.Settings.shouldThrowExceptions()) {
+            throw new RuntimeException(message);
+        }
+    }
 }

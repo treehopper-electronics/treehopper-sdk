@@ -83,7 +83,7 @@ public class HardwareI2c implements I2c {
     }
 
     /**
-     * Send and receive data with this I2c module
+     * send and receive data with this I2c module
      *
      * @param address        the slave address to send/receive with
      * @param dataToWrite    the data to write
