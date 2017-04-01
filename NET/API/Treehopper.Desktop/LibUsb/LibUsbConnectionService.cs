@@ -8,9 +8,6 @@ namespace Treehopper.Desktop.LibUsb
 {
     public class LibUsbConnectionService : ConnectionService
     {
-        protected override void Rescan()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

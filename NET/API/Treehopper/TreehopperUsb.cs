@@ -388,7 +388,14 @@
         /// </remarks>
         public void Disconnect()
         {
-            Reinitialize();
+            try
+            {
+                Reinitialize();
+            } catch(Exception ex)
+            {
+
+            }
+
             if (connection != null)
                 connection.Close();
             IsConnected = false;

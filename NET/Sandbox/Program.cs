@@ -16,20 +16,29 @@ namespace Sandbox
         static void Main(string[] args)
         {
             App().Wait();
+            ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
         }
 
-        static async Task App()
+        private static async void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+            var board = (TreehopperUsb)e.NewItems[0];
             await board.ConnectAsync();
 
             //board.Pins[0].Mode = PinMode.PushPullOutput;
 
-            while(board.IsConnected && !Console.KeyAvailable)
+            while (board.IsConnected && !Console.KeyAvailable)
             {
                 // do stuff
                 board.Led = !board.Led;
+                await Task.Delay(100);
             }
+        }
+
+        static async Task App()
+        {
+            //var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+            
+
         }
     }
 }
