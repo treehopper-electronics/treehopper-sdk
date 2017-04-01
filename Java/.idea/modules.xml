@@ -6,11 +6,12 @@
       <module fileurl="file://$PROJECT_DIR$/demos/desktop/analogRead/analogRead.iml" filepath="$PROJECT_DIR$/demos/desktop/analogRead/analogRead.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/android/android.iml" filepath="$PROJECT_DIR$/demos/android/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/android/blink/android-blink.iml" filepath="$PROJECT_DIR$/demos/android/blink/android-blink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demos/android/sandbox/android-sandbox.iml" filepath="$PROJECT_DIR$/demos/android/sandbox/android-sandbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/demos.iml" filepath="$PROJECT_DIR$/demos/demos.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/desktop/desktop.iml" filepath="$PROJECT_DIR$/demos/desktop/desktop.iml" />
       <module fileurl="file://$PROJECT_DIR$/demos/desktop/blink/desktop-blink.iml" filepath="$PROJECT_DIR$/demos/desktop/blink/desktop-blink.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demos/desktop/sandbox/sandbox.iml" filepath="$PROJECT_DIR$/demos/desktop/sandbox/sandbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demos/desktop/sandbox/desktop-sandbox.iml" filepath="$PROJECT_DIR$/demos/desktop/sandbox/desktop-sandbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/treehopper/treehopper.iml" filepath="$PROJECT_DIR$/api/treehopper/treehopper.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/treehopper.android/treehopper.android.iml" filepath="$PROJECT_DIR$/api/treehopper.android/treehopper.android.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/treehopper.desktop/treehopper.desktop.iml" filepath="$PROJECT_DIR$/api/treehopper.desktop/treehopper.desktop.iml" />

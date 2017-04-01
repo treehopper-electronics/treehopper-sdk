@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/demos" />
             <option value="$PROJECT_DIR$/demos/android" />
             <option value="$PROJECT_DIR$/demos/android/blink" />
+            <option value="$PROJECT_DIR$/demos/android/sandbox" />
             <option value="$PROJECT_DIR$/demos/desktop" />
             <option value="$PROJECT_DIR$/demos/desktop/analogRead" />
             <option value="$PROJECT_DIR$/demos/desktop/blink" />
