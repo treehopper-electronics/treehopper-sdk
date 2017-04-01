@@ -23,12 +23,12 @@ namespace Sandbox
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
 
-            board.Pins[0].Mode = PinMode.PushPullOutput;
+            //board.Pins[0].Mode = PinMode.PushPullOutput;
 
             while(board.IsConnected && !Console.KeyAvailable)
             {
                 // do stuff
-                board.Pins[0].ToggleOutput();
+                board.Led = !board.Led;
             }
         }
     }

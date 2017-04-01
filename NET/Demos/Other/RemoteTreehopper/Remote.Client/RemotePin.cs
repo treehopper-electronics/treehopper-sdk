@@ -62,17 +62,17 @@ namespace Remote.Client
             throw new NotImplementedException();
         }
 
-        public void MakeDigitalIn()
+        public async Task MakeDigitalIn()
         {
             Mode = PinMode.DigitalInput;
         }
 
-        public void ToggleOutput()
+        public async Task ToggleOutputAsync()
         {
             DigitalValue = !DigitalValue;
         }
 
-        public void MakeDigitalPushPullOut()
+        public async Task MakeDigitalPushPullOut()
         {
             Mode = PinMode.PushPullOutput;
         }

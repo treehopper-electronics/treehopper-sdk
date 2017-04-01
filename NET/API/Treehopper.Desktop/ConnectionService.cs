@@ -9,6 +9,8 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Treehopper.Desktop.WinUsb;
+using Treehopper.Desktop.LibUsb;
 
 namespace Treehopper.Desktop
 {
@@ -17,7 +19,8 @@ namespace Treehopper.Desktop
     /// </summary>
     public abstract class ConnectionService : IConnectionService
     {
-        private static readonly ConnectionService winUsbInstance = new WinUsb.WinUsbConnectionService();
+        private static Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
+        private static Lazy<LibUsbConnectionService> libUsbInstance = new Lazy<LibUsbConnectionService>();
         //private static readonly ConnectionService libUsbInstance = new LibUsb.LibUsbConnectionService();
 
         /// <summary>
@@ -32,10 +35,10 @@ namespace Treehopper.Desktop
         {
             get {
                 if(IsWindows)
-                    return winUsbInstance;
+                    return winUsbInstance.Value;
 
-                //if (IsLinux)
-                //    return libUsbInstance;
+                if (IsLinux)
+                    return libUsbInstance.Value;
 
                 throw new Exception("Unsupported operating system");
             }
