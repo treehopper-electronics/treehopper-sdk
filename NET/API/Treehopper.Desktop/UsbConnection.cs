@@ -82,8 +82,6 @@ namespace Treehopper.Desktop
 
         public short Version { get; set; }
 
-
-
         public void Close()
         {
             if (!isOpen)
