@@ -14,6 +14,15 @@ namespace Treehopper
 		OutputDebugString(L"Adding board: ");
 		OutputDebugString(_devicePath.c_str());
 		OutputDebugString(L"\n");
+		open();
+
+		// Fill the "name" property from the descriptor
+		wchar_t buffer[64];
+		ULONG transfered;
+		WinUsb_GetDescriptor(deviceData.WinusbHandle, 0x03, 0x02, 0x0409, (PUCHAR)buffer, 64, &transfered); 	// The 0x02-index 0x03 (string) descriptor stores the name
+		_name.assign(&buffer[1], transfered / 2 - 1);
+
+		close();
 	}
 
 	WinUsbConnection::~WinUsbConnection()
@@ -44,11 +53,6 @@ namespace Treehopper
 
 		deviceData.HandlesOpen = true;
 
-		// Fill the "name" property from the descriptor
-		wchar_t buffer[64];
-		ULONG transfered;
-		WinUsb_GetDescriptor(deviceData.WinusbHandle, 0x03, 0x02, 0x0409, (PUCHAR)buffer, 64, &transfered); 	// The 0x02-index 0x03 (string) descriptor stores the name
-		_name.assign(&buffer[1], transfered / 2 - 1);
 		OutputDebugString(L"Device Opened");
 
 		return true;
