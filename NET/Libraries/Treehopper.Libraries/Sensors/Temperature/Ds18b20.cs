@@ -19,7 +19,6 @@ namespace Treehopper.Libraries.Sensors.Temperature
     public class Ds18b20 : TemperatureSensor
     {
         IOneWire oneWire;
-        ulong address;
 
         /// <summary>
         /// Construct a DS18B20
@@ -49,9 +48,11 @@ namespace Treehopper.Libraries.Sensors.Temperature
         public Ds18b20(IOneWire oneWire, ulong address = 0)
         {
             this.oneWire = oneWire;
-            this.address = address;
+            this.Address = address;
             oneWire.StartOneWire();
         }
+
+        public ulong Address { get; private set; }
 
         /// <summary>
         /// Whether group conversion mode is enabled or not
@@ -65,28 +66,28 @@ namespace Treehopper.Libraries.Sensors.Temperature
         {
             if(!EnableGroupConversion)
             {
-                if(address == 0)
+                if(Address == 0)
                 {
                     await oneWire.OneWireReset();
                     await oneWire.Send(new byte[] { 0xCC, 0x44 });
                 }
                 else
                 {
-                    await oneWire.OneWireResetAndMatchAddress(address);
+                    await oneWire.OneWireResetAndMatchAddress(Address);
                     await oneWire.Send(0x44);
                 }
                 
                 await Task.Delay(750);
             }
 
-            if (address == 0)
+            if (Address == 0)
             {
                 await oneWire.OneWireReset();
                 await oneWire.Send(new byte[] { 0xCC, 0xBE });
             }
             else
             {
-                await oneWire.OneWireResetAndMatchAddress(address);
+                await oneWire.OneWireResetAndMatchAddress(Address);
                 await oneWire.Send(0xBE);
             }
 
