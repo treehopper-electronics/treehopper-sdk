@@ -131,6 +131,7 @@ namespace Treehopper.Desktop.WinUsb
         {
             EndRead(result);
             PinEventDataReceived?.Invoke(pinReportBuffer);
+            if (!IsOpen) return;
             try
             {
                 BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback, null); // start another read
@@ -143,6 +144,7 @@ namespace Treehopper.Desktop.WinUsb
         public async Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
         {
             byte[] array = new byte[numBytesToRead];
+            if (!IsOpen) return new byte[0];
             if (UseOverlappedTransfers)
             {
                 await Task.Factory.FromAsync((callback, stateObject) => BeginRead(peripheralResponseEndpoint, array, array.Length, callback, stateObject), EndRead, null).ConfigureAwait(false);
@@ -158,6 +160,7 @@ namespace Treehopper.Desktop.WinUsb
 
         public async Task<byte[]> ReadPinReportPacket(uint numBytesToRead)
         {
+            if (!IsOpen) return new byte[0];
             byte[] array = new byte[numBytesToRead];
             if (UseOverlappedTransfers)
             {
@@ -174,6 +177,7 @@ namespace Treehopper.Desktop.WinUsb
 
         public Task SendDataPeripheralChannel(byte[] data)
         {
+            if (!IsOpen) return Task.FromResult(new object());
             if (UseOverlappedTransfers)
             {
                 return Task.Factory.FromAsync((callback, stateObject) => BeginWrite(peripheralConfigEndpoint, data, data.Length, callback, stateObject), EndWrite, null);
@@ -191,6 +195,7 @@ namespace Treehopper.Desktop.WinUsb
 
         public Task SendDataPinConfigChannel(byte[] data)
         {
+            if (!IsOpen) return Task.FromResult(new object());
             if (UseOverlappedTransfers)
             {
                 return Task.Factory.FromAsync((callback, stateObject) => BeginWrite(pinConfigEndpoint, data, data.Length, callback, stateObject), EndWrite, null);

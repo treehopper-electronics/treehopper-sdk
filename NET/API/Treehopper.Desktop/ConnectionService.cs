@@ -103,7 +103,7 @@ namespace Treehopper.Desktop
 
             Boards.CollectionChanged += Boards_CollectionChanged;
 
-            Rescan(); // add all the boards that were already connected when we started up
+            //Rescan(); // add all the boards that were already connected when we started up
 
             // now, setup a device notifier so we can be alerted when boards are added/removed
             pollingTimer.Elapsed += devicePollingTimer_Elapsed;
@@ -163,10 +163,8 @@ namespace Treehopper.Desktop
 
         void devicePollingTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Rescan();
+            //Rescan();
         }
-
-        protected abstract void Rescan();
 
         
 
