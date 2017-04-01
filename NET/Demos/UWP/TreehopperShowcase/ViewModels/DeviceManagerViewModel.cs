@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Utilities;
+using Treehopper.Uwp;
 
 namespace TreehopperShowcase.ViewModels
 {
