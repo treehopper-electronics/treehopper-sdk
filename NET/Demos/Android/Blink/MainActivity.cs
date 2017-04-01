@@ -7,6 +7,8 @@ using Android.Widget;
 using Android.Hardware.Usb;
 using Android.OS;
 using Treehopper;
+using Treehopper.Android;
+
 namespace Blink
 {
     [IntentFilter(new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached })]

@@ -21,7 +21,7 @@ namespace DemoSn74hc166
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
-            var shiftRegister = new Sn74hc166(board.Spi, board.Pins[10]);
+            var shiftRegister = new Hc166(board.Spi, board.Pins[10]);
             while(true)
             {
                 var value = shiftRegister.Pins[0].AwaitDigitalValueChange();
