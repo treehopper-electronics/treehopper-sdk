@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -209,6 +209,10 @@
     <Compile Include="WinUsb\WinUsb.cs" />
     <Compile Include="WinUsb\WinUsbConnection.cs" />
     <Compile Include="WinUsb\WinUsbConnectionService.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\CFObject.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOIterator.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOKitFramework.cs" />
+    <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />
@@ -221,6 +225,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MacUsb\" />
+    <Folder Include="LibUsbDotNet\MacUsb\" />
+    <Folder Include="LibUsbDotNet\MacUsb\IOKit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

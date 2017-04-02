@@ -1,13 +1,70 @@
 ﻿using System;
-using LibUsbDotNet;
+using System.Collections.Generic;
+using System.Diagnostics;
 using LibUsbDotNet.Main;
+// namespace Treehopper.Desktop.LibUsbDotNet
+using MonoMac.IOKit;
 
-namespace Treehopper.Desktop.LibUsbDotNet
+namespace LibUsbDotNet.MacUsb
 {
 	public class MacUsbRegistry : UsbRegistry
 	{
+		MacUsbDevice usbDevice;
+
 		public MacUsbRegistry()
 		{
+		}
+
+		private static List<MacUsbRegistry> devices = new List<MacUsbRegistry>();
+		public static List<MacUsbRegistry> Devices
+		{
+			get
+			{
+				Scan();
+				return devices;
+			}
+		}
+
+		private static void Scan()
+		{
+
+			using (var usbDeviceIterator = IOKitFramework.FindUsbDevices())
+			{
+				if (usbDeviceIterator != null)
+				{
+					var usbDeviceService = usbDeviceIterator.Next();
+
+					while (usbDeviceService != null)
+					{
+						using (usbDeviceService)
+						{
+							var vendorString = usbDeviceService.GetCFPropertyString(IOKitFramework.kUSBVendorString);
+							var productString = usbDeviceService.GetCFPropertyString(IOKitFramework.kUSBProductString);
+							var productID = usbDeviceService.GetCFPropertyInt(IOKitFramework.kUSBProductID);
+							var vendorID = usbDeviceService.GetCFPropertyInt(IOKitFramework.kUSBVendorID);
+
+							if ((productID > 0) && (vendorID > 0))
+							{
+								Debug.WriteLine("Found Device:");
+								Debug.WriteLine("Vendor: " + vendorString);
+								Debug.WriteLine("Product: " + productString);
+								Debug.WriteLine("Product ID: " + productID);
+								Debug.WriteLine("Vendor ID: " + vendorID);
+								Debug.WriteLine("");
+							}
+						}
+
+						usbDeviceService = usbDeviceIterator.Next();
+					}
+
+
+				}
+			}
+		}
+
+		public MacUsbRegistry(MacUsbDevice usbDevice)
+		{
+			this.usbDevice = usbDevice;
 		}
 
 		public override UsbDevice Device
