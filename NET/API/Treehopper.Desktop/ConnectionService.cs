@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Treehopper.Desktop.WinUsb;
 using Treehopper.Desktop.LibUsb;
+using Treehopper.Desktop.MacUsb;
 
 namespace Treehopper.Desktop
 {
@@ -21,7 +22,7 @@ namespace Treehopper.Desktop
     {
         private static Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
         private static Lazy<LibUsbConnectionService> libUsbInstance = new Lazy<LibUsbConnectionService>();
-        //private static readonly ConnectionService libUsbInstance = new LibUsb.LibUsbConnectionService();
+		private static Lazy<MacUsbConnectionService> macUsbInstance = new Lazy<MacUsbConnectionService>();
 
         /// <summary>
         /// Retrieve a reference to the static instance of the <see cref="ConnectionService"/> that should be used for discovering boards.
@@ -37,17 +38,15 @@ namespace Treehopper.Desktop
                 if(IsWindows)
                     return winUsbInstance.Value;
 
+				if (IsMac)
+					return macUsbInstance.Value;
+
                 if (IsLinux)
                     return libUsbInstance.Value;
 
                 throw new Exception("Unsupported operating system");
             }
         }
-
-        /// <summary>
-        /// Determines if we're running under Windows
-        /// </summary>
-        public static bool IsWindows { get { return !IsLinux; } }
 
         /// <summary>
         /// Occurs when a <see cref="TreehopperBoard"/> is removed from the system.
@@ -196,7 +195,33 @@ namespace Treehopper.Desktop
             return waitForFirstBoard.Task;
         }
 
-        private static bool mIsLinux;
+		private static bool? isLinux;
+
+		static bool? isWindows;
+
+		static bool? isMac;
+
+		/// <summary>
+		/// Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
+		/// </summary>
+		public static bool IsWindows
+		{
+			get
+			{
+				if (isWindows == null)
+				{
+					if (Environment.OSVersion.Platform.ToString() != "Unix")
+					{
+						isWindows = true;
+					}
+					else
+					{
+						isWindows = false;
+					}
+				}
+				return (bool)isWindows;
+			}
+		}
 
         /// <summary>
         /// Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
@@ -205,32 +230,23 @@ namespace Treehopper.Desktop
         {
             get
             {
-                if (ReferenceEquals(mIsLinux, null))
+                if (isLinux == null)
                 {
-                    switch (Environment.OSVersion.Platform.ToString())
-                    {
-                        case "Win32S":
-                        case "Win32Windows":
-                        case "Win32NT":
-                        case "WinCE":
-                        case "Xbox":
-                            mIsLinux = false;
-                            break;
-                        case "Unix":
-                            mIsLinux = true;
-                            break;
-                        default:
-                            throw new NotSupportedException(string.Format("Operating System:{0} not supported.", Environment.OSVersion));
-                    }
+					if (Environment.OSVersion.Platform.ToString() == "Unix" && !IsMac)
+					{
+						isLinux = true;
+					}
+					else
+					{
+						isLinux = false;
+					}
                 }
-                return (bool)mIsLinux;
+                return (bool)isLinux;
             }
         }
 
         [DllImport("libc")]
         static extern int uname(IntPtr buf);
-
-        static bool? isMac;
 
         /// <summary>
         /// Determines if we're running under macOS (OS X)
@@ -242,27 +258,29 @@ namespace Treehopper.Desktop
                 if (isMac == null)
                 {
                     isMac = false;
-                    IntPtr buf = IntPtr.Zero;
-                    try
-                    {
-                        buf = Marshal.AllocHGlobal(8192);
-                        // This is a hacktastic way of getting sysname from uname ()
-                        if (uname(buf) == 0)
-                        {
-                            string os = Marshal.PtrToStringAnsi(buf);
-                            if (os == "Darwin")
-                                isMac = true;
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                    finally
-                    {
-                        if (buf != IntPtr.Zero)
-                            Marshal.FreeHGlobal(buf);
-                    }
+					if (Environment.OSVersion.Platform.ToString() == "Unix")
+					{
+						IntPtr buf = IntPtr.Zero;
+						try
+						{
+							buf = Marshal.AllocHGlobal(8192);
+							// This is a hacktastic way of getting sysname from uname ()
+							if (uname(buf) == 0)
+							{
+								string os = Marshal.PtrToStringAnsi(buf);
+								if (os == "Darwin")
+									isMac = true;
+							}
+						}
+						catch
+						{
+						}
+						finally
+						{
+							if (buf != IntPtr.Zero)
+								Marshal.FreeHGlobal(buf);
+						}
+					}
 
                 }
                 return isMac.GetValueOrDefault();

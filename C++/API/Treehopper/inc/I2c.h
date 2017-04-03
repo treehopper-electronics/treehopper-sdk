@@ -1,9 +1,9 @@
 #pragma once
 #include "Treehopper.h"
 #include <stdint.h>
+#include <cstddef>
 
-using namespace std;
-namespace Treehopper 
+namespace Treehopper
 {
 	/** Base I2c interface */
 	class TREEHOPPER_API I2c

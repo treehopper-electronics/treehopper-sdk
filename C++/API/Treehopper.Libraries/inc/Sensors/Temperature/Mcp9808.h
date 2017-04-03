@@ -16,7 +16,7 @@ namespace Treehopper
 				class LIBRARIES_API Mcp9808 : public TemperatureSensor
 				{
 				public:
-					Mcp9808(I2c& i2c, uint8_t address);
+					Mcp9808(I2c& i2c, byte_t address);
 					Mcp9808(I2c& i2c, bool a0 = false, bool a1 = false, bool a2 = false);
 					void update();
 				protected:

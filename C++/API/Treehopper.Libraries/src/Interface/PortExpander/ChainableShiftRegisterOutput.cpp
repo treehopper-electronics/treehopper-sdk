@@ -10,8 +10,8 @@ namespace Treehopper {
 					ChainableShiftRegisterOutput::setupSpi(spiModule, latchPin, speedMhz, mode, csMode);
 					shiftRegisters.push_back(this);
 					this->numBytes = numBytes;
-					currentValue = new uint8_t[numBytes]();
-					lastValues = new uint8_t[numBytes]();
+					currentValue = new byte_t[numBytes]();
+					lastValues = new byte_t[numBytes]();
 				}
 
 				ChainableShiftRegisterOutput::ChainableShiftRegisterOutput(ChainableShiftRegisterOutput& upstreamDevice, int numBytes)
@@ -23,11 +23,11 @@ namespace Treehopper {
 
 					shiftRegisters.push_back(this);
 					this->numBytes = numBytes;
-					currentValue = new uint8_t[numBytes]();
-					lastValues = new uint8_t[numBytes]();
+					currentValue = new byte_t[numBytes]();
+					lastValues = new byte_t[numBytes]();
 				}
 
-				void ChainableShiftRegisterOutput::write(uint8_t* value)
+				void ChainableShiftRegisterOutput::write(byte_t* value)
 				{
 					bool savedAutoFlushValue = autoFlush;
 					autoFlush = false;
@@ -56,7 +56,7 @@ namespace Treehopper {
 				void ChainableShiftRegisterOutput::requestWrite()
 				{
 					// build the byte array to flush out of the port
-					vector<uint8_t> bytes;
+					vector<byte_t> bytes;
 					for (auto it = shiftRegisters.begin(); it != shiftRegisters.end(); ++it)
 					{
 						for (int i = 0; i < (*it)->numBytes; i++)

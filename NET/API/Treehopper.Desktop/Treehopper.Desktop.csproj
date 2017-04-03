@@ -213,6 +213,13 @@
     <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOIterator.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOKitFramework.cs" />
     <Compile Include="LibUsbDotNet\MacUsb\IOKit\IOObject.cs" />
+    <Compile Include="MacUsb\IOKit\CFObject.cs" />
+    <Compile Include="MacUsb\IOKit\IOIterator.cs" />
+    <Compile Include="MacUsb\IOKit\IOKitFramework.cs" />
+    <Compile Include="MacUsb\IOKit\IOObject.cs" />
+    <Compile Include="MacUsb\MacUsbConnectionService.cs" />
+    <Compile Include="MacUsb\IOKit\IUnknownCGuts.cs" />
+    <Compile Include="MacUsb\IOKit\IOCFPlugInInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />
@@ -227,6 +234,7 @@
     <Folder Include="MacUsb\" />
     <Folder Include="LibUsbDotNet\MacUsb\" />
     <Folder Include="LibUsbDotNet\MacUsb\IOKit\" />
+    <Folder Include="MacUsb\IOKit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

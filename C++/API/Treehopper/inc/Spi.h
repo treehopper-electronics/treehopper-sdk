@@ -4,6 +4,7 @@
 #include "SpiBurstMode.h"
 #include "SpiMode.h"
 #include <stdint.h>
+#include <cstddef>
 
 namespace Treehopper {
 	class SpiChipSelectPin;
