@@ -15,7 +15,7 @@ namespace Treehopper
 		virtual double speed();
 		virtual void enabled(bool value);
 		virtual bool enabled();
-		virtual void sendReceive(uint8_t address, uint8_t* writeBuffer, size_t numBytesToWrite,	
+		virtual void sendReceive(uint8_t address, uint8_t* writeBuffer, size_t numBytesToWrite,
 			uint8_t* readBuffer = NULL, size_t numBytesToRead = 0);
 
 	private:

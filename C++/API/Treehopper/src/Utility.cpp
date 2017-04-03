@@ -2,6 +2,7 @@
 #include "Utility.h"
 #include "Settings.h"
 #include <iostream>
+#include <cmath>
 namespace Treehopper 
 {
 	void Utility::error(runtime_error& message, bool fatal)

@@ -12,6 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>323c724b-61ff-45d2-baeb-ec7108354c00</ProjectGuid>
+    <DevelopmentDependency>false</DevelopmentDependency>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
@@ -36,8 +39,14 @@
     <OutputPath>..\..\..\Output\Nuget\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj" />
-    <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
+    <ProjectReference Include="..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj">
+      <Project>{397B4612-9FF2-4288-A7D0-C2B2FC4F4816}</Project>
+      <Name>Treehopper.Libraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Treehopper\Treehopper.nuproj">
+      <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
+      <Name>Treehopper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>

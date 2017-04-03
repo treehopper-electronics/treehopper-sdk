@@ -2,6 +2,7 @@
 
 #include "Treehopper.h"
 #include "HardwarePwmFrequency.h"
+#include "HardwarePwm.h"
 #include "Pin.h"
 
 namespace Treehopper

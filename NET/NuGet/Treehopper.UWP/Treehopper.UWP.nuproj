@@ -12,6 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>bf47946e-5f0c-4b62-b9a7-f6f984570e33</ProjectGuid>
+    <DevelopmentDependency>false</DevelopmentDependency>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
     <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
@@ -36,9 +39,18 @@
     <OutputPath>$(SolutionDir)Output\NuGet\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NET\API\Treehopper.UWP\Treehopper.UWP.csproj" />
-    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.nuproj" />
-    <ProjectReference Include="..\Treehopper\Treehopper.nuproj" />
+    <ProjectReference Include="..\..\NET\API\Treehopper.UWP\Treehopper.UWP.csproj">
+      <Project>{F85FFD61-CEC5-420E-A521-31C475580CAD}</Project>
+      <Name>Treehopper.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.nuproj">
+      <Project>{41E80DEE-6FCA-4EDA-B7C4-40EA5F829DAD}</Project>
+      <Name>Treehopper.MVVM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Treehopper\Treehopper.nuproj">
+      <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
+      <Name>Treehopper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Output\NET\Debug\Treehopper.UWP\Treehopper.UWP.pri">

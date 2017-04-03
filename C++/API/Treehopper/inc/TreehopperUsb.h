@@ -43,10 +43,10 @@ namespace Treehopper
 		wstring name();
 		void led(bool value);
 		bool led();
-		friend wostream& operator<<(wostream& wos, TreehopperUsb& board)
-		{
-			wos << board.name() << " (" << board.serialNumber() << ")";
-			return wos;
+        wstring toString()
+        {
+            wstring output = name() + L" (" + serialNumber() + L")";
+			return output;
 		}
 		vector<Pin> pins;
 		const int numberOfPins = 20;

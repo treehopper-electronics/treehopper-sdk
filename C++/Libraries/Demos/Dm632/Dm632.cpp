@@ -5,7 +5,7 @@
 using namespace Treehopper;
 using namespace Treehopper::Libraries::Displays;
 
-uint8_t dataToSend[32];
+byte_t dataToSend[32];
 
 int main()
 {
