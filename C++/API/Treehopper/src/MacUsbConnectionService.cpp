@@ -58,7 +58,28 @@ namespace Treehopper {
             
             if(Settings::instance().vid == vendorID && Settings::instance().pid == productID)
             {
-                boards.emplace_back(*(new MacUsbConnection(deviceService)));
+                string name;
+                string serial;
+                
+                char buffer[128];
+                CFTypeRef path = IORegistryEntrySearchCFProperty(deviceService, kIOServicePlane, CFSTR(kUSBProductString), kCFAllocatorDefault, kIORegistryIterateRecursively);
+                if(path)
+                {
+                    CFStringGetCString((CFStringRef)path, buffer, 128, kCFStringEncodingUTF8);
+                    name = string(buffer);
+                    CFRelease(path);
+                }
+                
+                path = IORegistryEntrySearchCFProperty(deviceService, kIOServicePlane, CFSTR(kUSBSerialNumberString), kCFAllocatorDefault, kIORegistryIterateRecursively);
+                if(path)
+                {
+                    CFStringGetCString((CFStringRef)path, buffer, 128, kCFStringEncodingUTF8);
+                    serial = string(buffer);
+                    CFRelease(path);
+                }
+                
+                
+                boards.emplace_back(*(new MacUsbConnection(deviceService, name, serial)));
             }
         }
     }

@@ -220,6 +220,14 @@
     <Compile Include="MacUsb\MacUsbConnectionService.cs" />
     <Compile Include="MacUsb\IOKit\IUnknownCGuts.cs" />
     <Compile Include="MacUsb\IOKit\IOCFPlugInInterface.cs" />
+    <Compile Include="MacUsb\IOKit\IOUSBDeviceInterface320.cs" />
+    <Compile Include="MacUsb\IOKit\NativeMethods.cs" />
+    <Compile Include="MacUsb\IOKit\CFNumberType.cs" />
+    <Compile Include="MacUsb\IOKit\CFStringEncoding.cs" />
+    <Compile Include="MacUsb\MacUsbConnection.cs" />
+    <Compile Include="MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" />
+    <Compile Include="MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" />
+    <Compile Include="MacUsb\IOKit\IOUSBInterfaceInterface197.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />

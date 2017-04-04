@@ -11,7 +11,7 @@ namespace Treehopper.Desktop.MacUsb
 			Scan();
 		}
 
-		private static void Scan()
+		private void Scan()
 		{
 			using (var usbDeviceIterator = IOKitFramework.FindUsbDevices())
 			{
@@ -40,7 +40,7 @@ namespace Treehopper.Desktop.MacUsb
 								Debug.WriteLine("Vendor ID: " + vendorID);
 								Debug.WriteLine("Serial Number: " + serialNumber);
 								Debug.WriteLine("");
-								IOKitFramework.GetUsbDevice(usbDeviceService);
+								Boards.Add(new TreehopperUsb(new MacUsbConnection(usbDeviceService, productString, serialNumber)));
 							}
 						}
 

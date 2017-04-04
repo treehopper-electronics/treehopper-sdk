@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
 {
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public class IOCFPlugInInterface : IUnknownCGuts
 	{
 		public ushort Version;
@@ -20,5 +20,12 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate ulong StopDelegate(IntPtr self);
+
+		public static IOCFPlugInInterface GetPlugInInterfaceFromPtrPtr(IntPtr PtrPtr)
+		{
+			IntPtr pluginInterfacePtr = new IntPtr(Marshal.ReadInt32(PtrPtr));
+			IOCFPlugInInterface pluginInterface = (IOCFPlugInInterface)Marshal.PtrToStructure(pluginInterfacePtr, typeof(IOCFPlugInInterface));
+			return pluginInterface;
+		}
 	}
 }
