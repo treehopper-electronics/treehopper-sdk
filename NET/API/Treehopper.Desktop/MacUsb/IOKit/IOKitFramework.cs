@@ -7,11 +7,6 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 {
 	public static class IOKitFramework
 	{
-		/// <summary>
-		/// IOKit Framework Path
-		/// </summary>
-		public const string IOKitFrameworkPath = "IOKit.framework/IOKit";
-
 		// Service Matching That is the 'IOProviderClass'.
 		public const string kIOSerialBSDServiceValue = "IOSerialBSDClient";
 
@@ -86,9 +81,9 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public const int kIOReturnLockedWrite = IOKitCommonError + 0x2c4;       // device write locked 
 		public const int kIOReturnExclusiveAccess = IOKitCommonError + 0x2c5;   // exclusive access and
 
-
-		public static byte[] kIOUSBInterfaceUserClientTypeID = new byte[] { 0x2d, 0x97, 0x86, 0xc6, 0x9e, 0xf3, 0x11, 0xD4, 0xad, 0x51, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61 };
-		public static byte[] kIOCFPlugInInterfaceID = new byte[] { 0xC2, 0x44, 0xE8, 0x58, 0x10, 0x9C, 0x11, 0xD4, 0x91, 0xD4, 0x00, 0x50, 0xE4, 0xC6, 0x42, 0x6F };
+		//public static byte[] kIOUSBDeviceUserClientTypeID = new byte[] { 0x9d, 0xc7, 0xb7, 0x80, 0x9e, 0xc0, 0x11, 0xD4, 0xa5, 0x4f, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61 };
+		//public static byte[] kIOUSBInterfaceUserClientTypeID = new byte[] { 0x2d, 0x97, 0x86, 0xc6, 0x9e, 0xf3, 0x11, 0xD4, 0xad, 0x51, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61 };
+		//public static byte[] kIOCFPlugInInterfaceID = new byte[] { 0xC2, 0x44, 0xE8, 0x58, 0x10, 0x9C, 0x11, 0xD4, 0x91, 0xD4, 0x00, 0x50, 0xE4, 0xC6, 0x42, 0x6F };
 
 		// KERN_* codes.
 		public const int KERN_SUCCESS = 0;
@@ -102,55 +97,6 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public const uint kIORegistryIterateRecursively = 0x00000001;
 		public const uint kIORegistryIterateParents = 0x00000002;
 
-		/// <summary>
-		/// CF number types
-		/// </summary>
-		public enum CFNumberType
-		{
-			/* Fixed-width types */
-			kCFNumberSInt8Type = 1,
-			kCFNumberSInt16Type = 2,
-			kCFNumberSInt32Type = 3,
-			kCFNumberSInt64Type = 4,
-			kCFNumberFloat32Type = 5,
-			kCFNumberFloat64Type = 6,   /* 64-bit IEEE 754 */
-										/* Basic C types */
-			kCFNumberCharType = 7,
-			kCFNumberShortType = 8,
-			kCFNumberIntType = 9,
-			kCFNumberLongType = 10,
-			kCFNumberLongLongType = 11,
-			kCFNumberFloatType = 12,
-			kCFNumberDoubleType = 13,
-			/* Other */
-			kCFNumberCFIndexType = 14,
-			//kCFNumberNSIntegerType CF_ENUM_AVAILABLE(10_5, 2_0) = 15,
-			//kCFNumberCGFloatType CF_ENUM_AVAILABLE(10_5, 2_0) = 16,
-			kCFNumberMaxType = 16
-		};
-
-		/// <summary>
-		/// CF string encoding types.
-		/// </summary>
-		public enum CFStringEncoding
-		{
-			kCFStringEncodingMacRoman = 0,
-			kCFStringEncodingWindowsLatin1 = 0x0500, /* ANSI codepage 1252 */
-			kCFStringEncodingISOLatin1 = 0x0201, /* ISO 8859-1 */
-			kCFStringEncodingNextStepLatin = 0x0B01, /* NextStep encoding*/
-			kCFStringEncodingASCII = 0x0600, /* 0..127 (in creating CFString, values greater than 0x7F are treated as corresponding Unicode value) */
-			kCFStringEncodingUnicode = 0x0100, /* kTextEncodingUnicodeDefault  + kTextEncodingDefaultFormat (aka kUnicode16BitFormat) */
-			kCFStringEncodingUTF8 = 0x08000100, /* kTextEncodingUnicodeDefault + kUnicodeUTF8Format */
-			kCFStringEncodingNonLossyASCII = 0x0BFF, /* 7bit Unicode variants used by Cocoa & Java */
-
-			kCFStringEncodingUTF16 = 0x0100, /* kTextEncodingUnicodeDefault + kUnicodeUTF16Format (alias of kCFStringEncodingUnicode) */
-			kCFStringEncodingUTF16BE = 0x10000100, /* kTextEncodingUnicodeDefault + kUnicodeUTF16BEFormat */
-			kCFStringEncodingUTF16LE = 0x14000100, /* kTextEncodingUnicodeDefault + kUnicodeUTF16LEFormat */
-
-			kCFStringEncodingUTF32 = 0x0c000100, /* kTextEncodingUnicodeDefault + kUnicodeUTF32Format */
-			kCFStringEncodingUTF32BE = 0x18000100, /* kTextEncodingUnicodeDefault + kUnicodeUTF32BEFormat */
-			kCFStringEncodingUTF32LE = 0x1c000100 /* kTextEncodingUnicodeDefault + kUnicodeUTF32LEFormat */
-		};
 
 
 		/// <summary>
@@ -242,92 +188,6 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 			return kernResult;
 		}
 
-		public unsafe static void GetUsbDevice(IOObject usbService)
-		{
-			IOCFPlugInInterface[] plugInInterface = new IOCFPlugInInterface[5];
-			var device = IntPtr.Zero;
-
-			if (usbService.Handle == IntPtr.Zero)
-			{
-				throw new NullReferenceException("USB Service is null");
-			}
-
-			int score = 0;
-
-			var status = NativeMethods.IOCreatePlugInInterfaceForService(usbService.Handle, kIOUSBInterfaceUserClientTypeID, kIOCFPlugInInterfaceID, plugInInterface, IntPtr.Zero);
-			if (status == kIOReturnSuccess)
-			{
-				//var currentService = IntPtr.Zero;
-				//while ((currentService = NativeMethods.IOIteratorNext(iterator)) != IntPtr.Zero)
-				//{
-				//	unsafe
-				//	{
-				//		fixed (char* serviceName = new char[4096])
-				//		{
-				//			status = NativeMethods.IORegistryEntryGetNameInPlane(currentService, kIOServicePlane, serviceName);
-				//		}
-
-				//		if (status == kIOReturnSuccess)
-				//		{
-				//			device = currentService;
-				//			break;
-				//		}
-				//		else
-				//		{
-				//			// Release the service object which is no longer needed
-				//			NativeMethods.IOObjectRelease(currentService);
-				//		}
-				//	}
-				}
-
-				// Release the iterator
-				//NativeMethods.IOObjectRelease(iterator);
-			}
-
-			//return new IOObject(device);
-
-
-		//public static IOObject GetUsbDevice(IOObject usbService)
-		//{
-		//	var iterator = IntPtr.Zero;
-		//	var device = IntPtr.Zero;
-
-		//	if (usbService.Handle == IntPtr.Zero)
-		//	{
-		//		throw new NullReferenceException("USB Service is null");
-		//	}
-
-		//	var status = NativeMethods.IORegistryEntryCreateIterator(usbService.Handle, kIOServicePlane, kIORegistryIterateParents | kIORegistryIterateRecursively, out iterator);
-		//	if (status == kIOReturnSuccess)
-		//	{
-		//		var currentService = IntPtr.Zero;
-		//		while ((currentService = NativeMethods.IOIteratorNext(iterator)) != IntPtr.Zero)
-		//		{
-		//			unsafe
-		//			{
-		//				fixed (char* serviceName = new char[4096])
-		//				{
-		//					status = NativeMethods.IORegistryEntryGetNameInPlane(currentService, kIOServicePlane, serviceName);
-		//				}
-
-		//				if (status == kIOReturnSuccess)
-		//				{
-		//					device = currentService;
-		//					break;
-		//				}
-		//				else {
-		//					// Release the service object which is no longer needed
-		//					NativeMethods.IOObjectRelease(currentService);
-		//				}
-		//			}
-		//		}
-
-		//		// Release the iterator
-		//		NativeMethods.IOObjectRelease(iterator);
-		//	}
-
-		//	return new IOObject(device);
-		//}
 
 		/// <summary>
 		/// Gets a dictionary value.
@@ -441,73 +301,6 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 				}
 			}
 			return ret;
-		}
-
-
-
-		public unsafe static class NativeMethods
-		{
-			/*! @function IORegistryEntryCreateCFProperty
-    @abstract Create a CF representation of a registry entry's property.
-    @discussion This function creates an instantaneous snapshot of a registry entry property, creating a CF container analogue in the caller's task. Not every object available in the kernel is represented as a CF container; currently OSDictionary, OSArray, OSSet, OSSymbol, OSString, OSData, OSNumber, OSBoolean are created as their CF counterparts. 
-    @param entry The registry entry handle whose property to copy.
-    @param key A CFString specifying the property name.
-    @param allocator The CF allocator to use when creating the CF container.
-    @param options No options are currently defined.
-    @result A CF container is created and returned the caller on success. The caller should release with CFRelease. */
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern IntPtr IORegistryEntryCreateCFProperty(IntPtr entry, IntPtr key, IntPtr allocator, int options);
-			
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern IntPtr __CFStringMakeConstantString(string str);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern IntPtr IOServiceMatching(string name);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern void CFDictionarySetValue(IntPtr theDict, IntPtr key, IntPtr value);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int IOServiceGetMatchingServices(IntPtr masterPort, IntPtr matching, out IntPtr iterator);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int IOCreatePlugInInterfaceForService(IntPtr service, Byte[] pluginType, Byte[] interfaceType, IOCFPlugInInterface[] plugIn, IntPtr theScore);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int IOObjectRelease(IntPtr obj);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern IntPtr IOIteratorNext(IntPtr iterator);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int IORegistryEntryGetName(IntPtr entry, char* buffer);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern IntPtr IORegistryEntryCreateCFProperty(IntPtr entry, IntPtr key, IntPtr allocator, uint options);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern IntPtr IORegistryEntrySearchCFProperty(IntPtr entry, string plane, IntPtr key, IntPtr allocator, uint options);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int CFRelease(IntPtr obj);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern bool CFStringGetCString(IntPtr theString, char* buffer, long bufferSize, CFStringEncoding encoding);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern bool CFNumberGetValue(IntPtr number, CFNumberType theType, out IntPtr valuePtr);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int IORegistryEntryCreateIterator(IntPtr entry, string plane, uint options, out IntPtr iterator);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern int IORegistryEntryGetNameInPlane(IntPtr entry, string plane, char* name);
-
-			[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-			public static extern bool IOObjectConformsTo(IntPtr obj, string className);
-
-
 		}
 	}
 }

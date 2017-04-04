@@ -16,7 +16,7 @@ namespace Treehopper
     class TREEHOPPER_API  MacUsbConnection : public UsbConnection
     {
     public:
-        MacUsbConnection(io_service_t deviceService);
+        MacUsbConnection(io_service_t deviceService, string name, string serial);
         ~MacUsbConnection();
         bool open();
         void close();
