@@ -65,7 +65,7 @@ namespace Treehopper
 		OutputDebugString(L"Device Closed");
 	}
 
-	void WinUsbConnection::sendDataPinConfigChannel(byte_t* data, size_t len)
+	void WinUsbConnection::sendDataPinConfigChannel(uint8_t* data, size_t len)
 	{
 		ULONG sent = 0;
 		WinUsb_WritePipe(deviceData.WinusbHandle, pinConfigEndpoint, data, len, &sent, 0);
@@ -73,7 +73,7 @@ namespace Treehopper
 			throw - 1;
 	}
 
-	void WinUsbConnection::sendDataPeripheralChannel(byte_t* data, size_t len)
+	void WinUsbConnection::sendDataPeripheralChannel(uint8_t* data, size_t len)
 	{
 		ULONG sent = 0;
 		WinUsb_WritePipe(deviceData.WinusbHandle, peripheralConfigEndpoint, data, len, &sent, 0);
@@ -99,7 +99,7 @@ namespace Treehopper
 		return _devicePath;
 	}
 
-	bool WinUsbConnection::receivePinReportPacket(byte_t* data)
+	bool WinUsbConnection::receivePinReportPacket(uint8_t* data)
 	{
 		ULONG transferred;
 		WinUsb_ReadPipe(deviceData.WinusbHandle, pinReportEndpoint, data, 64, &transferred, 0);
@@ -108,7 +108,7 @@ namespace Treehopper
 		return false;
 	}
 
-	bool WinUsbConnection::receiveDataPeripheralChannel(byte_t * data, size_t len)
+	bool WinUsbConnection::receiveDataPeripheralChannel(uint8_t * data, size_t len)
 	{
 		ULONG transferred;
 		WinUsb_ReadPipe(deviceData.WinusbHandle, peripheralResponseEndpoint, data, len, &transferred, 0);
