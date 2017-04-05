@@ -88,12 +88,12 @@
                     name = (string)device.GetPropertyValue("Name");
                     var hardwareIds = ((string[])device.GetPropertyValue("HardwareID"))[0].Split('&');
                     version = hardwareIds[2].Substring(4);
+
+                    var newBoard = new TreehopperUsb(new WinUsbConnection(path.ToLower(), name, serial, short.Parse(version)));
+                    Debug.WriteLine("Adding: " + newBoard);
+                    Boards.Add(newBoard);
                 }
             }
-
-            var newBoard = new TreehopperUsb(new WinUsbConnection(path.ToLower(), name, serial, short.Parse(version)));
-            Debug.WriteLine("Adding: " + newBoard);
-            Boards.Add(newBoard);
         }
 
         internal sealed class UsbNotifyWindow : NativeWindow
@@ -162,11 +162,14 @@
                         }
                         else
                         {
-                            var board = service.Boards.Where(x => x.Connection.DevicePath.Substring(3).ToLower() == msg.DevicePath.Substring(3).ToLower()).First();
+                            var board = service.Boards.Where(x => x.Connection.DevicePath.Substring(3).ToLower() == msg.DevicePath.Substring(3).ToLower()).FirstOrDefault();
+                            if(board != null)
+                            {
                             Debug.WriteLine("Removing: " + board);
                             board.Connection.Dispose(); // kill the connection first
                             board.Dispose();
                             service.Boards.Remove(board);
+                            }
                         }
                     }
                 }
