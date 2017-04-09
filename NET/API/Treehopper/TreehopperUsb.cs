@@ -61,7 +61,7 @@
             // Initialize modules
             I2c = new HardwareI2c(this);
             Spi = new HardwareSpi(this);
-            Uart = new Uart(this);
+            Uart = new HardwareUart(this);
             Pwm1 = new HardwarePwm(Pins[7]);
             Pwm2 = new HardwarePwm(Pins[8]);
             Pwm3 = new HardwarePwm(Pins[9]);
@@ -111,7 +111,7 @@
         /// <summary>
         /// Hardware UART supporting RS-232 and OneWire-style communication.
         /// </summary>
-        public Uart Uart { get; private set; }
+        public HardwareUart Uart { get; private set; }
 
         /// <summary>
         /// Hardware PWM #1
