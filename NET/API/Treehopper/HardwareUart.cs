@@ -7,7 +7,7 @@
     /// <summary>
     /// Module that implements hardware UART and OneWire functionality
     /// </summary>
-    public class Uart : IOneWire
+    public class HardwareUart : IOneWire
     {
         private bool isEnabled;
         private int baud = 9600;
@@ -15,7 +15,7 @@
         private UartMode mode = UartMode.Uart;
         private bool useOpenDrainTx = false;
 
-        internal Uart(TreehopperUsb device)
+        internal HardwareUart(TreehopperUsb device)
         {
             this.device = device;
         }
