@@ -28,7 +28,6 @@ namespace Treehopper.Desktop.MacUsb
 			}
 
 			int plugInSize = Marshal.SizeOf(typeof(IOCFPlugInInterface));
-			//IntPtr pluginInterface = Marshal.AllocHGlobal(plugInSize);
 			IntPtr pluginInterfacePtrPtr = IntPtr.Zero;
 			var device = IntPtr.Zero;
 
@@ -57,7 +56,6 @@ namespace Treehopper.Desktop.MacUsb
 				this.deviceInterface = (IOUSBDeviceInterface320)Marshal.PtrToStructure(deviceInterfacePtr, typeof(IOUSBDeviceInterface320));
 				this.deviceInterface.Handle = deviceInterfacePtrPtr;
 			}
-
 		}
 
 		public string DevicePath { get; private set; }
@@ -136,7 +134,9 @@ namespace Treehopper.Desktop.MacUsb
 			}
 
 			IOCFPlugInInterface pluginInterface = IOCFPlugInInterface.GetPlugInInterfaceFromPtrPtr(pluginInterfacePtrPtr);
-			//usbInterface.Dispose();
+
+			usbInterface.Dispose();
+			interfaceIterator.Dispose();
 
 
 			IntPtr interfaceInterfacePtrPtr = IntPtr.Zero;
@@ -166,8 +166,6 @@ namespace Treehopper.Desktop.MacUsb
 				Debug.WriteLine("Couldn't get interface number");
 				return false;
 			}
-
-
 
 			kr = interfaceInterface.USBInterfaceOpen(interfaceInterface.Handle);
 

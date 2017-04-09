@@ -41,6 +41,9 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public static extern int IOObjectRelease(IntPtr obj);
 
 		[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
+		public static extern int IOObjectRelease(IUnknownCGuts obj);
+
+		[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
 		public static extern IntPtr IOIteratorNext(IntPtr iterator);
 
 		[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
