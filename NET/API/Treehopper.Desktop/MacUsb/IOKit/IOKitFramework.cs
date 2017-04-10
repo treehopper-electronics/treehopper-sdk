@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using MonoMac.IOKit;
+using Treehopper.Desktop.MacUsb.IOKit;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
 {

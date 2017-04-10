@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Text;
+using System.Diagnostics;
 
 namespace Treehopper.Desktop.LibUsb
 {
@@ -15,6 +16,9 @@ namespace Treehopper.Desktop.LibUsb
 		LibUsbDeviceHandle deviceHandle;
 		IntPtr deviceProfile;
 
+		bool isOpen;
+
+		Task pinListenerTask;
 
 		public LibUsbConnection(IntPtr deviceProfile)
 		{
@@ -59,6 +63,38 @@ namespace Treehopper.Desktop.LibUsb
 			NativeMethods.Open(deviceProfile, ref handle);
 			this.deviceHandle = new LibUsbDeviceHandle(handle);
 			NativeMethods.ClaimInterface (deviceHandle, 0);
+
+			isOpen = true;
+
+			pinListenerTask = new Task(async() =>
+				{
+					while (isOpen)
+					{
+						byte[] buffer = new byte[41];
+						int len = 0;
+						try
+						{
+							var res = NativeMethods.BulkTransfer(deviceHandle, peripheralResponseEndpoint, buffer, buffer.Length, out len, 1000);
+
+							if (res == LibUsbError.Success)
+								PinEventDataReceived?.Invoke(buffer);
+							else
+								if(res != LibUsbError.ErrorTimeout)
+									Debug.WriteLine("Pin Data Read Failure: " + res);
+						}
+						catch (Exception ex)
+						{
+							Debug.WriteLine("Exception: " + ex.Message);
+						}
+
+						if ((1000f/UpdateRate) > 1) 
+							await Task.Delay((int)Math.Round(1000f/UpdateRate));
+					}
+
+				});
+
+			pinListenerTask.Start();
+
 			return true;
 		}
 
@@ -66,7 +102,7 @@ namespace Treehopper.Desktop.LibUsb
 		{
 			byte[] data = new byte[numBytesToRead];
 			int len = 0;
-			NativeMethods.BulkTransfer(deviceHandle, pinConfigEndpoint, data, (int)numBytesToRead, out len, 1000);
+			NativeMethods.BulkTransfer(deviceHandle, peripheralResponseEndpoint, data, (int)numBytesToRead, out len, 1000);
 			return data;
 		}
 
