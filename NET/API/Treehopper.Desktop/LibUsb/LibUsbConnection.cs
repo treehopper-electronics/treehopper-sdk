@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace Treehopper.Desktop.LibUsb
 {
@@ -18,6 +19,15 @@ namespace Treehopper.Desktop.LibUsb
 		public LibUsbConnection(IntPtr deviceProfile)
 		{
 			this.deviceProfile = deviceProfile;
+
+			OpenAsync ().Wait ();
+			var sb = new StringBuilder ();
+			NativeMethods.GetStringDescriptor (deviceHandle, 2, sb, sb.Capacity + 1);
+			this.Name = sb.ToString ();
+			NativeMethods.GetStringDescriptor (deviceHandle, 3, sb, sb.Capacity + 1);
+			this.Serial = sb.ToString ();
+			Close ();
+			DevicePath = deviceProfile.ToString ();
 		}
 
 		public string DevicePath { get; private set; }
@@ -40,7 +50,7 @@ namespace Treehopper.Desktop.LibUsb
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			Close ();
 		}
 
 		public async Task<bool> OpenAsync()
@@ -48,6 +58,7 @@ namespace Treehopper.Desktop.LibUsb
 			IntPtr handle = new IntPtr();
 			NativeMethods.Open(deviceProfile, ref handle);
 			this.deviceHandle = new LibUsbDeviceHandle(handle);
+			NativeMethods.ClaimInterface (deviceHandle, 0);
 			return true;
 		}
 
