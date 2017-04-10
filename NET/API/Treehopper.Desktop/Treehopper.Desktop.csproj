@@ -52,7 +52,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FirmwareConnection.cs" />
     <Compile Include="WinUsb\Kernel32.cs" />
     <Compile Include="ConnectionService.cs" />
     <Compile Include="LibUsb\LibUsbConnectionService.cs" />
@@ -82,9 +81,6 @@
     <Compile Include="LibUsb\LibUsbDeviceHandle.cs" />
     <Compile Include="LibUsb\LibUsbDeviceDescriptor.cs" />
     <Compile Include="LibUsb\HotplugEvent.cs" />
-    <Compile Include="LibUsb\LibUsbFirmwareConnection.cs" />
-    <Compile Include="MacUsb\MacUsbFirmwareConnection.cs" />
-    <Compile Include="WinUsb\WinUsbFirmwareConnection.cs" />
     <Compile Include="LibUsb\LibUsbError.cs" />
   </ItemGroup>
   <ItemGroup>
