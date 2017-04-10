@@ -14,7 +14,7 @@ namespace Treehopper.Desktop.LibUsb
 		IntPtr callbackHandle = new IntPtr();
 		public LibUsbConnectionService()
 		{
-			NativeMethods.Init(ref context);
+			NativeMethods.Init(out context);
 
 			HotplugCallbackFunction cb = new HotplugCallbackFunction (callback);
 
