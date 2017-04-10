@@ -29,7 +29,6 @@
     <OutputPath>..\..\..\Output\NET\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;LIBUSBDOTNET</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>anycpu</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>0</WarningLevel>
@@ -40,10 +39,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -232,13 +227,14 @@
     <Compile Include="LibUsb\NativeMethods.cs" />
     <Compile Include="LibUsb\LibUsbDeviceHandle.cs" />
     <Compile Include="LibUsb\LibUsbDeviceDescriptor.cs" />
+    <Compile Include="LibUsb\HotplugEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
-      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>

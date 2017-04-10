@@ -54,35 +54,6 @@ namespace Treehopper.Desktop
         //public event BoardEventHandler BoardRemoved;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// Enable the Serial Number filter.
-        /// </summary>
-        public bool SerialFilterIsEnabled { get; set; }
-
-        /// <summary>
-        /// Enable the Name filter.
-        /// </summary>
-        public bool NameFilterIsEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or set the Serial Number filter.
-        /// </summary>
-        /// <remarks>
-        /// This filter is only enabled when <see cref="SerialFilterIsEnabled"/> is set to true.
-        /// </remarks>
-        public string SerialFilter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Name filter.
-        /// </summary>
-        /// <remarks>
-        /// This filter is only enabled when <see cref="NameFilterIsEnabled"/> is set to true.
-        /// </remarks>
-        public string NameFilter { get; set; }
-
-        System.Timers.Timer pollingTimer;
-
-
         private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 
         /// <summary>
@@ -92,89 +63,24 @@ namespace Treehopper.Desktop
         /// <param name="serialFilter">Serial filter</param>
         public ConnectionService(string nameFilter = "", string serialFilter = "")
         {
-            pollingTimer = new System.Timers.Timer();
-            PollingTimerIsEnabled = false;
-            PollingTimerInterval = 500;
-            SerialFilterIsEnabled = serialFilter.Length > 0;
-            NameFilterIsEnabled = nameFilter.Length > 0;
-            SerialFilter = serialFilter;
-            NameFilter = nameFilter;
-
             Boards.CollectionChanged += Boards_CollectionChanged;
-
-            //Rescan(); // add all the boards that were already connected when we started up
-
-            // now, setup a device notifier so we can be alerted when boards are added/removed
-            pollingTimer.Elapsed += devicePollingTimer_Elapsed;
         }
 
         private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if ((e.OldItems?.Count ?? 0) == 0 && e.NewItems.Count > 0)
+			if (Boards.Count == 0)
+				waitForFirstBoard = new TaskCompletionSource<TreehopperUsb> ();
+			
+            else if ((e.OldItems?.Count ?? 0) == 0 && e.NewItems.Count > 0)
                 waitForFirstBoard.TrySetResult(Boards[0]);
-        }
-
-        private bool pollingTimerIsEnabled;
-
-        /// <summary>
-        /// Gets or sets a value controlling whether the polling timer is active or not.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// In order to avoid conflicts with the device notification system, the device notification system is automatically
-        /// disabled when the polling timer is activated.
-        /// </para>
-        /// <para>
-        /// Since the polling timer is inefficient compared to the device notification system, it is advisable to only use it
-        /// when the device notification system doesn't work properly.
-        /// </para>
-        /// </remarks>
-        public bool PollingTimerIsEnabled
-        {
-            get { return pollingTimerIsEnabled; }
-            set { 
-                pollingTimerIsEnabled = value;
-                if (value)
-                    pollingTimer.Start();
-                else
-                    pollingTimer.Stop();
-            }
-        }
-
-        private int pollingTimerInterval;
-
-        /// <summary>
-        /// Control the interval used by the polling timer. The default is 100 milliseconds.
-        /// </summary>
-        public int PollingTimerInterval
-        {
-            get { return pollingTimerInterval; }
-            set { 
-                pollingTimerInterval = value;
-                pollingTimer.Interval = value;
-            }
+			
         }
 
         /// <summary>
         /// Collection of <see cref="TreehopperUsb"/> devices attached to this computer
         /// </summary>
         public ObservableCollection<TreehopperUsb> Boards { get; } = new ObservableCollection<TreehopperUsb>();
-
-        void devicePollingTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            //Rescan();
-        }
-
-        
-
-        private bool PassesFilter(UsbConnection connection)
-        {
-            if (SerialFilterIsEnabled && connection.Serial != SerialFilter)
-                return false;
-            if (NameFilterIsEnabled && connection.Name != NameFilter)
-                return false;
-            return true;
-        }
+			
 
         /// <summary>
         /// Get a reference to the first device discovered.
@@ -289,7 +195,7 @@ namespace Treehopper.Desktop
 
         public virtual void Dispose()
         {
-            pollingTimer.Dispose();
+
         }
     }
 }
