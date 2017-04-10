@@ -228,6 +228,10 @@
     <Compile Include="MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" />
     <Compile Include="MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" />
     <Compile Include="MacUsb\IOKit\IOUSBInterfaceInterface197.cs" />
+    <Compile Include="LibUsb\LibUsbConnection.cs" />
+    <Compile Include="LibUsb\NativeMethods.cs" />
+    <Compile Include="LibUsb\LibUsbDeviceHandle.cs" />
+    <Compile Include="LibUsb\LibUsbDeviceDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LibUsbDotNet\LibUsbDotNet.snk" />

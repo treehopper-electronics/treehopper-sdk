@@ -18,7 +18,7 @@ namespace Treehopper.Desktop
     /// <summary>
     /// This class is used for discovering <see cref="TreehopperUsb"/> devices attached to this computer.
     /// </summary>
-    public abstract class ConnectionService : IConnectionService
+	public abstract class ConnectionService : IConnectionService, IDisposable
     {
         private static Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
         private static Lazy<LibUsbConnectionService> libUsbInstance = new Lazy<LibUsbConnectionService>();
@@ -287,7 +287,7 @@ namespace Treehopper.Desktop
             }
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             pollingTimer.Dispose();
         }
