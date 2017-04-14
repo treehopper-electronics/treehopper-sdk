@@ -9,8 +9,7 @@ board = Treehopper.Desktop.ConnectionService.Instance.GetFirstDeviceAsync.Result
 board.ConnectAsync().Wait();
 
 for i=1:25
-    board.Led = ~board.Led;
-    pause(0.1);
+    board.Pins.Item(0).ToggleOutputAsync().Wait();
 end
 
 board.Disconnect();

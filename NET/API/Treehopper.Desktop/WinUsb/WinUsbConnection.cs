@@ -122,7 +122,7 @@ namespace Treehopper.Desktop.WinUsb
             }
 
             IsOpen = true;
-            //BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback, null); // kick off our first pin read
+            BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback, null); // kick off our first pin read
             return true;
         }
 
