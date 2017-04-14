@@ -1,6 +1,9 @@
-﻿namespace Treehopper
+﻿namespace Treehopper.Firmware
 {
+    using HidSharp;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
@@ -13,37 +16,50 @@
     /// </summary>
     public class FirmwareUpdater
     {
+        static HidDeviceLoader loader = new HidDeviceLoader();
+
         private const int SizeIn = 4;
         private const int SizeOut = 64;
-        private IFirmwareConnection connection;
+        
+        private HidDevice connection;
+        private HidStream stream;
 
-        /// <summary>
-        /// Create a new FirmwareUpdater from an <see cref="IFirmwareConnection"/>  connection.
-        /// </summary>
-        /// <param name="connection">A platform-specific FirmwareConnection</param>
-        public FirmwareUpdater(IFirmwareConnection connection)
+        public static IList<FirmwareUpdater> Boards
+        {
+            get
+            {
+                Collection<FirmwareUpdater> collection = new Collection<FirmwareUpdater>();
+                var devices = loader.GetDevices(FirmwareUpdater.BootloaderVid, FirmwareUpdater.BootloaderPid);
+                foreach(var device in devices)
+                {
+                    collection.Add(new FirmwareUpdater(device));
+                }
+
+                return collection;
+            }
+        }
+
+        public FirmwareUpdater(HidDevice connection)
         {
             this.connection = connection;
         }
+
 
         /// <summary>
         /// Fires whenever firmware updating progress has changed.
         /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
 
+
         /// <summary>
-        /// Connect to a board that is currently in bootloader mode.
+        /// The PID used by the bootloader
         /// </summary>
-        /// <returns>An awaitable bool indicating whether a connection was successful.</returns>
-        /// <remarks>
-        /// <para>
-        /// Unlike <see cref="IConnectionService.GetFirstDeviceAsync"/>, this call will not wait for a board to be connected.
-        /// </para>
-        /// </remarks>
-        public Task<bool> ConnectAsync()
-        {
-            return connection.OpenAsync();
-        }
+        public static int BootloaderPid { get; set; } = 0xeac9;
+
+        /// <summary>
+        /// The VID used by the bootloader
+        /// </summary>
+        public static int BootloaderVid { get; set; } = 0x10c4;
 
         /// <summary>
         /// Load a firmware image specified by the path
@@ -62,6 +78,7 @@
         /// <returns>An awaitable bool indicating whether loading was successful.</returns>
         public async Task<bool> Load(Stream data)
         {
+            this.stream = connection.Open();
             byte dollarSign = Encoding.UTF8.GetBytes("$")[0];
             var header = ReadBytes(data, 2);
             while (header[0] == dollarSign)
@@ -85,6 +102,8 @@
                     ProgressChanged(this, new ProgressChangedEventArgs(progress, null));
             }
 
+            stream.Close();
+
             return true;
         }
 
@@ -94,7 +113,7 @@
         /// <returns>An awaitable bool indicating true for success or false for failure.</returns>
         public Task<bool> LoadAsync()
         {
-            var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Treehopper.treehopper.tfi");
+            var stream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Treehopper.Firmware.treehopper.tfi");
             return Load(stream);
         }
 
@@ -104,11 +123,13 @@
             {
                 var buffer = new byte[SizeOut];
                 Array.Copy(frame, i, buffer, 0, Math.Min(frame.Length - i, SizeOut));
-                await connection.Write(buffer).ConfigureAwait(false);
+                await stream.WriteAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+                await stream.FlushAsync().ConfigureAwait(false);
             }
 
-            var res = await connection.Read(SizeIn).ConfigureAwait(false);
-            return res;
+            byte[] result = new byte[SizeIn];
+            await stream.ReadAsync(result, 0, SizeIn).ConfigureAwait(false);
+            return result;
         }
 
         private byte[] ReadBytes(Stream source, int count)
