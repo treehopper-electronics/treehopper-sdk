@@ -153,7 +153,7 @@
                 // just send the header
                 if (burstMode == SpiBurstMode.BurstRx)
                 {
-                    device.SendPeripheralConfigPacket(header);
+                    await device.SendPeripheralConfigPacket(header);
                 }
                 else
                 {
@@ -167,7 +167,7 @@
                     {
                         int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var tmp = dataToSend.Skip(offset).Take(transferLength);
-                        device.SendPeripheralConfigPacket(tmp.ToArray());
+                        await device.SendPeripheralConfigPacket(tmp.ToArray());
                         offset += transferLength;
                         bytesRemaining -= transferLength;
                     }
