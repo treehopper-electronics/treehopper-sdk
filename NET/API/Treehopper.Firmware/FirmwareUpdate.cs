@@ -121,15 +121,15 @@
         {
             for (int i = 0; i < frame.Length; i += SizeOut)
             {
-                var buffer = new byte[SizeOut];
-                Array.Copy(frame, i, buffer, 0, Math.Min(frame.Length - i, SizeOut));
+                var buffer = new byte[SizeOut + 1];
+                Array.Copy(frame, i, buffer, 1, Math.Min(frame.Length - i, SizeOut));
                 await stream.WriteAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
                 await stream.FlushAsync().ConfigureAwait(false);
             }
 
-            byte[] result = new byte[SizeIn];
-            await stream.ReadAsync(result, 0, SizeIn).ConfigureAwait(false);
-            return result;
+            byte[] result = new byte[SizeIn+1];
+            await stream.ReadAsync(result, 0, SizeIn+1).ConfigureAwait(false);
+            return result.Skip(1).Take(SizeIn).ToArray(); ;
         }
 
         private byte[] ReadBytes(Stream source, int count)

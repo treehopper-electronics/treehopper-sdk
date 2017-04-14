@@ -21,7 +21,6 @@ namespace FirmwareUpdate
         {
             while(true)
             {
-                
                 while (FirmwareUpdater.Boards.Count == 0)
                 {
                     Console.WriteLine("Couldn't find a Treehopper board in bootloader mode. Searching for Treehoppers to reboot...");
