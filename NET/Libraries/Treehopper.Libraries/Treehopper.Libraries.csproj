@@ -109,6 +109,7 @@
     <Compile Include="Interface\PortExpander\ShiftOutPin.cs" />
     <Compile Include="Interface\PortExpander\Sn74hc166.cs" />
     <Compile Include="Interface\PortExpander\Sn74hc595.cs" />
+    <Compile Include="Memory\SpiFlash.cs" />
     <Compile Include="Motors\Amis30624.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
     <Compile Include="Motors\DualHalfBridge.cs" />
@@ -158,6 +159,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
