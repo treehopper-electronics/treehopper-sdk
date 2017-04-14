@@ -75,6 +75,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArduinoShim", "ArduinoShim", "{F8B89963-83B2-43D8-B3D4-7E2377766AB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirmwareUpdate", "NET\Demos\Console\FirmwareUpdate\FirmwareUpdate.csproj", "{253B9C1D-861C-4BC8-A923-0E46309BF0B2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1CDA2DDB-4E6E-4ACC-BC8A-0D9F00C1F348} = {1CDA2DDB-4E6E-4ACC-BC8A-0D9F00C1F348}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreehopperShowcase", "NET\Demos\WPF\TreehopperShowcase\TreehopperShowcase.csproj", "{30119321-F257-4D4A-998A-9F5018FCD41E}"
 EndProject
