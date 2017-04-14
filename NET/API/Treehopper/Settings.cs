@@ -28,16 +28,6 @@
         public uint Pid { get; set; } = 0x8a7e;
 
         /// <summary>
-        /// The PID used by the bootloader
-        /// </summary>
-        public uint BootloaderPid { get; set; } = 0xeac9;
-
-        /// <summary>
-        /// The VID used by the bootloader
-        /// </summary>
-        public uint BootloaderVid { get; set; } = 0x10c4;
-
-        /// <summary>
         /// The WinUSB GUID used by the librarh
         /// </summary>
         public Guid Guid { get; set; } = new Guid("{5B34B38B-F4CD-49C3-B2BB-60E47A43E12D}");

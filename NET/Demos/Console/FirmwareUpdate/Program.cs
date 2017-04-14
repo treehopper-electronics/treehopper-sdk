@@ -5,25 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
+using Treehopper.Firmware;
 
 namespace FirmwareUpdate
 {
     class Program
     {
-        static FirmwareUpdater dfu;
         static void Main(string[] args)
         {
             Console.WriteLine("Treehopper Firmware Updater");
-            dfu = new FirmwareUpdater(new FirmwareConnection());
             Run().Wait();
         }
 
         static async Task Run()
         {
-            dfu.ProgressChanged += Dfu_ProgressChanged;
             while(true)
             {
-                while (!await dfu.ConnectAsync())
+                
+                while (FirmwareUpdater.Boards.Count == 0)
                 {
                     Console.WriteLine("Couldn't find a Treehopper board in bootloader mode. Searching for Treehoppers to reboot...");
                     var board = await ConnectionService.Instance.GetFirstDeviceAsync();
@@ -38,6 +37,9 @@ namespace FirmwareUpdate
                     Console.WriteLine("Waiting 5 seconds to reconnect...");
                     await Task.Delay(5000);
                 }
+
+                var dfu = FirmwareUpdater.Boards[0];
+                dfu.ProgressChanged += Dfu_ProgressChanged;
 
                 Console.WriteLine("Ready to load firmware. Would you like to load with the built-in default? (Y/n)");
                 string response = Console.ReadLine();
