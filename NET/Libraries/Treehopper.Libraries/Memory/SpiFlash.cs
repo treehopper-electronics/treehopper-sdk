@@ -12,47 +12,98 @@ namespace Treehopper.Libraries.Memory
 
         public enum Command
         {
+            WriteEnable = 0x06,
+            WriteDisable = 0x04,
+
+            ReadStatus1 = 0x05,
+            WriteStatus1 = 0x01,
+            ReadStatus2 = 0x35,
+            WriteStatus2 = 0x31,
+            ReadStatus3 = 0x15,
+            WriteStatus3 = 0x11,
+
+            ChipErase = 0x60,
+
+            ReadJedecId = 0x9F,
+            ReadUniqueID = 0x4B,
+
+            ReadUniqueId = 0x4B,
+
+            PageProgram = 0x02,
+
             BlockErase_4k = 0x20,
             BlockErase_32k = 0x52,
             BlockErase_64k = 0xD8,
-            ChipErase = 0x60,
-            StatusRead = 0x05,
-            StatusWrite = 0x01,
-            ArrayRead = 0x0B,
-            ArrayReadLowFreq = 0x03,
-            Sleep = 0xB9,
-            Wake = 0xAB,
-            BytePageProgram = 0x02,
-            IdRead = 0x09,
-            MacRead = 0x4B
-        }
 
-        public enum WriteProtect
-        {
-            WriteEnable = 0x06,
-            WriteDisable = 0x04
-        }
+            ReadData = 0x03,
+            ReadSfdp = 0x5A,
 
+            EraseSecurityRegister = 0x44,
+            ProgramSecurityRegister = 0x42,
+            ReadSecurityRegister = 0x48,
+        }
 
         public SpiFlash(Spi dev, SpiChipSelectPin cs)
         {
-            this.dev = new SpiDevice(dev, cs);
+            this.dev = new SpiDevice(dev, cs, ChipSelectMode.SpiActiveLow, 8);
 
         }
 
-        public async Task<ushort> ReadDeviceID()
+        public async Task<ushort> ReadJedecId()
         {
-            var result = await dev.SendReceive(new byte[3] { (byte)Command.IdRead, 0x00, 0x00 });
+            var result = await dev.SendReceive(new byte[4] { (byte)Command.ReadJedecId, 0x00, 0x00, 0x00 });
 
             return (ushort)(result[1] << 8 | result[2]);
         }
-
-        async Task command(Command cmd, bool isWrite = false)
+        
+        public async Task<byte> ReadStatus()
         {
-            if (isWrite)
-                await command((Command)WriteProtect.WriteEnable);
+            var cmd = new byte[2];
+            cmd[0] = (byte)Command.ReadStatus1;
+            var result = await dev.SendReceive(cmd);
+            return result[1];
+        }
+        public async Task<byte[]> ReadArray(int address, int count)
+        {
+            var data = new byte[count + 4];
+            data[0] = (byte)Command.ReadData;
+            data[1] = (byte)(address >> 16);
+            data[2] = (byte)(address >> 8);
+            data[3] = (byte)(address);
+            var result = await dev.SendReceive(data);
+            return result.Skip(4).Take(count).ToArray();
+        }
 
-            await dev.SendReceive(new byte[] { (byte)cmd });
+        public async Task<byte> ReadByte(int address)
+        {
+            var res = await ReadArray(address, 1);
+            return res[0];
+        }
+
+        public Task Write(byte[] data, int address)
+        {
+            var header = new byte[4];
+            header[0] = (byte)Command.PageProgram;
+            header[1] = (byte)(address >> 16);
+            header[2] = (byte)(address >> 8);
+            header[3] = (byte)(address);
+
+            return dev.SendReceive(header.Concat(data).ToArray(), SpiBurstMode.BurstTx);
+        }
+
+        public async Task EraseChip()
+        {
+            await dev.SendReceive(new byte[] { (byte)Command.ChipErase }).ConfigureAwait(false);
+        }
+
+        public Task WriteEnable()
+        {
+            return dev.SendReceive(new byte[] { (byte)Command.WriteEnable });
+        }
+
+        public Task WriteDisable()
+        {
+            return dev.SendReceive(new byte[] { (byte)Command.WriteDisable });
         }
     }
 }
