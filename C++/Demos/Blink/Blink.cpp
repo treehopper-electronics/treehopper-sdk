@@ -14,12 +14,13 @@ using namespace Treehopper;
 int main()
 {
 	ConnectionService service;
-	TreehopperUsb& board = service.boards[0];
+    TreehopperUsb& board = service.getFirstDevice();
+    
 	board.connect();
 
     board.pins[2].makeAnalogInput();
     
-	for(int i=0;i<20;i++)
+    for(int i=0;i<20;i++)
 	{
 		board.led(!board.led());
 		//board.pins[1].toggleOutput();
@@ -27,6 +28,12 @@ int main()
         this_thread::sleep_for(chrono::milliseconds(100));
 	}
 	board.disconnect();
+    
+    while(true)
+    {
+        std:this_thread::sleep_for(chrono::seconds(5));
+    }
+    
     return 0;
 }
 

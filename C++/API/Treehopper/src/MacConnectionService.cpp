@@ -28,9 +28,13 @@ typedef struct MyPrivateData {
 
 namespace Treehopper {
     
-    static IONotificationPortRef    gNotifyPort;
+    IONotificationPortRef ConnectionService::gNotifyPort;
+    std::mutex ConnectionService::boardCollectionMutex;
+    std::condition_variable ConnectionService::boardCollectionCondition;
+    std::thread ConnectionService::deviceListenerThread;
     
-    static void DeviceRemoved(void *refCon, io_service_t service, natural_t messageType, void *messageArgument)
+    
+    void ConnectionService::DeviceRemoved(void *refCon, io_service_t service, natural_t messageType, void *messageArgument)
     {
         kern_return_t   kr;
         MyPrivateData   *privateDataRef = (MyPrivateData *) refCon;
@@ -56,7 +60,7 @@ namespace Treehopper {
         }
     }
     
-    static void DeviceAdded(void *refCon, io_iterator_t iterator)
+    void ConnectionService::DeviceAdded(void *refCon, io_iterator_t iterator)
     {
         kern_return_t       kr;
         io_service_t        usbDevice;
@@ -164,8 +168,13 @@ namespace Treehopper {
                 CFRelease(path);
             }
             
-            
+            std::unique_lock<std::mutex> lock(boardCollectionMutex);
+           
             service->boards.emplace_back(*(new MacUsbConnection(usbDevice, name, serial)));
+            
+            lock.unlock();
+            boardCollectionCondition.notify_one();
+            
             
             if (KERN_SUCCESS != kr) {
                 printf("IOServiceAddInterestNotification returned 0x%08x.\n", kr);
@@ -178,9 +187,7 @@ namespace Treehopper {
 
     ConnectionService::ConnectionService()
     {
-
-
-        t = std::thread([&]() {
+        deviceListenerThread = std::thread([&]() {
             io_iterator_t           gAddedIter;
             CFRunLoopRef            gRunLoop;
             CFMutableDictionaryRef  matchingDict;
@@ -234,18 +241,18 @@ namespace Treehopper {
             CFRunLoopAddSource(gRunLoop, runLoopSource, kCFRunLoopDefaultMode);
             
             // get a function pointer
-            //        void (ConnectionService::*deviceAdded)(void *, io_iterator_t) = &ConnectionService::DeviceAdded;
-            //
-            //        ConnectionService* obj = this;
-            //
-            //
-            //         IOServiceMatchingCallback func = obj->*deviceAdded;
+//            void (*deviceAdded)(ConnectionService*, void *, io_iterator_t) = std::mem_fn(&ConnectionService::DeviceAdded);
+            
+                 //   ConnectionService* obj = this;
+            
+            
+//                     IOServiceMatchingCallback func = obj->*deviceAdded;
             
             // Now set up a notification to be called when a device is first matched by I/O Kit.
             kr = IOServiceAddMatchingNotification(gNotifyPort,                  // notifyPort
                                                   kIOFirstMatchNotification,    // notificationType
                                                   matchingDict,                 // matching
-                                                  DeviceAdded,                  // callback
+                                                  static_cast<IOServiceMatchingCallback>(ConnectionService::DeviceAdded),                  // callback
                                                   this,                         // refCon
                                                   &gAddedIter                   // notification
                                                   );
@@ -260,67 +267,18 @@ namespace Treehopper {
 
     }
     
+    TreehopperUsb& ConnectionService::getFirstDevice()
+    {
+        std::unique_lock<std::mutex> lock(boardCollectionMutex);
+        while(boards.empty())
+        {
+            boardCollectionCondition.wait(lock);
+        }
+        return boards[0];
+    }
+    
     ConnectionService::~ConnectionService()
     {
         CFRunLoopStop(CFRunLoopGetCurrent());
-    }
-    
-    
-    
-    
-    void ConnectionService::scan()
-    {
-        mach_port_t iokitPort = kIOMasterPortDefault;
-        int kernelStatus;
-        io_iterator_t deviceIterator;
-        io_service_t deviceService;
-        
-        kernelStatus = IOServiceGetMatchingServices(iokitPort, IOServiceMatching(kIOUSBDeviceClassName), &deviceIterator);
-        assert(kernelStatus == KERN_SUCCESS && "Failed to get matching service");
-        
-        while((deviceService = IOIteratorNext(deviceIterator))) {
-            CFTypeRef path = IORegistryEntrySearchCFProperty(deviceService, kIOServicePlane, CFSTR(kUSBProductID), kCFAllocatorDefault, kIORegistryIterateRecursively);
-            
-            int productID;
-            int vendorID;
-            
-            if(path)
-            {
-                CFNumberGetValue((CFNumberRef)path, kCFNumberIntType, &productID);
-            }
-            
-            path = IORegistryEntrySearchCFProperty(deviceService, kIOServicePlane, CFSTR(kUSBVendorID), kCFAllocatorDefault, kIORegistryIterateRecursively);
-            if(path)
-            {
-                CFNumberGetValue((CFNumberRef)path, kCFNumberIntType, &vendorID);
-            }
-            
-            
-            if(Settings::instance().vid == vendorID && Settings::instance().pid == productID)
-            {
-                string name;
-                string serial;
-                
-                char buffer[128];
-                CFTypeRef path = IORegistryEntrySearchCFProperty(deviceService, kIOServicePlane, CFSTR(kUSBProductString), kCFAllocatorDefault, kIORegistryIterateRecursively);
-                if(path)
-                {
-                    CFStringGetCString((CFStringRef)path, buffer, 128, kCFStringEncodingUTF8);
-                    name = string(buffer);
-                    CFRelease(path);
-                }
-                
-                path = IORegistryEntrySearchCFProperty(deviceService, kIOServicePlane, CFSTR(kUSBSerialNumberString), kCFAllocatorDefault, kIORegistryIterateRecursively);
-                if(path)
-                {
-                    CFStringGetCString((CFStringRef)path, buffer, 128, kCFStringEncodingUTF8);
-                    serial = string(buffer);
-                    CFRelease(path);
-                }
-                
-                
-                boards.emplace_back(*(new MacUsbConnection(deviceService, name, serial)));
-            }
-        }
     }
 }
