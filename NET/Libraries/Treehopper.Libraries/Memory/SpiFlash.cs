@@ -10,6 +10,18 @@ namespace Treehopper.Libraries.Memory
     {
         SpiDevice dev;
 
+        public enum JedecManufacturer
+        {
+            WinbondNexcom = 0xEF,
+        }
+
+        public class JedecId
+        {
+            public JedecManufacturer Manufacturer { get; set; }
+            public byte MemoryType { get; set; }
+            public byte CapacityId { get; set; }
+        }
+
         public enum Command
         {
             WriteEnable = 0x06,
@@ -45,15 +57,20 @@ namespace Treehopper.Libraries.Memory
 
         public SpiFlash(Spi dev, SpiChipSelectPin cs)
         {
-            this.dev = new SpiDevice(dev, cs, ChipSelectMode.SpiActiveLow, 8);
+            this.dev = new SpiDevice(dev, cs, ChipSelectMode.SpiActiveLow, 6);
 
         }
 
-        public async Task<ushort> ReadJedecId()
+        public async Task<JedecId> ReadJedecId()
         {
             var result = await dev.SendReceive(new byte[4] { (byte)Command.ReadJedecId, 0x00, 0x00, 0x00 });
 
-            return (ushort)(result[1] << 8 | result[2]);
+            var id = new JedecId();
+            id.Manufacturer = (JedecManufacturer)result[1];
+            id.MemoryType = result[2];
+            id.CapacityId = result[3];
+
+            return id;
         }
         
         public async Task<byte> ReadStatus()
@@ -80,19 +97,21 @@ namespace Treehopper.Libraries.Memory
             return res[0];
         }
 
-        public Task Write(byte[] data, int address)
+        public async Task Write(byte[] data, int address)
         {
+            await WriteEnable();
             var header = new byte[4];
             header[0] = (byte)Command.PageProgram;
             header[1] = (byte)(address >> 16);
             header[2] = (byte)(address >> 8);
             header[3] = (byte)(address);
 
-            return dev.SendReceive(header.Concat(data).ToArray(), SpiBurstMode.BurstTx);
+            await dev.SendReceive(header.Concat(data).ToArray()).ConfigureAwait(false);
         }
 
         public async Task EraseChip()
         {
+            await WriteEnable().ConfigureAwait(false);
             await dev.SendReceive(new byte[] { (byte)Command.ChipErase }).ConfigureAwait(false);
         }
 
