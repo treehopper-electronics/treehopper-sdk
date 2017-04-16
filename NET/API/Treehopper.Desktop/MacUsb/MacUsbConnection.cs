@@ -73,7 +73,7 @@ namespace Treehopper.Desktop.MacUsb
 
 		public void Close()
 		{
-			
+			interfaceInterface.USBInterfaceClose(interfaceInterface.Handle);
 		}
 
 		public void Dispose()
