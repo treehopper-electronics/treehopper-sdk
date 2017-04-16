@@ -25,9 +25,15 @@
             this.Frequency = speedMhz;
             this.Mode = mode;
 
+            spi.Enabled = true;
+
             this.ChipSelect.MakeDigitalPushPullOut();
 
-            spi.Enabled = true;
+            // Set the initial chip select state
+            if (chipSelectMode == ChipSelectMode.PulseLowAtBeginning || chipSelectMode == ChipSelectMode.PulseLowAtEnd || chipSelectMode == ChipSelectMode.SpiActiveLow)
+                this.ChipSelect.DigitalValue = true;
+            else
+                this.ChipSelect.DigitalValue = false;
         }
 
         /// <summary>

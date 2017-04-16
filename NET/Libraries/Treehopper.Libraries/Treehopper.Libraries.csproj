@@ -121,6 +121,7 @@
     <Compile Include="Interface\PortExpander\ShiftOutPin.cs" />
     <Compile Include="Interface\PortExpander\Hc166.cs" />
     <Compile Include="Interface\PortExpander\Hc595.cs" />
+    <Compile Include="Memory\SpiFlash.cs" />
     <Compile Include="Motors\Amis30624.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
     <Compile Include="Motors\DualHalfBridge.cs" />
