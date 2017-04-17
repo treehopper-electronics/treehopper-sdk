@@ -47,7 +47,7 @@ namespace Treehopper {
 					/// </summary>
 					/// <param name="value">A value representing the data to write to the port</param>
 					/// <returns>An awaitable task that completes upon successfully writing the value.</returns>
-					void write(uint8_t* value);
+					void write(byte_t* value);
 
 					/// <summary>
 					/// flush data to the port
@@ -60,7 +60,7 @@ namespace Treehopper {
 					/** The current value of the port.
 					Note that this value is numBytes wide.
 					*/
-					uint8_t* currentValue;
+					byte_t* currentValue;
 					
 					/** The number of bytes wide this port is */
 					int numBytes;
@@ -83,7 +83,7 @@ namespace Treehopper {
 
 				private:
 					void setupSpi(Spi& spiModule, SpiChipSelectPin* latchPin, double speedMhz, SpiMode mode, ChipSelectMode csMode);
-					uint8_t* lastValues;
+					byte_t* lastValues;
 					static SpiDevice* spiDevice;
 					static vector<ChainableShiftRegisterOutput*> shiftRegisters;
 				};
