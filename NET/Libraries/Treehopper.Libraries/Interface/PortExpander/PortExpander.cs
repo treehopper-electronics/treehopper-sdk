@@ -59,13 +59,13 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// Called whenever an output changes
         /// </summary>
         /// <param name="portExpanderPin">The pin whose output changed</param>
-        protected abstract void outputValueChanged(IPortExpanderPin portExpanderPin);
+        protected abstract Task outputValueChanged(IPortExpanderPin portExpanderPin);
 
         /// <summary>
         /// Called whenever the mode of a pin changes
         /// </summary>
         /// <param name="portExpanderPin">The pin who has a new mode</param>
-        protected abstract void outputModeChanged(IPortExpanderPin portExpanderPin);
+        protected abstract Task outputModeChanged(IPortExpanderPin portExpanderPin);
 
         /// <summary>
         /// Called whenever a read is requested from the bus of the current input values
@@ -73,14 +73,14 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <returns>An awaitable task that completes when the read is finished</returns>
         protected abstract Task readPort();
 
-        void IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
+        Task IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
         {
-            outputValueChanged(portExpanderPin);
+            return outputValueChanged(portExpanderPin);
         }
 
-        void IPortExpanderParent.OutputModeChanged(IPortExpanderPin portExpanderPin)
+        Task IPortExpanderParent.OutputModeChanged(IPortExpanderPin portExpanderPin)
         {
-            outputModeChanged(portExpanderPin);
+            return outputModeChanged(portExpanderPin);
         }
 
         /// <summary>

@@ -40,7 +40,6 @@
     <Compile Include="ChipSelectMode.cs" />
     <Compile Include="DeviceCommands.cs" />
     <Compile Include="Events.cs" />
-    <Compile Include="FirmwareUpdate.cs" />
     <Compile Include="HardwareI2c.cs" />
     <Compile Include="HardwarePwmFrequency.cs" />
     <Compile Include="I2cTransferError.cs" />
@@ -77,7 +76,7 @@
     <Compile Include="TreehopperBoardEqualityComparer.cs" />
     <Compile Include="TreehopperRuntimeException.cs" />
     <Compile Include="TreehopperUsb.cs" />
-    <Compile Include="Uart.cs" />
+    <Compile Include="HardwareUart.cs" />
     <Compile Include="UartMode.cs" />
     <Compile Include="Utilities\NamespaceDoc.cs" />
     <Compile Include="Utilities\Numbers.cs" />
@@ -85,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
-    <EmbeddedResource Include="treehopper.tfi" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -61,7 +61,7 @@
             // Initialize modules
             I2c = new HardwareI2c(this);
             Spi = new HardwareSpi(this);
-            Uart = new Uart(this);
+            Uart = new HardwareUart(this);
             Pwm1 = new HardwarePwm(Pins[7]);
             Pwm2 = new HardwarePwm(Pins[8]);
             Pwm3 = new HardwarePwm(Pins[9]);
@@ -111,7 +111,7 @@
         /// <summary>
         /// Hardware UART supporting RS-232 and OneWire-style communication.
         /// </summary>
-        public Uart Uart { get; private set; }
+        public HardwareUart Uart { get; private set; }
 
         /// <summary>
         /// Hardware PWM #1
@@ -157,7 +157,10 @@
                 byte[] data = new byte[2];
                 data[0] = (byte)DeviceCommands.LedConfig;
                 data[1] = (byte)(led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
-                SendPeripheralConfigPacket(data);
+                if(TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                    SendPeripheralConfigPacket(data).Forget();
+                else
+                    SendPeripheralConfigPacket(data).Wait();
             }
         }
 
@@ -206,7 +209,7 @@
         {
             get
             {
-                return connection.SerialNumber;
+                return connection.Serial;
             }
         }
 
@@ -241,7 +244,7 @@
         {
             get
             {
-                return Utility.BcdToString(connection.Version, 2);
+                return string.Format("{0:0.00}", connection.Version / 100d);
             }
         }
 
@@ -252,7 +255,7 @@
         {
             get
             {
-                return Numbers.BcdToInt(connection.Version);
+                return connection.Version;
             }
         }
 
@@ -385,7 +388,14 @@
         /// </remarks>
         public void Disconnect()
         {
-            Reinitialize();
+            try
+            {
+                Reinitialize();
+            } catch(Exception ex)
+            {
+
+            }
+
             if (connection != null)
                 connection.Close();
             IsConnected = false;
@@ -486,16 +496,20 @@
                 return this.SerialNumber == y.SerialNumber;
         }
 
-        internal void SendPinConfigPacket(byte[] data)
+        internal Task SendPinConfigPacket(byte[] data)
         {
             if (IsConnected)
-                connection.SendDataPinConfigChannel(data);
+                return connection.SendDataPinConfigChannel(data);
+            else
+                return Task.FromResult<object>(null);
         }
 
-        internal void SendPeripheralConfigPacket(byte[] data)
+        internal Task SendPeripheralConfigPacket(byte[] data)
         {
             if (IsConnected)
-                connection.SendDataPeripheralChannel(data);
+                return connection.SendDataPeripheralChannel(data);
+            else
+                return Task.FromResult<object>(null);
         }
 
         internal Task<byte[]> ReceiveCommsResponsePacket(uint bytesToRead)

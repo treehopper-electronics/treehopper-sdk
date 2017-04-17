@@ -6,6 +6,7 @@
 #include "Treehopper/inc/TreehopperUsb.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 using namespace Treehopper;
@@ -16,11 +17,14 @@ int main()
 	TreehopperUsb& board = service.boards[0];
 	board.connect();
 
+    board.pins[2].makeAnalogInput();
+    
 	for(int i=0;i<20;i++)
 	{
 		board.led(!board.led());
-		board.pins[1].toggleOutput();
-		Sleep(100);
+		//board.pins[1].toggleOutput();
+        cout << board.pins[2].adcValue() << endl;
+        this_thread::sleep_for(chrono::milliseconds(100));
 	}
 	board.disconnect();
     return 0;
