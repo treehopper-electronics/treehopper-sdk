@@ -5,6 +5,12 @@ using Treehopper.Desktop.MacUsb.IOKit;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
 {
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void IOServiceMatchingCallback(IntPtr refCon, IntPtr iterator);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void IOServiceInterestCallback(int refCon, IntPtr service, uint messageType, IntPtr messageArgument);
+
 	public static class IOKitFramework
 	{
 		// Service Matching That is the 'IOProviderClass'.
@@ -12,6 +18,8 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 
 
 		public const string kIOUSBInterfaceClassName = "IOUSBInterface";
+		public const string kIOGeneralInterest = "IOGeneralInterest";
+		public const string kIOFirstMatchNotification = "IOServiceFirstMatch";
 
 		// Matching keys.
 		public const string kIOSerialBSDTypeKey = "IOSerialBSDClientType";
@@ -67,20 +75,6 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public const string kIOUSBPlane = "IOUSB";
 		public const string kIOUSBDeviceClassName = "IOUSBDevice";
 
-		// IOReturn* codes
-		public const int IOKitCommonError = 0;
-		public const int kIOReturnSuccess = KERN_SUCCESS;                       // OK
-		public const int kIOReturnError = IOKitCommonError + 0x2bc;             // general error 
-		public const int kIOReturnNoMemory = IOKitCommonError + 0x2bd;          // can't allocate memory 
-		public const int kIOReturnNoResources = IOKitCommonError + 0x2be;       // resource shortage 
-		public const int kIOReturnIPCError = IOKitCommonError + 0x2bf;          // error during IPC 
-		public const int kIOReturnNoDevice = IOKitCommonError + 0x2c0;          // no such device 
-		public const int kIOReturnNotPrivileged = IOKitCommonError + 0x2c1;     // privilege violation 
-		public const int kIOReturnBadArgument = IOKitCommonError + 0x2c2;       // invalid argument 
-		public const int kIOReturnLockedRead = IOKitCommonError + 0x2c3;        // device read locked 
-		public const int kIOReturnLockedWrite = IOKitCommonError + 0x2c4;       // device write locked 
-		public const int kIOReturnExclusiveAccess = IOKitCommonError + 0x2c5;   // exclusive access and
-
 		//public static byte[] kIOUSBDeviceUserClientTypeID = new byte[] { 0x9d, 0xc7, 0xb7, 0x80, 0x9e, 0xc0, 0x11, 0xD4, 0xa5, 0x4f, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61 };
 		//public static byte[] kIOUSBInterfaceUserClientTypeID = new byte[] { 0x2d, 0x97, 0x86, 0xc6, 0x9e, 0xf3, 0x11, 0xD4, 0xad, 0x51, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61 };
 		//public static byte[] kIOCFPlugInInterfaceID = new byte[] { 0xC2, 0x44, 0xE8, 0x58, 0x10, 0x9C, 0x11, 0xD4, 0x91, 0xD4, 0x00, 0x50, 0xE4, 0xC6, 0x42, 0x6F };
@@ -97,30 +91,10 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public const uint kIORegistryIterateRecursively = 0x00000001;
 		public const uint kIORegistryIterateParents = 0x00000002;
 
+		public const uint kIOMessageServiceIsTerminated = 0xe0000010;
 
-
-		/// <summary>
-		/// Returns an iterator to look up available communication devices.
-		/// </summary>
-		/// <returns>An instance of the type <see cref="IOIterator"/> on success; Otherwise, false.</returns>
-		public static IOIterator FindUsbDevices()
-		{
-			var usbDeviceIterator = IntPtr.Zero;
-			int kernResult = NativeMethods.IOServiceGetMatchingServices(kIOMasterPortDefault, NativeMethods.IOServiceMatching(kIOUSBDeviceClassName), out usbDeviceIterator);
-
-			if (KERN_SUCCESS != kernResult)
-			{
-				Debug.WriteLine("No devices were found");
-				return null;
-			}
-
-			if (usbDeviceIterator == IntPtr.Zero)
-			{
-				return null;
-			}
-
-			return new IOIterator(usbDeviceIterator);
-		}
+		// CF strings
+		public const string kCFRunLoopDefaultMode = "kCFRunLoopDefaultMode";
 
 		/// <summary>
 		/// Gets a dictionary value.

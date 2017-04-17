@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
@@ -10,7 +10,7 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 	public delegate ulong ReleaseDelegate(IntPtr self);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate int QueryInterfaceDelegate(IntPtr self, CFUUIDBytes iid, out IntPtr ppv);
+	public delegate IOKitError QueryInterfaceDelegate(IntPtr self, CFUUIDBytes iid, out IntPtr ppv);
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public class IUnknownCGuts
