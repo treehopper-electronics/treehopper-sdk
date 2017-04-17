@@ -59,6 +59,7 @@
     <Compile Include="Displays\LedDisplayCollection.cs" />
     <Compile Include="Displays\LedFadeAnimation.cs" />
     <Compile Include="Displays\NamespaceDoc.cs" />
+    <Compile Include="Displays\Pcd8544.cs" />
     <Compile Include="Input\Button.cs" />
     <Compile Include="Input\DPad.cs" />
     <Compile Include="Input\NesController.cs" />
