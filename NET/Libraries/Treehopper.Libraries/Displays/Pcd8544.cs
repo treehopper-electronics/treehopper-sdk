@@ -8,8 +8,8 @@ namespace Treehopper.Libraries.Displays
 {
     public class Pcd8544 : MonoGraphicDisplay
     {
-        private DigitalOutPin dc;
-        private DigitalOutPin rst;
+        private DigitalOut dc;
+        private DigitalOut rst;
         private SpiDevice spi;
 
         private enum Command
@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.Displays
             SetX = 0x80,
         }
 
-        public Pcd8544(Spi spi, SpiChipSelectPin csPin, DigitalOutPin dc, DigitalOutPin rst, byte biasValue = 0x04) : base(84, 48)
+        public Pcd8544(Spi spi, SpiChipSelectPin csPin, DigitalOut dc, DigitalOut rst, byte biasValue = 0x04) : base(84, 48)
         {
             this.spi = new SpiDevice(spi, csPin, ChipSelectMode.SpiActiveLow, 6);
 

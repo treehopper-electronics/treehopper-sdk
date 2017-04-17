@@ -81,7 +81,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// Unused. Stub for DigitalInPin compliance.
         /// </summary>
-        public void MakeDigitalIn()
+        public async Task MakeDigitalIn()
         {
         }
     }
