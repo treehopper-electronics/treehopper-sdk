@@ -190,9 +190,6 @@ namespace Treehopper.Desktop
             }
         }
 
-        public virtual void Dispose()
-        {
-
-        }
+		public abstract void Dispose();
     }
 }

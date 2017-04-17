@@ -50,126 +50,126 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public IntPtr Handle { get; set; }
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int CreateDeviceAsyncEventSourceDelegate (IntPtr self, IntPtr source);
+		public delegate IOKitError CreateDeviceAsyncEventSourceDelegate (IntPtr self, IntPtr source);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceAsyncEventSourceDelegate (IntPtr self);
+		public delegate IOKitError GetDeviceAsyncEventSourceDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int CreateDeviceAsyncPortDelegate (IntPtr self, IntPtr port);
+		public delegate IOKitError CreateDeviceAsyncPortDelegate (IntPtr self, IntPtr port);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceAsyncPortDelegate (IntPtr self);
+		public delegate IOKitError GetDeviceAsyncPortDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBDeviceOpenDelegate (IntPtr self);
+		public delegate IOKitError USBDeviceOpenDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBDeviceCloseDelegate (IntPtr self);
+		public delegate IOKitError USBDeviceCloseDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceClassDelegate (IntPtr self, out byte devClass);
+		public delegate IOKitError GetDeviceClassDelegate (IntPtr self, out byte devClass);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceSubClassDelegate (IntPtr self, out byte devSubClass);
+		public delegate IOKitError GetDeviceSubClassDelegate (IntPtr self, out byte devSubClass);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceProtocolDelegate (IntPtr self, out byte devProtocol);
+		public delegate IOKitError GetDeviceProtocolDelegate (IntPtr self, out byte devProtocol);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceVendorDelegate (IntPtr self, out short devVendor);
+		public delegate IOKitError GetDeviceVendorDelegate (IntPtr self, out short devVendor);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceProductDelegate (IntPtr self, out short devProduct);
+		public delegate IOKitError GetDeviceProductDelegate (IntPtr self, out short devProduct);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceReleaseNumberDelegate (IntPtr self, out short devRelNum);
+		public delegate IOKitError GetDeviceReleaseNumberDelegate (IntPtr self, out short devRelNum);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceAddressDelegate (IntPtr self, out short addr);
+		public delegate IOKitError GetDeviceAddressDelegate (IntPtr self, out short addr);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceBusPowerAvailableDelegate (IntPtr self, out UInt32 powerAvailable);
+		public delegate IOKitError GetDeviceBusPowerAvailableDelegate (IntPtr self, out UInt32 powerAvailable);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetDeviceSpeedDelegate (IntPtr self, out byte devSpeed);
+		public delegate IOKitError GetDeviceSpeedDelegate (IntPtr self, out byte devSpeed);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetNumberOfConfigurationsDelegate (IntPtr self, out byte numConfig);
+		public delegate IOKitError GetNumberOfConfigurationsDelegate (IntPtr self, out byte numConfig);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetLocationIDDelegate (IntPtr self, out UInt32 locationID);
+		public delegate IOKitError GetLocationIDDelegate (IntPtr self, out UInt32 locationID);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetConfigurationDescriptorPtrDelegate(IntPtr self, byte configIndex, out IOUSBConfigurationDescriptor desc); // IOUSBConfigurationDescriptorPtr
+		public delegate IOKitError GetConfigurationDescriptorPtrDelegate(IntPtr self, byte configIndex, out IOUSBConfigurationDescriptor desc); // IOUSBConfigurationDescriptorPtr
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetConfigurationDelegate (IntPtr self, out byte configNum);
+		public delegate IOKitError GetConfigurationDelegate (IntPtr self, out byte configNum);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int SetConfigurationDelegate (IntPtr self, byte configNum);
+		public delegate IOKitError SetConfigurationDelegate (IntPtr self, byte configNum);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetBusFrameNumberDelegate (IntPtr self, out UInt64 frame, out long atTime);
+		public delegate IOKitError GetBusFrameNumberDelegate (IntPtr self, out UInt64 frame, out long atTime);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int ResetDeviceDelegate (IntPtr self);
+		public delegate IOKitError ResetDeviceDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int DeviceRequestDelegate (IntPtr self, IntPtr req);
+		public delegate IOKitError DeviceRequestDelegate (IntPtr self, IntPtr req);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int DeviceRequestAsyncDelegate (IntPtr self, IntPtr req, IntPtr callback, IntPtr refCon);
+		public delegate IOKitError DeviceRequestAsyncDelegate (IntPtr self, IntPtr req, IntPtr callback, IntPtr refCon);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int CreateInterfaceIteratorDelegate(IntPtr self, IOUSBFindInterfaceRequest req, out IntPtr iter);
+		public delegate IOKitError CreateInterfaceIteratorDelegate(IntPtr self, IOUSBFindInterfaceRequest req, out IntPtr iter);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBDeviceOpenSeizeDelegate (IntPtr self);
+		public delegate IOKitError USBDeviceOpenSeizeDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int DeviceRequestTODelegate (IntPtr self, IntPtr req);
+		public delegate IOKitError DeviceRequestTODelegate (IntPtr self, IntPtr req);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int DeviceRequestAsyncTODelegate (IntPtr self, IntPtr req, IntPtr callback, IntPtr refCon);
+		public delegate IOKitError DeviceRequestAsyncTODelegate (IntPtr self, IntPtr req, IntPtr callback, IntPtr refCon);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBDeviceSuspendDelegate (IntPtr self, Boolean suspend);
+		public delegate IOKitError USBDeviceSuspendDelegate (IntPtr self, Boolean suspend);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBDeviceAbortPipeZeroDelegate (IntPtr self);
+		public delegate IOKitError USBDeviceAbortPipeZeroDelegate (IntPtr self);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBGetManufacturerStringIndexDelegate (IntPtr self, out byte msi);
+		public delegate IOKitError USBGetManufacturerStringIndexDelegate (IntPtr self, out byte msi);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBGetProductStringIndexDelegate (IntPtr self, out byte psi);
+		public delegate IOKitError USBGetProductStringIndexDelegate (IntPtr self, out byte psi);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBGetSerialNumberStringIndexDelegate (IntPtr self, out byte snsi);
+		public delegate IOKitError USBGetSerialNumberStringIndexDelegate (IntPtr self, out byte snsi);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int USBDeviceReEnumerateDelegate (IntPtr self, UInt32 options);
+		public delegate IOKitError USBDeviceReEnumerateDelegate (IntPtr self, UInt32 options);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetBusMicroFrameNumberDelegate (IntPtr self, out UInt64 microFrame, out long atTime);
+		public delegate IOKitError GetBusMicroFrameNumberDelegate (IntPtr self, out UInt64 microFrame, out long atTime);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetIOUSBLibVersionDelegate (IntPtr self, IntPtr ioUSBLibVersion, IntPtr usbFamilyVersion);
+		public delegate IOKitError GetIOUSBLibVersionDelegate (IntPtr self, IntPtr ioUSBLibVersion, IntPtr usbFamilyVersion);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetBusFrameNumberWithTimeDelegate(IntPtr self, out UInt64 frame, out long atTime);
+		public delegate IOKitError GetBusFrameNumberWithTimeDelegate(IntPtr self, out UInt64 frame, out long atTime);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetUSBDeviceInformationDelegate(IntPtr self, out UInt32 info);
+		public delegate IOKitError GetUSBDeviceInformationDelegate(IntPtr self, out UInt32 info);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int RequestExtraPowerDelegate(IntPtr self, UInt32 type, UInt32 requestedPower, out UInt32 powerAvailable);
+		public delegate IOKitError RequestExtraPowerDelegate(IntPtr self, UInt32 type, UInt32 requestedPower, out UInt32 powerAvailable);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int ReturnExtraPowerDelegate(IntPtr self, UInt32 type, UInt32 powerReturned);
+		public delegate IOKitError ReturnExtraPowerDelegate(IntPtr self, UInt32 type, UInt32 powerReturned);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate int GetExtraPowerAllocatedDelegate(IntPtr self, UInt32 type, out UInt32 powerAllocated);
+		public delegate IOKitError GetExtraPowerAllocatedDelegate(IntPtr self, UInt32 type, out UInt32 powerAllocated);
 	}
 }

@@ -65,7 +65,7 @@
     <Compile Include="MacUsb\IOKit\IOIterator.cs" />
     <Compile Include="MacUsb\IOKit\IOKitFramework.cs" />
     <Compile Include="MacUsb\IOKit\IOObject.cs" />
-    <Compile Include="MacUsb\MacUsbConnectionService.cs" />
+    <Compile Include="MacUsb\MacConnectionService.cs" />
     <Compile Include="MacUsb\IOKit\IUnknownCGuts.cs" />
     <Compile Include="MacUsb\IOKit\IOCFPlugInInterface.cs" />
     <Compile Include="MacUsb\IOKit\IOUSBDeviceInterface320.cs" />
@@ -82,6 +82,8 @@
     <Compile Include="LibUsb\LibUsbDeviceDescriptor.cs" />
     <Compile Include="LibUsb\HotplugEvent.cs" />
     <Compile Include="LibUsb\LibUsbError.cs" />
+    <Compile Include="MacUsb\TreehopperData.cs" />
+    <Compile Include="MacUsb\IOKit\IOKitError.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">

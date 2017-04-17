@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Threading;
 using Treehopper.Desktop.MacUsb.IOKit;
 
 namespace Treehopper.Desktop.MacUsb
@@ -13,7 +14,7 @@ namespace Treehopper.Desktop.MacUsb
 
 		IOUSBInterfaceInterface197 interfaceInterface;
 
-		IntPtr kIOCFPlugInInterfaceID 			= NativeMethods.CFUUIDGetConstantUUIDWithBytes(IntPtr.Zero, 0xC2, 0x44, 0xE8, 0x58, 0x10, 0x9C, 0x11, 0xD4, 0x91, 0xD4, 0x00, 0x50, 0xE4, 0xC6, 0x42, 0x6F);
+		IntPtr kIOCFPlugInInterfaceID 		    = NativeMethods.CFUUIDGetConstantUUIDWithBytes(IntPtr.Zero, 0xC2, 0x44, 0xE8, 0x58, 0x10, 0x9C, 0x11, 0xD4, 0x91, 0xD4, 0x00, 0x50, 0xE4, 0xC6, 0x42, 0x6F);
 		IntPtr kIOUSBDeviceUserClientTypeID 	= NativeMethods.CFUUIDGetConstantUUIDWithBytes(IntPtr.Zero, 0x9d, 0xc7, 0xb7, 0x80, 0x9e, 0xc0, 0x11, 0xD4, 0xa5, 0x4f, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61);
 		IntPtr kIOUSBInterfaceUserClientTypeID	= NativeMethods.CFUUIDGetConstantUUIDWithBytes(IntPtr.Zero, 0x2d, 0x97, 0x86, 0xc6, 0x9e, 0xf3, 0x11, 0xD4, 0xad, 0x51, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61);
 
@@ -33,20 +34,20 @@ namespace Treehopper.Desktop.MacUsb
 
 			int score = 0;
 
-			var status = NativeMethods.IOCreatePlugInInterfaceForService(usbService.Handle, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID, out pluginInterfacePtrPtr, out score);
-			if (status != IOKitFramework.kIOReturnSuccess)
+			var kr = NativeMethods.IOCreatePlugInInterfaceForService(usbService.Handle, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID, out pluginInterfacePtrPtr, out score);
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn't create plug-in interface. Error = {0}", status);
+				Debug.WriteLine("Couldn't create plug-in interface. Error: " + kr);
 				return;
 			}
 
 			IOCFPlugInInterface pluginInterface = IOCFPlugInInterface.GetPlugInInterfaceFromPtrPtr(pluginInterfacePtrPtr);
 
 			IntPtr deviceInterfacePtrPtr = IntPtr.Zero;
-			var kr = pluginInterface.QueryInterface(pluginInterfacePtrPtr, kIOUSBDeviceInterfaceID320, out deviceInterfacePtrPtr);
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			kr = pluginInterface.QueryInterface(pluginInterfacePtrPtr, kIOUSBDeviceInterfaceID320, out deviceInterfacePtrPtr);
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn't query interface. Error = {0}", kr);
+				Debug.WriteLine("Couldn't query interface. Error: " + kr);
 				return;
 			}
 
@@ -56,6 +57,9 @@ namespace Treehopper.Desktop.MacUsb
 				this.deviceInterface = (IOUSBDeviceInterface320)Marshal.PtrToStructure(deviceInterfacePtr, typeof(IOUSBDeviceInterface320));
 				this.deviceInterface.Handle = deviceInterfacePtrPtr;
 			}
+
+			Name = name;
+			Serial = serialNumber;
 		}
 
 		public string DevicePath { get; private set; }
@@ -68,26 +72,37 @@ namespace Treehopper.Desktop.MacUsb
 
 		public short Version { get; set; }
 
+		private Thread pinReportThread;
+		private bool isConnected = false;
+
 		public event PinEventData PinEventDataReceived;
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public void Close()
 		{
-			
+			if (!isConnected) return;
+
+			isConnected = false;
+
+            if (pinReportThread.IsAlive)
+                pinReportThread.Join();
+
+            interfaceInterface.USBInterfaceClose(interfaceInterface.Handle);
+            deviceInterface.USBDeviceClose(deviceInterface.Handle);
 		}
 
 		public void Dispose()
 		{
-			
+			Close();
 		}
 
 		public async Task<bool> OpenAsync()
 		{
 			deviceInterface.GetDeviceAsyncEventSource(deviceInterface.Handle);
 			var kr = deviceInterface.USBDeviceOpen(deviceInterface.Handle);
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn’t open device (err = {x})", kr);
+				Debug.WriteLine("Couldn’t open device: " + kr);
 				return false;
 			}
 
@@ -98,38 +113,47 @@ namespace Treehopper.Desktop.MacUsb
 
 			IOUSBConfigurationDescriptor configDesc = new IOUSBConfigurationDescriptor();
 			kr = deviceInterface.GetConfigurationDescriptorPtr(deviceInterface.Handle, 0, out configDesc);
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn’t get configuration descriptor for index (err = {x})", kr);
+				Debug.WriteLine("Couldn’t get configuration descriptor for index: " + kr);
 				return false;
 			}
 
 			kr = deviceInterface.SetConfiguration(deviceInterface.Handle, configDesc.bConfigurationValue);
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn’t set configuration to value (err = {x})", kr);
+				Debug.WriteLine("Couldn’t set configuration to value: " + kr);
 				return false;
 			}
+
+            // HACK: the LED blinks three times since we reconfigured it. Ugh, we should wait here so we don't miss commands
+            await Task.Delay(500).ConfigureAwait(false);
 
 			IOUSBFindInterfaceRequest interfaceRequest = new IOUSBFindInterfaceRequest();
 			IntPtr interfaceIteratorPtr = IntPtr.Zero;
 			kr = deviceInterface.CreateInterfaceIterator(deviceInterface.Handle, interfaceRequest, out interfaceIteratorPtr);
 
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Failed to create interface iterator (err = {x})", kr);
+				Debug.WriteLine("Failed to create interface iterator: " + kr);
 				return false;
 			}
 
 			IOIterator interfaceIterator = new IOIterator(interfaceIteratorPtr);
 
 			var usbInterface = interfaceIterator.Next();
-			IntPtr pluginInterfacePtrPtr = IntPtr.Zero;
+            if (usbInterface == null)
+            {
+                Debug.WriteLine("Failed to find an interface.");
+                return false;
+            }
+
+            IntPtr pluginInterfacePtrPtr = IntPtr.Zero;
 			int score = 0;
 
-			if (NativeMethods.IOCreatePlugInInterfaceForService(usbInterface.Handle, kIOUSBInterfaceUserClientTypeID, kIOCFPlugInInterfaceID, out pluginInterfacePtrPtr, out score) != IOKitFramework.kIOReturnSuccess)
+			if (NativeMethods.IOCreatePlugInInterfaceForService(usbInterface.Handle, kIOUSBInterfaceUserClientTypeID, kIOCFPlugInInterfaceID, out pluginInterfacePtrPtr, out score) != IOKitError.Success)
 			{
-				Debug.WriteLine("Failed to create CF Plug-In interface (err = {x})", kr);
+				Debug.WriteLine("Failed to create CF Plug-In interface: " + kr);
 				return false;
 			}
 
@@ -140,9 +164,9 @@ namespace Treehopper.Desktop.MacUsb
 
 
 			IntPtr interfaceInterfacePtrPtr = IntPtr.Zero;
-			if (pluginInterface.QueryInterface(pluginInterfacePtrPtr, kIOUSBInterfaceInterfaceID, out interfaceInterfacePtrPtr) != IOKitFramework.kIOReturnSuccess)
+			if (pluginInterface.QueryInterface(pluginInterfacePtrPtr, kIOUSBInterfaceInterfaceID, out interfaceInterfacePtrPtr) != IOKitError.Success)
 			{
-				Debug.WriteLine("Could not query plugin interface to retrieve interface interface");
+				Debug.WriteLine("Could not query plugin interface to retrieve interface interface: " + kr);
 				return false;
 			}
 
@@ -161,33 +185,61 @@ namespace Treehopper.Desktop.MacUsb
 			interfaceInterface.GetInterfaceClass(interfaceInterface.Handle, out intNumber);
 
 			kr = interfaceInterface.GetInterfaceNumber(interfaceInterface.Handle, out intNumber);
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn't get interface number");
+				Debug.WriteLine("Couldn't get interface number: " + kr);
 				return false;
 			}
 
 			kr = interfaceInterface.USBInterfaceOpen(interfaceInterface.Handle);
 
-			if (kr != IOKitFramework.kIOReturnSuccess)
+			if (kr != IOKitError.Success)
 			{
-				Debug.WriteLine("Couldn't open interface");
+				Debug.WriteLine("Couldn't open interface: " + kr);
 				return false;
 			}
-			else
-			{
-				return true;
-			}
 
-			return false;
+			isConnected = true;
+
+			pinReportThread = new Thread(() =>
+			{
+				byte[] pinReport = new byte[41];
+				uint numBytesToRead = 41;
+				while(isConnected)
+				{
+					var status = interfaceInterface.ReadPipeTO(interfaceInterface.Handle, 1, pinReport, out numBytesToRead, 1000, 1000);
+					if (status == IOKitError.Success)
+					{
+						PinEventDataReceived?.Invoke(pinReport);
+					}
+					else
+					{
+						if (status == IOKitError.NoDevice || status == IOKitError.Aborted) // device was unplugged
+                        {
+                            
+                        } else {
+							Debug.WriteLine("Read from pin report failed: {0}", status);
+
+							status = interfaceInterface.ClearPipeStallBothEnds(interfaceInterface.Handle, 1);
+							if (status != IOKitError.Success)
+								Debug.WriteLine("Can't clear pipe stall: " + status);
+                        }
+					}
+				}
+			});
+
+			pinReportThread.Name = "PinReportThread";
+			pinReportThread.Start();
+
+			return true;
 		}
 
 		public async Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
 		{
 			byte[] dataToRead = new byte[numBytesToRead];
 
-			var status = interfaceInterface.ReadPipeTO(interfaceInterface.Handle, 1, dataToRead, out numBytesToRead, 1000, 1000);
-			if (status != IOKitFramework.kIOReturnSuccess)
+			var status = interfaceInterface.ReadPipeTO(interfaceInterface.Handle, 2, dataToRead, out numBytesToRead, 1000, 1000);
+			if (status != IOKitError.Success)
 			{
 				Debug.WriteLine("Write to peripheral endpoint failed: {0}", status);
 				interfaceInterface.ClearPipeStallBothEnds(interfaceInterface.Handle, 1);
@@ -198,7 +250,7 @@ namespace Treehopper.Desktop.MacUsb
 		public async Task SendDataPeripheralChannel(byte[] data)
 		{
 			var status = interfaceInterface.WritePipeTO(interfaceInterface.Handle, 4, data, (uint)data.Length, 1000, 1000);
-			if (status != IOKitFramework.kIOReturnSuccess)
+			if (status != IOKitError.Success)
 			{
 				Debug.WriteLine("Write to peripheral endpoint failed: {0:x8}", status);
 				interfaceInterface.ClearPipeStallBothEnds(interfaceInterface.Handle, 4);
@@ -208,7 +260,7 @@ namespace Treehopper.Desktop.MacUsb
 		public async Task SendDataPinConfigChannel(byte[] data)
 		{
 			var status = interfaceInterface.WritePipeTO(interfaceInterface.Handle, 3, data, (uint)data.Length, 1000, 1000);
-			if (status != IOKitFramework.kIOReturnSuccess)
+			if (status != IOKitError.Success)
 			{
 				Debug.WriteLine("Write to peripheral endpoint failed: {0:x8}", status);
 				interfaceInterface.ClearPipeStallBothEnds(interfaceInterface.Handle, 3);
