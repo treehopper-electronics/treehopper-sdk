@@ -52,7 +52,7 @@ namespace Treehopper {
 		return false;
 	}
 
-	void HardwareI2c::sendReceive(uint8_t address, uint8_t * writeBuffer, size_t numBytesToWrite, 
+	void HardwareI2c::sendReceive(uint8_t address, uint8_t * writeBuffer, size_t numBytesToWrite,
 		uint8_t * readBuffer, size_t numBytesToRead)
 	{
 		uint8_t* receivedData = new uint8_t[numBytesToRead+1];
@@ -67,11 +67,11 @@ namespace Treehopper {
 			copy(writeBuffer, writeBuffer + numBytesToWrite, dataToSend + 4);
 
 		int offset = 0;
-		int bytesRemaining = 4 + numBytesToWrite;
+		size_t bytesRemaining = 4 + numBytesToWrite;
 
 		while (bytesRemaining > 0)
 		{
-			int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
+			size_t transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
 			board.sendPeripheralConfigPacket(&dataToSend[offset], transferLength);
 			offset += transferLength;
 			bytesRemaining -= transferLength;
@@ -94,7 +94,7 @@ namespace Treehopper {
 
 			while (bytesRemaining > 0)
 			{
-				int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
+				size_t numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
 				board.receivePeripheralConfigPacket(&receivedData[offset], numBytesToTransfer);
 				offset += numBytesToTransfer;
 				bytesRemaining -= numBytesToTransfer;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
+using Treehopper.Desktop.MacUsb;
 using Treehopper.Libraries;
 namespace Sandbox
 {
@@ -15,21 +16,25 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            App().Wait();
+			App().Wait();
         }
+
 
         static async Task App()
         {
-            var board = await ConnectionService.Instance.GetFirstDeviceAsync();
-            await board.ConnectAsync();
+			var board = await ConnectionService.Instance.GetFirstDeviceAsync();
 
-            board.Pins[0].Mode = PinMode.PushPullOutput;
+			await board.ConnectAsync();
 
-            while(board.IsConnected && !Console.KeyAvailable)
-            {
-                // do stuff
-                board.Pins[0].ToggleOutput();
-            }
+			//board.Pins[0].Mode = PinMode.PushPullOutput;
+
+			while (board.IsConnected && !Console.KeyAvailable)
+			{
+				// do stuff
+				board.Led = !board.Led;
+				Task.Delay(100).Wait();
+			}
+
         }
     }
 }

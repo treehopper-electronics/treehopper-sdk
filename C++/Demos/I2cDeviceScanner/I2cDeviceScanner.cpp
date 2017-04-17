@@ -20,8 +20,8 @@ int main()
 		cout << "0x" << std::hex << i << ": ";
 		for (int j = 0; j < 3; j++)	{
 			try {
-				uint8_t sendData = 0;
-				board.i2c.sendReceive((uint8_t)i, &sendData, 1, NULL, 0);
+				byte_t sendData = 0;
+				board.i2c.sendReceive((byte_t)i, &sendData, 1, NULL, 0);
 				cout << "Device found!";
 				break;
 			} catch (...) {

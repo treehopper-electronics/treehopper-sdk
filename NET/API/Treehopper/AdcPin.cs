@@ -1,4 +1,6 @@
-﻿namespace Treehopper
+﻿using System.Threading.Tasks;
+
+namespace Treehopper
 {
     /// <summary>
     /// Base interface representing pins capable of reading analog values
@@ -69,6 +71,6 @@
         /// <summary>
         /// Make this pin an ADC pin
         /// </summary>
-        void MakeAnalogIn();
+        Task MakeAnalogIn();
     }
 }

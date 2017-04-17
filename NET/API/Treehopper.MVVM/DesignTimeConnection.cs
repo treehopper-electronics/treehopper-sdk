@@ -22,7 +22,7 @@ namespace Treehopper
         /// </summary>
         public DesignTimeConnection()
         {
-            SerialNumber = Utility.RandomString(16);
+            Serial = Utility.RandomString(16);
             Name = "MyTreehopper "+ Utility.RandomString(2);
             
         }
@@ -35,7 +35,7 @@ namespace Treehopper
         /// <summary>
         /// The serial number of the board
         /// </summary>
-        public string SerialNumber { get; private set;  }
+        public string Serial { get; private set;  }
         
         /// <summary>
         /// The device path of the board
@@ -83,7 +83,7 @@ namespace Treehopper
         /// Send peripheral data over the DesignTime connection. Note that this function has no effect.
         /// </summary>
         /// <param name="data">The data to send</param>
-        public void SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannel(byte[] data)
         {
             
         }
@@ -92,7 +92,7 @@ namespace Treehopper
         /// Send pin config data over the DesignTime connection. Note that this function has no effect.
         /// </summary>
         /// <param name="data"></param>
-        public void SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannel(byte[] data)
         {
             
         }

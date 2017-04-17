@@ -52,7 +52,10 @@ namespace Treehopper.Libraries.Interface.PortExpander
             {
                 if (mode == value) return;
                 mode = value;
-                portExpander.OutputModeChanged(this);
+                if (mode == PortExpanderPinMode.DigitalOutput)
+                    MakeDigitalPushPullOut();
+                else
+                    MakeDigitalIn();
             }
         }
 
@@ -142,26 +145,26 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// Make the pin a digital input
         /// </summary>
-        public void MakeDigitalIn()
+        public Task MakeDigitalIn()
         {
-            Mode = PortExpanderPinMode.DigitalInput;
+            return portExpander.OutputModeChanged(this);
         }
 
         /// <summary>
         /// Toggle the pin's output value
         /// </summary>
-        public void ToggleOutput()
+        public async Task ToggleOutputAsync()
         {
-            MakeDigitalPushPullOut();
+            await MakeDigitalPushPullOut().ConfigureAwait(false);
             DigitalValue = !DigitalValue;
         }
 
         /// <summary>
         /// Make the pin a digital output
         /// </summary>
-        public void MakeDigitalPushPullOut()
+        public Task MakeDigitalPushPullOut()
         {
-            Mode = PortExpanderPinMode.DigitalOutput;
+            return portExpander.OutputModeChanged(this);
         }
     }
 }

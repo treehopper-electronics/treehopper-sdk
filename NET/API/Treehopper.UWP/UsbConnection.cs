@@ -23,7 +23,7 @@ namespace Treehopper.Uwp
         {
             UpdateRate = 1000;
             DevicePath = deviceInfo.Id;
-            SerialNumber = DevicePath.Split('#')[2];
+            Serial = DevicePath.Split('#')[2];
             Name = deviceInfo.Name;
         }
 
@@ -34,7 +34,7 @@ namespace Treehopper.Uwp
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string SerialNumber { get; private set; }
+        public string Serial { get; private set; }
 
 
         public string Name { get; private set; }
@@ -155,7 +155,7 @@ namespace Treehopper.Uwp
             isOpen = false;
         }
 
-        async public void SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannel(byte[] data)
         {
             if (!IsOpen)
                 return;
@@ -168,7 +168,7 @@ namespace Treehopper.Uwp
             }
         }
 
-        async public void SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannel(byte[] data)
         {
             if (!IsOpen)
                 return;

@@ -3,6 +3,7 @@
 #include "HardwarePwmManager.h"
 #include "HardwarePwm.h"
 #include "Pin.h"
+#include <cmath>
 
 namespace Treehopper {
 

@@ -2,6 +2,7 @@
 #include "HardwareSpi.h"
 #include "TreehopperUsb.h"
 #include "SpiChipSelectPin.h"
+#include <cmath>
 
 namespace Treehopper {
 	HardwareSpi::HardwareSpi(TreehopperUsb& board) : board(board)

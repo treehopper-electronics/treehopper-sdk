@@ -8,9 +8,7 @@ namespace Treehopper
 {
 	using namespace std;
 	
-	template<class Sender, class EventArgs>
-
-	/** Provides a simple C#-style observer pattern event queue. 
+	/** Provides a simple C#-style observer pattern event queue.
 	This class provides two public operators -- Event::operator+= and Event::operator-= -- which allows user code to subscribe and unsubscribe from these events.
 
 	For example, to subscribe to the Pin::pinChanged event using a lambda expression,
@@ -64,7 +62,7 @@ namespace Treehopper
 		readingReceived.invoke(event);
 	\endcode
 	*/
-	class Event
+    template<class Sender, class EventArgs> class Event
 	{
 		friend Sender;
 	public:
@@ -76,18 +74,20 @@ namespace Treehopper
 		}
 
 		/** Subscribe to an event */
-		void operator+=(function<void(Sender& sender, EventArgs e)> pin1inputHandler)
+		void operator+=(function<void(Sender& sender, EventArgs& e)> handler)
 		{
-			handlers.push_back(pin1inputHandler);
+			handlers.push_back(handler);
 		}
 
-		void operator-=(function<void(Sender& sender, EventArgs e)> pin1inputHandler)
+		void operator-=(function<void(Sender& sender, EventArgs& e)> handler)
 		{
 			int idx = -1;
-			for(int i=0;i<handlers.size();i++)
+			for (int i = 0; i < handlers.size(); i++ )
 			{
-				void* testHandlerAddress = *(handlers[i]).target<void(*)(Sender& sender, EventArgs e)>();
-				void* handlerAddress = *(pin1inputHandler).target<void(*)(Sender& sender, EventArgs e)>();
+//				void* testHandlerAddress = *(handlers[i]).target<void(*)(Sender& sender, EventArgs& e)>();
+//				void* handlerAddress = *(handler).target<void(*)(Sender& sender, EventArgs& e)>();
+                void* testHandlerAddress = *(handlers[i]).target();
+                void* handlerAddress = *(handler).target();
 				if (testHandlerAddress == handlerAddress)
 					idx = i;
 			}
@@ -96,7 +96,7 @@ namespace Treehopper
 		}
 
 	protected:
-		vector<function<void(Sender& sender, EventArgs e)>> handlers;
+		vector<function<void(Sender& sender, EventArgs& e)>> handlers;
 
 		void invoke(EventArgs arg)
 		{

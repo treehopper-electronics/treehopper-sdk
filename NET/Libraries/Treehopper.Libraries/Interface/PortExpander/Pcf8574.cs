@@ -81,20 +81,20 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// Called when the output value of any pin has changed and should be written to the port
         /// </summary>
         /// <param name="portExpanderPin">The pin whose value changed</param>
-        protected override void outputValueChanged(IPortExpanderPin portExpanderPin)
+        protected override Task outputValueChanged(IPortExpanderPin portExpanderPin)
         {
-            Flush().Wait();
+            return Flush();
         }
 
         /// <summary>
         /// Called when any pin's mode changes
         /// </summary>
         /// <param name="portExpanderPin">The pin whose mode has changed</param>
-        protected override void outputModeChanged(IPortExpanderPin portExpanderPin)
+        protected override Task outputModeChanged(IPortExpanderPin portExpanderPin)
         {
             // we set the I/O mode by writing a 1 or 0 to the output port, so just
             // flush out the data
-            Flush().Wait();
+            return Flush();
         }
 
         /// <summary>
