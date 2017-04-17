@@ -56,6 +56,7 @@
     <Compile Include="Displays\LedDisplayCollection.cs" />
     <Compile Include="Displays\LedFadeAnimation.cs" />
     <Compile Include="Displays\NamespaceDoc.cs" />
+    <Compile Include="Displays\Pcd8544.cs" />
     <Compile Include="Displays\PwmLedDriver.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
