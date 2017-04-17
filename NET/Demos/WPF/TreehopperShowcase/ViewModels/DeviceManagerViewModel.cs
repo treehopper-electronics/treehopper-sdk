@@ -13,6 +13,7 @@ using Treehopper.Mvvm.ViewModel;
 using Treehopper.Mvvm.Messages;
 using Treehopper.Utilities;
 using Treehopper.Desktop;
+using Treehopper.Firmware;
 
 namespace TreehopperShowcase.ViewModels
 {
@@ -108,9 +109,8 @@ namespace TreehopperShowcase.ViewModels
                         await Task.Delay(1000);
                         Progress = 50;
 
-                        var updater = new FirmwareUpdater(new FirmwareConnection());
+                        var updater = FirmwareUpdater.Boards[0];
                         updater.ProgressChanged += (sender, args) => { Progress = args.ProgressPercentage / 2.0 + 50.0; };
-                        await updater.ConnectAsync();
                         await updater.LoadAsync();
 
                     },
