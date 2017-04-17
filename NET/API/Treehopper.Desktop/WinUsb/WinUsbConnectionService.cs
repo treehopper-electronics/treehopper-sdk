@@ -96,7 +96,12 @@
             }
         }
 
-        internal sealed class UsbNotifyWindow : NativeWindow
+		public override void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+
+		internal sealed class UsbNotifyWindow : NativeWindow
         {
             private const string WINDOW_CAPTION = "{18662f14-0871-455c-bf99-eff135425e3a}";
             private const int WM_DEVICECHANGE = 0x219;

@@ -96,12 +96,8 @@ namespace Treehopper {
             
             // Save the device's name to our private data.
             privateDataRef->deviceName = deviceNameAsCFString;
-            
-            // Now, get the locationID of this device. In order to do this, we need to create an IOUSBDeviceInterface
-            // for our device. This will create the necessary connections between our userland application and the
-            // kernel object for the USB Device.
-            kr = IOCreatePlugInInterfaceForService(usbDevice, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID,
-                                                   &plugInInterface, &score);
+
+            kr = IOCreatePlugInInterfaceForService(usbDevice, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID, &plugInInterface, &score);
             
             if ((kIOReturnSuccess != kr) || !plugInInterface) {
                 fprintf(stderr, "IOCreatePlugInInterfaceForService returned 0x%08x.\n", kr);
@@ -120,23 +116,6 @@ namespace Treehopper {
                 continue;
             }
             
-            // Now that we have the IOUSBDeviceInterface, we can call the routines in IOUSBLib.h.
-            // In this case, fetch the locationID. The locationID uniquely identifies the device
-            // and will remain the same, even across reboots, so long as the bus topology doesn't change.
-            
-            kr = (*privateDataRef->deviceInterface)->GetLocationID(privateDataRef->deviceInterface, &locationID);
-            if (KERN_SUCCESS != kr) {
-                fprintf(stderr, "GetLocationID returned 0x%08x.\n", kr);
-                continue;
-            }
-            else {
-                fprintf(stderr, "Location ID: 0x%lx\n\n", locationID);
-            }
-            
-            privateDataRef->locationID = locationID;
-            
-
-            
             // Register for an interest notification of this device being removed. Use a reference to our
             // private data as the refCon which will be passed to the notification callback.
             kr = IOServiceAddInterestNotification(gNotifyPort,                      // notifyPort
@@ -149,18 +128,10 @@ namespace Treehopper {
             
             
             char buffer[128];
-            string name;
+            string name = string(deviceName);
             string serial;
             
-            CFTypeRef path = IORegistryEntrySearchCFProperty(usbDevice, kIOServicePlane, CFSTR(kUSBProductString), kCFAllocatorDefault, kIORegistryIterateRecursively);
-            if(path)
-            {
-                CFStringGetCString((CFStringRef)path, buffer, 128, kCFStringEncodingUTF8);
-                name = string(buffer);
-                CFRelease(path);
-            }
-            
-            path = IORegistryEntrySearchCFProperty(usbDevice, kIOServicePlane, CFSTR(kUSBSerialNumberString), kCFAllocatorDefault, kIORegistryIterateRecursively);
+            auto path = IORegistryEntrySearchCFProperty(usbDevice, kIOServicePlane, CFSTR(kUSBSerialNumberString), kCFAllocatorDefault, kIORegistryIterateRecursively);
             if(path)
             {
                 CFStringGetCString((CFStringRef)path, buffer, 128, kCFStringEncodingUTF8);
@@ -179,9 +150,6 @@ namespace Treehopper {
             if (KERN_SUCCESS != kr) {
                 printf("IOServiceAddInterestNotification returned 0x%08x.\n", kr);
             }
-            
-            // Done with this USB device; release the reference added by IOIteratorNext
-            // kr = IOObjectRelease(usbDevice);
         }
     }
 
@@ -189,7 +157,6 @@ namespace Treehopper {
     {
         deviceListenerThread = std::thread([&]() {
             io_iterator_t           gAddedIter;
-            CFRunLoopRef            gRunLoop;
             CFMutableDictionaryRef  matchingDict;
             CFRunLoopSourceRef      runLoopSource;
             CFNumberRef             numberRef;
@@ -240,14 +207,6 @@ namespace Treehopper {
             gRunLoop = CFRunLoopGetCurrent();
             CFRunLoopAddSource(gRunLoop, runLoopSource, kCFRunLoopDefaultMode);
             
-            // get a function pointer
-//            void (*deviceAdded)(ConnectionService*, void *, io_iterator_t) = std::mem_fn(&ConnectionService::DeviceAdded);
-            
-                 //   ConnectionService* obj = this;
-            
-            
-//                     IOServiceMatchingCallback func = obj->*deviceAdded;
-            
             // Now set up a notification to be called when a device is first matched by I/O Kit.
             kr = IOServiceAddMatchingNotification(gNotifyPort,                  // notifyPort
                                                   kIOFirstMatchNotification,    // notificationType
@@ -279,6 +238,6 @@ namespace Treehopper {
     
     ConnectionService::~ConnectionService()
     {
-        CFRunLoopStop(CFRunLoopGetCurrent());
+        CFRunLoopStop(gRunLoop);
     }
 }

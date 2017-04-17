@@ -31,6 +31,7 @@ namespace Treehopper
 	private:
 		void scan();
 #ifdef __APPLE__
+        CFRunLoopRef gRunLoop;
         static void DeviceAdded(void *refCon, io_iterator_t iterator);
         static void DeviceRemoved(void *refCon, io_service_t service, natural_t messageType, void *messageArgument);
         static std::mutex boardCollectionMutex;

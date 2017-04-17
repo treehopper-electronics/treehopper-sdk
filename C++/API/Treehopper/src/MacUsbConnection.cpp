@@ -130,7 +130,8 @@ namespace Treehopper
     
     void MacUsbConnection::close()
     {
-        
+        (*_currentInterfaceInterface)->USBInterfaceClose(_currentInterfaceInterface);
+        (*deviceInterface)->USBDeviceClose(deviceInterface);
     }
     
     void MacUsbConnection::sendDataPinConfigChannel(uint8_t* data, size_t len)
@@ -178,6 +179,11 @@ namespace Treehopper
         uint32_t lengthTransfered = 41;
         status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 1, data, &lengthTransfered, 1000, 1000);
         if(status != kIOReturnSuccess) {
+            if(status == kIOUSBTransactionTimeout)
+            {
+                
+            }
+            
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 1);
             return false;
         }
@@ -189,7 +195,7 @@ namespace Treehopper
         IOReturn status;
         assert(_currentInterfaceInterface != nil && "Interface interface nonexistent; did you set a configuration?");
         uint32_t lengthTransfered = len;
-        status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 1, data, &lengthTransfered, 1000, 1000);
+        status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 2, data, &lengthTransfered, 1000, 1000);
         if(status != kIOReturnSuccess) {
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 1);
             assert(status == kIOReturnSuccess);
