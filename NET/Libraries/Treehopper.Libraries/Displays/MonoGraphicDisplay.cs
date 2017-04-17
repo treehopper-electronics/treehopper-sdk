@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="Width">The width, in pixels, of the display</param>
         /// <param name="Height">The height, in pixels, of the display</param>
-        public MonoGraphicDisplay(int Width, int Height) : base(Width, Height, Width/8)
+        public MonoGraphicDisplay(int Width, int Height) : base(Width, Height, (1d/8))
         {
 
         }
@@ -59,7 +59,7 @@ namespace Treehopper.Libraries.Displays
         /// If you want control over 
         /// </para>
         /// </remarks>
-        public Task Print(dynamic value, int column = 0, int row = 0)
+        public async Task Print(dynamic value, int column = 0, int row = 0)
         {
             int characterWidth = 6; // include the one-column space
 
@@ -84,7 +84,8 @@ namespace Treehopper.Libraries.Displays
                     RawBuffer[charPointer++] = Font5x7[(5* fontIndex) +i];
                 RawBuffer[charPointer++] = 0x00;
             }
-            return Flush();
+            if (AutoFlush)
+                await Flush().ConfigureAwait(false);
         }
 
         static byte[] Font5x7 = new byte[] {

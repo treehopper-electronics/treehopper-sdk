@@ -76,7 +76,6 @@ namespace Treehopper.Desktop.LibUsb
 
 		public override void Dispose()
 		{
-			base.Dispose();
 			NativeMethods.Exit(context);
 		}
     }

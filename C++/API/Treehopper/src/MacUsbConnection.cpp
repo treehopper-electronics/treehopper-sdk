@@ -130,7 +130,8 @@ namespace Treehopper
     
     void MacUsbConnection::close()
     {
-        
+        (*_currentInterfaceInterface)->USBInterfaceClose(_currentInterfaceInterface);
+        (*deviceInterface)->USBDeviceClose(deviceInterface);
     }
     
     void MacUsbConnection::sendDataPinConfigChannel(uint8_t* data, size_t len)
@@ -148,7 +149,7 @@ namespace Treehopper
     {
         IOReturn status;
         assert(_currentInterfaceInterface != nil && "Interface interface nonexistent; did you set a configuration?");
-        status = (*_currentInterfaceInterface)->WritePipeTO(_currentInterfaceInterface, 4, data, (uint32_t)len, 100, 100);
+        status = (*_currentInterfaceInterface)->WritePipeTO(_currentInterfaceInterface, 4, data, (uint32_t)len, 1000, 1000);
         if(status != kIOReturnSuccess) {
             printf("WriteToDevice run returned err 0x%x\n", status);
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 4);
@@ -176,10 +177,14 @@ namespace Treehopper
         IOReturn status;
         assert(_currentInterfaceInterface != nil && "Interface interface nonexistent; did you set a configuration?");
         uint32_t lengthTransfered = 41;
-        status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 1, data, &lengthTransfered, 100, 100);
+        status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 1, data, &lengthTransfered, 1000, 1000);
         if(status != kIOReturnSuccess) {
+            if(status == kIOUSBTransactionTimeout)
+            {
+                
+            }
+            
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 1);
-            assert(status == kIOReturnSuccess);
             return false;
         }
         return true;
@@ -190,7 +195,7 @@ namespace Treehopper
         IOReturn status;
         assert(_currentInterfaceInterface != nil && "Interface interface nonexistent; did you set a configuration?");
         uint32_t lengthTransfered = len;
-        status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 1, data, &lengthTransfered, 100, 100);
+        status = (*_currentInterfaceInterface)->ReadPipeTO(_currentInterfaceInterface, 2, data, &lengthTransfered, 1000, 1000);
         if(status != kIOReturnSuccess) {
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 1);
             assert(status == kIOReturnSuccess);
