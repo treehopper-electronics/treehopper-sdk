@@ -62,11 +62,6 @@ namespace Treehopper.Android
             {
                 throw new NotImplementedException();
             }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public short Version { get; private set; }
@@ -116,7 +111,7 @@ namespace Treehopper.Android
             throw new NotImplementedException();
         }
 
-        public void SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannel(byte[] data)
         {
             if (connection == null)
             {
@@ -127,7 +122,7 @@ namespace Treehopper.Android
             connection.BulkTransfer(peripheralConfigEndpoint, data, data.Length, 1000);
         }
 
-        public void SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannel(byte[] data)
         {
             if (connection == null)
             {
