@@ -139,7 +139,7 @@
                 throw new Exception("The maximum UART length for one transaction is 63 bytes");
             }
 
-            byte[] data = new byte[dataToSend.Length + 3];
+            var data = new byte[dataToSend.Length + 3];
             data[0] = (byte)DeviceCommands.UartTransaction;
             data[1] = (byte)UartCommand.Transmit;
             data[2] = (byte)dataToSend.Length;
@@ -147,7 +147,7 @@
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 await device.SendPeripheralConfigPacket(data);
-                byte[] receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                var receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
             }
         }
 
@@ -158,17 +158,17 @@
         /// <returns>The bytes received</returns>
         public async Task<byte[]> Receive(int numBytes = 0)
         {
-            byte[] retVal = new byte[0];
+            var retVal = new byte[0];
             if (mode == UartMode.Uart)
             {
-                byte[] data = new byte[2];
+                var data = new byte[2];
                 data[0] = (byte)DeviceCommands.UartTransaction;
                 data[1] = (byte)UartCommand.Receive;
 
                 using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
                     await device.SendPeripheralConfigPacket(data);
-                    byte[] receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
+                    var receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -176,7 +176,7 @@
             }
             else
             {
-                byte[] data = new byte[3];
+                var data = new byte[3];
                 data[0] = (byte)DeviceCommands.UartTransaction;
                 data[1] = (byte)UartCommand.Receive;
                 data[2] = (byte)numBytes;
@@ -184,7 +184,7 @@
                 using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
                     await device.SendPeripheralConfigPacket(data);
-                    byte[] receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
+                    var receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -204,14 +204,14 @@
             Enabled = true;
             if (mode != UartMode.OneWire)
                 throw new Exception("The UART must be in OneWire mode to issue a OneWireReset command");
-            bool retVal = false;
-            byte[] data = new byte[2];
+            var retVal = false;
+            var data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction;
             data[1] = (byte)UartCommand.OneWireReset;
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 await device.SendPeripheralConfigPacket(data);
-                byte[] receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                var receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
                 retVal = receivedData[0] > 0 ? true : false;
             }
 
@@ -226,15 +226,15 @@
         {
             Mode = UartMode.OneWire;
             Enabled = true;
-            List<ulong> retVal = new List<ulong>();
+            var retVal = new List<ulong>();
 
-            byte[] data = new byte[2];
+            var data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction;
             data[1] = (byte)UartCommand.OneWireScan;
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 await device.SendPeripheralConfigPacket(data);
-                byte[] receivedData = new byte[8];
+                var receivedData = new byte[8];
                 while (true)
                 {
                     receivedData = await device.ReceiveCommsResponsePacket(9).ConfigureAwait(false);
@@ -259,8 +259,8 @@
             Mode = UartMode.OneWire;
             Enabled = true;
             await OneWireReset().ConfigureAwait(false);
-            byte[] addr = BitConverter.GetBytes(address);
-            byte[] data = new byte[9];
+            var addr = BitConverter.GetBytes(address);
+            var data = new byte[9];
             data[0] = 0x55; // MATCH ROM
             Array.Copy(addr, 0, data, 1, 8);
             await Send(data).ConfigureAwait(false);
@@ -282,7 +282,7 @@
         public override string ToString()
         {
             if (Enabled)
-                return string.Format("{0}, running at {1:0.00} baud", Mode, Baud);
+                return $"{Mode}, running at {Baud:0.00} baud";
             else
                 return "Not enabled";
         }
@@ -296,14 +296,14 @@
             else if (mode == UartMode.Uart)
             {
                 byte timerVal = 0;
-                bool usePrescaler = false;
+                var usePrescaler = false;
 
                 // calculate baud with and without prescaler
-                int timerValPrescaler = (int)Math.Round(256.0 - (2000000.0 / baud));
-                int timerValNoPrescaler = (int)Math.Round(256.0 - (24000000.0 / baud));
+                var timerValPrescaler = (int)Math.Round(256.0 - (2000000.0 / baud));
+                var timerValNoPrescaler = (int)Math.Round(256.0 - (24000000.0 / baud));
 
-                bool prescalerOutOfBounds = timerValPrescaler > 255 || timerValPrescaler < 0;
-                bool noPrescalerOutOfBounds = timerValNoPrescaler > 255 || timerValNoPrescaler < 0;
+                var prescalerOutOfBounds = timerValPrescaler > 255 || timerValPrescaler < 0;
+                var noPrescalerOutOfBounds = timerValNoPrescaler > 255 || timerValNoPrescaler < 0;
 
                 // calculate error
                 double prescalerError = Math.Abs(baud - (2000000 / (256 - timerValPrescaler)));
@@ -334,7 +334,7 @@
                     timerVal = (byte)timerValPrescaler;
                 }
 
-                byte[] data = new byte[5];
+                var data = new byte[5];
                 data[0] = (byte)DeviceCommands.UartConfig;
                 data[1] = (byte)UartConfig.Standard;
                 data[2] = timerVal;
@@ -344,7 +344,7 @@
             }
             else
             {
-                byte[] data = new byte[2];
+                var data = new byte[2];
                 data[0] = (byte)DeviceCommands.UartConfig;
                 data[1] = (byte)UartConfig.OneWire;
                 device.SendPeripheralConfigPacket(data);

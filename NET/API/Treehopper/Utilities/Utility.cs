@@ -23,7 +23,7 @@
         /// <param name="action">The Action to perform on each item</param>
         public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
-            foreach (T item in enumeration)
+            foreach (var item in enumeration)
             {
                 action(item);
             }
@@ -38,11 +38,11 @@
         /// <returns>The string</returns>
         public static string BcdToString(int val, int decimalPlace = 0, bool showLeadingZeros = false)
         {
-            string retVal = string.Empty;
-            bool nonZeroFound = false;
-            for (int i = 7; i >= 0; i--)
+            var retVal = string.Empty;
+            var nonZeroFound = false;
+            for (var i = 7; i >= 0; i--)
             {
-                int num = val >> (i * 4) & 0xF;
+                var num = val >> (i * 4) & 0xF;
                 if (showLeadingZeros || num != 0 || nonZeroFound || i == decimalPlace)
                     retVal += num.ToString();
 

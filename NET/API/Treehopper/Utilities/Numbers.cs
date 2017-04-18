@@ -103,8 +103,8 @@ namespace Treehopper.Utilities
         /// <returns>The integer number</returns>
         public static int BcdToInt(int val)
         {
-            int retVal = 0;
-            for (int i = 0; i < 8; i++)
+            var retVal = 0;
+            for (var i = 0; i < 8; i++)
             {
                 retVal += (int)Math.Pow(10, i) * (val >> (i * 4) & 0xF);
             }

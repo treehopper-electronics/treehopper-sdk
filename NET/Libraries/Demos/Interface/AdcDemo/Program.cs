@@ -25,7 +25,7 @@
                 await adc.Update();
                 Console.WriteLine("Data:");
                 for(int i=0;i<adc.Pins.Count;i++)
-                    Console.WriteLine(string.Format("{0:0.00}", adc.Pins[i].AnalogVoltage));
+                    Console.WriteLine($"{adc.Pins[i].AnalogVoltage:0.00}");
 
                 await Task.Delay(1000);
             }

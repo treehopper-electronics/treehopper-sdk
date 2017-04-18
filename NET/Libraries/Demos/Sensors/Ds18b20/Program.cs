@@ -43,7 +43,8 @@ namespace Ds18b20Test
                     {
                         temp.AutoUpdateWhenPropertyRead = false;
                         await temp.Update();
-                        Console.WriteLine(String.Format("Sensor {0} reports a temperature of {1} °C ({2} °F)", temp.Address, temp.Celsius, temp.Fahrenheit ));
+                        Console.WriteLine(
+                            $"Sensor {temp.Address} reports a temperature of {temp.Celsius} °C ({temp.Fahrenheit} °F)");
                     }
                 }
 

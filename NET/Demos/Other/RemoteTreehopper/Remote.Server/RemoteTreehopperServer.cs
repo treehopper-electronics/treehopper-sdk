@@ -103,7 +103,7 @@ namespace Remote.Server
                 Array.Copy(data, 2, dataToSend, 0, dataToSend.Length);
 
                 var response = Boards[serial].I2c.SendReceive(address, dataToSend, numBytesToRead).Result;
-                Publish(string.Format("treehopper/connection/{0}/i2c/received", serial), Convert.ToBase64String(response));
+                Publish($"treehopper/connection/{serial}/i2c/received", Convert.ToBase64String(response));
             };
         }
 
@@ -128,7 +128,7 @@ namespace Remote.Server
                 var response = Boards[serial].Spi.SendReceive(transaction.DataToWrite, Boards[serial].Pins[transaction.ChipSelectPinNumber], transaction.ChipSelectMode, transaction.Speed, transaction.Burst, transaction.SpiMode).Result;
 
                 if(transaction.Burst != SpiBurstMode.BurstTx)
-                    Publish(string.Format("treehopper/connection/{0}/spi/received", serial), Convert.ToBase64String(response));
+                    Publish($"treehopper/connection/{serial}/spi/received", Convert.ToBase64String(response));
             };
         }
 

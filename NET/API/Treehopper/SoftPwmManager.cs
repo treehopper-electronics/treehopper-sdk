@@ -29,7 +29,7 @@
         public override string ToString()
         {
             if (pins.Count > 1)
-                return string.Format("{0} SoftPwm pins running", pins.Count);
+                return $"{pins.Count} SoftPwm pins running";
             else if (pins.Count == 1)
                 return "1 SoftPwm pin running";
             else
@@ -43,7 +43,7 @@
 
         internal void Stop()
         {
-            foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
+            foreach (var entry in pins)
             {
                 entry.Value.Pin.Mode = PinMode.DigitalInput;
             }
@@ -102,7 +102,7 @@
         {
             if (pins.Count > 0)
             {
-                foreach (KeyValuePair<int, SoftPwmPinConfig> entry in pins)
+                foreach (var entry in pins)
                 {
                     // for pins that use pulse width, calculate value based on resolution
                     if (entry.Value.UsePulseWidth)
@@ -127,25 +127,25 @@
 
                 var list = orderedValues.ToList();
 
-                int count = list.Count() + 1;
-                byte[] config = new byte[2 + (3 * count)]; // { , (byte)pins.Count, timerVal };
+                var count = list.Count() + 1;
+                var config = new byte[2 + (3 * count)]; // { , (byte)pins.Count, timerVal };
                 config[0] = (byte)DeviceCommands.SoftPwmConfig;
                 config[1] = (byte)count;
                 if (count > 1)
                 {
-                    int i = 2;
-                    int time = 0;
+                    var i = 2;
+                    var time = 0;
 
-                    for (int j = 0; j < count; j++)
+                    for (var j = 0; j < count; j++)
                     {
-                        int ticks = 0;
+                        var ticks = 0;
 
                         if (j < list.Count())
                             ticks = list[j].Ticks - time;
                         else
                             ticks = ushort.MaxValue - time;
 
-                        int tmrVal = ushort.MaxValue - ticks;
+                        var tmrVal = ushort.MaxValue - ticks;
                         if (j == 0)
                             config[i++] = (byte)0;
                         else

@@ -161,8 +161,8 @@
 
         internal void SetDutyCycle(Pin pin, double value)
         {
-            ushort registerValue = (ushort)Math.Round(value * ushort.MaxValue);
-            byte[] newValue = BitConverter.GetBytes(registerValue); // TODO: is this endian-safe?
+            var registerValue = (ushort)Math.Round(value * ushort.MaxValue);
+            var newValue = BitConverter.GetBytes(registerValue); // TODO: is this endian-safe?
             switch (pin.PinNumber)
             {
                 case 7:
@@ -181,7 +181,7 @@
 
         internal void SendConfig()
         {
-            byte[] configuration = new byte[9];
+            var configuration = new byte[9];
 
             configuration[0] = (byte)DeviceCommands.PwmConfig;
 

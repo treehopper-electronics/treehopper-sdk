@@ -86,12 +86,12 @@
                 Debug.WriteLine("NOTICE: I2c.SendReceive() called before enabling the peripheral. This call will be ignored.");
             }
 
-            byte[] receivedData = new byte[numBytesToRead];
-            int txLen = dataToWrite?.Length ?? 0;
+            var receivedData = new byte[numBytesToRead];
+            var txLen = dataToWrite?.Length ?? 0;
 
             using (await device.ComsLock.LockAsync())
             {
-                byte[] dataToSend = new byte[4 + txLen]; // 2 bytes for the header
+                var dataToSend = new byte[4 + txLen]; // 2 bytes for the header
                 dataToSend[0] = (byte)DeviceCommands.I2cTransaction;
                 dataToSend[1] = address;
                 dataToSend[2] = (byte)txLen; // total length (0-255)
@@ -100,13 +100,13 @@
                 if(txLen > 0)
                     Array.Copy(dataToWrite, 0, dataToSend, 4, txLen);
 
-                int bytesRemaining = dataToSend.Length;
-                int offset = 0;
+                var bytesRemaining = dataToSend.Length;
+                var offset = 0;
 
                 // for long transactions (> 64 bytes - 4 byte header), we send <=64 byte chunks, one by one.
                 while (bytesRemaining > 0)
                 {
-                    int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
+                    var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                     var tmp = dataToSend.Skip(offset).Take(transferLength);
                     await device.SendPeripheralConfigPacket(tmp.ToArray());
                     offset += transferLength;
@@ -127,11 +127,11 @@
                 else
                 {
                     bytesRemaining = numBytesToRead + 1; // received data length + status byte
-                    int srcIndex = 0;
+                    var srcIndex = 0;
                     var result = new byte[bytesRemaining];
                     while (bytesRemaining > 0)
                     {
-                        int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
+                        var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var chunk = await device.ReceiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
                         Array.Copy(chunk, 0, result, srcIndex, chunk.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;
@@ -158,20 +158,20 @@
         public override string ToString()
         {
             if (enabled)
-                return string.Format("Enabled, {0:0.00} kHz", speed);
+                return $"Enabled, {speed:0.00} kHz";
             else
                 return "Not enabled";
         }
 
         private void SendConfig()
         {
-            double th0 = 256.0 - (4000.0 / (3.0 * speed));
+            var th0 = 256.0 - (4000.0 / (3.0 * speed));
             if (th0 < 0 || th0 > 255.0)
             {
                 throw new Exception("Rate out of limits. Valid rate is 62.5 kHz - 16000 kHz (16 MHz)");
             }
 
-            byte[] dataToSend = new byte[3];
+            var dataToSend = new byte[3];
             dataToSend[0] = (byte)DeviceCommands.I2cConfig;
             dataToSend[1] = (byte)(enabled ? 0x01 : 0x00);
             dataToSend[2] = (byte)Math.Round(th0);

@@ -67,7 +67,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Rd [A] [Data] NA P
-            byte[] data = await i2c.SendReceive(this.address, new byte[] { }, 1).ConfigureAwait(false);
+            var data = await i2c.SendReceive(this.address, new byte[] { }, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -135,7 +135,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [Data] NA P
-            byte[] data = await i2c.SendReceive(this.address, new byte[] { register }, 1).ConfigureAwait(false);
+            var data = await i2c.SendReceive(this.address, new byte[] { register }, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -150,7 +150,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            byte[] result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
+            var result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
             return (ushort)((result[1] << 8) | result[0]);
         }
 
@@ -165,7 +165,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            byte[] result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
+            var result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
             return (ushort)((result[0] << 8) | result[1]);
         }
 
@@ -179,7 +179,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            byte[] result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
+            var result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
             return (ushort)((result[1] << 8) | result[0]);
         }
 
@@ -193,7 +193,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataHigh] A [DataLow] NA P
-            byte[] result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
+            var result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
             return (ushort)((result[0] << 8) | result[1]);
         }
 

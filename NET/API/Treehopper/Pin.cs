@@ -30,7 +30,7 @@
             this.board = board;
             this.PinNumber = pinNumber;
             SoftPwm = new SoftPwm(Board, this);
-            this.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
+            this.ReferenceLevel = AdcReferenceLevel.Vref_3V3;
             Name = "Pin " + pinNumber; // default name
         }
 
@@ -192,7 +192,8 @@
             get
             {
                 if (Mode == PinMode.Reserved || Mode == PinMode.AnalogInput)
-                    Debug.WriteLine(string.Format("NOTICE: Pin {0} must be in digital I/O mode to read from. This call will return 0 always.", PinNumber));
+                    Debug.WriteLine(
+                        $"NOTICE: Pin {PinNumber} must be in digital I/O mode to read from. This call will return 0 always.");
 
                 return digitalValue;
             }
@@ -223,7 +224,7 @@
             if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
                 await MakeDigitalPushPullOut().ConfigureAwait(false); // assume they want push-pull
 
-            byte byteVal = (byte)(digitalValue ? 0x01 : 0x00);
+            var byteVal = (byte)(digitalValue ? 0x01 : 0x00);
             await SendCommand(new byte[] { (byte)PinConfigCommands.SetDigitalValue, byteVal }).ConfigureAwait(false);
         }
 
@@ -238,7 +239,8 @@
             get
             {
                 if (Mode != PinMode.AnalogInput)
-                    Debug.WriteLine(string.Format("NOTICE: Attempting to read AdcValue from Pin {0}, which is configured for {1}. This call will always return 0", PinNumber, Mode));
+                    Debug.WriteLine(
+                        $"NOTICE: Attempting to read AdcValue from Pin {PinNumber}, which is configured for {Mode}. This call will always return 0");
 
                 return adcValue;
             }
@@ -283,22 +285,22 @@
                 referenceLevel = value;
                 switch (referenceLevel)
                 {
-                    case AdcReferenceLevel.VREF_1V65:
+                    case AdcReferenceLevel.Vref_1V65:
                         referenceLevelVoltage = 1.65;
                         break;
-                    case AdcReferenceLevel.VREF_1V8:
+                    case AdcReferenceLevel.Vref_1V8:
                         referenceLevelVoltage = 1.8;
                         break;
-                    case AdcReferenceLevel.VREF_2V4:
+                    case AdcReferenceLevel.Vref_2V4:
                         referenceLevelVoltage = 2.4;
                         break;
-                    case AdcReferenceLevel.VREF_3V3:
+                    case AdcReferenceLevel.Vref_3V3:
                         referenceLevelVoltage = 3.3;
                         break;
-                    case AdcReferenceLevel.VREF_3V3_DERIVED:
+                    case AdcReferenceLevel.Vref_3V3Derived:
                         referenceLevelVoltage = 3.3;
                         break;
-                    case AdcReferenceLevel.VREF_3V6:
+                    case AdcReferenceLevel.Vref_3V6:
                         referenceLevelVoltage = 3.6;
                         break;
                 }
@@ -436,13 +438,13 @@
             switch (Mode)
             {
                 case PinMode.AnalogInput:
-                    return Name + ": " + string.Format("Analog input, {0:0.00} volts", AnalogVoltage);
+                    return Name + ": " + $"Analog input, {AnalogVoltage:0.00} volts";
                 case PinMode.DigitalInput:
-                    return Name + ": " + string.Format("Digital input, {0}", DigitalValue);
+                    return Name + ": " + $"Digital input, {DigitalValue}";
                 case PinMode.OpenDrainOutput:
-                    return Name + ": " + string.Format("Open-drain output, {0}", DigitalValue);
+                    return Name + ": " + $"Open-drain output, {DigitalValue}";
                 case PinMode.PushPullOutput:
-                    return Name + ": " + string.Format("Push-pull output, {0}", DigitalValue);
+                    return Name + ": " + $"Push-pull output, {DigitalValue}";
                 case PinMode.Reserved:
                     return Name + ": In use by peripheral";
 
@@ -456,7 +458,7 @@
         {
             if (Mode == PinMode.DigitalInput)
             {
-                bool newVal = highByte > 0;
+                var newVal = highByte > 0;
                 if (digitalValue != newVal)
                 {
                     // we have a new value!
@@ -467,7 +469,7 @@
             }
             else if (Mode == PinMode.AnalogInput)
             {
-                int val = ((int)highByte) << 8;
+                var val = ((int)highByte) << 8;
                 val |= (int)lowByte;
                 adcValue = val;
                 RaiseAnalogInChanged();
@@ -522,7 +524,7 @@
 
         internal Task SendCommand(byte[] cmd)
         {
-            byte[] data = new byte[6];
+            var data = new byte[6];
             data[0] = (byte)PinNumber;
             cmd.CopyTo(data, 1);
             return Board.SendPinConfigPacket(data);

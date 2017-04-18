@@ -92,7 +92,7 @@ namespace Treehopper.Libraries.Displays
         /// <returns>A string representing the state and brightness of the LED</returns>
         public override string ToString()
         {
-            return string.Format("{0} ({1:0.00})", state, brightness);
+            return $"{state} ({brightness:0.00})";
         }
     }
 }
