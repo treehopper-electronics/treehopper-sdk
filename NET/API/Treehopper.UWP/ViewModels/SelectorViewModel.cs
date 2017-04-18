@@ -1,7 +1,8 @@
-﻿using Windows.UI.Core;
-using Windows.UI.Xaml;
-using System;
+﻿using System;
 using System.Collections.Specialized;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Treehopper.Uwp;
 
 namespace Treehopper.Mvvm.ViewModel
@@ -13,30 +14,25 @@ namespace Treehopper.Mvvm.ViewModel
             Window.Current.Closed += WindowClosed;
         }
 
+        public SelectorViewModel() : this(ConnectionService.Instance)
+        {
+        }
+
         private void WindowClosed(object sender, CoreWindowEventArgs e)
         {
             WindowClosing.Execute(this);
         }
 
-        public SelectorViewModel() : this(ConnectionService.Instance)
-        {
-
-        }
-
-        protected async override void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected override async void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             foreach (var board in Boards)
-            {
                 if (board.SerialNumber == AutoConnectSerialNumber)
-                {
-                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                    () =>
-                    {
-                        SelectedBoard = board;
-                        ConnectCommand.Execute(null);
-                    });
-                }
-            }
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                        () =>
+                        {
+                            SelectedBoard = board;
+                            ConnectCommand.Execute(null);
+                        });
         }
     }
 }

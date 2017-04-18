@@ -1,137 +1,140 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using Treehopper.Desktop.MacUsb.IOKit;
 using System.Threading;
 using System.Windows.Threading;
+using Treehopper.Desktop.MacUsb.IOKit;
 
 namespace Treehopper.Desktop.MacUsb
 {
-	public class MacUsbConnectionService : ConnectionService
-	{
-		IntPtr gNotifyPort;
-		IntPtr gRunLoop;
-	    readonly List<GCHandle> handles = new List<GCHandle>();
+    public class MacUsbConnectionService : ConnectionService
+    {
+        private readonly List<GCHandle> handles = new List<GCHandle>();
 
-	    readonly Thread listener;
+        private readonly Thread listener;
+        private IntPtr gNotifyPort;
+        private IntPtr gRunLoop;
 
-		Dispatcher mainDispatcher;
+        private Dispatcher mainDispatcher;
 
-		public MacUsbConnectionService()
-		{
-			mainDispatcher = Dispatcher.CurrentDispatcher;
+        private IntPtr notificationPtr;
 
-			int usbVendor = (int)TreehopperUsb.Settings.Vid;
-			int usbProduct = (int)TreehopperUsb.Settings.Pid;
+        public MacUsbConnectionService()
+        {
+            mainDispatcher = Dispatcher.CurrentDispatcher;
 
-			IntPtr gAddedIter = IntPtr.Zero;
+            var usbVendor = (int) TreehopperUsb.Settings.Vid;
+            var usbProduct = (int) TreehopperUsb.Settings.Pid;
 
-			var matchingDict = NativeMethods.IOServiceMatching(IOKitFramework.kIOUSBDeviceClassName);
+            var gAddedIter = IntPtr.Zero;
 
-			if (matchingDict == IntPtr.Zero)
-				throw new Exception("IOServiceMatching returned NULL");
+            var matchingDict = NativeMethods.IOServiceMatching(IOKitFramework.kIOUSBDeviceClassName);
 
-			var numberRef = NativeMethods.CFNumberCreate(IOKitFramework.kCFAllocatorDefault, CFNumberType.kCFNumberSInt32Type, ref usbVendor);
-			NativeMethods.CFDictionarySetValue(matchingDict, NativeMethods.__CFStringMakeConstantString(IOKitFramework.kUSBVendorID), numberRef);
-			NativeMethods.CFRelease(numberRef);
+            if (matchingDict == IntPtr.Zero)
+                throw new Exception("IOServiceMatching returned NULL");
 
-			numberRef = NativeMethods.CFNumberCreate(IOKitFramework.kCFAllocatorDefault, CFNumberType.kCFNumberSInt32Type, ref usbProduct);
-			NativeMethods.CFDictionarySetValue(matchingDict, NativeMethods.__CFStringMakeConstantString(IOKitFramework.kUSBProductID), numberRef);
-			NativeMethods.CFRelease(numberRef);
+            var numberRef = NativeMethods.CFNumberCreate(IOKitFramework.kCFAllocatorDefault,
+                CFNumberType.kCFNumberSInt32Type, ref usbVendor);
+            NativeMethods.CFDictionarySetValue(matchingDict,
+                NativeMethods.__CFStringMakeConstantString(IOKitFramework.kUSBVendorID), numberRef);
+            NativeMethods.CFRelease(numberRef);
 
-			// Create a notification port and add its run loop event source to our run loop
-			// This is how async notifications get set up.
+            numberRef = NativeMethods.CFNumberCreate(IOKitFramework.kCFAllocatorDefault,
+                CFNumberType.kCFNumberSInt32Type, ref usbProduct);
+            NativeMethods.CFDictionarySetValue(matchingDict,
+                NativeMethods.__CFStringMakeConstantString(IOKitFramework.kUSBProductID), numberRef);
+            NativeMethods.CFRelease(numberRef);
+
+            // Create a notification port and add its run loop event source to our run loop
+            // This is how async notifications get set up.
 
 
-			listener = new Thread(() =>
-			{
-				gNotifyPort = NativeMethods.IONotificationPortCreate(IOKitFramework.kIOMasterPortDefault);
-				var runLoopSource = NativeMethods.IONotificationPortGetRunLoopSource(gNotifyPort);
+            listener = new Thread(() =>
+            {
+                gNotifyPort = NativeMethods.IONotificationPortCreate(IOKitFramework.kIOMasterPortDefault);
+                var runLoopSource = NativeMethods.IONotificationPortGetRunLoopSource(gNotifyPort);
 
-				gRunLoop = NativeMethods.CFRunLoopGetCurrent();
-				NativeMethods.CFRunLoopAddSource(gRunLoop, runLoopSource, NativeMethods.__CFStringMakeConstantString(IOKitFramework.kCFRunLoopDefaultMode));
+                gRunLoop = NativeMethods.CFRunLoopGetCurrent();
+                NativeMethods.CFRunLoopAddSource(gRunLoop, runLoopSource,
+                    NativeMethods.__CFStringMakeConstantString(IOKitFramework.kCFRunLoopDefaultMode));
 
-				IOServiceMatchingCallback deviceAdded = new IOServiceMatchingCallback(DeviceAdded);
+                IOServiceMatchingCallback deviceAdded = DeviceAdded;
 
-				var kr = NativeMethods.IOServiceAddMatchingNotification(
-					gNotifyPort,                            // notifyPort
-					IOKitFramework.kIOFirstMatchNotification,       // notificationType
-					matchingDict,                           // matching
-					DeviceAdded,                            // callback
-					IntPtr.Zero,                            // refCon
-					ref gAddedIter                          // notification
-					);
+                var kr = NativeMethods.IOServiceAddMatchingNotification(
+                    gNotifyPort, // notifyPort
+                    IOKitFramework.kIOFirstMatchNotification, // notificationType
+                    matchingDict, // matching
+                    DeviceAdded, // callback
+                    IntPtr.Zero, // refCon
+                    ref gAddedIter // notification
+                );
 
-				DeviceAdded(IntPtr.Zero, gAddedIter);
+                DeviceAdded(IntPtr.Zero, gAddedIter);
 
-				NativeMethods.CFRunLoopRun();
-			});
+                NativeMethods.CFRunLoopRun();
+            });
 
-			listener.Name = "CFRunLoop thread";
+            listener.Name = "CFRunLoop thread";
 
-			listener.Start();
+            listener.Start();
+        }
 
-		}
+        private void DeviceRemoved(int data, IntPtr service, uint messageType, IntPtr messageArgument)
+        {
+            if (messageType == IOKitFramework.kIOMessageServiceIsTerminated)
+            {
+                Debug.WriteLine("Device removed: " + Boards[data].SerialNumber);
+                Boards[data].Dispose();
+                Boards.RemoveAt(data);
+            }
+        }
 
-		private void DeviceRemoved(int data, IntPtr service, uint messageType, IntPtr messageArgument)
-		{
-			if(messageType == IOKitFramework.kIOMessageServiceIsTerminated)
-			{
-				Debug.WriteLine("Device removed: " + Boards[data].SerialNumber);
-				Boards[data].Dispose();
-				Boards.RemoveAt(data);
-			}
-		}
+        private void DeviceAdded(IntPtr refCon, IntPtr iterator)
+        {
+            var it = new IOIterator(iterator);
 
-		IntPtr notificationPtr = new IntPtr();
+            var usbDevice = it.Next();
 
-		private void DeviceAdded(IntPtr refCon, IntPtr iterator)
-		{
-			var it = new IOIterator(iterator);
+            while (usbDevice != null)
+            {
+                var vendorString = usbDevice.GetCFPropertyString(IOKitFramework.kUSBVendorString);
+                var productString = usbDevice.GetCFPropertyString(IOKitFramework.kUSBProductString);
+                var serialNumber = usbDevice.GetCFPropertyString(IOKitFramework.kUSBSerialNumberString);
 
-			var usbDevice = it.Next();
+                Debug.WriteLine("Found Device:");
+                Debug.WriteLine("Vendor: " + vendorString);
+                Debug.WriteLine("Product: " + productString);
+                Debug.WriteLine("Serial Number: " + serialNumber);
+                Debug.WriteLine("");
+                var board = new TreehopperUsb(new MacUsbConnection(usbDevice, productString, serialNumber));
+                var idx = -1;
 
-			while(usbDevice != null)
-			{
+                Boards.Add(board);
+                idx = Boards.IndexOf(board);
 
-				var vendorString = usbDevice.GetCFPropertyString(IOKitFramework.kUSBVendorString);
-				var productString = usbDevice.GetCFPropertyString(IOKitFramework.kUSBProductString);
-				var serialNumber = usbDevice.GetCFPropertyString(IOKitFramework.kUSBSerialNumberString);
+                var data = new TreehopperData {SerialNumber = board.SerialNumber};
 
-				Debug.WriteLine("Found Device:");
-				Debug.WriteLine("Vendor: " + vendorString);
-				Debug.WriteLine("Product: " + productString);
-				Debug.WriteLine("Serial Number: " + serialNumber);
-				Debug.WriteLine("");
-				var board = new TreehopperUsb(new MacUsbConnection(usbDevice, productString, serialNumber));
-				int idx = -1;
+                var handle = GCHandle.Alloc(data, GCHandleType.Pinned); // pin the object to prevent release
 
-				Boards.Add(board);
-				idx = Boards.IndexOf(board);
+                handles.Add(handle);
 
-				var data = new TreehopperData() { SerialNumber = board.SerialNumber };
+                var kr = NativeMethods.IOServiceAddInterestNotification(
+                    gNotifyPort, // notifyPort
+                    usbDevice.Handle, // service
+                    IOKitFramework.kIOGeneralInterest, // interestType
+                    DeviceRemoved, // callback
+                    idx, // refCon
+                    ref notificationPtr // notification
+                );
 
-				GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned); // pin the object to prevent release
+                usbDevice = it.Next();
+            }
+        }
 
-				handles.Add(handle);
-
-				var kr = NativeMethods.IOServiceAddInterestNotification(
-					gNotifyPort,                // notifyPort
-					usbDevice.Handle,                   // service
-					IOKitFramework.kIOGeneralInterest,  // interestType
-					DeviceRemoved,                      // callback
-					idx,                            // refCon
-					ref notificationPtr             // notification
-					);
-
-				usbDevice = it.Next();
-			}
-		}
-
-		public override void Dispose()
-		{
-			NativeMethods.CFRunLoopStop(gRunLoop);
-		}
-	}
+        public override void Dispose()
+        {
+            NativeMethods.CFRunLoopStop(gRunLoop);
+        }
+    }
 }

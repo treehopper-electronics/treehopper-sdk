@@ -1,20 +1,21 @@
-﻿namespace Treehopper.Desktop.WinUsb
-{
-    using Microsoft.Win32.SafeHandles;
-    using System;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Management;
-    using System.Runtime.InteropServices;
-    using System.Security.Permissions;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Management;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.Win32.SafeHandles;
 
+namespace Treehopper.Desktop.WinUsb
+{
     public class WinUsbConnectionService : ConnectionService
     {
         private UsbNotifyWindow mNotifyWindow;
-        public WinUsbConnectionService() : base()
+
+        public WinUsbConnectionService()
         {
             // WMI queries take forever, so spin up a task to handle this so we don't block the app
             Task.Run(() => initialAdd());
@@ -30,11 +31,11 @@
             {
                 // We're definitely not in an STA Thread (we're probably running in a console), so start a new STA Thread, and call
                 // Application.Run() to start pumping windows messages.
-                Thread staThread = new Thread(new ThreadStart(() =>
+                var staThread = new Thread(() =>
                 {
                     mNotifyWindow = new UsbNotifyWindow(this);
                     Application.Run();
-                }));
+                });
 
                 staThread.SetApartmentState(ApartmentState.STA);
                 staThread.Name = "DevNotifyNativeWindow STA Thread";
@@ -42,71 +43,72 @@
             }
         }
 
-        void initialAdd()
+        private void initialAdd()
         {
             var query =
                 $@"Select DeviceID, HardwareID, Name From Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%VID_{
-                    TreehopperUsb.Settings.Vid
-                :X}&PID_{TreehopperUsb.Settings.Pid:X}%'";
+                        TreehopperUsb.Settings.Vid
+                    :X}&PID_{TreehopperUsb.Settings.Pid:X}%'";
 
             using (var searcher = new ManagementObjectSearcher(query))
             using (var collection = searcher.Get())
             {
                 foreach (var device in collection)
                 {
-                    string deviceID = (string)device.GetPropertyValue("DeviceID");
+                    var deviceID = (string) device.GetPropertyValue("DeviceID");
                     var elements = deviceID.Split('\\');
 
-                    string serial = elements[2].ToLower();
+                    var serial = elements[2].ToLower();
 
-                    var hardwareIds = ((string[])device.GetPropertyValue("HardwareID"))[0].Split('&');
+                    var hardwareIds = ((string[]) device.GetPropertyValue("HardwareID"))[0].Split('&');
                     var version = hardwareIds[2].Substring(4);
 
-                    string name = (string)device.GetPropertyValue("Name");
-                    string path =
+                    var name = (string) device.GetPropertyValue("Name");
+                    var path =
                         $@"\\.\usb#vid_{TreehopperUsb.Settings.Vid:x}&pid_{TreehopperUsb.Settings.Pid:x}#{
-                            serial
-                        }#{{a5dcbf10-6530-11d2-901f-00c04fb951ed}}";
+                                serial
+                            }#{{a5dcbf10-6530-11d2-901f-00c04fb951ed}}";
 
                     Boards.Add(new TreehopperUsb(new WinUsbConnection(path, name, serial, short.Parse(version))));
                 }
             }
         }
 
-        void addBoardFromPath(string path)
+        private void addBoardFromPath(string path)
         {
             var items = path.ToLower().Split('#');
-            string serial = items[2];
-            string name = "";
-            string version = "";
+            var serial = items[2];
+            var name = "";
+            var version = "";
 
             var query =
                 $@"SELECT Name, DeviceID, HardwareID FROM Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%{
-                    serial.ToUpper()
-                }%'";
+                        serial.ToUpper()
+                    }%'";
 
             using (var searcher = new ManagementObjectSearcher(query))
             using (var collection = searcher.Get())
             {
                 foreach (var device in collection)
                 {
-                    name = (string)device.GetPropertyValue("Name");
-                    var hardwareIds = ((string[])device.GetPropertyValue("HardwareID"))[0].Split('&');
+                    name = (string) device.GetPropertyValue("Name");
+                    var hardwareIds = ((string[]) device.GetPropertyValue("HardwareID"))[0].Split('&');
                     version = hardwareIds[2].Substring(4);
 
-                    var newBoard = new TreehopperUsb(new WinUsbConnection(path.ToLower(), name, serial, short.Parse(version)));
+                    var newBoard = new TreehopperUsb(
+                        new WinUsbConnection(path.ToLower(), name, serial, short.Parse(version)));
                     Debug.WriteLine("Adding: " + newBoard);
                     Boards.Add(newBoard);
                 }
             }
         }
 
-		public override void Dispose()
-		{
-			throw new NotImplementedException();
-		}
+        public override void Dispose()
+        {
+            throw new NotImplementedException();
+        }
 
-		internal sealed class UsbNotifyWindow : NativeWindow
+        internal sealed class UsbNotifyWindow : NativeWindow
         {
             private const string WINDOW_CAPTION = "{18662f14-0871-455c-bf99-eff135425e3a}";
             private const int WM_DEVICECHANGE = 0x219;
@@ -115,14 +117,14 @@
             private const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
 
             private const int DBT_DEVTYP_DEVICEINTERFACE = 0x00000005;
+            private readonly DevBroadcastHdr mDevInterface = new DevBroadcastHdr();
 
             private readonly WinUsbConnectionService service;
             private DevNotifySafeHandle mDevInterfaceHandle;
-            private readonly DevBroadcastHdr mDevInterface = new DevBroadcastHdr();
 
             internal UsbNotifyWindow(WinUsbConnectionService winUsbConnectionService)
             {
-                CreateParams cp = new CreateParams();
+                var cp = new CreateParams();
                 cp.Caption = WINDOW_CAPTION;
                 cp.X = -100;
                 cp.Y = -100;
@@ -144,7 +146,6 @@
                     mDevInterfaceHandle = NativeMethods.RegisterDeviceNotification(Handle, mDevInterface, 0);
                     if (mDevInterfaceHandle != null && !mDevInterfaceHandle.IsInvalid)
                     {
-
                     }
                 }
                 base.OnHandleChange();
@@ -155,30 +156,29 @@
             {
                 if (m.Msg == WM_DEVICECHANGE)
                 {
-                    var theEvent = (m.WParam.ToInt64());
+                    var theEvent = m.WParam.ToInt64();
                     if (theEvent == DBT_DEVICEARRIVAL || theEvent == DBT_DEVICEREMOVECOMPLETE)
                     {
-                        DevBroadcastDeviceInterface msg = new DevBroadcastDeviceInterface();
+                        var msg = new DevBroadcastDeviceInterface();
                         Marshal.PtrToStructure(m.LParam, msg);
                         if (msg.DeviceType != 0x05)
                             return;
-                        if(theEvent == DBT_DEVICEARRIVAL)
+                        if (theEvent == DBT_DEVICEARRIVAL)
                         {
-                            Task.Run(() =>
-                            {
-                                service.addBoardFromPath(msg.DevicePath);
-                            });
-
+                            Task.Run(() => { service.addBoardFromPath(msg.DevicePath); });
                         }
                         else
                         {
-                            var board = service.Boards.Where(x => x.Connection.DevicePath.Substring(3).ToLower() == msg.DevicePath.Substring(3).ToLower()).FirstOrDefault();
-                            if(board != null)
+                            var board = service.Boards
+                                .Where(x => x.Connection.DevicePath.Substring(3).ToLower() ==
+                                            msg.DevicePath.Substring(3).ToLower())
+                                .FirstOrDefault();
+                            if (board != null)
                             {
-                            Debug.WriteLine("Removing: " + board);
-                            board.Connection.Dispose(); // kill the connection first
-                            board.Dispose();
-                            service.Boards.Remove(board);
+                                Debug.WriteLine("Removing: " + board);
+                                board.Connection.Dispose(); // kill the connection first
+                                board.Dispose();
+                                service.Boards.Remove(board);
                             }
                         }
                     }
@@ -189,10 +189,11 @@
 
             internal static class NativeMethods
             {
-                [DllImport("user32.dll", SetLastError = true, EntryPoint = "RegisterDeviceNotificationA", CharSet = CharSet.Ansi)]
+                [DllImport("user32.dll", SetLastError = true, EntryPoint = "RegisterDeviceNotificationA",
+                    CharSet = CharSet.Ansi)]
                 internal static extern DevNotifySafeHandle RegisterDeviceNotification(
                     IntPtr hRecipient,
-                    [MarshalAs(UnmanagedType.AsAny), In] object notificationFilter,
+                    [MarshalAs(UnmanagedType.AsAny)] [In] object notificationFilter,
                     int flags);
 
                 [DllImport("user32.dll", SetLastError = true)]
@@ -202,25 +203,29 @@
             [StructLayout(LayoutKind.Sequential)]
             internal class DevBroadcastHdr
             {
-                public int Size;
-                public int devType = DBT_DEVTYP_DEVICEINTERFACE;
-                public int Rsrvd1;
                 public Guid ClassGuid = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED");
+                public int devType = DBT_DEVTYP_DEVICEINTERFACE;
                 private char mNameHolder;
+                public int Rsrvd1;
+                public int Size;
 
-                internal DevBroadcastHdr() { Size = Marshal.SizeOf(this); }
+                internal DevBroadcastHdr()
+                {
+                    Size = Marshal.SizeOf(this);
+                }
             }
 
 
             [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
             public class DevBroadcastDeviceInterface
             {
-                public int Size;
+                public Guid ClassGuid;
+
+                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)] public string DevicePath;
+
                 public int DeviceType;
                 public int Reserved;
-                public Guid ClassGuid;
-                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
-                public string DevicePath;
+                public int Size;
             }
 
             internal class DevNotifySafeHandle : SafeHandleZeroOrMinusOneIsInvalid
@@ -233,7 +238,7 @@
                 {
                     if (handle != IntPtr.Zero)
                     {
-                        bool bSuccess = NativeMethods.UnregisterDeviceNotification(handle);
+                        var bSuccess = NativeMethods.UnregisterDeviceNotification(handle);
                         handle = IntPtr.Zero;
                     }
 
@@ -243,4 +248,3 @@
         }
     }
 }
-

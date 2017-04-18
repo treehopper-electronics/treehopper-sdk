@@ -1,22 +1,21 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 
 namespace Treehopper.Desktop.WinUsb
 {
     internal class Kernel32
     {
-        internal const Int32 ERROR_IO_PENDING = 997;
+        internal const int ERROR_IO_PENDING = 997;
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern SafeFileHandle CreateFile(string fileName,
-                                               [MarshalAs(UnmanagedType.U4)] NativeFileAccess fileAccess,
-                                               [MarshalAs(UnmanagedType.U4)] NativeFileShare fileShare,
-                                               IntPtr securityAttributes,
-                                               [MarshalAs(UnmanagedType.U4)] NativeFileMode creationDisposition,
-                                               NativeFileFlag flags,
-                                               IntPtr template);
-
+            [MarshalAs(UnmanagedType.U4)] NativeFileAccess fileAccess,
+            [MarshalAs(UnmanagedType.U4)] NativeFileShare fileShare,
+            IntPtr securityAttributes,
+            [MarshalAs(UnmanagedType.U4)] NativeFileMode creationDisposition,
+            NativeFileFlag flags,
+            IntPtr template);
     }
 
 
@@ -24,26 +23,28 @@ namespace Treehopper.Desktop.WinUsb
     internal enum NativeFileAccess : uint
     {
         FILE_SPECIAL = 0,
-        FILE_APPEND_DATA = (0x0004), // file
-        FILE_READ_DATA = (0x0001), // file & pipe
-        FILE_WRITE_DATA = (0x0002), // file & pipe
-        FILE_READ_EA = (0x0008), // file & directory
-        FILE_WRITE_EA = (0x0010), // file & directory
-        FILE_READ_ATTRIBUTES = (0x0080), // all
-        FILE_WRITE_ATTRIBUTES = (0x0100), // all
+        FILE_APPEND_DATA = 0x0004, // file
+        FILE_READ_DATA = 0x0001, // file & pipe
+        FILE_WRITE_DATA = 0x0002, // file & pipe
+        FILE_READ_EA = 0x0008, // file & directory
+        FILE_WRITE_EA = 0x0010, // file & directory
+        FILE_READ_ATTRIBUTES = 0x0080, // all
+        FILE_WRITE_ATTRIBUTES = 0x0100, // all
         DELETE = 0x00010000,
-        READ_CONTROL = (0x00020000),
-        WRITE_DAC = (0x00040000),
-        WRITE_OWNER = (0x00080000),
-        SYNCHRONIZE = (0x00100000),
-        STANDARD_RIGHTS_REQUIRED = (0x000F0000),
-        STANDARD_RIGHTS_READ = (READ_CONTROL),
-        STANDARD_RIGHTS_WRITE = (READ_CONTROL),
-        STANDARD_RIGHTS_EXECUTE = (READ_CONTROL),
-        STANDARD_RIGHTS_ALL = (0x001F0000),
-        SPECIFIC_RIGHTS_ALL = (0x0000FFFF),
-        FILE_GENERIC_READ = (STANDARD_RIGHTS_READ | FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA | SYNCHRONIZE),
-        FILE_GENERIC_WRITE = (STANDARD_RIGHTS_WRITE | FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA | SYNCHRONIZE),
+        READ_CONTROL = 0x00020000,
+        WRITE_DAC = 0x00040000,
+        WRITE_OWNER = 0x00080000,
+        SYNCHRONIZE = 0x00100000,
+        STANDARD_RIGHTS_REQUIRED = 0x000F0000,
+        STANDARD_RIGHTS_READ = READ_CONTROL,
+        STANDARD_RIGHTS_WRITE = READ_CONTROL,
+        STANDARD_RIGHTS_EXECUTE = READ_CONTROL,
+        STANDARD_RIGHTS_ALL = 0x001F0000,
+        SPECIFIC_RIGHTS_ALL = 0x0000FFFF,
+        FILE_GENERIC_READ = STANDARD_RIGHTS_READ | FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA | SYNCHRONIZE,
+
+        FILE_GENERIC_WRITE = STANDARD_RIGHTS_WRITE | FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA |
+                             FILE_APPEND_DATA | SYNCHRONIZE,
         SPECIAL = 0
     }
 
@@ -53,7 +54,7 @@ namespace Treehopper.Desktop.WinUsb
         CREATE_ALWAYS = 2,
         OPEN_EXISTING = 3,
         OPEN_ALWAYS = 4,
-        TRUNCATE_EXISTING = 5,
+        TRUNCATE_EXISTING = 5
     }
 
     [Flags]
@@ -62,7 +63,7 @@ namespace Treehopper.Desktop.WinUsb
         NONE = 0,
         FILE_SHARE_READ = 0x00000001,
         FILE_SHARE_WRITE = 0x00000002,
-        FILE_SHARE_DEELETE = 0x00000004,
+        FILE_SHARE_DEELETE = 0x00000004
     }
 
     [Flags]
@@ -92,6 +93,6 @@ namespace Treehopper.Desktop.WinUsb
         FILE_FLAG_POSIX_SEMANTICS = 0x01000000,
         FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000,
         FILE_FLAG_OPEN_NO_RECALL = 0x00100000,
-        FILE_FLAG_FIRST_PIPE_INSTANCE = 0x00080000,
+        FILE_FLAG_FIRST_PIPE_INSTANCE = 0x00080000
     }
 }
