@@ -400,7 +400,7 @@
             puCtrl.CycleStart = true;
             UpdatePuCtrl().Wait();
 
-            this.parent = this;
+            parent = this;
         }
 
         private async void Drdy_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)

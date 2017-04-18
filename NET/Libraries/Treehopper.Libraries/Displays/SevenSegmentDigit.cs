@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="leds">The LEDs to use for this digit</param>
         public SevenSegmentDigit(IList<Led> leds)
         {
-            this.Leds = leds;
+            Leds = leds;
             foreach(var led in Leds)
             {
                 // disable auto-flushing to increase speed

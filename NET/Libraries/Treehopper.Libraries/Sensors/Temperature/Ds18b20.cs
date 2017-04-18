@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         public Ds18b20(IOneWire oneWire, ulong address = 0)
         {
             this.oneWire = oneWire;
-            this.Address = address;
+            Address = address;
             oneWire.StartOneWire();
         }
 
@@ -207,7 +207,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
                 internal ConversionCycle(Group group)
                 {
-                    this.ds18b20Group = group;
+                    ds18b20Group = group;
                 }
 
                 /// <summary>
@@ -215,7 +215,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 /// </summary>
                 public void Dispose()
                 {
-                    this.ds18b20Group.endConversion();
+                    ds18b20Group.endConversion();
                 }
             }
         }

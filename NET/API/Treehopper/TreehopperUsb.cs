@@ -34,7 +34,7 @@
         /// <param name="treehopperUsbConnection">the connection to construct the board with</param>
         public TreehopperUsb(IConnection treehopperUsbConnection)
         {
-            this._connection = treehopperUsbConnection;
+            _connection = treehopperUsbConnection;
 
             // initialize pins
             for (var i = 0; i < NumberOfPins; i++)
@@ -156,7 +156,7 @@
                 var data = new byte[2];
                 data[0] = (byte)DeviceCommands.LedConfig;
                 data[1] = (byte)(_led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
-                if(TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                if(Settings.PropertyWritesReturnImmediately)
                     SendPeripheralConfigPacket(data).Forget();
                 else
                     SendPeripheralConfigPacket(data).Wait();
@@ -330,7 +330,7 @@
                 return true;
 
             _connection.PinEventDataReceived += Connection_PinEventDataReceived;
-            this.IsConnected = true;
+            IsConnected = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Version"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VersionString"));
 
@@ -408,7 +408,7 @@
         /// <returns>True if the two boards are the same</returns>
         public bool Equals(TreehopperUsb other)
         {
-            return other.ToString() == this.ToString();
+            return other.ToString() == ToString();
         }
 
         /// <summary>
@@ -461,7 +461,7 @@
             if (y == null)
                 return false;
             else
-                return this.SerialNumber == y.SerialNumber;
+                return SerialNumber == y.SerialNumber;
         }
 
         internal Task SendPinConfigPacket(byte[] data)

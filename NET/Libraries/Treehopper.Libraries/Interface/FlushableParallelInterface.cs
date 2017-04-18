@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Interface
         /// <param name="outputPort"></param>
         public FlushableParallelInterface(IFlushableOutputPort<T> outputPort)
         {
-            this.port = outputPort;
+            port = outputPort;
         }
 
         private bool enabled;

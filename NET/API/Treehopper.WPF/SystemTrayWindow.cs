@@ -37,7 +37,7 @@ namespace Treehopper.WPF
                 throw new Exception("Icon must be set for this class to function properly.");
             if (Window == null)
                 throw new Exception("Window must not be null.");
-            this.window = Window;
+            window = Window;
             Window.Closing += window_Closing;
             Window.StateChanged += window_StateChanged;
             ni = new NotifyIcon();
@@ -50,7 +50,7 @@ namespace Treehopper.WPF
 
             if(StartMinimized)
             {
-                Window.WindowState = System.Windows.WindowState.Minimized;
+                Window.WindowState = WindowState.Minimized;
                 Window.Hide();
             }
         }
@@ -60,7 +60,7 @@ namespace Treehopper.WPF
         /// </summary>
         public void Minimize()
         {
-            window.WindowState = System.Windows.WindowState.Minimized;
+            window.WindowState = WindowState.Minimized;
             window.Hide();
         }
 
@@ -70,7 +70,7 @@ namespace Treehopper.WPF
         public void Restore()
         {
             window.Show();
-            window.WindowState = System.Windows.WindowState.Normal;
+            window.WindowState = WindowState.Normal;
         }
 
         void window_StateChanged(object sender, EventArgs e)

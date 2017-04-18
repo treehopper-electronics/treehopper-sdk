@@ -38,8 +38,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
             //RollQuaternion = new Quaternion(Xaxis, 0);
             //PitchQuaternion = new Quaternion(Yaxis, 0);
 
-            this.accel = accelerometer;
-            this.gyro = gyroscope;
+            accel = accelerometer;
+            gyro = gyroscope;
 
             accelPoller = new Poller<IAccelerometer>(accelerometer, samplePeriodMs, useHighResolutionTimer);
             accelPoller.OnNewSensorValue += PollerEvent;
@@ -129,11 +129,11 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             //Transform = Quaternion.Multiply(new Quaternion(Xaxis, (float)Roll), new Quaternion(Yaxis, (float)Pitch));
 
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Yaw"));
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Matrix"));
-            this.FilterUpdate?.Invoke(this, new EventArgs());
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Yaw"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Matrix"));
+            FilterUpdate?.Invoke(this, new EventArgs());
         }
 
         Vector3 Xaxis = new Vector3(1, 0, 0);

@@ -27,8 +27,8 @@ namespace Treehopper.Libraries.Motors
         /// <param name="position">The goal position, from 0.0 to 1.0</param>
         public void RecallPosition(double position)
         {
-            this.GoalPosition = position;
-            this.Enabled = true;
+            GoalPosition = position;
+            Enabled = true;
 
         }
     }

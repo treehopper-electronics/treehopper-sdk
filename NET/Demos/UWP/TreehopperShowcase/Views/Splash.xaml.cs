@@ -10,7 +10,7 @@ namespace TreehopperShowcase.Views
     {
         public Splash(SplashScreen splashScreen)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             Action resize = () =>
             {

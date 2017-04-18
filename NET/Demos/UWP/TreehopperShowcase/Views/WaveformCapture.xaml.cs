@@ -24,7 +24,7 @@ namespace TreehopperShowcase.Views
     {
         public WaveformCapture()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

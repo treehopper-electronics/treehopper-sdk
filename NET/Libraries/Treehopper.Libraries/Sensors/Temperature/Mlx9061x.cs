@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <param name="i2c">The i2c module to use</param>
         public Mlx90614(I2c i2c)
         {
-            this.dev = new SMBusDevice(0x5A, i2c);
+            dev = new SMBusDevice(0x5A, i2c);
             Object =  new TempRegister(dev, 0x07);
             Ambient = new TempRegister(dev, 0x06);
         }
@@ -80,7 +80,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <param name="module"></param>
         public Mlx90615(I2c module) : base(module)
         {
-            this.dev = new SMBusDevice(0x5B, module);
+            dev = new SMBusDevice(0x5B, module);
             Object = new TempRegister(dev, 0x27);
             Ambient = new TempRegister(dev, 0x26);
         }

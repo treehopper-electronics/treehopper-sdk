@@ -32,9 +32,9 @@ namespace Treehopper.Libraries.Displays
         /// <param name="blue">The blue LED</param>
         public RgbLed(Led red, Led green, Led blue)
         {
-            this.r = red;
-            this.g = green;
-            this.b = blue;
+            r = red;
+            g = green;
+            b = blue;
 
             if (!drivers.Contains(red.Driver))
                 drivers.Add(red.Driver);

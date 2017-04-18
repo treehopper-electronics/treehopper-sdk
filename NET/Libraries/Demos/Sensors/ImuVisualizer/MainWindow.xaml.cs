@@ -42,7 +42,7 @@ namespace ImuVisualizer
         {
             InitializeComponent();
             Selector = new SelectorViewModel();
-            this.DataContext = this;
+            DataContext = this;
 
             Selector.OnBoardConnected += Selector_OnBoardConnected;
             Selector.OnBoardDisconnected += Selector_OnBoardDisconnected;
@@ -87,10 +87,10 @@ namespace ImuVisualizer
 
 
 
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Yaw"));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Transform"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pitch"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Roll"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Yaw"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Transform"));
             }));
         }
     }

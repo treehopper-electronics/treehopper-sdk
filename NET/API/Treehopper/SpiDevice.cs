@@ -19,21 +19,21 @@
         /// <param name="mode">The SpiMode of this device</param>
         public SpiDevice(Spi spiModule, SpiChipSelectPin chipSelect, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, SpiMode mode = SpiMode.Mode00)
         {
-            this.ChipSelectMode = chipSelectMode;
-            this.ChipSelect = chipSelect;
-            this.spi = spiModule;
-            this.Frequency = speedMhz;
-            this.Mode = mode;
+            ChipSelectMode = chipSelectMode;
+            ChipSelect = chipSelect;
+            spi = spiModule;
+            Frequency = speedMhz;
+            Mode = mode;
 
             spi.Enabled = true;
 
-            this.ChipSelect.MakeDigitalPushPullOut();
+            ChipSelect.MakeDigitalPushPullOut();
 
             // Set the initial chip select state
             if (chipSelectMode == ChipSelectMode.PulseLowAtBeginning || chipSelectMode == ChipSelectMode.PulseLowAtEnd || chipSelectMode == ChipSelectMode.SpiActiveLow)
-                this.ChipSelect.DigitalValue = true;
+                ChipSelect.DigitalValue = true;
             else
-                this.ChipSelect.DigitalValue = false;
+                ChipSelect.DigitalValue = false;
         }
 
         /// <summary>

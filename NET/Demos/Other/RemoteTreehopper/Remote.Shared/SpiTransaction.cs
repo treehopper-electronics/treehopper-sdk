@@ -17,12 +17,12 @@ namespace Remote.Shared
         public SpiTransaction(string json)
         {
             var temp = JsonConvert.DeserializeObject<SpiTransaction>(json);
-            this.Burst = temp.Burst;
-            this.ChipSelectPinNumber = temp.ChipSelectPinNumber;
-            this.ChipSelectMode = temp.ChipSelectMode;
-            this.DataToWrite = temp.DataToWrite;
-            this.Speed = temp.Speed;
-            this.SpiMode = temp.SpiMode;
+            Burst = temp.Burst;
+            ChipSelectPinNumber = temp.ChipSelectPinNumber;
+            ChipSelectMode = temp.ChipSelectMode;
+            DataToWrite = temp.DataToWrite;
+            Speed = temp.Speed;
+            SpiMode = temp.SpiMode;
         }
 
         public string ToJsonString()

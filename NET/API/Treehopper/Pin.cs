@@ -28,9 +28,9 @@
         internal Pin(TreehopperUsb board, byte pinNumber)
         {
             this.board = board;
-            this.PinNumber = pinNumber;
+            PinNumber = pinNumber;
             SoftPwm = new SoftPwm(Board, this);
-            this.ReferenceLevel = AdcReferenceLevel.Vref_3V3;
+            ReferenceLevel = AdcReferenceLevel.Vref_3V3;
             Name = "Pin " + pinNumber; // default name
         }
 

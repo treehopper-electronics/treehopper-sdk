@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace TreehopperShowcase.ViewModels
 {
-    public class DetailPageViewModel : TreehopperShowcase.Mvvm.ViewModelBase
+    public class DetailPageViewModel : Mvvm.ViewModelBase
     {
         public DetailPageViewModel()
         {

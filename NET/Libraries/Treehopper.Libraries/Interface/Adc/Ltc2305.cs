@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Interface.Adc
         /// <param name="I2cModule">The I2c module this ADC is attached to</param>
         public Ltc2305(byte address, I2c I2cModule)
         {
-            this.dev = new SMBusDevice(address, I2cModule, 100);
+            dev = new SMBusDevice(address, I2cModule, 100);
         }
 
         /// <summary>

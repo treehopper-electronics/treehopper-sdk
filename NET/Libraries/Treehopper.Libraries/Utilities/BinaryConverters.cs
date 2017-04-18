@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Utilities
 {
-    [global::System.AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class BitfieldAttribute : Attribute
     {
         uint length;

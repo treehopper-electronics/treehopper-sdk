@@ -54,8 +54,8 @@ namespace Treehopper.Desktop.MacUsb
 			IntPtr deviceInterfacePtr = new IntPtr(Marshal.ReadInt32(deviceInterfacePtrPtr));
 			if (deviceInterfacePtr != IntPtr.Zero)
 			{
-				this.deviceInterface = (IOUSBDeviceInterface320)Marshal.PtrToStructure(deviceInterfacePtr, typeof(IOUSBDeviceInterface320));
-				this.deviceInterface.Handle = deviceInterfacePtrPtr;
+				deviceInterface = (IOUSBDeviceInterface320)Marshal.PtrToStructure(deviceInterfacePtr, typeof(IOUSBDeviceInterface320));
+				deviceInterface.Handle = deviceInterfacePtrPtr;
 			}
 
 			Name = name;
@@ -176,8 +176,8 @@ namespace Treehopper.Desktop.MacUsb
 				return false;
 			}
 
-			this.interfaceInterface = (IOUSBInterfaceInterface197)Marshal.PtrToStructure(interfaceInterfacePtr, typeof(IOUSBInterfaceInterface197));
-			this.interfaceInterface.Handle = interfaceInterfacePtrPtr;
+			interfaceInterface = (IOUSBInterfaceInterface197)Marshal.PtrToStructure(interfaceInterfacePtr, typeof(IOUSBInterfaceInterface197));
+			interfaceInterface.Handle = interfaceInterfacePtrPtr;
 
 			byte intNumber = 0;
 

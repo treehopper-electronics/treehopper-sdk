@@ -174,16 +174,16 @@ namespace Treehopper.Libraries.Displays
         public Hd44780(WriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOut Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
         {
             if (iface.Width == 8)
-                this.bits = BitMode.EightBit;
+                bits = BitMode.EightBit;
             else if (iface.Width == 4)
-                this.bits = BitMode.FourBit;
+                bits = BitMode.FourBit;
             else
                 throw new ArgumentException("The IParallelInterface bus must be either 4 or 8 bits wide.", "iface");
 
             if (Rows == 1)
-                this.lines = LinesMode.OneLine;
+                lines = LinesMode.OneLine;
             else
-                this.lines = LinesMode.TwoOrMoreLines;
+                lines = LinesMode.TwoOrMoreLines;
 
             this.font = font;
             this.iface = iface;
@@ -211,7 +211,7 @@ namespace Treehopper.Libraries.Displays
 
             if (Backlight != null)
             {
-                this.backlight = Backlight;
+                backlight = Backlight;
                 backlight.MakeDigitalPushPullOut();
             }
 

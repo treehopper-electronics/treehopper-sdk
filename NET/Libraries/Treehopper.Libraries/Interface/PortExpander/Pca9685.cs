@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Treehopper.Libraries.Displays;
+    using Displays;
     using Treehopper.Utilities;
 
     /// <summary>
@@ -49,7 +49,7 @@
         /// <param name="speed">The speed, in kHz, to use with this chip</param>
         public Pca9685(I2c i2c, byte address, int speed = 100)
         {
-            this.dev = new SMBusDevice(address, i2c, speed);
+            dev = new SMBusDevice(address, i2c, speed);
             for (int i = 0; i < 16; i++)
             {
                 Pins.Add(new Pin(this, i));

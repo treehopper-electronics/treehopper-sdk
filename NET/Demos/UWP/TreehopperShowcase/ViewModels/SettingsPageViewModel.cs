@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 
 namespace TreehopperShowcase.ViewModels
 {
-    public class SettingsPageViewModel : TreehopperShowcase.Mvvm.ViewModelBase
+    public class SettingsPageViewModel : Mvvm.ViewModelBase
     {
         public SettingsPartViewModel SettingsPartViewModel { get; } = new SettingsPartViewModel();
         public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
@@ -22,13 +22,13 @@ namespace TreehopperShowcase.ViewModels
         public bool UseShellBackButton
         {
             get { return _settings.UseShellBackButton; }
-            set { _settings.UseShellBackButton = value; base.RaisePropertyChanged(); }
+            set { _settings.UseShellBackButton = value; RaisePropertyChanged(); }
         }
 
         public bool UseLightThemeButton
         {
             get { return _settings.AppTheme.Equals(ApplicationTheme.Light); }
-            set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged(); }
+            set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; RaisePropertyChanged(); }
         }
 
         private string _BusyText = "Please wait...";

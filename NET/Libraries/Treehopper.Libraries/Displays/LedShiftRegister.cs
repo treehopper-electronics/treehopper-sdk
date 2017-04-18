@@ -9,7 +9,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Treehopper;
-    using Treehopper.Libraries.Interface.PortExpander;
+    using Interface.PortExpander;
     using Treehopper.Utilities;
     using Utilities;
     /// <summary>
@@ -72,7 +72,7 @@
         /// <param name="speedMhz">The speed, in MHz, to use when communicating</param>
         public LedShiftRegister(Spi SpiModule, SpiChipSelectPin LatchPin, Pwm OutputEnablePin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel, double speedMhz = 6) : base(SpiModule, LatchPin, (int)ChannelCount / 8, speedMhz)
         {
-            this.oePwm = OutputEnablePin;
+            oePwm = OutputEnablePin;
             Start(ChannelCount);
         }
 
@@ -96,7 +96,7 @@
         /// <param name="ChannelCount">The number of channels this LED shift register has</param>
         public LedShiftRegister(ChainableShiftRegisterOutput upstreamDevice, Pwm OutputEnablePin, LedChannelCount ChannelCount = LedChannelCount.SixteenChannel) : base(upstreamDevice, (int)ChannelCount / 8)
         {
-            this.oePwm = OutputEnablePin;
+            oePwm = OutputEnablePin;
             Start(ChannelCount);
         }
 

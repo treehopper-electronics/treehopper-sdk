@@ -35,7 +35,7 @@
         /// <param name="activeLow">Whether the button is active-low (true, default). If the button is active-high, set to false.</param>
         public Button(DigitalIn input, bool activeLow = true)
         {
-            this.Input = input;
+            Input = input;
             this.activeLow = activeLow;
             input.DigitalValueChanged += Input_DigitalValueChanged;
         }

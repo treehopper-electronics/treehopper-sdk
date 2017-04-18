@@ -24,7 +24,7 @@ namespace TreehopperShowcase.Views
     {
         public AnalogRead()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

@@ -16,15 +16,15 @@ namespace Remote.Shared
         }
         public RemoteBoardInfo(TreehopperUsb board)
         {
-            this.Name = board.Name;
-            this.Serial = board.SerialNumber;
+            Name = board.Name;
+            Serial = board.SerialNumber;
         }
 
         public RemoteBoardInfo(string json)
         {
             var board = JsonConvert.DeserializeObject<RemoteBoardInfo>(json);
-            this.Name = board.Name;
-            this.Serial = board.Serial;
+            Name = board.Name;
+            Serial = board.Serial;
         }
         public string Name { get; set; }
         public string Serial { get; set; }

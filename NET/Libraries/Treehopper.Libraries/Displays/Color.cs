@@ -303,12 +303,12 @@ namespace Treehopper.Libraries.Displays
             {
                 unchecked
                 {
-                    return (byte)(this._packedValue >> 16);
+                    return (byte)(_packedValue >> 16);
                 }
             }
             set
             {
-                this._packedValue = (this._packedValue & 0xff00ffff) | ((uint)value << 16);
+                _packedValue = (_packedValue & 0xff00ffff) | ((uint)value << 16);
             }
         }
 
@@ -322,12 +322,12 @@ namespace Treehopper.Libraries.Displays
             {
                 unchecked
                 {
-                    return (byte)(this._packedValue >> 8);
+                    return (byte)(_packedValue >> 8);
                 }
             }
             set
             {
-                this._packedValue = (this._packedValue & 0xffff00ff) | ((uint)value << 8);
+                _packedValue = (_packedValue & 0xffff00ff) | ((uint)value << 8);
             }
         }
 
@@ -341,12 +341,12 @@ namespace Treehopper.Libraries.Displays
             {
                 unchecked
                 {
-                    return (byte)this._packedValue;
+                    return (byte)_packedValue;
                 }
             }
             set
             {
-                this._packedValue = (this._packedValue & 0xffffff00) | value;
+                _packedValue = (_packedValue & 0xffffff00) | value;
             }
         }
 
@@ -360,12 +360,12 @@ namespace Treehopper.Libraries.Displays
             {
                 unchecked
                 {
-                    return (byte)(this._packedValue >> 24);
+                    return (byte)(_packedValue >> 24);
                 }
             }
             set
             {
-                this._packedValue = (this._packedValue & 0x00ffffff) | ((uint)value << 24);
+                _packedValue = (_packedValue & 0x00ffffff) | ((uint)value << 24);
             }
         }
 
@@ -397,7 +397,7 @@ namespace Treehopper.Libraries.Displays
         /// <returns>Hash code of this <see cref="Color"/>.</returns>
         public override int GetHashCode()
         {
-            return this._packedValue.GetHashCode();
+            return _packedValue.GetHashCode();
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace Treehopper.Libraries.Displays
         /// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
         public override bool Equals(object obj)
         {
-            return ((obj is Color) && this.Equals((Color)obj));
+            return ((obj is Color) && Equals((Color)obj));
         }
 
         #region Color Bank
@@ -1748,10 +1748,10 @@ namespace Treehopper.Libraries.Displays
 
 
         internal string DebugDisplayString => string.Concat(
-            this.R.ToString(), "  ",
-            this.G.ToString(), "  ",
-            this.B.ToString(), "  ",
-            this.A.ToString()
+            R.ToString(), "  ",
+            G.ToString(), "  ",
+            B.ToString(), "  ",
+            A.ToString()
         );
 
 
@@ -1839,7 +1839,7 @@ namespace Treehopper.Libraries.Displays
         /// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
         public bool Equals(Color other)
         {
-            return this.PackedValue == other.PackedValue;
+            return PackedValue == other.PackedValue;
         }
 
         #endregion

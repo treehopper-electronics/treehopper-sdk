@@ -11,7 +11,7 @@ namespace Remote.Client
     {
         internal RemotePin(RemoteTreehopper board, int pinNumber)
         {
-            this.Board = board;
+            Board = board;
             PinNumber = pinNumber;
         }
 

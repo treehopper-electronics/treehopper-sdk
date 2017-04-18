@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="Digits"></param>
         public SevenSegmentDisplay(IList<SevenSegmentDigit> Digits) : base(Digits.Count, 1)
         {
-            this.digits = Digits;
+            digits = Digits;
 
             setupDigits();
         }

@@ -31,13 +31,13 @@ namespace Remote.Client
         }
         public void Open()
         {
-            this.Run();
-            this.Publish($"treehopper/connection/{SerialNumber}/state", "connect");
+            Run();
+            Publish($"treehopper/connection/{SerialNumber}/state", "connect");
         }
 
         public void Close()
         {
-            this.Publish($"treehopper/connection/{SerialNumber}/state", "disconnect");
+            Publish($"treehopper/connection/{SerialNumber}/state", "disconnect");
         }
 
         private bool led = false;
@@ -48,7 +48,7 @@ namespace Remote.Client
             {
                 if (led == value) return;
                 led = value;
-                this.Publish($"treehopper/connection/{SerialNumber}/led", led.ToString());
+                Publish($"treehopper/connection/{SerialNumber}/led", led.ToString());
             }
         }
 

@@ -45,7 +45,7 @@ namespace Treehopper.Libraries.Displays
 
             dev = new SpiDevice(SpiModule, LoadPin, speedMhz: SpeedMHz, chipSelectMode: ChipSelectMode.PulseHighAtEnd);
 
-            this.address = Address;
+            address = Address;
             sendTest(false);
 
             ScanLimit = 7;

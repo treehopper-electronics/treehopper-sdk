@@ -25,7 +25,7 @@ namespace TreehopperShowcase.Pages.Settings
             InitializeComponent();
 
             // create and assign the appearance view model
-            this.DataContext = new AppearanceViewModel();
+            DataContext = new AppearanceViewModel();
         }
     }
 }
