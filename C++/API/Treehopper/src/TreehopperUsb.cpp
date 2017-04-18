@@ -20,7 +20,8 @@ namespace Treehopper
 
 	TreehopperUsb::~TreehopperUsb()
 	{
-
+        disconnect();
+        delete &connection;
 	}
 
 	bool TreehopperUsb::connect()
@@ -32,7 +33,6 @@ namespace Treehopper
 
 		isConnected = true;
 		pinListenerThread = thread(&TreehopperUsb::pinStateListener, this);
-		pinListenerThread.detach();
 
 		reinitialize();
 		return true;
@@ -45,8 +45,8 @@ namespace Treehopper
 		reinitialize(); // leave the board where we found it
 
 		isConnected = false;
-		if(pinListenerThread.joinable())
-			pinListenerThread.join(); // block this thread until the listener exits
+        if(pinListenerThread.joinable())
+            pinListenerThread.join(); // block this thread until the listener exits
 		connection.close();
 	}
 
@@ -69,7 +69,9 @@ namespace Treehopper
 
 	void TreehopperUsb::led(bool value)
 	{
-		_led = value;
+        if(!isConnected) return;
+        
+        _led = value;
 		uint8_t data[2];
 		data[0] = (uint8_t)DeviceCommands::LedConfig;
 		data[1] = _led;
@@ -83,16 +85,19 @@ namespace Treehopper
 
 	void TreehopperUsb::sendPinConfigPacket(uint8_t* data, size_t len)
 	{
+        if(!isConnected) return;
 		connection.sendDataPinConfigChannel(data, len);
 	}
 
 	void TreehopperUsb::sendPeripheralConfigPacket(uint8_t* data, size_t len)
 	{
+        if(!isConnected) return;
 		connection.sendDataPeripheralChannel(data, len);
 	}
 
 	void TreehopperUsb::receivePeripheralConfigPacket(uint8_t * data, size_t numBytesToRead)
 	{
+        if(!isConnected) return;
 		connection.receiveDataPeripheralChannel(data, numBytesToRead);
 	}
 
@@ -100,10 +105,10 @@ namespace Treehopper
 	{
 		while (isConnected)
 		{
-			connection.receivePinReportPacket(buffer);
-
-			for (int i = 0; i < numberOfPins; i++)
-				pins[i].updateValue(buffer[i * 2 + 1], buffer[i * 2 + 2]);
-		}
+                connection.receivePinReportPacket(buffer);
+                
+                for (int i = 0; i < numberOfPins; i++)
+                    pins[i].updateValue(buffer[i * 2 + 1], buffer[i * 2 + 2]);
+        }
 	}
 }

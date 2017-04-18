@@ -18,41 +18,36 @@
 #include "Settings.h"
 #include "MacUsbConnection.h"
 #include <thread>
-
-typedef struct MyPrivateData {
-    io_object_t             notification;
-    IOUSBDeviceInterface    **deviceInterface;
-    CFStringRef             deviceName;
-    UInt32                  locationID;
-} MyPrivateData;
-
+#include <iostream>
 namespace Treehopper {
+
+    typedef struct BoardConnectionData {
+        io_object_t             notification;
+        ConnectionService       *connectionService;
+        UInt32                  boardId;
+    } MyPrivateData;
     
     IONotificationPortRef ConnectionService::gNotifyPort;
     std::mutex ConnectionService::boardCollectionMutex;
     std::condition_variable ConnectionService::boardCollectionCondition;
     std::thread ConnectionService::deviceListenerThread;
     
-    
     void ConnectionService::DeviceRemoved(void *refCon, io_service_t service, natural_t messageType, void *messageArgument)
     {
-        kern_return_t   kr;
-        MyPrivateData   *privateDataRef = (MyPrivateData *) refCon;
-        
         if (messageType == kIOMessageServiceIsTerminated) {
-            fprintf(stderr, "Device removed.\n");
+
+            kern_return_t   kr;
+            BoardConnectionData *privateDataRef = (BoardConnectionData *) refCon;
             
-            // Dump our private data to stderr just to see what it looks like.
-            fprintf(stderr, "privateDataRef->deviceName: ");
-            CFShow(privateDataRef->deviceName);
-            fprintf(stderr, "privateDataRef->locationID: 0x%lx.\n\n", privateDataRef->locationID);
+            int boardId = privateDataRef->boardId;
             
-            // Free the data we're no longer using now that the device is going away
-            CFRelease(privateDataRef->deviceName);
+
+            std::vector<TreehopperUsb> &boards = privateDataRef->connectionService->boards;
             
-            if (privateDataRef->deviceInterface) {
-                kr = (*privateDataRef->deviceInterface)->Release(privateDataRef->deviceInterface);
-            }
+            std::wcerr << L"Removing: " << boards[boardId].toString() << std::endl;
+            
+            boards[boardId].disconnect();
+            boards.erase(boards.begin() + boardId);
             
             kr = IOObjectRelease(privateDataRef->notification);
             
@@ -72,14 +67,16 @@ namespace Treehopper {
         
         while ((usbDevice = IOIteratorNext(iterator))) {
             io_name_t       deviceName;
-            CFStringRef     deviceNameAsCFString;
             MyPrivateData   *privateDataRef = NULL;
-            UInt32          locationID;
             
             // Add some app-specific information about this device.
             // Create a buffer to hold the data.
-            privateDataRef = (MyPrivateData*)malloc(sizeof(MyPrivateData));
+            privateDataRef = (BoardConnectionData*)malloc(sizeof(BoardConnectionData));
             bzero(privateDataRef, sizeof(MyPrivateData));
+            
+            
+            privateDataRef->connectionService = service;
+            
             
             // Get the USB device's name.
             kr = IORegistryEntryGetName(usbDevice, deviceName);
@@ -87,16 +84,6 @@ namespace Treehopper {
                 deviceName[0] = '\0';
             }
             
-            deviceNameAsCFString = CFStringCreateWithCString(kCFAllocatorDefault, deviceName,
-                                                             kCFStringEncodingASCII);
-            
-            // Dump our data to stderr just to see what it looks like.
-            fprintf(stderr, "deviceName: ");
-            CFShow(deviceNameAsCFString);
-            
-            // Save the device's name to our private data.
-            privateDataRef->deviceName = deviceNameAsCFString;
-
             kr = IOCreatePlugInInterfaceForService(usbDevice, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID, &plugInInterface, &score);
             
             if ((kIOReturnSuccess != kr) || !plugInInterface) {
@@ -104,18 +91,7 @@ namespace Treehopper {
                 continue;
             }
             
-            // Use the plugin interface to retrieve the device interface.
-            res = (*plugInInterface)->QueryInterface(plugInInterface, CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID),
-                                                     (LPVOID*) &privateDataRef->deviceInterface);
-            
-            // Now done with the plugin interface.
-            (*plugInInterface)->Release(plugInInterface);
-            
-            if (res || privateDataRef->deviceInterface == NULL) {
-                fprintf(stderr, "QueryInterface returned %d.\n", (int) res);
-                continue;
-            }
-            
+           
             // Register for an interest notification of this device being removed. Use a reference to our
             // private data as the refCon which will be passed to the notification callback.
             kr = IOServiceAddInterestNotification(gNotifyPort,                      // notifyPort
@@ -140,12 +116,13 @@ namespace Treehopper {
             }
             
             std::unique_lock<std::mutex> lock(boardCollectionMutex);
-           
+            privateDataRef->boardId = service->boards.size();
             service->boards.emplace_back(*(new MacUsbConnection(usbDevice, name, serial)));
+            std::wcerr << "Adding: " << service->boards[privateDataRef->boardId].toString() << std::endl;
             
             lock.unlock();
-            boardCollectionCondition.notify_one();
             
+            boardCollectionCondition.notify_one();
             
             if (KERN_SUCCESS != kr) {
                 printf("IOServiceAddInterestNotification returned 0x%08x.\n", kr);
@@ -165,11 +142,6 @@ namespace Treehopper {
             long                    usbProduct = Settings::instance().pid;
             sig_t                   oldHandler;
             
-            
-            
-            fprintf(stderr, "Looking for devices matching vendor ID=%ld and product ID=%ld.\n", usbVendor, usbProduct);
-            
-           
             matchingDict = IOServiceMatching(kIOUSBDeviceClassName);    // Interested in instances of class
             // IOUSBDevice and its subclasses
             if (matchingDict == NULL) {
@@ -220,7 +192,6 @@ namespace Treehopper {
             DeviceAdded(this, gAddedIter);
             
             // Start the run loop. Now we'll receive notifications.
-            fprintf(stderr, "Starting run loop.\n\n");
             CFRunLoopRun();
         });
 

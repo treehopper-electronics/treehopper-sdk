@@ -29,11 +29,14 @@ namespace Treehopper
 		TreehopperUsb& operator=(const TreehopperUsb& rhs)
 		{
 			connection = rhs.connection;
+            isConnected = rhs.isConnected;
+            
 			return *this;
 		}
 		TreehopperUsb(const TreehopperUsb& rhs) : TreehopperUsb(rhs.connection)
 		{
-
+            connection = rhs.connection;
+            isConnected = rhs.isConnected;
 		}
 
 		void reinitialize();
