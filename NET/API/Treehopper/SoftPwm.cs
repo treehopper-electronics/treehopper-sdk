@@ -100,6 +100,10 @@
             }
         }
 
+        /// <summary>
+        /// Gets a string representation of the soft-PWM pin's state
+        /// </summary>
+        /// <returns>The soft-PWM pin's state</returns>
         public override string ToString()
         {
             if (Enabled)

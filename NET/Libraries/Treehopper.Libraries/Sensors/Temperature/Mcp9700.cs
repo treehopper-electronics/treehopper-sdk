@@ -50,9 +50,9 @@
             Celsius = (voltage - v0) / tc;
         }
 
-        private void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)
+        private async void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)
         {
-            Update();
+            await Update();
         }
     }
 }

@@ -91,6 +91,10 @@
             }
         }
 
+        /// <summary>
+        /// Gets a string representing the state of the Hardware PWM manager
+        /// </summary>
+        /// <returns>the state of the hardware PWM manager</returns>
         public override string ToString()
         {
             switch (mode)

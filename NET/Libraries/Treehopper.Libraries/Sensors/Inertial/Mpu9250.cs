@@ -47,8 +47,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// </summary>
         public bool EnableMagnetometer { get; set; } = true;
 
-        public int AwaitPollingInterval { get; set; }
-
         /// <summary>
         /// Retrieve the latest sample data from the MPU9250
         /// </summary>

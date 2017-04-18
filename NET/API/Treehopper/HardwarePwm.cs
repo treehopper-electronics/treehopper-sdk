@@ -98,6 +98,10 @@
             }
         }
 
+        /// <summary>
+        /// Returns this PWM channel's data in an easy-to-read format
+        /// </summary>
+        /// <returns>A string representation of the channel</returns>
         public override string ToString()
         {
             if (Enabled)

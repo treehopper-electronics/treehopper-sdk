@@ -53,8 +53,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
         }
 
-        public int AwaitPollingInterval { get; set; }
-
         /// <summary>
         /// Reads current data from the BME280
         /// </summary>

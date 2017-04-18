@@ -85,12 +85,14 @@
             Reserved
         }
 
+#pragma warning disable 649
         private struct DataReport
         {
             public short x;
             public short z;
             public short y;
         }
+#pragma warning restore 649
 
         private RangeSetting range = RangeSetting.Reserved;
 

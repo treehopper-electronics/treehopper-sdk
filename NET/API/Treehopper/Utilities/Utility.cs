@@ -88,6 +88,10 @@
                 throw new TreehopperRuntimeException(message);
         }
 
+        /// <summary>
+        /// Print an error to the Debug console and throw an exception if the Settings permit
+        /// </summary>
+        /// <param name="ex">The exception message to print</param>
         public static void Error(Exception ex)
         {
             Debug.WriteLine("ERROR: " + ex.Message);

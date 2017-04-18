@@ -192,6 +192,10 @@
             return returnedData;
         }
 
+        /// <summary>
+        /// Gets a string representing the SPI peripheral's state
+        /// </summary>
+        /// <returns>the state of the SPI peripheral</returns>
         public override string ToString()
         {
             if (Enabled)

@@ -23,6 +23,9 @@
         /// </summary>
         Task ToggleOutputAsync();
 
+        /// <summary>
+        /// Get or set the digital value of the pin
+        /// </summary>
         new bool DigitalValue { get; set; }
 
         /// <summary>

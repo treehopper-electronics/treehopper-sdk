@@ -25,28 +25,28 @@
     /// This is the delegate prototype used for event-driven reading of digital pins.
     /// </summary>
     /// <param name="sender">The Pin that changed</param>
-    /// <param name="value">The new value of the pin</param>
+    /// <param name="e">The new value of the pin</param>
     public delegate void OnDigitalInValueChanged(object sender, DigitalInValueChangedEventArgs e);
 
     /// <summary>
     /// Used to send VoltageChanged events from the AnalogIn pin.
     /// </summary>
     /// <param name="sender">The AnalogIn pin that sent that message</param>
-    /// <param name="voltage">The new voltage of the AnalogIn pin</param>
+    /// <param name="e">The new voltage of the AnalogIn pin</param>
     public delegate void OnAnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e);
 
     /// <summary>
     /// Used to send ValueChanged events from the AnalogIn pin.
     /// </summary>
     /// <param name="sender">The AnalogIn pin that sent that message</param>
-    /// <param name="value">The new voltage of the AnalogIn pin</param>
+    /// <param name="e">The new voltage of the AnalogIn pin</param>
     public delegate void OnAdcValueChanged(object sender, AdcValueChangedEventArgs e);
 
     /// <summary>
     /// Used to send ValueChanged events from the pin.
     /// </summary>
     /// <param name="sender">The pin that sent that message</param>
-    /// <param name="value">The new normalized value of the pin</param>
+    /// <param name="e">The new normalized value of the pin</param>
     public delegate void OnAnalogValueChanged(object sender, AnalogValueChangedEventArgs e);
 
     /// <summary>
@@ -69,33 +69,63 @@
         public bool NewValue { get; set; }
     }
 
+    /// <summary>
+    /// Analog value changed EventArgs
+    /// </summary>
     public class AnalogValueChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct a new Analog value changed EventArgs
+        /// </summary>
+        /// <param name="newValue">the new value</param>
         public AnalogValueChangedEventArgs(double newValue)
         {
             NewValue = newValue;
         }
 
+        /// <summary>
+        /// The new analog value
+        /// </summary>
         public double NewValue { get; set; }
     }
 
+    /// <summary>
+    /// Analog voltage changed EventArgs
+    /// </summary>
     public class AnalogVoltageChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct a new Analog voltage changed EventArgs
+        /// </summary>
+        /// <param name="newValue">the new value</param>
         public AnalogVoltageChangedEventArgs(double newValue)
         {
             NewValue = newValue;
         }
 
+        /// <summary>
+        /// The new analog voltage
+        /// </summary>
         public double NewValue { get; set; }
     }
 
+    /// <summary>
+    /// ADC value changed EventArgs
+    /// </summary>
     public class AdcValueChangedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Construct a new ADC value changed EventArgs
+        /// </summary>
+        /// <param name="newValue">the new value</param>
         public AdcValueChangedEventArgs(int newValue)
         {
             NewValue = newValue;
         }
 
+        /// <summary>
+        /// The new ADC value
+        /// </summary>
         public int NewValue { get; set; }
     }
 }

@@ -28,12 +28,22 @@ namespace Sandbox
 
 			//board.Pins[0].Mode = PinMode.PushPullOutput;
 
+            foreach(var pin in board.Pins)
+            {
+                pin.Mode = PinMode.OpenDrainOutput;
+                pin.DigitalValue = true;
+            }
+
 			while (board.IsConnected && !Console.KeyAvailable)
 			{
-				// do stuff
-				board.Led = !board.Led;
-				Task.Delay(100).Wait();
-			}
+                foreach (var pin in board.Pins)
+                {
+                    pin.DigitalValue = false;
+                    await Task.Delay(500);
+                    pin.DigitalValue = true;
+                    await Task.Delay(500);
+                }
+            }
 
         }
     }

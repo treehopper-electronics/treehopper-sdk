@@ -114,7 +114,7 @@
             cmd[0] = (byte)DeviceCommands.ParallelTransaction;
             cmd[1] = (byte)ParallelCmd.WriteCommand;
             cmd[2] = (byte)cmdLen;
-            board.SendPeripheralConfigPacket(cmd);
+            await board.SendPeripheralConfigPacket(cmd);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@
             cmd[0] = (byte)DeviceCommands.ParallelTransaction;
             cmd[1] = (byte)ParallelCmd.WriteData;
             cmd[2] = (byte)dataLen;
-            board.SendPeripheralConfigPacket(cmd);
+            await board.SendPeripheralConfigPacket(cmd);
         }
 
         /// <summary>
@@ -174,6 +174,10 @@
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets a string representation of the parallel interface's state
+        /// </summary>
+        /// <returns>the parallel interface's state</returns>
         public override string ToString()
         {
             if (enabled)

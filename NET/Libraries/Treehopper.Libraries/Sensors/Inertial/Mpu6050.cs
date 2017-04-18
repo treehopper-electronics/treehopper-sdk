@@ -118,8 +118,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
-        public int AwaitPollingInterval { get; set; }
-
         /// <summary>
         /// Read the current sensor data
         /// </summary>

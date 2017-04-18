@@ -31,10 +31,5 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// </summary>
         /// <param name="portExpanderPin"></param>
         Task OutputModeChanged(IPortExpanderPin portExpanderPin);
-
-        /// <summary>
-        /// Gets or sets the polling period used when AwaitDigitalValueChanged() is used by the port expander
-        /// </summary>
-        int AwaitPollingInterval { get; set; }
     }
 }

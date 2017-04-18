@@ -2,6 +2,9 @@
 {
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// An SPI interface
+    /// </summary>
     public interface Spi
     {
         /// <summary>

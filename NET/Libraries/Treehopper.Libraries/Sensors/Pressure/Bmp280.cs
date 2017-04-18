@@ -69,6 +69,7 @@
             TrimmingStart = 0x88,
         }
 
+#pragma warning disable 649
         internal struct Trimming
         {
             public ushort T1;
@@ -84,6 +85,7 @@
             public short P8;
             public short P9;
         }
+#pragma warning restore 649
 
         internal byte ChipId { get { return 0x58; } }
 
@@ -132,8 +134,6 @@
                 return TemperatureSensor.ToKelvin(Celsius);
             }
         }
-
-        public int AwaitPollingInterval { get; set; }
 
         internal int PayloadSize { get; set; } = 6;
         internal byte[] LastReceivedData { get; set; }
