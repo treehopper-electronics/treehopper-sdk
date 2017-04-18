@@ -146,7 +146,7 @@
             dataToSend.CopyTo(data, 3);
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                device.SendPeripheralConfigPacket(data);
+                await device.SendPeripheralConfigPacket(data);
                 byte[] receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
             }
         }
@@ -167,7 +167,7 @@
 
                 using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    device.SendPeripheralConfigPacket(data);
+                    await device.SendPeripheralConfigPacket(data);
                     byte[] receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
@@ -183,7 +183,7 @@
 
                 using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    device.SendPeripheralConfigPacket(data);
+                    await device.SendPeripheralConfigPacket(data);
                     byte[] receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
@@ -210,7 +210,7 @@
             data[1] = (byte)UartCommand.OneWireReset;
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                device.SendPeripheralConfigPacket(data);
+                await device.SendPeripheralConfigPacket(data);
                 byte[] receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
                 retVal = receivedData[0] > 0 ? true : false;
             }
@@ -233,7 +233,7 @@
             data[1] = (byte)UartCommand.OneWireScan;
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                device.SendPeripheralConfigPacket(data);
+                await device.SendPeripheralConfigPacket(data);
                 byte[] receivedData = new byte[8];
                 while (true)
                 {
@@ -275,6 +275,10 @@
             Enabled = true;
         }
 
+        /// <summary>
+        /// Gets a string representing the UART's state
+        /// </summary>
+        /// <returns>the UART's string</returns>
         public override string ToString()
         {
             if (Enabled)

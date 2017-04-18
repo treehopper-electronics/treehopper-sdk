@@ -185,7 +185,7 @@ namespace Treehopper.Libraries.Displays
             await sendCommand(Command.DeactivateScroll).ConfigureAwait(false);
             await sendCommand(Command.DisplayOn).ConfigureAwait(false);
 
-            Clear();
+            await Clear();
             await flush().ConfigureAwait(false);
         }
 

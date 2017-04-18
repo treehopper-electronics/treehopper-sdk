@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Utilities
 {
+    /// <summary>
+    /// Utilities for dealing with numbers
+    /// </summary>
     public static class Numbers
     {
         /// <summary>
@@ -60,7 +63,6 @@ namespace Treehopper.Utilities
         /// <returns>the constrained number</returns>
         public static T Constrain<T>(T x, T a, T b) where T : IComparable
         {
-            int i;
             if (x.CompareTo(a) < 0)
                 return a;
             if (x.CompareTo(b) > 0)
@@ -71,7 +73,7 @@ namespace Treehopper.Utilities
         // from Microsoft.Xna.Framework
         /// <summary>
         /// Linearly interpolates between two values.
-        /// This method is a less efficient, more precise version of <see cref="MathHelper.Lerp"/>.
+        /// This method is a less efficient, more precise version of <see cref="Lerp"/>.
         /// See remarks for more info.
         /// </summary>
         /// <param name="value1">Source value.</param>
@@ -81,9 +83,9 @@ namespace Treehopper.Utilities
         /// <remarks>This method performs the linear interpolation based on the following formula:
         /// <code>((1 - amount) * value1) + (value2 * amount)</code>.
         /// Passing amount a value of 0 will cause value1 to be returned, a value of 1 will cause value2 to be returned.
-        /// This method does not have the floating point precision issue that <see cref="MathHelper.Lerp"/> has.
+        /// This method does not have the floating point precision issue that <see cref="Lerp"/> has.
         /// i.e. If there is a big gap between value1 and value2 in magnitude (e.g. value1=10000000000000000, value2=1),
-        /// right at the edge of the interpolation range (amount=1), <see cref="MathHelper.Lerp"/> will return 0 (whereas it should return 1).
+        /// right at the edge of the interpolation range (amount=1), <see cref="Lerp"/> will return 0 (whereas it should return 1).
         /// This also holds for value1=10^17, value2=10; value1=10^18,value2=10^2... so on.
         /// For an in depth explanation of the issue, see below references:
         /// Relevant Wikipedia Article: https://en.wikipedia.org/wiki/Linear_interpolation#Programming_language_support

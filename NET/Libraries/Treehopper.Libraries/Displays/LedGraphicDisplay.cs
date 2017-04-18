@@ -20,16 +20,6 @@ namespace Treehopper.Libraries.Displays
         public LedCollection Leds { get; private set; }
 
         /// <summary>
-        /// The parent object
-        /// </summary>
-        public IFlushable Parent { get; set; }
-
-        /// <summary>
-        /// Whether this display should automatically flush whenever a pixel is updated
-        /// </summary>
-        public bool AutoFlush { get; set; } = true;
-
-        /// <summary>
         /// Construct a new LED graphic display
         /// </summary>
         /// <param name="leds">The LEDs to use with this display</param>
@@ -44,10 +34,9 @@ namespace Treehopper.Libraries.Displays
         /// Write out all the pixels' values to the corresponding LEDs
         /// </summary>
         /// <returns>An awaitable task</returns>
-        protected override async Task flush()
+        protected override Task flush()
         {
-            if (AutoFlush)
-                await Flush().ConfigureAwait(false);
+            return Leds.Flush();
         }
 
         /// <summary>
@@ -64,9 +53,6 @@ namespace Treehopper.Libraries.Displays
             Leds.Select(x => x.Driver).Distinct().ForEach(drv => drv.Brightness = brightness);
         }
 
-        /// <summary>
-        /// Set the LED states based on the graphic buffer. This function does not actually flush the LED states to the driver(s)
-        /// </summary>
         public void WriteLeds()
         {
             for (int i = 0; i < RawBuffer.Length; i++)
@@ -78,17 +64,6 @@ namespace Treehopper.Libraries.Displays
                     Leds[idx].State = (((data >> j) & 0x01) == 0x01) ? true : false;
                 }
             }
-        }
-
-        /// <summary>
-        /// Flush the LED states to the driver(s)
-        /// </summary>
-        /// <param name="force">Whether to force an update</param>
-        /// <returns>An awaitable task</returns>
-        public Task Flush(bool force = false)
-        {
-            WriteLeds();
-            return Leds.Flush(force);
         }
     }
 }

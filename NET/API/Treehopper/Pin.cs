@@ -145,6 +145,9 @@
             get { return board; }
         }
 
+        /// <summary>
+        /// Gets the name of the pin
+        /// </summary>
         public string Name { get; internal set; }
 
         /// <summary>
@@ -306,6 +309,12 @@
             }
         }
 
+        /// <summary>
+        /// Gets the Spi module that can use this pin for chip-select duties
+        /// </summary>
+        /// <remarks>
+        /// <para>Since the SPI chip-select functionality is done in-hardware, the SPI module must check to ensure the pin you're using for chip-select actually belongs to the same board as the SPI module does (as you may have multiple boards attached).</para>
+        /// </remarks>
         public Spi SpiModule
         {
             get
@@ -416,6 +425,10 @@
             return SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
         }
 
+        /// <summary>
+        /// Gets a string representation of the pin's current state
+        /// </summary>
+        /// <returns>the pin's current state</returns>
         public override string ToString()
         {
             if (SoftPwm.Enabled)

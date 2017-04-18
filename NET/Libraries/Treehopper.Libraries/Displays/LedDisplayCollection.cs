@@ -57,7 +57,10 @@ namespace Treehopper.Libraries.Displays
             Items.ForEach(disp => disp.WriteLeds());
 
             // Write out the drivers over the bus
-            Items.SelectMany(x => x.Leds.Drivers).Distinct().ForEach(async driver => await driver.Flush(true));
+            foreach(var driver in Items.SelectMany(x => x.Leds.Drivers).Distinct())
+            {
+                await driver.Flush(true);
+            }
         }
 
         /// <summary>

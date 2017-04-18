@@ -108,7 +108,7 @@
                 {
                     int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                     var tmp = dataToSend.Skip(offset).Take(transferLength);
-                    device.SendPeripheralConfigPacket(tmp.ToArray());
+                    await device.SendPeripheralConfigPacket(tmp.ToArray());
                     offset += transferLength;
                     bytesRemaining -= transferLength;
                 }

@@ -118,6 +118,8 @@
             TurnedOff = 0x03
         }
 
+
+#pragma warning disable 649
         struct Pga
         {
             [Bitfield(1)]
@@ -233,7 +235,7 @@
             [Bitfield(1)]
             public bool EnablePullSdaLowOnConversionComplete;
         }
-
+#pragma warning restore 649
         public GainSelect Gain
         {
             get { return ctrl1.Gains; }
