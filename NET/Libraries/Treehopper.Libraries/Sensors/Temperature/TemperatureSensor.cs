@@ -1,6 +1,5 @@
 ﻿namespace Treehopper.Libraries.Sensors.Temperature
 {
-    using System;
     using System.Threading.Tasks;
 
     /// <summary>

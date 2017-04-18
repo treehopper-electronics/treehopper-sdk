@@ -1,12 +1,8 @@
 ﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
-    using Treehopper.Utilities;
     using Utilities;
     /// <summary>
     /// Microchip MCP23008 8-bit I/O expander with I2c interface

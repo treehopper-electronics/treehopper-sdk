@@ -1,5 +1,4 @@
-﻿using System;
-namespace Treehopper.Desktop.MacUsb.IOKit
+﻿namespace Treehopper.Desktop.MacUsb.IOKit
 {
 
 	/// <summary>

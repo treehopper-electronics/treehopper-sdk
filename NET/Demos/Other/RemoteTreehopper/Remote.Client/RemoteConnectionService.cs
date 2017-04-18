@@ -1,12 +1,7 @@
 ﻿using Charlotte;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Remote.Shared;
-using Newtonsoft.Json;
 
 namespace Remote.Client
 {

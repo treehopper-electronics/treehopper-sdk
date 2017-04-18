@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Motors
+﻿namespace Treehopper.Libraries.Motors
 {
     /// <summary>
     /// A motorized fader contains a DC motor, speed controller, and servo functionality to set the fader to a particular position and quickly disabling the drive to allow the user to easily move the fader.

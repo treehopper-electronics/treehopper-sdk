@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Treehopper;
-using Windows.UI.Xaml.Media.Imaging;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
 using Treehopper.Libraries.Displays;
 using Treehopper.Desktop;
 

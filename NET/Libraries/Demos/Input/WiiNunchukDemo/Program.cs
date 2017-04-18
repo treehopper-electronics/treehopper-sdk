@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
 using Treehopper.Libraries.Input;
-using Treehopper.Libraries.Interface.PortExpander;
 using Treehopper.Libraries.Sensors;
 
 namespace WiiNunchukDemo

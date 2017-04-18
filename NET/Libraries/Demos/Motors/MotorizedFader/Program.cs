@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Treehopper;
 using Treehopper.Utilities;
 using Treehopper.Libraries.Motors;
 using Treehopper.Desktop;

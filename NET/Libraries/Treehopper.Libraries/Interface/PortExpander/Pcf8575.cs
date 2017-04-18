@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
     /// PCF8575 16-bit I/O port expander

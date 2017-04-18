@@ -1,18 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Treehopper;
 using Treehopper.Mvvm.ViewModel;
 using Treehopper.Mvvm.Messages;
 using Treehopper.Utilities;
-using Treehopper.Desktop;
 using Treehopper.Firmware;
 
 namespace TreehopperShowcase.ViewModels

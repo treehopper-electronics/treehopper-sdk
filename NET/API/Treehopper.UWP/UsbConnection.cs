@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Usb;
-using Windows.Foundation;
 using Windows.Storage.Streams;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Globalization;
 using System.ComponentModel;
 using System.Threading;
 

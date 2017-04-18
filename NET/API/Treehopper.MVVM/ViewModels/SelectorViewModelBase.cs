@@ -4,8 +4,6 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows;
-using Treehopper.Mvvm;
 using Treehopper.Mvvm.Messages;
 
 namespace Treehopper.Mvvm.ViewModel
