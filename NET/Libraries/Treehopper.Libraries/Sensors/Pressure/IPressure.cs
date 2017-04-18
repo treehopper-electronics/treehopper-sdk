@@ -1,6 +1,6 @@
 ﻿namespace Treehopper.Libraries.Sensors.Pressure
 {
-    interface IPressure : IPollable
+    internal interface IPressure : IPollable
     {
         double Pascal { get; }
     }

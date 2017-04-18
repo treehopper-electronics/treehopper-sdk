@@ -5,27 +5,18 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Sensors.Optical
 {
     /// <summary>
-    /// FLIR Lepton
+    ///     FLIR Lepton
     /// </summary>
     public class FlirLepton
     {
+        private readonly ushort[,] blackFrame;
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
-        struct VoSPI
-        {
-            public readonly ushort Id;
-            public readonly ushort Crc;
-            //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
-            public readonly ushort[] Payload;
-        }
-
-        readonly int height = 40;
-        readonly int width = 80;
-        Spi spi;
-        readonly ushort[,] blackFrame;
+        private readonly int height = 40;
+        private readonly int width = 80;
+        private Spi spi;
 
         /// <summary>
-        /// Construct a FLIR Lepton
+        ///     Construct a FLIR Lepton
         /// </summary>
         /// <param name="spi">The Spi module to use</param>
         public FlirLepton(Spi spi)
@@ -36,16 +27,13 @@ namespace Treehopper.Libraries.Sensors.Optical
             //spi.ChipSelect.DigitalValue = true;
             spi.Enabled = true;
             blackFrame = new ushort[height, width];
-            for (int i=0;i<height;i++)
-            {
-                for (int j = 0; j < width; j++)
-                    blackFrame[i,j] = (ushort)0xffff;
-            }
-
+            for (var i = 0; i < height; i++)
+            for (var j = 0; j < width; j++)
+                blackFrame[i, j] = 0xffff;
         }
 
         /// <summary>
-        /// Get the raw frame from the sensor
+        ///     Get the raw frame from the sensor
         /// </summary>
         /// <returns>An awaitable 2D-array of values</returns>
         public async Task<ushort[,]> GetRawFrame()
@@ -53,35 +41,28 @@ namespace Treehopper.Libraries.Sensors.Optical
             //spi.ChipSelect.DigitalValue = false;
             await Task.Delay(185);
             //spi.ChipSelect.DigitalValue = true;
-            
-            ushort[,] frame = new ushort[height, width];
-            bool frameAcquired = false;
-            bool syncAcquired = false;
+
+            var frame = new ushort[height, width];
+            var frameAcquired = false;
+            var syncAcquired = false;
             while (!frameAcquired)
             {
                 syncAcquired = false;
-                VoSPI packet = new VoSPI();
+                var packet = new VoSPI();
                 while (!syncAcquired)
                 {
                     packet = await GetPacket();
                     if ((packet.Id & 0x000f) != 0x000f)
                         syncAcquired = true;
-
                 }
-                for (int i = 0; i < height; i++)
+                for (var i = 0; i < height; i++)
                 {
                     if ((packet.Id & 0x000f) == 0x000f)
-                    {
-                        //Debug.WriteLine("Lost sync on line "+i);
-                        //Debug.WriteLine("PacketID: " + packet.Id);
                         break;
-                    }
-                        
-                    for (int j = 0; j < width; j++)
-                    {
+
+                    for (var j = 0; j < width; j++)
                         frame[i, j] = packet.Payload[j];
-                    }
-                    if (i == height-1)
+                    if (i == height - 1)
                         frameAcquired = true;
                     packet = await GetPacket();
                 }
@@ -116,47 +97,41 @@ namespace Treehopper.Libraries.Sensors.Optical
 //        }
 //#endif
 
-            /// <summary>
-            /// Get the corrected raster frame 
-            /// </summary>
-            /// <returns>A byte[] raster</returns>
+        /// <summary>
+        ///     Get the corrected raster frame
+        /// </summary>
+        /// <returns>A byte[] raster</returns>
         public async Task<byte[]> GetCorrectedRasterFrameArray()
         {
-            ushort[,] rawFrame = await GetRawFrame();
+            var rawFrame = await GetRawFrame();
             ushort maxVal = 0;
-            ushort minVal = ushort.MaxValue;
-            for (int i = 0; i < height; i++)
+            var minVal = ushort.MaxValue;
+            for (var i = 0; i < height; i++)
+            for (var j = 0; j < width; j++)
             {
-                for (int j = 0; j < width; j++)
-                {
-                    if (rawFrame[i, j] > maxVal)
-                        maxVal = rawFrame[i, j];
-                    if (rawFrame[i, j] < minVal)
-                        minVal = rawFrame[i, j];
-                }
+                if (rawFrame[i, j] > maxVal)
+                    maxVal = rawFrame[i, j];
+                if (rawFrame[i, j] < minVal)
+                    minVal = rawFrame[i, j];
             }
 
-            int range = maxVal - minVal;
+            var range = maxVal - minVal;
 
             //Debug.WriteLine("max val: " + maxVal);
             //Debug.WriteLine("min val: " + minVal);
 
-            double factor = 255.0 / range;
+            var factor = 255.0 / range;
 
-            byte[] correctedFrame = new byte[width * height];
+            var correctedFrame = new byte[width * height];
 
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    correctedFrame[ i * width + j] = (byte)(rawFrame[i, j]/256);
-                }
-            }
+            for (var i = 0; i < height; i++)
+            for (var j = 0; j < width; j++)
+                correctedFrame[i * width + j] = (byte) (rawFrame[i, j] / 256);
 
             return correctedFrame;
         }
 
-        async Task<VoSPI> GetPacket()
+        private async Task<VoSPI> GetPacket()
         {
             //int rawsize = Marshal.SizeOf<VoSPI>();
             //byte[] data = await spi.SendReceive(new byte[164]);
@@ -165,23 +140,23 @@ namespace Treehopper.Libraries.Sensors.Optical
             //return Marshal.PtrToStructure<VoSPI>(buffer);
             throw new NotImplementedException();
         }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
+        private struct VoSPI
+        {
+            public readonly ushort Id;
+
+            public readonly ushort Crc;
+
+            //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
+            public readonly ushort[] Payload;
+        }
     }
 
-    static class Crc16
+    internal static class Crc16
     {
-        const ushort polynomial = 0xA001;
-        static readonly ushort[] table = new ushort[256];
-
-        public static ushort ComputeChecksum(byte[] bytes)
-        {
-            ushort crc = 0;
-            for (int i = 0; i < bytes.Length; ++i)
-            {
-                byte index = (byte)(crc ^ bytes[i]);
-                crc = (ushort)((crc >> 8) ^ table[index]);
-            }
-            return crc;
-        }
+        private const ushort polynomial = 0xA001;
+        private static readonly ushort[] table = new ushort[256];
 
         static Crc16()
         {
@@ -194,17 +169,24 @@ namespace Treehopper.Libraries.Sensors.Optical
                 for (byte j = 0; j < 8; ++j)
                 {
                     if (((value ^ temp) & 0x0001) != 0)
-                    {
-                        value = (ushort)((value >> 1) ^ polynomial);
-                    }
+                        value = (ushort) ((value >> 1) ^ polynomial);
                     else
-                    {
                         value >>= 1;
-                    }
                     temp >>= 1;
                 }
                 table[i] = value;
             }
+        }
+
+        public static ushort ComputeChecksum(byte[] bytes)
+        {
+            ushort crc = 0;
+            for (var i = 0; i < bytes.Length; ++i)
+            {
+                var index = (byte) (crc ^ bytes[i]);
+                crc = (ushort) ((crc >> 8) ^ table[index]);
+            }
+            return crc;
         }
     }
 }

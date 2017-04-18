@@ -4,170 +4,172 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// HD44780-compatible character display
+    ///     HD44780-compatible character display
     /// </summary>
     public class Hd44780 : CharacterDisplay
     {
         /// <summary>
-        /// Whether to use 4 or 8 bits for transactions
+        ///     Whether to use 4 or 8 bits for transactions
         /// </summary>
         public enum BitMode
         {
             /// <summary>
-            /// 4-bit mode
+            ///     4-bit mode
             /// </summary>
             FourBit = 0x00,
 
             /// <summary>
-            /// 8-bit mode
+            ///     8-bit mode
             /// </summary>
             EightBit = 0x10
         }
 
         /// <summary>
-        /// The font mode to use
-        /// </summary>
-        public enum FontMode
-        {
-            /// <summary>
-            /// Use 5x8 pixel fonts
-            /// </summary>
-            Font_5x8 = 0x00,
-
-            /// <summary>
-            /// Use 5x10 pixel fonts
-            /// </summary>
-            Font_5x10 = 0x04
-        }
-
-        /// <summary>
-        /// Whether the display is single or multi-line
-        /// </summary>
-        public enum LinesMode
-        {
-            /// <summary>
-            /// One-line mode
-            /// </summary>
-            OneLine = 0x00,
-
-            /// <summary>
-            /// Two or more lines
-            /// </summary>
-            TwoOrMoreLines = 0x08
-        }
-
-        /// <summary>
-        /// The display state
-        /// </summary>
-        public enum DisplayState
-        {
-            /// <summary>
-            /// Display off
-            /// </summary>
-            DisplayOff = 0x00,
-
-            /// <summary>
-            /// Display on
-            /// </summary>
-            DisplayOn = 0x04
-        }
-
-        /// <summary>
-        /// The cursor display state
-        /// </summary>
-        public enum CursorState
-        {
-            /// <summary>
-            /// Cursor is not displayed
-            /// </summary>
-            CursorOff = 0x00,
-
-            /// <summary>
-            /// Cursor is displayed
-            /// </summary>
-            CursorOn = 0x02
-        }
-
-        /// <summary>
-        /// Whether the cursor should blink
+        ///     Whether the cursor should blink
         /// </summary>
         public enum BlinkState
         {
             /// <summary>
-            /// The cursor doesn't blink
+            ///     The cursor doesn't blink
             /// </summary>
             BlinkOff = 0x00,
 
             /// <summary>
-            /// The cursor blinks
+            ///     The cursor blinks
             /// </summary>
             BlinkOn = 0x01
         }
 
         /// <summary>
-        /// An enumeration of commands the display supports
+        ///     An enumeration of commands the display supports
         /// </summary>
         public enum Command
         {
             /// <summary>
-            /// Clear the display
+            ///     Clear the display
             /// </summary>
             ClearDisplay = 0x01,
 
             /// <summary>
-            /// Return the cursor to top-left
+            ///     Return the cursor to top-left
             /// </summary>
             ReturnHome = 0x02,
 
             /// <summary>
-            /// Entry mode set
+            ///     Entry mode set
             /// </summary>
             EntryModeSet = 0x04,
 
             /// <summary>
-            /// Set the display mode
+            ///     Set the display mode
             /// </summary>
             DisplayControl = 0x08,
 
             /// <summary>
-            /// Move the cursor
+            ///     Move the cursor
             /// </summary>
             CursorShift = 0x10,
 
             /// <summary>
-            /// Control display functions
+            ///     Control display functions
             /// </summary>
             FunctionSet = 0x20,
 
             /// <summary>
-            /// Set the CGRAM address to write to
+            ///     Set the CGRAM address to write to
             /// </summary>
             SetCgramAddr = 0x40,
 
             /// <summary>
-            /// Set DDRAM address to write to
+            ///     Set DDRAM address to write to
             /// </summary>
             SetDdramAddr = 0x80
         }
 
-        private readonly BitMode bits;
-        private readonly LinesMode lines;
-        private FontMode font;
-        private readonly WriteOnlyParallelInterface iface;
-        private bool display;
-        private bool cursor;
-        private bool blink;
-        private readonly DigitalOut backlight;
+        /// <summary>
+        ///     The cursor display state
+        /// </summary>
+        public enum CursorState
+        {
+            /// <summary>
+            ///     Cursor is not displayed
+            /// </summary>
+            CursorOff = 0x00,
+
+            /// <summary>
+            ///     Cursor is displayed
+            /// </summary>
+            CursorOn = 0x02
+        }
 
         /// <summary>
-        /// Construct a new HD44780-compatible display
+        ///     The display state
+        /// </summary>
+        public enum DisplayState
+        {
+            /// <summary>
+            ///     Display off
+            /// </summary>
+            DisplayOff = 0x00,
+
+            /// <summary>
+            ///     Display on
+            /// </summary>
+            DisplayOn = 0x04
+        }
+
+        /// <summary>
+        ///     The font mode to use
+        /// </summary>
+        public enum FontMode
+        {
+            /// <summary>
+            ///     Use 5x8 pixel fonts
+            /// </summary>
+            Font_5x8 = 0x00,
+
+            /// <summary>
+            ///     Use 5x10 pixel fonts
+            /// </summary>
+            Font_5x10 = 0x04
+        }
+
+        /// <summary>
+        ///     Whether the display is single or multi-line
+        /// </summary>
+        public enum LinesMode
+        {
+            /// <summary>
+            ///     One-line mode
+            /// </summary>
+            OneLine = 0x00,
+
+            /// <summary>
+            ///     Two or more lines
+            /// </summary>
+            TwoOrMoreLines = 0x08
+        }
+
+        private readonly DigitalOut backlight;
+
+        private readonly BitMode bits;
+        private readonly WriteOnlyParallelInterface iface;
+        private readonly LinesMode lines;
+        private bool blink;
+        private bool cursor;
+        private bool display;
+        private FontMode font;
+
+        /// <summary>
+        ///     Construct a new HD44780-compatible display
         /// </summary>
         /// <param name="iface">The writable parallel interface to use</param>
         /// <param name="Columns">The number of columns in the display</param>
         /// <param name="Rows">The number of rows of the display</param>
         /// <param name="Backlight">The active-high pin to use for the backlight</param>
         /// <param name="font">The font mode to use</param>
-        public Hd44780(WriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOut Backlight = null, FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
+        public Hd44780(WriteOnlyParallelInterface iface, int Columns, int Rows, DigitalOut Backlight = null,
+            FontMode font = FontMode.Font_5x8) : base(Columns, Rows)
         {
             if (iface.Width == 8)
                 bits = BitMode.EightBit;
@@ -189,17 +191,17 @@ namespace Treehopper.Libraries.Displays
 
             if (bits == BitMode.FourBit)
             {
-                iface.WriteCommand(new uint[] { 0x03 }).Wait();
+                iface.WriteCommand(new uint[] {0x03}).Wait();
                 Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] { 0x03 }).Wait();
+                iface.WriteCommand(new uint[] {0x03}).Wait();
                 Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] { 0x03 }).Wait();
+                iface.WriteCommand(new uint[] {0x03}).Wait();
                 Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] { 0x02 }).Wait();
+                iface.WriteCommand(new uint[] {0x02}).Wait();
             }
 
 
-            cmd = (byte)((byte)Command.FunctionSet | (byte)bits | (byte)lines | (byte)font);
+            cmd = (byte) ((byte) Command.FunctionSet | (byte) bits | (byte) lines | (byte) font);
             writeCommand(cmd).Wait();
 
             Display = true;
@@ -216,14 +218,11 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Enable or disable the backlight
+        ///     Enable or disable the backlight
         /// </summary>
         public bool Backlight
         {
-            get
-            {
-                return backlight?.DigitalValue ?? false;
-            }
+            get { return backlight?.DigitalValue ?? false; }
             set
             {
                 if (backlight == null) return;
@@ -232,7 +231,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Enable or disable the display
+        ///     Enable or disable the display
         /// </summary>
         public bool Display
         {
@@ -246,7 +245,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Enable or disable the cursor
+        ///     Enable or disable the cursor
         /// </summary>
         public bool Cursor
         {
@@ -260,7 +259,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Enable or disable cursor blinking
+        ///     Enable or disable cursor blinking
         /// </summary>
         public bool Blink
         {
@@ -275,16 +274,16 @@ namespace Treehopper.Libraries.Displays
 
         private Task updateDisplayControl()
         {
-            byte cmd = (byte)((byte)Command.DisplayControl |
-                (Display ? (byte)DisplayState.DisplayOn : 0) |
-                (Cursor ? (byte)CursorState.CursorOn : 0) |
-                (Blink ? (byte)BlinkState.BlinkOn : 0));
+            var cmd = (byte) ((byte) Command.DisplayControl |
+                              (Display ? (byte) DisplayState.DisplayOn : 0) |
+                              (Cursor ? (byte) CursorState.CursorOn : 0) |
+                              (Blink ? (byte) BlinkState.BlinkOn : 0));
 
             return writeCommand(cmd);
         }
 
         /// <summary>
-        /// Clear the display
+        ///     Clear the display
         /// </summary>
         /// <returns>An awaitable task that completes when finished</returns>
         protected override async Task clear()
@@ -294,20 +293,20 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Update the cursor position
+        ///     Update the cursor position
         /// </summary>
         /// <returns>An awaitable task that completes when finished</returns>
         protected override Task updateCursorPosition()
         {
-            byte[] row_offsets = new byte[] { 0x00, 0x40, (byte)Columns, (byte)(0x40 + Columns) };
-            byte data = (byte)(CusorLeft + row_offsets[CusorTop]);
+            byte[] row_offsets = {0x00, 0x40, (byte) Columns, (byte) (0x40 + Columns)};
+            var data = (byte) (CusorLeft + row_offsets[CusorTop]);
 
-            byte cmd = (byte)((byte)Command.SetDdramAddr | data);
+            var cmd = (byte) ((byte) Command.SetDdramAddr | data);
             return writeCommand(cmd);
         }
 
         /// <summary>
-        /// Write data to the display at the current cursor position
+        ///     Write data to the display at the current cursor position
         /// </summary>
         /// <param name="value">The data to write</param>
         /// <returns>An awaitable task that completes when finished</returns>
@@ -315,25 +314,21 @@ namespace Treehopper.Libraries.Displays
         {
             string str = value.ToString();
             var data = new byte[str.Length];
-            for(int i=0;i<str.Length;i++)
-            {
-                data[i] = (byte)str[i];
-            }
+            for (var i = 0; i < str.Length; i++)
+                data[i] = (byte) str[i];
             return writeData(data);
         }
 
         private Task writeCommand(Command cmd)
         {
-            return writeCommand((byte)cmd);
+            return writeCommand((byte) cmd);
         }
+
         private Task writeCommand(byte cmd)
         {
-            if(bits == BitMode.EightBit)
-                return iface.WriteCommand(new uint[] { cmd });
-            else
-            {
-                return iface.WriteCommand(new uint[] { (uint)(cmd >> 4), (uint)(cmd & 0x0f) }); // send high nib, then low nib
-            }
+            if (bits == BitMode.EightBit)
+                return iface.WriteCommand(new uint[] {cmd});
+            return iface.WriteCommand(new[] {(uint) (cmd >> 4), (uint) (cmd & 0x0f)}); // send high nib, then low nib
         }
 
         private Task writeData(byte[] data)
@@ -343,24 +338,21 @@ namespace Treehopper.Libraries.Displays
             {
                 dataToSend = new uint[data.Length];
 
-                for (int i = 0; i < data.Length; i++)
+                for (var i = 0; i < data.Length; i++)
                     dataToSend[i] = data[i];
             }
             else
             {
                 dataToSend = new uint[data.Length * 2];
-                for(int i=0;i<data.Length;i++)
+                for (var i = 0; i < data.Length; i++)
                 {
                     // send high nib, then low nib
-                    dataToSend[i * 2] = (byte)(data[i] >> 4);
-                    dataToSend[i * 2 + 1] = (byte)(data[i] & 0x0f);
+                    dataToSend[i * 2] = (byte) (data[i] >> 4);
+                    dataToSend[i * 2 + 1] = (byte) (data[i] & 0x0f);
                 }
             }
 
             return iface.WriteData(dataToSend);
         }
-
-
-        
     }
 }

@@ -3,42 +3,99 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
-
-
     /// <summary>
-    /// ams TSL2591 High-dynamic range digital light sensor
+    ///     ams TSL2591 High-dynamic range digital light sensor
     /// </summary>
     public class Tsl2591 : SMBusDevice
     {
-        const byte CommandBit = 0xA0;
-        const byte ReadBit = 0x01;
+        /// <summary>
+        ///     Gain settings
+        /// </summary>
+        public enum Gain
+        {
+            /// <summary>
+            ///     Low
+            /// </summary>
+            Low,
+
+            /// <summary>
+            ///     Medium
+            /// </summary>
+            Medium,
+
+            /// <summary>
+            ///     High
+            /// </summary>
+            High,
+
+            /// <summary>
+            ///     Maximum
+            /// </summary>
+            Maximum
+        }
+
+        /// <summary>
+        ///     Integration times
+        /// </summary>
+        public enum IntegrationTime
+        {
+            /// <summary>
+            ///     100 ms
+            /// </summary>
+            Time_100ms,
+
+            /// <summary>
+            ///     200 ms
+            /// </summary>
+            Time_200ms,
+
+            /// <summary>
+            ///     300 ms
+            /// </summary>
+            Time_300ms,
+
+            /// <summary>
+            ///     400 ms
+            /// </summary>
+            Time_400ms,
+
+            /// <summary>
+            ///     500 ms
+            /// </summary>
+            Time_500ms,
+
+            /// <summary>
+            ///     600 ms
+            /// </summary>
+            Time_600ms
+        }
+
+        private const byte CommandBit = 0xA0;
+        private const byte ReadBit = 0x01;
+
+        private Gain gain = Gain.Low;
+        private IntegrationTime integrationTime = IntegrationTime.Time_100ms;
 
 
         /// <summary>
-        /// Construct a TSL2591 ambient light sensor
+        ///     Construct a TSL2591 ambient light sensor
         /// </summary>
         /// <param name="I2cModule">The I2c module this sensor is attached to</param>
         public Tsl2591(I2c I2cModule) : base(0x29, I2cModule, 100)
         {
-            var t = ReadByteData(CommandBit | (byte)Registers.DeviceId);
+            var t = ReadByteData(CommandBit | (byte) Registers.DeviceId);
             t.Wait();
-            byte retVal = t.Result;
-            if(retVal != 0x50)
-            {
+            var retVal = t.Result;
+            if (retVal != 0x50)
                 throw new Exception("TSL2591 not found on bus. Check your connections");
-            }
         }
-        private IntegrationTime integrationTime = IntegrationTime.Time_100ms;
 
         /// <summary>
-        /// Get or set the integration time of this sensor
+        ///     Get or set the integration time of this sensor
         /// </summary>
         public IntegrationTime IntegrationTimeSetting
         {
-            get
-            {
-                return integrationTime;
-            }
+            get { return integrationTime; }
             set
             {
                 if (integrationTime == value)
@@ -48,17 +105,12 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
-        private Gain gain = Gain.Low;
-
         /// <summary>
-        /// Get or set the gain setting
+        ///     Get or set the gain setting
         /// </summary>
         public Gain GainSetting
         {
-            get
-            {
-                return gain;
-            }
+            get { return gain; }
             set
             {
                 if (gain == value)
@@ -70,11 +122,11 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         private async Task sendConfig()
         {
-            byte config = (byte)((byte)integrationTime | ((byte)gain << 4));
-            await WriteByteData((byte)Registers.Control, config);
+            var config = (byte) ((byte) integrationTime | ((byte) gain << 4));
+            await WriteByteData((byte) Registers.Control, config);
         }
 
-        enum Registers
+        private enum Registers
         {
             Enable = 0x00,
             Control = 0x01,
@@ -94,68 +146,6 @@ namespace Treehopper.Libraries.Sensors.Optical
             Ch0HighByte = 0x15,
             Ch1LowByte = 0x16,
             Ch1HighByte = 0x17
-        };
-
-        /// <summary>
-        /// Integration times
-        /// </summary>
-        public enum IntegrationTime
-        {
-            /// <summary>
-            /// 100 ms
-            /// </summary>
-            Time_100ms,
-
-            /// <summary>
-            /// 200 ms
-            /// </summary>
-            Time_200ms,
-
-            /// <summary>
-            /// 300 ms
-            /// </summary>
-            Time_300ms,
-
-            /// <summary>
-            /// 400 ms
-            /// </summary>
-            Time_400ms,
-
-            /// <summary>
-            /// 500 ms
-            /// </summary>
-            Time_500ms,
-
-            /// <summary>
-            /// 600 ms
-            /// </summary>
-            Time_600ms
-        };
-
-        /// <summary>
-        /// Gain settings
-        /// </summary>
-        public enum Gain
-        {
-            /// <summary>
-            /// Low
-            /// </summary>
-            Low,
-
-            /// <summary>
-            /// Medium
-            /// </summary>
-            Medium,
-
-            /// <summary>
-            /// High
-            /// </summary>
-            High,
-
-            /// <summary>
-            /// Maximum
-            /// </summary>
-            Maximum
-        };
+        }
     }
 }

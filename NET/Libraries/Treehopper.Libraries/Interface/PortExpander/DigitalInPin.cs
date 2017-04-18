@@ -4,20 +4,21 @@ using Treehopper.Libraries.Sensors;
 namespace Treehopper.Libraries.Interface.PortExpander
 {
     /// <summary>
-    /// A DigitalInPin-only implementation for the C and Z buttons
+    ///     A DigitalInPin-only implementation for the C and Z buttons
     /// </summary>
     public class DigitalInPeripheralPin : DigitalIn
     {
         private readonly IPollable parent;
-        TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
+        private TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
         private bool digitalValue;
+
         internal DigitalInPeripheralPin(IPollable parent)
         {
             this.parent = parent;
         }
 
         /// <summary>
-        /// Gets the digital state of the button. "0" for "unpressed" and "1" for "pressed"
+        ///     Gets the digital state of the button. "0" for "unpressed" and "1" for "pressed"
         /// </summary>
         public bool DigitalValue
         {
@@ -31,23 +32,27 @@ namespace Treehopper.Libraries.Interface.PortExpander
             {
                 if (digitalValue == value) return;
                 digitalValue = value;
-                DigitalValueChanged?.Invoke((DigitalIn)this, new DigitalInValueChangedEventArgs(digitalValue));
+                DigitalValueChanged?.Invoke(this, new DigitalInValueChangedEventArgs(digitalValue));
                 digitalSignal.TrySetResult(digitalValue);
             }
         }
 
         /// <summary>
-        /// Fires when the button state changes
+        ///     Fires when the button state changes
         /// </summary>
         public event OnDigitalInValueChanged DigitalValueChanged;
 
         /// <summary>
-        /// Wait for the button to change state
+        ///     Wait for the button to change state
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// If the parent Nunchuk's <see cref="WiiNunchuk.AutoUpdateWhenPropertyRead"/> is "true", executing this function will start a Task that will poll the Nunchuk at an update rate specified by <see cref="WiiNunchuk.AwaitPollingInterval"/> until the button's state changes. Otherwise, this will return an awaitable (empty) task that will complete when the button state changes (the user is required to call <see cref="WiiNunchuk.Update()"/> periodically).
-        /// </para>
+        ///     <para>
+        ///         If the parent Nunchuk's <see cref="WiiNunchuk.AutoUpdateWhenPropertyRead" /> is "true", executing this function
+        ///         will start a Task that will poll the Nunchuk at an update rate specified by
+        ///         <see cref="WiiNunchuk.AwaitPollingInterval" /> until the button's state changes. Otherwise, this will return an
+        ///         awaitable (empty) task that will complete when the button state changes (the user is required to call
+        ///         <see cref="WiiNunchuk.Update()" /> periodically).
+        ///     </para>
         /// </remarks>
         /// <returns>The new state of the button</returns>
         public Task<bool> AwaitDigitalValueChange()
@@ -56,7 +61,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
             {
                 return Task.Run(async () =>
                 {
-                    bool oldValue = digitalValue;
+                    var oldValue = digitalValue;
                     // poll the device
                     while (digitalValue == oldValue)
                     {
@@ -67,15 +72,12 @@ namespace Treehopper.Libraries.Interface.PortExpander
                     return digitalValue;
                 });
             }
-            else
-            {
-                digitalSignal = new TaskCompletionSource<bool>();
-                return digitalSignal.Task;
-            }
+            digitalSignal = new TaskCompletionSource<bool>();
+            return digitalSignal.Task;
         }
 
         /// <summary>
-        /// Unused. Stub for DigitalInPin compliance.
+        ///     Unused. Stub for DigitalInPin compliance.
         /// </summary>
         public async Task MakeDigitalIn()
         {

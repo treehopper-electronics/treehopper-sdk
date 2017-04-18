@@ -8,12 +8,17 @@ using Treehopper.Utilities;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// Base class that all LED drivers inherit from.
+    ///     Base class that all LED drivers inherit from.
     /// </summary>
     public abstract class LedDriver : ILedDriver
     {
         /// <summary>
-        /// Construct an LedDriver
+        ///     The internally-referenced global brightness of the LED driver
+        /// </summary>
+        protected double brightness;
+
+        /// <summary>
+        ///     Construct an LedDriver
         /// </summary>
         /// <param name="numLeds">The number of LEDs to construct</param>
         /// <param name="HasGlobalBrightnessControl">Whether the controller can globally adjust the LED brightness.</param>
@@ -22,7 +27,7 @@ namespace Treehopper.Libraries.Displays
         {
             this.HasGlobalBrightnessControl = HasGlobalBrightnessControl;
             this.HasIndividualBrightnessControl = HasIndividualBrightnessControl;
-            for (int i = 0; i < numLeds; i++)
+            for (var i = 0; i < numLeds; i++)
             {
                 var led = new Led(this, i, HasIndividualBrightnessControl);
                 Leds.Add(led);
@@ -30,32 +35,27 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Gets or sets whether the display should auto-flush whenever an LED state is changed
+        ///     Gets or sets whether the display should auto-flush whenever an LED state is changed
         /// </summary>
         public bool AutoFlush { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets whether this controller supports global brightness control.
+        ///     Gets or sets whether this controller supports global brightness control.
         /// </summary>
         public bool HasGlobalBrightnessControl { get; protected set; }
 
         /// <summary>
-        /// Gets or sets whether this controller's LEDs have individual brightness control (through PWM or otherwise).
+        ///     Gets or sets whether this controller's LEDs have individual brightness control (through PWM or otherwise).
         /// </summary>
-        public bool HasIndividualBrightnessControl { get; private set; }
+        public bool HasIndividualBrightnessControl { get; }
 
         /// <summary>
-        /// The internally-referenced global brightness of the LED driver
-        /// </summary>
-        protected double brightness = 0.0;
-
-        /// <summary>
-        /// The global brightness, from 0.0-1.0, of the LEDs attached to this driver
+        ///     The global brightness, from 0.0-1.0, of the LEDs attached to this driver
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// This property is meaningless when <see cref="HasGlobalBrightnessControl"/>  is false
-        /// </para>
+        ///     <para>
+        ///         This property is meaningless when <see cref="HasGlobalBrightnessControl" />  is false
+        ///     </para>
         /// </remarks>
         public double Brightness
         {
@@ -67,12 +67,14 @@ namespace Treehopper.Libraries.Displays
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException("Valid brightness is from 0 to 1");
                 brightness = value;
-                
-                if(HasGlobalBrightnessControl) // might be more efficient
-                    SetGlobalBrightness(brightness); 
-                else if(HasIndividualBrightnessControl)
+
+                if (HasGlobalBrightnessControl) // might be more efficient
                 {
-                    bool savedAutoflushState = AutoFlush;
+                    SetGlobalBrightness(brightness);
+                }
+                else if (HasIndividualBrightnessControl)
+                {
+                    var savedAutoflushState = AutoFlush;
                     AutoFlush = false;
                     foreach (var led in Leds)
                         led.Brightness = brightness;
@@ -82,57 +84,61 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        internal abstract void SetGlobalBrightness(double brightness);
-
         /// <summary>
-        /// The collection of LEDs that belong to this driver.
+        ///     The collection of LEDs that belong to this driver.
         /// </summary>
         public IList<Led> Leds { get; set; } = new Collection<Led>();
 
         /// <summary>
-        /// Gets the parent device of this LED driver
+        ///     Gets the parent device of this LED driver
         /// </summary>
         public IFlushable Parent { get; protected set; }
 
+        void ILedDriver.LedStateChanged(Led led)
+        {
+            LedStateChanged(led);
+        }
+
+        void ILedDriver.LedBrightnessChanged(Led led)
+        {
+            LedBrightnessChanged(led);
+        }
 
         /// <summary>
-        /// Called by the LED when the state changes
-        /// </summary>
-        /// <param name="led">The LED whose state changed</param>
-        internal abstract void LedStateChanged(Led led);
-        void ILedDriver.LedStateChanged(Led led) { LedStateChanged(led); }
-
-
-        /// <summary>
-        /// Called by the LED when the brightness changed
-        /// </summary>
-        /// <param name="led">The LED whose brightness changed</param>
-        internal abstract void LedBrightnessChanged(Led led);
-        void ILedDriver.LedBrightnessChanged(Led led) { LedBrightnessChanged(led); }
-
-        /// <summary>
-        /// Clear the display
+        ///     Clear the display
         /// </summary>
         /// <returns>An awaitable task that completes when the display is cleared</returns>
         public async Task Clear()
         {
-            bool autoflushSave = AutoFlush;
+            var autoflushSave = AutoFlush;
             AutoFlush = false;
-            foreach(var led in Leds)
-            {
+            foreach (var led in Leds)
                 led.State = false;
-            }
             await Flush(true);
             AutoFlush = autoflushSave;
         }
 
         /// <summary>
-        /// Write out the current values of the LEDs immediately.
+        ///     Write out the current values of the LEDs immediately.
         /// </summary>
         /// <param name="force">Whether to write out all values, even if they appear unchanged.</param>
-        /// <returns>An awaitable <see cref="Task"/></returns>
+        /// <returns>An awaitable <see cref="Task" /></returns>
         public abstract Task Flush(bool force = false);
 
+        internal abstract void SetGlobalBrightness(double brightness);
 
+
+        /// <summary>
+        ///     Called by the LED when the state changes
+        /// </summary>
+        /// <param name="led">The LED whose state changed</param>
+        internal abstract void LedStateChanged(Led led);
+
+
+        /// <summary>
+        ///     Called by the LED when the brightness changed
+        /// </summary>
+        /// <param name="led">The LED whose brightness changed</param>
+        internal abstract void LedBrightnessChanged(Led led);
     }
 }

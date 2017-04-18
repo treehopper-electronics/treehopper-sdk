@@ -1,6 +1,6 @@
 ﻿namespace Treehopper.Libraries.Sensors.Humidity
 {
-    interface IHumiditySensor : IPollable
+    internal interface IHumiditySensor : IPollable
     {
         double RelativeHumidity { get; }
     }

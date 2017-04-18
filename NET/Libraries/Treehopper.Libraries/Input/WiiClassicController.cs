@@ -1,29 +1,29 @@
-﻿namespace Treehopper.Libraries.Input
-{
-    using System.Collections;
-    using System.Linq;
-    using System.Numerics;
-    using System.Threading.Tasks;
-    using Interface.PortExpander;
-    using Sensors;
+﻿using System.Collections;
+using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
+using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper.Libraries.Sensors;
 
+namespace Treehopper.Libraries.Input
+{
     /// <summary>
-    /// Nintendo Wii Classic Controller
+    ///     Nintendo Wii Classic Controller
     /// </summary>
     public class WiiClassicController : IPollable
     {
         private readonly SMBusDevice dev;
-        private Vector2 rightStick;
-        private Vector2 leftStick;
         private DPadState dPad;
+        private Vector2 leftStick;
         private float leftTriggerForce;
+        private Vector2 rightStick;
         private float rightTriggerForce;
 
         public WiiClassicController(I2c i2c)
         {
             dev = new SMBusDevice(0x52, i2c);
-            dev.WriteData(new byte[] { 0xF0, 0x55 }).Wait();
-            dev.WriteData(new byte[] { 0xFB, 0x00 }).Wait();
+            dev.WriteData(new byte[] {0xF0, 0x55}).Wait();
+            dev.WriteData(new byte[] {0xFB, 0x00}).Wait();
 
             L = new Button(new DigitalInPeripheralPin(this), false);
             R = new Button(new DigitalInPeripheralPin(this), false);
@@ -38,19 +38,17 @@
             Y = new Button(new DigitalInPeripheralPin(this), false);
         }
 
-        public event DPadStateEventHandler DPadStateChanged;
-
-        public Button R { get; private set; }
-        public Button L { get; private set; }
-        public Button ZL { get; private set; }
-        public Button ZR { get; private set; }
-        public Button Home { get; private set; }
-        public Button Plus { get; private set; }
-        public Button Minus { get; private set; }
-        public Button A { get; private set; }
-        public Button B { get; private set; }
-        public Button X { get; private set; }
-        public Button Y { get; private set; }
+        public Button R { get; }
+        public Button L { get; }
+        public Button ZL { get; }
+        public Button ZR { get; }
+        public Button Home { get; }
+        public Button Plus { get; }
+        public Button Minus { get; }
+        public Button A { get; }
+        public Button B { get; }
+        public Button X { get; }
+        public Button Y { get; }
 
 
         public DPadState DPad
@@ -109,7 +107,7 @@
             var response = await dev.ReadData(6).ConfigureAwait(false);
             var lx = (response[0] & 0x3F) - 32;
             var ly = (response[1] & 0x3F) - 32;
-            var rx = (response[2] >> 7) | ((response[1] & 0xC0) >> 5) | ((response[0] & 0xC0) >> 3) - 16;
+            var rx = (response[2] >> 7) | ((response[1] & 0xC0) >> 5) | (((response[0] & 0xC0) >> 3) - 16);
             var ry = (response[2] & 0x1F) - 16;
 
             leftStick.X = lx > 0 ? lx / 31f : lx / 32f;
@@ -124,47 +122,37 @@
             leftTriggerForce = lt / 31f;
             rightTriggerForce = rt / 31f;
 
-            BitArray array = new BitArray(response.Skip(4).Take(2).ToArray());
-            ((DigitalInPeripheralPin)(R.Input)).DigitalValue = !array[1];
-            ((DigitalInPeripheralPin)(Plus.Input)).DigitalValue = !array[2];
-            ((DigitalInPeripheralPin)(Home.Input)).DigitalValue = !array[3];
-            ((DigitalInPeripheralPin)(Minus.Input)).DigitalValue = !array[4];
-            ((DigitalInPeripheralPin)(L.Input)).DigitalValue = !array[5];
+            var array = new BitArray(response.Skip(4).Take(2).ToArray());
+            ((DigitalInPeripheralPin) R.Input).DigitalValue = !array[1];
+            ((DigitalInPeripheralPin) Plus.Input).DigitalValue = !array[2];
+            ((DigitalInPeripheralPin) Home.Input).DigitalValue = !array[3];
+            ((DigitalInPeripheralPin) Minus.Input).DigitalValue = !array[4];
+            ((DigitalInPeripheralPin) L.Input).DigitalValue = !array[5];
 
             // D-Pad stuff
             var temp = dPad;
-            if(!array[6])
-            {
+            if (!array[6])
                 dPad = DPadState.Down;
-            }
-            else if(!array[7])
-            {
+            else if (!array[7])
                 dPad = DPadState.Right;
-            }
-            else if(!array[8])
-            {
+            else if (!array[8])
                 dPad = DPadState.Up;
-            }
-            else if(!array[9])
-            {
+            else if (!array[9])
                 dPad = DPadState.Left;
-            }
             else
-            {
                 dPad = DPadState.None;
-            }
 
             if (temp != dPad)
-            {
-                DPadStateChanged?.Invoke(this, new DPadStateEventArgs() { NewValue = dPad });
-            }
+                DPadStateChanged?.Invoke(this, new DPadStateEventArgs {NewValue = dPad});
 
-            ((DigitalInPeripheralPin)(ZR.Input)).DigitalValue = !array[10];
-            ((DigitalInPeripheralPin)(X.Input)).DigitalValue = !array[11];
-            ((DigitalInPeripheralPin)(A.Input)).DigitalValue = !array[12];
-            ((DigitalInPeripheralPin)(Y.Input)).DigitalValue = !array[13];
-            ((DigitalInPeripheralPin)(B.Input)).DigitalValue = !array[14];
-            ((DigitalInPeripheralPin)(ZL.Input)).DigitalValue = !array[15];
+            ((DigitalInPeripheralPin) ZR.Input).DigitalValue = !array[10];
+            ((DigitalInPeripheralPin) X.Input).DigitalValue = !array[11];
+            ((DigitalInPeripheralPin) A.Input).DigitalValue = !array[12];
+            ((DigitalInPeripheralPin) Y.Input).DigitalValue = !array[13];
+            ((DigitalInPeripheralPin) B.Input).DigitalValue = !array[14];
+            ((DigitalInPeripheralPin) ZL.Input).DigitalValue = !array[15];
         }
+
+        public event DPadStateEventHandler DPadStateChanged;
     }
 }

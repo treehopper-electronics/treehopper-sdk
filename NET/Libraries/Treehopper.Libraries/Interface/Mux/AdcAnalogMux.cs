@@ -1,21 +1,20 @@
-﻿namespace Treehopper.Libraries.Interface.Mux
-{
-    using System;
-    using System.Collections;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
+namespace Treehopper.Libraries.Interface.Mux
+{
     /// <summary>
-    /// Analog mux for ADC expansion
+    ///     Analog mux for ADC expansion
     /// </summary>
     public class AdcAnalogMux
     {
-        internal AdcPin pin { get; set; }
         private readonly DigitalOut[] pins;
         internal int settlingTime;
 
         /// <summary>
-        /// Construct an <see cref="I2cMux"/> using a standard 4052-style two-bit 4:1 mux. 
+        ///     Construct an <see cref="I2cMux" /> using a standard 4052-style two-bit 4:1 mux.
         /// </summary>
         /// <param name="muxedPin">The upstream Adc pin to mux</param>
         /// <param name="pins">The pin(s) to use to control the mux, starting with the least-significant bit</param>
@@ -28,19 +27,19 @@
                 pin.MakeDigitalPushPullOut();
         }
 
+        internal AdcPin pin { get; set; }
+
         public Collection<AdcPin> AnalogPins { get; set; }
 
         /// <summary>
-        /// Set the mux
+        ///     Set the mux
         /// </summary>
         /// <param name="index">The index to be muxed</param>
         internal void setMux(int index)
         {
-            BitArray array = new BitArray(new byte[] { (byte)index });
-            for (int i = 0; i < pins.Length; i++)
-            {
+            var array = new BitArray(new[] {(byte) index});
+            for (var i = 0; i < pins.Length; i++)
                 pins[i].DigitalValue = array[i];
-            }
         }
 
         public class AdcAnalogMuxPin : AdcPin
@@ -56,7 +55,7 @@
             }
 
             /// <summary>
-            /// Get the raw ADC value
+            ///     Get the raw ADC value
             /// </summary>
             public int AdcValue
             {
@@ -69,23 +68,17 @@
             }
 
             /// <summary>
-            /// Gets or sets the threshold for the AdcValueChanged event
+            ///     Gets or sets the threshold for the AdcValueChanged event
             /// </summary>
             public int AdcValueChangedThreshold
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get { throw new NotImplementedException(); }
 
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                set { throw new NotImplementedException(); }
             }
 
             /// <summary>
-            /// The analog value (0-1)
+            ///     The analog value (0-1)
             /// </summary>
             public double AnalogValue
             {
@@ -98,23 +91,17 @@
             }
 
             /// <summary>
-            /// Gets or sets the threshold for the AnalogValueChanged event
+            ///     Gets or sets the threshold for the AnalogValueChanged event
             /// </summary>
             public double AnalogValueChangedThreshold
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get { throw new NotImplementedException(); }
 
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                set { throw new NotImplementedException(); }
             }
 
             /// <summary>
-            /// The analog voltage
+            ///     The analog voltage
             /// </summary>
             public double AnalogVoltage
             {
@@ -127,38 +114,32 @@
             }
 
             /// <summary>
-            /// Gets or sets the threshold for the AnalogVoltageChanged event
+            ///     Gets or sets the threshold for the AnalogVoltageChanged event
             /// </summary>
             public double AnalogVoltageChangedThreshold
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get { throw new NotImplementedException(); }
 
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                set { throw new NotImplementedException(); }
             }
 
             /// <summary>
-            /// Occurs when the ADC value change exceeds AdcValueChangedThreshold
+            ///     Occurs when the ADC value change exceeds AdcValueChangedThreshold
             /// </summary>
             public event OnAdcValueChanged AdcValueChanged;
 
             /// <summary>
-            /// Occurs when the analog value change exceeds AnalogValueChangedThreshold
+            ///     Occurs when the analog value change exceeds AnalogValueChangedThreshold
             /// </summary>
             public event OnAnalogValueChanged AnalogValueChanged;
 
             /// <summary>
-            /// Occurs when the analog voltage change exceeds AnalogVoltageChangedThreshold
+            ///     Occurs when the analog voltage change exceeds AnalogVoltageChangedThreshold
             /// </summary>
             public event OnAnalogVoltageChanged AnalogVoltageChanged;
 
             /// <summary>
-            /// Make the pin an input (unused)
+            ///     Make the pin an input (unused)
             /// </summary>
             public Task MakeAnalogIn()
             {

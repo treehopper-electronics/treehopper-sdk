@@ -1,16 +1,16 @@
-﻿namespace Treehopper.Libraries.Interface.Mux
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Treehopper.Libraries.Interface.Mux
+{
     /// <summary>
-    /// Base class for any circuit that implements an i2C mux
+    ///     Base class for any circuit that implements an i2C mux
     /// </summary>
     public abstract class I2cMux
     {
-        int currentIndex = -1;
+        private int currentIndex = -1;
 
         /// <summary>
-        /// Construct an I2cMux with a given muxed port
+        ///     Construct an I2cMux with a given muxed port
         /// </summary>
         /// <param name="UpstreamPort">The upstream port to mux</param>
         /// <param name="numPorts">The number of ports that belong to this mux</param>
@@ -18,17 +18,17 @@
         {
             this.UpstreamPort = UpstreamPort;
             UpstreamPort.Enabled = true;
-            for (int i = 0; i < numPorts; i++)
+            for (var i = 0; i < numPorts; i++)
                 Ports.Add(new I2cMuxPort(this, i));
         }
 
         /// <summary>
-        /// Collection of downstream I2C ports provided by this mux.
+        ///     Collection of downstream I2C ports provided by this mux.
         /// </summary>
         public IList<I2cMuxPort> Ports { get; protected set; } = new List<I2cMuxPort>();
 
         /// <summary>
-        /// The upstream I2C port that the selected downstream port should be connected to.
+        ///     The upstream I2C port that the selected downstream port should be connected to.
         /// </summary>
         public I2c UpstreamPort { get; set; }
 
@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Configure the mux to connect the specified <see cref="I2c"/> port to the upstream port 
+        ///     Configure the mux to connect the specified <see cref="I2c" /> port to the upstream port
         /// </summary>
         /// <param name="index">The index of the upstream port to connect</param>
         protected abstract void setMux(int index);

@@ -1,21 +1,21 @@
-﻿namespace Treehopper.Libraries.Sensors.Temperature
-{
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
+namespace Treehopper.Libraries.Sensors.Temperature
+{
     /// <summary>
-    /// Base temperature sensor functionality
+    ///     Base temperature sensor functionality
     /// </summary>
     public abstract class TemperatureSensor : ITemperatureSensor
     {
         private double temperatureCelsius;
 
         /// <summary>
-        /// Gets or sets whether this temperature sensor should be updated when read from
+        ///     Gets or sets whether this temperature sensor should be updated when read from
         /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         /// <summary>
-        /// Get the temperature, in Celsius
+        ///     Get the temperature, in Celsius
         /// </summary>
         public double Celsius
         {
@@ -27,32 +27,29 @@
                 return temperatureCelsius;
             }
 
-            protected set
-            {
-                temperatureCelsius = value;
-            }
+            protected set { temperatureCelsius = value; }
         }
 
         /// <summary>
-        /// Get the temperature, in Fahrenheit
+        ///     Get the temperature, in Fahrenheit
         /// </summary>
         public double Fahrenheit => ToFahrenheit(Celsius);
 
         /// <summary>
-        /// Get the temperature, in Kelvin
+        ///     Get the temperature, in Kelvin
         /// </summary>
         public double Kelvin => ToKelvin(Celsius);
 
         public int AwaitPollingInterval { get; set; }
 
         /// <summary>
-        /// Update the temperature from the current value reported by the sensor
+        ///     Update the temperature from the current value reported by the sensor
         /// </summary>
         /// <returns>An awaitable task</returns>
         public abstract Task Update();
 
         /// <summary>
-        /// Utility method to convert any Celsius temperature to Kelvin
+        ///     Utility method to convert any Celsius temperature to Kelvin
         /// </summary>
         /// <param name="temperatureCelsius">The original Celsius temperature</param>
         /// <returns>the Kelvin equivalent</returns>
@@ -62,17 +59,17 @@
         }
 
         /// <summary>
-        /// Utility method to convert any Celsius temperature to Fahrenheit
+        ///     Utility method to convert any Celsius temperature to Fahrenheit
         /// </summary>
         /// <param name="temperatureCelsius">The original Celsius temperature</param>
         /// <returns>the Fahrenheit equivalent</returns>
         public static double ToFahrenheit(double temperatureCelsius)
         {
-            return ((temperatureCelsius * 9.0) / 5.0) + 32.0;
+            return temperatureCelsius * 9.0 / 5.0 + 32.0;
         }
 
         /// <summary>
-        /// Returns a string representing the current temperature, in Celsius
+        ///     Returns a string representing the current temperature, in Celsius
         /// </summary>
         /// <returns>A string representing the current temperature</returns>
         public override string ToString()

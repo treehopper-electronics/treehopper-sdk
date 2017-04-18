@@ -4,40 +4,19 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Interface
 {
     /// <summary>
-    /// A class that represents a WriteOnlyParallelInterface constructed from a <see cref="IFlushableOutputPort{TDigitalPin}"/>
+    ///     A class that represents a WriteOnlyParallelInterface constructed from a
+    ///     <see cref="IFlushableOutputPort{TDigitalPin}" />
     /// </summary>
-    /// <typeparam name="T">A type that implements <see cref="DigitalOut"/></typeparam>
+    /// <typeparam name="T">A type that implements <see cref="DigitalOut" /></typeparam>
     public class FlushableParallelInterface<T> : WriteOnlyParallelInterface where T : DigitalOut
     {
         private readonly IFlushableOutputPort<T> port;
 
-        /// <summary>
-        /// A collection of pins to use for the data bus
-        /// </summary>
-        public Collection<DigitalOut> DataBus { get; set; } = new Collection<DigitalOut>();
+        private bool enabled;
+        private bool oldAutoflushSettings;
 
         /// <summary>
-        /// The Register Select (RS) pin to use
-        /// </summary>
-        public DigitalOut RegisterSelectPin { get; set; }
-
-        /// <summary>
-        /// The Read/Write (R/W) pin to use
-        /// </summary>
-        public DigitalOut ReadWritePin { get; set; }
-
-        /// <summary>
-        /// The enable (E) pin to use
-        /// </summary>
-        public DigitalOut EnablePin { get; set; }
-
-        /// <summary>
-        /// The number of microseconds to delay between transactions.
-        /// </summary>
-        public int DelayMicroseconds { get; set; }
-
-        /// <summary>
-        /// Construct a FlushableParallelInterface from a <see cref="IFlushableOutputPort{TDigitalPin}"/>. 
+        ///     Construct a FlushableParallelInterface from a <see cref="IFlushableOutputPort{TDigitalPin}" />.
         /// </summary>
         /// <param name="outputPort"></param>
         public FlushableParallelInterface(IFlushableOutputPort<T> outputPort)
@@ -45,24 +24,43 @@ namespace Treehopper.Libraries.Interface
             port = outputPort;
         }
 
-        private bool enabled;
-        private bool oldAutoflushSettings;
+        /// <summary>
+        ///     A collection of pins to use for the data bus
+        /// </summary>
+        public Collection<DigitalOut> DataBus { get; set; } = new Collection<DigitalOut>();
 
         /// <summary>
-        /// Whether this parallel interface is enabled or disabled
+        ///     The Register Select (RS) pin to use
+        /// </summary>
+        public DigitalOut RegisterSelectPin { get; set; }
+
+        /// <summary>
+        ///     The Read/Write (R/W) pin to use
+        /// </summary>
+        public DigitalOut ReadWritePin { get; set; }
+
+        /// <summary>
+        ///     The enable (E) pin to use
+        /// </summary>
+        public DigitalOut EnablePin { get; set; }
+
+        /// <summary>
+        ///     The number of microseconds to delay between transactions.
+        /// </summary>
+        public int DelayMicroseconds { get; set; }
+
+        /// <summary>
+        ///     Whether this parallel interface is enabled or disabled
         /// </summary>
         public bool Enabled
         {
-            get
-            {
-                return enabled;
-            }
+            get { return enabled; }
 
             set
             {
                 if (enabled == value) return;
                 enabled = value;
-                if(enabled)
+                if (enabled)
                 {
                     oldAutoflushSettings = port.AutoFlush; // save old autoflush settings
                     port.AutoFlush = false; // disable autoflush for speed
@@ -72,13 +70,13 @@ namespace Treehopper.Libraries.Interface
                         pin.MakeDigitalPushPullOut();
 
                     RegisterSelectPin.MakeDigitalPushPullOut();
-                    if(ReadWritePin != null) // R/W is optional, and is often tied to "write"
+                    if (ReadWritePin != null) // R/W is optional, and is often tied to "write"
                         ReadWritePin.MakeDigitalPushPullOut();
                     EnablePin.MakeDigitalPushPullOut();
 
                     port.Flush().Wait(); // write out port settings
-
-                } else
+                }
+                else
                 {
                     port.AutoFlush = oldAutoflushSettings; // restore old autoflush settings
                 }
@@ -86,18 +84,28 @@ namespace Treehopper.Libraries.Interface
         }
 
         /// <summary>
-        /// Gets the width of the bus
+        ///     Gets the width of the bus
         /// </summary>
         public int Width => DataBus.Count;
 
         /// <summary>
-        /// Write one or more bytes to the command register
+        ///     Write one or more bytes to the command register
         /// </summary>
         /// <param name="command">The command data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
         public Task WriteCommand(uint[] command)
         {
             return WriteDataOrCommand(command, false);
+        }
+
+        /// <summary>
+        ///     Write one or more bytes to the data register
+        /// </summary>
+        /// <param name="data">The data to write</param>
+        /// <returns>An awaitable task that completes when the write operation finishes</returns>
+        public Task WriteData(uint[] data)
+        {
+            return WriteDataOrCommand(data, true);
         }
 
         private async Task Pulse()
@@ -112,23 +120,11 @@ namespace Treehopper.Libraries.Interface
 
         private void SetDataBus(uint value)
         {
-            for (int i = 0; i < Width; i++)
-            {
+            for (var i = 0; i < Width; i++)
                 if (((value >> i) & 0x01) == 0x01)
                     DataBus[i].DigitalValue = true;
                 else
                     DataBus[i].DigitalValue = false;
-            }
-        }
-
-        /// <summary>
-        /// Write one or more bytes to the data register
-        /// </summary>
-        /// <param name="data">The data to write</param>
-        /// <returns>An awaitable task that completes when the write operation finishes</returns>
-        public Task WriteData(uint[] data)
-        {
-             return WriteDataOrCommand(data, true);
         }
 
         private async Task WriteDataOrCommand(uint[] busValues, bool isData = false)
@@ -137,12 +133,11 @@ namespace Treehopper.Libraries.Interface
             if (ReadWritePin != null)
                 ReadWritePin.DigitalValue = false;
 
-            foreach(var val in busValues)
+            foreach (var val in busValues)
             {
                 SetDataBus(val);
                 await Pulse().ConfigureAwait(false);
             }
-            
         }
     }
 }

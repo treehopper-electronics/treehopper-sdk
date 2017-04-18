@@ -4,14 +4,20 @@ using Treehopper.Utilities;
 namespace Treehopper.Libraries.Motors
 {
     /// <summary>
-    /// The HobbyServo library is used to control small DC servos that use pulse-width control.
+    ///     The HobbyServo library is used to control small DC servos that use pulse-width control.
     /// </summary>
     public class HobbyServo
     {
-        readonly Pwm Pwm;
+        private readonly Pwm Pwm;
+
+        private double angle;
+
+        private double maxPulseWidth;
+
+        private double minPulseWidth;
 
         /// <summary>
-        /// Construct a hobby servo motor
+        ///     Construct a hobby servo motor
         /// </summary>
         /// <param name="pwm">The PWM module to use</param>
         /// <param name="minPulseWidth">The minimum pulse width, in microseconds, corresponding to 0-degree angle</param>
@@ -26,17 +32,12 @@ namespace Treehopper.Libraries.Motors
             Angle = 90;
         }
 
-        private double minPulseWidth;
-
         /// <summary>
-        /// Gets or sets the minimum pulse width for the motor
+        ///     Gets or sets the minimum pulse width for the motor
         /// </summary>
         public double MinPulseWidth
         {
-            get
-            {
-                return minPulseWidth;
-            }
+            get { return minPulseWidth; }
             set
             {
                 if (minPulseWidth.CloseTo(value)) return;
@@ -45,17 +46,12 @@ namespace Treehopper.Libraries.Motors
             }
         }
 
-        private double maxPulseWidth;
-
         /// <summary>
-        /// Gets or sets the max pulse width of the motor
+        ///     Gets or sets the max pulse width of the motor
         /// </summary>
         public double MaxPulseWidth
         {
-            get
-            {
-                return maxPulseWidth;
-            }
+            get { return maxPulseWidth; }
             set
             {
                 if (maxPulseWidth.CloseTo(value)) return;
@@ -64,10 +60,8 @@ namespace Treehopper.Libraries.Motors
             }
         }
 
-        double angle;
-
         /// <summary>
-        /// Gets or sets the angle of the servo
+        ///     Gets or sets the angle of the servo
         /// </summary>
         public double Angle
         {
@@ -78,9 +72,7 @@ namespace Treehopper.Libraries.Motors
                 angle = value;
 
                 if (angle < 0 || angle > 180)
-                {
                     throw new Exception("Angle must be between 0 and 180 degrees");
-                }
 
                 Pwm.PulseWidth = Numbers.Map(angle, 0, 180, MinPulseWidth, MaxPulseWidth);
             }

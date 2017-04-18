@@ -1,34 +1,18 @@
-﻿namespace Treehopper.Libraries.Input
-{
-    using System.Collections;
-    using System.Threading.Tasks;
-    using Interface.PortExpander;
-    using Sensors;
+﻿using System.Collections;
+using System.Threading.Tasks;
+using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper.Libraries.Sensors;
 
+namespace Treehopper.Libraries.Input
+{
     /// <summary>
-    /// Nintendo Entertainment System (NES) Controller
+    ///     Nintendo Entertainment System (NES) Controller
     /// </summary>
     public class NesController : IPollable
     {
         protected SpiDevice dev;
 
-        public Button A { get; private set; }
-        public Button B { get; private set; }
-
-        public Button Start { get; private set; }
-        public Button Select { get; private set; }
-
-        public event DPadStateEventHandler DPadStateChanged;
-
         protected DPadState dpad;
-        public DPadState DPad
-        {
-            get
-            {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
-                return dpad;
-            }
-        }
 
         public NesController(Spi spi, SpiChipSelectPin ps)
         {
@@ -40,18 +24,33 @@
             Select = new Button(new DigitalInPeripheralPin(this));
         }
 
+        public Button A { get; }
+        public Button B { get; }
+
+        public Button Start { get; }
+        public Button Select { get; }
+
+        public DPadState DPad
+        {
+            get
+            {
+                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                return dpad;
+            }
+        }
+
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         public int AwaitPollingInterval { get; set; } = 20;
 
         public virtual async Task Update()
         {
-            var result = await dev.SendReceive(new byte[] { 0x00 });
-            BitArray values = new BitArray(result);
-            ((DigitalInPeripheralPin)A.Input).DigitalValue = values[7];
-            ((DigitalInPeripheralPin)B.Input).DigitalValue = values[6];
-            ((DigitalInPeripheralPin)Select.Input).DigitalValue = values[5];
-            ((DigitalInPeripheralPin)Start.Input).DigitalValue = values[4];
+            var result = await dev.SendReceive(new byte[] {0x00});
+            var values = new BitArray(result);
+            ((DigitalInPeripheralPin) A.Input).DigitalValue = values[7];
+            ((DigitalInPeripheralPin) B.Input).DigitalValue = values[6];
+            ((DigitalInPeripheralPin) Select.Input).DigitalValue = values[5];
+            ((DigitalInPeripheralPin) Start.Input).DigitalValue = values[4];
 
             var oldState = dpad;
 
@@ -70,9 +69,11 @@
                 RaiseDPadChanged();
         }
 
+        public event DPadStateEventHandler DPadStateChanged;
+
         protected void RaiseDPadChanged()
         {
-            DPadStateChanged?.Invoke(this, new DPadStateEventArgs() { NewValue = dpad });
+            DPadStateChanged?.Invoke(this, new DPadStateEventArgs {NewValue = dpad});
         }
     }
 }

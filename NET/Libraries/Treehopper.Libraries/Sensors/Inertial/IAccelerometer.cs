@@ -3,12 +3,12 @@
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
-    /// Three-axis accelerometer sensor
+    ///     Three-axis accelerometer sensor
     /// </summary>
     public interface IAccelerometer : IPollable
     {
         /// <summary>
-        /// The three-axis acceleration reading, in g.
+        ///     The three-axis acceleration reading, in g.
         /// </summary>
         Vector3 Accelerometer { get; }
     }

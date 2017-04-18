@@ -1,33 +1,39 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
-    /// InvenSense MPU9250 9-DoF IMU
+    ///     InvenSense MPU9250 9-DoF IMU
     /// </summary>
     public class Mpu9250 : Mpu6050, IMagnetometer
     {
+        private readonly SMBusDevice mag;
+
         /// <summary>
-        /// Construct a new MPU9250 9-DoF IMU
+        ///     The 3-axis magnetometer data
+        /// </summary>
+        protected Vector3 magnetometer;
+
+        /// <summary>
+        ///     Construct a new MPU9250 9-DoF IMU
         /// </summary>
         /// <param name="i2c">The i2C port to use</param>
         /// <param name="addressPin">The address pin state</param>
         /// <param name="rate">The rate, in kHz, to communicate at</param>
         public Mpu9250(I2c i2c, bool addressPin = false, int rate = 400) : base(i2c, addressPin, rate)
         {
-            dev.WriteByteData((byte)Registers.INT_PIN_CFG, 0x22).Wait();
+            dev.WriteByteData((byte) Registers.INT_PIN_CFG, 0x22).Wait();
             mag = new SMBusDevice(0x0C, i2c, rate);
         }
 
-        private readonly SMBusDevice mag;
-
         /// <summary>
-        /// The 3-axis magnetometer data
+        ///     Whether the magnetometer is enabled or not
         /// </summary>
-        protected Vector3 magnetometer = new Vector3();
+        public bool EnableMagnetometer { get; set; } = true;
 
         /// <summary>
-        /// The current 3-axis magnetometer data
+        ///     The current 3-axis magnetometer data
         /// </summary>
         public Vector3 Magnetometer
         {
@@ -39,12 +45,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         /// <summary>
-        /// Whether the magnetometer is enabled or not
-        /// </summary>
-        public bool EnableMagnetometer { get; set; } = true;
-
-        /// <summary>
-        /// Retrieve the latest sample data from the MPU9250
+        ///     Retrieve the latest sample data from the MPU9250
         /// </summary>
         /// <returns></returns>
         public override async Task Update()
@@ -53,16 +54,15 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             if (!EnableMagnetometer) return;
 
-            var magData = await mag.ReadBufferData((byte)AK8975CRegisters.HXL, 6);
+            var magData = await mag.ReadBufferData((byte) AK8975CRegisters.HXL, 6);
 
-            magnetometer.X = magData[1] << 8 | magData[0];
-            magnetometer.Y = magData[3] << 8 | magData[2];
-            magnetometer.Z = magData[5] << 8 | magData[4];
-
+            magnetometer.X = (magData[1] << 8) | magData[0];
+            magnetometer.Y = (magData[3] << 8) | magData[2];
+            magnetometer.Z = (magData[5] << 8) | magData[4];
         }
 
         /// <summary>
-        /// Registers for the AK8975C magnetometer
+        ///     Registers for the AK8975C magnetometer
         /// </summary>
         private enum AK8975CRegisters
         {
