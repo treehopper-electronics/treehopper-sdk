@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class IOUSBConfigurationDescriptor
 	{
 		public byte bLength;

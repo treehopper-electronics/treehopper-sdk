@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Treehopper.Desktop.MacUsb.IOKit {
 
 	/// <summary>
 	/// Manages native IOObject references.
 	/// </summary>
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class IOObject : IDisposable {
 		protected IntPtr handle;
 		protected bool disposedValue = false;

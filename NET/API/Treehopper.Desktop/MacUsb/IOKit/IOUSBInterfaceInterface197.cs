@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
 {
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public class IOUSBInterfaceInterface197 : IUnknownCGuts
 	{
 		public CreateInterfaceAsyncEventSourceDelegate CreateInterfaceAsyncEventSource;

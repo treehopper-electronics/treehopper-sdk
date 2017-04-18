@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
@@ -9,6 +10,7 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void IOServiceInterestCallback(int refCon, IntPtr service, uint messageType, IntPtr messageArgument);
 
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public static class IOKitFramework
 	{
 		// Service Matching That is the 'IOProviderClass'.

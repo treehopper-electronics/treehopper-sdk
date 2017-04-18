@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
 {
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public unsafe static class NativeMethods
 	{
 		/// <summary>

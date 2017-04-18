@@ -1,9 +1,12 @@
-﻿namespace Treehopper.Desktop.MacUsb.IOKit
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Treehopper.Desktop.MacUsb.IOKit
 {
 
 	/// <summary>
 	/// CF string encoding types.
 	/// </summary>
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public enum CFStringEncoding
 	{
 		kCFStringEncodingMacRoman = 0,
