@@ -1,5 +1,8 @@
-﻿namespace Treehopper
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Treehopper
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal enum DeviceCommands : byte
     {
         Reserved = 0,

@@ -5,7 +5,7 @@ using Treehopper;
 
 namespace Remote.Client
 {
-    public class RemoteI2c : I2c
+    public class RemoteI2c : I2C
     {
         private readonly RemoteTreehopper board;
 

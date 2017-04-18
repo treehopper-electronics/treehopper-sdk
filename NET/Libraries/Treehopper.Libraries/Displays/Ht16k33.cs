@@ -41,7 +41,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="i2c">The I2c port to use with this display.</param>
         /// <param name="address">The 7-bit I2c address to use</param>
         /// <param name="package">Which package is used</param>
-        public Ht16k33(I2c i2c, byte address, Package package) : base((int) package, true, false)
+        public Ht16k33(I2C i2c, byte address, Package package) : base((int) package, true, false)
         {
             dev = new SMBusDevice(address, i2c);
             dev.WriteByte(0x21);
@@ -57,7 +57,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="a0">The state of the A0 address pin</param>
         /// <param name="a1">The state of the A1 address pin</param>
         /// <param name="a2">The state of the A2 address pin</param>
-        public Ht16k33(I2c i2c, Package package, bool a0 = false, bool a1 = false, bool a2 = false) : this(i2c,
+        public Ht16k33(I2C i2c, Package package, bool a0 = false, bool a1 = false, bool a2 = false) : this(i2c,
             (byte) (0x70 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), package)
         {
         }

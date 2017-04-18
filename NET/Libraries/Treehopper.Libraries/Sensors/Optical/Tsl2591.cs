@@ -81,7 +81,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         ///     Construct a TSL2591 ambient light sensor
         /// </summary>
         /// <param name="I2cModule">The I2c module this sensor is attached to</param>
-        public Tsl2591(I2c I2cModule) : base(0x29, I2cModule, 100)
+        public Tsl2591(I2C I2cModule) : base(0x29, I2cModule, 100)
         {
             var t = ReadByteData(CommandBit | (byte) Registers.DeviceId);
             t.Wait();

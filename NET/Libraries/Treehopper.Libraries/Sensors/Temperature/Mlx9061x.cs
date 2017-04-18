@@ -16,7 +16,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Construct a new MLX90614 attached to the given i2c port
         /// </summary>
         /// <param name="i2c">The i2c module to use</param>
-        public Mlx90614(I2c i2c)
+        public Mlx90614(I2C i2c)
         {
             dev = new SMBusDevice(0x5A, i2c);
             Object = new TempRegister(dev, 0x07);
@@ -72,7 +72,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Construct a new MLX90615 attached to the given i2c port
         /// </summary>
         /// <param name="module"></param>
-        public Mlx90615(I2c module) : base(module)
+        public Mlx90615(I2C module) : base(module)
         {
             dev = new SMBusDevice(0x5B, module);
             Object = new TempRegister(dev, 0x27);

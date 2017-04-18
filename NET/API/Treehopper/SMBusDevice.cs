@@ -11,33 +11,33 @@ namespace Treehopper
         /// <summary>
         ///     The address of the device
         /// </summary>
-        private readonly byte address;
+        private readonly byte _address;
 
         /// <summary>
         ///     The I2c port used by the device
         /// </summary>
-        private readonly I2c i2c;
+        private readonly I2C _i2C;
 
         /// <summary>
         ///     The frequency to use
         /// </summary>
-        private readonly int rateKhz;
+        private readonly int _rateKhz;
 
         /// <summary>
         ///     Create a new SMBus device
         /// </summary>
         /// <param name="address">The 7-bit address of the device</param>
-        /// <param name="i2cModule">The i2C module this device is connected to.</param>
+        /// <param name="i2CModule">The i2C module this device is connected to.</param>
         /// <param name="rateKHz">the rate, in kHz, that should be used to communicate with this device.</param>
-        public SMBusDevice(byte address, I2c i2cModule, int rateKHz = 100)
+        public SMBusDevice(byte address, I2C i2CModule, int rateKHz = 100)
         {
             if (address > 0x7f)
-                throw new ArgumentOutOfRangeException("address",
+                throw new ArgumentOutOfRangeException(nameof(address),
                     "The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F");
-            this.address = address;
-            i2c = i2cModule;
-            rateKhz = rateKHz;
-            i2c.Enabled = true;
+            _address = address;
+            _i2C = i2CModule;
+            _rateKhz = rateKHz;
+            _i2C.Enabled = true;
         }
 
         // SMBus functions
@@ -65,10 +65,10 @@ namespace Treehopper
         public async Task<byte> ReadByte()
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Rd [A] [Data] NA P
-            var data = await i2c.SendReceive(address, new byte[] { }, 1).ConfigureAwait(false);
+            var data = await _i2C.SendReceive(_address, new byte[] { }, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -80,10 +80,10 @@ namespace Treehopper
         public Task WriteByte(byte data)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Data [A] P
-            return i2c.SendReceive(address, new[] {data}, 0);
+            return _i2C.SendReceive(_address, new[] {data}, 0);
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Treehopper
         public Task WriteData(byte[] data)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
-            return i2c.SendReceive(address, data, 0);
+            return _i2C.SendReceive(_address, data, 0);
         }
 
         /// <summary>
@@ -107,9 +107,9 @@ namespace Treehopper
         public Task<byte[]> ReadData(byte numBytesToRead)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
-            return i2c.SendReceive(address, null, numBytesToRead);
+            return _i2C.SendReceive(_address, null, numBytesToRead);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Treehopper
         public Task<byte> ReadByteData(int register)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             return ReadByteData((byte) register);
         }
@@ -133,10 +133,10 @@ namespace Treehopper
         public async Task<byte> ReadByteData(byte register)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [Data] NA P
-            var data = await i2c.SendReceive(address, new[] {register}, 1).ConfigureAwait(false);
+            var data = await _i2C.SendReceive(_address, new[] {register}, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -148,10 +148,10 @@ namespace Treehopper
         public async Task<ushort> ReadWordData(byte register)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            var result = await i2c.SendReceive(address, new[] {register}, 2).ConfigureAwait(false);
+            var result = await _i2C.SendReceive(_address, new[] {register}, 2).ConfigureAwait(false);
             return (ushort) ((result[1] << 8) | result[0]);
         }
 
@@ -163,10 +163,10 @@ namespace Treehopper
         public async Task<ushort> ReadWordDataBE(byte register)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            var result = await i2c.SendReceive(address, new[] {register}, 2).ConfigureAwait(false);
+            var result = await _i2C.SendReceive(_address, new[] {register}, 2).ConfigureAwait(false);
             return (ushort) ((result[0] << 8) | result[1]);
         }
 
@@ -177,10 +177,10 @@ namespace Treehopper
         public async Task<ushort> ReadWord()
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            var result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
+            var result = await _i2C.SendReceive(_address, null, 2).ConfigureAwait(false);
             return (ushort) ((result[1] << 8) | result[0]);
         }
 
@@ -191,10 +191,10 @@ namespace Treehopper
         public async Task<ushort> ReadWordBE()
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataHigh] A [DataLow] NA P
-            var result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
+            var result = await _i2C.SendReceive(_address, null, 2).ConfigureAwait(false);
             return (ushort) ((result[0] << 8) | result[1]);
         }
 
@@ -207,10 +207,10 @@ namespace Treehopper
         public Task WriteByteData(byte register, byte data)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] Data [A] P
-            return i2c.SendReceive(address, new[] {register, data}, 0);
+            return _i2C.SendReceive(_address, new[] {register, data}, 0);
         }
 
         /// <summary>
@@ -222,10 +222,10 @@ namespace Treehopper
         public Task WriteWordData(byte register, ushort data)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
-            return i2c.SendReceive(address, new[] {register, (byte) (data & 0xFF), (byte) (data >> 8)}, 0);
+            return _i2C.SendReceive(_address, new[] {register, (byte) (data & 0xFF), (byte) (data >> 8)}, 0);
         }
 
         /// <summary>
@@ -237,10 +237,10 @@ namespace Treehopper
         public Task WriteWordDataBE(byte register, ushort data)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             // S Addr Wr [A] Comm [A] DataHigh [A] DataLow [A] P
-            return i2c.SendReceive(address, new[] {register, (byte) (data >> 8), (byte) (data & 0xFF)}, 0);
+            return _i2C.SendReceive(_address, new[] {register, (byte) (data >> 8), (byte) (data & 0xFF)}, 0);
         }
 
         /// <summary>
@@ -252,8 +252,8 @@ namespace Treehopper
         public Task<byte[]> ReadBufferData(byte register, int numBytes)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
-            return i2c.SendReceive(address, new[] {register}, (byte) numBytes);
+            _i2C.Speed = _rateKhz;
+            return _i2C.SendReceive(_address, new[] {register}, (byte) numBytes);
         }
 
         /// <summary>
@@ -264,12 +264,12 @@ namespace Treehopper
         public Task WriteBufferData(byte register, byte[] buffer)
         {
             // set the speed for this device, just in case another device mucked with these settings
-            i2c.Speed = rateKhz;
+            _i2C.Speed = _rateKhz;
 
             var data = new byte[buffer.Length + 1];
             data[0] = register;
             Array.Copy(buffer, 0, data, 1, buffer.Length);
-            return i2c.SendReceive(address, data, 0);
+            return _i2C.SendReceive(_address, data, 0);
         }
     }
 }

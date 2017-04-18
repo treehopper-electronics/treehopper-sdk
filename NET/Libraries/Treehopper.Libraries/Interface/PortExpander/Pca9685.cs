@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <param name="a3">The state of the A3 pin</param>
         /// <param name="a4">The state of the A4 pin</param>
         /// <param name="a5">The state of the A5 pin</param>
-        public Pca9685(I2c i2c, int speed = 100, bool a0 = false, bool a1 = false, bool a2 = false, bool a3 = false,
+        public Pca9685(I2C i2c, int speed = 100, bool a0 = false, bool a1 = false, bool a2 = false, bool a3 = false,
             bool a4 = false, bool a5 = false)
             : this(i2c, (byte) (0x40 |
                                 ((a0 ? 1 : 0) << 0) |
@@ -81,7 +81,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <param name="i2c">The i2c port this chip is attached to</param>
         /// <param name="address">The 7-bit address to use</param>
         /// <param name="speed">The speed, in kHz, to use with this chip</param>
-        public Pca9685(I2c i2c, byte address, int speed = 100)
+        public Pca9685(I2C i2c, byte address, int speed = 100)
         {
             dev = new SMBusDevice(address, i2c, speed);
             for (var i = 0; i < 16; i++)

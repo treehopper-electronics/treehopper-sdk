@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AdcReferenceLevel.cs" />
-    <Compile Include="AsyncHelpers.cs" />
+    <Compile Include="ThirdParty\AsyncHelpers.cs" />
     <Compile Include="ChipSelectMode.cs" />
     <Compile Include="DeviceCommands.cs" />
     <Compile Include="Events.cs" />

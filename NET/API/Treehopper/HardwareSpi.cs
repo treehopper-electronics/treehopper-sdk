@@ -69,19 +69,19 @@ namespace Treehopper
     /// </remarks>
     public class HardwareSpi : Spi
     {
-        private readonly TreehopperUsb device;
-        private bool enabled;
+        private readonly TreehopperUsb _device;
+        private bool _enabled;
 
         internal HardwareSpi(TreehopperUsb device)
         {
-            this.device = device;
+            _device = device;
         }
 
-        private Pin Sck => device.Pins[0];
+        private Pin Sck => _device.Pins[0];
 
-        private Pin Miso => device.Pins[1];
+        private Pin Miso => _device.Pins[1];
 
-        private Pin Mosi => device.Pins[2];
+        private Pin Mosi => _device.Pins[2];
 
         /// <summary>
         ///     Enable or disable the SPI module.
@@ -92,16 +92,16 @@ namespace Treehopper
         /// </remarks>
         public bool Enabled
         {
-            get { return enabled; }
+            get { return _enabled; }
 
             set
             {
-                if (enabled == value) return;
-                enabled = value;
+                if (_enabled == value) return;
+                _enabled = value;
 
                 SendConfig();
 
-                if (enabled)
+                if (_enabled)
                 {
                     Mosi.Mode = PinMode.Reserved;
                     Miso.Mode = PinMode.Reserved;
@@ -142,25 +142,25 @@ namespace Treehopper
             if (chipSelect != null && chipSelect.SpiModule != this)
                 Utility.Error("Chip select pin must belong to this SPI module", true);
 
-            using (await device.ComsLock.LockAsync())
+            using (await _device.ComsLock.LockAsync())
             {
-                var spi0ckr = (int) Math.Round(24.0 / speedMhz - 1);
-                if (spi0ckr > 255.0)
+                var spi0Ckr = (int) Math.Round(24.0 / speedMhz - 1);
+                if (spi0Ckr > 255.0)
                 {
-                    spi0ckr = 255;
+                    spi0Ckr = 255;
                     Debug.WriteLine(
                         "NOTICE: Requested SPI frequency of {0} MHz is below the minimum frequency, and will be clipped to 0.09375 MHz (93.75 kHz).",
                         speedMhz);
                 }
-                else if (spi0ckr < 0)
+                else if (spi0Ckr < 0)
                 {
-                    spi0ckr = 0;
+                    spi0Ckr = 0;
                     Debug.WriteLine(
                         "NOTICE: Requested SPI frequency of {0} MHz is above the maximum frequency, and will be clipped to 24 MHz.",
                         speedMhz);
                 }
 
-                var actualFrequency = 48.0 / (2.0 * (spi0ckr + 1.0));
+                var actualFrequency = 48.0 / (2.0 * (spi0Ckr + 1.0));
 
                 if (Math.Abs(actualFrequency - speedMhz) > 1)
                     Debug.WriteLine(
@@ -170,13 +170,11 @@ namespace Treehopper
                 if (dataToWrite.Length > 255)
                     throw new Exception("Maximum packet length is 255 bytes");
 
-                byte[] receivedData;
-                var srcIndex = 0;
                 var header = new byte[7];
                 header[0] = (byte) DeviceCommands.SpiTransaction;
                 header[1] = (byte) (chipSelect?.PinNumber ?? 255);
                 header[2] = (byte) chipSelectMode;
-                header[3] = (byte) spi0ckr;
+                header[3] = (byte) spi0Ckr;
                 header[4] = (byte) spiMode;
                 header[5] = (byte) burstMode;
                 header[6] = (byte) transactionLength;
@@ -184,7 +182,7 @@ namespace Treehopper
                 // just send the header
                 if (burstMode == SpiBurstMode.BurstRx)
                 {
-                    await device.SendPeripheralConfigPacket(header);
+                    await _device.SendPeripheralConfigPacket(header);
                 }
                 else
                 {
@@ -198,7 +196,7 @@ namespace Treehopper
                     {
                         var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var tmp = dataToSend.Skip(offset).Take(transferLength);
-                        await device.SendPeripheralConfigPacket(tmp.ToArray());
+                        await _device.SendPeripheralConfigPacket(tmp.ToArray());
                         offset += transferLength;
                         bytesRemaining -= transferLength;
                     }
@@ -208,11 +206,11 @@ namespace Treehopper
                 if (burstMode != SpiBurstMode.BurstTx)
                 {
                     var bytesRemaining = transactionLength;
-                    srcIndex = 0;
+                    var srcIndex = 0;
                     while (bytesRemaining > 0)
                     {
                         var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        receivedData = await device.ReceiveCommsResponsePacket((uint) numBytesToTransfer)
+                        var receivedData = await _device.ReceiveCommsResponsePacket((uint) numBytesToTransfer)
                             .ConfigureAwait(false);
                         Array.Copy(receivedData, 0, returnedData, srcIndex,
                             receivedData.Length); // just in case we don't get what we're expecting
@@ -240,8 +238,8 @@ namespace Treehopper
         {
             var dataToSend = new byte[2];
             dataToSend[0] = (byte) DeviceCommands.SpiConfig;
-            dataToSend[1] = (byte) (enabled ? 0x01 : 0x00);
-            device.SendPeripheralConfigPacket(dataToSend);
+            dataToSend[1] = (byte) (_enabled ? 0x01 : 0x00);
+            _device.SendPeripheralConfigPacket(dataToSend);
         }
     }
 }

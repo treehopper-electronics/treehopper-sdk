@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <param name="a1">The state of the A1 pin</param>
         /// <param name="a2">The state of the A2 pin</param>
         /// <param name="speedKHz"></param>
-        public Mcp23008(I2c i2c, bool a0 = false, bool a1 = false, bool a2 = false, int speedKHz = 100)
+        public Mcp23008(I2C i2c, bool a0 = false, bool a1 = false, bool a2 = false, int speedKHz = 100)
             : this(i2c, (byte) (0x20 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), speedKHz)
         {
         }
@@ -35,7 +35,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <param name="i2c">The I2c bus to use</param>
         /// <param name="address">The address to use</param>
         /// <param name="speedKHz">The speed, in KHz, to use</param>
-        public Mcp23008(I2c i2c, byte address, int speedKHz = 100)
+        public Mcp23008(I2C i2c, byte address, int speedKHz = 100)
         {
             dev = new SMBusDevice(address, i2c, speedKHz);
             for (var i = 0; i < 8; i++)

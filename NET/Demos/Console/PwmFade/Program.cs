@@ -19,7 +19,7 @@ namespace PwmFade
 			Console.WriteLine("Board found:" + board);
             await board.ConnectAsync();
             board.Pwm1.Enabled = true;
-            board.HardwarePwmManager.Frequency = HardwarePwmFrequency.Freq_61Hz; 
+            board.HardwarePwmManager.Frequency = HardwarePwmFrequency.Freq61Hz; 
 
             int step = 5;
             int rate = 1;

@@ -80,7 +80,7 @@ namespace Treehopper.Libraries.Interface.Adc
         private Pga pga;
         private PowerUpControl puCtrl;
 
-        public Nau7802(I2c i2c, DigitalIn drdy = null) : base(null, 24, 0)
+        public Nau7802(I2C i2c, DigitalIn drdy = null) : base(null, 24, 0)
         {
             if (drdy != null)
             {

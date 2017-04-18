@@ -29,7 +29,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// </summary>
         /// <param name="i2c">the i2C bus to use</param>
         /// <param name="sdo">the state of the SDO pin, which sets the address</param>
-        public Bmp280(I2c i2c, bool sdo = false)
+        public Bmp280(I2C i2c, bool sdo = false)
         {
             i2cDev = new SMBusDevice((byte) (0x76 | (sdo ? 1 : 0)), i2c);
             Start();

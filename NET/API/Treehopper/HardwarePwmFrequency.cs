@@ -8,16 +8,16 @@
         /// <summary>
         ///     732 Hz PWM frequency
         /// </summary>
-        Freq_732Hz,
+        Freq732Hz,
 
         /// <summary>
         ///     183 Hz PWM frequency
         /// </summary>
-        Freq_183Hz,
+        Freq183Hz,
 
         /// <summary>
         ///     61 Hz PWM frequency
         /// </summary>
-        Freq_61Hz
+        Freq61Hz
     }
 }

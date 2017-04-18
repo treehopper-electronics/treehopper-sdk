@@ -429,7 +429,7 @@ namespace Treehopper.Libraries.Motors
         /// <param name="module">The I2c module this stepper motor is attached to</param>
         /// <param name="addressPin">The hardwired address pin state</param>
         /// <param name="speed">The speed to operate this peripheral at</param>
-        public Amis30624(I2c module, bool addressPin = false, int speed = 400) : this(module,
+        public Amis30624(I2C module, bool addressPin = false, int speed = 400) : this(module,
             (byte) (addressPin ? 0x61 : 0x60), speed)
         {
         }
@@ -441,7 +441,7 @@ namespace Treehopper.Libraries.Motors
         /// <param name="module">The I2c module this stepper motor is attached to</param>
         /// <param name="address">The address of the module</param>
         /// <param name="speed">The speed to operate this peripheral at</param>
-        public Amis30624(I2c module, byte address, int speed)
+        public Amis30624(I2C module, byte address, int speed)
         {
             dev = new SMBusDevice(address, module, speed);
             ResetToDefault().ConfigureAwait(false);

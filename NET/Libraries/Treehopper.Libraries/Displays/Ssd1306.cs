@@ -57,7 +57,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="height">The number of pixels tall</param>
         /// <param name="address">The address</param>
         /// <param name="mode">The VCC mode of the display</param>
-        public Ssd1306(I2c I2c, int width = 128, int height = 32, byte address = 0x3C,
+        public Ssd1306(I2C I2c, int width = 128, int height = 32, byte address = 0x3C,
             VccMode mode = VccMode.SwitchCap) : base(width, height)
         {
             if (!(Width == 128 && Height == 32 || Width == 128 && Height == 64 || Width == 96 && Height == 16))

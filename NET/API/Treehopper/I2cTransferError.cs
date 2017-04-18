@@ -3,7 +3,7 @@
     /// <summary>
     ///     Describes the transfer error, if not Success, that occured
     /// </summary>
-    public enum I2cTransferError
+    public enum I2CTransferError
     {
         /// <summary>
         ///     Bus arbitration was lost

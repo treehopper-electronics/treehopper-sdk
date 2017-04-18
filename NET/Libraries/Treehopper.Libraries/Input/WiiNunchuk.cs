@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.Input
     ///         peripheral. By default, <see cref="AutoUpdateWhenPropertyRead" /> will be true, so the library will
     ///         automatically fetch updates from the device on-the-fly whenever you read one of the object's properties ---
     ///         this is a great method when you only need to grab the state of the device infrequently, as it doesn't tie up
-    ///         the <see cref="I2c" /> bus constantly. If your application is going to constantly read the input (say, in a
+    ///         the <see cref="I2C" /> bus constantly. If your application is going to constantly read the input (say, in a
     ///         game), you should change <see cref="AutoUpdateWhenPropertyRead" /> to false, and poll the sensor manually (with
     ///         <see cref="Update()" />) whenever you want an update. Or, if you're hooking into events for the device, you can
     ///         wrap this class inside a <see cref="Poller{TPollable}" /> to automatically run the polling loop for you.
@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.Input
         private Vector3 accelerometer;
         private Vector2 joystick;
 
-        public WiiNunchuk(I2c i2c)
+        public WiiNunchuk(I2C i2c)
         {
             dev = new SMBusDevice(0x52, i2c);
             dev.WriteData(new byte[] {0xF0, 0x55}).Wait();

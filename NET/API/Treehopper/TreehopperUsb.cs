@@ -56,7 +56,7 @@ namespace Treehopper
             HardwarePwmManager = new HardwarePwmManager(this);
 
             // Initialize modules
-            I2c = new HardwareI2c(this);
+            I2c = new HardwareI2C(this);
             Spi = new HardwareSpi(this);
             Uart = new HardwareUart(this);
             Pwm1 = new HardwarePwm(Pins[7]);
@@ -73,7 +73,8 @@ namespace Treehopper
         /// <summary>
         ///     I2C module
         /// </summary>
-        public I2c I2c { get; }
+        // ReSharper disable once InconsistentNaming
+        public I2C I2c { get; }
 
         /// <summary>
         ///     SPI module
@@ -238,7 +239,7 @@ namespace Treehopper
             if (board == null)
                 return 1;
 
-            return string.Compare(ToString(), board.ToString());
+            return string.CompareOrdinal(ToString(), board.ToString());
         }
 
         /// <summary>
@@ -357,10 +358,7 @@ namespace Treehopper
             dataToSend[1] = (byte) serialNumber.Length;
             bytes.CopyTo(dataToSend, 2);
             SendPeripheralConfigPacket(dataToSend);
-            return
-                Task
-                    .Delay(
-                        100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
+            return Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
         }
 
         /// <summary>
@@ -409,8 +407,9 @@ namespace Treehopper
 
             Connection.PinEventDataReceived += Connection_PinEventDataReceived;
             IsConnected = true;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Version"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VersionString"));
+
+            RaisePropertyChanged(nameof(Version));
+            RaisePropertyChanged(nameof(VersionString));
 
             Reinitialize();
             return true;
@@ -439,12 +438,12 @@ namespace Treehopper
             {
                 Reinitialize();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                // ignored
             }
 
-            if (Connection != null)
-                Connection.Close();
+            Connection?.Close();
             IsConnected = false;
         }
 
@@ -454,7 +453,7 @@ namespace Treehopper
         /// <returns>The string</returns>
         public override string ToString()
         {
-            return Name + " (" + SerialNumber + ")";
+            return $"{Name}, ({SerialNumber})";
         }
 
         /// <summary>

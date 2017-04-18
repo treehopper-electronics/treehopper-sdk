@@ -34,7 +34,7 @@ namespace Treehopper.Libraries.Interface.Adc
         /// <param name="addr">The address pin of this module</param>
         /// <param name="refVoltage">The supply (reference) voltage of this module</param>
         /// <param name="speed">The speed to use when communicating with this module, in kHz</param>
-        public Ads1115(I2c i2c, ChannelMode channelMode = ChannelMode.SingleEnded, bool addr = false,
+        public Ads1115(I2C i2c, ChannelMode channelMode = ChannelMode.SingleEnded, bool addr = false,
             double refVoltage = 3.3, int speed = 400)
         {
             dev = new SMBusDevice((byte) (0x48 | (addr ? 1 : 0)), i2c, speed);

@@ -7,17 +7,17 @@ namespace Treehopper
     /// </summary>
     public class HardwarePwmManager
     {
-        private readonly TreehopperUsb board;
+        private readonly TreehopperUsb _board;
 
-        private byte[] dutyCyclePin7 = new byte[2];
-        private byte[] dutyCyclePin8 = new byte[2];
-        private byte[] dutyCyclePin9 = new byte[2];
-        private HardwarePwmFrequency frequency = HardwarePwmFrequency.Freq_732Hz;
-        private PwmPinEnableMode mode;
+        private byte[] _dutyCyclePin7 = new byte[2];
+        private byte[] _dutyCyclePin8 = new byte[2];
+        private byte[] _dutyCyclePin9 = new byte[2];
+        private HardwarePwmFrequency _frequency = HardwarePwmFrequency.Freq732Hz;
+        private PwmPinEnableMode _mode;
 
-        internal HardwarePwmManager(TreehopperUsb treehopperUSB)
+        internal HardwarePwmManager(TreehopperUsb treehopperUsb)
         {
-            board = treehopperUSB;
+            _board = treehopperUsb;
         }
 
         /// <summary>
@@ -25,13 +25,13 @@ namespace Treehopper
         /// </summary>
         public HardwarePwmFrequency Frequency
         {
-            get { return frequency; }
+            get { return _frequency; }
 
             set
             {
-                if (frequency != value)
+                if (_frequency != value)
                 {
-                    frequency = value;
+                    _frequency = value;
                     SendConfig();
                 }
             }
@@ -40,12 +40,12 @@ namespace Treehopper
         /// <summary>
         ///     Get the number of microseconds per tick
         /// </summary>
-        public double MicrosecondsPerTick => 1000000 / (FrequencyHz * 65536);
+        public double MicrosecondsPerTick => 1000000d / (FrequencyHz * 65536);
 
         /// <summary>
         ///     Get the number of microseconds per period
         /// </summary>
-        public double PeriodMicroseconds => 1000000 / FrequencyHz;
+        public double PeriodMicroseconds => 1000000d / FrequencyHz;
 
         /// <summary>
         ///     Get an integer representing the current PWM frequency
@@ -54,13 +54,13 @@ namespace Treehopper
         {
             get
             {
-                switch (frequency)
+                switch (_frequency)
                 {
-                    case HardwarePwmFrequency.Freq_183Hz:
+                    case HardwarePwmFrequency.Freq183Hz:
                         return 183;
-                    case HardwarePwmFrequency.Freq_61Hz:
+                    case HardwarePwmFrequency.Freq61Hz:
                         return 61;
-                    case HardwarePwmFrequency.Freq_732Hz:
+                    case HardwarePwmFrequency.Freq732Hz:
                         return 732;
                     default:
                         return 0;
@@ -74,16 +74,15 @@ namespace Treehopper
         /// <returns>the state of the hardware PWM manager</returns>
         public override string ToString()
         {
-            switch (mode)
+            switch (_mode)
             {
                 case PwmPinEnableMode.Pin7:
                     return "channel 1 enabled";
-                case PwmPinEnableMode.Pin7_Pin8:
+                case PwmPinEnableMode.Pin7Pin8:
                     return "channels 1 and 2 enabled";
-                case PwmPinEnableMode.Pin7_Pin8_Pin9:
+                case PwmPinEnableMode.Pin7Pin8Pin9:
                     return "channels 1, 2, and 3 enabled";
                 default:
-                case PwmPinEnableMode.None:
                     return "No channels enabled";
             }
         }
@@ -91,23 +90,23 @@ namespace Treehopper
         internal void StartPin(Pin pin)
         {
             // first check to make sure the previous PWM pins have been enabled first.
-            if (pin.PinNumber == 8 && mode != PwmPinEnableMode.Pin7)
+            if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7)
                 throw new Exception(
                     "You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm");
-            if (pin.PinNumber == 9 && mode != PwmPinEnableMode.Pin7_Pin8)
+            if (pin.PinNumber == 9 && _mode != PwmPinEnableMode.Pin7Pin8)
                 throw new Exception(
                     "You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm");
 
             switch (pin.PinNumber)
             {
                 case 7:
-                    mode = PwmPinEnableMode.Pin7;
+                    _mode = PwmPinEnableMode.Pin7;
                     break;
                 case 8:
-                    mode = PwmPinEnableMode.Pin7_Pin8;
+                    _mode = PwmPinEnableMode.Pin7Pin8;
                     break;
                 case 9:
-                    mode = PwmPinEnableMode.Pin7_Pin8_Pin9;
+                    _mode = PwmPinEnableMode.Pin7Pin8Pin9;
                     break;
             }
 
@@ -117,23 +116,23 @@ namespace Treehopper
         internal void StopPin(Pin pin)
         {
             // first check to make sure the higher PWM pins have been disabled first
-            if (pin.PinNumber == 8 && mode != PwmPinEnableMode.Pin7_Pin8)
+            if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7Pin8)
                 throw new Exception(
                     "You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
-            if (pin.PinNumber == 7 && mode != PwmPinEnableMode.Pin7)
+            if (pin.PinNumber == 7 && _mode != PwmPinEnableMode.Pin7)
                 throw new Exception(
                     "You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
 
             switch (pin.PinNumber)
             {
                 case 7:
-                    mode = PwmPinEnableMode.None;
+                    _mode = PwmPinEnableMode.None;
                     break;
                 case 8:
-                    mode = PwmPinEnableMode.Pin7;
+                    _mode = PwmPinEnableMode.Pin7;
                     break;
                 case 9:
-                    mode = PwmPinEnableMode.Pin7_Pin8;
+                    _mode = PwmPinEnableMode.Pin7Pin8;
                     break;
             }
 
@@ -147,13 +146,13 @@ namespace Treehopper
             switch (pin.PinNumber)
             {
                 case 7:
-                    dutyCyclePin7 = newValue;
+                    _dutyCyclePin7 = newValue;
                     break;
                 case 8:
-                    dutyCyclePin8 = newValue;
+                    _dutyCyclePin8 = newValue;
                     break;
                 case 9:
-                    dutyCyclePin9 = newValue;
+                    _dutyCyclePin9 = newValue;
                     break;
             }
 
@@ -166,27 +165,27 @@ namespace Treehopper
 
             configuration[0] = (byte) DeviceCommands.PwmConfig;
 
-            configuration[1] = (byte) mode;
-            configuration[2] = (byte) frequency;
+            configuration[1] = (byte) _mode;
+            configuration[2] = (byte) _frequency;
 
-            configuration[3] = dutyCyclePin7[0];
-            configuration[4] = dutyCyclePin7[1];
+            configuration[3] = _dutyCyclePin7[0];
+            configuration[4] = _dutyCyclePin7[1];
 
-            configuration[5] = dutyCyclePin8[0];
-            configuration[6] = dutyCyclePin8[1];
+            configuration[5] = _dutyCyclePin8[0];
+            configuration[6] = _dutyCyclePin8[1];
 
-            configuration[7] = dutyCyclePin9[0];
-            configuration[8] = dutyCyclePin9[1];
+            configuration[7] = _dutyCyclePin9[0];
+            configuration[8] = _dutyCyclePin9[1];
 
-            board.SendPeripheralConfigPacket(configuration);
+            _board.SendPeripheralConfigPacket(configuration);
         }
 
         private enum PwmPinEnableMode
         {
             None,
             Pin7,
-            Pin7_Pin8,
-            Pin7_Pin8_Pin9
+            Pin7Pin8,
+            Pin7Pin8Pin9
         }
     }
 }

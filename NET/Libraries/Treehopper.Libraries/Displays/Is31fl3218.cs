@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="i2c">The I2C peripheral this chip is attached to</param>
         /// <param name="rateKhz">The frequency, in kHz, that should be used to communicate with the chip</param>
-        public Is31fl3218(I2c i2c, int rateKhz = 100) : base(18, false, true)
+        public Is31fl3218(I2C i2c, int rateKhz = 100) : base(18, false, true)
         {
             dev = new SMBusDevice(0x54, i2c, rateKhz);
             dev.WriteByteData((byte) Registers.Shutdown, 0x01).Wait();

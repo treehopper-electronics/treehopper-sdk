@@ -31,7 +31,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         private readonly Mode1 mode1;
         private Mode2 mode2;
 
-        public Pca9632(I2c i2c)
+        public Pca9632(I2C i2c)
         {
             dev = new SMBusDevice(0x62, i2c);
 

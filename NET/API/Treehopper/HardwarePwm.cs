@@ -1,5 +1,4 @@
-﻿using System;
-using Treehopper.Utilities;
+﻿using Treehopper.Utilities;
 
 namespace Treehopper
 {
@@ -14,16 +13,16 @@ namespace Treehopper
     /// </remarks>
     public class HardwarePwm : Pwm
     {
-        private readonly TreehopperUsb board;
-        private readonly Pin pin;
-        private double dutyCycle;
-        private bool isEnabled;
-        private double pulseWidth;
+        private readonly TreehopperUsb _board;
+        private readonly Pin _pin;
+        private double _dutyCycle;
+        private bool _isEnabled;
+        private double _pulseWidth;
 
         internal HardwarePwm(Pin pin)
         {
-            this.pin = pin;
-            board = pin.Board;
+            _pin = pin;
+            _board = pin.Board;
         }
 
         /// <summary>
@@ -31,22 +30,22 @@ namespace Treehopper
         /// </summary>
         public bool Enabled
         {
-            get { return isEnabled; }
+            get { return _isEnabled; }
 
             set
             {
-                if (value != isEnabled)
+                if (value != _isEnabled)
                 {
-                    isEnabled = value;
-                    if (isEnabled)
+                    _isEnabled = value;
+                    if (_isEnabled)
                     {
-                        board.HardwarePwmManager.StartPin(pin);
-                        pin.Mode = PinMode.Reserved;
+                        _board.HardwarePwmManager.StartPin(_pin);
+                        _pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
-                        board.HardwarePwmManager.StopPin(pin);
-                        pin.Mode = PinMode.Unassigned;
+                        _board.HardwarePwmManager.StopPin(_pin);
+                        _pin.Mode = PinMode.Unassigned;
                     }
                 }
             }
@@ -57,18 +56,18 @@ namespace Treehopper
         /// </summary>
         public double DutyCycle
         {
-            get { return dutyCycle; }
+            get { return _dutyCycle; }
 
             set
             {
-                if (dutyCycle.CloseTo(value)) return;
+                if (_dutyCycle.CloseTo(value)) return;
                 if (value > 1.0 || value < 0.0)
-                    throw new ArgumentOutOfRangeException("DutyCycle", "DutyCycle must be between 0.0 and 1.0");
-                dutyCycle = value;
+                    Utility.Error("DutyCycle must be between 0.0 and 1.0");
+                _dutyCycle = value.Constrain();
 
                 // update the pulseWidth just in case the user wants to read from the value
-                pulseWidth = dutyCycle * board.HardwarePwmManager.PeriodMicroseconds;
-                board.HardwarePwmManager.SetDutyCycle(pin, value);
+                _pulseWidth = _dutyCycle * _board.HardwarePwmManager.PeriodMicroseconds;
+                _board.HardwarePwmManager.SetDutyCycle(_pin, value);
             }
         }
 
@@ -77,17 +76,16 @@ namespace Treehopper
         /// </summary>
         public double PulseWidth
         {
-            get { return pulseWidth; }
+            get { return _pulseWidth; }
 
             set
             {
-                if (pulseWidth.CloseTo(value)) return;
-                if (value > board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
-                    throw new ArgumentOutOfRangeException("PulseWidth",
-                        "PulseWidth must be between 0.0 and " + board.HardwarePwmManager.PeriodMicroseconds);
-                pulseWidth = value;
+                if (_pulseWidth.CloseTo(value)) return;
+                if (value > _board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
+                    Utility.Error($"PulseWidth must be between 0.0 and {_board.HardwarePwmManager.PeriodMicroseconds}");
+                _pulseWidth = value.Constrain(0, _board.HardwarePwmManager.PeriodMicroseconds);
 
-                DutyCycle = pulseWidth / board.HardwarePwmManager.PeriodMicroseconds;
+                DutyCycle = _pulseWidth / _board.HardwarePwmManager.PeriodMicroseconds;
             }
         }
 

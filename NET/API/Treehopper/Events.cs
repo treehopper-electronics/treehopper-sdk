@@ -5,14 +5,14 @@ namespace Treehopper
     /// <summary>
     ///     An event handler for when a board is added
     /// </summary>
-    /// <param name="BoardAdded">The new board</param>
-    public delegate void TreehopperUsbAddedHandler(TreehopperUsb BoardAdded);
+    /// <param name="boardAdded">The new board</param>
+    public delegate void TreehopperUsbAddedHandler(TreehopperUsb boardAdded);
 
     /// <summary>
     ///     An event handler for when a board is removed
     /// </summary>
-    /// <param name="BoardRemoved">the removed board</param>
-    public delegate void TreehopperUsbRemovedHandler(TreehopperUsb BoardRemoved);
+    /// <param name="boardRemoved">the removed board</param>
+    public delegate void TreehopperUsbRemovedHandler(TreehopperUsb boardRemoved);
 
     /// <summary>
     ///     An event handler for when a new pin update report comes in
