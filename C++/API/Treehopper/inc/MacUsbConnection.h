@@ -28,6 +28,8 @@ namespace Treehopper
         bool receivePinReportPacket(uint8_t* data);
         bool receiveDataPeripheralChannel(uint8_t* data, size_t len);
     private:
+        wstring _name;
+        wstring _serialNumber;
         int _currentConfiguration;
         int _currentInterface = 0;
         uint8_t _currentAlternateInterface = 0;
