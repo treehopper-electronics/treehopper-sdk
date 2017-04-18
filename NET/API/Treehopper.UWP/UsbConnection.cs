@@ -1,18 +1,34 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Usb;
 using Windows.Storage.Streams;
-using System.ComponentModel;
-using System.Threading;
 
 namespace Treehopper.Uwp
 {
     public class UsbConnection : IConnection, INotifyPropertyChanged
     {
+        private CancellationTokenSource cts;
 
-        UsbDevice usbDevice;
+        private UsbBulkInPipe peripheralInPipe;
+        private UsbBulkOutPipe peripheralOutPipe;
+        private DataReader peripheralReader;
+        private DataWriter peripheralWriter;
+        private UsbBulkOutPipe pinConfigPipe;
+        private DataWriter pinConfigWriter;
+
+
+        private UsbBulkInPipe pinEventPipe;
+
+        private DataReader pinEventReader;
+        private int updateDelay;
+
+        private int updateRate;
+
+        private UsbDevice usbDevice;
 
         public UsbConnection(DeviceInformation deviceInfo)
         {
@@ -22,77 +38,29 @@ namespace Treehopper.Uwp
             Name = deviceInfo.Name;
         }
 
-        bool isOpen;
-        public bool IsOpen => isOpen;
+        public bool IsOpen { get; private set; }
 
         public event PinEventData PinEventDataReceived;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Serial { get; private set; }
+        public string Serial { get; }
 
 
-        public string Name { get; private set; }
-        
-
-        UsbBulkInPipe pinEventPipe;
-        UsbBulkInPipe peripheralInPipe;
-        UsbBulkOutPipe pinConfigPipe;
-        UsbBulkOutPipe peripheralOutPipe;
-
-        DataReader pinEventReader;
-        DataWriter pinConfigWriter;
-        DataReader peripheralReader;
-        DataWriter peripheralWriter;
-
-        async void pinEventListerner(CancellationToken ct)
-        {
-            if (!IsOpen)
-                return;
-            UInt32 bytesRead = 0;
-            while (true)
-            {
-                if (ct.IsCancellationRequested)
-                    return;
-                try {
-                    bytesRead = await pinEventReader.LoadAsync(64);
-
-                    if (bytesRead == 64)
-                    {
-                        byte[] data = new byte[64];
-                        pinEventReader.ReadBytes(data);
-                        if (PinEventDataReceived != null)
-                        {
-                            PinEventDataReceived(data);
-                            if(updateDelay >= 10)
-                                await Task.Delay(updateDelay);
-                        }
-                    }
-                } catch {
-                    return;
-                }
-            }
-        }
-        CancellationTokenSource cts;
+        public string Name { get; }
 
         public string DevicePath { get; set; }
 
-        private int updateRate;
-        private int updateDelay;
-
         public int UpdateRate
         {
-            get
-            {
-                return updateRate;
-            }
+            get { return updateRate; }
 
             set
             {
                 if (updateRate == value)
                     return;
                 updateRate = value;
-                updateDelay = (int)Math.Round(1000.0 / updateRate);
+                updateDelay = (int) Math.Round(1000.0 / updateRate);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UpdateRate"));
             }
         }
@@ -114,7 +82,7 @@ namespace Treehopper.Uwp
 
             // https://msdn.microsoft.com/en-us/library/windows/hardware/dn303346(v=vs.85).aspx
 
-            Version = (short)usbDevice.DeviceDescriptor.BcdDeviceRevision;
+            Version = (short) usbDevice.DeviceDescriptor.BcdDeviceRevision;
 
             pinConfigPipe = usbDevice.DefaultInterface.BulkOutPipes[0];
             pinConfigPipe.WriteOptions |= UsbWriteOptions.ShortPacketTerminate;
@@ -131,7 +99,7 @@ namespace Treehopper.Uwp
             peripheralInPipe = usbDevice.DefaultInterface.BulkInPipes[1];
             peripheralReader = new DataReader(peripheralInPipe.InputStream);
 
-            isOpen = true;
+            IsOpen = true;
             pinEventListerner(cts.Token);
 
             Debug.WriteLine("Connection opened");
@@ -141,23 +109,25 @@ namespace Treehopper.Uwp
 
         public void Close()
         {
-            if (!isOpen)
+            if (!IsOpen)
                 return;
             cts.Cancel();
             usbDevice.Dispose();
             usbDevice = null;
             Debug.WriteLine("Connection closed");
-            isOpen = false;
+            IsOpen = false;
         }
 
         public async Task SendDataPinConfigChannel(byte[] data)
         {
             if (!IsOpen)
                 return;
-            try {
+            try
+            {
                 pinConfigWriter.WriteBytes(data);
                 await pinConfigWriter.StoreAsync();
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
@@ -171,7 +141,8 @@ namespace Treehopper.Uwp
             {
                 peripheralWriter.WriteBytes(data);
                 await peripheralWriter.StoreAsync();
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
@@ -188,13 +159,11 @@ namespace Treehopper.Uwp
 
                 if (bytesRead == bytesToRead)
                 {
-                    byte[] data = new byte[bytesToRead];
+                    var data = new byte[bytesToRead];
                     peripheralReader.ReadBytes(data);
                     return data;
-                } else
-                {
-                    return new byte[0];
                 }
+                return new byte[0];
             }
             catch
             {
@@ -207,10 +176,41 @@ namespace Treehopper.Uwp
             throw new NotImplementedException();
         }
 
+        private async void pinEventListerner(CancellationToken ct)
+        {
+            if (!IsOpen)
+                return;
+            uint bytesRead = 0;
+            while (true)
+            {
+                if (ct.IsCancellationRequested)
+                    return;
+                try
+                {
+                    bytesRead = await pinEventReader.LoadAsync(64);
+
+                    if (bytesRead == 64)
+                    {
+                        var data = new byte[64];
+                        pinEventReader.ReadBytes(data);
+                        if (PinEventDataReceived != null)
+                        {
+                            PinEventDataReceived(data);
+                            if (updateDelay >= 10)
+                                await Task.Delay(updateDelay);
+                        }
+                    }
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+
         ~UsbConnection()
         {
             Close();
         }
     }
 }
-

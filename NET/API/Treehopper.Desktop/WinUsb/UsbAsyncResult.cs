@@ -7,28 +7,25 @@
 
 using System;
 using System.Threading;
+
 namespace Treehopper.Desktop.WinUsb
 {
     internal class USBAsyncResult : IAsyncResult, IDisposable
     {
-        private readonly object _stateObject;
         private readonly AsyncCallback _userCallback;
         private bool _completed;
         private bool _completedSynchronously;
-        private ManualResetEvent _waitEvent;
-        private int _bytesTransfered;
         private Exception _error;
+        private ManualResetEvent _waitEvent;
 
         public USBAsyncResult(AsyncCallback userCallback, object stateObject)
         {
-            _stateObject = stateObject;
+            AsyncState = stateObject;
             _userCallback = userCallback;
             _completedSynchronously = false;
             _completed = false;
             _waitEvent = null;
         }
-
-        public object AsyncState => _stateObject;
 
         public Exception Error
         {
@@ -40,7 +37,10 @@ namespace Treehopper.Desktop.WinUsb
                 }
             }
         }
-        public int BytesTransfered => _bytesTransfered;
+
+        public int BytesTransfered { get; private set; }
+
+        public object AsyncState { get; }
 
         public WaitHandle AsyncWaitHandle
         {
@@ -83,43 +83,38 @@ namespace Treehopper.Desktop.WinUsb
             GC.SuppressFinalize(this);
         }
 
-        public void OnCompletion(bool completedSynchronously, Exception error, int bytesTransfered, bool synchronousCallback)
+        public void OnCompletion(bool completedSynchronously, Exception error, int bytesTransfered,
+            bool synchronousCallback)
         {
             lock (this)
             {
                 _completedSynchronously = completedSynchronously;
                 _completed = true;
                 _error = error;
-                _bytesTransfered = bytesTransfered;
+                BytesTransfered = bytesTransfered;
                 if (_waitEvent != null)
                     _waitEvent.Set();
             }
             if (_userCallback != null)
-            {
                 if (synchronousCallback)
                     RunCallback(null);
                 else
                     ThreadPool.QueueUserWorkItem(RunCallback);
-            }
-
         }
+
         private void RunCallback(object state)
         {
             _userCallback(this);
         }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
-            {
-                // Cleanup managed resources
                 lock (this)
                 {
                     if (_waitEvent != null)
                         _waitEvent.Close();
                 }
-            }
         }
-
-
     }
 }

@@ -3,16 +3,17 @@
 namespace Treehopper.Mvvm.ViewModel
 {
     /// <summary>
-    /// A view model used to power a XAML Selector view
+    ///     A view model used to power a XAML Selector view
     /// </summary>
     public class SelectorDesignTimeViewModel : SelectorViewModelBase
     {
         /// <summary>
-        /// Construct a view model used to power a XAML Selector view
+        ///     Construct a view model used to power a XAML Selector view
         /// </summary>
-        public SelectorDesignTimeViewModel(bool selectBoard = true, DesignTimeTestData testData = DesignTimeTestData.None) : base(new DesignTimeConnectionService())
+        public SelectorDesignTimeViewModel(bool selectBoard = true,
+            DesignTimeTestData testData = DesignTimeTestData.None) : base(new DesignTimeConnectionService())
         {
-            if(selectBoard)
+            if (selectBoard)
             {
                 SelectedBoard = Boards[0];
                 ConnectCommand.Execute(this);
@@ -26,39 +27,37 @@ namespace Treehopper.Mvvm.ViewModel
             //    case DesignTimeTestData.Digital:
             //        SelectedBoard.GenerateDigitalTestData();
             //        break;
-                    
+
             //}
-                
         }
 
         /// <summary>
-        /// Occurs when the board collection changed
+        ///     Occurs when the board collection changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected override void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
         }
     }
 
     /// <summary>
-    /// Generate design time data
+    ///     Generate design time data
     /// </summary>
     public enum DesignTimeTestData
     {
         /// <summary>
-        /// No data
+        ///     No data
         /// </summary>
         None,
 
         /// <summary>
-        /// Analog data
+        ///     Analog data
         /// </summary>
         Analog,
 
         /// <summary>
-        /// Digital data
+        ///     Digital data
         /// </summary>
         Digital
     }

@@ -5,19 +5,12 @@ using System.Threading.Tasks;
 namespace Treehopper
 {
     /// <summary>
-    /// A DesignTime connection service useful for developing GUIs
+    ///     A DesignTime connection service useful for developing GUIs
     /// </summary>
     public class DesignTimeConnectionService : IConnectionService
     {
-        private static readonly IConnectionService instance = new DesignTimeConnectionService();
-
         /// <summary>
-        /// get a static connection instance
-        /// </summary>
-        public static IConnectionService Instance => instance;
-
-        /// <summary>
-        /// Create a new DesignTime connection service with three connected boards
+        ///     Create a new DesignTime connection service with three connected boards
         /// </summary>
         public DesignTimeConnectionService()
         {
@@ -29,17 +22,22 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// Get a collection of boards
+        ///     get a static connection instance
+        /// </summary>
+        public static IConnectionService Instance { get; } = new DesignTimeConnectionService();
+
+        /// <summary>
+        ///     Get a collection of boards
         /// </summary>
         public ObservableCollection<TreehopperUsb> Boards { get; set; }
 
         /// <summary>
-        /// Fires when any property changes
+        ///     Fires when any property changes
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Get the first device
+        ///     Get the first device
         /// </summary>
         /// <returns>An awaitable task that completes when the first board is found</returns>
         public async Task<TreehopperUsb> GetFirstDeviceAsync()
@@ -48,11 +46,10 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// Dispose of this connection
+        ///     Dispose of this connection
         /// </summary>
         public void Dispose()
         {
-            
         }
     }
 }

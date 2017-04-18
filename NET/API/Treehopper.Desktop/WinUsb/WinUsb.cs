@@ -6,8 +6,6 @@ namespace Treehopper.Desktop.WinUsb
 {
     internal class WinUsb
     {
-
-
         internal static class NativeMethods
         {
             internal const string WIN_USB_DLL = "winusb.dll";
@@ -31,27 +29,28 @@ namespace Treehopper.Desktop.WinUsb
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_GetAssociatedInterface", SetLastError = true)]
             internal static extern bool WinUsb_GetAssociatedInterface([In] SafeHandle InterfaceHandle,
-                                                                      byte AssociatedInterfaceIndex,
-                                                                      ref IntPtr AssociatedInterfaceHandle);
+                byte AssociatedInterfaceIndex,
+                ref IntPtr AssociatedInterfaceHandle);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_GetCurrentAlternateSetting", SetLastError = true)]
-            internal static extern bool WinUsb_GetCurrentAlternateSetting([In] SafeHandle InterfaceHandle, out byte SettingNumber);
+            internal static extern bool WinUsb_GetCurrentAlternateSetting([In] SafeHandle InterfaceHandle,
+                out byte SettingNumber);
 
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_GetDescriptor", SetLastError = true)]
             internal static extern bool WinUsb_GetDescriptor([In] SafeHandle InterfaceHandle,
-                                                            byte DescriptorType,
-                                                            byte Index,
-                                                            ushort LanguageID,
-                                                            IntPtr Buffer,
-                                                            int BufferLength,
-                                                            out int LengthTransferred);
+                byte DescriptorType,
+                byte Index,
+                ushort LanguageID,
+                IntPtr Buffer,
+                int BufferLength,
+                out int LengthTransferred);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_GetOverlappedResult", SetLastError = true)]
             internal static extern bool WinUsb_GetOverlappedResult([In] SafeHandle InterfaceHandle,
-                                                                  IntPtr pOVERLAPPED,
-                                                                  out int lpNumberOfBytesTransferred,
-                                                                  bool Wait);
+                IntPtr pOVERLAPPED,
+                out int lpNumberOfBytesTransferred,
+                bool Wait);
 
             //[DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_GetPipePolicy", SetLastError = true)]
             //internal static extern bool WinUsb_GetPipePolicy([In] SafeHandle InterfaceHandle,
@@ -67,7 +66,8 @@ namespace Treehopper.Desktop.WinUsb
             //                                                  IntPtr Value);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_Initialize", SetLastError = true)]
-            internal static extern bool WinUsb_Initialize([In] SafeHandle DeviceHandle, [Out, In] ref SafeWinUsbHandle InterfaceHandle);
+            internal static extern bool WinUsb_Initialize([In] SafeHandle DeviceHandle,
+                [Out] [In] ref SafeWinUsbHandle InterfaceHandle);
 
             //[DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_QueryDeviceInformation", SetLastError = true)]
             //internal static extern bool WinUsb_QueryDeviceInformation([In] SafeHandle InterfaceHandle,
@@ -89,19 +89,19 @@ namespace Treehopper.Desktop.WinUsb
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_ReadPipe", SetLastError = true)]
             internal static extern bool WinUsb_ReadPipe([In] SafeHandle InterfaceHandle,
-                                                       byte PipeID,
-                                                       Byte[] Buffer,
-                                                       int BufferLength,
-                                                       out int LengthTransferred,
-                                                       IntPtr pOVERLAPPED);
+                byte PipeID,
+                byte[] Buffer,
+                int BufferLength,
+                out int LengthTransferred,
+                IntPtr pOVERLAPPED);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_ReadPipe", SetLastError = true)]
             internal static extern bool WinUsb_ReadPipe([In] SafeHandle InterfaceHandle,
-                                                       byte PipeID,
-                                                       IntPtr pBuffer,
-                                                       int BufferLength,
-                                                       out int LengthTransferred,
-                                                       IntPtr pOVERLAPPED);
+                byte PipeID,
+                IntPtr pBuffer,
+                int BufferLength,
+                out int LengthTransferred,
+                IntPtr pOVERLAPPED);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_ResetPipe", SetLastError = true)]
             internal static extern bool WinUsb_ResetPipe([In] SafeHandle InterfaceHandle, byte PipeID);
@@ -117,20 +117,20 @@ namespace Treehopper.Desktop.WinUsb
             //internal static extern bool WinUsb_SetPowerPolicy([In] SafeHandle InterfaceHandle, PowerPolicyType policyType, int ValueLength, IntPtr Value);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_WritePipe", SetLastError = true)]
-            internal unsafe static extern bool WinUsb_WritePipe([In] SafeHandle InterfaceHandle,
-                                                        byte PipeID,
-                                                        Byte[] Buffer,
-                                                        int BufferLength,
-                                                        out int LengthTransferred,
-                                                        NativeOverlapped* pOVERLAPPED);
+            internal static extern unsafe bool WinUsb_WritePipe([In] SafeHandle InterfaceHandle,
+                byte PipeID,
+                byte[] Buffer,
+                int BufferLength,
+                out int LengthTransferred,
+                NativeOverlapped* pOVERLAPPED);
 
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_WritePipe", SetLastError = true)]
             internal static extern bool WinUsb_WritePipe([In] SafeHandle InterfaceHandle,
-                                                        byte PipeID,
-                                                        Byte[] pBuffer,
-                                                        int BufferLength,
-                                                        out int LengthTransferred,
-                                                        IntPtr pOVERLAPPED);
+                byte PipeID,
+                byte[] pBuffer,
+                int BufferLength,
+                out int LengthTransferred,
+                IntPtr pOVERLAPPED);
         }
     }
 }

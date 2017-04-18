@@ -2,55 +2,54 @@
 
 namespace Treehopper.Desktop.LibUsb
 {
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public class LibUsbDeviceDescriptor
-	{
-		/** Size of this descriptor (in bytes) */
-		public byte  bLength;
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public class LibUsbDeviceDescriptor
+    {
+        /** Device release number in binary-coded decimal */
+        public ushort bcdDevice;
 
-		/** Descriptor type. Will have value
-	 * \ref libusb_descriptor_type::LIBUSB_DT_DEVICE LIBUSB_DT_DEVICE in this
-	 * context. */
-		public byte  bDescriptorType;
+        /** USB specification release number in binary-coded decimal. A value of
+     * 0x0200 indicates USB 2.0, 0x0110 indicates USB 1.1, etc. */
+        public ushort bcdUSB;
 
-		/** USB specification release number in binary-coded decimal. A value of
-	 * 0x0200 indicates USB 2.0, 0x0110 indicates USB 1.1, etc. */
-		public ushort bcdUSB;
+        /** Descriptor type. Will have value
+     * \ref libusb_descriptor_type::LIBUSB_DT_DEVICE LIBUSB_DT_DEVICE in this
+     * context. */
+        public byte bDescriptorType;
 
-		/** USB-IF class code for the device. See \ref libusb_class_code. */
-		public byte  bDeviceClass;
+        /** USB-IF class code for the device. See \ref libusb_class_code. */
+        public byte bDeviceClass;
 
-		/** USB-IF subclass code for the device, qualified by the bDeviceClass
-	 * value */
-		public byte  bDeviceSubClass;
+        /** USB-IF protocol code for the device, qualified by the bDeviceClass and
+     * bDeviceSubClass values */
+        public byte bDeviceProtocol;
 
-		/** USB-IF protocol code for the device, qualified by the bDeviceClass and
-	 * bDeviceSubClass values */
-		public byte  bDeviceProtocol;
+        /** USB-IF subclass code for the device, qualified by the bDeviceClass
+     * value */
+        public byte bDeviceSubClass;
 
-		/** Maximum packet size for endpoint 0 */
-		public byte  bMaxPacketSize0;
+        /** Size of this descriptor (in bytes) */
+        public byte bLength;
 
-		/** USB-IF vendor ID */
-		public ushort idVendor;
+        /** Maximum packet size for endpoint 0 */
+        public byte bMaxPacketSize0;
 
-		/** USB-IF product ID */
-		public ushort idProduct;
+        /** Number of possible configurations */
+        public byte bNumConfigurations;
 
-		/** Device release number in binary-coded decimal */
-		public ushort bcdDevice;
+        /** USB-IF product ID */
+        public ushort idProduct;
 
-		/** Index of string descriptor describing manufacturer */
-		public byte  iManufacturer;
+        /** USB-IF vendor ID */
+        public ushort idVendor;
 
-		/** Index of string descriptor describing product */
-		public byte  iProduct;
+        /** Index of string descriptor describing manufacturer */
+        public byte iManufacturer;
 
-		/** Index of string descriptor containing device serial number */
-		public byte  iSerialNumber;
+        /** Index of string descriptor describing product */
+        public byte iProduct;
 
-		/** Number of possible configurations */
-		public byte  bNumConfigurations;
-
-	}
+        /** Index of string descriptor containing device serial number */
+        public byte iSerialNumber;
+    }
 }

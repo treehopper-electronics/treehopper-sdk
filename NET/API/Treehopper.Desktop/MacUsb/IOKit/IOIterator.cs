@@ -1,39 +1,34 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Treehopper.Desktop.MacUsb.IOKit 
+namespace Treehopper.Desktop.MacUsb.IOKit
 {
+    /// <summary>
+    ///     Manages IOIterator handles.
+    /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public class IOIterator : IOObject
+    {
+        /// <summary>
+        ///     Initializes a new instance of the see <see cref="IOObject" />.
+        /// </summary>
+        public IOIterator(IntPtr handle) :
+            base(handle)
+        {
+        }
 
-	/// <summary>
-	/// Manages IOIterator handles.
-	/// </summary>
-	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class IOIterator : IOObject {
+        /// <summary>
+        ///     Iterates one step forward.
+        /// </summary>
+        /// <returns>A <see cref="IOObject" /> instance on success; Null if the iterator has reached it's end.</returns>
+        public IOObject Next()
+        {
+            if (disposedValue) throw new ObjectDisposedException("handle");
 
-		/// <summary>
-		/// Initializes a new instance of the see <see cref="IOObject"/>.
-		/// </summary>
-		public IOIterator(IntPtr handle) :
-			base(handle) {
+            if (handle == IntPtr.Zero)
+                throw new InvalidOperationException("Can not iterate over uninitialized objects.");
 
-		}
-
-		/// <summary>
-		/// Iterates one step forward.
-		/// </summary>
-		/// <returns>A <see cref="IOObject"/> instance on success; Null if the iterator has reached it's end.</returns>
-		public IOObject Next() {
-			if (disposedValue) {
-				throw new ObjectDisposedException("handle");
-			}
-
-			if (handle == IntPtr.Zero) {
-				throw new InvalidOperationException("Can not iterate over uninitialized objects.");
-			}
-
-			return IOKitFramework.IOIteratorNext(this);
-		}
-
-	}
-
+            return IOKitFramework.IOIteratorNext(this);
+        }
+    }
 }
