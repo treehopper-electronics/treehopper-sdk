@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.ArduinoShim
         /// <param name="redirectToDebugStream">Whether to direct Serial.write() to Debug, or to send over the physical UART.</param>
         public void begin(int baud, bool redirectToDebugStream = true)
         {
-            this.redirectToDebug = redirectToDebugStream;
+            redirectToDebug = redirectToDebugStream;
             if (redirectToDebugStream)
                 return;
 

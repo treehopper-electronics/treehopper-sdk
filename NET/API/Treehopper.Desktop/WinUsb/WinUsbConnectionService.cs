@@ -131,7 +131,7 @@
                 cp.Width = 50;
                 cp.Height = 50;
                 CreateHandle(cp);
-                this.service = winUsbConnectionService;
+                service = winUsbConnectionService;
             }
 
             protected override void OnHandleChange()
@@ -141,9 +141,9 @@
                     mDevInterfaceHandle.Dispose();
                     mDevInterfaceHandle = null;
                 }
-                if (this.Handle != IntPtr.Zero)
+                if (Handle != IntPtr.Zero)
                 {
-                    mDevInterfaceHandle = NativeMethods.RegisterDeviceNotification(this.Handle, mDevInterface, 0);
+                    mDevInterfaceHandle = NativeMethods.RegisterDeviceNotification(Handle, mDevInterface, 0);
                     if (mDevInterfaceHandle != null && !mDevInterfaceHandle.IsInvalid)
                     {
 
@@ -152,7 +152,7 @@
                 base.OnHandleChange();
             }
 
-            [PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+            [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
             protected override void WndProc(ref Message m)
             {
                 if (m.Msg == WM_DEVICECHANGE)

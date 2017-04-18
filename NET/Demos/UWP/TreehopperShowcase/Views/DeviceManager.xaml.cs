@@ -24,7 +24,7 @@ namespace TreehopperShowcase.Views
     {
         public DeviceManager()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

@@ -69,10 +69,10 @@ namespace Treehopper.Libraries.Displays
             var chunk = new byte[252];
 
             // we have to spit up the display buffer into two chunks so we don't violate the max-size of the SPI transfer
-            Array.Copy(this.RawBuffer, 0, chunk, 0, 252);
+            Array.Copy(RawBuffer, 0, chunk, 0, 252);
             await spi.SendReceive(chunk, SpiBurstMode.BurstTx);
 
-            Array.Copy(this.RawBuffer, 252, chunk, 0, 252);
+            Array.Copy(RawBuffer, 252, chunk, 0, 252);
             await spi.SendReceive(chunk, SpiBurstMode.BurstTx);
         }
 

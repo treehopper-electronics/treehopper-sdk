@@ -22,7 +22,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="ratekHz">The rate, in kHz, to use with this IC</param>
         public Mpu6050(I2c i2c, bool addressPin = false, int ratekHz = 400)
         {
-            this.dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
+            dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
 
             byte result = dev.ReadByteData((byte)Registers.WHO_AM_I).Result;
 

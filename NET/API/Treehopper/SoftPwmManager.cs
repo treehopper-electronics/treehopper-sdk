@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Treehopper.ThirdParty;
+    using ThirdParty;
 
     /// <summary>
     /// The SoftPwmManager is used to configure soft-PWM pins on the board

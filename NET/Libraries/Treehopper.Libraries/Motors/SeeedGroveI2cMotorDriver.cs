@@ -59,7 +59,7 @@
         /// <param name="address">The address to use</param>
         public SeeedGroveI2cMotorDriver(I2c i2c, byte address = 0x0f)
         {
-            this.dev = new SMBusDevice((byte)(address), i2c);
+            dev = new SMBusDevice((byte)(address), i2c);
             Frequency = PrescalerFrequency.Freq_3921Hz;
         }
 

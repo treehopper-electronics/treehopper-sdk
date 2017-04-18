@@ -19,7 +19,7 @@ namespace Treehopper.Libraries.Motors
         /// <param name="maxPulseWidth">The maximum pulse width, in microseconds, corresponding to 180-degree angle</param>
         public HobbyServo(Pwm pwm, double minPulseWidth = 500, double maxPulseWidth = 2500)
         {
-            this.Pwm = pwm;
+            Pwm = pwm;
             pwm.Enabled = true;
 
             MinPulseWidth = minPulseWidth;

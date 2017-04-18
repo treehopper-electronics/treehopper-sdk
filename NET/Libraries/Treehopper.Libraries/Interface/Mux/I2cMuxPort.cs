@@ -36,7 +36,7 @@
         public Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
             i2cMux.SetMux(index);
-            i2cMux.UpstreamPort.Speed = this.Speed;
+            i2cMux.UpstreamPort.Speed = Speed;
             return i2cMux.UpstreamPort.SendReceive(address, dataToWrite, numBytesToRead);
         }
     }

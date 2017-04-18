@@ -27,9 +27,9 @@ namespace Treehopper.Desktop.LibUsb
 			OpenAsync ().Wait ();
 			var sb = new StringBuilder ();
 			NativeMethods.GetStringDescriptor (deviceHandle, 2, sb, sb.Capacity + 1);
-			this.Name = sb.ToString ();
+			Name = sb.ToString ();
 			NativeMethods.GetStringDescriptor (deviceHandle, 3, sb, sb.Capacity + 1);
-			this.Serial = sb.ToString ();
+			Serial = sb.ToString ();
 			Close ();
 			DevicePath = deviceProfile.ToString ();
 		}
@@ -61,7 +61,7 @@ namespace Treehopper.Desktop.LibUsb
 		{
 			IntPtr handle = new IntPtr();
 			NativeMethods.Open(deviceProfile, ref handle);
-			this.deviceHandle = new LibUsbDeviceHandle(handle);
+			deviceHandle = new LibUsbDeviceHandle(handle);
 			NativeMethods.ClaimInterface (deviceHandle, 0);
 
 			isOpen = true;

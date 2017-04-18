@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Sensors
         public Poller(TPollable sensor, int samplePeriod = 10, bool usePrecisionTimer = false)
         {
             this.sensor = sensor;
-            this.sampleDelay = samplePeriod;
+            sampleDelay = samplePeriod;
 
             sensor.AutoUpdateWhenPropertyRead = false;
 

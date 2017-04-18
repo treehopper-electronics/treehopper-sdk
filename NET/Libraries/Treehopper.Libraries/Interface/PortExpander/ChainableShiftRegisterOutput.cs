@@ -45,9 +45,9 @@ namespace Treehopper.Libraries.Interface.PortExpander
         public ChainableShiftRegisterOutput(ChainableShiftRegisterOutput upstreamDevice, int numBytes = 1)
         {
             if (upstreamDevice.Parent != null)
-                this.Parent = upstreamDevice.Parent;
+                Parent = upstreamDevice.Parent;
             else
-                this.Parent = upstreamDevice;
+                Parent = upstreamDevice;
 
             shiftRegisters.Add(this);
             this.numBytes = numBytes;

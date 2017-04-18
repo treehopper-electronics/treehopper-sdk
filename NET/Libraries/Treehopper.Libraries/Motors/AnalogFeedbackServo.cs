@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.Motors
         public AnalogFeedbackServo(Pin analogIn, MotorSpeedController Controller) 
         {
             this.analogIn = analogIn;
-            this.controller = Controller;
+            controller = Controller;
             analogIn.Mode = PinMode.AnalogInput;
             isRunning = true;
             controlLoopTask = new Task(async() =>

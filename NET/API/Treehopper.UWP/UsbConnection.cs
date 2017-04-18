@@ -66,7 +66,7 @@ namespace Treehopper.Uwp
                     {
                         byte[] data = new byte[64];
                         pinEventReader.ReadBytes(data);
-                        if (this.PinEventDataReceived != null)
+                        if (PinEventDataReceived != null)
                         {
                             PinEventDataReceived(data);
                             if(updateDelay >= 10)
@@ -111,8 +111,8 @@ namespace Treehopper.Uwp
 
             // Calling this will "open" the device, blocking any other app from using it.
             // This will return null if another program already has the device open.
-            this.usbDevice = await UsbDevice.FromIdAsync(DevicePath);
-            if (this.usbDevice == null)
+            usbDevice = await UsbDevice.FromIdAsync(DevicePath);
+            if (usbDevice == null)
                 return false;
 
             cts = new CancellationTokenSource();

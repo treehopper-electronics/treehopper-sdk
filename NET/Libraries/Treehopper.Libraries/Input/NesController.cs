@@ -2,7 +2,7 @@
 {
     using System.Collections;
     using System.Threading.Tasks;
-    using Treehopper.Libraries.Interface.PortExpander;
+    using Interface.PortExpander;
     using Sensors;
 
     /// <summary>
@@ -32,7 +32,7 @@
 
         public NesController(Spi spi, SpiChipSelectPin ps)
         {
-            this.dev = new SpiDevice(spi, ps, ChipSelectMode.PulseHighAtBeginning);
+            dev = new SpiDevice(spi, ps, ChipSelectMode.PulseHighAtBeginning);
 
             A = new Button(new DigitalInPeripheralPin(this));
             B = new Button(new DigitalInPeripheralPin(this));

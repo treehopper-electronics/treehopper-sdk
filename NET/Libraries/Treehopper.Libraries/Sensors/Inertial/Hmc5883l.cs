@@ -159,7 +159,7 @@
         /// <param name="rateKHz">The frequency, in kHz, to use.</param>
         public Hmc5883l(I2c i2c, int rateKHz = 100)
         {
-            this.dev = new SMBusDevice(0x1E, i2c, rateKHz);
+            dev = new SMBusDevice(0x1E, i2c, rateKHz);
 
             var idA = dev.ReadByteData((byte)Registers.IdA).Result;
             var idB = dev.ReadByteData((byte)Registers.IdB).Result;

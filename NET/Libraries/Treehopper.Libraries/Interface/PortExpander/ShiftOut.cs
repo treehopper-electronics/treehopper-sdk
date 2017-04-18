@@ -51,7 +51,7 @@
             for (int i = 0; i < numPins; i++)
                 Pins.Add(new ShiftOutPin(this, i));
 
-            ChainableShiftRegisterOutput.requestWrite().Wait();
+            requestWrite().Wait();
         }
 
         /// <summary>

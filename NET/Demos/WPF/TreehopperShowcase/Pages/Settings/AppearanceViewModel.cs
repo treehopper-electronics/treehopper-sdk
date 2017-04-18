@@ -63,10 +63,10 @@ namespace TreehopperShowcase.Pages.Settings
         public AppearanceViewModel()
         {
             // add the default themes
-            this.themes.Add(new Link { DisplayName = "dark", Source = AppearanceManager.DarkThemeSource });
-            this.themes.Add(new Link { DisplayName = "light", Source = AppearanceManager.LightThemeSource });
+            themes.Add(new Link { DisplayName = "dark", Source = AppearanceManager.DarkThemeSource });
+            themes.Add(new Link { DisplayName = "light", Source = AppearanceManager.LightThemeSource });
 
-            this.SelectedFontSize = AppearanceManager.Current.FontSize == FontSize.Large ? FontLarge : FontSmall;
+            SelectedFontSize = AppearanceManager.Current.FontSize == FontSize.Large ? FontLarge : FontSmall;
             SyncThemeAndColor();
 
             AppearanceManager.Current.PropertyChanged += OnAppearanceManagerPropertyChanged;
@@ -75,10 +75,10 @@ namespace TreehopperShowcase.Pages.Settings
         private void SyncThemeAndColor()
         {
             // synchronizes the selected viewmodel theme with the actual theme used by the appearance manager.
-            this.SelectedTheme = this.themes.FirstOrDefault(l => l.Source.Equals(AppearanceManager.Current.ThemeSource));
+            SelectedTheme = themes.FirstOrDefault(l => l.Source.Equals(AppearanceManager.Current.ThemeSource));
 
             // and make sure accent color is up-to-date
-            this.SelectedAccentColor = AppearanceManager.Current.AccentColor;
+            SelectedAccentColor = AppearanceManager.Current.AccentColor;
         }
 
         private void OnAppearanceManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -89,20 +89,20 @@ namespace TreehopperShowcase.Pages.Settings
             }
         }
 
-        public LinkCollection Themes => this.themes;
+        public LinkCollection Themes => themes;
 
         public string[] FontSizes => new string[] { FontSmall, FontLarge };
 
-        public Color[] AccentColors => this.accentColors;
+        public Color[] AccentColors => accentColors;
 
         public Link SelectedTheme
         {
-            get { return this.selectedTheme; }
+            get { return selectedTheme; }
             set
             {
-                if (this.selectedTheme != value)
+                if (selectedTheme != value)
                 {
-                    this.selectedTheme = value;
+                    selectedTheme = value;
                     OnPropertyChanged("SelectedTheme");
 
                     // and update the actual theme
@@ -113,12 +113,12 @@ namespace TreehopperShowcase.Pages.Settings
 
         public string SelectedFontSize
         {
-            get { return this.selectedFontSize; }
+            get { return selectedFontSize; }
             set
             {
-                if (this.selectedFontSize != value)
+                if (selectedFontSize != value)
                 {
-                    this.selectedFontSize = value;
+                    selectedFontSize = value;
                     OnPropertyChanged("SelectedFontSize");
 
                     AppearanceManager.Current.FontSize = value == FontLarge ? FontSize.Large : FontSize.Small;
@@ -128,12 +128,12 @@ namespace TreehopperShowcase.Pages.Settings
 
         public Color SelectedAccentColor
         {
-            get { return this.selectedAccentColor; }
+            get { return selectedAccentColor; }
             set
             {
-                if (this.selectedAccentColor != value)
+                if (selectedAccentColor != value)
                 {
-                    this.selectedAccentColor = value;
+                    selectedAccentColor = value;
                     OnPropertyChanged("SelectedAccentColor");
 
                     AppearanceManager.Current.AccentColor = value;

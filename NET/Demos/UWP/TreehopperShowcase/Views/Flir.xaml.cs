@@ -24,7 +24,7 @@ namespace TreehopperShowcase.Views
     {
         public Flir()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

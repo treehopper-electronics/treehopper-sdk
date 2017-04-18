@@ -35,7 +35,7 @@
                 throw new ArgumentOutOfRangeException("address", "The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F");
             this.address = address;
             i2c = i2cModule;
-            this.rateKhz = rateKHz;
+            rateKhz = rateKHz;
             i2c.Enabled = true;
         }
 
@@ -67,7 +67,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Rd [A] [Data] NA P
-            var data = await i2c.SendReceive(this.address, new byte[] { }, 1).ConfigureAwait(false);
+            var data = await i2c.SendReceive(address, new byte[] { }, 1).ConfigureAwait(false);
             return data[0];
         }
 
@@ -135,7 +135,7 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [Data] NA P
-            var data = await i2c.SendReceive(this.address, new byte[] { register }, 1).ConfigureAwait(false);
+            var data = await i2c.SendReceive(address, new byte[] { register }, 1).ConfigureAwait(false);
             return data[0];
         }
 

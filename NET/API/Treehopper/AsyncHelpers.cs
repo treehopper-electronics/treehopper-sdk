@@ -110,7 +110,7 @@
 
             internal Releaser(AsyncLock toRelease)
             {
-                this._toRelease = toRelease;
+                _toRelease = toRelease;
             }
 
             /// <summary>

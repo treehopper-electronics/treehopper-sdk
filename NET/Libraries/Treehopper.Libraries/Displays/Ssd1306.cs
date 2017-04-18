@@ -113,7 +113,7 @@ namespace Treehopper.Libraries.Displays
             if (!((Width == 128 && Height == 32) || (Width == 128 && Height == 64) || (Width == 96 && Height == 16)))
                 throw new ArgumentException("The only supported display sizes are 128x32, 128x64, and 96x16");
 
-            this.dev = new SMBusDevice(address, I2c, 400);
+            dev = new SMBusDevice(address, I2c, 400);
 
             RawBuffer = new byte[Width * Height / 8 + Width];
             BoolBuffer = new bool[Width, Height];

@@ -26,8 +26,8 @@ namespace Treehopper.Android
 
         public UsbConnection(UsbDevice device, UsbManager manager)
         {
-            this.usbDevice = device;
-            this.usbManager = manager;
+            usbDevice = device;
+            usbManager = manager;
         }
 
         public string DevicePath => usbDevice.Handle.ToString();

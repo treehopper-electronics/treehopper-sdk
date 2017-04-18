@@ -40,7 +40,7 @@ namespace Treehopper.Libraries.Displays
 
             public I2cParallelInterface(I2c i2c)
             {
-                this.dev = new SMBusDevice(0x3e, i2c);
+                dev = new SMBusDevice(0x3e, i2c);
             }
 
             public int DelayMicroseconds { get; set; }

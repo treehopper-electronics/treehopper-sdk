@@ -24,7 +24,7 @@ namespace TreehopperShowcase.Views
     {
         public LedAnimation()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }
