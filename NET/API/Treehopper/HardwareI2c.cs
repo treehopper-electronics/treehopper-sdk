@@ -9,31 +9,31 @@ namespace Treehopper
     /// <summary>
     ///     The I2c class is used for interacting with the I2C module on the Treehopper Board.
     /// </summary>
-    internal class HardwareI2c : I2c
+    internal class HardwareI2C : I2C
     {
-        private readonly TreehopperUsb device;
-        private bool enabled;
-        private double speed = 100;
+        private readonly TreehopperUsb _device;
+        private bool _enabled;
+        private double _speed = 100;
 
-        internal HardwareI2c(TreehopperUsb device)
+        internal HardwareI2C(TreehopperUsb device)
         {
-            this.device = device;
+            _device = device;
         }
 
-        public Pin Sda => device.Pins[3];
+        public Pin Sda => _device.Pins[3];
 
-        public Pin Scl => device.Pins[4];
+        public Pin Scl => _device.Pins[4];
 
         public bool Enabled
         {
-            get { return enabled; }
+            get { return _enabled; }
 
             set
             {
-                if (value == enabled)
+                if (value == _enabled)
                     return;
-                enabled = value;
-                if (enabled)
+                _enabled = value;
+                if (_enabled)
                 {
                     Sda.Mode = PinMode.Reserved;
                     Scl.Mode = PinMode.Reserved;
@@ -50,12 +50,12 @@ namespace Treehopper
 
         public double Speed
         {
-            get { return speed; }
+            get { return _speed; }
 
             set
             {
-                if (speed.CloseTo(value)) return;
-                speed = value;
+                if (_speed.CloseTo(value)) return;
+                _speed = value;
                 SendConfig();
             }
         }
@@ -76,7 +76,7 @@ namespace Treehopper
             var receivedData = new byte[numBytesToRead];
             var txLen = dataToWrite?.Length ?? 0;
 
-            using (await device.ComsLock.LockAsync())
+            using (await _device.ComsLock.LockAsync())
             {
                 var dataToSend = new byte[4 + txLen]; // 2 bytes for the header
                 dataToSend[0] = (byte) DeviceCommands.I2cTransaction;
@@ -95,20 +95,20 @@ namespace Treehopper
                 {
                     var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                     var tmp = dataToSend.Skip(offset).Take(transferLength);
-                    await device.SendPeripheralConfigPacket(tmp.ToArray());
+                    await _device.SendPeripheralConfigPacket(tmp.ToArray());
                     offset += transferLength;
                     bytesRemaining -= transferLength;
                 }
 
                 if (numBytesToRead == 0)
                 {
-                    var result = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                    var result = await _device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
                     if (result[0] != 255)
                     {
-                        var error = (I2cTransferError) result[0];
+                        var error = (I2CTransferError) result[0];
                         Debug.WriteLine("NOTICE: I2C transaction resulted in an error: " + error);
                         if (TreehopperUsb.Settings.ThrowExceptions)
-                            throw new I2cTransferException {Error = error};
+                            throw new I2CTransferException {Error = error};
                     }
                 }
                 else
@@ -119,7 +119,7 @@ namespace Treehopper
                     while (bytesRemaining > 0)
                     {
                         var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        var chunk = await device.ReceiveCommsResponsePacket((uint) numBytesToTransfer)
+                        var chunk = await _device.ReceiveCommsResponsePacket((uint) numBytesToTransfer)
                             .ConfigureAwait(false);
                         Array.Copy(chunk, 0, result, srcIndex,
                             chunk.Length); // just in case we don't get what we're expecting
@@ -129,10 +129,10 @@ namespace Treehopper
 
                     if (result[0] != 255)
                     {
-                        var error = (I2cTransferError) result[0];
+                        var error = (I2CTransferError) result[0];
                         Debug.WriteLine("NOTICE: I2C transaction resulted in an error: " + error);
                         if (TreehopperUsb.Settings.ThrowExceptions)
-                            throw new I2cTransferException {Error = error};
+                            throw new I2CTransferException {Error = error};
                     }
                     else
                     {
@@ -146,22 +146,22 @@ namespace Treehopper
 
         public override string ToString()
         {
-            if (enabled)
-                return $"Enabled, {speed:0.00} kHz";
+            if (_enabled)
+                return $"Enabled, {_speed:0.00} kHz";
             return "Not enabled";
         }
 
         private void SendConfig()
         {
-            var th0 = 256.0 - 4000.0 / (3.0 * speed);
+            var th0 = 256.0 - 4000.0 / (3.0 * _speed);
             if (th0 < 0 || th0 > 255.0)
                 throw new Exception("Rate out of limits. Valid rate is 62.5 kHz - 16000 kHz (16 MHz)");
 
             var dataToSend = new byte[3];
             dataToSend[0] = (byte) DeviceCommands.I2cConfig;
-            dataToSend[1] = (byte) (enabled ? 0x01 : 0x00);
+            dataToSend[1] = (byte) (_enabled ? 0x01 : 0x00);
             dataToSend[2] = (byte) Math.Round(th0);
-            device.SendPeripheralConfigPacket(dataToSend);
+            _device.SendPeripheralConfigPacket(dataToSend);
         }
     }
 }
