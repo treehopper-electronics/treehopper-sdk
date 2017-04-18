@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Treehopper.Desktop.MacUsb.IOKit 
 {
@@ -6,6 +7,7 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 	/// <summary>
 	/// Manages IOIterator handles.
 	/// </summary>
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class IOIterator : IOObject {
 
 		/// <summary>

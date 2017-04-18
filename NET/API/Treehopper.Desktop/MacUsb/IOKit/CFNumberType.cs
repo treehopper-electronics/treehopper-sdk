@@ -1,9 +1,12 @@
-﻿namespace Treehopper.Desktop.MacUsb.IOKit
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Treehopper.Desktop.MacUsb.IOKit
 {
 
 	/// <summary>
 	/// CF number types
 	/// </summary>
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public enum CFNumberType
 	{
 		/* Fixed-width types */

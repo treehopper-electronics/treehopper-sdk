@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb.IOKit
@@ -21,7 +22,8 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public ReleaseDelegate Release;
 	}
 
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct CFUUIDBytes
 	{
 	    readonly byte byte0;

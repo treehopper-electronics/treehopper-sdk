@@ -1,5 +1,8 @@
-﻿namespace Treehopper.Desktop.MacUsb.IOKit
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Treehopper.Desktop.MacUsb.IOKit
 {
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public enum IOKitError : uint
 	{
 		// IOKit
