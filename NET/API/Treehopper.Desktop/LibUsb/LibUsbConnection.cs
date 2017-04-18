@@ -74,7 +74,7 @@ namespace Treehopper.Desktop.LibUsb
 						int len = 0;
 						try
 						{
-							var res = NativeMethods.BulkTransfer(deviceHandle, peripheralResponseEndpoint, buffer, buffer.Length, out len, 1000);
+							var res = NativeMethods.BulkTransfer(deviceHandle, pinReportEndpoint, buffer, buffer.Length, out len, 1000);
 
 							if (res == LibUsbError.Success)
 								PinEventDataReceived?.Invoke(buffer);
