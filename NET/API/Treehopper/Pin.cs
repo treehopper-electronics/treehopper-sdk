@@ -1,33 +1,32 @@
-﻿namespace Treehopper
-{
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Threading.Tasks;
-    using Utilities;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Treehopper.Utilities;
 
+namespace Treehopper
+{
     /// <summary>
-    /// Represents an I/O pin on Treehopper; it provides core digital I/O (GPIO) and ADC functionality.
+    ///     Represents an I/O pin on Treehopper; it provides core digital I/O (GPIO) and ADC functionality.
     /// </summary>
     public class Pin : INotifyPropertyChanged, DigitalIn, DigitalOut, AdcPin, SpiChipSelectPin
     {
-        private readonly TreehopperUsb board;
-        private PinMode mode = PinMode.Unassigned;
-        private AdcReferenceLevel referenceLevel;
-        private bool digitalValue;
-        private double referenceLevelVoltage;
-        private int prevAdcValue;
-        private double prevAnalogVoltage;
-        private double prevAnalogValue;
         private int adcValue;
-        private TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
         private TaskCompletionSource<int> adcValueSignal = new TaskCompletionSource<int>();
         private TaskCompletionSource<double> analogValueSignal = new TaskCompletionSource<double>();
         private TaskCompletionSource<double> analogVoltageSignal = new TaskCompletionSource<double>();
+        private TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
+        private bool digitalValue;
+        private PinMode mode = PinMode.Unassigned;
+        private int prevAdcValue;
+        private double prevAnalogValue;
+        private double prevAnalogVoltage;
+        private AdcReferenceLevel referenceLevel;
+        private double referenceLevelVoltage;
 
         internal Pin(TreehopperUsb board, byte pinNumber)
         {
-            this.board = board;
+            Board = board;
             PinNumber = pinNumber;
             SoftPwm = new SoftPwm(Board, this);
             ReferenceLevel = AdcReferenceLevel.Vref_3V3;
@@ -35,72 +34,19 @@
         }
 
         /// <summary>
-        /// Occurs when an analog voltage is changed, according to the set threshold.
-        /// </summary>
-        /// <remarks>
-        /// The Changed event is raised when the 12-bit ADC value obtained is different from the previous reading 
-        /// by at least the value specified by <see cref="AnalogVoltageChangedThreshold"/>.
-        /// </remarks>
-        public event OnAnalogVoltageChanged AnalogVoltageChanged;
-
-        /// <summary>
-        /// Occurs when an analog value is changed, according to the set threshold.
-        /// </summary>
-        /// <remarks>
-        /// The Changed event is raised when the 10-bit ADC value obtained is different from the previous reading
-        /// by at least the value specified by <see cref="AdcValueChangedThreshold"/>
-        /// </remarks>
-        public event OnAnalogValueChanged AnalogValueChanged;
-
-        /// <summary>
-        /// Occurs when the normalized analog value is changed, according to the set threshold.
-        /// </summary>
-        /// <remarks>
-        /// The Changed event is raised when the 10-bit ADC value obtained is different from the previous reading.
-        /// </remarks>
-        public event OnAdcValueChanged AdcValueChanged;
-
-        /// <summary>
-        /// This event fires whenever a property changes
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Occurs when the input on the pin changes.
-        /// </summary>
-        /// <remarks>
-        /// This event will only fire when the pin is configured as a digital input.
-        /// </remarks>
-        public event OnDigitalInValueChanged DigitalValueChanged;
-
-        internal enum PinConfigCommands
-        {
-            Reserved = 0,
-            MakeDigitalInput,
-            MakePushPullOutput,
-            MakeOpenDrainOutput,
-            MakeAnalogInput,
-            SetDigitalValue,
-        }
-
-        /// <summary>
-        /// Get or set the mode of the pin.
+        ///     Get or set the mode of the pin.
         /// </summary>
         public PinMode Mode
         {
-            get
-            {
-                return mode;
-            }
+            get { return mode; }
 
             set
             {
                 if (value == mode)
                     return;
                 if (mode == PinMode.Reserved && value != PinMode.Unassigned)
-                {
-                    throw new Exception("This pin is reserved; you must disable the peripheral using it before interacting with it");
-                }
+                    throw new Exception(
+                        "This pin is reserved; you must disable the peripheral using it before interacting with it");
 
                 mode = value;
 
@@ -138,132 +84,26 @@
         }
 
         /// <summary>
-        /// This returns a reference to the Treehopper board this pin belongs to.
+        ///     This returns a reference to the Treehopper board this pin belongs to.
         /// </summary>
-        public TreehopperUsb Board => board;
+        public TreehopperUsb Board { get; }
 
         /// <summary>
-        /// Gets the name of the pin
+        ///     Gets the name of the pin
         /// </summary>
         public string Name { get; internal set; }
 
         /// <summary>
-        /// The pin number of the pin.
-        /// </summary>
-        public int PinNumber { get; internal set; }
-
-        /// <summary>
-        /// The SoftPwm functions associated with this pin.
+        ///     The SoftPwm functions associated with this pin.
         /// </summary>
         public SoftPwm SoftPwm { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the voltage threshold required to fire the AnalogVoltageChanged event.
-        /// </summary>
-        public double AnalogVoltageChangedThreshold { get; set; } = 0.05;
-
-        /// <summary>
-        /// Gets or sets the value threshold required to fire the AdcValueChanged event.
-        /// </summary>
-        public int AdcValueChangedThreshold { get; set; } = 10;
-
-        /// <summary>
-        /// Gets or sets the value threshold required to fire the AnalogValueChanged event.
-        /// </summary>
-        public double AnalogValueChangedThreshold { get; set; } = 0.01;
-
-        /// <summary>
-        /// Gets or sets the digital value of the pin.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Setting a value to a pin that is configured as an input will automatically make the pin an output before 
-        /// writing the value to it. 
-        /// </para>
-        /// <para>
-        /// The value retrieved from this pin will read as "0" when then pin is being used for other purposes.
-        /// </para>
-        /// </remarks>
-        public bool DigitalValue
-        {
-            get
-            {
-                if (Mode == PinMode.Reserved || Mode == PinMode.AnalogInput)
-                    Debug.WriteLine(
-                        $"NOTICE: Pin {PinNumber} must be in digital I/O mode to read from. This call will return 0 always.");
-
-                return digitalValue;
-            }
-
-            set
-            {
-                if (digitalValue == value) return;
-                digitalValue = value;
-                if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                    WriteDigitalValueAsync(digitalValue).Forget(); // send off the request and move on.
-                else
-                    WriteDigitalValueAsync(digitalValue).Wait(); // wait for it to complete
-            }
-        }
-
-        /// <summary>
-        /// Write a value to a pin
-        /// </summary>
-        /// <param name="value">The value to write</param>
-        /// <returns>An awaitable task that completes upon success</returns>
-        /// <remarks>
-        /// <para>This method is functionally equivalent of calling "<see cref="DigitalValue"/>=value", however, it provides finer-grained control over asynchronous behavior. You may choose to await it, block it synchronously, or "forget" it (continue execution without waiting at all).
-        /// </para>
-        /// </remarks>
-        public async Task WriteDigitalValueAsync(bool value)
-        {
-            digitalValue = value;
-            if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
-                await MakeDigitalPushPullOut().ConfigureAwait(false); // assume they want push-pull
-
-            var byteVal = (byte)(digitalValue ? 0x01 : 0x00);
-            await SendCommand(new byte[] { (byte)PinConfigCommands.SetDigitalValue, byteVal }).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Retrieve the last value obtained from the ADC. 
-        /// </summary>
-        /// <remarks>
-        /// Treehopper has a 12-bit ADC, so ADC values will range from 0-4095.
-        /// </remarks>
-        public int AdcValue
-        {
-            get
-            {
-                if (Mode != PinMode.AnalogInput)
-                    Debug.WriteLine(
-                        $"NOTICE: Attempting to read AdcValue from Pin {PinNumber}, which is configured for {Mode}. This call will always return 0");
-
-                return adcValue;
-            }
-        }
-
-        /// <summary>
-        /// Retrieve the last voltage reading from the ADC.
-        /// </summary>
-        public double AnalogVoltage => Math.Round((double)AdcValue * (referenceLevelVoltage / 4092.0), 4);
-
-        /// <summary>
-        /// Retrieve the last reading from the ADC, expressed on a unit range (0.0 - 1.0)
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        public double AnalogValue => Math.Round((double)AdcValue / 4092.0, 4);
-
-        /// <summary>
-        /// Sets the ADC reference value used 
+        ///     Sets the ADC reference value used
         /// </summary>
         public AdcReferenceLevel ReferenceLevel
         {
-            get
-            {
-                return referenceLevel;
-            }
+            get { return referenceLevel; }
 
             set
             {
@@ -292,30 +132,163 @@
 
                 // if we're already an analog input, re-send the command to set the new reference level
                 if (Mode == PinMode.AnalogInput)
-                    SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
+                    SendCommand(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
             }
         }
 
         /// <summary>
-        /// Gets the Spi module that can use this pin for chip-select duties
+        ///     Occurs when an analog voltage is changed, according to the set threshold.
         /// </summary>
         /// <remarks>
-        /// <para>Since the SPI chip-select functionality is done in-hardware, the SPI module must check to ensure the pin you're using for chip-select actually belongs to the same board as the SPI module does (as you may have multiple boards attached).</para>
+        ///     The Changed event is raised when the 12-bit ADC value obtained is different from the previous reading
+        ///     by at least the value specified by <see cref="AnalogVoltageChangedThreshold" />.
         /// </remarks>
-        public Spi SpiModule => board.Spi;
+        public event OnAnalogVoltageChanged AnalogVoltageChanged;
 
         /// <summary>
-        /// Toggles the output value of the pin.
+        ///     Occurs when an analog value is changed, according to the set threshold.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// Calling this function on a pin that is configured as an input will automatically make the pin an output
-        /// before writing the value to it.
-        /// </para>
+        ///     The Changed event is raised when the 10-bit ADC value obtained is different from the previous reading
+        ///     by at least the value specified by <see cref="AdcValueChangedThreshold" />
+        /// </remarks>
+        public event OnAnalogValueChanged AnalogValueChanged;
+
+        /// <summary>
+        ///     Occurs when the normalized analog value is changed, according to the set threshold.
+        /// </summary>
+        /// <remarks>
+        ///     The Changed event is raised when the 10-bit ADC value obtained is different from the previous reading.
+        /// </remarks>
+        public event OnAdcValueChanged AdcValueChanged;
+
+        /// <summary>
+        ///     Gets or sets the voltage threshold required to fire the AnalogVoltageChanged event.
+        /// </summary>
+        public double AnalogVoltageChangedThreshold { get; set; } = 0.05;
+
+        /// <summary>
+        ///     Gets or sets the value threshold required to fire the AdcValueChanged event.
+        /// </summary>
+        public int AdcValueChangedThreshold { get; set; } = 10;
+
+        /// <summary>
+        ///     Gets or sets the value threshold required to fire the AnalogValueChanged event.
+        /// </summary>
+        public double AnalogValueChangedThreshold { get; set; } = 0.01;
+
+        /// <summary>
+        ///     Retrieve the last value obtained from the ADC.
+        /// </summary>
+        /// <remarks>
+        ///     Treehopper has a 12-bit ADC, so ADC values will range from 0-4095.
+        /// </remarks>
+        public int AdcValue
+        {
+            get
+            {
+                if (Mode != PinMode.AnalogInput)
+                    Debug.WriteLine(
+                        $"NOTICE: Attempting to read AdcValue from Pin {PinNumber}, which is configured for {Mode}. This call will always return 0");
+
+                return adcValue;
+            }
+        }
+
+        /// <summary>
+        ///     Retrieve the last voltage reading from the ADC.
+        /// </summary>
+        public double AnalogVoltage => Math.Round(AdcValue * (referenceLevelVoltage / 4092.0), 4);
+
+        /// <summary>
+        ///     Retrieve the last reading from the ADC, expressed on a unit range (0.0 - 1.0)
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        public double AnalogValue => Math.Round(AdcValue / 4092.0, 4);
+
+        /// <summary>
+        ///     Make the pin an analog input.
+        /// </summary>
+        public Task MakeAnalogIn()
+        {
+            mode = PinMode.AnalogInput;
+            return SendCommand(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
+        }
+
+        /// <summary>
+        ///     Occurs when the input on the pin changes.
+        /// </summary>
+        /// <remarks>
+        ///     This event will only fire when the pin is configured as a digital input.
+        /// </remarks>
+        public event OnDigitalInValueChanged DigitalValueChanged;
+
+        /// <summary>
+        ///     Gets or sets the digital value of the pin.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Setting a value to a pin that is configured as an input will automatically make the pin an output before
+        ///         writing the value to it.
+        ///     </para>
+        ///     <para>
+        ///         The value retrieved from this pin will read as "0" when then pin is being used for other purposes.
+        ///     </para>
+        /// </remarks>
+        public bool DigitalValue
+        {
+            get
+            {
+                if (Mode == PinMode.Reserved || Mode == PinMode.AnalogInput)
+                    Debug.WriteLine(
+                        $"NOTICE: Pin {PinNumber} must be in digital I/O mode to read from. This call will return 0 always.");
+
+                return digitalValue;
+            }
+
+            set
+            {
+                if (digitalValue == value) return;
+                digitalValue = value;
+                if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                    WriteDigitalValueAsync(digitalValue).Forget(); // send off the request and move on.
+                else
+                    WriteDigitalValueAsync(digitalValue).Wait(); // wait for it to complete
+            }
+        }
+
+        /// <summary>
+        ///     Wait for the digital input value of the pin to change
+        /// </summary>
+        /// <returns>An awaitable bool, indicating the pin's state</returns>
+        public Task<bool> AwaitDigitalValueChange()
+        {
+            digitalSignal = new TaskCompletionSource<bool>();
+            return digitalSignal.Task;
+        }
+
+        /// <summary>
+        ///     Make the pin a digital input.
+        /// </summary>
+        public Task MakeDigitalIn()
+        {
+            mode = PinMode.DigitalInput;
+            return SendCommand(new byte[] {(byte) PinConfigCommands.MakeDigitalInput, 0});
+        }
+
+        /// <summary>
+        ///     Toggles the output value of the pin.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Calling this function on a pin that is configured as an input will automatically make the pin an output
+        ///         before writing the value to it.
+        ///     </para>
         /// </remarks>
         /// <example>
-        /// In this example, an LED attached to pin 4 is made to blink.
-        /// <code>
+        ///     In this example, an LED attached to pin 4 is made to blink.
+        ///     <code>
         /// Pin led = myTreehopperBoard.Pin4; // create a reference to Pin4 to keep code concise.
         /// led.MakeDigitalOutput();
         /// while(true)
@@ -331,17 +304,60 @@
         }
 
         /// <summary>
-        /// Wait for the digital input value of the pin to change
+        ///     Make the pin a push-pull output.
         /// </summary>
-        /// <returns>An awaitable bool, indicating the pin's state</returns>
-        public Task<bool> AwaitDigitalValueChange()
+        public Task MakeDigitalPushPullOut()
         {
-            digitalSignal = new TaskCompletionSource<bool>();
-            return digitalSignal.Task;
+            mode = PinMode.PushPullOutput;
+            return SendCommand(new byte[] {(byte) PinConfigCommands.MakePushPullOutput, 0});
         }
 
         /// <summary>
-        /// Wait for the pin's ADC value to change.
+        ///     This event fires whenever a property changes
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        ///     The pin number of the pin.
+        /// </summary>
+        public int PinNumber { get; internal set; }
+
+        /// <summary>
+        ///     Gets the Spi module that can use this pin for chip-select duties
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Since the SPI chip-select functionality is done in-hardware, the SPI module must check to ensure the pin
+        ///         you're using for chip-select actually belongs to the same board as the SPI module does (as you may have
+        ///         multiple boards attached).
+        ///     </para>
+        /// </remarks>
+        public Spi SpiModule => Board.Spi;
+
+        /// <summary>
+        ///     Write a value to a pin
+        /// </summary>
+        /// <param name="value">The value to write</param>
+        /// <returns>An awaitable task that completes upon success</returns>
+        /// <remarks>
+        ///     <para>
+        ///         This method is functionally equivalent of calling "<see cref="DigitalValue" />=value", however, it provides
+        ///         finer-grained control over asynchronous behavior. You may choose to await it, block it synchronously, or
+        ///         "forget" it (continue execution without waiting at all).
+        ///     </para>
+        /// </remarks>
+        public async Task WriteDigitalValueAsync(bool value)
+        {
+            digitalValue = value;
+            if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
+                await MakeDigitalPushPullOut().ConfigureAwait(false); // assume they want push-pull
+
+            var byteVal = (byte) (digitalValue ? 0x01 : 0x00);
+            await SendCommand(new[] {(byte) PinConfigCommands.SetDigitalValue, byteVal}).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Wait for the pin's ADC value to change.
         /// </summary>
         /// <returns>An awaitable int, in the range of 0-4095, of the pin's ADC value.</returns>
         public Task<int> AwaitAdcValueChange()
@@ -351,7 +367,7 @@
         }
 
         /// <summary>
-        /// Wait for the pin's analog voltage to change.
+        ///     Wait for the pin's analog voltage to change.
         /// </summary>
         /// <returns>An awaitable double of the pin's analog voltage, measured in volts.</returns>
         public Task<double> AwaitAnalogVoltageChange()
@@ -361,7 +377,7 @@
         }
 
         /// <summary>
-        /// Wait for the pin's analog value to change.
+        ///     Wait for the pin's analog value to change.
         /// </summary>
         /// <returns>An awaitable double of the analog value, normalized from 0-1.</returns>
         public Task<double> AwaitAnalogValueChange()
@@ -371,49 +387,22 @@
         }
 
         /// <summary>
-        /// Make the pin a push-pull output.
+        ///     Make the pin a push-pull output.
         /// </summary>
         public Task MakeDigitalOpenDrainOut()
         {
             mode = PinMode.OpenDrainOutput;
-            return SendCommand(new byte[] { (byte)PinConfigCommands.MakeOpenDrainOutput, 0 });
+            return SendCommand(new byte[] {(byte) PinConfigCommands.MakeOpenDrainOutput, 0});
         }
 
         /// <summary>
-        /// Make the pin a push-pull output.
-        /// </summary>
-        public Task MakeDigitalPushPullOut()
-        {
-            mode = PinMode.PushPullOutput;
-            return SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0 });
-        }
-
-        /// <summary>
-        /// Make the pin a digital input.
-        /// </summary>
-        public Task MakeDigitalIn()
-        {
-            mode = PinMode.DigitalInput;
-            return SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, 0 });
-        }
-
-        /// <summary>
-        /// Make the pin an analog input.
-        /// </summary>
-        public Task MakeAnalogIn()
-        {
-            mode = PinMode.AnalogInput;
-            return SendCommand(new byte[] { (byte)PinConfigCommands.MakeAnalogInput, (byte)ReferenceLevel });
-        }
-
-        /// <summary>
-        /// Gets a string representation of the pin's current state
+        ///     Gets a string representation of the pin's current state
         /// </summary>
         /// <returns>the pin's current state</returns>
         public override string ToString()
         {
             if (SoftPwm.Enabled)
-                return Name + ": " + SoftPwm.ToString();
+                return Name + ": " + SoftPwm;
             switch (Mode)
             {
                 case PinMode.AnalogInput:
@@ -448,8 +437,8 @@
             }
             else if (Mode == PinMode.AnalogInput)
             {
-                var val = ((int)highByte) << 8;
-                val |= (int)lowByte;
+                var val = highByte << 8;
+                val |= lowByte;
                 adcValue = val;
                 RaiseAnalogInChanged();
             }
@@ -504,9 +493,19 @@
         internal Task SendCommand(byte[] cmd)
         {
             var data = new byte[6];
-            data[0] = (byte)PinNumber;
+            data[0] = (byte) PinNumber;
             cmd.CopyTo(data, 1);
             return Board.SendPinConfigPacket(data);
+        }
+
+        internal enum PinConfigCommands
+        {
+            Reserved = 0,
+            MakeDigitalInput,
+            MakePushPullOutput,
+            MakeOpenDrainOutput,
+            MakeAnalogInput,
+            SetDigitalValue
         }
     }
 }

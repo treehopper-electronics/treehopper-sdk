@@ -1,14 +1,14 @@
-﻿namespace Treehopper
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Treehopper
+{
     /// <summary>
-    /// This comparer is used to compare Treehopper boards
+    ///     This comparer is used to compare Treehopper boards
     /// </summary>
     public class TreehopperBoardEqualityComparer : EqualityComparer<TreehopperUsb>
     {
         /// <summary>
-        /// Determines if two treehopper boards are the same
+        ///     Determines if two treehopper boards are the same
         /// </summary>
         /// <param name="x">The first board to compare</param>
         /// <param name="y">The second board to compare</param>
@@ -21,7 +21,7 @@
         }
 
         /// <summary>
-        /// Returns the Hash of the Treehopper board
+        ///     Returns the Hash of the Treehopper board
         /// </summary>
         /// <param name="obj">The Treehopper board to calculate the hash for</param>
         /// <returns>The calculated hash value</returns>
@@ -32,8 +32,7 @@
                     return obj.ToString().GetHashCode();
                 else
                     return 0;
-            else
-                return 0;
+            return 0;
         }
     }
 }

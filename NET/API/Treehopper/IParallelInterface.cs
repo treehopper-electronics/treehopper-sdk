@@ -1,36 +1,36 @@
-﻿namespace Treehopper
-{
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
+namespace Treehopper
+{
     /// <summary>
-    /// Represents an 8080-style parallel interface that can write data
+    ///     Represents an 8080-style parallel interface that can write data
     /// </summary>
     public interface WriteOnlyParallelInterface
     {
         /// <summary>
-        /// Gets or sets whether the bus is enabled
+        ///     Gets or sets whether the bus is enabled
         /// </summary>
         bool Enabled { get; set; }
 
         /// <summary>
-        /// The minimum number of microseconds to delay between each word write. 
+        ///     The minimum number of microseconds to delay between each word write.
         /// </summary>
         int DelayMicroseconds { get; set; }
 
         /// <summary>
-        /// Gets the width of the bus
+        ///     Gets the width of the bus
         /// </summary>
         int Width { get; }
 
         /// <summary>
-        /// Write one or more bytes to the command register
+        ///     Write one or more bytes to the command register
         /// </summary>
         /// <param name="command">The command data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
         Task WriteCommand(uint[] command);
 
         /// <summary>
-        /// Write one or more bytes to the data register
+        ///     Write one or more bytes to the data register
         /// </summary>
         /// <param name="data">The data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
@@ -38,12 +38,12 @@
     }
 
     /// <summary>
-    /// A parallel interface that can read and write data
+    ///     A parallel interface that can read and write data
     /// </summary>
     public interface ReadWriteParallelInterface : WriteOnlyParallelInterface
     {
         /// <summary>
-        /// Read one or more words from the command register
+        ///     Read one or more words from the command register
         /// </summary>
         /// <param name="command">The command to write before reading</param>
         /// <param name="length">The number of words to read</param>
@@ -51,7 +51,7 @@
         Task<ushort[]> ReadCommand(uint command, int length);
 
         /// <summary>
-        /// Read one or more words from the data register
+        ///     Read one or more words from the data register
         /// </summary>
         /// <param name="length">The number of words to read</param>
         /// <returns>The words read</returns>

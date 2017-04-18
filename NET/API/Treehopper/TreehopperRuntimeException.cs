@@ -1,26 +1,24 @@
-﻿namespace Treehopper
-{
-    using System;
+﻿using System;
 
+namespace Treehopper
+{
     /// <summary>
-    /// A runtime exception caused in Treehopper
+    ///     A runtime exception caused in Treehopper
     /// </summary>
     public class TreehopperRuntimeException : Exception
     {
-        private readonly string message;
-
         /// <summary>
-        /// Construct a runtime exception
+        ///     Construct a runtime exception
         /// </summary>
         /// <param name="message">the message to print</param>
         public TreehopperRuntimeException(string message)
         {
-            this.message = message;
+            Message = message;
         }
 
         /// <summary>
-        /// The message of the exception
+        ///     The message of the exception
         /// </summary>
-        public override string Message => message;
+        public override string Message { get; }
     }
 }

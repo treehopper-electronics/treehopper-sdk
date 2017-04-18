@@ -1,42 +1,31 @@
-﻿namespace Treehopper
-{
-    using System;
+﻿using System;
 
+namespace Treehopper
+{
     /// <summary>
-    /// Hardware PWM manager
+    ///     Hardware PWM manager
     /// </summary>
     public class HardwarePwmManager
     {
         private readonly TreehopperUsb board;
-        private PwmPinEnableMode mode;
-        private HardwarePwmFrequency frequency = HardwarePwmFrequency.Freq_732Hz;
 
         private byte[] dutyCyclePin7 = new byte[2];
         private byte[] dutyCyclePin8 = new byte[2];
         private byte[] dutyCyclePin9 = new byte[2];
+        private HardwarePwmFrequency frequency = HardwarePwmFrequency.Freq_732Hz;
+        private PwmPinEnableMode mode;
 
         internal HardwarePwmManager(TreehopperUsb treehopperUSB)
         {
             board = treehopperUSB;
         }
 
-        private enum PwmPinEnableMode
-        {
-            None,
-            Pin7,
-            Pin7_Pin8,
-            Pin7_Pin8_Pin9
-        }
-
         /// <summary>
-        /// Gets or sets the PWM frequency of the pin, selected from <see cref="HardwarePwmFrequency"/>
+        ///     Gets or sets the PWM frequency of the pin, selected from <see cref="HardwarePwmFrequency" />
         /// </summary>
         public HardwarePwmFrequency Frequency
         {
-            get
-            {
-                return frequency;
-            }
+            get { return frequency; }
 
             set
             {
@@ -49,17 +38,17 @@
         }
 
         /// <summary>
-        /// Get the number of microseconds per tick
+        ///     Get the number of microseconds per tick
         /// </summary>
         public double MicrosecondsPerTick => 1000000 / (FrequencyHz * 65536);
 
         /// <summary>
-        /// Get the number of microseconds per period
+        ///     Get the number of microseconds per period
         /// </summary>
         public double PeriodMicroseconds => 1000000 / FrequencyHz;
 
         /// <summary>
-        /// Get an integer representing the current PWM frequency
+        ///     Get an integer representing the current PWM frequency
         /// </summary>
         public int FrequencyHz
         {
@@ -80,7 +69,7 @@
         }
 
         /// <summary>
-        /// Gets a string representing the state of the Hardware PWM manager
+        ///     Gets a string representing the state of the Hardware PWM manager
         /// </summary>
         /// <returns>the state of the hardware PWM manager</returns>
         public override string ToString()
@@ -103,9 +92,11 @@
         {
             // first check to make sure the previous PWM pins have been enabled first.
             if (pin.PinNumber == 8 && mode != PwmPinEnableMode.Pin7)
-                throw new Exception("You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm");
+                throw new Exception(
+                    "You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm");
             if (pin.PinNumber == 9 && mode != PwmPinEnableMode.Pin7_Pin8)
-                throw new Exception("You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm");
+                throw new Exception(
+                    "You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm");
 
             switch (pin.PinNumber)
             {
@@ -127,9 +118,11 @@
         {
             // first check to make sure the higher PWM pins have been disabled first
             if (pin.PinNumber == 8 && mode != PwmPinEnableMode.Pin7_Pin8)
-                throw new Exception("You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
+                throw new Exception(
+                    "You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
             if (pin.PinNumber == 7 && mode != PwmPinEnableMode.Pin7)
-                throw new Exception("You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
+                throw new Exception(
+                    "You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
 
             switch (pin.PinNumber)
             {
@@ -149,7 +142,7 @@
 
         internal void SetDutyCycle(Pin pin, double value)
         {
-            var registerValue = (ushort)Math.Round(value * ushort.MaxValue);
+            var registerValue = (ushort) Math.Round(value * ushort.MaxValue);
             var newValue = BitConverter.GetBytes(registerValue); // TODO: is this endian-safe?
             switch (pin.PinNumber)
             {
@@ -171,10 +164,10 @@
         {
             var configuration = new byte[9];
 
-            configuration[0] = (byte)DeviceCommands.PwmConfig;
+            configuration[0] = (byte) DeviceCommands.PwmConfig;
 
-            configuration[1] = (byte)mode;
-            configuration[2] = (byte)frequency;
+            configuration[1] = (byte) mode;
+            configuration[2] = (byte) frequency;
 
             configuration[3] = dutyCyclePin7[0];
             configuration[4] = dutyCyclePin7[1];
@@ -186,6 +179,14 @@
             configuration[8] = dutyCyclePin9[1];
 
             board.SendPeripheralConfigPacket(configuration);
+        }
+
+        private enum PwmPinEnableMode
+        {
+            None,
+            Pin7,
+            Pin7_Pin8,
+            Pin7_Pin8_Pin9
         }
     }
 }

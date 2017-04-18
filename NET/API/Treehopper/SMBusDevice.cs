@@ -1,30 +1,30 @@
-﻿namespace Treehopper
-{
-    using System;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
+namespace Treehopper
+{
     /// <summary>
-    /// Device class used to abstract i2C interfacing
+    ///     Device class used to abstract i2C interfacing
     /// </summary>
     public class SMBusDevice
     {
         /// <summary>
-        /// The I2c port used by the device
-        /// </summary>
-        private readonly I2c i2c;
-
-        /// <summary>
-        /// The address of the device
+        ///     The address of the device
         /// </summary>
         private readonly byte address;
 
         /// <summary>
-        /// The frequency to use
+        ///     The I2c port used by the device
+        /// </summary>
+        private readonly I2c i2c;
+
+        /// <summary>
+        ///     The frequency to use
         /// </summary>
         private readonly int rateKhz;
 
         /// <summary>
-        /// Create a new SMBus device
+        ///     Create a new SMBus device
         /// </summary>
         /// <param name="address">The 7-bit address of the device</param>
         /// <param name="i2cModule">The i2C module this device is connected to.</param>
@@ -32,7 +32,8 @@
         public SMBusDevice(byte address, I2c i2cModule, int rateKHz = 100)
         {
             if (address > 0x7f)
-                throw new ArgumentOutOfRangeException("address", "The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F");
+                throw new ArgumentOutOfRangeException("address",
+                    "The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F");
             this.address = address;
             i2c = i2cModule;
             rateKhz = rateKHz;
@@ -58,7 +59,7 @@
         // [..]: Data sent by I2C device, as opposed to data sent by the host adapter.
 
         /// <summary>
-        /// Read a single byte from the device
+        ///     Read a single byte from the device
         /// </summary>
         /// <returns></returns>
         public async Task<byte> ReadByte()
@@ -72,7 +73,7 @@
         }
 
         /// <summary>
-        /// Write a single byte to the device
+        ///     Write a single byte to the device
         /// </summary>
         /// <param name="data">the data to write</param>
         /// <returns></returns>
@@ -82,11 +83,11 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Data [A] P
-            return i2c.SendReceive(address, new byte[] { data }, 0);
+            return i2c.SendReceive(address, new[] {data}, 0);
         }
 
         /// <summary>
-        /// Write data directly to the device
+        ///     Write data directly to the device
         /// </summary>
         /// <param name="data">an array of bytes to write</param>
         /// <returns></returns>
@@ -99,7 +100,7 @@
         }
 
         /// <summary>
-        /// Read data directly from a device
+        ///     Read data directly from a device
         /// </summary>
         /// <param name="numBytesToRead">the number of bytes to read</param>
         /// <returns></returns>
@@ -112,7 +113,7 @@
         }
 
         /// <summary>
-        /// Read an 8-bit register's value from the device
+        ///     Read an 8-bit register's value from the device
         /// </summary>
         /// <param name="register">the register address to read</param>
         /// <returns>the register's value as a byte</returns>
@@ -121,11 +122,11 @@
             // set the speed for this device, just in case another device mucked with these settings
             i2c.Speed = rateKhz;
 
-            return ReadByteData((byte)register);
+            return ReadByteData((byte) register);
         }
 
         /// <summary>
-        /// Read an 8-bit register's value from the device
+        ///     Read an 8-bit register's value from the device
         /// </summary>
         /// <param name="register">the register address to read</param>
         /// <returns>the register's value as a byte</returns>
@@ -135,12 +136,12 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [Data] NA P
-            var data = await i2c.SendReceive(address, new byte[] { register }, 1).ConfigureAwait(false);
+            var data = await i2c.SendReceive(address, new[] {register}, 1).ConfigureAwait(false);
             return data[0];
         }
 
         /// <summary>
-        /// Read a 16-bit little-endian register value from the device
+        ///     Read a 16-bit little-endian register value from the device
         /// </summary>
         /// <param name="register">the 8-bit register address to read from</param>
         /// <returns>the register's 16-bit value</returns>
@@ -150,12 +151,12 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            var result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
-            return (ushort)((result[1] << 8) | result[0]);
+            var result = await i2c.SendReceive(address, new[] {register}, 2).ConfigureAwait(false);
+            return (ushort) ((result[1] << 8) | result[0]);
         }
 
         /// <summary>
-        /// Read a 16-bit big-endian register value from the device
+        ///     Read a 16-bit big-endian register value from the device
         /// </summary>
         /// <param name="register">the 8-bit register address to read from</param>
         /// <returns>the register's 16-bit value</returns>
@@ -165,12 +166,12 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
-            var result = await i2c.SendReceive(address, new byte[] { register }, 2).ConfigureAwait(false);
-            return (ushort)((result[0] << 8) | result[1]);
+            var result = await i2c.SendReceive(address, new[] {register}, 2).ConfigureAwait(false);
+            return (ushort) ((result[0] << 8) | result[1]);
         }
 
         /// <summary>
-        /// Read a 16-bit little-endian value from the device
+        ///     Read a 16-bit little-endian value from the device
         /// </summary>
         /// <returns>the 16-bit value</returns>
         public async Task<ushort> ReadWord()
@@ -180,11 +181,11 @@
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataLow] A [DataHigh] NA P
             var result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
-            return (ushort)((result[1] << 8) | result[0]);
+            return (ushort) ((result[1] << 8) | result[0]);
         }
 
         /// <summary>
-        /// Read a 16-bit little-endian value from the device
+        ///     Read a 16-bit little-endian value from the device
         /// </summary>
         /// <returns>the 16-bit value</returns>
         public async Task<ushort> ReadWordBE()
@@ -194,11 +195,11 @@
 
             // S Addr Wr [A] Comm [A] S Addr Rd [A] [DataHigh] A [DataLow] NA P
             var result = await i2c.SendReceive(address, null, 2).ConfigureAwait(false);
-            return (ushort)((result[0] << 8) | result[1]);
+            return (ushort) ((result[0] << 8) | result[1]);
         }
 
         /// <summary>
-        /// Write a byte to a register
+        ///     Write a byte to a register
         /// </summary>
         /// <param name="register">the register to write the byte to</param>
         /// <param name="data">the byte to be written to the specified register</param>
@@ -209,11 +210,11 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] Data [A] P
-            return i2c.SendReceive(address, new byte[] { register, data }, 0);
+            return i2c.SendReceive(address, new[] {register, data}, 0);
         }
 
         /// <summary>
-        /// Write a 16-bit little-endian word to a register
+        ///     Write a 16-bit little-endian word to a register
         /// </summary>
         /// <param name="register">the register to write the 16-bit word to</param>
         /// <param name="data">the 16-bit word to write to the specified register</param>
@@ -224,11 +225,11 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] DataLow [A] DataHigh [A] P
-            return i2c.SendReceive(address, new byte[] { register, (byte)(data & 0xFF), (byte)(data >> 8) }, 0);
+            return i2c.SendReceive(address, new[] {register, (byte) (data & 0xFF), (byte) (data >> 8)}, 0);
         }
 
         /// <summary>
-        /// Write a 16-bit big-endian word to a register
+        ///     Write a 16-bit big-endian word to a register
         /// </summary>
         /// <param name="register">the register to write the 16-bit word to</param>
         /// <param name="data">the 16-bit word to write to the specified register</param>
@@ -239,11 +240,11 @@
             i2c.Speed = rateKhz;
 
             // S Addr Wr [A] Comm [A] DataHigh [A] DataLow [A] P
-            return i2c.SendReceive(address, new byte[] { register, (byte)(data >> 8), (byte)(data & 0xFF) }, 0);
+            return i2c.SendReceive(address, new[] {register, (byte) (data >> 8), (byte) (data & 0xFF)}, 0);
         }
 
         /// <summary>
-        /// Read one or more bytes from the specified register
+        ///     Read one or more bytes from the specified register
         /// </summary>
         /// <param name="register">The register to read from</param>
         /// <param name="numBytes">The number of bytes to read</param>
@@ -252,11 +253,10 @@
         {
             // set the speed for this device, just in case another device mucked with these settings
             i2c.Speed = rateKhz;
-            return i2c.SendReceive(address, new byte[] { register }, (byte)numBytes);
+            return i2c.SendReceive(address, new[] {register}, (byte) numBytes);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="register"></param>
         /// <param name="buffer"></param>

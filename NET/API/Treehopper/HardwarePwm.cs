@@ -1,23 +1,24 @@
-﻿namespace Treehopper
-{
-    using System;
-    using Utilities;
+﻿using System;
+using Treehopper.Utilities;
 
+namespace Treehopper
+{
     /// <summary>
-    /// The Pwm class manages the hardware PWM module on the Treehopper board.
+    ///     The Pwm class manages the hardware PWM module on the Treehopper board.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// Both Pwm and <see cref="SoftPwm"/> implement <see cref="Pwm"/>, which provides a useful interface to generic PWM functionality.
-    /// </para>
+    ///     <para>
+    ///         Both Pwm and <see cref="SoftPwm" /> implement <see cref="Pwm" />, which provides a useful interface to generic
+    ///         PWM functionality.
+    ///     </para>
     /// </remarks>
     public class HardwarePwm : Pwm
     {
+        private readonly TreehopperUsb board;
         private readonly Pin pin;
         private double dutyCycle;
+        private bool isEnabled;
         private double pulseWidth;
-        private bool isEnabled = false;
-        private readonly TreehopperUsb board;
 
         internal HardwarePwm(Pin pin)
         {
@@ -26,14 +27,11 @@
         }
 
         /// <summary>
-        /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
+        ///     Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
         public bool Enabled
         {
-            get
-            {
-                return isEnabled;
-            }
+            get { return isEnabled; }
 
             set
             {
@@ -55,14 +53,11 @@
         }
 
         /// <summary>
-        /// Get or set the duty cycle (0-1) of the pin
+        ///     Get or set the duty cycle (0-1) of the pin
         /// </summary>
         public double DutyCycle
         {
-            get
-            {
-                return dutyCycle;
-            }
+            get { return dutyCycle; }
 
             set
             {
@@ -78,20 +73,18 @@
         }
 
         /// <summary>
-        /// Get or set the pulse width, in microseconds, of the pin
+        ///     Get or set the pulse width, in microseconds, of the pin
         /// </summary>
         public double PulseWidth
         {
-            get
-            {
-                return pulseWidth;
-            }
+            get { return pulseWidth; }
 
             set
             {
                 if (pulseWidth.CloseTo(value)) return;
                 if (value > board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
-                    throw new ArgumentOutOfRangeException("PulseWidth", "PulseWidth must be between 0.0 and " + board.HardwarePwmManager.PeriodMicroseconds);
+                    throw new ArgumentOutOfRangeException("PulseWidth",
+                        "PulseWidth must be between 0.0 and " + board.HardwarePwmManager.PeriodMicroseconds);
                 pulseWidth = value;
 
                 DutyCycle = pulseWidth / board.HardwarePwmManager.PeriodMicroseconds;
@@ -99,15 +92,14 @@
         }
 
         /// <summary>
-        /// Returns this PWM channel's data in an easy-to-read format
+        ///     Returns this PWM channel's data in an easy-to-read format
         /// </summary>
         /// <returns>A string representation of the channel</returns>
         public override string ToString()
         {
             if (Enabled)
                 return $"{DutyCycle * 100:0.00}% duty cycle ({PulseWidth:0.00} us pulse width)";
-            else
-                return "Not enabled";
+            return "Not enabled";
         }
     }
 }

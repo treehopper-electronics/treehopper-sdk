@@ -1,24 +1,29 @@
-﻿namespace Treehopper
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using ThirdParty;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Treehopper.ThirdParty;
 
+namespace Treehopper
+{
     /// <summary>
-    /// The SoftPwmManager is used to configure soft-PWM pins on the board
+    ///     The SoftPwmManager is used to configure soft-PWM pins on the board
     /// </summary>
     internal class SoftPwmManager : IDisposable
     {
+        private readonly TreehopperUsb board;
         private readonly AsyncLock mutex = new AsyncLock();
         private readonly Dictionary<int, SoftPwmPinConfig> pins;
         private readonly double resolution = 0.25; // 0.25 microseconds / tick
-        private readonly TreehopperUsb board;
 
         internal SoftPwmManager(TreehopperUsb board)
         {
             this.board = board;
             pins = new Dictionary<int, SoftPwmPinConfig>();
+        }
+
+        public void Dispose()
+        {
+            Stop();
         }
 
         ~SoftPwmManager()
@@ -30,23 +35,15 @@
         {
             if (pins.Count > 1)
                 return $"{pins.Count} SoftPwm pins running";
-            else if (pins.Count == 1)
+            if (pins.Count == 1)
                 return "1 SoftPwm pin running";
-            else
-                return "No SoftPwm pins running";
-        }
-
-        public void Dispose()
-        {
-            Stop();
+            return "No SoftPwm pins running";
         }
 
         internal void Stop()
         {
             foreach (var entry in pins)
-            {
                 entry.Value.Pin.Mode = PinMode.DigitalInput;
-            }
 
             pins.Clear();
             UpdateConfig();
@@ -56,7 +53,7 @@
         {
             if (pins.ContainsKey(pin.PinNumber))
                 return;
-            pins.Add(pin.PinNumber, new SoftPwmPinConfig() { Pin = pin, PulseWidthUs = 0, UsePulseWidth = true });
+            pins.Add(pin.PinNumber, new SoftPwmPinConfig {Pin = pin, PulseWidthUs = 0, UsePulseWidth = true});
             UpdateConfig();
         }
 
@@ -103,34 +100,32 @@
             if (pins.Count > 0)
             {
                 foreach (var entry in pins)
-                {
                     // for pins that use pulse width, calculate value based on resolution
                     if (entry.Value.UsePulseWidth)
                     {
-                        entry.Value.Ticks = (ushort)(entry.Value.PulseWidthUs / resolution);
+                        entry.Value.Ticks = (ushort) (entry.Value.PulseWidthUs / resolution);
 
                         // just in case the user wants to retrieve duty cycle, update its value, too
                         entry.Value.DutyCycle = entry.Value.Ticks / 65535;
                     }
-                    else 
+                    else
                     {
                         // for pins that use duty-cycle, calculate based on period count
-                        entry.Value.Ticks = (ushort)Math.Round(entry.Value.DutyCycle * 65535);
+                        entry.Value.Ticks = (ushort) Math.Round(entry.Value.DutyCycle * 65535);
 
                         // just in case the user wants to retrieve pulse width, update its value too
-                        entry.Value.PulseWidthUs = (int)(entry.Value.Ticks * resolution);
+                        entry.Value.PulseWidthUs = (int) (entry.Value.Ticks * resolution);
                     }
-                }
 
                 // now the fun part; let's figure out the delta delays between each pin
-                var orderedValues = pins.Values.OrderBy((pin) => pin.Ticks);
+                var orderedValues = pins.Values.OrderBy(pin => pin.Ticks);
 
                 var list = orderedValues.ToList();
 
                 var count = list.Count() + 1;
-                var config = new byte[2 + (3 * count)]; // { , (byte)pins.Count, timerVal };
-                config[0] = (byte)DeviceCommands.SoftPwmConfig;
-                config[1] = (byte)count;
+                var config = new byte[2 + 3 * count]; // { , (byte)pins.Count, timerVal };
+                config[0] = (byte) DeviceCommands.SoftPwmConfig;
+                config[1] = (byte) count;
                 if (count > 1)
                 {
                     var i = 2;
@@ -147,12 +142,12 @@
 
                         var tmrVal = ushort.MaxValue - ticks;
                         if (j == 0)
-                            config[i++] = (byte)0;
+                            config[i++] = 0;
                         else
-                            config[i++] = (byte)list[j - 1].Pin.PinNumber;
+                            config[i++] = (byte) list[j - 1].Pin.PinNumber;
 
-                        config[i++] = (byte)(tmrVal >> 8);
-                        config[i++] = (byte)(tmrVal & 0xff);
+                        config[i++] = (byte) (tmrVal >> 8);
+                        config[i++] = (byte) (tmrVal & 0xff);
                         time += ticks;
                     }
                 }
@@ -166,7 +161,7 @@
             else
             {
                 // disable SoftPWM
-                board.SendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.SoftPwmConfig, 0 });
+                board.SendPeripheralConfigPacket(new byte[] {(byte) DeviceCommands.SoftPwmConfig, 0});
             }
         }
     }
