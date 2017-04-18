@@ -1,22 +1,22 @@
 ﻿namespace Treehopper.Libraries.Sensors.Temperature
 {
     /// <summary>
-    /// Temperature sensor interface
+    ///     Temperature sensor interface
     /// </summary>
     public interface ITemperatureSensor : IPollable
     {
         /// <summary>
-        /// Celsius temperature
+        ///     Celsius temperature
         /// </summary>
         double Celsius { get; }
 
         /// <summary>
-        /// Fahrenheit temperature
+        ///     Fahrenheit temperature
         /// </summary>
         double Fahrenheit { get; }
 
         /// <summary>
-        /// Kelvin temperature
+        ///     Kelvin temperature
         /// </summary>
         double Kelvin { get; }
     }

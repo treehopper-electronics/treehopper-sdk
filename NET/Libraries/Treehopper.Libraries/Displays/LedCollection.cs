@@ -6,17 +6,12 @@ using Treehopper.Libraries.Interface;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// Manages efficient updates of a collection of LEDs that may be attached to multiple drivers.
+    ///     Manages efficient updates of a collection of LEDs that may be attached to multiple drivers.
     /// </summary>
     public class LedCollection : List<Led>
     {
         /// <summary>
-        /// The drivers that belong to this LED collection
-        /// </summary>
-        public List<IFlushable> Drivers { get; private set; } = new List<IFlushable>();
-
-        /// <summary>
-        /// Construct a new LED collection from the provided list of LEDs
+        ///     Construct a new LED collection from the provided list of LEDs
         /// </summary>
         /// <param name="Leds">The LEDs to build the collection on</param>
         public LedCollection(IList<Led> Leds) : base(Leds)
@@ -25,21 +20,20 @@ namespace Treehopper.Libraries.Displays
             foreach (var driver in ledDrivers)
                 driver.AutoFlush = false;
 
-            foreach(var driver in ledDrivers)
-            {
+            foreach (var driver in ledDrivers)
                 if (driver.Parent == null) // stand-alone or head of chain
-                {
                     Drivers.Add(driver);
-                }
-                else if(!Drivers.Contains(driver.Parent))
-                {
+                else if (!Drivers.Contains(driver.Parent))
                     Drivers.Add(driver.Parent);
-                }
-            }
         }
 
         /// <summary>
-        /// Flush the values of the LEDs to the driver(s) the LEDs are attached to
+        ///     The drivers that belong to this LED collection
+        /// </summary>
+        public List<IFlushable> Drivers { get; } = new List<IFlushable>();
+
+        /// <summary>
+        ///     Flush the values of the LEDs to the driver(s) the LEDs are attached to
         /// </summary>
         /// <param name="force">Whether to force an update</param>
         /// <returns></returns>

@@ -6,41 +6,6 @@ namespace Treehopper.Libraries.Memory
 {
     public class SpiFlash
     {
-        readonly SpiDevice dev;
-
-        public enum JedecManufacturer
-        {
-            WinbondNexcom = 0xEF,
-        }
-
-        public class JedecId
-        {
-            public JedecManufacturer Manufacturer { get; set; }
-            public byte MemoryType { get; set; }
-            public byte CapacityId { get; set; }
-        }
-
-        public enum StatusProtectMode
-        {
-            SoftwareProtection,
-            HardwareProtection,
-            PowerSupplyLockDown,
-            OneTimeProgram
-        }
-
-        public struct Status
-        {
-            public bool Busy;
-            public bool WriteEnableLatch;
-            public int Blockprotect;
-            public bool TopBottomProtect;
-            public bool SectorProtect;
-            public StatusProtectMode StatusProtection;
-            public int SecurityLockBits;
-            public bool ComplementProtect;
-            public bool IsSuspended;
-        }
-
         public enum Command
         {
             WriteEnable = 0x06,
@@ -71,21 +36,35 @@ namespace Treehopper.Libraries.Memory
 
             EraseSecurityRegister = 0x44,
             ProgramSecurityRegister = 0x42,
-            ReadSecurityRegister = 0x48,
+            ReadSecurityRegister = 0x48
         }
+
+        public enum JedecManufacturer
+        {
+            WinbondNexcom = 0xEF
+        }
+
+        public enum StatusProtectMode
+        {
+            SoftwareProtection,
+            HardwareProtection,
+            PowerSupplyLockDown,
+            OneTimeProgram
+        }
+
+        private readonly SpiDevice dev;
 
         public SpiFlash(Spi dev, SpiChipSelectPin cs)
         {
             this.dev = new SpiDevice(dev, cs, ChipSelectMode.SpiActiveLow, 6);
-
         }
 
         public async Task<JedecId> ReadJedecId()
         {
-            var result = await dev.SendReceive(new byte[4] { (byte)Command.ReadJedecId, 0x00, 0x00, 0x00 });
+            var result = await dev.SendReceive(new byte[4] {(byte) Command.ReadJedecId, 0x00, 0x00, 0x00});
 
             var id = new JedecId();
-            id.Manufacturer = (JedecManufacturer)result[1];
+            id.Manufacturer = (JedecManufacturer) result[1];
             id.MemoryType = result[2];
             id.CapacityId = result[3];
 
@@ -95,13 +74,13 @@ namespace Treehopper.Libraries.Memory
         public async Task<Status> ReadStatus()
         {
             var cmd = new byte[2];
-            cmd[0] = (byte)Command.ReadStatus1;
+            cmd[0] = (byte) Command.ReadStatus1;
             var status1 = await dev.SendReceive(cmd);
 
-            cmd[0] = (byte)Command.ReadStatus2;
+            cmd[0] = (byte) Command.ReadStatus2;
             var status2 = await dev.SendReceive(cmd);
 
-            cmd[0] = (byte)Command.ReadStatus3;
+            cmd[0] = (byte) Command.ReadStatus3;
             var status3 = await dev.SendReceive(cmd);
 
             var status = new Status();
@@ -111,22 +90,22 @@ namespace Treehopper.Libraries.Memory
             status.Blockprotect = (status1[1] >> 2) & 0x07;
             status.TopBottomProtect = (status1[1] & 32) > 0 ? true : false;
             status.SectorProtect = (status1[1] & 64) > 0 ? true : false;
-            status.StatusProtection = (StatusProtectMode)(status1[1] >> 7 | (status2[1] & 0x01));
+            status.StatusProtection = (StatusProtectMode) ((status1[1] >> 7) | (status2[1] & 0x01));
 
             return status;
         }
+
         public async Task<byte[]> ReadArray(int address, int count)
         {
             while ((await ReadStatus().ConfigureAwait(false)).Busy)
             {
-
             }
 
             var data = new byte[count + 4];
-            data[0] = (byte)Command.ReadData;
-            data[1] = (byte)(address >> 16);
-            data[2] = (byte)(address >> 8);
-            data[3] = (byte)(address);
+            data[0] = (byte) Command.ReadData;
+            data[1] = (byte) (address >> 16);
+            data[2] = (byte) (address >> 8);
+            data[3] = (byte) address;
             var result = await dev.SendReceive(data);
             return result.Skip(4).Take(count).ToArray();
         }
@@ -142,19 +121,18 @@ namespace Treehopper.Libraries.Memory
             //var check = await ReadArray(address, data.Length).ConfigureAwait(false);
             while ((await ReadStatus().ConfigureAwait(false)).Busy)
             {
-
             }
 
             await WriteEnable().ConfigureAwait(false);
-            
+
             var status = await ReadStatus().ConfigureAwait(false);
             if (status.WriteEnableLatch != true)
                 throw new Exception("Write Enable Latch is not set. Check write-protect");
             var header = new byte[4];
-            header[0] = (byte)Command.PageProgram;
-            header[1] = (byte)(address >> 16);
-            header[2] = (byte)(address >> 8);
-            header[3] = (byte)(address);
+            header[0] = (byte) Command.PageProgram;
+            header[1] = (byte) (address >> 16);
+            header[2] = (byte) (address >> 8);
+            header[3] = (byte) address;
 
             await dev.SendReceive(header.Concat(data).ToArray()).ConfigureAwait(false);
         }
@@ -163,7 +141,6 @@ namespace Treehopper.Libraries.Memory
         {
             while ((await ReadStatus().ConfigureAwait(false)).Busy)
             {
-
             }
 
             await WriteEnable().ConfigureAwait(false);
@@ -171,39 +148,57 @@ namespace Treehopper.Libraries.Memory
             if (status.WriteEnableLatch != true)
                 throw new Exception("Write Enable Latch is not set. Check write-protect");
 
-            await dev.SendReceive(new byte[] { (byte)Command.ChipErase }).ConfigureAwait(false);
+            await dev.SendReceive(new[] {(byte) Command.ChipErase}).ConfigureAwait(false);
             while ((await ReadStatus().ConfigureAwait(false)).Busy)
-            {
                 await Task.Delay(100);
-            }
         }
 
         public Task WriteEnable()
         {
-            return dev.SendReceive(new byte[] { (byte)Command.WriteEnable });
+            return dev.SendReceive(new[] {(byte) Command.WriteEnable});
         }
 
         public Task WriteDisable()
         {
-            return dev.SendReceive(new byte[] { (byte)Command.WriteDisable });
+            return dev.SendReceive(new[] {(byte) Command.WriteDisable});
         }
 
         public async Task WriteStatus1(byte val)
         {
             await WriteEnable();
-            await dev.SendReceive(new byte[] { (byte)Command.WriteStatus1, val });
+            await dev.SendReceive(new[] {(byte) Command.WriteStatus1, val});
         }
 
         public async Task WriteStatus2(byte val)
         {
             await WriteEnable();
-            await dev.SendReceive(new byte[] { (byte)Command.WriteStatus2, val });
+            await dev.SendReceive(new[] {(byte) Command.WriteStatus2, val});
         }
 
         public async Task WriteStatus3(byte val)
         {
             await WriteEnable();
-            await dev.SendReceive(new byte[] { (byte)Command.WriteStatus3, val });
+            await dev.SendReceive(new[] {(byte) Command.WriteStatus3, val});
+        }
+
+        public class JedecId
+        {
+            public JedecManufacturer Manufacturer { get; set; }
+            public byte MemoryType { get; set; }
+            public byte CapacityId { get; set; }
+        }
+
+        public struct Status
+        {
+            public bool Busy;
+            public bool WriteEnableLatch;
+            public int Blockprotect;
+            public bool TopBottomProtect;
+            public bool SectorProtect;
+            public StatusProtectMode StatusProtection;
+            public int SecurityLockBits;
+            public bool ComplementProtect;
+            public bool IsSuspended;
         }
     }
 }

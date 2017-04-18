@@ -3,17 +3,20 @@
 namespace Treehopper.Libraries.Motors
 {
     /// <summary>
-    /// Construct a dual half-bridge-style H-bridge driver with an enable pin
+    ///     Construct a dual half-bridge-style H-bridge driver with an enable pin
     /// </summary>
     public class DualHalfBridge : MotorSpeedController
     {
-        readonly Pwm enablePwm;
-        readonly DigitalOut enable;
-        readonly DigitalOut A;
-        readonly DigitalOut B;
-        
+        private readonly DigitalOut A;
+        private readonly DigitalOut B;
+        private readonly DigitalOut enable;
+        private readonly Pwm enablePwm;
+        private bool enabled;
+
+        private double speed;
+
         /// <summary>
-        /// Construct a dual half bridge with PWM speed control
+        ///     Construct a dual half bridge with PWM speed control
         /// </summary>
         /// <param name="A">The "A" channel half-bridge input</param>
         /// <param name="B">The "B" channel half-bridge input</param>
@@ -29,24 +32,23 @@ namespace Treehopper.Libraries.Motors
             enablePwm = Enable;
             this.A = A;
             this.B = B;
-
         }
 
         /// <summary>
-        /// Construct a dual half bridge with no speed control
+        ///     Construct a dual half bridge with no speed control
         /// </summary>
         /// <param name="A">The "A" channel half-bridge input</param>
         /// <param name="B">The "B" channel half-bridge input</param>
         /// <param name="Enable">An optional Enable pin of the H-bridge</param>
         public DualHalfBridge(DigitalOut A, DigitalOut B, DigitalOut Enable = null)
         {
-            if(Enable != null)
+            if (Enable != null)
             {
                 Enable.DigitalValue = false;
                 Enable.MakeDigitalPushPullOut();
                 enable = Enable;
             }
-            
+
             A.MakeDigitalPushPullOut();
             B.MakeDigitalPushPullOut();
 
@@ -54,17 +56,18 @@ namespace Treehopper.Libraries.Motors
             this.A = A;
             this.B = B;
         }
-        private bool enabled;
 
         /// <summary>
-        /// Enable or disable the H-bridge outputs
+        ///     Whether to brake -- drive both H-bridge outputs to the same value -- on zero speed
+        /// </summary>
+        public bool BrakeOnZeroSpeed { get; set; }
+
+        /// <summary>
+        ///     Enable or disable the H-bridge outputs
         /// </summary>
         public bool Enabled
         {
-            get
-            {
-                return enabled;
-            }
+            get { return enabled; }
 
             set
             {
@@ -75,41 +78,12 @@ namespace Treehopper.Libraries.Motors
             }
         }
 
-        private void setEnabled(double value)
-        {
-            if (enablePwm != null)
-            {
-                enablePwm.DutyCycle = value;
-            } else if(enable != null)
-            {
-                if (value > 0.5)
-                    enable.DigitalValue = true;
-                else
-                    enable.DigitalValue = false;
-            } else if(value < 0.5)
-            {
-                // no enable pin; just set both inputs to zero to at least stop the motor
-                A.DigitalValue = false;
-                B.DigitalValue = false;
-            }
-        }
-
         /// <summary>
-        /// Whether to brake -- drive both H-bridge outputs to the same value -- on zero speed
-        /// </summary>
-        public bool BrakeOnZeroSpeed { get; set; }
-
-        private double speed;
-
-        /// <summary>
-        /// Get or set the speed of the motor driver
+        ///     Get or set the speed of the motor driver
         /// </summary>
         public double Speed
         {
-            get
-            {
-                return speed;
-            }
+            get { return speed; }
 
             set
             {
@@ -119,26 +93,50 @@ namespace Treehopper.Libraries.Motors
 
                 if (speed > -0.01 && speed < 0.01) // brake
                 {
-                    if(BrakeOnZeroSpeed)
+                    if (BrakeOnZeroSpeed)
                     {
                         setEnabled(1.0);
                         A.DigitalValue = false;
                         B.DigitalValue = false;
-                    } else
+                    }
+                    else
                     {
                         setEnabled(0.0);
                     }
-                } else if (speed > 0)
+                }
+                else if (speed > 0)
                 {
                     A.DigitalValue = true;
                     B.DigitalValue = false;
                     setEnabled(Math.Abs(speed));
-                } else
+                }
+                else
                 {
                     A.DigitalValue = false;
                     B.DigitalValue = true;
                     setEnabled(Math.Abs(speed));
                 }
+            }
+        }
+
+        private void setEnabled(double value)
+        {
+            if (enablePwm != null)
+            {
+                enablePwm.DutyCycle = value;
+            }
+            else if (enable != null)
+            {
+                if (value > 0.5)
+                    enable.DigitalValue = true;
+                else
+                    enable.DigitalValue = false;
+            }
+            else if (value < 0.5)
+            {
+                // no enable pin; just set both inputs to zero to at least stop the motor
+                A.DigitalValue = false;
+                B.DigitalValue = false;
             }
         }
     }

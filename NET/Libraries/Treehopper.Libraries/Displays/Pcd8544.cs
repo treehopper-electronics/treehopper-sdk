@@ -9,31 +9,8 @@ namespace Treehopper.Libraries.Displays
         private readonly DigitalOut rst;
         private readonly SpiDevice spi;
 
-        private enum Command
-        {
-            EnterExtendedCommandMode = 0x21,
-            ExitExtendedCommandMode = 0x20,
-
-            DisplayOff = 0x08,
-            DisplayOn = 0x0C,
-
-            /// <summary>
-            /// Set the display bias (n = 3 is suggested). Requires extended mode
-            /// </summary>
-            SetBias = 0x10,
-
-            /// <summary>
-            /// Set Vop. Requires extended mode
-            /// </summary>
-            SetVop = 0x80,
-
-            SetTempCoefficient = 0x04,
-
-            SetY = 0x40,
-            SetX = 0x80,
-        }
-
-        public Pcd8544(Spi spi, SpiChipSelectPin csPin, DigitalOut dc, DigitalOut rst, byte biasValue = 0x04) : base(84, 48)
+        public Pcd8544(Spi spi, SpiChipSelectPin csPin, DigitalOut dc, DigitalOut rst,
+            byte biasValue = 0x04) : base(84, 48)
         {
             this.spi = new SpiDevice(spi, csPin, ChipSelectMode.SpiActiveLow, 6);
 
@@ -56,7 +33,7 @@ namespace Treehopper.Libraries.Displays
             sendCommand(Command.DisplayOn).Wait();
         }
 
-        protected async override Task flush()
+        protected override async Task flush()
         {
             // reset the pointer to (0, 0);
             await sendCommand(Command.SetX);
@@ -75,13 +52,36 @@ namespace Treehopper.Libraries.Displays
 
         protected override void setBrightness(double brightness)
         {
-            
         }
 
         private Task sendCommand(Command command, byte value = 0)
         {
             dc.DigitalValue = false;
-            return spi.SendReceive(new byte[] { (byte)((byte)command | value) });
+            return spi.SendReceive(new[] {(byte) ((byte) command | value)});
+        }
+
+        private enum Command
+        {
+            EnterExtendedCommandMode = 0x21,
+            ExitExtendedCommandMode = 0x20,
+
+            DisplayOff = 0x08,
+            DisplayOn = 0x0C,
+
+            /// <summary>
+            ///     Set the display bias (n = 3 is suggested). Requires extended mode
+            /// </summary>
+            SetBias = 0x10,
+
+            /// <summary>
+            ///     Set Vop. Requires extended mode
+            /// </summary>
+            SetVop = 0x80,
+
+            SetTempCoefficient = 0x04,
+
+            SetY = 0x40,
+            SetX = 0x80
         }
     }
 }

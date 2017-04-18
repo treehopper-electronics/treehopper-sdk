@@ -7,27 +7,18 @@ using Treehopper.Utilities;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    /// Efficiently update multiple LED display widgets simultaneously.
+    ///     Efficiently update multiple LED display widgets simultaneously.
     /// </summary>
     public class LedDisplayCollection : Collection<LedDisplay>, IFlushable
     {
+        private bool autoFlush;
+
         /// <summary>
-        /// Construct a new LED display collection
+        ///     Gets / sets whether the drivers should be auto-flushed or not.
         /// </summary>
-        public LedDisplayCollection() : base()
+        public bool AutoFlush
         {
-
-        }
-        private bool autoFlush = false;
-
-        /// <summary>
-        /// Gets / sets whether the drivers should be auto-flushed or not.
-        /// </summary>
-        public bool AutoFlush {
-            get
-            {
-                return autoFlush;
-            }
+            get { return autoFlush; }
             set
             {
                 autoFlush = value;
@@ -37,31 +28,30 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// The parent of this Flushable interface. This property is unused.
+        ///     The parent of this Flushable interface. This property is unused.
         /// </summary>
         public IFlushable Parent { get; set; }
 
         /// <summary>
-        /// Flush every display in this collection to the LED drivers
+        ///     Flush every display in this collection to the LED drivers
         /// </summary>
         /// <param name="force">Whether to force an update, even if the driver doesn't appear to have a different state</param>
         /// <returns></returns>
         public async Task Flush(bool force = false)
         {
-            if (autoFlush) return; // if autoflush is on, individual displays manage their LEDs; no need to write out other updates
+            if (autoFlush)
+                return; // if autoflush is on, individual displays manage their LEDs; no need to write out other updates
 
             // program the LEDs in each driver
             Items.ForEach(disp => disp.WriteLeds());
 
             // Write out the drivers over the bus
-            foreach(var driver in Items.SelectMany(x => x.Leds.Drivers).Distinct())
-            {
+            foreach (var driver in Items.SelectMany(x => x.Leds.Drivers).Distinct())
                 await driver.Flush(true);
-            }
         }
 
         /// <summary>
-        /// Insert a new LED display widget
+        ///     Insert a new LED display widget
         /// </summary>
         /// <param name="index">The index to insert the item at</param>
         /// <param name="item">The LED display widget to insert</param>
@@ -72,7 +62,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Set the LED display widget at the given index
+        ///     Set the LED display widget at the given index
         /// </summary>
         /// <param name="index">The index to set</param>
         /// <param name="item">The item to set</param>
@@ -83,7 +73,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Remove the LED display widget at the given index
+        ///     Remove the LED display widget at the given index
         /// </summary>
         /// <param name="index">The index of the item to remove</param>
         protected override void RemoveItem(int index)
@@ -93,7 +83,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        /// Remove all LED display widgets from this collection
+        ///     Remove all LED display widgets from this collection
         /// </summary>
         protected override void ClearItems()
         {
