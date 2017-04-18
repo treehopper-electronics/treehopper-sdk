@@ -22,10 +22,7 @@ namespace Treehopper.Desktop.WinUsb
         ///<returns>
         ///true if the <see cref="SafeWinUsbInterfaceHandle"/> is valid; otherwise, false.
         ///</returns>
-        public override bool IsInvalid
-        {
-            get { return (handle == IntPtr.Zero || handle.ToInt64() == -1); }
-        }
+        public override bool IsInvalid => (handle == IntPtr.Zero || handle.ToInt64() == -1);
 
         ///<summary>
         ///Executes the code required to free the <see cref="SafeWinUsbInterfaceHandle"/>.

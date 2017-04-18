@@ -19,16 +19,11 @@ namespace Treehopper.Android
     {
         static readonly ConnectionService instance = new ConnectionService();
 
-        public static ConnectionService Instance { get { return instance; } }
+        public static ConnectionService Instance => instance;
 
         public Context ApplicationContext { get; set; }
 
-        public UsbManager Manager {
-            get
-            {
-                return (UsbManager)Context.GetSystemService(Context.UsbService);
-            }
-        }
+        public UsbManager Manager => (UsbManager)Context.GetSystemService(Context.UsbService);
 
         PendingIntent mPendingIntent;
 

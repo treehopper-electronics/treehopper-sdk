@@ -92,13 +92,7 @@ namespace Treehopper.Libraries.Interface
         /// <summary>
         /// Gets the width of the bus
         /// </summary>
-        public int Width
-        {
-            get
-            {
-                return DataBus.Count;
-            }
-        }
+        public int Width => DataBus.Count;
 
         /// <summary>
         /// Write one or more bytes to the command register

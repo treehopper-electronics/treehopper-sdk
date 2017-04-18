@@ -33,7 +33,7 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         /// The parent Flushable interface.
         /// </summary>
-        public IFlushable Parent { get { return null; } }
+        public IFlushable Parent => null;
 
         /// <summary>
         /// Gets or sets the global brightness of the LED strip

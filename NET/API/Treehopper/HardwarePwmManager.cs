@@ -51,24 +51,12 @@
         /// <summary>
         /// Get the number of microseconds per tick
         /// </summary>
-        public double MicrosecondsPerTick
-        {
-            get
-            {
-                return 1000000 / (FrequencyHz * 65536);
-            }
-        }
+        public double MicrosecondsPerTick => 1000000 / (FrequencyHz * 65536);
 
         /// <summary>
         /// Get the number of microseconds per period
         /// </summary>
-        public double PeriodMicroseconds
-        {
-            get
-            {
-                return 1000000 / FrequencyHz;
-            }
-        }
+        public double PeriodMicroseconds => 1000000 / FrequencyHz;
 
         /// <summary>
         /// Get an integer representing the current PWM frequency

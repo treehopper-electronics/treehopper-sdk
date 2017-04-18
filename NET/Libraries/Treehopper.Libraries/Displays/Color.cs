@@ -1747,18 +1747,12 @@ namespace Treehopper.Libraries.Displays
         }
 
 
-        internal string DebugDisplayString
-        {
-            get
-            {
-                return string.Concat(
-                    this.R.ToString(), "  ",
-                    this.G.ToString(), "  ",
-                    this.B.ToString(), "  ",
-                    this.A.ToString()
-                );
-            }
-        }
+        internal string DebugDisplayString => string.Concat(
+            this.R.ToString(), "  ",
+            this.G.ToString(), "  ",
+            this.B.ToString(), "  ",
+            this.A.ToString()
+        );
 
 
         /// <summary>

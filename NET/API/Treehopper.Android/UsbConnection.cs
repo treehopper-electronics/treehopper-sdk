@@ -30,29 +30,11 @@ namespace Treehopper.Android
             this.usbManager = manager;
         }
 
-        public string DevicePath
-        {
-            get
-            {
-                return usbDevice.Handle.ToString();
-            }
-        }
+        public string DevicePath => usbDevice.Handle.ToString();
 
-        public string Name
-        {
-            get
-            {
-                return usbDevice.ProductName;
-            }
-        }
+        public string Name => usbDevice.ProductName;
 
-        public string Serial
-        {
-            get
-            {
-                return usbDevice.SerialNumber;
-            }
-        }
+        public string Serial => usbDevice.SerialNumber;
 
         public int UpdateRate { get; set; }
 

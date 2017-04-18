@@ -28,7 +28,7 @@ namespace Treehopper.Uwp
         }
 
         bool isOpen;
-        public bool IsOpen { get { return isOpen; } }
+        public bool IsOpen => isOpen;
 
         public event PinEventData PinEventDataReceived;
 

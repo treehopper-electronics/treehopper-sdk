@@ -74,7 +74,7 @@
         /// <summary>
         /// The parent device. Unused and always returns null.
         /// </summary>
-        public IFlushable Parent { get { return null; } }
+        public IFlushable Parent => null;
 
         /// <summary>
         /// Gets or sets whether this GPIO expander will execute an (expensive) i2C read request whenever the DigitalValue property is read from

@@ -100,7 +100,7 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         /// The parent object. Unused, returns null.
         /// </summary>
-        public IFlushable Parent { get { return null; } }
+        public IFlushable Parent => null;
 
         /// <summary>
         /// Whether to automatically flush this LED widget whenever a value is written to it

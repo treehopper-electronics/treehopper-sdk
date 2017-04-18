@@ -10,13 +10,13 @@ namespace Treehopper.Desktop.LibUsb
 {
     public class LibUsbConnectionService : ConnectionService
     {
-		IntPtr context = new IntPtr();
-		IntPtr callbackHandle = new IntPtr();
+        private IntPtr context;
+        private IntPtr callbackHandle;
 		public LibUsbConnectionService()
 		{
 			NativeMethods.Init(out context);
 
-			HotplugCallbackFunction cb = new HotplugCallbackFunction (callback);
+			HotplugCallbackFunction cb = new HotplugCallbackFunction (Callback);
 
 			NativeMethods.HotplugRegisterCallback (context, HotplugEvent.DeviceArrived | HotplugEvent.DeviceLeft, 0, (int)TreehopperUsb.Settings.Vid, (int)TreehopperUsb.Settings.Pid, NativeMethods.HotplugMatchAny, cb, IntPtr.Zero, callbackHandle);
 			Refresh();
@@ -30,7 +30,7 @@ namespace Treehopper.Desktop.LibUsb
 		}
 
 
-		private int callback(IntPtr context, IntPtr deviceProfile, HotplugEvent e, IntPtr userData)
+		private int Callback(IntPtr context, IntPtr deviceProfile, HotplugEvent e, IntPtr userData)
 		{
 			Debug.WriteLine (e);
 			Task.Run (() => {
@@ -40,7 +40,7 @@ namespace Treehopper.Desktop.LibUsb
 					Boards.Add (board);
 				} else if(e == HotplugEvent.DeviceLeft) {
 					var devicePath = deviceProfile.ToString ();
-					var boardToRemove = Boards.Where (b => b.Connection.DevicePath == devicePath).FirstOrDefault ();
+					var boardToRemove = Boards.FirstOrDefault (b => b.Connection.DevicePath == devicePath);
 					if (boardToRemove != null) {
 						boardToRemove.Dispose ();
 						Boards.Remove (boardToRemove);
@@ -52,7 +52,7 @@ namespace Treehopper.Desktop.LibUsb
 
 		private void Refresh()
 		{
-			IntPtr deviceProfilePtrPtr = new IntPtr();
+			IntPtr deviceProfilePtrPtr;
 			int ret = NativeMethods.GetDeviceList(context, out deviceProfilePtrPtr);
 			if (ret > 0 || deviceProfilePtrPtr == IntPtr.Zero)
 			{

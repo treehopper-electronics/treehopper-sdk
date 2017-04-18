@@ -73,13 +73,7 @@ namespace Treehopper.Libraries.Interface.Adc
         /// <summary>
         /// The analog value (from 0-1) of the ADC pin
         /// </summary>
-        public double AnalogValue
-        {
-            get
-            {
-                return analogValueFromAdc(AdcValue);
-            }
-        }
+        public double AnalogValue => analogValueFromAdc(AdcValue);
 
         private double analogValueFromAdc(int adcValue)
         {
@@ -94,13 +88,7 @@ namespace Treehopper.Libraries.Interface.Adc
         /// <summary>
         /// The analog voltage of the pin
         /// </summary>
-        public double AnalogVoltage
-        {
-            get
-            {
-                return analogVoltageFromAdc(AdcValue);
-            }
-        }
+        public double AnalogVoltage => analogVoltageFromAdc(AdcValue);
 
         private double analogVoltageFromAdc(int adcValue)
         {

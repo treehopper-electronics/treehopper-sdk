@@ -21,7 +21,7 @@ namespace TreehopperDAQ.ViewModels
     public class MainViewModel : ViewModelBase
     {
         private readonly SelectorViewModel selector = new SelectorViewModel();
-        public SelectorViewModel Selector { get { return selector; } }
+        public SelectorViewModel Selector => selector;
 
         private Stopwatch sw = new Stopwatch(); // accurate timer
         System.Timers.Timer timer = new System.Timers.Timer(); // fire every second to update the GUI

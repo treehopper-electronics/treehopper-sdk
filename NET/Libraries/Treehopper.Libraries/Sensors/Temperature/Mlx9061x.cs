@@ -41,7 +41,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <summary>
         /// Raw (uncorrected) IR data from the thermopile array
         /// </summary>
-        public int RawIrData { get { return dev.ReadWordData(0x25).Result;  } }
+        public int RawIrData => dev.ReadWordData(0x25).Result;
 
         internal class TempRegister : TemperatureSensor
         {
