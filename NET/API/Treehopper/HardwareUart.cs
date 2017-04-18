@@ -11,7 +11,7 @@
     {
         private bool isEnabled;
         private int baud = 9600;
-        private TreehopperUsb device;
+        private readonly TreehopperUsb device;
         private UartMode mode = UartMode.Uart;
         private bool useOpenDrainTx = false;
 

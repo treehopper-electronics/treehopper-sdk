@@ -16,8 +16,8 @@
     /// </remarks>
     public class SoftPwm : Pwm
     {
-        private Pin pin;
-        private TreehopperUsb board;
+        private readonly Pin pin;
+        private readonly TreehopperUsb board;
         private bool isEnabled;
 
         internal SoftPwm(TreehopperUsb board, Pin pin)

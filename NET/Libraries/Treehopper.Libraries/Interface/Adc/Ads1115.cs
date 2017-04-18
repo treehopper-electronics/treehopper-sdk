@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Interface.Adc
     /// </summary>
     public class Ads1115 : IAdcPeripheral
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// Construct a new ADS1115

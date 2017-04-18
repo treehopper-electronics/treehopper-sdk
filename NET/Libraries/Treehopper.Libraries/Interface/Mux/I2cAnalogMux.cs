@@ -7,7 +7,7 @@
     /// </summary>
     public class I2cAnalogMux : I2cMux
     {
-        private DigitalOut[] pins;
+        private readonly DigitalOut[] pins;
 
         /// <summary>
         /// Construct an <see cref="I2cMux"/> using a standard 4052-style two-bit 4:1 mux. 

@@ -14,13 +14,13 @@ namespace Treehopper.Libraries.Displays
     /// </remarks>
     public class Tm1650 : LedDriver
     {
-        private I2c i2c;
+        private readonly I2c i2c;
 
         private static readonly byte ControlBase = 0x24;
         private static readonly byte DisplayBase = 0x34;
 
-        private byte[] oldValues = new byte[4];
-        private byte[] newValues = new byte[4];
+        private readonly byte[] oldValues = new byte[4];
+        private readonly byte[] newValues = new byte[4];
         private bool enable;
 
         /// <summary>

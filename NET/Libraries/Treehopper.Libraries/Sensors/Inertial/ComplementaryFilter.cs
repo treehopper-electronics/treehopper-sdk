@@ -14,10 +14,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
     /// </summary>
     public class ComplementaryFilter : IDisposable, INotifyPropertyChanged
     {
-        IAccelerometer accel;
-        IGyroscope gyro;
-        Poller<IAccelerometer> accelPoller;
-        Poller<IAccelerometer> gyroPoller;
+        readonly IAccelerometer accel;
+        readonly IGyroscope gyro;
+        readonly Poller<IAccelerometer> accelPoller;
+        readonly Poller<IAccelerometer> gyroPoller;
 
         /// <summary>
         /// Delegate of the callback function to be invoked when the filter is updated
@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             update();
         }
 
-        Stopwatch sw = new Stopwatch();
+        readonly Stopwatch sw = new Stopwatch();
 
         /// <summary>
         /// Fires whenever a property has been updated

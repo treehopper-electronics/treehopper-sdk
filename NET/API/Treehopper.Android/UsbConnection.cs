@@ -17,12 +17,12 @@ namespace Treehopper.Android
     public class UsbConnection : IConnection
     {
         UsbDeviceConnection connection;
-        UsbDevice usbDevice;
+        readonly UsbDevice usbDevice;
         UsbEndpoint pinConfigEndpoint;
         UsbEndpoint pinReportEndpoint;
         UsbEndpoint peripheralConfigEndpoint;
         UsbEndpoint peripheralResponseEndpoint;
-        UsbManager usbManager;
+        readonly UsbManager usbManager;
 
         public UsbConnection(UsbDevice device, UsbManager manager)
         {

@@ -36,10 +36,10 @@
         /// <param name="sender">The RotaryEncoder where this message originated from</param>
         /// <param name="e">The EventArgs this RotaryEncoder generated</param>
         public delegate void PositionChangedDelegate(object sender, PositionChangedEventArgs e);
-        private DigitalIn a;
-        private DigitalIn b;
+        private readonly DigitalIn a;
+        private readonly DigitalIn b;
         private long position;
-        private int stepsPerTick;
+        private readonly int stepsPerTick;
         private long oldPosition;
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace Treehopper.Libraries.ArduinoShim
     /// </summary>
     public class SerialShim
     {
-        TreehopperUsb board;
+        readonly TreehopperUsb board;
         bool redirectToDebug = true;
 
         /// <summary>

@@ -8,9 +8,9 @@ namespace Treehopper.Libraries.Displays
 {
     public class Pcd8544 : MonoGraphicDisplay
     {
-        private DigitalOut dc;
-        private DigitalOut rst;
-        private SpiDevice spi;
+        private readonly DigitalOut dc;
+        private readonly DigitalOut rst;
+        private readonly SpiDevice spi;
 
         private enum Command
         {

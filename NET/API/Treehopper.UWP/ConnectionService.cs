@@ -26,7 +26,7 @@ namespace Treehopper.Uwp
             StartWatcher();
         }
 
-        ObservableCollection<TreehopperUsb> connectedDevices;
+        readonly ObservableCollection<TreehopperUsb> connectedDevices;
         public ObservableCollection<TreehopperUsb> Boards => connectedDevices;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,7 +40,7 @@ namespace Treehopper.Uwp
         TypedEventHandler<DeviceWatcher, Object> handlerEnumCompleted = null;
         TypedEventHandler<DeviceWatcher, Object> handlerStopped = null;
 
-        private SemaphoreSlim boardAddedSignal = new SemaphoreSlim(0, 1);
+        private readonly SemaphoreSlim boardAddedSignal = new SemaphoreSlim(0, 1);
 
         void StartWatcher()
         {

@@ -7,8 +7,8 @@
     /// </summary>
     public class I2cMuxPort : I2c
     {
-        private int index;
-        private I2cMux i2cMux;
+        private readonly int index;
+        private readonly I2cMux i2cMux;
 
         internal I2cMuxPort(I2cMux i2cMux, int index)
         {

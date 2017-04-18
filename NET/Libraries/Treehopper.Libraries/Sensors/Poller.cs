@@ -30,11 +30,11 @@ namespace Treehopper.Libraries.Sensors
         /// <param name="e">An empty EventArgs</param>
         public delegate void NewSensorValueEventHandler(object sender, EventArgs e);
 
-        private int sampleDelay;
-        private TPollable sensor;
-        Task sampleTask;
+        private readonly int sampleDelay;
+        private readonly TPollable sensor;
+        readonly Task sampleTask;
         bool isRunning = true;
-        Stopwatch sw = new Stopwatch();
+        readonly Stopwatch sw = new Stopwatch();
 
         /// <summary>
         /// Fires whenever the sensor value is updated

@@ -118,9 +118,9 @@
 
             private const int DBT_DEVTYP_DEVICEINTERFACE = 0x00000005;
 
-            private WinUsbConnectionService service;
+            private readonly WinUsbConnectionService service;
             private DevNotifySafeHandle mDevInterfaceHandle;
-            private DevBroadcastHdr mDevInterface = new DevBroadcastHdr();
+            private readonly DevBroadcastHdr mDevInterface = new DevBroadcastHdr();
 
             internal UsbNotifyWindow(WinUsbConnectionService winUsbConnectionService)
             {

@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             mag = new SMBusDevice(0x0C, i2c, rate);
         }
 
-        private SMBusDevice mag;
+        private readonly SMBusDevice mag;
 
         /// <summary>
         /// The 3-axis magnetometer data

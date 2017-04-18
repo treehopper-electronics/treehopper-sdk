@@ -102,10 +102,10 @@
             TotemPole
         }
 
-        private SMBusDevice dev;
-        Mode1 mode1;
+        private readonly SMBusDevice dev;
+        readonly Mode1 mode1;
         Mode2 mode2;
-        LedOut ledOut;
+        readonly LedOut ledOut;
 
         async Task updateMode2()
         {
@@ -182,7 +182,7 @@
         /// </summary>
         public class Pin : Pwm
         {
-            private Pca9632 driver;
+            private readonly Pca9632 driver;
 
             internal int pinNumber;
 

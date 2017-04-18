@@ -11,7 +11,7 @@
     public class AdcAnalogMux
     {
         internal AdcPin pin { get; set; }
-        private DigitalOut[] pins;
+        private readonly DigitalOut[] pins;
         internal int settlingTime;
 
         /// <summary>
@@ -45,8 +45,8 @@
 
         public class AdcAnalogMuxPin : AdcPin
         {
-            private int channel;
-            private AdcAnalogMux parent;
+            private readonly int channel;
+            private readonly AdcAnalogMux parent;
 
             internal AdcAnalogMuxPin(AdcAnalogMux parent, int channel)
             {

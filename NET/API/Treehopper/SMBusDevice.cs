@@ -11,17 +11,17 @@
         /// <summary>
         /// The I2c port used by the device
         /// </summary>
-        private I2c i2c;
+        private readonly I2c i2c;
 
         /// <summary>
         /// The address of the device
         /// </summary>
-        private byte address;
+        private readonly byte address;
 
         /// <summary>
         /// The frequency to use
         /// </summary>
-        private int rateKhz;
+        private readonly int rateKhz;
 
         /// <summary>
         /// Create a new SMBus device

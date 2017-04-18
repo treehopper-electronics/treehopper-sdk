@@ -11,8 +11,8 @@ namespace Treehopper.Libraries.Interface.PortExpander
     /// </summary>
     public class Pcf8574 : PortExpander
     {
-        private SMBusDevice dev;
-        int numBytes;
+        private readonly SMBusDevice dev;
+        readonly int numBytes;
 
         /// <summary>
         /// Construct a PCF-series I/O expander
@@ -42,8 +42,8 @@ namespace Treehopper.Libraries.Interface.PortExpander
 
         }
 
-        byte[] oldValues;
-        byte[] newValues;
+        readonly byte[] oldValues;
+        readonly byte[] newValues;
 
         /// <summary>
         /// Flush the output data to the port expander

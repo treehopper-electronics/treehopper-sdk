@@ -39,11 +39,11 @@ namespace Remote.Client
         }
 
 
-        private TaskCompletionSource<RemoteTreehopper> waitForFirstBoard = new TaskCompletionSource<RemoteTreehopper>();
-        private string hostname;
-        private int port;
-        private string username;
-        private string password;
+        private readonly TaskCompletionSource<RemoteTreehopper> waitForFirstBoard = new TaskCompletionSource<RemoteTreehopper>();
+        private readonly string hostname;
+        private readonly int port;
+        private readonly string username;
+        private readonly string password;
 
         public Task<RemoteTreehopper> GetFirstDeviceAsync()
         {

@@ -7,7 +7,7 @@
     /// </summary>
     public class HardwarePwmManager
     {
-        private TreehopperUsb board;
+        private readonly TreehopperUsb board;
         private PwmPinEnableMode mode;
         private HardwarePwmFrequency frequency = HardwarePwmFrequency.Freq_732Hz;
 

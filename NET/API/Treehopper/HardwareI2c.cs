@@ -11,7 +11,7 @@
     /// </summary>
     internal class HardwareI2c : I2c
     {
-        private TreehopperUsb device;
+        private readonly TreehopperUsb device;
         private double speed = 100;
         private bool enabled;
 

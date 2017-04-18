@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Interface
     /// <typeparam name="T">A type that implements <see cref="DigitalOut"/></typeparam>
     public class FlushableParallelInterface<T> : WriteOnlyParallelInterface where T : DigitalOut
     {
-        private IFlushableOutputPort<T> port;
+        private readonly IFlushableOutputPort<T> port;
 
         /// <summary>
         /// A collection of pins to use for the data bus

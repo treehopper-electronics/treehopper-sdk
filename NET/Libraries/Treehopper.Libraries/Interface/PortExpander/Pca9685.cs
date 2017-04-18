@@ -57,9 +57,9 @@
             updateConfig();
         }
 
-        byte[] pinRegisters = new byte[16 * 4];
+        readonly byte[] pinRegisters = new byte[16 * 4];
         private OutputDriveMode outputDrive = OutputDriveMode.TotemPole;
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
         private double frequency = 100;
         private bool useExternalClock = false;
         private bool invertOutput;
@@ -261,7 +261,7 @@
     /// </summary>
     public class Pin : Pwm
     {
-        private Pca9685 driver;
+        private readonly Pca9685 driver;
 
         internal int pinNumber;
 

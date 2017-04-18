@@ -23,8 +23,8 @@ namespace TreehopperDAQ.ViewModels
         private readonly SelectorViewModel selector = new SelectorViewModel();
         public SelectorViewModel Selector => selector;
 
-        private Stopwatch sw = new Stopwatch(); // accurate timer
-        System.Timers.Timer timer = new System.Timers.Timer(); // fire every second to update the GUI
+        private readonly Stopwatch sw = new Stopwatch(); // accurate timer
+        readonly System.Timers.Timer timer = new System.Timers.Timer(); // fire every second to update the GUI
 
         public MainViewModel()
         {
@@ -37,7 +37,7 @@ namespace TreehopperDAQ.ViewModels
             msFreq = Stopwatch.Frequency / 1000.0;
         }
 
-        Queue<DataPoint> buffer = new Queue<DataPoint>(); // temp buffer to avoid tying down the GUI
+        readonly Queue<DataPoint> buffer = new Queue<DataPoint>(); // temp buffer to avoid tying down the GUI
         public ObservableCollection<DataPoint> Data { get; set; } = new ObservableCollection<DataPoint>(); // GUI-accessible buffer
 
         public ObservableCollection<bool> ChannelEnabled { get; set; } = new ObservableCollection<bool>();
@@ -50,7 +50,7 @@ namespace TreehopperDAQ.ViewModels
         public double refreshRate = 2;
         public string RefreshRate { get { return refreshRate.ToString(); } set { refreshRate = double.Parse(value); timer.Interval = 1000 / refreshRate; } }
 
-        private SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
         private void Selector_OnBoardConnected(object sender, BoardConnectedEventArgs e)
         {
             Data.Clear();
@@ -83,7 +83,7 @@ namespace TreehopperDAQ.ViewModels
             });
         }
 
-        double msFreq = 0;
+        readonly double msFreq = 0;
         private void Board_OnPinValuesUpdated(object sender, System.EventArgs e)
         {
             var data = new DataPoint();

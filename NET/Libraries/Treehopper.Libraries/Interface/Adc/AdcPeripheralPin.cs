@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Interface.Adc
     {
         private int adcValue;
         protected IAdcPeripheral parent;
-        private int bitDepth;
+        private readonly int bitDepth;
 
         /// <summary>
         /// Construct a new ADC pin that's part of the specified peripheral

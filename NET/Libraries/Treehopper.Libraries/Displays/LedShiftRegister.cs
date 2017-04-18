@@ -44,8 +44,8 @@
     /// </remarks>
     public class LedShiftRegister : ChainableShiftRegisterOutput, ILedDriver
     {
-        DigitalOut oe;
-        Pwm oePwm;
+        readonly DigitalOut oe;
+        readonly Pwm oePwm;
         int channels;
 
         /// <summary>

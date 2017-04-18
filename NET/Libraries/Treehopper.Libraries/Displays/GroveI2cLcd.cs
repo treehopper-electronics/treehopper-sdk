@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Displays
     /// </summary>
     public class GroveI2cLcd : Hd44780
     {
-        Pca9632 backlight;
+        readonly Pca9632 backlight;
 
         public GroveI2cLcd(I2c i2c) : base(new I2cParallelInterface(i2c), 16, 2)
         {
@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.Displays
 
         class I2cParallelInterface : WriteOnlyParallelInterface
         {
-            private SMBusDevice dev;
+            private readonly SMBusDevice dev;
 
             public I2cParallelInterface(I2c i2c)
             {

@@ -14,7 +14,7 @@ namespace Treehopper.Desktop.LibUsb
 		const byte peripheralConfigEndpoint = 0x02;
 
 		LibUsbDeviceHandle deviceHandle;
-		IntPtr deviceProfile;
+	    readonly IntPtr deviceProfile;
 
 		bool isOpen;
 

@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Displays
     public class PwmLedDriver<TPwm> : LedDriver where TPwm : Pwm
     {
         private readonly IFlushable controller;
-        private IList<TPwm> Pins;
+        private readonly IList<TPwm> Pins;
         private readonly bool useActiveLowOutput;
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace Treehopper.Mvvm.ViewModel
     /// </summary>
     public abstract class SelectorViewModelBase : ViewModelBase, ISelectorViewModel
     {
-        private IConnectionService connectionService;
+        private readonly IConnectionService connectionService;
 
         /// <summary>
         /// Bind to this property to get an updated list of boards

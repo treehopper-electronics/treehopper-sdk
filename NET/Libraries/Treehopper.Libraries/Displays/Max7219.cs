@@ -55,9 +55,9 @@ namespace Treehopper.Libraries.Displays
             SetGlobalBrightness(1);
         }
 
-        int address;
+        readonly int address;
 
-        private SpiDevice dev;
+        private readonly SpiDevice dev;
 
         private bool test = true;
         /// <summary>
@@ -152,7 +152,7 @@ namespace Treehopper.Libraries.Displays
             await dev.SendReceive(spiData, SpiBurstMode.BurstTx);
         }
 
-        byte[] state = new byte[8];
+        readonly byte[] state = new byte[8];
 
         /// <summary>
         /// If true, LED segments are ordered G-A, DP. If False, this library will

@@ -20,7 +20,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
 
         bool digitalValue;
 
-        private ShiftOut controller;
+        private readonly ShiftOut controller;
 
         /// <summary>
         /// The bit number, 0-n, of the n-bit output.

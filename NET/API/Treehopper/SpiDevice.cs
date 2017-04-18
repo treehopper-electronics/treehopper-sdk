@@ -7,7 +7,7 @@
     /// </summary>
     public class SpiDevice
     {
-        private Spi spi;
+        private readonly Spi spi;
 
         /// <summary>
         /// Construct an SPI device attached to a particular module

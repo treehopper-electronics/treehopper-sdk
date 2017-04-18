@@ -10,8 +10,8 @@ namespace Treehopper.WPF
     /// </summary>
     public class MinimizeToSystemTray
     {
-        NotifyIcon ni;
-        Window window;
+        readonly NotifyIcon ni;
+        readonly Window window;
         /// <summary>
         /// This is a helper class to rapidly add a minimize-to-tray functionality in WPF Win32 apps.
         /// </summary>

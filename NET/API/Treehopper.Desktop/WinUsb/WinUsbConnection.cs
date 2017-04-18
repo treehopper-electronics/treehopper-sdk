@@ -126,7 +126,7 @@ namespace Treehopper.Desktop.WinUsb
             return true;
         }
 
-        byte[] pinReportBuffer = new byte[41];
+        readonly byte[] pinReportBuffer = new byte[41];
         private void pinStateCallback(IAsyncResult result)
         {
             EndRead(result);

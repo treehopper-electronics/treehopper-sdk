@@ -7,7 +7,7 @@
     /// </summary>
     public class TreehopperRuntimeException : Exception
     {
-        private string message;
+        private readonly string message;
 
         /// <summary>
         /// Construct a runtime exception

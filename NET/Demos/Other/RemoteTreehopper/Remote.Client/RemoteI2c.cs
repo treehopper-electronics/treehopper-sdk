@@ -9,7 +9,7 @@ namespace Remote.Client
 {
     public class RemoteI2c : I2c
     {
-        private RemoteTreehopper board;
+        private readonly RemoteTreehopper board;
 
         TaskCompletionSource<byte[]> dataReceived = new TaskCompletionSource<byte[]>();
 

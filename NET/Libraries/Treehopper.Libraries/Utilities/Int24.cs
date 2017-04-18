@@ -10,9 +10,9 @@ namespace Treehopper.Libraries.Utilities
     [StructLayout(LayoutKind.Sequential)]
     public struct Int24
     {
-        private Byte _b0;
-        private Byte _b1;
-        private Byte _b2;
+        private readonly Byte _b0;
+        private readonly Byte _b1;
+        private readonly Byte _b2;
 
         public Int24(Int32 value)
         {
@@ -31,9 +31,9 @@ namespace Treehopper.Libraries.Utilities
     [StructLayout(LayoutKind.Sequential)]
     public struct UInt24
     {
-        private Byte _b0;
-        private Byte _b1;
-        private Byte _b2;
+        private readonly Byte _b0;
+        private readonly Byte _b1;
+        private readonly Byte _b2;
 
         public UInt24(UInt32 value)
         {
