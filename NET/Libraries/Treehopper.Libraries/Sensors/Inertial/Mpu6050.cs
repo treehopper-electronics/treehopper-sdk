@@ -78,7 +78,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The I2c module this module is connected to.</param>
         /// <param name="addressPin">The address of the module</param>
         /// <param name="ratekHz">The rate, in kHz, to use with this IC</param>
-        public Mpu6050(I2c i2c, bool addressPin = false, int ratekHz = 400)
+        public Mpu6050(I2C i2c, bool addressPin = false, int ratekHz = 400)
         {
             dev = new SMBusDevice((byte) (addressPin ? 0x69 : 0x68), i2c, ratekHz);
 

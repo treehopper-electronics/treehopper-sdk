@@ -11,7 +11,7 @@ namespace Treehopper.Utilities
     /// </summary>
     public static class Utility
     {
-        private static readonly Random random = new Random();
+        private static readonly Random Random = new Random();
 
         /// <summary>
         ///     Do something with each item in a list, collection, or enumerable
@@ -67,9 +67,9 @@ namespace Treehopper.Utilities
         /// <returns>the generated string</returns>
         public static string RandomString(int length)
         {
-            const string Characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(Characters, length)
-                .Select(s => s[random.Next(s.Length)])
+            const string characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(characters, length)
+                .Select(s => s[Random.Next(s.Length)])
                 .ToArray());
         }
 

@@ -35,7 +35,7 @@ namespace Treehopper.Libraries.Motors
         /// <param name="a2">A2</param>
         /// <param name="a3">A3</param>
         /// <param name="a4">A4</param>
-        public SeeedGroveI2cMotorDriver(I2c i2c, bool a1, bool a2, bool a3, bool a4) : this(i2c,
+        public SeeedGroveI2cMotorDriver(I2C i2c, bool a1, bool a2, bool a3, bool a4) : this(i2c,
             (byte) ((a1 ? 1 : 0 << 3) | (a2 ? 1 : 0 << 2) | (a3 ? 1 : 0 << 1) | (a4 ? 1 : 0 << 0)))
         {
         }
@@ -45,7 +45,7 @@ namespace Treehopper.Libraries.Motors
         /// </summary>
         /// <param name="i2c">I2c module to use</param>
         /// <param name="address">The address to use</param>
-        public SeeedGroveI2cMotorDriver(I2c i2c, byte address = 0x0f)
+        public SeeedGroveI2cMotorDriver(I2C i2c, byte address = 0x0f)
         {
             dev = new SMBusDevice(address, i2c);
             Frequency = PrescalerFrequency.Freq_3921Hz;

@@ -8,10 +8,10 @@ namespace Treehopper
     /// <remarks>
     ///     <para>
     ///         To support the widest variety of hardware configurations, peripheral libraries should always use this class
-    ///         instead of <see cref="HardwareI2c" />.
+    ///         instead of <see cref="HardwareI2C" />.
     ///     </para>
     /// </remarks>
-    public interface I2c
+    public interface I2C
     {
         /// <summary>
         ///     The speed, in KHz, that the bus should be operated at. The default is 100 KHz for most modules.

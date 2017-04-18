@@ -59,6 +59,7 @@ namespace Treehopper
     /// <summary>
     ///     Helper interface to describe pins that are both inputs and outputs
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public interface DigitalIO : DigitalIn, DigitalOut
     {
     }

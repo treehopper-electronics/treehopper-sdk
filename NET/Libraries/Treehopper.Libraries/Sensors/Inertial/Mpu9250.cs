@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The i2C port to use</param>
         /// <param name="addressPin">The address pin state</param>
         /// <param name="rate">The rate, in kHz, to communicate at</param>
-        public Mpu9250(I2c i2c, bool addressPin = false, int rate = 400) : base(i2c, addressPin, rate)
+        public Mpu9250(I2C i2c, bool addressPin = false, int rate = 400) : base(i2c, addressPin, rate)
         {
             dev.WriteByteData((byte) Registers.INT_PIN_CFG, 0x22).Wait();
             mag = new SMBusDevice(0x0C, i2c, rate);

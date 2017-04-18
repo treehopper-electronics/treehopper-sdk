@@ -40,7 +40,7 @@ namespace I2cDeviceScanner
                             Console.Write("Device Found!");
                             break;
                         }
-                        catch (I2cTransferException ex)
+                        catch (I2CTransferException ex)
                         {
                             Console.Write("...", i);
                         }

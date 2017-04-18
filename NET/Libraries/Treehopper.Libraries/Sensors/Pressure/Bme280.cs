@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// </summary>
         /// <param name="i2c">the i2C bus to use</param>
         /// <param name="sdo">the state of the SDO pin, which sets the address</param>
-        public Bme280(I2c i2c, bool sdo = false) : base(i2c, sdo)
+        public Bme280(I2C i2c, bool sdo = false) : base(i2c, sdo)
         {
             Start();
         }

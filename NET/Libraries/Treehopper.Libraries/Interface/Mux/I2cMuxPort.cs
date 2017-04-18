@@ -5,7 +5,7 @@ namespace Treehopper.Libraries.Interface.Mux
     /// <summary>
     ///     I2C mux port
     /// </summary>
-    public class I2cMuxPort : I2c
+    public class I2cMuxPort : I2C
     {
         private readonly I2cMux i2cMux;
         private readonly int index;

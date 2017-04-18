@@ -70,11 +70,11 @@ namespace Treehopper.Libraries.Sensors.Inertial
         private RangeSetting range = RangeSetting.Reserved;
 
         /// <summary>
-        ///     Construct a new HMC5883L connected to the specified <see cref="I2c" /> port.
+        ///     Construct a new HMC5883L connected to the specified <see cref="I2C" /> port.
         /// </summary>
         /// <param name="i2c">The I2C port to use</param>
         /// <param name="rateKHz">The frequency, in kHz, to use.</param>
-        public Hmc5883l(I2c i2c, int rateKHz = 100)
+        public Hmc5883l(I2C i2c, int rateKHz = 100)
         {
             dev = new SMBusDevice(0x1E, i2c, rateKHz);
 

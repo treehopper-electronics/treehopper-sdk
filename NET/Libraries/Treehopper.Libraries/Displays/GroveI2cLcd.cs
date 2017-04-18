@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Displays
     {
         private readonly Pca9632 backlight;
 
-        public GroveI2cLcd(I2c i2c) : base(new I2cParallelInterface(i2c), 16, 2)
+        public GroveI2cLcd(I2C i2c) : base(new I2cParallelInterface(i2c), 16, 2)
         {
             // It's undocumented, but the Grove I2C LCD uses a PCA9632 for the RGB backlight
             backlight = new Pca9632(i2c);
@@ -34,7 +34,7 @@ namespace Treehopper.Libraries.Displays
         {
             private readonly SMBusDevice dev;
 
-            public I2cParallelInterface(I2c i2c)
+            public I2cParallelInterface(I2C i2c)
             {
                 dev = new SMBusDevice(0x3e, i2c);
             }

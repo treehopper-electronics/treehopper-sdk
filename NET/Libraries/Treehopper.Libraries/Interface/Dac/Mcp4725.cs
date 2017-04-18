@@ -20,7 +20,7 @@ namespace Treehopper.Libraries.Interface.Dac
         /// <param name="addr">The address pin state</param>
         /// <param name="refVoltage">The voltage of the VDD pin</param>
         /// <param name="speed">The speed to use</param>
-        public Mcp4725(I2c i2c, bool addr = false, double refVoltage = 3.3, int speed = 400) : this(i2c,
+        public Mcp4725(I2C i2c, bool addr = false, double refVoltage = 3.3, int speed = 400) : this(i2c,
             (byte) (0x62 | (addr ? 1 : 0)), refVoltage, speed)
         {
         }
@@ -32,7 +32,7 @@ namespace Treehopper.Libraries.Interface.Dac
         /// <param name="address">The address to use</param>
         /// <param name="refVoltage">The voltage of the VDD pin</param>
         /// <param name="speed">The speed to use</param>
-        public Mcp4725(I2c i2c, byte address, double refVoltage = 3.3, int speed = 400)
+        public Mcp4725(I2C i2c, byte address, double refVoltage = 3.3, int speed = 400)
         {
             dev = new SMBusDevice(address, i2c, speed);
             ReferenceVoltage = refVoltage;

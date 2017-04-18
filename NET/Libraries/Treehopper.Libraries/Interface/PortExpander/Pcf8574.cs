@@ -22,7 +22,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <param name="Address1">The state of the Address1 pin</param>
         /// <param name="Address2">The state of the Address2 pin</param>
         /// <param name="baseAddress">The base address of the chip</param>
-        public Pcf8574(I2c i2c, int numPins, bool Address0, bool Address1, bool Address2,
+        public Pcf8574(I2C i2c, int numPins, bool Address0, bool Address1, bool Address2,
             byte baseAddress) : base(numPins)
         {
             var address = (byte) (baseAddress | (Address0 ? 1 : 0) | ((Address1 ? 1 : 0) << 1) |

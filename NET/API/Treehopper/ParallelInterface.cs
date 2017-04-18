@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Treehopper
@@ -9,12 +10,12 @@ namespace Treehopper
     /// </summary>
     public class ParallelInterface : ReadWriteParallelInterface
     {
-        private readonly TreehopperUsb board;
-        private bool enabled;
+        private readonly TreehopperUsb _board;
+        private bool _enabled;
 
         internal ParallelInterface(TreehopperUsb board)
         {
-            this.board = board;
+            _board = board;
         }
 
         /// <summary>
@@ -47,12 +48,12 @@ namespace Treehopper
         /// </summary>
         public bool Enabled
         {
-            get { return enabled; }
+            get { return _enabled; }
 
             set
             {
-                if (enabled == value) return;
-                enabled = value;
+                if (_enabled == value) return;
+                _enabled = value;
                 UpdateConfig();
             }
         }
@@ -95,7 +96,7 @@ namespace Treehopper
             cmd[0] = (byte) DeviceCommands.ParallelTransaction;
             cmd[1] = (byte) ParallelCmd.WriteCommand;
             cmd[2] = (byte) cmdLen;
-            await board.SendPeripheralConfigPacket(cmd);
+            await _board.SendPeripheralConfigPacket(cmd);
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace Treehopper
             cmd[0] = (byte) DeviceCommands.ParallelTransaction;
             cmd[1] = (byte) ParallelCmd.WriteData;
             cmd[2] = (byte) dataLen;
-            await board.SendPeripheralConfigPacket(cmd);
+            await _board.SendPeripheralConfigPacket(cmd);
         }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace Treehopper
         /// <returns>the parallel interface's state</returns>
         public override string ToString()
         {
-            if (enabled)
+            if (_enabled)
                 return $"Enabled, {Width}-bit width, {DelayMicroseconds} us clock period";
             return "Not enabled";
         }
@@ -167,7 +168,7 @@ namespace Treehopper
         private void UpdateConfig()
         {
             if (DataBus.Count > 16 || DataBus.Count < 4)
-                throw new ArgumentOutOfRangeException("DataBus should have between 4 and 16 pins");
+                throw new ArgumentOutOfRangeException(nameof(DataBus), "DataBus should have between 4 and 16 pins");
 
             var cmd = new byte[7 + DataBus.Count];
             cmd[0] = (byte) DeviceCommands.ParallelConfig;
@@ -183,9 +184,10 @@ namespace Treehopper
                 DataBus[i].Mode = PinMode.Reserved;
             }
 
-            board.SendPeripheralConfigPacket(cmd);
+            _board.SendPeripheralConfigPacket(cmd);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private enum ParallelCmd
         {
             WriteCommand,

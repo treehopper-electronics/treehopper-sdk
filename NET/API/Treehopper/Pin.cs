@@ -9,20 +9,21 @@ namespace Treehopper
     /// <summary>
     ///     Represents an I/O pin on Treehopper; it provides core digital I/O (GPIO) and ADC functionality.
     /// </summary>
+    // ReSharper disable once RedundantExtendsListEntry
     public class Pin : INotifyPropertyChanged, DigitalIn, DigitalOut, AdcPin, SpiChipSelectPin
     {
-        private int adcValue;
-        private TaskCompletionSource<int> adcValueSignal = new TaskCompletionSource<int>();
-        private TaskCompletionSource<double> analogValueSignal = new TaskCompletionSource<double>();
-        private TaskCompletionSource<double> analogVoltageSignal = new TaskCompletionSource<double>();
-        private TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
-        private bool digitalValue;
-        private PinMode mode = PinMode.Unassigned;
-        private int prevAdcValue;
-        private double prevAnalogValue;
-        private double prevAnalogVoltage;
-        private AdcReferenceLevel referenceLevel;
-        private double referenceLevelVoltage;
+        private int _adcValue;
+        private TaskCompletionSource<int> _adcValueSignal = new TaskCompletionSource<int>();
+        private TaskCompletionSource<double> _analogValueSignal = new TaskCompletionSource<double>();
+        private TaskCompletionSource<double> _analogVoltageSignal = new TaskCompletionSource<double>();
+        private TaskCompletionSource<bool> _digitalSignal = new TaskCompletionSource<bool>();
+        private bool _digitalValue;
+        private PinMode _mode = PinMode.Unassigned;
+        private int _prevAdcValue;
+        private double _prevAnalogValue;
+        private double _prevAnalogVoltage;
+        private AdcReferenceLevel _referenceLevel;
+        private double _referenceLevelVoltage;
 
         internal Pin(TreehopperUsb board, byte pinNumber)
         {
@@ -38,19 +39,19 @@ namespace Treehopper
         /// </summary>
         public PinMode Mode
         {
-            get { return mode; }
+            get { return _mode; }
 
             set
             {
-                if (value == mode)
+                if (value == _mode)
                     return;
-                if (mode == PinMode.Reserved && value != PinMode.Unassigned)
+                if (_mode == PinMode.Reserved && value != PinMode.Unassigned)
                     throw new Exception(
                         "This pin is reserved; you must disable the peripheral using it before interacting with it");
 
-                mode = value;
+                _mode = value;
 
-                switch (mode)
+                switch (_mode)
                 {
                     case PinMode.AnalogInput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
@@ -103,30 +104,30 @@ namespace Treehopper
         /// </summary>
         public AdcReferenceLevel ReferenceLevel
         {
-            get { return referenceLevel; }
+            get { return _referenceLevel; }
 
             set
             {
-                referenceLevel = value;
-                switch (referenceLevel)
+                _referenceLevel = value;
+                switch (_referenceLevel)
                 {
                     case AdcReferenceLevel.Vref_1V65:
-                        referenceLevelVoltage = 1.65;
+                        _referenceLevelVoltage = 1.65;
                         break;
                     case AdcReferenceLevel.Vref_1V8:
-                        referenceLevelVoltage = 1.8;
+                        _referenceLevelVoltage = 1.8;
                         break;
                     case AdcReferenceLevel.Vref_2V4:
-                        referenceLevelVoltage = 2.4;
+                        _referenceLevelVoltage = 2.4;
                         break;
                     case AdcReferenceLevel.Vref_3V3:
-                        referenceLevelVoltage = 3.3;
+                        _referenceLevelVoltage = 3.3;
                         break;
                     case AdcReferenceLevel.Vref_3V3Derived:
-                        referenceLevelVoltage = 3.3;
+                        _referenceLevelVoltage = 3.3;
                         break;
                     case AdcReferenceLevel.Vref_3V6:
-                        referenceLevelVoltage = 3.6;
+                        _referenceLevelVoltage = 3.6;
                         break;
                 }
 
@@ -191,14 +192,14 @@ namespace Treehopper
                     Debug.WriteLine(
                         $"NOTICE: Attempting to read AdcValue from Pin {PinNumber}, which is configured for {Mode}. This call will always return 0");
 
-                return adcValue;
+                return _adcValue;
             }
         }
 
         /// <summary>
         ///     Retrieve the last voltage reading from the ADC.
         /// </summary>
-        public double AnalogVoltage => Math.Round(AdcValue * (referenceLevelVoltage / 4092.0), 4);
+        public double AnalogVoltage => Math.Round(AdcValue * (_referenceLevelVoltage / 4092.0), 4);
 
         /// <summary>
         ///     Retrieve the last reading from the ADC, expressed on a unit range (0.0 - 1.0)
@@ -212,7 +213,7 @@ namespace Treehopper
         /// </summary>
         public Task MakeAnalogIn()
         {
-            mode = PinMode.AnalogInput;
+            _mode = PinMode.AnalogInput;
             return SendCommand(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
         }
 
@@ -244,17 +245,17 @@ namespace Treehopper
                     Debug.WriteLine(
                         $"NOTICE: Pin {PinNumber} must be in digital I/O mode to read from. This call will return 0 always.");
 
-                return digitalValue;
+                return _digitalValue;
             }
 
             set
             {
-                if (digitalValue == value) return;
-                digitalValue = value;
+                if (_digitalValue == value) return;
+                _digitalValue = value;
                 if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                    WriteDigitalValueAsync(digitalValue).Forget(); // send off the request and move on.
+                    WriteDigitalValueAsync(_digitalValue).Forget(); // send off the request and move on.
                 else
-                    WriteDigitalValueAsync(digitalValue).Wait(); // wait for it to complete
+                    WriteDigitalValueAsync(_digitalValue).Wait(); // wait for it to complete
             }
         }
 
@@ -264,8 +265,8 @@ namespace Treehopper
         /// <returns>An awaitable bool, indicating the pin's state</returns>
         public Task<bool> AwaitDigitalValueChange()
         {
-            digitalSignal = new TaskCompletionSource<bool>();
-            return digitalSignal.Task;
+            _digitalSignal = new TaskCompletionSource<bool>();
+            return _digitalSignal.Task;
         }
 
         /// <summary>
@@ -273,7 +274,7 @@ namespace Treehopper
         /// </summary>
         public Task MakeDigitalIn()
         {
-            mode = PinMode.DigitalInput;
+            _mode = PinMode.DigitalInput;
             return SendCommand(new byte[] {(byte) PinConfigCommands.MakeDigitalInput, 0});
         }
 
@@ -308,7 +309,7 @@ namespace Treehopper
         /// </summary>
         public Task MakeDigitalPushPullOut()
         {
-            mode = PinMode.PushPullOutput;
+            _mode = PinMode.PushPullOutput;
             return SendCommand(new byte[] {(byte) PinConfigCommands.MakePushPullOutput, 0});
         }
 
@@ -348,11 +349,11 @@ namespace Treehopper
         /// </remarks>
         public async Task WriteDigitalValueAsync(bool value)
         {
-            digitalValue = value;
+            _digitalValue = value;
             if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
                 await MakeDigitalPushPullOut().ConfigureAwait(false); // assume they want push-pull
 
-            var byteVal = (byte) (digitalValue ? 0x01 : 0x00);
+            var byteVal = (byte) (_digitalValue ? 0x01 : 0x00);
             await SendCommand(new[] {(byte) PinConfigCommands.SetDigitalValue, byteVal}).ConfigureAwait(false);
         }
 
@@ -362,8 +363,8 @@ namespace Treehopper
         /// <returns>An awaitable int, in the range of 0-4095, of the pin's ADC value.</returns>
         public Task<int> AwaitAdcValueChange()
         {
-            adcValueSignal = new TaskCompletionSource<int>();
-            return adcValueSignal.Task;
+            _adcValueSignal = new TaskCompletionSource<int>();
+            return _adcValueSignal.Task;
         }
 
         /// <summary>
@@ -372,8 +373,8 @@ namespace Treehopper
         /// <returns>An awaitable double of the pin's analog voltage, measured in volts.</returns>
         public Task<double> AwaitAnalogVoltageChange()
         {
-            analogVoltageSignal = new TaskCompletionSource<double>();
-            return analogVoltageSignal.Task;
+            _analogVoltageSignal = new TaskCompletionSource<double>();
+            return _analogVoltageSignal.Task;
         }
 
         /// <summary>
@@ -382,8 +383,8 @@ namespace Treehopper
         /// <returns>An awaitable double of the analog value, normalized from 0-1.</returns>
         public Task<double> AwaitAnalogValueChange()
         {
-            analogValueSignal = new TaskCompletionSource<double>();
-            return analogValueSignal.Task;
+            _analogValueSignal = new TaskCompletionSource<double>();
+            return _analogValueSignal.Task;
         }
 
         /// <summary>
@@ -391,7 +392,7 @@ namespace Treehopper
         /// </summary>
         public Task MakeDigitalOpenDrainOut()
         {
-            mode = PinMode.OpenDrainOutput;
+            _mode = PinMode.OpenDrainOutput;
             return SendCommand(new byte[] {(byte) PinConfigCommands.MakeOpenDrainOutput, 0});
         }
 
@@ -417,7 +418,6 @@ namespace Treehopper
                     return Name + ": In use by peripheral";
 
                 default:
-                case PinMode.Unassigned:
                     return Name + ": Unassigned";
             }
         }
@@ -427,10 +427,10 @@ namespace Treehopper
             if (Mode == PinMode.DigitalInput)
             {
                 var newVal = highByte > 0;
-                if (digitalValue != newVal)
+                if (_digitalValue != newVal)
                 {
                     // we have a new value!
-                    digitalValue = newVal;
+                    _digitalValue = newVal;
                     RaiseDigitalInValueChanged();
                     RaisePropertyChanged("DigitalValue");
                 }
@@ -439,52 +439,51 @@ namespace Treehopper
             {
                 var val = highByte << 8;
                 val |= lowByte;
-                adcValue = val;
+                _adcValue = val;
                 RaiseAnalogInChanged();
             }
         }
 
         internal void RaisePropertyChanged(string property)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         internal void RaiseDigitalInValueChanged()
         {
-            DigitalValueChanged?.Invoke(this, new DigitalInValueChangedEventArgs(digitalValue));
+            DigitalValueChanged?.Invoke(this, new DigitalInValueChangedEventArgs(_digitalValue));
 
-            digitalSignal.TrySetResult(digitalValue);
+            _digitalSignal.TrySetResult(_digitalValue);
         }
 
         internal void RaiseAnalogInChanged()
         {
-            if (!prevAdcValue.CloseTo(adcValue, AdcValueChangedThreshold))
+            if (!_prevAdcValue.CloseTo(_adcValue, AdcValueChangedThreshold))
             {
-                prevAdcValue = adcValue;
-                AdcValueChanged?.Invoke(this, new AdcValueChangedEventArgs(adcValue));
+                _prevAdcValue = _adcValue;
+                AdcValueChanged?.Invoke(this, new AdcValueChangedEventArgs(_adcValue));
 
-                adcValueSignal.TrySetResult(adcValue);
+                _adcValueSignal.TrySetResult(_adcValue);
 
                 RaisePropertyChanged("AdcValue");
             }
 
-            if (!prevAnalogVoltage.CloseTo(AnalogVoltage, AnalogVoltageChangedThreshold))
+            if (!_prevAnalogVoltage.CloseTo(AnalogVoltage, AnalogVoltageChangedThreshold))
             {
-                prevAnalogVoltage = AnalogVoltage;
+                _prevAnalogVoltage = AnalogVoltage;
                 AnalogVoltageChanged?.Invoke(this, new AnalogVoltageChangedEventArgs(AnalogVoltage));
 
-                analogVoltageSignal.TrySetResult(AnalogVoltage);
+                _analogVoltageSignal.TrySetResult(AnalogVoltage);
 
                 RaisePropertyChanged("AnalogVoltage");
             }
 
-            if (!prevAnalogValue.CloseTo(AnalogValue, AnalogValueChangedThreshold))
+            if (!_prevAnalogValue.CloseTo(AnalogValue, AnalogValueChangedThreshold))
             {
-                prevAnalogValue = AnalogValue;
+                _prevAnalogValue = AnalogValue;
                 AnalogValueChanged?.Invoke(this, new AnalogValueChangedEventArgs(AnalogValue));
 
-                analogValueSignal.TrySetResult(AnalogValue);
+                _analogValueSignal.TrySetResult(AnalogValue);
 
                 RaisePropertyChanged("AnalogValue");
             }

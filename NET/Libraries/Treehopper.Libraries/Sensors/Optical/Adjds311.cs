@@ -8,7 +8,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// </summary>
     public class Adjds311 : SMBusDevice, INotifyPropertyChanged
     {
-        private readonly I2c _I2C;
+        private readonly I2C _I2C;
         private readonly byte CAP_BLUE = 0x08;
         private readonly byte CAP_CLEAR = 0x09;
         private readonly byte CAP_GREEN = 0x07;
@@ -41,7 +41,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </summary>
         /// <param name="I2CDevice">The I2c port to use</param>
         /// <param name="LedPin">The pin attached to the led</param>
-        public Adjds311(I2c I2CDevice, DigitalOut LedPin) : base(0x74, I2CDevice)
+        public Adjds311(I2C I2CDevice, DigitalOut LedPin) : base(0x74, I2CDevice)
         {
             _I2C = I2CDevice;
             _I2C.Enabled = true;

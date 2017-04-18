@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Interface.Mux
         /// </summary>
         /// <param name="MuxedPort">The upstream port to mux</param>
         /// <param name="pins">The pin(s) to use to control the mux, starting with the least-significant bit</param>
-        public I2cAnalogMux(I2c MuxedPort, params DigitalOut[] pins) : base(MuxedPort, 1 << pins.Length)
+        public I2cAnalogMux(I2C MuxedPort, params DigitalOut[] pins) : base(MuxedPort, 1 << pins.Length)
         {
             this.pins = pins;
             foreach (var pin in pins)

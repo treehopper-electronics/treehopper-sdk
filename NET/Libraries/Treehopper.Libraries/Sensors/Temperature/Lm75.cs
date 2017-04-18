@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <param name="a0">the state of the A0 pin</param>
         /// <param name="a1">the state of the A1 pin</param>
         /// <param name="a2">the state of the A2 pin</param>
-        public Lm75(I2c i2c, bool a0 = false, bool a1 = false, bool a2 = false)
+        public Lm75(I2C i2c, bool a0 = false, bool a1 = false, bool a2 = false)
         {
             dev = new SMBusDevice((byte) (0x48 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c);
         }

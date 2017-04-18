@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Interface.Mux
         /// </summary>
         /// <param name="UpstreamPort">The upstream port to mux</param>
         /// <param name="numPorts">The number of ports that belong to this mux</param>
-        public I2cMux(I2c UpstreamPort, int numPorts)
+        public I2cMux(I2C UpstreamPort, int numPorts)
         {
             this.UpstreamPort = UpstreamPort;
             UpstreamPort.Enabled = true;
@@ -30,7 +30,7 @@ namespace Treehopper.Libraries.Interface.Mux
         /// <summary>
         ///     The upstream I2C port that the selected downstream port should be connected to.
         /// </summary>
-        public I2c UpstreamPort { get; set; }
+        public I2C UpstreamPort { get; set; }
 
         internal void SetMux(int index)
         {
@@ -40,7 +40,7 @@ namespace Treehopper.Libraries.Interface.Mux
         }
 
         /// <summary>
-        ///     Configure the mux to connect the specified <see cref="I2c" /> port to the upstream port
+        ///     Configure the mux to connect the specified <see cref="I2C" /> port to the upstream port
         /// </summary>
         /// <param name="index">The index of the upstream port to connect</param>
         protected abstract void setMux(int index);

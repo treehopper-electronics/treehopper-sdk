@@ -9,15 +9,15 @@ namespace Treehopper
     /// </summary>
     public class HardwareUart : IOneWire
     {
-        private readonly TreehopperUsb device;
-        private int baud = 9600;
-        private bool isEnabled;
-        private UartMode mode = UartMode.Uart;
-        private bool useOpenDrainTx;
+        private readonly TreehopperUsb _device;
+        private int _baud = 9600;
+        private bool _isEnabled;
+        private UartMode _mode = UartMode.Uart;
+        private bool _useOpenDrainTx;
 
         internal HardwareUart(TreehopperUsb device)
         {
-            this.device = device;
+            _device = device;
         }
 
         /// <summary>
@@ -25,14 +25,14 @@ namespace Treehopper
         /// </summary>
         public UartMode Mode
         {
-            get { return mode; }
+            get { return _mode; }
 
             set
             {
-                if (mode == value)
+                if (_mode == value)
                     return;
 
-                mode = value;
+                _mode = value;
                 UpdateConfig();
             }
         }
@@ -42,14 +42,14 @@ namespace Treehopper
         /// </summary>
         public bool Enabled
         {
-            get { return isEnabled; }
+            get { return _isEnabled; }
 
             set
             {
-                if (isEnabled == value)
+                if (_isEnabled == value)
                     return;
 
-                isEnabled = value;
+                _isEnabled = value;
                 UpdateConfig();
             }
         }
@@ -59,14 +59,14 @@ namespace Treehopper
         /// </summary>
         public int Baud
         {
-            get { return baud; }
+            get { return _baud; }
 
             set
             {
-                if (baud == value)
+                if (_baud == value)
                     return;
 
-                baud = value;
+                _baud = value;
 
                 UpdateConfig();
             }
@@ -77,14 +77,14 @@ namespace Treehopper
         /// </summary>
         public bool UseOpenDrainTx
         {
-            get { return useOpenDrainTx; }
+            get { return _useOpenDrainTx; }
 
             set
             {
-                if (useOpenDrainTx == value)
+                if (_useOpenDrainTx == value)
                     return;
 
-                useOpenDrainTx = value;
+                _useOpenDrainTx = value;
 
                 UpdateConfig();
             }
@@ -115,10 +115,10 @@ namespace Treehopper
             data[1] = (byte) UartCommand.Transmit;
             data[2] = (byte) dataToSend.Length;
             dataToSend.CopyTo(data, 3);
-            using (await device.ComsLock.LockAsync().ConfigureAwait(false))
+            using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await device.SendPeripheralConfigPacket(data);
-                var receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                await _device.SendPeripheralConfigPacket(data);
+                await _device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
             }
         }
 
@@ -129,17 +129,17 @@ namespace Treehopper
         /// <returns>The bytes received</returns>
         public async Task<byte[]> Receive(int numBytes = 0)
         {
-            var retVal = new byte[0];
-            if (mode == UartMode.Uart)
+            byte[] retVal;
+            if (_mode == UartMode.Uart)
             {
                 var data = new byte[2];
                 data[0] = (byte) DeviceCommands.UartTransaction;
                 data[1] = (byte) UartCommand.Receive;
 
-                using (await device.ComsLock.LockAsync().ConfigureAwait(false))
+                using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    await device.SendPeripheralConfigPacket(data);
-                    var receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
+                    await _device.SendPeripheralConfigPacket(data);
+                    var receivedData = await _device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -152,10 +152,10 @@ namespace Treehopper
                 data[1] = (byte) UartCommand.Receive;
                 data[2] = (byte) numBytes;
 
-                using (await device.ComsLock.LockAsync().ConfigureAwait(false))
+                using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    await device.SendPeripheralConfigPacket(data);
-                    var receivedData = await device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
+                    await _device.SendPeripheralConfigPacket(data);
+                    var receivedData = await _device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -173,17 +173,17 @@ namespace Treehopper
         {
             Mode = UartMode.OneWire;
             Enabled = true;
-            if (mode != UartMode.OneWire)
+            if (_mode != UartMode.OneWire)
                 throw new Exception("The UART must be in OneWire mode to issue a OneWireReset command");
-            var retVal = false;
+            bool retVal;
             var data = new byte[2];
             data[0] = (byte) DeviceCommands.UartTransaction;
             data[1] = (byte) UartCommand.OneWireReset;
-            using (await device.ComsLock.LockAsync().ConfigureAwait(false))
+            using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await device.SendPeripheralConfigPacket(data);
-                var receivedData = await device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
-                retVal = receivedData[0] > 0 ? true : false;
+                await _device.SendPeripheralConfigPacket(data);
+                var receivedData = await _device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                retVal = receivedData[0] > 0;
             }
 
             return retVal;
@@ -202,13 +202,12 @@ namespace Treehopper
             var data = new byte[2];
             data[0] = (byte) DeviceCommands.UartTransaction;
             data[1] = (byte) UartCommand.OneWireScan;
-            using (await device.ComsLock.LockAsync().ConfigureAwait(false))
+            using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await device.SendPeripheralConfigPacket(data);
-                var receivedData = new byte[8];
+                await _device.SendPeripheralConfigPacket(data);
                 while (true)
                 {
-                    receivedData = await device.ReceiveCommsResponsePacket(9).ConfigureAwait(false);
+                    var receivedData = await _device.ReceiveCommsResponsePacket(9).ConfigureAwait(false);
                     if (receivedData[0] == 0xff)
                         break;
 
@@ -259,25 +258,25 @@ namespace Treehopper
 
         private void UpdateConfig()
         {
-            if (!isEnabled)
+            if (!_isEnabled)
             {
-                device.SendPeripheralConfigPacket(new[] {(byte) DeviceCommands.UartConfig, (byte) UartConfig.Disabled});
+                _device.SendPeripheralConfigPacket(new[] {(byte) DeviceCommands.UartConfig, (byte) UartConfig.Disabled});
             }
-            else if (mode == UartMode.Uart)
+            else if (_mode == UartMode.Uart)
             {
-                byte timerVal = 0;
-                var usePrescaler = false;
+                byte timerVal;
+                bool usePrescaler;
 
                 // calculate baud with and without prescaler
-                var timerValPrescaler = (int) Math.Round(256.0 - 2000000.0 / baud);
-                var timerValNoPrescaler = (int) Math.Round(256.0 - 24000000.0 / baud);
+                var timerValPrescaler = (int) Math.Round(256.0 - 2000000.0 / _baud);
+                var timerValNoPrescaler = (int) Math.Round(256.0 - 24000000.0 / _baud);
 
                 var prescalerOutOfBounds = timerValPrescaler > 255 || timerValPrescaler < 0;
                 var noPrescalerOutOfBounds = timerValNoPrescaler > 255 || timerValNoPrescaler < 0;
 
                 // calculate error
-                double prescalerError = Math.Abs(baud - 2000000 / (256 - timerValPrescaler));
-                double noPrescalerError = Math.Abs(baud - 24000000 / (256 - timerValNoPrescaler));
+                double prescalerError = Math.Abs(_baud - 2000000 / (256 - timerValPrescaler));
+                double noPrescalerError = Math.Abs(_baud - 24000000 / (256 - timerValNoPrescaler));
 
                 if (prescalerOutOfBounds && noPrescalerOutOfBounds)
                     throw new Exception("The specified baud rate was out of bounds.");
@@ -307,15 +306,15 @@ namespace Treehopper
                 data[1] = (byte) UartConfig.Standard;
                 data[2] = timerVal;
                 data[3] = (byte) (usePrescaler ? 0x01 : 0x00);
-                data[4] = (byte) (useOpenDrainTx ? 0x01 : 0x00);
-                device.SendPeripheralConfigPacket(data);
+                data[4] = (byte) (_useOpenDrainTx ? 0x01 : 0x00);
+                _device.SendPeripheralConfigPacket(data);
             }
             else
             {
                 var data = new byte[2];
                 data[0] = (byte) DeviceCommands.UartConfig;
                 data[1] = (byte) UartConfig.OneWire;
-                device.SendPeripheralConfigPacket(data);
+                _device.SendPeripheralConfigPacket(data);
             }
         }
 

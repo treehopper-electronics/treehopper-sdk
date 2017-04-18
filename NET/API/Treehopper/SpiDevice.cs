@@ -7,7 +7,7 @@ namespace Treehopper
     /// </summary>
     public class SpiDevice
     {
-        private readonly Spi spi;
+        private readonly Spi _spi;
 
         /// <summary>
         ///     Construct an SPI device attached to a particular module
@@ -23,11 +23,11 @@ namespace Treehopper
         {
             ChipSelectMode = chipSelectMode;
             ChipSelect = chipSelect;
-            spi = spiModule;
+            _spi = spiModule;
             Frequency = speedMhz;
             Mode = mode;
 
-            spi.Enabled = true;
+            _spi.Enabled = true;
 
             ChipSelect.MakeDigitalPushPullOut();
 
@@ -85,7 +85,7 @@ namespace Treehopper
         /// <returns>Data received by the peripheral</returns>
         public Task<byte[]> SendReceive(byte[] dataToSend, SpiBurstMode burst = SpiBurstMode.NoBurst)
         {
-            return spi.SendReceive(dataToSend, ChipSelect, ChipSelectMode, Frequency, burst, Mode);
+            return _spi.SendReceive(dataToSend, ChipSelect, ChipSelectMode, Frequency, burst, Mode);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Treehopper.Libraries.Displays
     {
         private static readonly byte ControlBase = 0x24;
         private static readonly byte DisplayBase = 0x34;
-        private readonly I2c i2c;
+        private readonly I2C i2c;
         private readonly byte[] newValues = new byte[4];
 
         private readonly byte[] oldValues = new byte[4];
@@ -27,7 +27,7 @@ namespace Treehopper.Libraries.Displays
         ///     Construct a new TM1650 with a given I2c interface
         /// </summary>
         /// <param name="i2c">The I2c interface to use</param>
-        public Tm1650(I2c i2c) : base(32, true, false)
+        public Tm1650(I2C i2c) : base(32, true, false)
         {
             this.i2c = i2c;
             brightness = 1.0;

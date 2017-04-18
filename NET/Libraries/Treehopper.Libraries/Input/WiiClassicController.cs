@@ -19,7 +19,7 @@ namespace Treehopper.Libraries.Input
         private Vector2 rightStick;
         private float rightTriggerForce;
 
-        public WiiClassicController(I2c i2c)
+        public WiiClassicController(I2C i2c)
         {
             dev = new SMBusDevice(0x52, i2c);
             dev.WriteData(new byte[] {0xF0, 0x55}).Wait();
