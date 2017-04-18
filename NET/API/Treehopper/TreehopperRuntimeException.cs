@@ -21,9 +21,6 @@
         /// <summary>
         /// The message of the exception
         /// </summary>
-        public override string Message
-        {
-            get { return message; }
-        }
+        public override string Message => message;
     }
 }

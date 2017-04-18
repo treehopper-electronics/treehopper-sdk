@@ -176,10 +176,7 @@
         /// <summary>
         /// Get the Connection used by this board
         /// </summary>
-        public IConnection Connection
-        {
-            get { return _connection; }
-        }
+        public IConnection Connection => _connection;
 
         /// <summary>
         /// The unique identification string for the board.
@@ -204,13 +201,7 @@
         /// If you accidentally erase this number, you must reprogram it using the Factory Programmer software.
         /// </para>
         /// </remarks>
-        public string SerialNumber
-        {
-            get
-            {
-                return _connection.Serial;
-            }
-        }
+        public string SerialNumber => _connection.Serial;
 
         /// <summary>
         /// The name of the board
@@ -228,35 +219,17 @@
         /// want a program communicating with the incorrect board.
         /// </para>
         /// </remarks>
-        public string Name
-        {
-            get
-            {
-                return _connection.Name;
-            }
-        }
+        public string Name => _connection.Name;
 
         /// <summary>
         /// Get a string representation of the firmware version number
         /// </summary>
-        public string VersionString
-        {
-            get
-            {
-                return $"{_connection.Version / 100d:0.00}";
-            }
-        }
+        public string VersionString => $"{_connection.Version / 100d:0.00}";
 
         /// <summary>
         /// Get the firmware version number
         /// </summary>
-        public int Version
-        {
-            get
-            {
-                return _connection.Version;
-            }
-        }
+        public int Version => _connection.Version;
 
         /// <summary>
         /// This list contains all the pins that belong to the board. 
@@ -273,10 +246,7 @@
         /// </summary>
         /// <param name="index">The pin index to access</param>
         /// <returns></returns>
-        public Pin this[int index]
-        {
-            get { return Pins[index]; }
-        }
+        public Pin this[int index] => Pins[index];
 
         /// <summary>
         /// Reboots the board.

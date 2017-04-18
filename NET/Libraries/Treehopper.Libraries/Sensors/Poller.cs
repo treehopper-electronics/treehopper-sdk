@@ -91,7 +91,7 @@ namespace Treehopper.Libraries.Sensors
         /// <summary>
         /// The underlying sensor that is polled by this instance
         /// </summary>
-        public TPollable Sensor { get { return sensor; } }
+        public TPollable Sensor => sensor;
 
         /// <summary>
         /// Destroy the poller object

@@ -17,13 +17,7 @@ namespace Treehopper.Uwp
     {
         static readonly IConnectionService instance = new ConnectionService();
 
-        public static IConnectionService Instance
-        {
-            get
-            {
-                return instance;                    
-            }
-        }
+        public static IConnectionService Instance => instance;
 
         public ConnectionService()
         {
@@ -33,13 +27,7 @@ namespace Treehopper.Uwp
         }
 
         ObservableCollection<TreehopperUsb> connectedDevices;
-        public ObservableCollection<TreehopperUsb> Boards
-        {
-            get
-            {
-                return connectedDevices;
-            }
-        }
+        public ObservableCollection<TreehopperUsb> Boards => connectedDevices;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

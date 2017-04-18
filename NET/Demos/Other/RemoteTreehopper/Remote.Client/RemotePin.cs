@@ -49,13 +49,7 @@ namespace Remote.Client
         public RemoteTreehopper Board { get; private set; }
         public int PinNumber { get; private set; }
 
-        public Spi SpiModule
-        {
-            get
-            {
-                return Board.Spi;
-            }
-        }
+        public Spi SpiModule => Board.Spi;
 
         public Task<bool> AwaitDigitalValueChange()
         {

@@ -31,13 +31,7 @@ namespace Treehopper.Desktop.WinUsb
             _waitEvent = null;
         }
 
-        public object AsyncState
-        {
-            get
-            {
-                return _stateObject;
-            }
-        }
+        public object AsyncState => _stateObject;
 
         public Exception Error
         {
@@ -49,10 +43,8 @@ namespace Treehopper.Desktop.WinUsb
                 }
             }
         }
-        public int BytesTransfered
-        {
-            get { return _bytesTransfered; }
-        }
+        public int BytesTransfered => _bytesTransfered;
+
         public WaitHandle AsyncWaitHandle
         {
             get

@@ -140,10 +140,7 @@
         /// <summary>
         /// This returns a reference to the Treehopper board this pin belongs to.
         /// </summary>
-        public TreehopperUsb Board
-        {
-            get { return board; }
-        }
+        public TreehopperUsb Board => board;
 
         /// <summary>
         /// Gets the name of the pin
@@ -249,26 +246,14 @@
         /// <summary>
         /// Retrieve the last voltage reading from the ADC.
         /// </summary>
-        public double AnalogVoltage
-        {
-            get
-            {
-                return Math.Round((double)AdcValue * (referenceLevelVoltage / 4092.0), 4);
-            }
-        }
+        public double AnalogVoltage => Math.Round((double)AdcValue * (referenceLevelVoltage / 4092.0), 4);
 
         /// <summary>
         /// Retrieve the last reading from the ADC, expressed on a unit range (0.0 - 1.0)
         /// </summary>
         /// <remarks>
         /// </remarks>
-        public double AnalogValue
-        {
-            get
-            {
-                return Math.Round((double)AdcValue / 4092.0, 4);
-            }
-        }
+        public double AnalogValue => Math.Round((double)AdcValue / 4092.0, 4);
 
         /// <summary>
         /// Sets the ADC reference value used 
@@ -317,13 +302,7 @@
         /// <remarks>
         /// <para>Since the SPI chip-select functionality is done in-hardware, the SPI module must check to ensure the pin you're using for chip-select actually belongs to the same board as the SPI module does (as you may have multiple boards attached).</para>
         /// </remarks>
-        public Spi SpiModule
-        {
-            get
-            {
-                return board.Spi;
-            }
-        }
+        public Spi SpiModule => board.Spi;
 
         /// <summary>
         /// Toggles the output value of the pin.

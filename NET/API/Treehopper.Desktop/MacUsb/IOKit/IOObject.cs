@@ -16,11 +16,9 @@ namespace Treehopper.Desktop.MacUsb.IOKit {
 		/// <summary>
 		/// Gets the native handle.
 		/// </summary>
-		public IntPtr Handle {
-			get { return handle; }
-		}
+		public IntPtr Handle => handle;
 
-		/// <summary>
+	    /// <summary>
 		/// Initializes a new instance of the see <see cref="IOObject"/>.
 		/// </summary>
 		public IOObject(IntPtr handle) {

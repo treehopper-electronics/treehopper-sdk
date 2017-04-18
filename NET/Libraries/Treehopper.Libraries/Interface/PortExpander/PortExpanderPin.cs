@@ -84,13 +84,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// The pin number of this port expander pin
         /// </summary>
-        public int PinNumber
-        {
-            get
-            {
-                return pinNumber;
-            }
-        }
+        public int PinNumber => pinNumber;
 
         internal void UpdateInputValue(bool value)
         {

@@ -79,20 +79,11 @@
             }
         }
 
-        private Pin Sck
-        {
-            get { return device.Pins[0]; }
-        }
+        private Pin Sck => device.Pins[0];
 
-        private Pin Miso
-        {
-            get { return device.Pins[1]; }
-        }
+        private Pin Miso => device.Pins[1];
 
-        private Pin Mosi
-        {
-            get { return device.Pins[2]; }
-        }
+        private Pin Mosi => device.Pins[2];
 
         /// <summary>
         /// Send/receive data

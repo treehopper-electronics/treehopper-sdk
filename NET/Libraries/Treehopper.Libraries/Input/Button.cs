@@ -43,7 +43,7 @@
         /// <summary>
         /// Determines whether the button is pressed (by reading Input.DigitalValue)
         /// </summary>
-        public bool Pressed { get { return Input.DigitalValue ^ activeLow; } }
+        public bool Pressed => Input.DigitalValue ^ activeLow;
 
         /// <summary>
         /// Fired whenever the button is pressed

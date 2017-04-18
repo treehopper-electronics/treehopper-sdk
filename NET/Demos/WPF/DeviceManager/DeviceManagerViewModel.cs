@@ -21,10 +21,7 @@ namespace DeviceManager.ViewModels
     {
         public ISelectorViewModel Selector { get; set; }
 
-        public bool CanEdit
-        {
-            get { return board != null; }
-        }
+        public bool CanEdit => board != null;
 
         private string name = "";
         public string Name { get { return name; } set { Set(ref name, value); } }

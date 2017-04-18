@@ -31,7 +31,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// <summary>
         /// The parent device. Always returns null.
         /// </summary>
-        public IFlushable Parent { get { return null; } }
+        public IFlushable Parent => null;
 
         /// <summary>
         /// Whether this port expander should auto-flush

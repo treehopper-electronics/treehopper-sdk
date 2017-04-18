@@ -17,7 +17,7 @@ namespace Treehopper.Libraries.Utilities
         {
             this.length = length;
         }
-        public uint Length { get { return length; } }
+        public uint Length => length;
     }
     public static class BinaryConverters
     {

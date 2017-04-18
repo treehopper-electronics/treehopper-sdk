@@ -18,10 +18,7 @@ namespace Treehopper
         /// <summary>
         /// get a static connection instance
         /// </summary>
-        public static IConnectionService Instance
-        {
-            get { return instance; }
-        }
+        public static IConnectionService Instance => instance;
 
         /// <summary>
         /// Create a new DesignTime connection service with three connected boards

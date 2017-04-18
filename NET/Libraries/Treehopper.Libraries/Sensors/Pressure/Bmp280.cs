@@ -87,7 +87,7 @@
         }
 #pragma warning restore 649
 
-        internal byte ChipId { get { return 0x58; } }
+        internal byte ChipId => 0x58;
 
         /// <summary>
         /// Temperature, in degrees Celsius
@@ -116,24 +116,12 @@
         /// <summary>
         /// Temperature, in degrees Fahrenheit
         /// </summary>
-        public double Fahrenheit
-        {
-            get
-            {
-                return TemperatureSensor.ToFahrenheit(Celsius);
-            }
-        }
+        public double Fahrenheit => TemperatureSensor.ToFahrenheit(Celsius);
 
         /// <summary>
         /// Temperature, in Kelvin
         /// </summary>
-        public double Kelvin
-        {
-            get
-            {
-                return TemperatureSensor.ToKelvin(Celsius);
-            }
-        }
+        public double Kelvin => TemperatureSensor.ToKelvin(Celsius);
 
         internal int PayloadSize { get; set; } = 6;
         internal byte[] LastReceivedData { get; set; }

@@ -24,17 +24,17 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// <summary>
         /// The pressure, in bars
         /// </summary>
-        public double Bar { get { return Pascal / 100000.0; } }
+        public double Bar => Pascal / 100000.0;
 
         /// <summary>
         /// The pressure, in Atmospheres. 
         /// </summary>
-        public double Atm { get { return Pascal / (1.01325 * 100000.0); } }
+        public double Atm => Pascal / (1.01325 * 100000.0);
 
         /// <summary>
         /// The pressure, in PSI
         /// </summary>
-        public double Psi { get { return Atm / 14.7; } }
+        public double Psi => Atm / 14.7;
 
         /// <summary>
         /// Update the sensor

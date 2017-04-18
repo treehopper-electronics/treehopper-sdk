@@ -89,20 +89,11 @@ namespace TreehopperShowcase.Pages.Settings
             }
         }
 
-        public LinkCollection Themes
-        {
-            get { return this.themes; }
-        }
+        public LinkCollection Themes => this.themes;
 
-        public string[] FontSizes
-        {
-            get { return new string[] { FontSmall, FontLarge }; }
-        }
+        public string[] FontSizes => new string[] { FontSmall, FontLarge };
 
-        public Color[] AccentColors
-        {
-            get { return this.accentColors; }
-        }
+        public Color[] AccentColors => this.accentColors;
 
         public Link SelectedTheme
         {

@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Displays
 
             public bool Enabled { get; set; }
 
-            public int Width { get { return 8; } }
+            public int Width => 8;
 
             public Task WriteCommand(uint[] command)
             {

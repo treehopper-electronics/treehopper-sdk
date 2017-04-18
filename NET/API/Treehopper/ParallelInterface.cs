@@ -71,13 +71,7 @@
         /// <summary>
         /// Get the width of the data bus (i.e., the count of the number of pins in the bus)
         /// </summary>
-        public int Width
-        {
-            get
-            {
-                return DataBus.Count;
-            }
-        }
+        public int Width => DataBus.Count;
 
         /// <summary>
         /// Write one or more words of data to the bus with the command flag asserted (RS=0);

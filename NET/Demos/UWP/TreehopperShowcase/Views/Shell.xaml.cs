@@ -11,7 +11,7 @@ namespace TreehopperShowcase.Views
     public sealed partial class Shell : Page, INotifyPropertyChanged
     {
         public static Shell Instance { get; set; }
-        public static HamburgerMenu HamburgerMenu { get { return Instance.MyHamburgerMenu; } }
+        public static HamburgerMenu HamburgerMenu => Instance.MyHamburgerMenu;
 
         public Shell(NavigationService navigationService)
         {

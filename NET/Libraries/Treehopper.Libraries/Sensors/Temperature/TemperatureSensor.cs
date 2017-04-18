@@ -37,24 +37,12 @@
         /// <summary>
         /// Get the temperature, in Fahrenheit
         /// </summary>
-        public double Fahrenheit
-        {
-            get
-            {
-                return ToFahrenheit(Celsius);
-            }
-        }
+        public double Fahrenheit => ToFahrenheit(Celsius);
 
         /// <summary>
         /// Get the temperature, in Kelvin
         /// </summary>
-        public double Kelvin
-        {
-            get
-            {
-                return ToKelvin(Celsius);
-            }
-        }
+        public double Kelvin => ToKelvin(Celsius);
 
         public int AwaitPollingInterval { get; set; }
 

@@ -72,7 +72,7 @@
         /// <summary>
         /// The parent object. Always returns null.
         /// </summary>
-        public IFlushable Parent { get { return null; } }
+        public IFlushable Parent => null;
 
         /// <summary>
         /// Whether to use the external clock

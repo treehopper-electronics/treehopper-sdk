@@ -21,7 +21,7 @@ namespace TreehopperShowcase.ViewModels
             }
         }
 
-        public ObservableCollection<TreehopperUsb> Boards { get { return ConnectionService.Instance.Boards; } }
+        public ObservableCollection<TreehopperUsb> Boards => ConnectionService.Instance.Boards;
 
         WriteableBitmap currentFrame;
         public WriteableBitmap CurrentFrame { get { return currentFrame; } set { Set(ref currentFrame, value); } }

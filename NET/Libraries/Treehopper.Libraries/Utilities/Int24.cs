@@ -20,7 +20,7 @@ namespace Treehopper.Libraries.Utilities
             _b1 = (byte)(value >> 8);
             _b2 = (byte)(value >> 16);
         }
-        public Int32 Value { get { return _b0 | (_b1 << 8) | (_b2 << 16) | ((_b2 & 0x80) > 0 ? 0xFF : 0x00); } }
+        public Int32 Value => _b0 | (_b1 << 8) | (_b2 << 16) | ((_b2 & 0x80) > 0 ? 0xFF : 0x00);
 
         public override string ToString()
         {
@@ -41,7 +41,8 @@ namespace Treehopper.Libraries.Utilities
             _b1 = (byte)(value >> 8);
             _b2 = (byte)(value >> 16);
         }
-        public UInt32 Value { get { return (uint)(_b0 | (_b1 << 8) | (_b2 << 16)); } }
+        public UInt32 Value => (uint)(_b0 | (_b1 << 8) | (_b2 << 16));
+
         public override string ToString()
         {
             return Value.ToString();

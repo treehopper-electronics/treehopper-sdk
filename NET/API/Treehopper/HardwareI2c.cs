@@ -62,15 +62,9 @@
             }
         }
 
-        public Pin Sda
-        {
-            get { return device.Pins[3]; }
-        }
+        public Pin Sda => device.Pins[3];
 
-        public Pin Scl
-        {
-            get { return device.Pins[4]; }
-        }
+        public Pin Scl => device.Pins[4];
 
         /// <summary>
         /// Sends and Receives data. This is a blocking call that won't return until I2C communication is complete.

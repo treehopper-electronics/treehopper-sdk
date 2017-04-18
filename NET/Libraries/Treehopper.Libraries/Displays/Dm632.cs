@@ -68,12 +68,12 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         /// Gets whether this display has global brightness control (Hint: it does!)
         /// </summary>
-        public bool HasGlobalBrightnessControl { get { return true; } }
+        public bool HasGlobalBrightnessControl => true;
 
         /// <summary>
         /// Gets whether this display has individual brightness control (which it does!)
         /// </summary>
-        public bool HasIndividualBrightnessControl { get { return true; } }
+        public bool HasIndividualBrightnessControl => true;
 
         /// <summary>
         /// Gets the list of LEDs associated with this driver
