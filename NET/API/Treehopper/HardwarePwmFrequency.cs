@@ -1,22 +1,22 @@
 ﻿namespace Treehopper
 {
     /// <summary>
-    /// Defines the PWM period options
+    ///     Defines the PWM period options
     /// </summary>
     public enum HardwarePwmFrequency
     {
         /// <summary>
-        /// 732 Hz PWM frequency
+        ///     732 Hz PWM frequency
         /// </summary>
         Freq_732Hz,
 
         /// <summary>
-        /// 183 Hz PWM frequency
+        ///     183 Hz PWM frequency
         /// </summary>
         Freq_183Hz,
 
         /// <summary>
-        /// 61 Hz PWM frequency
+        ///     61 Hz PWM frequency
         /// </summary>
         Freq_61Hz
     }

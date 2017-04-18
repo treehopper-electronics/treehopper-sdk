@@ -1,23 +1,26 @@
-﻿namespace Treehopper
-{
-    using System;
+﻿using System;
 
+namespace Treehopper
+{
     /// <summary>
-    /// This class provides software-based pulse-width modulation (PWM) on any pin.
+    ///     This class provides software-based pulse-width modulation (PWM) on any pin.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// The period of the SoftPwm module defaults to approximately 100 Hz. Changing this period will affect all active SoftPwm pins.
-    /// </para>
-    /// <para>
-    /// Compared to <see cref="HardwarePwm"/> (which is implemented in hardware), SoftPwm has relatively high jitter. However, it has relatively 
-    /// good precision, fine-tuned period control, and works well even when many (or all!) Treehopper pins are used for SoftPwm. 
-    /// </para>
+    ///     <para>
+    ///         The period of the SoftPwm module defaults to approximately 100 Hz. Changing this period will affect all active
+    ///         SoftPwm pins.
+    ///     </para>
+    ///     <para>
+    ///         Compared to <see cref="HardwarePwm" /> (which is implemented in hardware), SoftPwm has relatively high jitter.
+    ///         However, it has relatively
+    ///         good precision, fine-tuned period control, and works well even when many (or all!) Treehopper pins are used for
+    ///         SoftPwm.
+    ///     </para>
     /// </remarks>
     public class SoftPwm : Pwm
     {
-        private readonly Pin pin;
         private readonly TreehopperUsb board;
+        private readonly Pin pin;
         private bool isEnabled;
 
         internal SoftPwm(TreehopperUsb board, Pin pin)
@@ -27,14 +30,11 @@
         }
 
         /// <summary>
-        /// Gets or sets the value determining whether the PWM functionality of the pin is enabled.
+        ///     Gets or sets the value determining whether the PWM functionality of the pin is enabled.
         /// </summary>
         public bool Enabled
         {
-            get
-            {
-                return isEnabled;
-            }
+            get { return isEnabled; }
 
             set
             {
@@ -56,19 +56,16 @@
         }
 
         /// <summary>
-        /// Get or set the duty cycle of the pin. This property has a range between 0.0 and 1.0, inclusive.
+        ///     Get or set the duty cycle of the pin. This property has a range between 0.0 and 1.0, inclusive.
         /// </summary>
         /// <remarks>
-        /// Due to software implementation constraints, the minimum duty cycle
-        /// that will be generated is approximately 0.0003, and the maximum
-        /// duty cycle will be 0.9993.
+        ///     Due to software implementation constraints, the minimum duty cycle
+        ///     that will be generated is approximately 0.0003, and the maximum
+        ///     duty cycle will be 0.9993.
         /// </remarks>
         public double DutyCycle
         {
-            get
-            {
-                return board.SoftPwmMgr.GetDutyCycle(pin);
-            }
+            get { return board.SoftPwmMgr.GetDutyCycle(pin); }
 
             set
             {
@@ -79,18 +76,15 @@
         }
 
         /// <summary>
-        /// Get or set the pulse width, in microseconds, of the pin. This property has a range between 0 and 16409. 
+        ///     Get or set the pulse width, in microseconds, of the pin. This property has a range between 0 and 16409.
         /// </summary>
         /// <remarks>
-        /// Due to software implementation constraints, the minimum pulse width that will be generated is approximately
-        /// 5.4 microseconds, and the maximum pulse width will be approximately 16,400. 
+        ///     Due to software implementation constraints, the minimum pulse width that will be generated is approximately
+        ///     5.4 microseconds, and the maximum pulse width will be approximately 16,400.
         /// </remarks>
         public double PulseWidth
         {
-            get
-            {
-                return board.SoftPwmMgr.GetPulseWidth(pin);
-            }
+            get { return board.SoftPwmMgr.GetPulseWidth(pin); }
 
             set
             {
@@ -101,15 +95,14 @@
         }
 
         /// <summary>
-        /// Gets a string representation of the soft-PWM pin's state
+        ///     Gets a string representation of the soft-PWM pin's state
         /// </summary>
         /// <returns>The soft-PWM pin's state</returns>
         public override string ToString()
         {
             if (Enabled)
                 return $"{DutyCycle * 100:0.00}% duty cycle ({PulseWidth:0.00} us pulse width)";
-            else
-                return "Not enabled";
+            return "Not enabled";
         }
     }
 }

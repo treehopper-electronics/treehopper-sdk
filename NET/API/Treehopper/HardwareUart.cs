@@ -1,49 +1,31 @@
-﻿namespace Treehopper
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Treehopper
+{
     /// <summary>
-    /// Module that implements hardware UART and OneWire functionality
+    ///     Module that implements hardware UART and OneWire functionality
     /// </summary>
     public class HardwareUart : IOneWire
     {
-        private bool isEnabled;
-        private int baud = 9600;
         private readonly TreehopperUsb device;
+        private int baud = 9600;
+        private bool isEnabled;
         private UartMode mode = UartMode.Uart;
-        private bool useOpenDrainTx = false;
+        private bool useOpenDrainTx;
 
         internal HardwareUart(TreehopperUsb device)
         {
             this.device = device;
         }
 
-        private enum UartConfig : byte
-        {
-            Disabled,
-            Standard,
-            OneWire,
-        }
-
-        private enum UartCommand : byte
-        {
-            Transmit,
-            Receive,
-            OneWireReset,
-            OneWireScan
-        }
-
         /// <summary>
-        /// Gets or sets the UART mode
+        ///     Gets or sets the UART mode
         /// </summary>
         public UartMode Mode
         {
-            get
-            {
-                return mode;
-            }
+            get { return mode; }
 
             set
             {
@@ -56,14 +38,11 @@
         }
 
         /// <summary>
-        /// Enable or disable the UART
+        ///     Enable or disable the UART
         /// </summary>
         public bool Enabled
         {
-            get
-            {
-                return isEnabled;
-            }
+            get { return isEnabled; }
 
             set
             {
@@ -76,14 +55,11 @@
         }
 
         /// <summary>
-        /// Set or get the baud of the UART
+        ///     Set or get the baud of the UART
         /// </summary>
         public int Baud
         {
-            get
-            {
-                return baud;
-            }
+            get { return baud; }
 
             set
             {
@@ -97,14 +73,11 @@
         }
 
         /// <summary>
-        /// Whether to use an open-drain TX pin or not.
+        ///     Whether to use an open-drain TX pin or not.
         /// </summary>
         public bool UseOpenDrainTx
         {
-            get
-            {
-                return useOpenDrainTx;
-            }
+            get { return useOpenDrainTx; }
 
             set
             {
@@ -118,31 +91,29 @@
         }
 
         /// <summary>
-        /// Send a byte out of the UART
+        ///     Send a byte out of the UART
         /// </summary>
         /// <param name="data">The byte to send</param>
         /// <returns>An awaitable task that completes upon transmission of the byte</returns>
         public Task Send(byte data)
         {
-            return Send(new byte[] { data });
+            return Send(new[] {data});
         }
 
         /// <summary>
-        /// Send data
+        ///     Send data
         /// </summary>
         /// <param name="dataToSend">The data to send</param>
         /// <returns>An awaitable task that completes upon transmission of the data</returns>
         public async Task Send(byte[] dataToSend)
         {
             if (dataToSend.Length > 63)
-            {
                 throw new Exception("The maximum UART length for one transaction is 63 bytes");
-            }
 
             var data = new byte[dataToSend.Length + 3];
-            data[0] = (byte)DeviceCommands.UartTransaction;
-            data[1] = (byte)UartCommand.Transmit;
-            data[2] = (byte)dataToSend.Length;
+            data[0] = (byte) DeviceCommands.UartTransaction;
+            data[1] = (byte) UartCommand.Transmit;
+            data[2] = (byte) dataToSend.Length;
             dataToSend.CopyTo(data, 3);
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
@@ -152,7 +123,7 @@
         }
 
         /// <summary>
-        /// Receive bytes from the UART
+        ///     Receive bytes from the UART
         /// </summary>
         /// <param name="numBytes">The number of bytes to receive</param>
         /// <returns>The bytes received</returns>
@@ -162,8 +133,8 @@
             if (mode == UartMode.Uart)
             {
                 var data = new byte[2];
-                data[0] = (byte)DeviceCommands.UartTransaction;
-                data[1] = (byte)UartCommand.Receive;
+                data[0] = (byte) DeviceCommands.UartTransaction;
+                data[1] = (byte) UartCommand.Receive;
 
                 using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
@@ -177,9 +148,9 @@
             else
             {
                 var data = new byte[3];
-                data[0] = (byte)DeviceCommands.UartTransaction;
-                data[1] = (byte)UartCommand.Receive;
-                data[2] = (byte)numBytes;
+                data[0] = (byte) DeviceCommands.UartTransaction;
+                data[1] = (byte) UartCommand.Receive;
+                data[2] = (byte) numBytes;
 
                 using (await device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
@@ -195,7 +166,7 @@
         }
 
         /// <summary>
-        /// Reset the One Wire bus
+        ///     Reset the One Wire bus
         /// </summary>
         /// <returns>True if at least one device was found. False otherwise.</returns>
         public async Task<bool> OneWireReset()
@@ -206,8 +177,8 @@
                 throw new Exception("The UART must be in OneWire mode to issue a OneWireReset command");
             var retVal = false;
             var data = new byte[2];
-            data[0] = (byte)DeviceCommands.UartTransaction;
-            data[1] = (byte)UartCommand.OneWireReset;
+            data[0] = (byte) DeviceCommands.UartTransaction;
+            data[1] = (byte) UartCommand.OneWireReset;
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 await device.SendPeripheralConfigPacket(data);
@@ -219,7 +190,7 @@
         }
 
         /// <summary>
-        /// Search for One Wire devices on the bus
+        ///     Search for One Wire devices on the bus
         /// </summary>
         /// <returns>A list of addresses found</returns>
         public async Task<List<ulong>> OneWireSearch()
@@ -229,8 +200,8 @@
             var retVal = new List<ulong>();
 
             var data = new byte[2];
-            data[0] = (byte)DeviceCommands.UartTransaction;
-            data[1] = (byte)UartCommand.OneWireScan;
+            data[0] = (byte) DeviceCommands.UartTransaction;
+            data[1] = (byte) UartCommand.OneWireScan;
             using (await device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 await device.SendPeripheralConfigPacket(data);
@@ -250,7 +221,7 @@
         }
 
         /// <summary>
-        /// Reset and match a device on the One-Wire bus
+        ///     Reset and match a device on the One-Wire bus
         /// </summary>
         /// <param name="address">The address to reset and match</param>
         /// <returns></returns>
@@ -267,7 +238,7 @@
         }
 
         /// <summary>
-        /// Start one-wire mode on this interface
+        ///     Start one-wire mode on this interface
         /// </summary>
         public void StartOneWire()
         {
@@ -276,22 +247,21 @@
         }
 
         /// <summary>
-        /// Gets a string representing the UART's state
+        ///     Gets a string representing the UART's state
         /// </summary>
         /// <returns>the UART's string</returns>
         public override string ToString()
         {
             if (Enabled)
                 return $"{Mode}, running at {Baud:0.00} baud";
-            else
-                return "Not enabled";
+            return "Not enabled";
         }
 
         private void UpdateConfig()
         {
             if (!isEnabled)
             {
-                device.SendPeripheralConfigPacket(new byte[] { (byte)DeviceCommands.UartConfig, (byte)UartConfig.Disabled });
+                device.SendPeripheralConfigPacket(new[] {(byte) DeviceCommands.UartConfig, (byte) UartConfig.Disabled});
             }
             else if (mode == UartMode.Uart)
             {
@@ -299,56 +269,69 @@
                 var usePrescaler = false;
 
                 // calculate baud with and without prescaler
-                var timerValPrescaler = (int)Math.Round(256.0 - (2000000.0 / baud));
-                var timerValNoPrescaler = (int)Math.Round(256.0 - (24000000.0 / baud));
+                var timerValPrescaler = (int) Math.Round(256.0 - 2000000.0 / baud);
+                var timerValNoPrescaler = (int) Math.Round(256.0 - 24000000.0 / baud);
 
                 var prescalerOutOfBounds = timerValPrescaler > 255 || timerValPrescaler < 0;
                 var noPrescalerOutOfBounds = timerValNoPrescaler > 255 || timerValNoPrescaler < 0;
 
                 // calculate error
-                double prescalerError = Math.Abs(baud - (2000000 / (256 - timerValPrescaler)));
-                double noPrescalerError = Math.Abs(baud - (24000000 / (256 - timerValNoPrescaler)));
+                double prescalerError = Math.Abs(baud - 2000000 / (256 - timerValPrescaler));
+                double noPrescalerError = Math.Abs(baud - 24000000 / (256 - timerValNoPrescaler));
 
                 if (prescalerOutOfBounds && noPrescalerOutOfBounds)
-                {
                     throw new Exception("The specified baud rate was out of bounds.");
-                }
-                else if (prescalerOutOfBounds)
+                if (prescalerOutOfBounds)
                 {
                     usePrescaler = false;
-                    timerVal = (byte)timerValNoPrescaler;
+                    timerVal = (byte) timerValNoPrescaler;
                 }
                 else if (noPrescalerOutOfBounds)
                 {
                     usePrescaler = true;
-                    timerVal = (byte)timerValPrescaler;
+                    timerVal = (byte) timerValPrescaler;
                 }
                 else if (prescalerError > noPrescalerError)
                 {
                     usePrescaler = false;
-                    timerVal = (byte)timerValNoPrescaler;
+                    timerVal = (byte) timerValNoPrescaler;
                 }
                 else
                 {
                     usePrescaler = true;
-                    timerVal = (byte)timerValPrescaler;
+                    timerVal = (byte) timerValPrescaler;
                 }
 
                 var data = new byte[5];
-                data[0] = (byte)DeviceCommands.UartConfig;
-                data[1] = (byte)UartConfig.Standard;
+                data[0] = (byte) DeviceCommands.UartConfig;
+                data[1] = (byte) UartConfig.Standard;
                 data[2] = timerVal;
-                data[3] = (byte)(usePrescaler ? 0x01 : 0x00);
-                data[4] = (byte)(useOpenDrainTx ? 0x01 : 0x00);
+                data[3] = (byte) (usePrescaler ? 0x01 : 0x00);
+                data[4] = (byte) (useOpenDrainTx ? 0x01 : 0x00);
                 device.SendPeripheralConfigPacket(data);
             }
             else
             {
                 var data = new byte[2];
-                data[0] = (byte)DeviceCommands.UartConfig;
-                data[1] = (byte)UartConfig.OneWire;
+                data[0] = (byte) DeviceCommands.UartConfig;
+                data[1] = (byte) UartConfig.OneWire;
                 device.SendPeripheralConfigPacket(data);
             }
+        }
+
+        private enum UartConfig : byte
+        {
+            Disabled,
+            Standard,
+            OneWire
+        }
+
+        private enum UartCommand : byte
+        {
+            Transmit,
+            Receive,
+            OneWireReset,
+            OneWireScan
         }
     }
 }

@@ -1,64 +1,53 @@
-﻿namespace Treehopper
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
+namespace Treehopper
+{
     /// <summary>
-    /// This module is used to provide an 8080-style R/W parallel interface (especially useful for displays)
+    ///     This module is used to provide an 8080-style R/W parallel interface (especially useful for displays)
     /// </summary>
     public class ParallelInterface : ReadWriteParallelInterface
     {
-        private bool enabled;
         private readonly TreehopperUsb board;
+        private bool enabled;
 
         internal ParallelInterface(TreehopperUsb board)
         {
             this.board = board;
         }
 
-        private enum ParallelCmd
-        {
-            WriteCommand,
-            ReadCommand,
-            WriteData,
-            ReadData
-        }
-
         /// <summary>
-        /// Controls which pins are used for the data bus.
+        ///     Controls which pins are used for the data bus.
         /// </summary>
         public Collection<Pin> DataBus { get; set; } = new Collection<Pin>();
 
         /// <summary>
-        /// Gets or sets the pin used for Register Select (RS).
+        ///     Gets or sets the pin used for Register Select (RS).
         /// </summary>
         public Pin RegisterSelectPin { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin used for Read/Write (R/W)
+        ///     Gets or sets the pin used for Read/Write (R/W)
         /// </summary>
         public Pin ReadWritePin { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin used for Enable (E).
+        ///     Gets or sets the pin used for Enable (E).
         /// </summary>
         public Pin EnablePin { get; set; }
 
         /// <summary>
-        /// gets or sets the number of microseconds that should be delayed after pulse.
+        ///     gets or sets the number of microseconds that should be delayed after pulse.
         /// </summary>
         public int DelayMicroseconds { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this peripheral is enabled
+        ///     Gets or sets a value indicating whether this peripheral is enabled
         /// </summary>
         public bool Enabled
         {
-            get
-            {
-                return enabled;
-            }
+            get { return enabled; }
 
             set
             {
@@ -69,12 +58,12 @@
         }
 
         /// <summary>
-        /// Get the width of the data bus (i.e., the count of the number of pins in the bus)
+        ///     Get the width of the data bus (i.e., the count of the number of pins in the bus)
         /// </summary>
         public int Width => DataBus.Count;
 
         /// <summary>
-        /// Write one or more words of data to the bus with the command flag asserted (RS=0);
+        ///     Write one or more words of data to the bus with the command flag asserted (RS=0);
         /// </summary>
         /// <param name="command"></param>
         public async Task WriteCommand(uint[] command)
@@ -89,30 +78,28 @@
                 cmd = new byte[cmdLen + 3];
 
                 for (var i = 0; i < cmdLen; i++)
-                {
-                    cmd[3 + i] = (byte)command[i];
-                }
+                    cmd[3 + i] = (byte) command[i];
             }
             else
             {
                 // 16-bit data
-                cmd = new byte[(cmdLen * 2) + 3];
+                cmd = new byte[cmdLen * 2 + 3];
 
                 for (var i = 0; i < cmdLen; i++)
                 {
-                    cmd[3 + (i * 2)] = (byte)(command[2 * i] >> 8);
-                    cmd[3 + (i * 2) + 1] = (byte)command[(2 * i) + 1];
+                    cmd[3 + i * 2] = (byte) (command[2 * i] >> 8);
+                    cmd[3 + i * 2 + 1] = (byte) command[2 * i + 1];
                 }
             }
 
-            cmd[0] = (byte)DeviceCommands.ParallelTransaction;
-            cmd[1] = (byte)ParallelCmd.WriteCommand;
-            cmd[2] = (byte)cmdLen;
+            cmd[0] = (byte) DeviceCommands.ParallelTransaction;
+            cmd[1] = (byte) ParallelCmd.WriteCommand;
+            cmd[2] = (byte) cmdLen;
             await board.SendPeripheralConfigPacket(cmd);
         }
 
         /// <summary>
-        /// Write one or more words of data to the bus with the data flag asserted (RS=1);
+        ///     Write one or more words of data to the bus with the data flag asserted (RS=1);
         /// </summary>
         /// <param name="data"></param>
         public async Task WriteData(uint[] data)
@@ -125,30 +112,28 @@
                 cmd = new byte[dataLen + 3];
 
                 for (var i = 0; i < dataLen; i++)
-                {
-                    cmd[3 + i] = (byte)data[i];
-                }
+                    cmd[3 + i] = (byte) data[i];
             }
             else
             {
                 // 16-bit data
-                cmd = new byte[(dataLen * 2) + 3];
+                cmd = new byte[dataLen * 2 + 3];
 
                 for (var i = 0; i < dataLen; i++)
                 {
-                    cmd[3 + (i * 2)] = (byte)(data[2 * i] >> 8);
-                    cmd[3 + (i * 2) + 1] = (byte)data[(2 * i) + 1];
+                    cmd[3 + i * 2] = (byte) (data[2 * i] >> 8);
+                    cmd[3 + i * 2 + 1] = (byte) data[2 * i + 1];
                 }
             }
 
-            cmd[0] = (byte)DeviceCommands.ParallelTransaction;
-            cmd[1] = (byte)ParallelCmd.WriteData;
-            cmd[2] = (byte)dataLen;
+            cmd[0] = (byte) DeviceCommands.ParallelTransaction;
+            cmd[1] = (byte) ParallelCmd.WriteData;
+            cmd[2] = (byte) dataLen;
             await board.SendPeripheralConfigPacket(cmd);
         }
 
         /// <summary>
-        /// Write a command to the bus and await data to be returned
+        ///     Write a command to the bus and await data to be returned
         /// </summary>
         /// <param name="command">The command word to write</param>
         /// <param name="length">The number of words to read</param>
@@ -159,7 +144,7 @@
         }
 
         /// <summary>
-        /// Read data words from the bus
+        ///     Read data words from the bus
         /// </summary>
         /// <param name="length">The number of words to read</param>
         /// <returns>An awaitable array of words read</returns>
@@ -169,15 +154,14 @@
         }
 
         /// <summary>
-        /// Gets a string representation of the parallel interface's state
+        ///     Gets a string representation of the parallel interface's state
         /// </summary>
         /// <returns>the parallel interface's state</returns>
         public override string ToString()
         {
             if (enabled)
                 return $"Enabled, {Width}-bit width, {DelayMicroseconds} us clock period";
-            else
-                return "Not enabled";
+            return "Not enabled";
         }
 
         private void UpdateConfig()
@@ -186,20 +170,28 @@
                 throw new ArgumentOutOfRangeException("DataBus should have between 4 and 16 pins");
 
             var cmd = new byte[7 + DataBus.Count];
-            cmd[0] = (byte)DeviceCommands.ParallelConfig;
-            cmd[1] = (byte)(Enabled ? 1 : 0);               // enable/disable parallel module
-            cmd[2] = (byte)DelayMicroseconds;               // placeholder for bus speed
-            cmd[3] = (byte)DataBus.Count;                   // bus width
-            cmd[4] = (byte)(RegisterSelectPin?.PinNumber ?? -1);
-            cmd[5] = (byte)(ReadWritePin?.PinNumber ?? -1);
-            cmd[6] = (byte)(EnablePin?.PinNumber ?? -1);
+            cmd[0] = (byte) DeviceCommands.ParallelConfig;
+            cmd[1] = (byte) (Enabled ? 1 : 0); // enable/disable parallel module
+            cmd[2] = (byte) DelayMicroseconds; // placeholder for bus speed
+            cmd[3] = (byte) DataBus.Count; // bus width
+            cmd[4] = (byte) (RegisterSelectPin?.PinNumber ?? -1);
+            cmd[5] = (byte) (ReadWritePin?.PinNumber ?? -1);
+            cmd[6] = (byte) (EnablePin?.PinNumber ?? -1);
             for (var i = 0; i < DataBus.Count; i++)
             {
-                cmd[7 + i] = (byte)DataBus[i].PinNumber;
+                cmd[7 + i] = (byte) DataBus[i].PinNumber;
                 DataBus[i].Mode = PinMode.Reserved;
             }
 
             board.SendPeripheralConfigPacket(cmd);
+        }
+
+        private enum ParallelCmd
+        {
+            WriteCommand,
+            ReadCommand,
+            WriteData,
+            ReadData
         }
     }
 }

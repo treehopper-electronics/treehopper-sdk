@@ -1,14 +1,14 @@
-﻿namespace Treehopper.ThirdParty
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
+namespace Treehopper.ThirdParty
+{
     // from https://blogs.msdn.microsoft.com/pfxteam/2012/02/12/building-async-coordination-primitives-part-6-asynclock/
 
     /// <summary>
-    /// An Async-compatible semaphore lock
+    ///     An Async-compatible semaphore lock
     /// </summary>
     public class AsyncSemaphore
     {
@@ -17,7 +17,7 @@
         private int _currentCount;
 
         /// <summary>
-        /// Create a new lock
+        ///     Create a new lock
         /// </summary>
         /// <param name="initialCount">The initial count the semaphore should use</param>
         public AsyncSemaphore(int initialCount)
@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Wait for the semaphore to release
+        ///     Wait for the semaphore to release
         /// </summary>
         /// <returns>An awaitable Task</returns>
         public Task WaitAsync()
@@ -39,17 +39,14 @@
                     --_currentCount;
                     return Completed;
                 }
-                else
-                {
-                    var waiter = new TaskCompletionSource<bool>();
-                    _waiters.Enqueue(waiter);
-                    return waiter.Task;
-                }
+                var waiter = new TaskCompletionSource<bool>();
+                _waiters.Enqueue(waiter);
+                return waiter.Task;
             }
         }
 
         /// <summary>
-        /// Release the semaphore
+        ///     Release the semaphore
         /// </summary>
         public void Release()
         {
@@ -67,15 +64,15 @@
     }
 
     /// <summary>
-    /// A mutual exclusion lock that is compatible with async. Note that this lock is <b>not</b> recursive!
+    ///     A mutual exclusion lock that is compatible with async. Note that this lock is <b>not</b> recursive!
     /// </summary>
     public class AsyncLock
     {
-        private readonly AsyncSemaphore _semaphore;
         private readonly Task<Releaser> _releaser;
+        private readonly AsyncSemaphore _semaphore;
 
         /// <summary>
-        /// Creates a new async-compatible mutual exclusion lock.
+        ///     Creates a new async-compatible mutual exclusion lock.
         /// </summary>
         public AsyncLock()
         {
@@ -84,25 +81,25 @@
         }
 
         /// <summary>
-        /// Asynchronously acquires the lock. Returns a disposable that releases the lock when disposed.
+        ///     Asynchronously acquires the lock. Returns a disposable that releases the lock when disposed.
         /// </summary>
         /// <returns>A disposable that releases the lock when disposed.</returns>
         public Task<Releaser> LockAsync()
         {
             var wait = _semaphore.WaitAsync();
-            return wait.IsCompleted ?
-                _releaser :
-                wait.ContinueWith(
+            return wait.IsCompleted
+                ? _releaser
+                : wait.ContinueWith(
                     (_, state) => new Releaser(
-                    (AsyncLock)state),
-                    this, 
+                        (AsyncLock) state),
+                    this,
                     CancellationToken.None,
-                    TaskContinuationOptions.ExecuteSynchronously, 
+                    TaskContinuationOptions.ExecuteSynchronously,
                     TaskScheduler.Default);
         }
 
         /// <summary>
-        /// The disposable which releases the lock.
+        ///     The disposable which releases the lock.
         /// </summary>
         public struct Releaser : IDisposable
         {
@@ -114,7 +111,7 @@
             }
 
             /// <summary>
-            /// Release the lock.
+            ///     Release the lock.
             /// </summary>
             public void Dispose()
             {

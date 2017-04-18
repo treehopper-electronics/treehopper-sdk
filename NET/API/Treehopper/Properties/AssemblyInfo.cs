@@ -5,7 +5,8 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Treehopper")]
-[assembly: AssemblyDescription("Treehopper is an open-source platform for connecting your computer to the physical world")]
+[assembly:
+    AssemblyDescription("Treehopper is an open-source platform for connecting your computer to the physical world")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Treehopper LLC")]
 [assembly: AssemblyProduct("Treehopper")]

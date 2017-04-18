@@ -1,20 +1,20 @@
-﻿namespace Treehopper.Utilities
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
+namespace Treehopper.Utilities
+{
     /// <summary>
-    /// This is a utility class that contains convenient static methods.
+    ///     This is a utility class that contains convenient static methods.
     /// </summary>
     public static class Utility
     {
         private static readonly Random random = new Random();
 
         /// <summary>
-        /// Do something with each item in a list, collection, or enumerable
+        ///     Do something with each item in a list, collection, or enumerable
         /// </summary>
         /// <typeparam name="T">The type of the enumerable</typeparam>
         /// <param name="enumeration">The collection, list, etc to operate over</param>
@@ -22,13 +22,11 @@
         public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
             foreach (var item in enumeration)
-            {
                 action(item);
-            }
         }
 
         /// <summary>
-        /// Convert 4-bit BCD nibbles to a string
+        ///     Convert 4-bit BCD nibbles to a string
         /// </summary>
         /// <param name="val">The number (composed of 4-bit nibbles) to convert</param>
         /// <param name="decimalPlace">Where to draw a decimal point</param>
@@ -40,7 +38,7 @@
             var nonZeroFound = false;
             for (var i = 7; i >= 0; i--)
             {
-                var num = val >> (i * 4) & 0xF;
+                var num = (val >> (i * 4)) & 0xF;
                 if (showLeadingZeros || num != 0 || nonZeroFound || i == decimalPlace)
                     retVal += num.ToString();
 
@@ -55,7 +53,7 @@
         }
 
         /// <summary>
-        /// Empty method which prevents VS from generating warnings from un-awaited calls. 
+        ///     Empty method which prevents VS from generating warnings from un-awaited calls.
         /// </summary>
         /// <param name="task"></param>
         public static void Forget(this Task task)
@@ -63,7 +61,7 @@
         }
 
         /// <summary>
-        /// Get a random string with alphanumeric characters
+        ///     Get a random string with alphanumeric characters
         /// </summary>
         /// <param name="length">The number of characters the string should have</param>
         /// <returns>the generated string</returns>
@@ -71,11 +69,12 @@
         {
             const string Characters = "abcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(Characters, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+                .Select(s => s[random.Next(s.Length)])
+                .ToArray());
         }
 
         /// <summary>
-        /// Emit an error message
+        ///     Emit an error message
         /// </summary>
         /// <param name="message">The error to emit</param>
         /// <param name="fatal">Whether this error is fatal, and should throw an exception</param>
@@ -87,7 +86,7 @@
         }
 
         /// <summary>
-        /// Print an error to the Debug console and throw an exception if the Settings permit
+        ///     Print an error to the Debug console and throw an exception if the Settings permit
         /// </summary>
         /// <param name="ex">The exception message to print</param>
         public static void Error(Exception ex)
