@@ -29,7 +29,7 @@ namespace RotaryEncoderDemo
 
         private static void Encoder_PositionChanged(object sender, RotaryEncoder.PositionChangedEventArgs e)
         {
-            Console.WriteLine(string.Format("New position: {0}",e.NewPosition));
+            Console.WriteLine($"New position: {e.NewPosition}");
         }
     }
 }

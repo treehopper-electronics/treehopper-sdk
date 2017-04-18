@@ -34,7 +34,8 @@ namespace TemperatureDemo
 
             while (!Console.KeyAvailable)
             {
-                Console.WriteLine(string.Format("Current temperature: {0:0.00} Celsius ({1:0.00} Fahrenheit)", sensor.Celsius, sensor.Fahrenheit));
+                Console.WriteLine(
+                    $"Current temperature: {sensor.Celsius:0.00} Celsius ({sensor.Fahrenheit:0.00} Fahrenheit)");
                 await Task.Delay(1000);
             }
 

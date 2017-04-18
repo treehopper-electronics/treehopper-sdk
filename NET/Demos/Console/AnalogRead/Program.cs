@@ -22,12 +22,12 @@ namespace Treehopper.Demos.AnalogRead
             await board.ConnectAsync();
 
             Pin AdcPin = board.Pins[0]; // equivalent to Pin AdcPin = board[1];
-            AdcPin.ReferenceLevel = AdcReferenceLevel.VREF_3V3;
+            AdcPin.ReferenceLevel = AdcReferenceLevel.Vref_3V3;
             AdcPin.Mode = PinMode.AnalogInput;
             while (!Console.KeyAvailable)
             {
                 double voltage = await AdcPin.AwaitAnalogVoltageChange();
-                Console.WriteLine(String.Format("New analog voltage: {0}V", voltage));
+                Console.WriteLine($"New analog voltage: {voltage}V");
             }
         }
     }

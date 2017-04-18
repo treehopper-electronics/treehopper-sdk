@@ -46,9 +46,10 @@
 
         void initialAdd()
         {
-            var query = string.Format(@"Select DeviceID, HardwareID, Name From Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%VID_{0:X}&PID_{1:X}%'",
-                TreehopperUsb.Settings.Vid,
-                TreehopperUsb.Settings.Pid);
+            var query =
+                $@"Select DeviceID, HardwareID, Name From Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%VID_{
+                    TreehopperUsb.Settings.Vid
+                :X}&PID_{TreehopperUsb.Settings.Pid:X}%'";
 
             using (var searcher = new ManagementObjectSearcher(query))
             using (var collection = searcher.Get())
@@ -64,7 +65,10 @@
                     var version = hardwareIds[2].Substring(4);
 
                     string name = (string)device.GetPropertyValue("Name");
-                    string path = string.Format(@"\\.\usb#vid_{0:x}&pid_{1:x}#{2}#{{a5dcbf10-6530-11d2-901f-00c04fb951ed}}", TreehopperUsb.Settings.Vid, TreehopperUsb.Settings.Pid, serial);
+                    string path =
+                        $@"\\.\usb#vid_{TreehopperUsb.Settings.Vid:x}&pid_{TreehopperUsb.Settings.Pid:x}#{
+                            serial
+                        }#{{a5dcbf10-6530-11d2-901f-00c04fb951ed}}";
 
                     Boards.Add(new TreehopperUsb(new WinUsbConnection(path, name, serial, short.Parse(version))));
                 }
@@ -78,7 +82,10 @@
             string name = "";
             string version = "";
 
-            var query = string.Format(@"SELECT Name, DeviceID, HardwareID FROM Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%{0}%'", serial.ToUpper());
+            var query =
+                $@"SELECT Name, DeviceID, HardwareID FROM Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%{
+                    serial.ToUpper()
+                }%'";
 
             using (var searcher = new ManagementObjectSearcher(query))
             using (var collection = searcher.Get())

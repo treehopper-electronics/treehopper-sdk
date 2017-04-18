@@ -25,7 +25,7 @@ namespace Mpu9250Demo
 
             while(!Console.KeyAvailable)
             {
-                Console.WriteLine(string.Format("{0:0.00}, {1:0.00}, {2:0.00}", imu.Accelerometer.X, imu.Accelerometer.Y, imu.Accelerometer.Z));
+                Console.WriteLine($"{imu.Accelerometer.X:0.00}, {imu.Accelerometer.Y:0.00}, {imu.Accelerometer.Z:0.00}");
                 await Task.Delay(100);
             }
 

@@ -25,9 +25,8 @@
     {
         internal readonly AsyncLock ComsLock = new AsyncLock();
         private const int MinimumSupportedFirmwareVersion = 110;
-        private byte[] pinStateBuffer;
-        private IConnection connection;
-        private bool led = false;
+        private IConnection _connection;
+        private bool _led = false;
 
         /// <summary>
         /// Construct a new TreehopperUsb board from a connection
@@ -35,10 +34,10 @@
         /// <param name="treehopperUsbConnection">the connection to construct the board with</param>
         public TreehopperUsb(IConnection treehopperUsbConnection)
         {
-            this.connection = treehopperUsbConnection;
+            this._connection = treehopperUsbConnection;
 
             // initialize pins
-            for (int i = 0; i < NumberOfPins; i++)
+            for (var i = 0; i < NumberOfPins; i++)
             {
                 Pins.Add(new Pin(this, (byte)i));
             }
@@ -145,18 +144,18 @@
         {
             get
             {
-                return led;
+                return _led;
             }
 
             set
             {
-                if (value == led)
+                if (value == _led)
                     return;
-                led = value;
+                _led = value;
 
-                byte[] data = new byte[2];
+                var data = new byte[2];
                 data[0] = (byte)DeviceCommands.LedConfig;
-                data[1] = (byte)(led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
+                data[1] = (byte)(_led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
                 if(TreehopperUsb.Settings.PropertyWritesReturnImmediately)
                     SendPeripheralConfigPacket(data).Forget();
                 else
@@ -179,7 +178,7 @@
         /// </summary>
         public IConnection Connection
         {
-            get { return connection; }
+            get { return _connection; }
         }
 
         /// <summary>
@@ -209,7 +208,7 @@
         {
             get
             {
-                return connection.Serial;
+                return _connection.Serial;
             }
         }
 
@@ -233,7 +232,7 @@
         {
             get
             {
-                return connection.Name;
+                return _connection.Name;
             }
         }
 
@@ -244,7 +243,7 @@
         {
             get
             {
-                return string.Format("{0:0.00}", connection.Version / 100d);
+                return $"{_connection.Version / 100d:0.00}";
             }
         }
 
@@ -255,7 +254,7 @@
         {
             get
             {
-                return connection.Version;
+                return _connection.Version;
             }
         }
 
@@ -313,8 +312,8 @@
             if (serialNumber.Length > 60)
                 throw new Exception("String must be 15 characters or less");
 
-            byte[] bytes = Encoding.UTF8.GetBytes(serialNumber);
-            byte[] dataToSend = new byte[bytes.Length + 2];
+            var bytes = Encoding.UTF8.GetBytes(serialNumber);
+            var dataToSend = new byte[bytes.Length + 2];
             dataToSend[0] = (byte)DeviceCommands.FirmwareUpdateSerial;
             dataToSend[1] = (byte)serialNumber.Length;
             bytes.CopyTo(dataToSend, 2);
@@ -334,10 +333,10 @@
         {
             if (deviceName.Length > 60)
                 throw new Exception("Device name must be 60 characters or less");
-            byte[] dataToSend = new byte[deviceName.Length + 2];
+            var dataToSend = new byte[deviceName.Length + 2];
             dataToSend[0] = (byte)DeviceCommands.FirmwareUpdateName;
             dataToSend[1] = (byte)deviceName.Length;
-            byte[] stringData = Encoding.UTF8.GetBytes(deviceName);
+            var stringData = Encoding.UTF8.GetBytes(deviceName);
             stringData.CopyTo(dataToSend, 2);
             SendPeripheralConfigPacket(dataToSend);
             return Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
@@ -350,7 +349,7 @@
         {
             if (Version < MinimumSupportedFirmwareVersion)
                 Debug.WriteLine("NOTICE: The specified board has an old firmware version. Please use the Firmware Updater to load a firmware image with a minimum version of " + MinimumSupportedFirmwareVersion);
-            bool res = await connection.OpenAsync().ConfigureAwait(false);
+            var res = await _connection.OpenAsync().ConfigureAwait(false);
             if (!res)
             {
                 IsConnected = false;
@@ -360,8 +359,7 @@
             if (IsConnected)
                 return true;
 
-            pinStateBuffer = new byte[64];
-            connection.PinEventDataReceived += Connection_PinEventDataReceived;
+            _connection.PinEventDataReceived += Connection_PinEventDataReceived;
             this.IsConnected = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Version"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("VersionString"));
@@ -396,8 +394,8 @@
 
             }
 
-            if (connection != null)
-                connection.Close();
+            if (_connection != null)
+                _connection.Close();
             IsConnected = false;
         }
 
@@ -407,7 +405,7 @@
         public void Dispose()
         {
             Disconnect();
-            connection.Dispose();
+            _connection.Dispose();
         }
 
         /// <summary>
@@ -417,7 +415,7 @@
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            TreehopperUsb board = obj as TreehopperUsb;
+            var board = obj as TreehopperUsb;
             if (board == null)
                 return 1;
 
@@ -489,7 +487,7 @@
         /// <returns>True if the two boards are the same</returns>
         public override bool Equals(object obj)
         {
-            TreehopperUsb y = obj as TreehopperUsb;
+            var y = obj as TreehopperUsb;
             if (y == null)
                 return false;
             else
@@ -499,7 +497,7 @@
         internal Task SendPinConfigPacket(byte[] data)
         {
             if (IsConnected)
-                return connection.SendDataPinConfigChannel(data);
+                return _connection.SendDataPinConfigChannel(data);
             else
                 return Task.FromResult<object>(null);
         }
@@ -507,14 +505,14 @@
         internal Task SendPeripheralConfigPacket(byte[] data)
         {
             if (IsConnected)
-                return connection.SendDataPeripheralChannel(data);
+                return _connection.SendDataPeripheralChannel(data);
             else
                 return Task.FromResult<object>(null);
         }
 
         internal Task<byte[]> ReceiveCommsResponsePacket(uint bytesToRead)
         {
-            return connection.ReadPeripheralResponsePacket(bytesToRead);
+            return _connection.ReadPeripheralResponsePacket(bytesToRead);
         }
 
         private void RaisePropertyChanged(string property)
@@ -526,8 +524,8 @@
         {
             if (pinStateBuffer[0] != 0x00)
             {
-                int i = 1;
-                foreach (Pin pin in Pins)
+                var i = 1;
+                foreach (var pin in Pins)
                 {
                     pin.UpdateValue(pinStateBuffer[i++], pinStateBuffer[i++]);
                 }

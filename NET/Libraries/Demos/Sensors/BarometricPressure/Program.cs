@@ -31,12 +31,12 @@ namespace BarometricPressure
             while(!Console.KeyAvailable)
             {
                 await sensor.Update();
-                Console.WriteLine(string.Format("Pressure:    {0:0.00} Atm", sensor.Atm));
-                Console.WriteLine(string.Format("Altitude:    {0:0.00} m", sensor.Altitude));
-                Console.WriteLine(string.Format("Temperature: {0:0.00} Celsius", sensor.Celsius));
+                Console.WriteLine($"Pressure:    {sensor.Atm:0.00} Atm");
+                Console.WriteLine($"Altitude:    {sensor.Altitude:0.00} m");
+                Console.WriteLine($"Temperature: {sensor.Celsius:0.00} Celsius");
                 
                 // comment this line out if you're not using a sensor with humidity measurement
-                Console.WriteLine(string.Format("Humidity:    {0:0.00} % RH", sensor.RelativeHumidity));
+                Console.WriteLine($"Humidity:    {sensor.RelativeHumidity:0.00} % RH");
                 Console.WriteLine();
                 await Task.Delay(1000);
             }

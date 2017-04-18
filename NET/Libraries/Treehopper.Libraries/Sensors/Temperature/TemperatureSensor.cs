@@ -90,7 +90,7 @@
         /// <returns>A string representing the current temperature</returns>
         public override string ToString()
         {
-            return string.Format("{0:0.00} °C", Celsius);
+            return $"{Celsius:0.00} °C";
         }
     }
 }

@@ -13,8 +13,8 @@
     public class AsyncSemaphore
     {
         private static readonly Task Completed = Task.FromResult(true);
-        private readonly Queue<TaskCompletionSource<bool>> waiters = new Queue<TaskCompletionSource<bool>>();
-        private int currentCount;
+        private readonly Queue<TaskCompletionSource<bool>> _waiters = new Queue<TaskCompletionSource<bool>>();
+        private int _currentCount;
 
         /// <summary>
         /// Create a new lock
@@ -22,8 +22,8 @@
         /// <param name="initialCount">The initial count the semaphore should use</param>
         public AsyncSemaphore(int initialCount)
         {
-            if (initialCount < 0) throw new ArgumentOutOfRangeException("initialCount");
-            currentCount = initialCount;
+            if (initialCount < 0) throw new ArgumentOutOfRangeException(nameof(initialCount));
+            _currentCount = initialCount;
         }
 
         /// <summary>
@@ -32,17 +32,17 @@
         /// <returns>An awaitable Task</returns>
         public Task WaitAsync()
         {
-            lock (waiters)
+            lock (_waiters)
             {
-                if (currentCount > 0)
+                if (_currentCount > 0)
                 {
-                    --currentCount;
+                    --_currentCount;
                     return Completed;
                 }
                 else
                 {
                     var waiter = new TaskCompletionSource<bool>();
-                    waiters.Enqueue(waiter);
+                    _waiters.Enqueue(waiter);
                     return waiter.Task;
                 }
             }
@@ -54,16 +54,15 @@
         public void Release()
         {
             TaskCompletionSource<bool> toRelease = null;
-            lock (waiters)
+            lock (_waiters)
             {
-                if (waiters.Count > 0)
-                    toRelease = waiters.Dequeue();
+                if (_waiters.Count > 0)
+                    toRelease = _waiters.Dequeue();
                 else
-                    ++currentCount;
+                    ++_currentCount;
             }
 
-            if (toRelease != null)
-                toRelease.SetResult(true);
+            toRelease?.SetResult(true);
         }
     }
 
@@ -72,16 +71,16 @@
     /// </summary>
     public class AsyncLock
     {
-        private readonly AsyncSemaphore semaphore;
-        private readonly Task<Releaser> releaser;
+        private readonly AsyncSemaphore _semaphore;
+        private readonly Task<Releaser> _releaser;
 
         /// <summary>
         /// Creates a new async-compatible mutual exclusion lock.
         /// </summary>
         public AsyncLock()
         {
-            semaphore = new AsyncSemaphore(1);
-            releaser = Task.FromResult(new Releaser(this));
+            _semaphore = new AsyncSemaphore(1);
+            _releaser = Task.FromResult(new Releaser(this));
         }
 
         /// <summary>
@@ -90,9 +89,9 @@
         /// <returns>A disposable that releases the lock when disposed.</returns>
         public Task<Releaser> LockAsync()
         {
-            var wait = semaphore.WaitAsync();
+            var wait = _semaphore.WaitAsync();
             return wait.IsCompleted ?
-                releaser :
+                _releaser :
                 wait.ContinueWith(
                     (_, state) => new Releaser(
                     (AsyncLock)state),
@@ -107,11 +106,11 @@
         /// </summary>
         public struct Releaser : IDisposable
         {
-            private readonly AsyncLock toRelease;
+            private readonly AsyncLock _toRelease;
 
             internal Releaser(AsyncLock toRelease)
             {
-                this.toRelease = toRelease;
+                this._toRelease = toRelease;
             }
 
             /// <summary>
@@ -119,8 +118,7 @@
             /// </summary>
             public void Dispose()
             {
-                if (toRelease != null)
-                    toRelease.semaphore.Release();
+                _toRelease?._semaphore.Release();
             }
         }
     }

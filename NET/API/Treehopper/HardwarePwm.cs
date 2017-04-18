@@ -105,7 +105,7 @@
         public override string ToString()
         {
             if (Enabled)
-                return string.Format("{0:0.00}% duty cycle ({1:0.00} us pulse width)", DutyCycle * 100, PulseWidth);
+                return $"{DutyCycle * 100:0.00}% duty cycle ({PulseWidth:0.00} us pulse width)";
             else
                 return "Not enabled";
         }

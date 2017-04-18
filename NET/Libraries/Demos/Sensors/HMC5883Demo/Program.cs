@@ -89,7 +89,7 @@ namespace HMC5883Demo
                 angle = angle * (180 / Math.PI);
                 angle -= (3.0 + (10.0 / 60.0));
 
-                Console.WriteLine(string.Format("{0:0.00} degrees ({1:0.00}, {2:0.00}, {3:0.00})", angle, reading.X, reading.Y, reading.Z));
+                Console.WriteLine($"{angle:0.00} degrees ({reading.X:0.00}, {reading.Y:0.00}, {reading.Z:0.00})");
                 await Task.Delay(100);
             }
         }

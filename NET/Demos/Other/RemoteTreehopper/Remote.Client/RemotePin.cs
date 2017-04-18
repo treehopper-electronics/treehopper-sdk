@@ -24,7 +24,7 @@ namespace Remote.Client
                 if (mode == value) return;
                 mode = value;
 
-                Board.Write(string.Format("pins/{0}/mode", PinNumber), (int)mode);
+                Board.Write($"pins/{PinNumber}/mode", (int)mode);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Remote.Client
 
                 digitalValue = value;
 
-                Board.Write(string.Format("pins/{0}/digital", PinNumber), digitalValue);
+                Board.Write($"pins/{PinNumber}/digital", digitalValue);
             }
         }
         public RemoteTreehopper Board { get; private set; }

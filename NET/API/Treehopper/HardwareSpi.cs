@@ -106,8 +106,8 @@
         /// <returns>An awaitable byte array with the received data.</returns>
         public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null, ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1, SpiBurstMode burstMode = SpiBurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
         {
-            int transactionLength = dataToWrite.Length;
-            byte[] returnedData = new byte[transactionLength];
+            var transactionLength = dataToWrite.Length;
+            var returnedData = new byte[transactionLength];
 
             if (Enabled != true)
             {
@@ -119,7 +119,7 @@
 
             using (await device.ComsLock.LockAsync())
             {
-                int spi0ckr = (int)Math.Round((24.0 / speedMhz) - 1);
+                var spi0ckr = (int)Math.Round((24.0 / speedMhz) - 1);
                 if (spi0ckr > 255.0)
                 {
                     spi0ckr = 255;
@@ -131,7 +131,7 @@
                     Debug.WriteLine("NOTICE: Requested SPI frequency of {0} MHz is above the maximum frequency, and will be clipped to 24 MHz.", speedMhz);
                 }
 
-                double actualFrequency = 48.0 / (2.0 * (spi0ckr + 1.0));
+                var actualFrequency = 48.0 / (2.0 * (spi0ckr + 1.0));
 
                 if (Math.Abs(actualFrequency - speedMhz) > 1)
                     Debug.WriteLine("NOTICE: SPI module actual frequency of {0} MHz is more than 1 MHz away from the requested frequency of {1} MHz", actualFrequency, speedMhz);
@@ -140,8 +140,8 @@
                     throw new Exception("Maximum packet length is 255 bytes");
 
                 byte[] receivedData;
-                int srcIndex = 0;
-                byte[] header = new byte[7];
+                var srcIndex = 0;
+                var header = new byte[7];
                 header[0] = (byte)DeviceCommands.SpiTransaction;
                 header[1] = (byte)(chipSelect?.PinNumber ?? 255);
                 header[2] = (byte)chipSelectMode;
@@ -157,15 +157,15 @@
                 }
                 else
                 {
-                    byte[] dataToSend = new byte[transactionLength + header.Length];
+                    var dataToSend = new byte[transactionLength + header.Length];
                     Array.Copy(header, dataToSend, header.Length);
                     Array.Copy(dataToWrite, 0, dataToSend, header.Length, transactionLength);
 
-                    int bytesRemaining = dataToSend.Length;
-                    int offset = 0;
+                    var bytesRemaining = dataToSend.Length;
+                    var offset = 0;
                     while (bytesRemaining > 0)
                     {
-                        int transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
+                        var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var tmp = dataToSend.Skip(offset).Take(transferLength);
                         await device.SendPeripheralConfigPacket(tmp.ToArray());
                         offset += transferLength;
@@ -176,11 +176,11 @@
                 // no need to wait if we're not reading anything
                 if (burstMode != SpiBurstMode.BurstTx)
                 {
-                    int bytesRemaining = transactionLength;
+                    var bytesRemaining = transactionLength;
                     srcIndex = 0;
                     while (bytesRemaining > 0)
                     {
-                        int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
+                        var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
                         receivedData = await device.ReceiveCommsResponsePacket((uint)numBytesToTransfer).ConfigureAwait(false);
                         Array.Copy(receivedData, 0, returnedData, srcIndex, receivedData.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;
@@ -206,7 +206,7 @@
 
         private void SendConfig()
         {
-            byte[] dataToSend = new byte[2];
+            var dataToSend = new byte[2];
             dataToSend[0] = (byte)DeviceCommands.SpiConfig;
             dataToSend[1] = (byte)(enabled ? 0x01 : 0x00);
             device.SendPeripheralConfigPacket(dataToSend);

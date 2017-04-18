@@ -85,7 +85,7 @@
         /// <param name="command"></param>
         public async Task WriteCommand(uint[] command)
         {
-            int cmdLen = command.Length;
+            var cmdLen = command.Length;
             byte[] cmd;
 
             // we have data to send with the command
@@ -94,7 +94,7 @@
                 // 8-bit data
                 cmd = new byte[cmdLen + 3];
 
-                for (int i = 0; i < cmdLen; i++)
+                for (var i = 0; i < cmdLen; i++)
                 {
                     cmd[3 + i] = (byte)command[i];
                 }
@@ -104,7 +104,7 @@
                 // 16-bit data
                 cmd = new byte[(cmdLen * 2) + 3];
 
-                for (int i = 0; i < cmdLen; i++)
+                for (var i = 0; i < cmdLen; i++)
                 {
                     cmd[3 + (i * 2)] = (byte)(command[2 * i] >> 8);
                     cmd[3 + (i * 2) + 1] = (byte)command[(2 * i) + 1];
@@ -123,14 +123,14 @@
         /// <param name="data"></param>
         public async Task WriteData(uint[] data)
         {
-            int dataLen = data.Length;
+            var dataLen = data.Length;
             byte[] cmd;
             if (DataBus.Count <= 8)
             {
                 // 8-bit data
                 cmd = new byte[dataLen + 3];
 
-                for (int i = 0; i < dataLen; i++)
+                for (var i = 0; i < dataLen; i++)
                 {
                     cmd[3 + i] = (byte)data[i];
                 }
@@ -140,7 +140,7 @@
                 // 16-bit data
                 cmd = new byte[(dataLen * 2) + 3];
 
-                for (int i = 0; i < dataLen; i++)
+                for (var i = 0; i < dataLen; i++)
                 {
                     cmd[3 + (i * 2)] = (byte)(data[2 * i] >> 8);
                     cmd[3 + (i * 2) + 1] = (byte)data[(2 * i) + 1];
@@ -181,7 +181,7 @@
         public override string ToString()
         {
             if (enabled)
-                return string.Format("Enabled, {0}-bit width, {1} us clock period", Width, DelayMicroseconds);
+                return $"Enabled, {Width}-bit width, {DelayMicroseconds} us clock period";
             else
                 return "Not enabled";
         }
@@ -199,7 +199,7 @@
             cmd[4] = (byte)(RegisterSelectPin?.PinNumber ?? -1);
             cmd[5] = (byte)(ReadWritePin?.PinNumber ?? -1);
             cmd[6] = (byte)(EnablePin?.PinNumber ?? -1);
-            for (int i = 0; i < DataBus.Count; i++)
+            for (var i = 0; i < DataBus.Count; i++)
             {
                 cmd[7 + i] = (byte)DataBus[i].PinNumber;
                 DataBus[i].Mode = PinMode.Reserved;
