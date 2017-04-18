@@ -1,4 +1,5 @@
 #include "MacUsbConnection.h"
+#include <thread>
 
 namespace Treehopper
 {
@@ -30,12 +31,17 @@ namespace Treehopper
                                                                  );
             assert(resultingStatus == kIOReturnSuccess && "Failed to create plug-in interface for device");
             (*plugInInterface)->Release(plugInInterface);
+            
+            _name.assign(name.begin(), name.end());
+            _serialNumber.assign(serial.begin(), serial.end());
         }
     }
     
     MacUsbConnection::~MacUsbConnection()
     {
+        close();
         
+        (*deviceInterface)->Release(deviceInterface);
     }
     
     bool MacUsbConnection::open()
@@ -73,6 +79,9 @@ namespace Treehopper
                    kr);
             return false;
         }
+        
+        // HACK alert: setting the configuration is required for macOS to get the interface; unfortunately, this will make the board unresponsive for about half a second or so (while the LED blinks three times), so we might miss peripheral config messages -- wait here for half a second or so
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
         
         IOReturn deviceError;
         SInt32 score;
@@ -131,6 +140,7 @@ namespace Treehopper
     void MacUsbConnection::close()
     {
         (*_currentInterfaceInterface)->USBInterfaceClose(_currentInterfaceInterface);
+        (*_currentInterfaceInterface)->Release(_currentInterfaceInterface);
         (*deviceInterface)->USBDeviceClose(deviceInterface);
     }
     
@@ -140,8 +150,10 @@ namespace Treehopper
         assert(_currentInterfaceInterface != nil && "Interface interface nonexistent; did you set a configuration?");
         status = (*_currentInterfaceInterface)->WritePipeTO(_currentInterfaceInterface, 3, data, (uint32_t)len, 1000, 1000);
         if(status != kIOReturnSuccess) {
+            if(status == kIOReturnNoDevice)
+                return;
+            
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 3);
-            assert(status == kIOReturnSuccess);
         }
     }
     
@@ -151,20 +163,22 @@ namespace Treehopper
         assert(_currentInterfaceInterface != nil && "Interface interface nonexistent; did you set a configuration?");
         status = (*_currentInterfaceInterface)->WritePipeTO(_currentInterfaceInterface, 4, data, (uint32_t)len, 1000, 1000);
         if(status != kIOReturnSuccess) {
+            if(status == kIOReturnNoDevice)
+                return;
+            
             printf("WriteToDevice run returned err 0x%x\n", status);
             status = (*_currentInterfaceInterface)->ClearPipeStallBothEnds(_currentInterfaceInterface, 4);
-            assert(status == kIOReturnSuccess);
         }
     }
     
     wstring MacUsbConnection::serialNumber()
     {
-        return wstring();
+        return _serialNumber;
     }
     
     wstring MacUsbConnection::name()
     {
-        return wstring();
+        return _name;
     }
     
     wstring MacUsbConnection::devicePath()
