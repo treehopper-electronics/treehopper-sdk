@@ -1,5 +1,4 @@
 ﻿using System;
-using Treehopper;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Motors

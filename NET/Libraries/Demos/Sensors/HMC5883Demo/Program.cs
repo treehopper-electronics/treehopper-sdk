@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
-using Treehopper.Libraries;
-using Treehopper.Libraries.Displays;
 using Treehopper.Libraries.Sensors.Inertial;
 using Treehopper.Utilities;
 

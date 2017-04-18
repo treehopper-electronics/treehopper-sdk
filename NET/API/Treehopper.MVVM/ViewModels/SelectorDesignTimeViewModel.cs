@@ -1,13 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows;
-
-using Treehopper.Mvvm.Messages;
-using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 
 namespace Treehopper.Mvvm.ViewModel
 {

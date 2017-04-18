@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Humidity;
 
 namespace Treehopper.Libraries.Sensors.Pressure

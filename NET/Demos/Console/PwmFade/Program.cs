@@ -1,6 +1,5 @@
 ﻿using System;
 using Treehopper;
-using System.Threading;
 using System.Threading.Tasks;
 using Treehopper.Desktop;
 

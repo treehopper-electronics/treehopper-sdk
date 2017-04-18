@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Treehopper;
 using Treehopper.Desktop;
 using Treehopper.Libraries.Displays;
-using Treehopper.Libraries.Interface;
 using Treehopper.Libraries.Interface.PortExpander;
 
 namespace CharacterLcd16x2Pcf8574

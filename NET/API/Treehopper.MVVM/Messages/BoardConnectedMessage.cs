@@ -1,6 +1,4 @@
-﻿using Treehopper;
-
-namespace Treehopper.Mvvm.Messages
+﻿namespace Treehopper.Mvvm.Messages
 {
     /// <summary>
     /// This message is used to communicate board connection/disconnection.

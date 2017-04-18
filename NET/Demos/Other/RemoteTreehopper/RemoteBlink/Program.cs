@@ -1,14 +1,9 @@
 ﻿using Remote.Client;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
 using Treehopper.Utilities;
-using Treehopper;
 
 namespace RemoteBlink
 {

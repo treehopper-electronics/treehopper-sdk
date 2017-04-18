@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Diagnostics;
-using Treehopper;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {

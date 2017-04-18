@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Treehopper.Libraries.Motors
+﻿namespace Treehopper.Libraries.Motors
 {
     /// <summary>
     /// Any H-bridge device capable of motor speed control

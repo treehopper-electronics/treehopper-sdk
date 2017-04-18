@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace TreehopperShowcase.Mvvm
 {
     // DOCS: https://github.com/Windows-XAML/Template10/wiki/Docs-%7C-MVVM

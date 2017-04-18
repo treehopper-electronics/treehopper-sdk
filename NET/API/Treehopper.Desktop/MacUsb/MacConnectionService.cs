@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using Treehopper.Desktop.MacUsb.IOKit;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Threading;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Treehopper.Desktop.LibUsb
+﻿namespace Treehopper.Desktop.LibUsb
 {
 	/// <summary> 
 	/// Error codes. 

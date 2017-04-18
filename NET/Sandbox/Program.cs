@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
-using Treehopper.Desktop.MacUsb;
-using Treehopper.Libraries;
+
 namespace Sandbox
 {
     /// <summary>

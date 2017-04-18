@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Treehopper;
 using Treehopper.Desktop;
-using Treehopper.Libraries;
 using Treehopper.Libraries.Input;
 using Treehopper.Libraries.Sensors;
 
