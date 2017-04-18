@@ -18,7 +18,7 @@ namespace Treehopper.Libraries.Displays
     /// </remarks>
     public class Apa102 : IFlushable
     {
-        private Spi spi;
+        private readonly Spi spi;
 
         /// <summary>
         /// Gets the LEDs belonging to this APA102 instance.
@@ -111,7 +111,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         public class Led : IRgbLed
         {
-            private Apa102 driver;
+            private readonly Apa102 driver;
             internal float red, green, blue;
 
             /// <summary>

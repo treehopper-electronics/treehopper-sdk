@@ -36,7 +36,7 @@
     /// </remarks>
     public class HardwareSpi : Spi
     {
-        private TreehopperUsb device;
+        private readonly TreehopperUsb device;
         private bool enabled;
 
         internal HardwareSpi(TreehopperUsb device)

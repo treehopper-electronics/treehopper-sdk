@@ -17,16 +17,16 @@ namespace Treehopper.Libraries.Sensors.Optical
         [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
         struct VoSPI
         {
-            public ushort Id;
-            public ushort Crc;
+            public readonly ushort Id;
+            public readonly ushort Crc;
             //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
-            public ushort[] Payload;
+            public readonly ushort[] Payload;
         }
 
-        int height = 40;
-        int width = 80;
+        readonly int height = 40;
+        readonly int width = 80;
         Spi spi;
-        ushort[,] blackFrame;
+        readonly ushort[,] blackFrame;
 
         /// <summary>
         /// Construct a FLIR Lepton

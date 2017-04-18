@@ -32,8 +32,8 @@ namespace Treehopper.Libraries.Input
 
         Vector3 accelerometer;
         Vector2 joystick;
-        SMBusDevice dev;
-        private byte[] oldJoystickData = new byte[2] { 127, 128 }; // load with initial joystick "resting position" data so we don't fire changed events when we launch
+        readonly SMBusDevice dev;
+        private readonly byte[] oldJoystickData = new byte[2] { 127, 128 }; // load with initial joystick "resting position" data so we don't fire changed events when we launch
         public WiiNunchuk(I2c i2c)
         {
             dev = new SMBusDevice(0x52, i2c);

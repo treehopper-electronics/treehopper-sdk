@@ -14,8 +14,8 @@ namespace Treehopper.Desktop.WinUsb
 {
     internal class USBAsyncResult : IAsyncResult, IDisposable
     {
-        private object _stateObject;
-        private AsyncCallback _userCallback;
+        private readonly object _stateObject;
+        private readonly AsyncCallback _userCallback;
         private bool _completed;
         private bool _completedSynchronously;
         private ManualResetEvent _waitEvent;

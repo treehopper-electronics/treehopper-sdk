@@ -11,31 +11,31 @@ namespace Treehopper.Libraries.Sensors.Optical
         byte CTRL          = 0x00;
         byte CONFIG        = 0x01;
 
-        byte CAP_RED       = 0x06;
-        byte CAP_GREEN     = 0x07;
-        byte CAP_BLUE      = 0x08;
-        byte CAP_CLEAR     = 0x09;
+        readonly byte CAP_RED       = 0x06;
+        readonly byte CAP_GREEN     = 0x07;
+        readonly byte CAP_BLUE      = 0x08;
+        readonly byte CAP_CLEAR     = 0x09;
 
-        byte INT_RED_LO    = 0x0A;
-        byte INT_RED_HI    = 0x0B;
-        byte INT_GREEN_LO  = 0x0C;
-        byte INT_GREEN_HI  = 0x0D;
-        byte INT_BLUE_LO   = 0x0E;
-        byte INT_BLUE_HI   = 0x0F;
-        byte INT_CLEAR_LO  = 0x10;
-        byte INT_CLEAR_HI  = 0x11;
+        readonly byte INT_RED_LO    = 0x0A;
+        readonly byte INT_RED_HI    = 0x0B;
+        readonly byte INT_GREEN_LO  = 0x0C;
+        readonly byte INT_GREEN_HI  = 0x0D;
+        readonly byte INT_BLUE_LO   = 0x0E;
+        readonly byte INT_BLUE_HI   = 0x0F;
+        readonly byte INT_CLEAR_LO  = 0x10;
+        readonly byte INT_CLEAR_HI  = 0x11;
 
-        byte DATA_RED_LO   = 0x40;
-        byte DATA_RED_HI   = 0x41;
-        byte DATA_GREEN_LO = 0x42;
-        byte DATA_GREEN_HI = 0x43;
-        byte DATA_BLUE_LO  = 0x44;
-        byte DATA_BLUE_HI  = 0x45;
-        byte DATA_CLEAR_LO = 0x46;
-        byte DATA_CLEAR_HI = 0x47;
+        readonly byte DATA_RED_LO   = 0x40;
+        readonly byte DATA_RED_HI   = 0x41;
+        readonly byte DATA_GREEN_LO = 0x42;
+        readonly byte DATA_GREEN_HI = 0x43;
+        readonly byte DATA_BLUE_LO  = 0x44;
+        readonly byte DATA_BLUE_HI  = 0x45;
+        readonly byte DATA_CLEAR_LO = 0x46;
+        readonly byte DATA_CLEAR_HI = 0x47;
 
-        I2c _I2C;
-        DigitalOut led;
+        readonly I2c _I2C;
+        readonly DigitalOut led;
 
         /// <summary>
         /// Create a ADJDS311 device

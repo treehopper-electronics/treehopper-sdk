@@ -8,7 +8,7 @@ namespace Treehopper.Libraries.Memory
 {
     public class SpiFlash
     {
-        SpiDevice dev;
+        readonly SpiDevice dev;
 
         public enum JedecManufacturer
         {

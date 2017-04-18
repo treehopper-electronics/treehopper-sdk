@@ -75,7 +75,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
         /// </summary>
         public IFlushable Parent { get; protected set; }
 
-        byte[] lastValues;
+        readonly byte[] lastValues;
 
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Treehopper.Libraries.Interface.PortExpander
 
         private static SpiDevice spiDevice;
 
-        private static Collection<ChainableShiftRegisterOutput> shiftRegisters = new Collection<ChainableShiftRegisterOutput>();
+        private static readonly Collection<ChainableShiftRegisterOutput> shiftRegisters = new Collection<ChainableShiftRegisterOutput>();
         private int numBytes;
 
         private static readonly AsyncLock lockObject = new AsyncLock();

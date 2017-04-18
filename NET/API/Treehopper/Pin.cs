@@ -11,7 +11,7 @@
     /// </summary>
     public class Pin : INotifyPropertyChanged, DigitalIn, DigitalOut, AdcPin, SpiChipSelectPin
     {
-        private TreehopperUsb board;
+        private readonly TreehopperUsb board;
         private PinMode mode = PinMode.Unassigned;
         private AdcReferenceLevel referenceLevel;
         private bool digitalValue;

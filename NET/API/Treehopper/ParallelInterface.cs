@@ -10,7 +10,7 @@
     public class ParallelInterface : ReadWriteParallelInterface
     {
         private bool enabled;
-        private TreehopperUsb board;
+        private readonly TreehopperUsb board;
 
         internal ParallelInterface(TreehopperUsb board)
         {

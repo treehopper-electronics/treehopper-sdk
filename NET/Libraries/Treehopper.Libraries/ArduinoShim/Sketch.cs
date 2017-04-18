@@ -19,7 +19,7 @@ namespace Treehopper.Libraries.ArduinoShim
         /// The board to use with this sketch.
         /// </summary>
         public TreehopperUsb Board { get; private set; }
-        private bool throwExceptions;
+        private readonly bool throwExceptions;
         /// <summary>
         /// The Serial port to use with this sketch.
         /// </summary>
@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.ArduinoShim
                 loop();
         }
 
-        Stopwatch sw = new Stopwatch();
+        readonly Stopwatch sw = new Stopwatch();
 
         int pwmResolution = 8;
         int adcResolution = 10;

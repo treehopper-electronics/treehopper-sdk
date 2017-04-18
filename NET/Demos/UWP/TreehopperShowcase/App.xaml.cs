@@ -11,7 +11,7 @@ namespace TreehopperShowcase
 
     sealed partial class App : Template10.Common.BootStrapper
     {
-        ISettingsService _settings;
+        readonly ISettingsService _settings;
 
         public App()
         {

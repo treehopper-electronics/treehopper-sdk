@@ -10,10 +10,10 @@
     /// </summary>
     internal class SoftPwmManager : IDisposable
     {
-        private AsyncLock mutex = new AsyncLock();
-        private Dictionary<int, SoftPwmPinConfig> pins;
-        private double resolution = 0.25; // 0.25 microseconds / tick
-        private TreehopperUsb board;
+        private readonly AsyncLock mutex = new AsyncLock();
+        private readonly Dictionary<int, SoftPwmPinConfig> pins;
+        private readonly double resolution = 0.25; // 0.25 microseconds / tick
+        private readonly TreehopperUsb board;
 
         internal SoftPwmManager(TreehopperUsb board)
         {

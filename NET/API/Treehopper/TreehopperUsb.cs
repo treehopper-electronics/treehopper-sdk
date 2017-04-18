@@ -25,7 +25,7 @@
     {
         internal readonly AsyncLock ComsLock = new AsyncLock();
         private const int MinimumSupportedFirmwareVersion = 110;
-        private IConnection _connection;
+        private readonly IConnection _connection;
         private bool _led = false;
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace TreehopperShowcase.ViewModels
 
     public class SettingsPartViewModel : Mvvm.ViewModelBase
     {
-        Services.SettingsServices.SettingsService _settings;
+        readonly Services.SettingsServices.SettingsService _settings;
 
         public SettingsPartViewModel()
         {

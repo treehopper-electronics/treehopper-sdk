@@ -21,7 +21,7 @@
         public delegate void ButtonPressedEventHandler(object sender, ButtonPressedEventArgs e);
         public delegate void ButtonReleasedEventHandler(object sender, ButtonReleasedEventArgs e);
 
-        private bool activeLow;
+        private readonly bool activeLow;
 
         /// <summary>
         /// Gets the underlying DigitalIn input.

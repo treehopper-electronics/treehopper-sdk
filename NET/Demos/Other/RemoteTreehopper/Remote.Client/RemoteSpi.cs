@@ -10,8 +10,8 @@ namespace Remote.Client
 {
     public class RemoteSpi : Spi
     {
-        private RemoteTreehopper board;
-        TaskCompletionSource<byte[]> dataReceived = new TaskCompletionSource<byte[]>();
+        private readonly RemoteTreehopper board;
+        readonly TaskCompletionSource<byte[]> dataReceived = new TaskCompletionSource<byte[]>();
         public RemoteSpi(RemoteTreehopper board)
         {
             this.board = board;

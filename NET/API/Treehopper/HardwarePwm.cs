@@ -13,11 +13,11 @@
     /// </remarks>
     public class HardwarePwm : Pwm
     {
-        private Pin pin;
+        private readonly Pin pin;
         private double dutyCycle;
         private double pulseWidth;
         private bool isEnabled = false;
-        private TreehopperUsb board;
+        private readonly TreehopperUsb board;
 
         internal HardwarePwm(Pin pin)
         {

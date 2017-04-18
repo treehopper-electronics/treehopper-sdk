@@ -10,14 +10,14 @@
     /// </summary>
     public class Nau7802 : AdcPeripheralPin, IAdcPeripheral
     {
-        SMBusDevice dev;
+        readonly SMBusDevice dev;
         Ctrl1 ctrl1;
         Ctrl2 ctrl2;
         I2cCtrl i2cCtrl = new I2cCtrl();
         PowerUpControl puCtrl;
         Pga pga = new Pga();
         Adc adc = new Adc();
-        private DigitalIn drdy;
+        private readonly DigitalIn drdy;
 
         public enum Channel
         {
@@ -58,10 +58,10 @@
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct CalData
         {
-            UInt24 Ocal1;
-            UInt32 GCal1;
-            UInt24 Ocal2;
-            UInt32 GCal2;
+            readonly UInt24 Ocal1;
+            readonly UInt32 GCal1;
+            readonly UInt24 Ocal2;
+            readonly UInt32 GCal2;
         }
 
         public enum LdoVoltage

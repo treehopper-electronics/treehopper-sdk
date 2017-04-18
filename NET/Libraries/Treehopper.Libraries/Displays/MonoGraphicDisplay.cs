@@ -88,7 +88,7 @@ namespace Treehopper.Libraries.Displays
                 await Flush().ConfigureAwait(false);
         }
 
-        static byte[] Font5x7 = new byte[] {
+        static readonly byte[] Font5x7 = new byte[] {
 	        0x00, 0x00, 0x00, 0x00, 0x00,// (space)
 	        0x00, 0x00, 0x5F, 0x00, 0x00,// !
 	        0x00, 0x07, 0x00, 0x07, 0x00,// "

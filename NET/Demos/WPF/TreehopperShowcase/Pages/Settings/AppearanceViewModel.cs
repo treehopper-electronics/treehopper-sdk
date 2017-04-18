@@ -32,7 +32,7 @@ namespace TreehopperShowcase.Pages.Settings
         };*/
 
         // 20 accent colors from Windows Phone 8
-        private Color[] accentColors = new Color[]{
+        private readonly Color[] accentColors = new Color[]{
             Color.FromRgb(0xa4, 0xc4, 0x00),   // lime
             Color.FromRgb(0x60, 0xa9, 0x17),   // green
             Color.FromRgb(0x00, 0x8a, 0x00),   // emerald
@@ -56,7 +56,7 @@ namespace TreehopperShowcase.Pages.Settings
         };
 
         private Color selectedAccentColor;
-        private LinkCollection themes = new LinkCollection();
+        private readonly LinkCollection themes = new LinkCollection();
         private Link selectedTheme;
         private string selectedFontSize;
 

@@ -154,14 +154,14 @@ namespace Treehopper.Libraries.Displays
             SetDdramAddr = 0x80
         }
 
-        private BitMode bits;
-        private LinesMode lines;
+        private readonly BitMode bits;
+        private readonly LinesMode lines;
         private FontMode font;
-        private WriteOnlyParallelInterface iface;
+        private readonly WriteOnlyParallelInterface iface;
         private bool display;
         private bool cursor;
         private bool blink;
-        private DigitalOut backlight;
+        private readonly DigitalOut backlight;
 
         /// <summary>
         /// Construct a new HD44780-compatible display

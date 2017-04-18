@@ -13,9 +13,9 @@ namespace Treehopper.Desktop.MacUsb
 	{
 		IntPtr gNotifyPort;
 		IntPtr gRunLoop;
-		List<GCHandle> handles = new List<GCHandle>();
+	    readonly List<GCHandle> handles = new List<GCHandle>();
 
-		Thread listener;
+	    readonly Thread listener;
 
 		Dispatcher mainDispatcher;
 

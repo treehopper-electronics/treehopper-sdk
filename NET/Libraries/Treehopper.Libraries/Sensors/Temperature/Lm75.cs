@@ -10,7 +10,7 @@
     /// </remarks>
     public class Lm75 : TemperatureSensor
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// Construct a new LM75 temperature sensor

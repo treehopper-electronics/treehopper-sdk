@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Interface.Adc
     /// </summary>
     public class Ltc2305
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// Construct a new LTC2305

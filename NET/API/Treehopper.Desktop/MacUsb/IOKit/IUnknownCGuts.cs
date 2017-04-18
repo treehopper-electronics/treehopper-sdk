@@ -24,22 +24,22 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct CFUUIDBytes
 	{
-		byte byte0;
-		byte byte1;
-		byte byte2;
-		byte byte3;
-		byte byte4;
-		byte byte5;
-		byte byte6;
-		byte byte7;
-		byte byte8;
-		byte byte9;
-		byte byte10;
-		byte byte11;
-		byte byte12;
-		byte byte13;
-		byte byte14;
-		byte byte15;
+	    readonly byte byte0;
+	    readonly byte byte1;
+	    readonly byte byte2;
+	    readonly byte byte3;
+	    readonly byte byte4;
+	    readonly byte byte5;
+	    readonly byte byte6;
+	    readonly byte byte7;
+	    readonly byte byte8;
+	    readonly byte byte9;
+	    readonly byte byte10;
+	    readonly byte byte11;
+	    readonly byte byte12;
+	    readonly byte byte13;
+	    readonly byte byte14;
+	    readonly byte byte15;
 
 		public CFUUIDBytes(byte byte0,
 							byte byte1,

@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Motors
     /// </summary>
     public class HobbyServo
     {
-        Pwm Pwm;
+        readonly Pwm Pwm;
 
         /// <summary>
         /// Construct a hobby servo motor

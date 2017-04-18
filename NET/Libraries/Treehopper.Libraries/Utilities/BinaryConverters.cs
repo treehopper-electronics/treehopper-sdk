@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Utilities
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class BitfieldAttribute : Attribute
     {
-        uint length;
+        readonly uint length;
 
         public BitfieldAttribute(uint length)
         {

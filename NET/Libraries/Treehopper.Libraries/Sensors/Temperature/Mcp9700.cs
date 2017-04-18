@@ -7,8 +7,8 @@
     /// </summary>
     public class Mcp9700 : TemperatureSensor
     {
-        private Type type;
-        private AdcPin pin;
+        private readonly Type type;
+        private readonly AdcPin pin;
 
         /// <summary>
         /// Construct a new Microchip MCP9700 or MCP9701

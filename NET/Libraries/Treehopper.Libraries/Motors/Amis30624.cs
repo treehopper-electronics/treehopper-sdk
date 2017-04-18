@@ -27,7 +27,7 @@
     /// </summary>
     public class Amis30624
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// Construct a new AMIS30624 stepper motor controller

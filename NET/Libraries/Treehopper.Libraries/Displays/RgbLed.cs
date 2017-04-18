@@ -18,11 +18,11 @@ namespace Treehopper.Libraries.Displays
     /// </remarks>
     public class RgbLed : IFlushable, IRgbLed
     {
-        private Led b;
-        private Led g;
-        private Led r;
+        private readonly Led b;
+        private readonly Led g;
+        private readonly Led r;
 
-        private List<ILedDriver> drivers = new List<ILedDriver>();
+        private readonly List<ILedDriver> drivers = new List<ILedDriver>();
 
         /// <summary>
         /// Construct a new RGB LED from the specified LED driver channels

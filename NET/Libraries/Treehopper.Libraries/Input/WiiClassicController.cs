@@ -12,7 +12,7 @@
     /// </summary>
     public class WiiClassicController : IPollable
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
         private Vector2 rightStick;
         private Vector2 leftStick;
         private DPadState dPad;

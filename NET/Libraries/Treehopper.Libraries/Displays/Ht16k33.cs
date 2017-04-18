@@ -10,9 +10,9 @@
     /// </summary>
     public class Ht16k33 : LedDriver
     {
-        private SMBusDevice dev;
-        private BitArray data = new BitArray(128);
-        private Package package;
+        private readonly SMBusDevice dev;
+        private readonly BitArray data = new BitArray(128);
+        private readonly Package package;
 
         /// <summary>
         /// Construct a new HT16K33 16x8 LED driver

@@ -66,7 +66,7 @@
         private double m1_speed = 0;
         private double m2_speed = 0;
         private PrescalerFrequency frequency;
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// Gets or sets the driver frequency

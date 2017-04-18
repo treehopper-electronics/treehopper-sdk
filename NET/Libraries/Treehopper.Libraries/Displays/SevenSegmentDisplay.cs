@@ -64,7 +64,7 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        Collection<ILedDriver> drivers = new Collection<ILedDriver>();
+        readonly Collection<ILedDriver> drivers = new Collection<ILedDriver>();
 
         private string text;
         /// <summary>
@@ -97,7 +97,7 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        private IList<SevenSegmentDigit> digits;
+        private readonly IList<SevenSegmentDigit> digits;
 
         private async Task printString(string text)
         {

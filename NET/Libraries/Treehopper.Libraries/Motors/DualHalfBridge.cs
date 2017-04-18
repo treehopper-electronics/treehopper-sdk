@@ -11,10 +11,10 @@ namespace Treehopper.Libraries.Motors
     /// </summary>
     public class DualHalfBridge : MotorSpeedController
     {
-        Pwm enablePwm;
-        DigitalOut enable;
-        DigitalOut A;
-        DigitalOut B;
+        readonly Pwm enablePwm;
+        readonly DigitalOut enable;
+        readonly DigitalOut A;
+        readonly DigitalOut B;
         
         /// <summary>
         /// Construct a dual half bridge with PWM speed control

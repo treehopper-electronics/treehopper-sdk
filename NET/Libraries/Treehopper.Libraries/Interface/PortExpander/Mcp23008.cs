@@ -13,11 +13,11 @@
     /// </summary>
     public class Mcp23008 : IPortExpander<Mcp23008.Pin>, IPortExpanderParent
     {
-        private SMBusDevice dev;
-        private BitArray iodir = new BitArray(8);
-        private BitArray gppu = new BitArray(8);
+        private readonly SMBusDevice dev;
+        private readonly BitArray iodir = new BitArray(8);
+        private readonly BitArray gppu = new BitArray(8);
         private BitArray gpio = new BitArray(8);
-        private BitArray olat = new BitArray(8);
+        private readonly BitArray olat = new BitArray(8);
 
         /// <summary>
         /// Construct a new MCP23008

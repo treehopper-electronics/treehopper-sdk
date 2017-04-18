@@ -17,9 +17,9 @@ namespace Treehopper.Desktop
     /// </summary>
 	public abstract class ConnectionService : IConnectionService, IDisposable
     {
-        private static Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
-        private static Lazy<LibUsbConnectionService> libUsbInstance = new Lazy<LibUsbConnectionService>();
-		private static Lazy<MacUsbConnectionService> macUsbInstance = new Lazy<MacUsbConnectionService>();
+        private static readonly Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
+        private static readonly Lazy<LibUsbConnectionService> libUsbInstance = new Lazy<LibUsbConnectionService>();
+		private static readonly Lazy<MacUsbConnectionService> macUsbInstance = new Lazy<MacUsbConnectionService>();
 
         /// <summary>
         /// Retrieve a reference to the static instance of the <see cref="ConnectionService"/> that should be used for discovering boards.

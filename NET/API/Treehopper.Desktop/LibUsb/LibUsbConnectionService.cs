@@ -10,7 +10,7 @@ namespace Treehopper.Desktop.LibUsb
 {
     public class LibUsbConnectionService : ConnectionService
     {
-        private IntPtr context;
+        private readonly IntPtr context;
         private IntPtr callbackHandle;
 		public LibUsbConnectionService()
 		{

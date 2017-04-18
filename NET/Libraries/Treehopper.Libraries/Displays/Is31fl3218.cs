@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Displays
     /// </summary>
     public class Is31fl3218 : LedDriver
     {
-        SMBusDevice dev;
+        readonly SMBusDevice dev;
         /// <summary>
         /// Construct a new IS31FL3218
         /// </summary>
@@ -43,9 +43,9 @@ namespace Treehopper.Libraries.Displays
             }
         }
 
-        private byte[] currentValues = new byte[18];
+        private readonly byte[] currentValues = new byte[18];
 
-        private bool[] currentStates = new bool[18];
+        private readonly bool[] currentStates = new bool[18];
 
         /// <summary>
         /// Flush the data out to the LED driver

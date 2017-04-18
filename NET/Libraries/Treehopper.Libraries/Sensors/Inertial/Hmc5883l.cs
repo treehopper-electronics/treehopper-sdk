@@ -13,7 +13,7 @@
     /// </summary>
     public class Hmc5883l : IMagnetometer
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         private enum Registers
         {

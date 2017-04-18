@@ -18,7 +18,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// </remarks>
     public class Ds18b20 : TemperatureSensor
     {
-        IOneWire oneWire;
+        readonly IOneWire oneWire;
 
         /// <summary>
         /// Construct a DS18B20
@@ -139,7 +139,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </remarks>
         public class Group
         {
-            private IOneWire oneWire;
+            private readonly IOneWire oneWire;
             List<Ds18b20> SensorList = new List<Ds18b20>();
 
             /// <summary>
@@ -203,7 +203,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
             /// </summary>
             public struct ConversionCycle : IDisposable
             {
-                private Group ds18b20Group;
+                private readonly Group ds18b20Group;
 
                 internal ConversionCycle(Group group)
                 {

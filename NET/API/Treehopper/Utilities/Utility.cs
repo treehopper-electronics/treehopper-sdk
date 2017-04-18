@@ -13,7 +13,7 @@
     /// </summary>
     public static class Utility
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         /// <summary>
         /// Do something with each item in a list, collection, or enumerable

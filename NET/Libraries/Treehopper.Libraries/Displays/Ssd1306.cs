@@ -93,7 +93,7 @@ namespace Treehopper.Libraries.Displays
 
         }
 
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// A bool array representing pixel states
@@ -122,7 +122,7 @@ namespace Treehopper.Libraries.Displays
             InitAsync().Wait();
         }
 
-        private VccMode mode;
+        private readonly VccMode mode;
 
         private async Task InitAsync()
         {

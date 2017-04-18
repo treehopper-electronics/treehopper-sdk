@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// </summary>
     public class Mcp9808 : TemperatureSensor
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         /// Construct a new MCP9808 temperature sensor

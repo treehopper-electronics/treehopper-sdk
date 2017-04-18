@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Displays
     public class GpioLedDriver<TDigitalOutPin> : LedDriver where TDigitalOutPin : DigitalOut
     {
         private readonly IFlushable controller;
-        private IList<TDigitalOutPin> Pins;
+        private readonly IList<TDigitalOutPin> Pins;
         private readonly bool useActiveLowOutput;
 
         /// <summary>

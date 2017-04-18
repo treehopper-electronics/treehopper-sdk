@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Motors
     public class AnalogFeedbackServo : IDisposable
     {
         Pin analogIn;
-        MotorSpeedController controller;
+        readonly MotorSpeedController controller;
 
         /// <summary>
         /// Construct a new analog feedback servo from an analog pin and a speed controller
@@ -52,7 +52,7 @@ namespace Treehopper.Libraries.Motors
 
         private bool isRunning = false;
 
-        private Task controlLoopTask;
+        private readonly Task controlLoopTask;
 
         /// <summary>
         /// The K value to use in the proportional control loop

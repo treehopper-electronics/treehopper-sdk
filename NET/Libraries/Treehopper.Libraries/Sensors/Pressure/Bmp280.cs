@@ -16,8 +16,8 @@
     /// </para></remarks>
     public class Bmp280 : PressureSensor, ITemperatureSensor
     {
-        private SMBusDevice i2cDev;
-        private SpiDevice spiDev;
+        private readonly SMBusDevice i2cDev;
+        private readonly SpiDevice spiDev;
         private Trimming trimming;
         internal int tFine;
 

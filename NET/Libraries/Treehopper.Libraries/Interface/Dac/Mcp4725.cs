@@ -12,7 +12,7 @@
     /// </summary>
     public class Mcp4725 : Dac
     {
-        private SMBusDevice dev;
+        private readonly SMBusDevice dev;
         private double voltage;
         private double normalizedValue;
         private int dacValue;

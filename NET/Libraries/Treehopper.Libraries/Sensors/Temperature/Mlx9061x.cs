@@ -46,8 +46,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
         internal class TempRegister : TemperatureSensor
         {
 
-            private SMBusDevice dev;
-            private byte register;
+            private readonly SMBusDevice dev;
+            private readonly byte register;
 
             internal TempRegister(SMBusDevice dev, byte register)
             {

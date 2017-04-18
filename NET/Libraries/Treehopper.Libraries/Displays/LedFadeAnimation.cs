@@ -28,8 +28,9 @@ namespace Treehopper.Libraries.Displays
         {
             this.usePrecisionTimer = usePrecisionTimer;
         }
-        Stopwatch sw = new Stopwatch();
-        private bool usePrecisionTimer;
+
+        readonly Stopwatch sw = new Stopwatch();
+        private readonly bool usePrecisionTimer;
 
         /// <summary>
         /// Gets or sets the LED to fade.
