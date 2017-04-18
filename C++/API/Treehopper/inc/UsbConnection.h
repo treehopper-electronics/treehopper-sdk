@@ -9,10 +9,7 @@ namespace Treehopper
 	class TREEHOPPER_API UsbConnection
 	{
 	public:
-		virtual ~UsbConnection()
-		{
-
-		}
+        virtual ~UsbConnection() { };
 		virtual bool open() = 0;
 		virtual void close() = 0;
 		virtual wstring serialNumber() = 0;
@@ -22,7 +19,6 @@ namespace Treehopper
 		virtual void sendDataPeripheralChannel(uint8_t* data, size_t len) = 0;
 		virtual bool receiveDataPeripheralChannel(uint8_t* data, size_t len) = 0;
 		virtual bool receivePinReportPacket(uint8_t* data) = 0;
-		//virtual unique_ptr<
 
 	protected:
 		wstring _serialNumber;
