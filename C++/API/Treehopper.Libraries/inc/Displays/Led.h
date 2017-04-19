@@ -1,5 +1,5 @@
 #pragma once
-#include "Treehopper.Libraries/inc/Treehopper.Libraries.h"
+#include "Treehopper.Libraries.h"
 #include <ostream>
 namespace Treehopper {
 	namespace Libraries {
@@ -14,7 +14,7 @@ namespace Treehopper {
 			/// </summary>
 			/// <remarks>
 			/// <para>The default <see cref="state"/> of a newly-constructed LED is "false" (off) with a <see cref="brightness"/> of 1.0 (even if this LED does not support _brightness control). This allows LEDs to be used with many non-dimmable display classes (such as <see cref="SevenSegmentDigit"/>, or <see cref="BarGraph"/>) that only control the LED _state. Note that for an LED to be on, its _state must be "true" and its _brightness must be non-zero. </para>
-			/// <para>Do not confuse the <see cref="state"/>'s value with the electrical value on the pin; most LED drivers are open-drain, thus a "true" _state — i.e., when the LED is on — actually corresponds to the pin being driven to 0 (logic false); this is handled by the individual LED drivers to remove ambiguity. If your driver supports driving LEDs in either common-anode (open-drain) or common-cathode configurations, ensure the driver itself is configured to match your circuit.</para>
+			/// <para>Do not confuse the <see cref="state"/>'s value with the electrical value on the pin; most LED drivers are open-drain, thus a "true" _state Â— i.e., when the LED is on Â— actually corresponds to the pin being driven to 0 (logic false); this is handled by the individual LED drivers to remove ambiguity. If your driver supports driving LEDs in either common-anode (open-drain) or common-cathode configurations, ensure the driver itself is configured to match your circuit.</para>
 			/// <para>You can also attach LEDs to pins that don't belong to LED drivers; see <see cref="GpioLedDriver{TDigitalOutPin}"/> and <see cref="PwmLedDriver{TPwm}"/>, which perform the necessary conversions.</para>
 			/// </remarks>
 			class LIBRARIES_API Led

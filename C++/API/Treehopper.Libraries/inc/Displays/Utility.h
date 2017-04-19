@@ -1,5 +1,5 @@
 #pragma once
-#include "Treehopper.Libraries/inc/Treehopper.Libraries.h"
+#include "Treehopper.Libraries.h"
 #include <math.h>
 namespace Treehopper {
 	namespace Libraries {

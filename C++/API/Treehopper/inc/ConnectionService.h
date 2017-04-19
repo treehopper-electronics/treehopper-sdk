@@ -7,6 +7,9 @@
 #include <IOKit/IOTypes.h>
 #include <CoreFoundation/CFRunLoop.h>
 #endif
+#ifdef __linux__
+#include "libusb-1.0/libusb.h"
+#endif
 #include <vector>
 
 namespace Treehopper 
@@ -30,6 +33,11 @@ namespace Treehopper
 		vector<TreehopperUsb> boards;
 	private:
 		void scan();
+
+#ifdef __linux__
+        libusb_context *context;
+#endif
+
 #ifdef __APPLE__
         CFRunLoopRef gRunLoop;
         static void DeviceAdded(void *refCon, io_iterator_t iterator);

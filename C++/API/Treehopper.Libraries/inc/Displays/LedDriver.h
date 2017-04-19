@@ -1,7 +1,7 @@
 #pragma once
-#include "Treehopper.Libraries/inc/Treehopper.Libraries.h"
-#include "Treehopper.Libraries/inc/Displays/Led.h"
-#include "Treehopper.Libraries/inc/Interface/Flushable.h"
+#include "Treehopper.Libraries.h"
+#include "Displays/Led.h"
+#include "Interface/Flushable.h"
 #include <vector>
 namespace Treehopper {
 	namespace Libraries {
