@@ -244,3 +244,6 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+.idea/
+
+cmake-build-debug/
