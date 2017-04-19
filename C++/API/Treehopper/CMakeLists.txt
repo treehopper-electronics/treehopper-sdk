@@ -26,10 +26,10 @@ set(SOURCE_FILES ${COMMON_SRC} ${PLATFORM_SRC})
 
 include_directories(inc)
 
-add_library(Treehopper ${SOURCE_FILES})
+add_library(Treehopper SHARED ${SOURCE_FILES})
 
 if(WIN32)
-
+    target_link_libraries(Treehopper winusb setupapi)
 endif(WIN32)
 
 if(UNIX)

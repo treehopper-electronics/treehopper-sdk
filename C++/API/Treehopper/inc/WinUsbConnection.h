@@ -2,6 +2,9 @@
 #include "Treehopper.h"
 #include "UsbConnection.h"
 #include <string>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <SDKDDKVer.h>
 #include <winusb.h>
 
 using namespace std;

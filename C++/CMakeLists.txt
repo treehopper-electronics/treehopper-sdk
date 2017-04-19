@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
+
+add_definitions(-D_UNICODE)
+add_definitions(-DUNICODE)
+
 project(treehopper VERSION 0.1 LANGUAGES CXX)
 
 include(GNUInstallDirs)
