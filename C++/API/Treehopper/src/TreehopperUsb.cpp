@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TreehopperUsb.h"
 #include "HardwarePwm.h"
-#include "hardwareI2c.h"
+#include "HardwareI2c.h"
 
 namespace Treehopper 
 {
