@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "TreehopperUsb.h"
 #include "HardwareI2c.h"
 #include "Utility.h"

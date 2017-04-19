@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <stdint.h>
 #include <functional>
 #include "Pin.h"

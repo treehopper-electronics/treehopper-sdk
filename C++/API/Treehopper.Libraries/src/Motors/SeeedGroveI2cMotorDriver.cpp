@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "Treehopper.Libraries/inc/Motors/SeeedGroveI2cMotorDriver.h"
+#include "Motors/SeeedGroveI2cMotorDriver.h"
+#include <cstdlib>
 #include <cmath>
 
 namespace Treehopper {

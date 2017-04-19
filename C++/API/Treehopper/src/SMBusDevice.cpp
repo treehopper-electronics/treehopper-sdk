@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "SMBusDevice.h"
 #include <algorithm>
 using namespace std;

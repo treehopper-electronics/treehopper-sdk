@@ -3,6 +3,7 @@
 #include <functional>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 namespace Treehopper
 {
@@ -13,14 +14,14 @@ namespace Treehopper
 
 	For example, to subscribe to the Pin::pinChanged event using a lambda expression,
 	\code{.cpp}
-	board.pins[4].pinChanged += [](DigitalIn* sender, PinChangedEventArgs e) {
+	board.pins[4].pinChanged += [](DigitalIn& sender, PinChangedEventArgs& e) {
 		cout << "Pin 4 event: " << e.newValue << endl;
 	};
 	\endcode
 
 	You may also subscribe to events by passing regular named functions, i.e.:
 	\code{.cpp}
-	void pinHandler(DigitalIn* sender, PinChangedEventArgs e) {
+	void pinHandler(DigitalIn& sender, PinChangedEventArgs& e) {
 	cout << "Pin 4 event: " << e.newValue << endl;
 	}
 
@@ -39,6 +40,8 @@ namespace Treehopper
 	}
 	\endcode
 
+	 <b>Note that for proper binding (and unbinding), the method signature must match precisely</b> (i.e., both parameters must be passed by reference).
+
 	This is all that is needed to consume events; if you wish to use this class in your own code to publish events, start by creating an EventArgs struct with all the parameters you wish to pass to subscribers. By convention, we use the suffix "EventArgs" in the name of the struct, however this is not required:
 	\code{.cpp}
 	struct ReadingReceivedEventArgs
@@ -51,7 +54,7 @@ namespace Treehopper
 	\code{.cpp}
 	class MyClass
 	{
-		Event<MyClass, ReadingReceivedEventArgs> readingReceived;
+		Event<MyClass&, ReadingReceivedEventArgs&> readingReceived;
 	}
 	\endcode
 
@@ -73,6 +76,13 @@ namespace Treehopper
 		{
 		}
 
+        size_t getAddress(std::function<void (Sender&, EventArgs&)> f) {
+            typedef void (fnType)(Sender&, EventArgs&);
+            fnType **fnPointer = f.template target<fnType*>();
+			if(fnPointer == NULL) return 0;
+            return (size_t) *fnPointer;
+        }
+
 		/** Subscribe to an event */
 		void operator+=(function<void(Sender& sender, EventArgs& e)> handler)
 		{
@@ -81,14 +91,22 @@ namespace Treehopper
 
 		void operator-=(function<void(Sender& sender, EventArgs& e)> handler)
 		{
+			std::cout << typeid(handler).name() << std::endl;
+			std::cout << typeid(handlers[0]).name() << std::endl;
+
+			std::cout << addressof(handler) << std::endl;
+			std::cout << addressof(handlers[0]) << std::endl;
+
+			int handlerAddress = getAddress(handler);
+			if(handlerAddress == 0) // we can't get the function's address
+			{
+				return;
+			}
+
 			int idx = -1;
 			for (int i = 0; i < handlers.size(); i++ )
 			{
-//				void* testHandlerAddress = *(handlers[i]).target<void(*)(Sender& sender, EventArgs& e)>();
-//				void* handlerAddress = *(handler).target<void(*)(Sender& sender, EventArgs& e)>();
-                void* testHandlerAddress = *(handlers[i]).target();
-                void* handlerAddress = *(handler).target();
-				if (testHandlerAddress == handlerAddress)
+				if (handlerAddress == getAddress(handlers[i]))
 					idx = i;
 			}
 			if (idx >= 0)
