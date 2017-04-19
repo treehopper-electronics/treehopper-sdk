@@ -8,7 +8,6 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
 using namespace Treehopper;
 
 int main()
