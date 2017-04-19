@@ -8,5 +8,5 @@ include_directories(../Treehopper/inc)
 
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
-add_library(TreehopperLibraries ${SOURCE_FILES})
+add_library(TreehopperLibraries SHARED ${SOURCE_FILES})
 target_link_libraries(TreehopperLibraries Treehopper)
