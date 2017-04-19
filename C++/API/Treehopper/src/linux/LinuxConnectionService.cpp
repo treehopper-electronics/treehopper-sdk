@@ -7,7 +7,7 @@
 
 namespace Treehopper {
     ConnectionService::ConnectionService() {
-
+        libusb_init(NULL);
     }
 
     ConnectionService::~ConnectionService() {

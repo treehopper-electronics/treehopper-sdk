@@ -25,3 +25,16 @@ set(SOURCE_FILES ${COMMON_SRC} ${PLATFORM_SRC})
 include_directories(inc)
 
 add_library(Treehopper ${SOURCE_FILES})
+
+if(WIN32)
+
+endif(WIN32)
+
+if(UNIX)
+
+    target_link_libraries(Treehopper usb-1.0 pthread)
+endif(UNIX)
+
+if(APPLE)
+
+endif(APPLE)
