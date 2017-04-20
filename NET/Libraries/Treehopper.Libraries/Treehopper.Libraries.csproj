@@ -138,8 +138,12 @@
     <Compile Include="Motors\SeeedGroveI2cMotorDriver.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Register.cs" />
+    <Compile Include="RegisterAccess.cs" />
+    <Compile Include="RegisterDepth.cs" />
     <Compile Include="Sensors\Humidity\IHumiditySensor.cs" />
     <Compile Include="Sensors\Humidity\NamespaceDoc.cs" />
+    <Compile Include="Sensors\Inertial\Adxl345.cs" />
     <Compile Include="Sensors\Inertial\ComplementaryFilter.cs" />
     <Compile Include="Sensors\Inertial\Hmc5883l.cs" />
     <Compile Include="Sensors\Inertial\IAccelerometer.cs" />
@@ -148,6 +152,7 @@
     <Compile Include="Sensors\Inertial\Mpu6050.cs" />
     <Compile Include="Sensors\Inertial\Mpu9250.cs" />
     <Compile Include="Sensors\Inertial\NamespaceDoc.cs" />
+    <Compile Include="RegisterValue.cs" />
     <Compile Include="Sensors\IPollable.cs" />
     <Compile Include="Sensors\NamespaceDoc.cs" />
     <Compile Include="Sensors\Optical\Adjds311.cs" />
@@ -170,6 +175,7 @@
     <Compile Include="Sensors\Temperature\NamespaceDoc.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
     <Compile Include="SMBusDevice.cs" />
+    <Compile Include="RegisterManager.cs" />
     <Compile Include="SpiDevice.cs" />
     <Compile Include="Utilities\BinaryConverters.cs" />
     <Compile Include="Utilities\Int24.cs" />
