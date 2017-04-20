@@ -65,6 +65,11 @@
     <Compile Include="Input\NesController.cs" />
     <Compile Include="Input\SuperNesController.cs" />
     <Compile Include="Input\WiiClassicController.cs" />
+    <Compile Include="Interface\DigitalPot\Mcp413x.cs" />
+    <Compile Include="Interface\DigitalPot\Mcp415x.cs" />
+    <Compile Include="Interface\DigitalPot\Mcp423x.cs" />
+    <Compile Include="Interface\DigitalPot\Mcp425x.cs" />
+    <Compile Include="Interface\DigitalPot\NamespaceDoc.cs" />
     <Compile Include="Interface\PortExpander\DigitalInPin.cs" />
     <Compile Include="Interface\PortExpander\Pca9632.cs" />
     <Compile Include="Displays\PwmLedDriver.cs" />
