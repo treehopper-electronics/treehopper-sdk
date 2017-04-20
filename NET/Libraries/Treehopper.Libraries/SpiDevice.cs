@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Treehopper
+namespace Treehopper.Libraries
 {
     /// <summary>
     ///     Represents a peripheral attached to the SPI bus

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Treehopper
+namespace Treehopper.Libraries
 {
     /// <summary>
     ///     Device class used to abstract i2C interfacing
