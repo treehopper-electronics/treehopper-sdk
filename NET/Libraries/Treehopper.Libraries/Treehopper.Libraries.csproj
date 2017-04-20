@@ -163,6 +163,8 @@
     <Compile Include="Sensors\Temperature\Mlx9061x.cs" />
     <Compile Include="Sensors\Temperature\NamespaceDoc.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
+    <Compile Include="SMBusDevice.cs" />
+    <Compile Include="SpiDevice.cs" />
     <Compile Include="Utilities\BinaryConverters.cs" />
     <Compile Include="Utilities\Int24.cs" />
     <Compile Include="Utilities\StructConverter.cs" />

@@ -63,14 +63,12 @@
     <Compile Include="HardwarePwm.cs" />
     <Compile Include="HardwarePwmManager.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SMBusDevice.cs" />
     <Compile Include="SoftPwm.cs" />
     <Compile Include="SoftPwmConfig.cs" />
     <Compile Include="SoftPwmManager.cs" />
     <Compile Include="HardwareSpi.cs" />
     <Compile Include="Spi.cs" />
     <Compile Include="SpiBurstMode.cs" />
-    <Compile Include="SpiDevice.cs" />
     <Compile Include="SpiChipSelectPin.cs" />
     <Compile Include="SpiMode.cs" />
     <Compile Include="TreehopperBoardEqualityComparer.cs" />
