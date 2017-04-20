@@ -95,7 +95,7 @@ namespace Treehopper
                 {
                     var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                     var tmp = dataToSend.Skip(offset).Take(transferLength);
-                    await _device.SendPeripheralConfigPacket(tmp.ToArray());
+                    await _device.SendPeripheralConfigPacket(tmp.ToArray()).ConfigureAwait(false);
                     offset += transferLength;
                     bytesRemaining -= transferLength;
                 }
@@ -119,8 +119,7 @@ namespace Treehopper
                     while (bytesRemaining > 0)
                     {
                         var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        var chunk = await _device.ReceiveCommsResponsePacket((uint) numBytesToTransfer)
-                            .ConfigureAwait(false);
+                        var chunk = await _device.ReceiveCommsResponsePacket((uint) numBytesToTransfer).ConfigureAwait(false);
                         Array.Copy(chunk, 0, result, srcIndex,
                             chunk.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;

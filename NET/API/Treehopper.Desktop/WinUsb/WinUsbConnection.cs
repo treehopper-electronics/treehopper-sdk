@@ -97,6 +97,29 @@ namespace Treehopper.Desktop.WinUsb
             if (WinUsb.NativeMethods.WinUsb_Initialize(deviceHandle, ref winUsbHandle) == false)
                 return false;
 
+            int trueVal = 1;
+            int timeout = 500;
+
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, peripheralResponseEndpoint,
+                PipePolicy.AutoClearStall, 4, ref trueVal);
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, peripheralResponseEndpoint,
+                PipePolicy.PipeTransferTimeout, 4, ref timeout);
+
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, pinReportEndpoint,
+                PipePolicy.AutoClearStall, 4, ref trueVal);
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, pinReportEndpoint,
+                PipePolicy.PipeTransferTimeout, 4, ref timeout);
+
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, peripheralConfigEndpoint,
+                PipePolicy.AutoClearStall, 4, ref trueVal);
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, peripheralConfigEndpoint,
+                PipePolicy.PipeTransferTimeout, 4, ref timeout);
+
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, pinConfigEndpoint,
+                PipePolicy.AutoClearStall, 4, ref trueVal);
+            WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, pinConfigEndpoint,
+                PipePolicy.PipeTransferTimeout, 4, ref timeout);
+
             IsOpen = true;
             BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback,
                 null); // kick off our first pin read
@@ -124,34 +147,41 @@ namespace Treehopper.Desktop.WinUsb
             return array;
         }
 
-        public Task SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannel(byte[] data)
         {
-            if (!IsOpen) return Task.FromResult(new object());
+            if (!IsOpen) return;
             if (UseOverlappedTransfers)
-                return Task.Factory.FromAsync(
-                    (callback, stateObject) => BeginWrite(peripheralConfigEndpoint, data, data.Length, callback,
-                        stateObject), EndWrite, null);
-            return Task.Run(() =>
+            {
+                await Task.Factory.FromAsync(
+                        (callback, stateObject) => BeginWrite(peripheralConfigEndpoint, data, data.Length, callback,
+                            stateObject), EndWrite, null)
+                    .ConfigureAwait(false);
+            }
+            else
             {
                 var bytesWritten = 0;
                 WinUsb.NativeMethods.WinUsb_WritePipe(winUsbHandle, peripheralResponseEndpoint, data, data.Length,
                     out bytesWritten, IntPtr.Zero);
-            });
+            }
         }
 
-        public Task SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannel(byte[] data)
         {
-            if (!IsOpen) return Task.FromResult(new object());
+            if (!IsOpen) return;
             if (UseOverlappedTransfers)
-                return Task.Factory.FromAsync(
-                    (callback, stateObject) => BeginWrite(pinConfigEndpoint, data, data.Length, callback, stateObject),
-                    EndWrite, null);
-            return Task.Run(() =>
+            {
+                await Task.Factory.FromAsync(
+                        (callback, stateObject) => BeginWrite(pinConfigEndpoint, data, data.Length, callback,
+                            stateObject),
+                        EndWrite, null)
+                    .ConfigureAwait(false);
+            }
+            else
             {
                 var bytesWritten = 0;
                 WinUsb.NativeMethods.WinUsb_WritePipe(winUsbHandle, pinConfigEndpoint, data, data.Length,
                     out bytesWritten, IntPtr.Zero);
-            });
+            }
         }
 
         ~WinUsbConnection()
