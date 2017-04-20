@@ -106,12 +106,12 @@ namespace Treehopper.Desktop.WinUsb
             [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_ResetPipe", SetLastError = true)]
             internal static extern bool WinUsb_ResetPipe([In] SafeHandle InterfaceHandle, byte PipeID);
 
-            //[DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_SetPipePolicy", SetLastError = true)]
-            //internal static extern bool WinUsb_SetPipePolicy([In] SafeHandle InterfaceHandle,
-            //                                                 byte PipeID,
-            //                                                 PipePolicyType policyType,
-            //                                                 int ValueLength,
-            //                                                 IntPtr Value);
+            [DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_SetPipePolicy", SetLastError = true)]
+            internal static extern bool WinUsb_SetPipePolicy([In] SafeHandle InterfaceHandle,
+                                                             byte PipeID,
+                                                             PipePolicy policyType,
+                                                             int ValueLength,
+                                                             ref int Value);
 
             //[DllImport(WIN_USB_DLL, EntryPoint = "WinUsb_SetPowerPolicy", SetLastError = true)]
             //internal static extern bool WinUsb_SetPowerPolicy([In] SafeHandle InterfaceHandle, PowerPolicyType policyType, int ValueLength, IntPtr Value);

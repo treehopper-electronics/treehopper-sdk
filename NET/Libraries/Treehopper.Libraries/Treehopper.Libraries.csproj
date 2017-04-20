@@ -154,6 +154,7 @@
     <Compile Include="Sensors\Optical\FlirLepton.cs" />
     <Compile Include="Sensors\Optical\NamespaceDoc.cs" />
     <Compile Include="Sensors\Optical\Tsl2591.cs" />
+    <Compile Include="Sensors\Optical\Veml6070.cs" />
     <Compile Include="Sensors\Poller.cs" />
     <Compile Include="Sensors\Pressure\Bme280.cs" />
     <Compile Include="Sensors\Pressure\Bmp280.cs" />
