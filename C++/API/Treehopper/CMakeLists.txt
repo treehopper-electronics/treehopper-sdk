@@ -28,15 +28,12 @@ include_directories(inc)
 
 add_library(Treehopper SHARED ${SOURCE_FILES})
 
-if(WIN32)
-    target_link_libraries(Treehopper winusb setupapi)
-endif(WIN32)
-
-if(UNIX)
-
-    target_link_libraries(Treehopper usb-1.0 pthread)
-endif(UNIX)
-
 if(APPLE)
-
+    find_library(CORE_FOUNDATION CoreFoundation)
+    find_library(IOKIT IOKit)
+    target_link_libraries(Treehopper pthread ${CORE_FOUNDATION} ${IOKIT})
+elseif(UNIX)
+    target_link_libraries(Treehopper usb-1.0 pthread)
+elseif(WIN32)
+    target_link_libraries(Treehopper winusb setupapi)
 endif(APPLE)
