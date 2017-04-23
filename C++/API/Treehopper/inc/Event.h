@@ -91,12 +91,6 @@ namespace Treehopper
 
 		void operator-=(function<void(Sender& sender, EventArgs& e)> handler)
 		{
-			std::cout << typeid(handler).name() << std::endl;
-			std::cout << typeid(handlers[0]).name() << std::endl;
-
-			std::cout << addressof(handler) << std::endl;
-			std::cout << addressof(handlers[0]) << std::endl;
-
 			int handlerAddress = getAddress(handler);
 			if(handlerAddress == 0) // we can't get the function's address
 			{
@@ -107,10 +101,15 @@ namespace Treehopper
 			for (int i = 0; i < handlers.size(); i++ )
 			{
 				if (handlerAddress == getAddress(handlers[i]))
+				{
 					idx = i;
+				}
 			}
+
 			if (idx >= 0)
 				handlers.erase(handlers.begin() + idx);
+			else
+				cerr << "Couldn't find an event handler to remove. Check your method's signature.";
 		}
 
 	protected:
