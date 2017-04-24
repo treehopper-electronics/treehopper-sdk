@@ -26,12 +26,7 @@ int main()
         this_thread::sleep_for(chrono::milliseconds(100));
 	}
 	board.disconnect();
-    
-    while(true)
-    {
-        std:this_thread::sleep_for(chrono::seconds(5));
-    }
-    
+
     return 0;
 }
 
