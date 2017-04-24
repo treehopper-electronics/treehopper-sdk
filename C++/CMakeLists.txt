@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.6)
 
 add_definitions(-D_UNICODE)
 add_definitions(-DUNICODE)
