@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Sensors/Temperature/Lm75.h"
 
 namespace Treehopper

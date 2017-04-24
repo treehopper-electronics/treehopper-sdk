@@ -1,7 +1,7 @@
 #pragma once
-#include "Treehopper.Libraries/inc/Treehopper.Libraries.h"
-#include "Treehopper.Libraries/inc/Displays/LedDriver.h"
-#include "Treehopper.Libraries/inc/Interface/PortExpander/ChainableShiftRegisterOutput.h"
+#include "Treehopper.Libraries.h"
+#include "Displays/LedDriver.h"
+#include "Interface/PortExpander/ChainableShiftRegisterOutput.h"
 #include <bitset>
 namespace Treehopper {
 	namespace Libraries {

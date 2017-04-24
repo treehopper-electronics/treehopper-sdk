@@ -1,6 +1,5 @@
-#include "stdafx.h"
-#include "Treehopper.Libraries/inc/Displays/LedDriver.h"
-#include "Treehopper/inc/Utility.h"
+#include "Displays/LedDriver.h"
+#include "Utility.h"
 namespace Treehopper {
 	namespace Libraries {
 		namespace Displays {

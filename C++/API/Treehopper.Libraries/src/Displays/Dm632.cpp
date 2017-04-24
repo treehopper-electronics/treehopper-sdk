@@ -1,6 +1,5 @@
-#include "stdafx.h"
-#include "Treehopper.Libraries/inc/Displays/Dm632.h"
-#include "Treehopper.Libraries/inc/Displays/Utility.h"
+#include "Displays/Dm632.h"
+#include "Displays/Utility.h"
 #include <math.h>
 namespace Treehopper {
 	namespace Libraries {
@@ -48,8 +47,8 @@ namespace Treehopper {
 				if (led.state())
 				{
 					uint16_t brightness = (uint16_t)round(Utility::brightnessToCieLuminance(led.brightness() * _brightness) * 65535);
-					currentValue[led.channel * 2 + 1] = (byte_t)(brightness >> 8);
-					currentValue[led.channel * 2] = (byte_t)(brightness & 0xFF);
+					currentValue[led.channel * 2 + 1] = (uint8_t)(brightness >> 8);
+					currentValue[led.channel * 2] = (uint8_t)(brightness & 0xFF);
 				}
 				else
 				{

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "HardwareSpi.h"
 #include "TreehopperUsb.h"
 #include "SpiChipSelectPin.h"

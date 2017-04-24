@@ -5,7 +5,15 @@
 // TREEHOPPERLIBRARIES_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 #ifdef TREEHOPPERLIBRARIES_EXPORTS
-#define LIBRARIES_API __declspec(dllexport)
+    #ifdef _WIN32
+        #define LIBRARIES_API __declspec(dllexport)
+    #else
+        #define LIBRARIES_API __attribute__ ((visibility ("default")))
+    #endif
 #else
-#define LIBRARIES_API __declspec(dllimport)
+    #ifdef _WIN32
+        #define LIBRARIES_API __declspec(dllimport)
+    #else
+        #define LIBRARIES_API __attribute__ ((visibility ("hidden")))
+    #endif
 #endif

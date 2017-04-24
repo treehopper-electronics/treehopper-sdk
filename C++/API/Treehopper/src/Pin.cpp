@@ -1,8 +1,8 @@
-#include "stdafx.h"
 #include <stdint.h>
 #include <functional>
 #include "Pin.h"
 #include "TreehopperUsb.h"
+#include <cstring>
 namespace Treehopper
 {
     enum class PinConfigCommands
@@ -201,7 +201,7 @@ namespace Treehopper
     {
         uint8_t data[6];
         data[0] = pinNumber;
-        memcpy(&data[1], cmd, len);
+        std::memcpy(&data[1], cmd, len);
         board->sendPinConfigPacket(data, 6);
     }
 }

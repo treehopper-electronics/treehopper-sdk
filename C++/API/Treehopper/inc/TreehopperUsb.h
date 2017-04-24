@@ -1,4 +1,5 @@
 #pragma once
+#include "Treehopper.h"
 #include "UsbConnection.h"
 #include <memory>
 #include <vector>
