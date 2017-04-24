@@ -1,7 +1,7 @@
-#include "stdafx.h"
 #include "WinUsbConnection.h"
 #include "Utility.h"
 #include <iostream>
+
 using namespace std;
 
 namespace Treehopper 

@@ -1,19 +1,17 @@
 // Blink.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-#include "Treehopper/inc/ConnectionService.h"
-#include "Treehopper/inc/TreehopperUsb.h"
+#include "ConnectionService.h"
+#include "TreehopperUsb.h"
 #include <string>
 #include <vector>
 #include <iostream>
 
-using namespace std;
 using namespace Treehopper;
 
 int main()
 {
-	ConnectionService service;
+	auto service = ConnectionService::instance();
     TreehopperUsb& board = service.getFirstDevice();
     
 	board.connect();
@@ -28,12 +26,7 @@ int main()
         this_thread::sleep_for(chrono::milliseconds(100));
 	}
 	board.disconnect();
-    
-    while(true)
-    {
-        std:this_thread::sleep_for(chrono::seconds(5));
-    }
-    
+
     return 0;
 }
 

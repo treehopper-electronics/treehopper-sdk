@@ -1,10 +1,9 @@
 // Blink.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-#include "Treehopper/inc/ConnectionService.h"
-#include "Treehopper/inc/TreehopperUsb.h"
-#include "Treehopper/inc/Pwm.h"
+#include "ConnectionService.h"
+#include "TreehopperUsb.h"
+#include "Pwm.h"
 #include <string>
 #include <vector>
 
@@ -19,12 +18,12 @@ int main()
 		for (int i = 0; i <= 20; i++)
 		{
 			board.pwm1.dutyCycle(0.05 * i);
-			Sleep(10);
+			this_thread::sleep_for(chrono::milliseconds(10));
 		}
 		for (int i = 0; i <= 20; i++)
 		{
 			board.pwm1.dutyCycle(1 - 0.05 * i);
-			Sleep(10);
+			this_thread::sleep_for(chrono::milliseconds(10));
 		}
 	
 	

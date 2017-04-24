@@ -1,7 +1,6 @@
-#include "stdafx.h"
 #include "TreehopperUsb.h"
 #include "HardwarePwm.h"
-#include "hardwareI2c.h"
+#include "HardwareI2c.h"
 
 namespace Treehopper 
 {
@@ -105,7 +104,7 @@ namespace Treehopper
 	{
 		while (isConnected)
 		{
-                connection.receivePinReportPacket(buffer);
+                if(!connection.receivePinReportPacket(buffer)) continue;
                 
                 for (int i = 0; i < numberOfPins; i++)
                     pins[i].updateValue(buffer[i * 2 + 1], buffer[i * 2 + 2]);

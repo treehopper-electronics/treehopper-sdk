@@ -1,8 +1,8 @@
 #pragma once
-#include "Treehopper.Libraries/inc/Treehopper.Libraries.h"
+#include "Treehopper.Libraries.h"
 #include "TemperatureSensor.h"
-#include "Treehopper/inc/I2c.h"
-#include "Treehopper/inc/SMBusDevice.h"
+#include "I2c.h"
+#include "SMBusDevice.h"
 #include <memory>
 namespace Treehopper
 {

@@ -1,5 +1,4 @@
-#include "stdafx.h"
-#include "Treehopper.Libraries/inc/Input/RotaryEncoder.h"
+#include "Input/RotaryEncoder.h"
 
 namespace Treehopper { namespace Libraries { namespace Input {
 

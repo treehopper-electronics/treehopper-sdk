@@ -1,5 +1,9 @@
-#include "stdafx.h"
 #include "ConnectionService.h"
+
+#define WIN32_LEAN_AND_MEAN  
+#include <windows.h>
+#include <SDKDDKVer.h>
+
 #include <SetupAPI.h>
 #include <string>
 #include "WinUsbConnection.h"
@@ -22,6 +26,16 @@ namespace Treehopper
 	ConnectionService::~ConnectionService()
 	{
 	}
+
+	TreehopperUsb& ConnectionService::getFirstDevice()
+	{
+		while(boards.size() == 0)
+		{
+			this_thread::sleep_for(chrono::milliseconds(100));
+		}
+		return boards[0];
+	}
+
 
 	void ConnectionService::scan()
 	{

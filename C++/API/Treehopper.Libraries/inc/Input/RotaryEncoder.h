@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Treehopper.Libraries/inc/Treehopper.Libraries.h"
-#include "Treehopper/inc/Event.h"
-#include "Treehopper/inc/DigitalIn.h"
+#include "Treehopper.Libraries.h"
+#include "Event.h"
+#include "DigitalIn.h"
 
 namespace Treehopper { namespace Libraries { namespace Input {
 

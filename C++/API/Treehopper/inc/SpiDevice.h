@@ -32,7 +32,7 @@ This class is essentially used to "save your settings" (chip select, clock rate,
 		\param[out] receiveBuffer	The receive buffer (or NULL) to use when reading data back. Note that numBytesToSend number of bytes must be allocated to this buffer.
 		\param[in] burst	The SPI burst mode to use when performing this transaction
 		*/
-		void sendReceive(byte_t* dataToSend, int numBytesToSend, byte_t* receiveBuffer, SpiBurstMode burst = SpiBurstMode::NoBurst)
+		void sendReceive(uint8_t* dataToSend, int numBytesToSend, uint8_t* receiveBuffer, SpiBurstMode burst = SpiBurstMode::NoBurst)
 		{
 			return spi.sendReceive(dataToSend, numBytesToSend, receiveBuffer, chipSelect, chipSelectMode, frequency, burst, mode);
 		}

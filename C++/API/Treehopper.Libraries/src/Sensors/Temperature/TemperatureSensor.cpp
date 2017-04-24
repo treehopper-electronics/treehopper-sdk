@@ -1,6 +1,5 @@
-#include "stdafx.h"
 #include "Sensors/Temperature/TemperatureSensor.h"
-#include "stdafx.h"
+
 namespace Treehopper
 {
 	namespace Libraries

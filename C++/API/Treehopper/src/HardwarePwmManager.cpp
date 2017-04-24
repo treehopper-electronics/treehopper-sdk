@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "TreehopperUsb.h"
 #include "HardwarePwmManager.h"
 #include "HardwarePwm.h"

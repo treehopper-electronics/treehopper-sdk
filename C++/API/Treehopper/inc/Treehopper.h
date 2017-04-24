@@ -8,12 +8,12 @@
     #ifdef _WIN32
         #define TREEHOPPER_API __declspec(dllexport)
     #else
-        #define TREEHOPPER_API __attribute__ ((visibility ("default")))
+        #define TREEHOPPER_API __attribute__ ((dllexport))
     #endif
 #else
     #ifdef _WIN32
         #define TREEHOPPER_API __declspec(dllimport)
     #else
-        #define TREEHOPPER_API __attribute__ ((visibility ("hidden")))
+        #define TREEHOPPER_API __attribute__ ((dllimport))
     #endif
 #endif
