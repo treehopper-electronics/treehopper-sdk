@@ -18,12 +18,12 @@ public class Adxl345 implements IAccelerometer {
         registers.PowerCtl.Sleep = 0;
         registers.PowerCtl.Measure = 1;
         registers.DataFormat.Range = 0x03;
-        registers.Flush();
+        registers.flush();
     }
 
     @Override
     public Vector3 getAccelerometer() {
-        registers.Update();
+        registers.update();
 
         Vector3 _accelerometer = new Vector3();
         _accelerometer.x = registers.DataX.Value * 0.04f;

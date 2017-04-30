@@ -12,21 +12,21 @@ class Adxl345Registers
         _dev = dev;
     }
 
-    void Flush()
+    void flush()
     {
         _dev.writeBufferData((byte)0x2D, getBytes(PowerCtl.getValue(), 1, true));
         _dev.writeBufferData((byte)0x31, getBytes(DataFormat.getValue(), 1, true));
     }
 
-    void Update()
+    void update()
     {
         int i = 0;
         byte[] bytes = _dev.readBufferData((byte)50, 6);
-        DataX.setValue(getValue(Arrays.copyOfRange(bytes, i, 2), true));
+        DataX.setValue(getValue(Arrays.copyOfRange(bytes, i, i + 2), true));
         i += 2;
-        DataY.setValue(getValue(Arrays.copyOfRange(bytes, i, 2), true));
+        DataY.setValue(getValue(Arrays.copyOfRange(bytes, i, i + 2), true));
         i += 2;
-        DataZ.setValue(getValue(Arrays.copyOfRange(bytes, i, 2), true));
+        DataZ.setValue(getValue(Arrays.copyOfRange(bytes, i, i + 2), true));
         i += 2;
     }
 

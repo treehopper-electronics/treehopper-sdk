@@ -16,7 +16,7 @@ namespace Treehopper {
 						registers.PowerCtl.Sleep = 0;
 						registers.PowerCtl.Measure = 1;
 						registers.DataFormat.Range = 0x03;
-						registers.Flush();
+						registers.flush();
 					}
 				private:
 					Adxl345Registers registers;
