@@ -17,7 +17,7 @@
         }
       ]
     },
-     {
+    {
       "name": "dataFormat",
       "address": "0x31",
       "access": "write",
@@ -34,21 +34,21 @@
       "address": "0x32",
       "access": "read",
       "width": "16",
-      "isSigned" : "true"
+      "isSigned": "true"
     },
     {
       "name": "dataY",
       "address": "0x34",
       "access": "read",
       "width": "16",
-      "isSigned" : "true"
+      "isSigned": "true"
     },
     {
       "name": "dataZ",
       "address": "0x36",
       "access": "read",
       "width": "16",
-      "isSigned" : "true"
+      "isSigned": "true"
     }
   ]
 }
