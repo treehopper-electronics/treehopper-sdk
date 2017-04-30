@@ -55,8 +55,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
             return regVal;
         }
 
-
-
         internal PowerCtlRegister PowerCtl = new PowerCtlRegister();
         internal DataFormatRegister DataFormat = new DataFormatRegister();
         internal DataXRegister DataX = new DataXRegister();
@@ -73,9 +71,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 Sleep = (int)((value >> 2) & 0x1);
                 Measure = (int)((value >> 3) & 0x1);
             }
-            
         }
-
         internal class DataFormatRegister
         {
             public int Range { get; set; }
@@ -84,9 +80,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 Range = (int)((value >> 0) & 0x3);
             }
-            
         }
-
         internal class DataXRegister
         {
             public int Value { get; set; }
@@ -95,9 +89,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
             }
-            
         }
-
         internal class DataYRegister
         {
             public int Value { get; set; }
@@ -106,9 +98,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
             }
-            
         }
-
         internal class DataZRegister
         {
             public int Value { get; set; }
@@ -117,8 +107,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
             }
-            
         }
-
     }
 }

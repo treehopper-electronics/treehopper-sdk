@@ -60,8 +60,6 @@ namespace Treehopper.Libraries.{{Namespace}}
             return regVal;
         }
 
-
-
     {{#Registers}}
         internal {{CapitalizedName}}Register {{CapitalizedName}} = new {{CapitalizedName}}Register();
     {{/Registers}}
@@ -84,9 +82,7 @@ namespace Treehopper.Libraries.{{Namespace}}
                 {{/IsSigned}}
                 {{/Values}}
             }
-            
         }
-
     {{/Registers}}
     }
 }
