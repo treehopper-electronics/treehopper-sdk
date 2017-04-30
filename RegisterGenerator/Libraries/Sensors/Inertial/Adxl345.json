@@ -1,0 +1,54 @@
+{
+  "registers": [
+    {
+      "name": "powerCtl",
+      "address": "0x2D",
+      "access": "write",
+      "values": [
+        {
+          "name": "sleep",
+          "offset": "2",
+          "width": "1"
+        },
+        {
+          "name": "measure",
+          "offset": "3",
+          "width": "1"
+        }
+      ]
+    },
+     {
+      "name": "dataFormat",
+      "address": "0x31",
+      "access": "write",
+      "values": [
+        {
+          "name": "range",
+          "offset": "0",
+          "width": "2"
+        }
+      ]
+    },
+    {
+      "name": "dataX",
+      "address": "0x32",
+      "access": "read",
+      "width": "16",
+      "isSigned" : "true"
+    },
+    {
+      "name": "dataY",
+      "address": "0x34",
+      "access": "read",
+      "width": "16",
+      "isSigned" : "true"
+    },
+    {
+      "name": "dataZ",
+      "address": "0x36",
+      "access": "read",
+      "width": "16",
+      "isSigned" : "true"
+    }
+  ]
+}

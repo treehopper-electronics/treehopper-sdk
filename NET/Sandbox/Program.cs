@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
+using Treehopper.Libraries.Sensors.Inertial;
 
 namespace Sandbox
 {
@@ -24,22 +26,13 @@ namespace Sandbox
 
 			//board.Pins[0].Mode = PinMode.PushPullOutput;
 
-            foreach(var pin in board.Pins)
-            {
-                pin.Mode = PinMode.OpenDrainOutput;
-                pin.DigitalValue = true;
-            }
+            var imu = new Adxl345(board.I2c);
 
 			while (board.IsConnected && !Console.KeyAvailable)
 			{
-                foreach (var pin in board.Pins)
-                {
-                    pin.DigitalValue = false;
-                    await Task.Delay(500);
-                    pin.DigitalValue = true;
-                    await Task.Delay(500);
-                }
-            }
+			    Console.WriteLine(imu.Accelerometer);
+			    await Task.Delay(100);
+			}
 
         }
     }
