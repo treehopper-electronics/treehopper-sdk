@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.6)
 project(TreehopperLibraries)
 
+add_definitions(-DTREEHOPPERLIBRARIES_EXPORTS)
+
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(inc)
+include_directories(./inc)
 include_directories(../Treehopper/inc)
 
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp)

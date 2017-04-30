@@ -1,4 +1,4 @@
-package io.treehopper.libraries.sensors.imu;
+package io.treehopper.libraries.sensors.inertial;
 
 import com.badlogic.gdx.math.Vector3;
 
