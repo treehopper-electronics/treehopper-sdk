@@ -22,8 +22,8 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 int Sleep;
                 int Measure;
 
-                long GetValue() { return ((Sleep & 0x1) << 2) | ((Measure & 0x1) << 3); }
-                void SetValue(long value)
+                long getValue() { return ((Sleep & 0x1) << 2) | ((Measure & 0x1) << 3); }
+                void setValue(long value)
                 {
                     Sleep = (int)((value >> 2) & 0x1);
                     Measure = (int)((value >> 3) & 0x1);
@@ -35,8 +35,8 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Range;
 
-                long GetValue() { return ((Range & 0x3) << 0); }
-                void SetValue(long value)
+                long getValue() { return ((Range & 0x3) << 0); }
+                void setValue(long value)
                 {
                     Range = (int)((value >> 0) & 0x3);
                 }
@@ -47,8 +47,8 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Value;
 
-                long GetValue() { return ((Value & 0xFFFF) << 0); }
-                void SetValue(long value)
+                long getValue() { return ((Value & 0xFFFF) << 0); }
+                void setValue(long value)
                 {
                     Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
                 }
@@ -59,8 +59,8 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Value;
 
-                long GetValue() { return ((Value & 0xFFFF) << 0); }
-                void SetValue(long value)
+                long getValue() { return ((Value & 0xFFFF) << 0); }
+                void setValue(long value)
                 {
                     Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
                 }
@@ -71,8 +71,8 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Value;
 
-                long GetValue() { return ((Value & 0xFFFF) << 0); }
-                void SetValue(long value)
+                long getValue() { return ((Value & 0xFFFF) << 0); }
+                void setValue(long value)
                 {
                     Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
                 }
@@ -84,7 +84,7 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             DataYRegister DataY;
             DataZRegister DataZ;
 
-        void GetBytes(long val, int width, bool isLittleEndian, uint8_t* output)
+        void getBytes(long val, int width, bool isLittleEndian, uint8_t* output)
         {
             for (int i = 0; i < width; i++) 
                 output[i] = (uint8_t) ((val >> (8 * i)) & 0xFF);
@@ -94,7 +94,7 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             //         bytes = bytes.Reverse().ToArray(); 
         }
 
-        long GetValue(uint8_t* bytes, int count, bool isLittleEndian)
+        long getValue(uint8_t* bytes, int count, bool isLittleEndian)
         {
             // TODO: Fix endian
             // if (BitConverter.IsLittleEndian ^ isLittleEndian) 
@@ -108,25 +108,25 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             return regVal;
         }
 
-        void Flush()
+        void flush()
         {
             uint8_t bytes[8];
-            GetBytes(PowerCtl.GetValue(), 1, true, bytes);
+            getBytes(PowerCtl.getValue(), 1, true, bytes);
             _dev.writeBufferData(0x2D, bytes, 1);
-            GetBytes(DataFormat.GetValue(), 1, true, bytes);
+            getBytes(DataFormat.getValue(), 1, true, bytes);
             _dev.writeBufferData(0x31, bytes, 1);
         }
 
-        void Update()
+        void update()
         {
             uint8_t bytes[6];
             int i = 0;
             _dev.readBufferData(50, bytes, 6);
-            DataX.SetValue(GetValue(&bytes[i], 2, true));
+            DataX.setValue(getValue(&bytes[i], 2, true));
             i += 2;
-            DataY.SetValue(GetValue(&bytes[i], 2, true));
+            DataY.setValue(getValue(&bytes[i], 2, true));
             i += 2;
-            DataZ.SetValue(GetValue(&bytes[i], 2, true));
+            DataZ.setValue(getValue(&bytes[i], 2, true));
             i += 2;
         }
 

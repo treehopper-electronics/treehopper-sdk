@@ -12,7 +12,7 @@ class {{Name}}Registers
         _dev = dev;
     }
 
-    void Flush()
+    void flush()
     {
         {{#Registers}}
         {{#IsWriteOnly}}
@@ -21,14 +21,14 @@ class {{Name}}Registers
         {{/Registers}}
     }
 
-    void Update()
+    void update()
     {
         {{#MultiRegisterAccess}}
         int i = 0;
         byte[] bytes = _dev.readBufferData((byte){{FirstReadAddress}}, {{TotalReadbytes}});
         {{#Registers}}
         {{#IsReadOnly}}
-        {{CapitalizedName}}.setValue(getValue(Arrays.copyOfRange(bytes, i, {{Numbytes}}), {{LittleEndian}}));
+        {{CapitalizedName}}.setValue(getValue(Arrays.copyOfRange(bytes, i, i + {{Numbytes}}), {{LittleEndian}}));
         i += {{Numbytes}};
         {{/IsReadOnly}}
         {{/Registers}}

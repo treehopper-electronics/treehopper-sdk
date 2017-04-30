@@ -24,8 +24,8 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
                 int {{CapitalizedName}};
             {{/Values}}
 
-                long GetValue() { return {{#Values}}(({{CapitalizedName}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values}}; }
-                void SetValue(long value)
+                long getValue() { return {{#Values}}(({{CapitalizedName}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values}}; }
+                void setValue(long value)
                 {
                     {{#Values}}
                     {{#IsSigned}}
@@ -43,7 +43,7 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
             {{CapitalizedName}}Register {{CapitalizedName}};
         {{/Registers}}
 
-        void GetBytes(long val, int width, bool isLittleEndian, uint8_t* output)
+        void getBytes(long val, int width, bool isLittleEndian, uint8_t* output)
         {
             for (int i = 0; i < width; i++) 
                 output[i] = (uint8_t) ((val >> (8 * i)) & 0xFF);
@@ -53,7 +53,7 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
             //         bytes = bytes.Reverse().ToArray(); 
         }
 
-        long GetValue(uint8_t* bytes, int count, bool isLittleEndian)
+        long getValue(uint8_t* bytes, int count, bool isLittleEndian)
         {
             // TODO: Fix endian
             // if (BitConverter.IsLittleEndian ^ isLittleEndian) 
@@ -67,18 +67,18 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
             return regVal;
         }
 
-        void Flush()
+        void flush()
         {
             uint8_t bytes[8];
             {{#Registers}}
             {{#IsWriteOnly}}
-            GetBytes({{CapitalizedName}}.GetValue(), {{NumBytes}}, {{LittleEndian}}, bytes);
+            getBytes({{CapitalizedName}}.getValue(), {{NumBytes}}, {{LittleEndian}}, bytes);
             _dev.writeBufferData({{Address}}, bytes, {{NumBytes}});
             {{/IsWriteOnly}}
             {{/Registers}}
         }
 
-        void Update()
+        void update()
         {
             {{#MultiRegisterAccess}}
             uint8_t bytes[{{TotalReadBytes}}];
@@ -86,7 +86,7 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
             _dev.readBufferData({{FirstReadAddress}}, bytes, {{TotalReadBytes}});
             {{#Registers}}
             {{#IsReadOnly}}
-            {{CapitalizedName}}.SetValue(GetValue(&bytes[i], {{NumBytes}}, {{LittleEndian}}));
+            {{CapitalizedName}}.setValue(getValue(&bytes[i], {{NumBytes}}, {{LittleEndian}}));
             i += {{NumBytes}};
             {{/IsReadOnly}}
             {{/Registers}}
@@ -94,7 +94,7 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
             {{^MultiRegisterAccess}}
             {{#Registers}}
             {{#IsReadOnly}}
-            {{CapitalizedName}}.SetValue(GetValue(_dev.readBufferData({{Address}}, {{NumBytes}}), {{LittleEndian}}));
+            {{CapitalizedName}}.setValue(getValue(_dev.readBufferData({{Address}}, {{NumBytes}}), {{LittleEndian}}));
             {{/IsReadOnly}}
             {{/Registers}}
             {{/MultiRegisterAccess}}
