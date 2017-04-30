@@ -10,12 +10,36 @@ namespace RegisterGenerator
     {
         public string Name { get; set; }
         public string Namespace { get; set; }
+        public bool MultiRegisterAccess { get; set; } = true;
         public List<Register> Registers { get; set; }
+        public int FirstReadAddress { get; set; }
+        public int FirstWriteAddress { get; set; }
+        public int TotalReadBytes { get; set; }
+        public int TotalWriteBytes { get; set; }
 
         public void Preprocess()
         {
-            for(int i=0;i<Registers.Count;i++)
-                Registers[i].Preprocess();
+            Registers = Registers.OrderBy(i => i.AddressNumber).ToList(); // sort by address asc
+            foreach (var reg in Registers)
+            {
+                reg.Preprocess();
+
+                if (reg.IsReadOnly)
+                {
+                    if (FirstReadAddress == 0)
+                        FirstReadAddress = reg.AddressNumber;
+
+                    TotalReadBytes = (reg.AddressNumber + reg.NumBytes) - FirstReadAddress;
+                }
+
+                if (reg.IsWriteOnly)
+                {
+                    if (FirstWriteAddress == 0)
+                        FirstWriteAddress = reg.AddressNumber;
+
+                    TotalWriteBytes = (reg.AddressNumber + reg.NumBytes) - FirstWriteAddress;
+                }
+            }
         }
     }
 }

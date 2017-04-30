@@ -28,11 +28,23 @@ namespace Treehopper.Libraries.{{Namespace}}
 
         internal async Task Update()
         {
+            {{#MultiRegisterAccess}}
+            int i = 0;
+            var bytes = await _dev.ReadBufferData({{FirstReadAddress}}, {{TotalReadBytes}});
+            {{#Registers}}
+            {{#IsReadOnly}}
+            {{CapitalizedName}}.SetValue(GetValue(bytes.Skip(i).Take({{NumBytes}}).ToArray(), {{LittleEndian}}));
+            i += {{NumBytes}};
+            {{/IsReadOnly}}
+            {{/Registers}}
+            {{/MultiRegisterAccess}}
+            {{^MultiRegisterAccess}}
             {{#Registers}}
             {{#IsReadOnly}}
             {{CapitalizedName}}.SetValue(GetValue(await _dev.ReadBufferData({{Address}}, {{NumBytes}}), {{LittleEndian}}));
             {{/IsReadOnly}}
             {{/Registers}}
+            {{/MultiRegisterAccess}}
         }
 
         internal byte[] GetBytes(long val, int width, bool isLittleEndian)
