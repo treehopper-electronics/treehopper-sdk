@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public Adxl345(I2C i2c, bool altAddress = false, int rate = 100)
         {
-            _dev = !altAddress ? new SMBusDevice(0x53, i2c, rate) : new SMBusDevice(0x1D, i2c, rate);
+            _dev = !altAddress ? new SMBusDevice((byte)(!altAddress ? 0x53 : 0x1D), i2c, rate);
             registers = new Adxl345Registers(_dev);
             registers.PowerCtl.Sleep = 0;
             registers.PowerCtl.Measure = 1;

@@ -37,14 +37,29 @@ namespace RegisterGenerator
                 library.Name = Path.GetFileNameWithoutExtension(file);
                 library.Preprocess();
 
-                var csharpOut = $"{treehopperRoot}\\NET\\Libraries\\{path.Replace("Libraries", "Treehopper.Libraries")}\\{library.Name}Registers.cs";
-                var relativePath = $"{path.Replace("Libraries\\", "")}\\{library.Name}Registers.cs";
-                Render.FileToFile("Templates\\Registers.cs", library, csharpOut);
-                if(project.Items.Count(i => i.UnevaluatedInclude == relativePath) == 0)
-                    project.AddItem("Compile", relativePath, new[] { new KeyValuePair<string, string>("DependentUpon", $"{library.Name}.cs")});
+                {
+                    // C Sharp
+                    var outPath = $"{treehopperRoot}\\NET\\Libraries\\{path.Replace("Libraries", "Treehopper.Libraries")}\\{library.Name}Registers.cs";
+                    Render.FileToFile("Templates\\Registers.cs", library, outPath);
+
+                    // add to the csproj file
+                    var relativePath = $"{path.Replace("Libraries\\", "")}\\{library.Name}Registers.cs";
+                    if (project.Items.Count(i => i.UnevaluatedInclude == relativePath) == 0)
+                        project.AddItem("Compile", relativePath, new[] { new KeyValuePair<string, string>("DependentUpon", $"{library.Name}.cs") });
+                }
+                {
+                    // C++
+                    var outPath = $"{treehopperRoot}\\C++\\API\\Treehopper.Libraries\\inc\\{path.Replace("Libraries\\", "")}\\{library.Name}Registers.h";
+                    Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+                    Render.FileToFile("Templates\\Registers.h", library, outPath);
+                }
+                {
+                    // Java
+                    var outPath = $"{treehopperRoot}\\Java\\api\\treehopper.libraries\\src\\main\\java\\io\\treehopper\\{path.ToLower()}\\{library.Name}Registers.java";
+                    Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+                    Render.FileToFile("Templates\\Registers.java", library, outPath);
+                }
             }
         }
-
-
     }
 }

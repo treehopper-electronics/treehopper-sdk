@@ -10,15 +10,18 @@ namespace RegisterGenerator
     {
         public string Name { get; set; }
         public string Namespace { get; set; }
+        public string NamespaceLower => Namespace.ToLower();
         public bool MultiRegisterAccess { get; set; } = true;
         public List<Register> Registers { get; set; }
         public int FirstReadAddress { get; set; }
         public int FirstWriteAddress { get; set; }
         public int TotalReadBytes { get; set; }
         public int TotalWriteBytes { get; set; }
+        public string[] NamespaceFragments { get; set; }
 
         public void Preprocess()
         {
+            NamespaceFragments = Namespace.Split('.');
             Registers = Registers.OrderBy(i => i.AddressNumber).ToList(); // sort by address asc
             foreach (var reg in Registers)
             {

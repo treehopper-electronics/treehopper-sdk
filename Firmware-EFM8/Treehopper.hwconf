@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="ASCII"?>
-<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/sls/hc/document/device.ecore" name="EFM8UB10F16G-B-QFN28" partId="com.silabs.mcu.si8051.efm8ub1_g.efm8ub10f16g">
+<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/ss/hwconfig/document/device.ecore" name="EFM8UB10F16G-B-QFN28" partId="mcu.8051.efm8.ub1.efm8ub10f16g-b-qfn28" version="4.0.1">
   <mode name="DefaultMode">
     <property object="ADC_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="ADC_0" propertyId="adc.accumulatorconfiguration.enable12bitmode" value="Enabled"/>
     <property object="ADC_0" propertyId="adc.accumulatorconfiguration.repeatcount" value="8 conversions"/>
     <property object="ADC_0" propertyId="adc.configuration.resolution" value="12-bit"/>
-    <property object="ADC_0" propertyId="adc.configuration.sarclkactual" value="3.500 MHz"/>
-    <property object="ADC_0" propertyId="adc.configuration.sarclktarget" value="3062000"/>
     <property object="ADC_0" propertyId="adc.configuration.sarclockdivider" value="6"/>
-    <property object="ADC_0" propertyId="adc.configuration.sarclocksource" value="24.500 MHz"/>
-    <property object="ADC_0" propertyId="adc.configuration.sysclk" value="48.000 MHz"/>
     <property object="ADC_0" propertyId="adc.control.enableadc" value="Enabled"/>
     <property object="ADC_0" propertyId="adc.control.enableburstmode" value="Enabled"/>
-    <property object="ADC_0" propertyId="adc.control.timer0overflowfrequency" value="307.692 kHz"/>
-    <property object="ADC_0" propertyId="adc.control.timer2overflowfrequency" value="61.000 Hz"/>
-    <property object="ADC_0" propertyId="adc.control.timer3overflowfrequency" value="61.000 Hz"/>
-    <property object="ADC_0" propertyId="adc.control.timer4overflowfrequency" value="61.000 Hz"/>
     <property object="ADC_0" propertyId="adc.view.view" value="Advanced"/>
     <property object="CIP51_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="CIP51_0" propertyId="cip51.prefetchenginecontrol.enableprefetch" value="Enabled"/>
@@ -86,12 +78,7 @@
     <property object="SMBUS_0" propertyId="smbus.configuration.enablesmbusfreetimeoutdetection" value="Enabled"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.enablesmbusscltimeoutdetection" value="Enabled"/>
     <property object="SMBUS_0" propertyId="smbus.configuration.enablesmbussetupandholdtimeextension" value="Enabled"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.smbusclockfrequency" value="102.564 kHz"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.smbusslaveinhibit" value="Disabled"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.timer0overflowfrequency" value="307.692 kHz"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.timer1overflowfrequency" value="19.230 kHz"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.timer2highbyteoverflowfrequency" value="61.000 Hz"/>
-    <property object="SMBUS_0" propertyId="smbus.configuration.timer2lowbyteoverflowfrequency" value="15.625 kHz"/>
+    <property object="SMBUS_0" propertyId="smbus.configuration.smbusslaveinhibit" value="Slave Disabled"/>
     <property object="SMBUS_0" propertyId="smbus.view.view" value="Advanced"/>
     <property object="SPI_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="SPI_0" propertyId="spi.clockrate.spiclockfrequencyactual" value="12.000 MHz"/>
@@ -104,12 +91,9 @@
     <property object="SPI_0" propertyId="spi.control.spienable" value="Enabled"/>
     <property object="SPI_0" propertyId="spi.view.view" value="Advanced"/>
     <property object="TIMER01_0" propertyId="ABPeripheral.included" value="true"/>
-    <property object="TIMER01_0" propertyId="timer01.timer0highbyte.timer0highbyte" value="243"/>
     <property object="TIMER01_0" propertyId="timer01.timer0mode0:13bitcountertimer.timerinitvalue" value="5000"/>
     <property object="TIMER01_0" propertyId="timer01.timer0mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="300000"/>
     <property object="TIMER01_0" propertyId="timer01.timer0mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="243"/>
-    <property object="TIMER01_0" propertyId="timer01.timer1highbyte.timer1highbyte" value="48"/>
-    <property object="TIMER01_0" propertyId="timer01.timer1lowbyte.timer1lowbyte" value="52"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.targetoverflowfrequency" value="19200"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerinitvalue" value="52"/>
     <property object="TIMER01_0" propertyId="timer01.timer1mode2:8bitcountertimerwithautoreload.timerreloadvalue" value="48"/>
@@ -189,7 +173,7 @@
     <property object="WDT_0" propertyId="wdt.watchdogcontrol.wdtenable" value="Disable"/>
   </mode>
   <modeTransition>
-    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
     <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.source" value="RESET"/>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
   </modeTransition>
 </device:XMLDevice>

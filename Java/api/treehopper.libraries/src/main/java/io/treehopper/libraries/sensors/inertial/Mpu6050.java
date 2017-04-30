@@ -1,4 +1,4 @@
-package io.treehopper.libraries.sensors.imu;
+package io.treehopper.libraries.sensors.inertial;
 
 import com.badlogic.gdx.math.Vector3;
 
@@ -9,7 +9,7 @@ import io.treehopper.libraries.sensors.temperature.TemperatureSensor;
 /**
  * InvenSense MPU6050 6-DoF IMU
  */
-public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyroscope{
+public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyroscope {
 	private SMBusDevice dev;
 	private Vector3 accelerometer;
 	private Vector3 gyroscope;
