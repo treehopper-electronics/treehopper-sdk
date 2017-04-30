@@ -25,9 +25,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         internal async Task Update()
         {
-            DataX.SetValue(GetValue(await _dev.ReadBufferData(0x32, 2), true));
-            DataY.SetValue(GetValue(await _dev.ReadBufferData(0x34, 2), true));
-            DataZ.SetValue(GetValue(await _dev.ReadBufferData(0x36, 2), true));
+            int i = 0;
+            var bytes = await _dev.ReadBufferData(50, 6);
+            DataX.SetValue(GetValue(bytes.Skip(i).Take(2).ToArray(), true));
+            i += 2;
+            DataY.SetValue(GetValue(bytes.Skip(i).Take(2).ToArray(), true));
+            i += 2;
+            DataZ.SetValue(GetValue(bytes.Skip(i).Take(2).ToArray(), true));
+            i += 2;
         }
 
         internal byte[] GetBytes(long val, int width, bool isLittleEndian)

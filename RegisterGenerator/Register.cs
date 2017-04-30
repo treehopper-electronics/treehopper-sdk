@@ -12,6 +12,7 @@ namespace RegisterGenerator
         public string Name { get; set; }
         public string CapitalizedName => Name.ToPascalCase();
         public string Address { get; set; }
+        public int AddressNumber => int.Parse(Address.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
         public string Access { get; set; }
         public int Width { get; set; }
         public string LittleEndian { get; set; } = "true";
