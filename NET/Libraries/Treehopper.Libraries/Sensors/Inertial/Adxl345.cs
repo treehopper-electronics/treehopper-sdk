@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
-    public class Adxl345 : IAccelerometer
+    public partial class Adxl345 : IAccelerometer
     {
         private Vector3 _accelerometer;
         private readonly SMBusDevice _dev;
@@ -18,7 +18,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             registers.PowerCtl.Sleep = 0;
             registers.PowerCtl.Measure = 1;
             registers.DataFormat.Range = 0x03;
-            registers.Flush().Wait();
+            registers.WriteRange(registers.PowerCtl, registers.DataFormat).Wait();
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
@@ -26,7 +26,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public async Task Update()
         {
-            await registers.Update();
+            await registers.ReadRange(registers.DataX, registers.DataZ);
             _accelerometer.X = registers.DataX.Value * 0.04f;
             _accelerometer.Y = registers.DataY.Value * 0.04f;
             _accelerometer.Z = registers.DataZ.Value * 0.04f;

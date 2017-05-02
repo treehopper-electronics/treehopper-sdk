@@ -5,13 +5,13 @@
 using namespace Treehopper::Libraries;
 
 namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inertial { 
-    class Adxl345Registers
+    class aadxl345Registers
     {
         private:
             SMBusDevice& _dev;
 
         public:
-            Adxl345Registers(SMBusDevice& device) : _dev(device)
+            aadxl345Registers(SMBusDevice& device) : _dev(device)
             {
 
             }

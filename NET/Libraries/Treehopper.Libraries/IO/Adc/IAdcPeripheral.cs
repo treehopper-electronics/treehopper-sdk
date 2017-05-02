@@ -1,6 +1,6 @@
 ﻿using Treehopper.Libraries.Sensors;
 
-namespace Treehopper.Libraries.Interface.Adc
+namespace Treehopper.Libraries.IO.Adc
 {
     /// <summary>
     ///     ADC peripheral IC

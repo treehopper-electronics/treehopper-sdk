@@ -1,9 +1,11 @@
-﻿namespace AdcDemo
+﻿using Treehopper.Libraries.IO.Adc;
+
+namespace AdcDemo
 {
     using System;
     using System.Threading.Tasks;
     using Treehopper.Desktop;
-    using Treehopper.Libraries.Interface.Adc;
+
     class Program
     {
         static void Main(string[] args)
