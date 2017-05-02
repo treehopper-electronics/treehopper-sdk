@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.Adc
+namespace Treehopper.Libraries.IO.Adc
 {
     /// <summary>
     ///     Texas Instruments ADS1115 16-bit 4-channel ADC

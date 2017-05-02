@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.Adc
+namespace Treehopper.Libraries.IO.Adc
 {
     /// <summary>
     ///     Linear LTC2305 12-bit two-channel ADC

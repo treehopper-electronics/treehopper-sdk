@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Treehopper.Utilities;
 
-namespace Treehopper.Libraries.Interface.Adc
+namespace Treehopper.Libraries.IO.Adc
 {
     /// <summary>
     ///     Base class for ADC peripherals

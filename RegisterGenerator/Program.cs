@@ -32,6 +32,7 @@ namespace RegisterGenerator
             var files = Directory.GetFiles(path);
             foreach (var file in files)
             {
+                if (Path.GetExtension(file) != ".json") continue;
                 var library = JsonConvert.DeserializeObject<Library>(File.ReadAllText(file));
                 library.Namespace = path.Replace("Libraries\\", "").Replace("\\", ".");
                 library.Name = Path.GetFileNameWithoutExtension(file);
@@ -39,11 +40,11 @@ namespace RegisterGenerator
 
                 {
                     // C Sharp
-                    var outPath = $"{treehopperRoot}\\NET\\Libraries\\{path.Replace("Libraries", "Treehopper.Libraries")}\\{library.Name}Registers.cs";
+                    var outPath = $"{treehopperRoot}\\NET\\Libraries\\{path.Replace("Libraries", "Treehopper.Libraries")}\\{library.Name}.generated.cs";
                     Render.FileToFile("Templates\\Registers.cs", library, outPath);
 
                     // add to the csproj file
-                    var relativePath = $"{path.Replace("Libraries\\", "")}\\{library.Name}Registers.cs";
+                    var relativePath = $"{path.Replace("Libraries\\", "")}\\{library.Name}.generated.cs";
                     if (project.Items.Count(i => i.UnevaluatedInclude == relativePath) == 0)
                         project.AddItem("Compile", relativePath, new[] { new KeyValuePair<string, string>("DependentUpon", $"{library.Name}.cs") });
                 }
@@ -55,9 +56,20 @@ namespace RegisterGenerator
                 }
                 {
                     // Java
-                    var outPath = $"{treehopperRoot}\\Java\\api\\treehopper.libraries\\src\\main\\java\\io\\treehopper\\{path.ToLower()}\\{library.Name}Registers.java";
-                    Directory.CreateDirectory(Path.GetDirectoryName(outPath));
-                    Render.FileToFile("Templates\\Registers.java", library, outPath);
+                    var outPath = $"{treehopperRoot}\\Java\\api\\treehopper.libraries\\src\\main\\java\\io\\treehopper\\{path.ToLower()}\\{library.Name.ToLower()}";
+                    Directory.CreateDirectory(outPath);
+                    Render.FileToFile("Templates\\Registers.java", library, outPath+$"\\{library.Name}Registers.java");
+                    foreach(var reg in library.RegisterList)
+                    {
+                        foreach (var value in reg.Values.Values)
+                        {
+                            if (value.Enum != null)
+                            {
+                                Render.FileToFile("Templates\\Enum.java", new { Enum = value.Enum, Package = library.NamespaceLower+"."+library.NameLower }, outPath + $"\\{value.Enum.Name}.java");
+                            }
+                        }
+                    }
+                    
                 }
             }
         }
