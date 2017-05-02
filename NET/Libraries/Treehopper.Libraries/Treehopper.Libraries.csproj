@@ -65,13 +65,19 @@
     <Compile Include="Input\NesController.cs" />
     <Compile Include="Input\SuperNesController.cs" />
     <Compile Include="Input\WiiClassicController.cs" />
-    <Compile Include="Interface\DigitalPot\Mcp413x.cs" />
-    <Compile Include="Interface\DigitalPot\Mcp415x.cs" />
-    <Compile Include="Interface\DigitalPot\Mcp423x.cs" />
-    <Compile Include="Interface\DigitalPot\Mcp425x.cs" />
-    <Compile Include="Interface\DigitalPot\NamespaceDoc.cs" />
-    <Compile Include="Interface\PortExpander\DigitalInPin.cs" />
-    <Compile Include="Interface\PortExpander\Pca9632.cs" />
+    <Compile Include="IO\Adc\anau7802.generated.cs">
+      <DependentUpon>anau7802.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IO\Adc\Nau7802.generated.cs">
+      <DependentUpon>Nau7802.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IO\DigitalPot\Mcp413x.cs" />
+    <Compile Include="IO\DigitalPot\Mcp415x.cs" />
+    <Compile Include="IO\DigitalPot\Mcp423x.cs" />
+    <Compile Include="IO\DigitalPot\Mcp425x.cs" />
+    <Compile Include="IO\DigitalPot\NamespaceDoc.cs" />
+    <Compile Include="IO\PortExpander\DigitalInPin.cs" />
+    <Compile Include="IO\PortExpander\Pca9632.cs" />
     <Compile Include="Displays\PwmLedDriver.cs" />
     <Compile Include="Displays\GpioLedDriver.cs" />
     <Compile Include="Displays\HobbyDisplayFactories.cs" />
@@ -95,38 +101,38 @@
     <Compile Include="Input\NamespaceDoc.cs" />
     <Compile Include="Input\RotaryEncoder.cs" />
     <Compile Include="Input\WiiNunchuk.cs" />
-    <Compile Include="Interface\Adc\AdcPeripheralPin.cs" />
-    <Compile Include="Interface\Adc\Ads1115.cs" />
-    <Compile Include="Interface\Adc\IAdcPeripheral.cs" />
-    <Compile Include="Interface\Adc\NamespaceDoc.cs" />
-    <Compile Include="Interface\Adc\Nau7802.cs" />
-    <Compile Include="Interface\Dac\NamespaceDoc.cs" />
-    <Compile Include="Interface\Mux\AdcAnalogMux.cs" />
-    <Compile Include="Interface\Mux\NamespaceDoc.cs" />
-    <Compile Include="Interface\Dac\Dac.cs" />
-    <Compile Include="Interface\Dac\Mcp4725.cs" />
-    <Compile Include="Interface\FlushableParallelInterface.cs" />
-    <Compile Include="Interface\Mux\I2cMux.cs" />
-    <Compile Include="Interface\Mux\I2cMuxPort.cs" />
-    <Compile Include="Interface\Mux\I2cAnalogMux.cs" />
-    <Compile Include="Interface\IFlushable.cs" />
-    <Compile Include="Interface\IFlushableOutputPort.cs" />
-    <Compile Include="Interface\Adc\Ltc2305.cs" />
-    <Compile Include="Interface\NamespaceDoc.cs" />
-    <Compile Include="Interface\PortExpander\NamespaceDoc.cs" />
-    <Compile Include="Interface\PortExpander\Pca9685.cs" />
-    <Compile Include="Interface\PortExpander\IPortExpander.cs" />
-    <Compile Include="Interface\PortExpander\IPortExpanderPin.cs" />
-    <Compile Include="Interface\PortExpander\Mcp23008.cs" />
-    <Compile Include="Interface\PortExpander\Pcf8574.cs" />
-    <Compile Include="Interface\PortExpander\Pcf8575.cs" />
-    <Compile Include="Interface\PortExpander\PortExpander.cs" />
-    <Compile Include="Interface\PortExpander\PortExpanderPin.cs" />
-    <Compile Include="Interface\PortExpander\ChainableShiftRegisterOutput.cs" />
-    <Compile Include="Interface\PortExpander\ShiftOut.cs" />
-    <Compile Include="Interface\PortExpander\ShiftOutPin.cs" />
-    <Compile Include="Interface\PortExpander\Hc166.cs" />
-    <Compile Include="Interface\PortExpander\Hc595.cs" />
+    <Compile Include="IO\Adc\AdcPeripheralPin.cs" />
+    <Compile Include="IO\Adc\Ads1115.cs" />
+    <Compile Include="IO\Adc\IAdcPeripheral.cs" />
+    <Compile Include="IO\Adc\NamespaceDoc.cs" />
+    <Compile Include="IO\Adc\Nau7802.cs" />
+    <Compile Include="IO\Dac\NamespaceDoc.cs" />
+    <Compile Include="IO\Mux\AdcAnalogMux.cs" />
+    <Compile Include="IO\Mux\NamespaceDoc.cs" />
+    <Compile Include="IO\Dac\Dac.cs" />
+    <Compile Include="IO\Dac\Mcp4725.cs" />
+    <Compile Include="IO\FlushableParallelInterface.cs" />
+    <Compile Include="IO\Mux\I2cMux.cs" />
+    <Compile Include="IO\Mux\I2cMuxPort.cs" />
+    <Compile Include="IO\Mux\I2cAnalogMux.cs" />
+    <Compile Include="IO\IFlushable.cs" />
+    <Compile Include="IO\IFlushableOutputPort.cs" />
+    <Compile Include="IO\Adc\Ltc2305.cs" />
+    <Compile Include="IO\NamespaceDoc.cs" />
+    <Compile Include="IO\PortExpander\NamespaceDoc.cs" />
+    <Compile Include="IO\PortExpander\Pca9685.cs" />
+    <Compile Include="IO\PortExpander\IPortExpander.cs" />
+    <Compile Include="IO\PortExpander\IPortExpanderPin.cs" />
+    <Compile Include="IO\PortExpander\Mcp23008.cs" />
+    <Compile Include="IO\PortExpander\Pcf8574.cs" />
+    <Compile Include="IO\PortExpander\Pcf8575.cs" />
+    <Compile Include="IO\PortExpander\PortExpander.cs" />
+    <Compile Include="IO\PortExpander\PortExpanderPin.cs" />
+    <Compile Include="IO\PortExpander\ChainableShiftRegisterOutput.cs" />
+    <Compile Include="IO\PortExpander\ShiftOut.cs" />
+    <Compile Include="IO\PortExpander\ShiftOutPin.cs" />
+    <Compile Include="IO\PortExpander\Hc166.cs" />
+    <Compile Include="IO\PortExpander\Hc595.cs" />
     <Compile Include="Memory\SpiFlash.cs" />
     <Compile Include="Motors\Amis30624.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
@@ -139,11 +145,16 @@
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.cs" />
-    <Compile Include="RegisterAccess.cs" />
-    <Compile Include="RegisterDepth.cs" />
+    <Compile Include="RegisterManager.cs" />
     <Compile Include="Sensors\Humidity\IHumiditySensor.cs" />
     <Compile Include="Sensors\Humidity\NamespaceDoc.cs" />
+    <Compile Include="Sensors\Inertial\aadxl345.generated.cs">
+      <DependentUpon>aadxl345.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sensors\Inertial\Adxl345.cs" />
+    <Compile Include="Sensors\Inertial\Adxl345.generated.cs">
+      <DependentUpon>Adxl345.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sensors\Inertial\ComplementaryFilter.cs" />
     <Compile Include="Sensors\Inertial\Hmc5883l.cs" />
     <Compile Include="Sensors\Inertial\IAccelerometer.cs" />
@@ -152,7 +163,6 @@
     <Compile Include="Sensors\Inertial\Mpu6050.cs" />
     <Compile Include="Sensors\Inertial\Mpu9250.cs" />
     <Compile Include="Sensors\Inertial\NamespaceDoc.cs" />
-    <Compile Include="RegisterValue.cs" />
     <Compile Include="Sensors\IPollable.cs" />
     <Compile Include="Sensors\NamespaceDoc.cs" />
     <Compile Include="Sensors\Optical\Adjds311.cs" />
@@ -175,7 +185,6 @@
     <Compile Include="Sensors\Temperature\NamespaceDoc.cs" />
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
     <Compile Include="SMBusDevice.cs" />
-    <Compile Include="RegisterManager.cs" />
     <Compile Include="SpiDevice.cs" />
     <Compile Include="Utilities\BinaryConverters.cs" />
     <Compile Include="Utilities\Int24.cs" />

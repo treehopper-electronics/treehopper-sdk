@@ -1,136 +1,57 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Treehopper.Libraries.Utilities;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries
 {
-    public class Register : IEnumerable<RegisterValue>
+    public abstract class Register
     {
-        public delegate void RegisterUpdatedHandler(Register register);
+        protected RegisterManager manager;
+        public bool IsLittleEndian { get; }
+        public int Address { get;  }
 
-        private RegisterAccess access;
-
-        public Register(string name, int address, RegisterAccess access, params RegisterValue[] registerValues)
+        public Register(RegisterManager regManager, int address, int width, bool isBigEndian)
         {
-            Name = name;
-            Address = address;
-            this.access = access;
-            foreach (var registerValue in registerValues)
-            {
-                this.registerValues.Add(registerValue.Name, registerValue);
-                registerValue.ValueUpdated += RegisterValue_ValueUpdated;
-            }
-        }
-
-        public Endianness Endianness { get; set; } = Endianness.LittleEndian;
-
-        private void RegisterValue_ValueUpdated(RegisterValue register)
-        {
-            RegisterUpdated?.Invoke(this);
-        }
-
-        public byte[] Bytes
-        {
-            get
-            {
-                long currentValue = 0;
-
-                var retVal = new byte[TotalBytes];
-
-                foreach (var reg in registerValues.Values)
-                {
-                    var mask = (1 << reg.Length) - 1;
-                    currentValue |= (reg.Value & mask) << reg.Offset;
-                }
-
-                for (var i = 0; i < TotalBytes; i++)
-                    retVal[i] = (byte) ((currentValue >> (8 * i)) & 0xFF);
-
-                if (BitConverter.IsLittleEndian ^ (Endianness == Endianness.LittleEndian))
-                    retVal = retVal.Reverse().ToArray();
-
-                return retVal;
-            }
-            set
-            {
-                if (BitConverter.IsLittleEndian ^ (Endianness == Endianness.LittleEndian))
-                    value = value.Reverse().ToArray();
-
-                long regVal = 0;
-
-                for (var i = 0; i < value.Length; i++)
-                    regVal |= value[i] << (i * 8);
-
-                foreach (var reg in registerValues.Values)
-                {
-                    var mask = (1 << reg.Length) - 1;
-                    var val = (int) ((regVal >> reg.Offset) & mask);
-
-                    switch (reg.Depth)
-                    {
-                        case RegisterDepth.SignedByte:
-                            reg.updateValue((sbyte) val);
-                            break;
-
-                        case RegisterDepth.SignedShort:
-                            reg.updateValue((short) val);
-                            break;
-
-                        case RegisterDepth.SignedInt:
-                        case RegisterDepth.Unsigned:
-                            reg.updateValue(val);
-                            break;
-                    }
-                }
-            }
-        }
-
-        public int TotalBytes
-        {
-            get
-            {
-                var numBits = 0;
-                foreach (var reg in registerValues.Values)
-                {
-                    var width = reg.Offset + reg.Length;
-                    if (width > numBits)
-                        numBits = width;
-                }
-
-                return (numBits - 1) / 8 + 1;
-            }
-        }
-
-        public Register(string name, int address)
-        {
-            Name = name;
+            manager = regManager;
+            Width = width;
+            IsLittleEndian = !isBigEndian;
             Address = address;
         }
 
-        private readonly Dictionary<string, RegisterValue> registerValues = new Dictionary<string, RegisterValue>();
-
-        public int Address { get; }
-
-        public string Name { get; }
-
-        public int this[string val]
+        public Task Write()
         {
-            get { return registerValues[val].Value; }
-            set { registerValues[val].Value = value; }
+            return manager.Write(this);
         }
 
-        public IEnumerator<RegisterValue> GetEnumerator()
+        public int Width { get; }
+        internal abstract long GetValue();
+        internal abstract void SetValue(long value);
+
+        internal byte[] GetBytes()
         {
-            return registerValues.Values.GetEnumerator();
+            var retVal = new byte[Width];
+            for (var i = 0; i < Width; i++)
+                retVal[i] = (byte)((GetValue() >> (8 * i)) & 0xFF);
+
+            if (BitConverter.IsLittleEndian ^ IsLittleEndian)
+                retVal = retVal.Reverse().ToArray();
+
+            return retVal;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        internal void SetBytes(byte[] bytes)
         {
-            return GetEnumerator();
-        }
+            if (BitConverter.IsLittleEndian ^ IsLittleEndian)
+                bytes = bytes.Reverse().ToArray();
 
-        public event RegisterUpdatedHandler RegisterUpdated;
+            long regVal = 0;
+
+            for (var i = 0; i < bytes.Length; i++)
+                regVal |= bytes[i] << (i * 8);
+
+            SetValue(regVal);
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
+using Treehopper.Libraries.IO.Adc;
+using Treehopper.Libraries.Sensors.Inertial;
 
 namespace Sandbox
 {
@@ -22,24 +25,28 @@ namespace Sandbox
 
 			await board.ConnectAsync();
 
-			//board.Pins[0].Mode = PinMode.PushPullOutput;
+            var adc = new Nau7802(board.I2c);
+            //board.Pins[0].Mode = PinMode.PushPullOutput;
 
-            foreach(var pin in board.Pins)
+            //var imu = new Adxl345(board.I2c);
+            long avg = 0;
+            Console.WriteLine("taring, please wait...");
+            for (int i = 0; i < 50; i++)
             {
-                pin.Mode = PinMode.OpenDrainOutput;
-                pin.DigitalValue = true;
+                avg += adc.AdcValue;
+                await Task.Delay(100);
             }
 
-			while (board.IsConnected && !Console.KeyAvailable)
+            avg /= 50;
+
+
+
+            while (board.IsConnected && !Console.KeyAvailable)
 			{
-                foreach (var pin in board.Pins)
-                {
-                    pin.DigitalValue = false;
-                    await Task.Delay(500);
-                    pin.DigitalValue = true;
-                    await Task.Delay(500);
-                }
-            }
+                Console.WriteLine(adc.AdcValue - avg);
+                //Console.WriteLine(imu.Accelerometer);
+                await Task.Delay(100);
+			}
 
         }
     }
