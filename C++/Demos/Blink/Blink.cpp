@@ -1,5 +1,4 @@
 // Blink.cpp : Defines the entry point for the console application.
-//
 
 #include "ConnectionService.h"
 #include "TreehopperUsb.h"

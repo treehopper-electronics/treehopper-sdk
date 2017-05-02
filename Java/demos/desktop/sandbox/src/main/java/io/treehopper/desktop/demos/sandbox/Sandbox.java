@@ -5,12 +5,8 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import io.treehopper.desktop.*;
 import io.treehopper.*;
-import io.treehopper.libraries.displays.SevenSegmentDisplay;
-import io.treehopper.libraries.displays.Tm1650;
-import io.treehopper.libraries.input.RotaryEncoder;
-import io.treehopper.libraries.motors.SeeedGroveI2cMotorDriver;
-import io.treehopper.libraries.sensors.imu.Mpu6050;
-import io.treehopper.libraries.sensors.temperature.Mcp9808;
+import io.treehopper.libraries.io.adc.nau7802.Nau7802;
+import io.treehopper.libraries.sensors.inertial.adxl345.Adxl345;
 
 public class Sandbox {
     public static void main(String[] args) {
@@ -19,20 +15,18 @@ public class Sandbox {
         TreehopperUsb board = boards.get(0);
         board.connect();
 
-        Mpu6050 imu = new Mpu6050(board.i2c, false, 100);
-
-
+//        Adxl345 imu = new Adxl345(board.i2c, false, 100);
+        Nau7802 adc = new Nau7802(board.i2c);
         while(true)
         {
-            imu.update();
-            Vector3 dater = imu.getAccelerometer();
-            System.out.println(String.format("(%.2f, %.2f, %.2f)", dater.x, dater.y, dater.z));
-//            System.out.println(temp.getTemperatureFahrenheit());
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            System.out.println(adc.getAdcValue());
+//            Vector3 dater = imu.getAccelerometer();
+//            System.out.println(String.format("(%.2f, %.2f, %.2f)", dater.x, dater.y, dater.z));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

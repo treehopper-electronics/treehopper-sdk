@@ -1,7 +1,6 @@
-#include "stdafx.h"
 #include <iostream>
-#include "Treehopper/inc/ConnectionService.h"
-#include "Treehopper.Libraries/inc/Input/RotaryEncoder.h"
+#include "ConnectionService.h"
+#include "Input/RotaryEncoder.h"
 
 using namespace Treehopper;
 using namespace Treehopper::Libraries::Input;
