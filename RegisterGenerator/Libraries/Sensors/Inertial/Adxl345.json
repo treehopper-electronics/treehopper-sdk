@@ -8,6 +8,7 @@
         "measure": { "offset": "3" }
       }
     },
+    
     "dataFormat": {
       "address": "0x31",
       "access": "write",
@@ -15,18 +16,21 @@
         "range": { "width": "2" }
       }
     },
+
     "dataX": {
       "address": "0x32",
       "access": "read",
       "width": "16",
       "isSigned": "true"
     },
+
     "dataY": {
       "address": "0x34",
       "access": "read",
       "width": "16",
       "isSigned": "true"
     },
+
     "dataZ": {
       "address": "0x36",
       "access": "read",

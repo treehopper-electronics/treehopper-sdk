@@ -86,7 +86,7 @@ class Adxl345Registers extends RegisterManager
         public long getValue() { return ((Value & 0xFFFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
+            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class DataYRegister extends Register
@@ -105,7 +105,7 @@ class Adxl345Registers extends RegisterManager
         public long getValue() { return ((Value & 0xFFFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
+            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class DataZRegister extends Register
@@ -124,7 +124,7 @@ class Adxl345Registers extends RegisterManager
         public long getValue() { return ((Value & 0xFFFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
+            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
 }

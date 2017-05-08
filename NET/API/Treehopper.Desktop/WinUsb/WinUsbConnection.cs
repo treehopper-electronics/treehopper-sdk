@@ -99,11 +99,12 @@ namespace Treehopper.Desktop.WinUsb
 
             int trueVal = 1;
             int timeout = 500;
+            int timeoutShort = 50;
 
             WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, peripheralResponseEndpoint,
                 PipePolicy.AutoClearStall, 4, ref trueVal);
             WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, peripheralResponseEndpoint,
-                PipePolicy.PipeTransferTimeout, 4, ref timeout);
+                PipePolicy.PipeTransferTimeout, 4, ref timeoutShort);
 
             WinUsb.NativeMethods.WinUsb_SetPipePolicy(winUsbHandle, pinReportEndpoint,
                 PipePolicy.AutoClearStall, 4, ref trueVal);

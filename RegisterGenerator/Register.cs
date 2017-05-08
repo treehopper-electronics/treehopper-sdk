@@ -35,8 +35,11 @@ namespace RegisterGenerator
             {
                 Values = new Dictionary<string, Value>();
                 // single-value register
+
+                int width = this.Width > 0 ? this.Width : 8; // default width
+                int offset = this.Offset;
                 Values.Add("value",
-                    new Value() {Name = "value", Width = this.Width, Offset = this.Offset, IsSigned = this.IsSigned});
+                    new Value() {Name = "value", Width = width, Offset = offset, IsSigned = this.IsSigned});
             }
             else
             {

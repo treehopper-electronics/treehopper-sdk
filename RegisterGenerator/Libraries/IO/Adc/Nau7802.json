@@ -14,6 +14,7 @@
         "useInternalLdo": {}
       }
     },
+
     "ctrl1": {
       "address": "0x01",
       "access": "write",
@@ -34,6 +35,7 @@
             }
           }
         },
+
         "vldo": {
           "width": 3,
           "enum": {
@@ -55,6 +57,7 @@
         "conversionReadyPinPolarity": {}
       }
     },
+
     "ctrl2": {
       "address": "0x02",
       "access": "write",
@@ -89,6 +92,7 @@
         "channelSelect": {}
       }
     },
+
     "i2cCtrl": {
       "address": "0x11",
       "access": "write",
@@ -103,6 +107,7 @@
         "crsd": {}
       }
     },
+
     "adcResult": {
       "address": "0x12",
       "access": "read",
@@ -110,6 +115,7 @@
       "isSigned": "true",
       "isBigEndian":"true"
     },
+
     "adc": {
       "address": "0x15",
       "access": "write",
@@ -137,6 +143,7 @@
         }
       }
     },
+
     "pga": {
       "address": "0x1B",
       "access": "write",
@@ -148,6 +155,7 @@
         "rdOptSel": {}
       }
     },
+    
     "powerCtrl": {
       "address": "0x1C",
       "access": "write",
@@ -158,7 +166,5 @@
         "pgaCapEn": {}
       }
     }
-
-
   }
 }

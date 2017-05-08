@@ -29,7 +29,7 @@ namespace Treehopper { namespace Libraries { {{#NamespaceFragments}}namespace {{
                 {
                     {{#Values.Values}}
                     {{#IsSigned}}
-                    {{CapitalizedName}} = (int)(((value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Offset}} - {{Width}})) >> (32 - {{Offset}} - {{Width}});
+                    {{CapitalizedName}} = (int)(((value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
                     {{/IsSigned}}
                     {{^IsSigned}}
                     {{CapitalizedName}} = (int)((value >> {{Offset}}) & {{Bitmask}});
