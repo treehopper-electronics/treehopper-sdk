@@ -1,8 +1,10 @@
-package io.treehopper.libraries.sensors.inertial;
+package io.treehopper.libraries.sensors.inertial.adxl345;
 
 import com.badlogic.gdx.math.Vector3;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.sensors.inertial.adxl345.Adxl345Registers;
+import io.treehopper.libraries.sensors.inertial.IAccelerometer;
 
 /**
  * Created by JayLocal on 4/29/2017.
@@ -18,12 +20,13 @@ public class Adxl345 implements IAccelerometer {
         registers.PowerCtl.Sleep = 0;
         registers.PowerCtl.Measure = 1;
         registers.DataFormat.Range = 0x03;
-        registers.flush();
+        registers.PowerCtl.write();
+        registers.DataFormat.write();
     }
 
     @Override
     public Vector3 getAccelerometer() {
-        registers.update();
+        registers.readRange(registers.DataX, registers.DataZ);
 
         Vector3 _accelerometer = new Vector3();
         _accelerometer.x = registers.DataX.Value * 0.04f;

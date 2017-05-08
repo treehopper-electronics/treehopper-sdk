@@ -65,9 +65,6 @@
     <Compile Include="Input\NesController.cs" />
     <Compile Include="Input\SuperNesController.cs" />
     <Compile Include="Input\WiiClassicController.cs" />
-    <Compile Include="IO\Adc\anau7802.generated.cs">
-      <DependentUpon>anau7802.cs</DependentUpon>
-    </Compile>
     <Compile Include="IO\Adc\Nau7802.generated.cs">
       <DependentUpon>Nau7802.cs</DependentUpon>
     </Compile>
@@ -148,9 +145,6 @@
     <Compile Include="RegisterManager.cs" />
     <Compile Include="Sensors\Humidity\IHumiditySensor.cs" />
     <Compile Include="Sensors\Humidity\NamespaceDoc.cs" />
-    <Compile Include="Sensors\Inertial\aadxl345.generated.cs">
-      <DependentUpon>aadxl345.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sensors\Inertial\Adxl345.cs" />
     <Compile Include="Sensors\Inertial\Adxl345.generated.cs">
       <DependentUpon>Adxl345.cs</DependentUpon>
@@ -160,6 +154,10 @@
     <Compile Include="Sensors\Inertial\IAccelerometer.cs" />
     <Compile Include="Sensors\Inertial\IGyroscope.cs" />
     <Compile Include="Sensors\Inertial\IMagnetometer.cs" />
+    <Compile Include="Sensors\Inertial\Lis3dh.cs" />
+    <Compile Include="Sensors\Inertial\Lis3dh.generated.cs">
+      <DependentUpon>Lis3dh.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sensors\Inertial\Mpu6050.cs" />
     <Compile Include="Sensors\Inertial\Mpu9250.cs" />
     <Compile Include="Sensors\Inertial\NamespaceDoc.cs" />

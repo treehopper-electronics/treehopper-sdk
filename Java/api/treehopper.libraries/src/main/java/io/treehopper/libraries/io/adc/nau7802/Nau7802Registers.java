@@ -181,7 +181,7 @@ class Nau7802Registers extends RegisterManager
         public long getValue() { return ((Value & 0xFFFFFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 0 - 24)) >> (32 - 0 - 24);
+            Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
         }
     }
     class AdcRegister extends Register

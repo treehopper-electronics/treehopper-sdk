@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.IO.Adc
 {
@@ -14,6 +17,8 @@ namespace Treehopper.Libraries.IO.Adc
 
         public Nau7802(I2C i2c, DigitalIn drdy = null) : base(null, 24, 0)
         {
+            parent = this;
+
             if (drdy != null)
             {
                 this.drdy = drdy;
@@ -33,6 +38,12 @@ namespace Treehopper.Libraries.IO.Adc
             registers.PuCtrl.Write().Wait();
 
             Task.Delay(10).Wait();
+            if (registers.PuCtrl.Read().Result.PowerUpReady == 0)
+            {
+                Utility.Error("Could not power up NAU7802");
+                return;
+            }
+
 
             // useful defaults
             registers.PuCtrl.UseExternalCrystal = 0;
@@ -63,7 +74,7 @@ namespace Treehopper.Libraries.IO.Adc
             registers.PuCtrl.CycleStart = 1;
             registers.PuCtrl.Write().Wait();
 
-            parent = this;
+
         }
 
         public bool AutoUpdateWhenPropertyRead
@@ -115,6 +126,34 @@ namespace Treehopper.Libraries.IO.Adc
             while ((await registers.Ctrl2.Read()).CalStart == 1) ;
 
             return (registers.Ctrl2.CalError == 0);
+        }
+
+        public Gains Gain
+        {
+            get { return registers.Ctrl1.GetGain(); }
+            set {
+                registers.Ctrl1.SetGain(value);
+                registers.Ctrl1.Write().Wait();
+            }
+        }
+
+        public bool Cfilter
+        {
+            get { return registers.PowerCtrl.PgaCapEn > 0; }
+            set {
+                registers.PowerCtrl.PgaCapEn = value ? 1 : 0;
+                registers.PowerCtrl.Write().Wait();
+            }
+        }
+
+        public ConversionRates ConversionRate
+        {
+            get { return registers.Ctrl2.GetConversionRate(); }
+            set
+            {
+                registers.Ctrl2.SetConversionRate(value);
+                registers.Ctrl2.Write().Wait();
+            }
         }
 
         private async void Drdy_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)

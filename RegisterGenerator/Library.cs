@@ -12,7 +12,7 @@ namespace RegisterGenerator
         public string NameLower => Name.ToLower();
         public string Namespace { get; set; }
         public string NamespaceLower => Namespace.ToLower();
-        public bool MultiRegisterAccess { get; set; } = true;
+        public string MultiRegisterAccess { get; set; }
         /// <summary>
         /// Unordered dictionary of registers (what's serialized)
         /// </summary>
@@ -30,6 +30,9 @@ namespace RegisterGenerator
 
         public void Preprocess()
         {
+            if (MultiRegisterAccess == null)
+                MultiRegisterAccess = "true";
+
             NamespaceFragments = Namespace.Split('.');
 
             foreach (var reg in Registers)

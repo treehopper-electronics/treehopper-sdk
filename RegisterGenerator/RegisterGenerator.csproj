@@ -83,6 +83,9 @@
     <None Include="Libraries\IO\Adc\Nau7802.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Libraries\Sensors\Inertial\Lis3dh.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Libraries\Sensors\Inertial\Adxl345.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
