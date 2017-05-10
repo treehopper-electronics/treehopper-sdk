@@ -208,23 +208,26 @@ namespace Treehopper.Desktop.MacUsb
 				while(isConnected)
 				{
 					var status = interfaceInterface.ReadPipeTO(interfaceInterface.Handle, 1, pinReport, out numBytesToRead, 1000, 1000);
-					if (status == IOKitError.Success)
-					{
-						PinEventDataReceived?.Invoke(pinReport);
-					}
-					else
-					{
-						if (status == IOKitError.NoDevice || status == IOKitError.Aborted) // device was unplugged
-                        {
-                            
-                        } else {
-							Debug.WriteLine("Read from pin report failed: {0}", status);
-
+					switch(status)
+                    {
+                        case IOKitError.Success:
+                           PinEventDataReceived?.Invoke(pinReport);
+                            break;
+                        case IOKitError.NoDevice:
+                        case IOKitError.Aborted:
+                            return; // board was unplugged, so kill this thread
+                            break;
+                        case IOKitError.TransactionTimedOut:
+                            // we probably don't have any inputs activated. No need to report to the user.
+                            status = interfaceInterface.ClearPipeStallBothEnds(interfaceInterface.Handle, 1);
+                            break;
+                        default:
+                            Debug.WriteLine("Read from pin report failed: " + status);
 							status = interfaceInterface.ClearPipeStallBothEnds(interfaceInterface.Handle, 1);
 							if (status != IOKitError.Success)
 								Debug.WriteLine("Can't clear pipe stall: " + status);
-                        }
-					}
+                            break;
+                    }
 				}
 			});
 
