@@ -161,6 +161,7 @@
     <Compile Include="Sensors\Inertial\Mpu6050.cs" />
     <Compile Include="Sensors\Inertial\Mpu9250.cs" />
     <Compile Include="Sensors\Inertial\NamespaceDoc.cs" />
+    <Compile Include="Sensors\Inertial\Tlv493d.cs" />
     <Compile Include="Sensors\IPollable.cs" />
     <Compile Include="Sensors\NamespaceDoc.cs" />
     <Compile Include="Sensors\Optical\Adjds311.cs" />
