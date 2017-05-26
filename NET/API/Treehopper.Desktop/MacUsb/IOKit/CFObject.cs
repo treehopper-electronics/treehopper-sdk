@@ -1,65 +1,60 @@
 ﻿using System;
 
-namespace Treehopper.Desktop.MacUsb.IOKit
-{
-    /// <summary>
-    ///     Manages native CFObjects references.
-    /// </summary>
-    public class CFObject : IDisposable
-    {
-        private bool disposedValue; // To detect redundant calls
+namespace Treehopper.Desktop.MacUsb.IOKit {
 
-        /// <summary>
-        ///     Initializes a new instance of the see <see cref="CFObject" />.
-        /// </summary>
-        public CFObject(IntPtr handle)
-        {
-            Handle = handle;
-        }
+	/// <summary>
+	/// Manages native CFObjects references.
+	/// </summary>
+	public class CFObject : IDisposable {
+		private IntPtr handle;
+		private bool disposedValue = false; // To detect redundant calls
 
-        /// <summary>
-        ///     Gets the native handle.
-        /// </summary>
-        public IntPtr Handle { get; private set; }
+		/// <summary>
+		/// Gets the native handle.
+		/// </summary>
+		public IntPtr Handle => handle;
 
-        /// <summary>
-        ///     Frees managed and unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+	    /// <summary>
+		/// Initializes a new instance of the see <see cref="CFObject"/>.
+		/// </summary>
+		public CFObject(IntPtr handle) {
+			this.handle = handle;
+		}
 
-        /// <summary>
-        ///     Finalizes this instance.
-        /// </summary>
-        ~CFObject()
-        {
-            Dispose(false);
-        }
+		/// <summary>
+		/// Finalizes this instance.
+		/// </summary>
+		~CFObject() {
+			Dispose(false);
+		}
 
-        /// <summary>
-        ///     Frees managed and unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">True if called from user space; Otherwise, false.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // dispose managed state (managed objects).
-                }
+		/// <summary>
+		/// Frees managed and unmanaged resources.
+		/// </summary>
+		public void Dispose() {
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
-                if (Handle != IntPtr.Zero)
-                {
-                    IOKitFramework.CFRelease(this);
-                    Handle = IntPtr.Zero;
-                }
+		/// <summary>
+		/// Frees managed and unmanaged resources.
+		/// </summary>
+		/// <param name="disposing">True if called from user space; Otherwise, false.</param>
+		protected virtual void Dispose(bool disposing) {
+			if (!disposedValue) {
+				if (disposing) {
+					// dispose managed state (managed objects).
+				}
 
-                disposedValue = true;
-            }
-        }
-    }
+				if (handle != IntPtr.Zero) {
+					IOKitFramework.CFRelease(this);
+					handle = IntPtr.Zero;
+				}
+
+				disposedValue = true;
+			}
+		}
+
+	}
+
 }
