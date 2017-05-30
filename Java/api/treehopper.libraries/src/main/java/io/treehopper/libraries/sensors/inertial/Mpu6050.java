@@ -211,9 +211,9 @@ public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyros
     	
     	setTemperature((data[6] << 8 | data[7]) / 333.87 + 21.0);
     	
-    	getGyroscope().x = (float)(((short)((data[8] & 0xff) << 8 | (data[9] & 0xff))) * gyroScale - getGyroOffset().x);
-    	getGyroscope().y = (float)(((short)((data[10] & 0xff) << 8 | (data[11] & 0xff))) * gyroScale - getGyroOffset().y);
-    	getGyroscope().z = (float)(((short)((data[12] & 0xff) << 8 | (data[13] & 0xff))) * gyroScale - getGyroOffset().z);
+    	getGyroscope().x = (float)(((short)((data[8] & 0xff) << 8 | (data[9] & 0xff))/32768.0) * gyroScale - getGyroOffset().x);
+    	getGyroscope().y = (float)(((short)((data[10] & 0xff) << 8 | (data[11] & 0xff))/32768.0) * gyroScale - getGyroOffset().y);
+    	getGyroscope().z = (float)(((short)((data[12] & 0xff) << 8 | (data[13] & 0xff))/32768.0) * gyroScale - getGyroOffset().z);
     }
 
 	public Vector3 getAccelOffset() {
