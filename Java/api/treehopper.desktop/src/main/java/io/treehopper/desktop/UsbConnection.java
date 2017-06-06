@@ -3,6 +3,8 @@ package io.treehopper.desktop;
 import io.treehopper.TreehopperUsb;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import javax.usb.UsbAbortException;
 import javax.usb.UsbClaimException;
@@ -16,6 +18,7 @@ import javax.usb.UsbNotActiveException;
 import javax.usb.UsbNotClaimedException;
 import javax.usb.UsbNotOpenException;
 import javax.usb.UsbPipe;
+import org.usb4java.*;
 
 import io.treehopper.interfaces.Connection;
 
@@ -24,26 +27,23 @@ import io.treehopper.interfaces.Connection;
  */
 public class UsbConnection implements Connection {
 
-	private UsbDevice device; // private reference to the javax-usb device
-
+	private Device device; // private reference to the javax-usb device
+	
+	private DeviceHandle deviceHandle = new DeviceHandle();
+	
 	// interface
 	private UsbInterface iface;
 
 	// endpoints
-	private UsbEndpoint pinReportEndpoint; // javax-usb endpoint for receiving
+	private byte pinReportEndpoint; // javax-usb endpoint for receiving
 											// pin reports
-	private UsbEndpoint peripheralResponseEndpoint; // for receiving peripheral
+	private byte peripheralResponseEndpoint; // for receiving peripheral
 													// data (i2C, SPI, etc)
-	private UsbEndpoint pinConfigEndpoint; // ... for configuring pins
-	private UsbEndpoint peripheralConfigEndpoint; // ... for configuring the
+	private byte pinConfigEndpoint; // ... for configuring pins
+	private byte peripheralConfigEndpoint; // ... for configuring the
 													// peripheral (including
 													// LED)
 
-	// pipes
-	private UsbPipe pinReportPipe;
-	private UsbPipe peripheralResponsePipe;
-	private UsbPipe pinConfigPipe;
-	private UsbPipe peripheralConfigPipe;
 
 	private Thread pinListenerThread;
 	private boolean pinListenerThreadRunning;
@@ -53,101 +53,74 @@ public class UsbConnection implements Connection {
 	private String serialNumber;
 	private String name;
 
-	public UsbConnection(UsbDevice device) {
+	public UsbConnection(Device device) {
 		this.device = device;
 		this.connected = false;
 		this.pinListenerThreadRunning = false;
 
 		// http://javax-usb.sourceforge.net/jdoc/javax/usb/UsbDevice.html
-		try {
-			this.serialNumber = device.getSerialNumberString();
-			this.name = device.getProductString();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		// TODO: set serial number
+		//			this.serialNumber = device.getSerialNumberString();
+		//			this.name = device.getProductString();
+
 	}
 
 	public boolean open() {
 		if (connected)
 			return true;
+		
+		int result = LibUsb.open(device, deviceHandle);
+		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to open USB device", result);
 
-		UsbConfiguration configuration = device.getActiveUsbConfiguration();
-		iface = configuration.getUsbInterface((byte) 0);
-		try {
-			iface.claim();
-			connected = true;
-		} catch (UsbClaimException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbNotActiveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		LibUsb.claimInterface(deviceHandle, 0);
+		
+
+//		UsbConfiguration configuration = device.getActiveUsbConfiguration();
+//		iface = configuration.getUsbInterface((byte) 0);
+//		try {
+//			iface.claim();
+//			connected = true;
+//		} catch (UsbClaimException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (UsbNotActiveException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (UsbDisconnectedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (UsbException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		// next, get the four endpoints for Treehopper
-		pinReportEndpoint = iface.getUsbEndpoint((byte)0x81);
-		peripheralResponseEndpoint = iface.getUsbEndpoint((byte)0x82);
-		pinConfigEndpoint = iface.getUsbEndpoint((byte)0x01);
-		peripheralConfigEndpoint = iface.getUsbEndpoint((byte)0x02);
-
-		// in JavaX-Usb, communication happens through pipes, so get those
-		pinReportPipe = pinReportEndpoint.getUsbPipe();
-		peripheralResponsePipe = peripheralResponseEndpoint.getUsbPipe();
-		pinConfigPipe = pinConfigEndpoint.getUsbPipe();
-		peripheralConfigPipe = peripheralConfigEndpoint.getUsbPipe();
-
-		// before we communicate, we have to open the pipes
-		try {
-			pinReportPipe.open();
-			peripheralResponsePipe.open();
-			pinConfigPipe.open();
-			peripheralConfigPipe.open();
-		} catch (UsbNotActiveException e) {
-			e.printStackTrace();
-		} catch (UsbNotClaimedException e) {
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			e.printStackTrace();
-		} catch (UsbException e) {
-			e.printStackTrace();
-		}
+		
+		// TODO: final initializers for all these:
+		pinReportEndpoint = (byte)0x81;
+		peripheralResponseEndpoint = (byte)0x82;
+		pinConfigEndpoint = (byte)0x01;
+		peripheralConfigEndpoint = (byte)0x02;
 
 
 		// we need to start a thread to constantly read from the pinReportEndpoint
 		pinListenerThread = new Thread() {
 			@Override
 			public void run() {
-				byte[] data = new byte[41];
+				IntBuffer numBytesTransfered = IntBuffer.allocate(1);
+				
+				ByteBuffer data = ByteBuffer.allocate(41);
 				pinListenerThreadRunning = true;
 				while (pinListenerThreadRunning) {
-					try {
-						int received = pinReportPipe.syncSubmit(data);
-					} catch (UsbNotActiveException e) {
-						e.printStackTrace();
-					} catch (UsbNotOpenException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (UsbDisconnectedException e) {
-						e.printStackTrace();
-					} catch (UsbException e) {
-						e.printStackTrace();
-					}
-					if (board != null)
-						board.onPinReportReceived(data);
+					
+					LibUsb.bulkTransfer(deviceHandle,
+				               pinReportEndpoint,
+				               data,
+				               numBytesTransfered,
+				               1000);
+					if (board != null && numBytesTransfered.get(0) == 41)
+						board.onPinReportReceived(data.array());
 				}
 			}
 		};
@@ -156,59 +129,35 @@ public class UsbConnection implements Connection {
 	}
 
 	public void sendDataPinConfigChannel(byte[] data) {
-		try {
-			pinConfigPipe.syncSubmit(data);
-		} catch (UsbNotActiveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbNotOpenException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ByteBuffer byteBufferData = ByteBuffer.wrap(data);
+		IntBuffer numBytesTransfered = IntBuffer.allocate(1);
+		LibUsb.bulkTransfer(deviceHandle,
+	               pinConfigEndpoint,
+	               byteBufferData,
+	               numBytesTransfered,
+	               1000);
 	}
 
 	public void sendDataPeripheralChannel(byte[] data) {
-		try {
-			peripheralConfigPipe.syncSubmit(data);
-		} catch (UsbNotActiveException e) {
-			e.printStackTrace();
-		} catch (UsbNotOpenException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			e.printStackTrace();
-		} catch (UsbException e) {
-			e.printStackTrace();
-		}
+		ByteBuffer byteBufferData = ByteBuffer.wrap(data);
+		IntBuffer numBytesTransfered = IntBuffer.allocate(1);
+		LibUsb.bulkTransfer(deviceHandle,
+	               peripheralConfigEndpoint,
+	               byteBufferData,
+	               numBytesTransfered,
+	               1000);
 	}
 
 	@Override
 	public byte[] readPeripheralResponsePacket(int numBytesToRead) {
-		byte[] data = new byte[numBytesToRead];
-		try {
-			int received = peripheralResponsePipe.syncSubmit(data);
-		} catch (UsbNotActiveException e) {
-			e.printStackTrace();
-		} catch (UsbNotOpenException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			e.printStackTrace();
-		} catch (UsbException e) {
-			e.printStackTrace();
-		}
-		return data;
+		ByteBuffer byteBufferData = ByteBuffer.allocate(numBytesToRead);
+		IntBuffer numBytesTransfered = IntBuffer.allocate(1);
+		LibUsb.bulkTransfer(deviceHandle,
+	               peripheralResponseEndpoint,
+	               byteBufferData,
+	               numBytesTransfered,
+	               1000);
+		return byteBufferData.array();
 	}
 
 	public boolean isConnected() {
@@ -217,7 +166,7 @@ public class UsbConnection implements Connection {
 
 	public void close() {
 		pinListenerThreadRunning = false;
-		pinReportPipe.abortAllSubmissions();
+//		pinReportPipe.abortAllSubmissions(); // TODO
 
 		try {
 			pinListenerThread.join(); // wait for the thread to finish
@@ -226,23 +175,9 @@ public class UsbConnection implements Connection {
 		}
 
 		connected = false;
-
-		try {
-			pinReportPipe.close();
-			peripheralResponsePipe.close();
-			pinConfigPipe.close();
-			peripheralConfigPipe.close();
-
-			iface.release();
-		} catch (UsbNotActiveException e) {
-			e.printStackTrace();
-		} catch (UsbNotOpenException e) {
-			e.printStackTrace();
-		} catch (UsbDisconnectedException e) {
-			e.printStackTrace();
-		} catch (UsbException e) {
-			e.printStackTrace();
-		}
+		
+		LibUsb.releaseInterface(deviceHandle, 0);
+		LibUsb.close(deviceHandle);
 	}
 
 	// these three methods should be refactored into base class
