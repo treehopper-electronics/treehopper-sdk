@@ -53,6 +53,7 @@ public class ConnectionService {
 	            if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to read device descriptor", result);
 	            if (descriptor.idVendor() == vendorId && descriptor.idProduct() == productId) 
 	            {
+	            	LibUsb.refDevice(device);
 	            	TreehopperUsb board = new TreehopperUsb(new UsbConnection(device));
 	            	boards.add(board);
 	            }

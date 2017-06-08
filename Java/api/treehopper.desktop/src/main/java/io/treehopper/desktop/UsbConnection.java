@@ -77,9 +77,19 @@ public class UsbConnection implements Connection {
 		int result = LibUsb.open(device, deviceHandle);
 		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to open USB device", result);
 
+		DeviceDescriptor descriptor = new DeviceDescriptor();
+		int result1 = LibUsb.getDeviceDescriptor(device, descriptor);
+		if(result1 != LibUsb.SUCCESS) throw new LibUsbException("Unable to read device descriptor", result);
+
+		String serialNo = LibUsb.getStringDescriptor(deviceHandle, descriptor.iSerialNumber());
+		String name = LibUsb.getStringDescriptor(deviceHandle, descriptor.iProduct());
+		
+		setSerialNumber(serialNo);
+		setName(name);
+		
 		LibUsb.claimInterface(deviceHandle, 0);
 		
-
+		
 //		UsbConfiguration configuration = device.getActiveUsbConfiguration();
 //		iface = configuration.getUsbInterface((byte) 0);
 //		try {
@@ -173,8 +183,6 @@ public class UsbConnection implements Connection {
 		byte[] byteData = new byte[numBytesToRead];
 		readPeripheralBuffer.rewind();
 		readPeripheralBuffer.get(byteData);
-		
-//		return readPeripheralBuffer.array();
 		return byteData;
 	}
 
@@ -207,6 +215,14 @@ public class UsbConnection implements Connection {
 	}
 	public void setPinReportListener(TreehopperUsb board) {
 		this.board = board;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
