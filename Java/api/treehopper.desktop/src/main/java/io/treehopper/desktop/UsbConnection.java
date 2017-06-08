@@ -35,14 +35,15 @@ public class UsbConnection implements Connection {
 	private UsbInterface iface;
 
 	// endpoints
-	private byte pinReportEndpoint; // javax-usb endpoint for receiving
+	private final byte pinReportEndpoint = (byte)0x81; // javax-usb endpoint for receiving
 											// pin reports
-	private byte peripheralResponseEndpoint; // for receiving peripheral
+	private final byte peripheralResponseEndpoint = (byte)0x82; // for receiving peripheral
 													// data (i2C, SPI, etc)
-	private byte pinConfigEndpoint; // ... for configuring pins
-	private byte peripheralConfigEndpoint; // ... for configuring the
+	private final byte pinConfigEndpoint = (byte)0x01; // ... for configuring pins
+	private final byte peripheralConfigEndpoint = (byte)0x02; // ... for configuring the
 													// peripheral (including
 													// LED)
+	
 	private ByteBuffer pinListenerThreadBuffer;
 	private ByteBuffer sendConfigBuffer;
 	private ByteBuffer sendPeripheralBuffer;
@@ -89,35 +90,6 @@ public class UsbConnection implements Connection {
 		
 		LibUsb.claimInterface(deviceHandle, 0);
 		
-		
-//		UsbConfiguration configuration = device.getActiveUsbConfiguration();
-//		iface = configuration.getUsbInterface((byte) 0);
-//		try {
-//			iface.claim();
-//			connected = true;
-//		} catch (UsbClaimException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (UsbNotActiveException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (UsbDisconnectedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (UsbException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
-		// next, get the four endpoints for Treehopper
-		
-		// TODO: final initializers for all these:
-		pinReportEndpoint = (byte)0x81;
-		peripheralResponseEndpoint = (byte)0x82;
-		pinConfigEndpoint = (byte)0x01;
-		peripheralConfigEndpoint = (byte)0x02;
-
-
 		// we need to start a thread to constantly read from the pinReportEndpoint
 		pinListenerThread = new Thread() {
 			@Override
