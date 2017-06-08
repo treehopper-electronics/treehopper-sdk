@@ -43,7 +43,11 @@ public class UsbConnection implements Connection {
 	private byte peripheralConfigEndpoint; // ... for configuring the
 													// peripheral (including
 													// LED)
-
+	private ByteBuffer pinListenerThreadBuffer;
+	private ByteBuffer sendConfigBuffer;
+	private ByteBuffer sendPeripheralBuffer;
+	private ByteBuffer readPeripheralBuffer;
+	
 
 	private Thread pinListenerThread;
 	private boolean pinListenerThreadRunning;
@@ -110,17 +114,22 @@ public class UsbConnection implements Connection {
 			public void run() {
 				IntBuffer numBytesTransfered = IntBuffer.allocate(1);
 				
-				ByteBuffer data = ByteBuffer.allocate(41);
+				
+				pinListenerThreadBuffer = ByteBuffer.allocateDirect(41);
 				pinListenerThreadRunning = true;
 				while (pinListenerThreadRunning) {
 					
 					LibUsb.bulkTransfer(deviceHandle,
 				               pinReportEndpoint,
-				               data,
+				               pinListenerThreadBuffer,
 				               numBytesTransfered,
 				               1000);
-					if (board != null && numBytesTransfered.get(0) == 41)
-						board.onPinReportReceived(data.array());
+					if (board != null && numBytesTransfered.get(0) == 41) {
+						byte[] byteData = new byte[41];
+						pinListenerThreadBuffer.rewind();
+						pinListenerThreadBuffer.get(byteData);
+						board.onPinReportReceived(byteData);
+					}
 				}
 			}
 		};
@@ -129,35 +138,44 @@ public class UsbConnection implements Connection {
 	}
 
 	public void sendDataPinConfigChannel(byte[] data) {
-		ByteBuffer byteBufferData = ByteBuffer.wrap(data);
+		sendConfigBuffer = ByteBuffer.allocateDirect(data.length);
+		sendConfigBuffer.put(data);
 		IntBuffer numBytesTransfered = IntBuffer.allocate(1);
 		LibUsb.bulkTransfer(deviceHandle,
 	               pinConfigEndpoint,
-	               byteBufferData,
+	               sendConfigBuffer,
 	               numBytesTransfered,
 	               1000);
 	}
 
 	public void sendDataPeripheralChannel(byte[] data) {
-		ByteBuffer byteBufferData = ByteBuffer.wrap(data);
+		
+		sendPeripheralBuffer = ByteBuffer.allocateDirect(data.length);
+		sendPeripheralBuffer.put(data);
 		IntBuffer numBytesTransfered = IntBuffer.allocate(1);
 		LibUsb.bulkTransfer(deviceHandle,
 	               peripheralConfigEndpoint,
-	               byteBufferData,
+	               sendPeripheralBuffer,
 	               numBytesTransfered,
 	               1000);
 	}
 
 	@Override
 	public byte[] readPeripheralResponsePacket(int numBytesToRead) {
-		ByteBuffer byteBufferData = ByteBuffer.allocate(numBytesToRead);
+		readPeripheralBuffer = ByteBuffer.allocateDirect(numBytesToRead);
 		IntBuffer numBytesTransfered = IntBuffer.allocate(1);
 		LibUsb.bulkTransfer(deviceHandle,
 	               peripheralResponseEndpoint,
-	               byteBufferData,
+	               readPeripheralBuffer,
 	               numBytesTransfered,
 	               1000);
-		return byteBufferData.array();
+		
+		byte[] byteData = new byte[numBytesToRead];
+		readPeripheralBuffer.rewind();
+		readPeripheralBuffer.get(byteData);
+		
+//		return readPeripheralBuffer.array();
+		return byteData;
 	}
 
 	public boolean isConnected() {

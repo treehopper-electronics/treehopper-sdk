@@ -61,7 +61,7 @@ public class ConnectionService {
 	    finally
 	    {
 	        // Ensure the allocated device list is freed
-	        LibUsb.freeDeviceList(list, true);
+//	        LibUsb.freeDeviceList(list, true);
 	    }
 		
 	}
