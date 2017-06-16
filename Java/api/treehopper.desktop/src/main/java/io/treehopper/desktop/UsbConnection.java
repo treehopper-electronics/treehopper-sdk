@@ -62,13 +62,23 @@ public class UsbConnection implements Connection {
 		this.device = device;
 		this.connected = false;
 		this.pinListenerThreadRunning = false;
-
-		// http://javax-usb.sourceforge.net/jdoc/javax/usb/UsbDevice.html
+//		this.serialNumber = "";
+//		this.name = "";
 		
-		// TODO: set serial number
-		//			this.serialNumber = device.getSerialNumberString();
-		//			this.name = device.getProductString();
-
+		int result = LibUsb.open(device, deviceHandle);
+		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to open USB device", result);
+		
+		DeviceDescriptor descriptor = new DeviceDescriptor();
+		int result1 = LibUsb.getDeviceDescriptor(device, descriptor);
+		if(result1 != LibUsb.SUCCESS) throw new LibUsbException("Unable to read device descriptor", result1);
+//
+		String serialNo = LibUsb.getStringDescriptor(deviceHandle, descriptor.iSerialNumber());
+		String name = LibUsb.getStringDescriptor(deviceHandle, descriptor.iProduct());
+		
+		this.serialNumber = serialNo;
+		this.name = name;
+		
+		LibUsb.close(deviceHandle);
 	}
 
 	public boolean open() {
@@ -78,16 +88,6 @@ public class UsbConnection implements Connection {
 		int result = LibUsb.open(device, deviceHandle);
 		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to open USB device", result);
 
-		DeviceDescriptor descriptor = new DeviceDescriptor();
-		int result1 = LibUsb.getDeviceDescriptor(device, descriptor);
-		if(result1 != LibUsb.SUCCESS) throw new LibUsbException("Unable to read device descriptor", result);
-
-		String serialNo = LibUsb.getStringDescriptor(deviceHandle, descriptor.iSerialNumber());
-		String name = LibUsb.getStringDescriptor(deviceHandle, descriptor.iProduct());
-		
-		setSerialNumber(serialNo);
-		setName(name);
-		
 		LibUsb.claimInterface(deviceHandle, 0);
 		
 		// we need to start a thread to constantly read from the pinReportEndpoint
