@@ -21,7 +21,7 @@ public class ConnectionService {
 	// these are the Treehopper USB VID/PID
 	private short vendorId = (short)0x10c4;
 	private short productId = (short)0x8a7e;
-	
+	private int result;
 
 	private static final Context context  = new Context();
 
@@ -36,7 +36,13 @@ public class ConnectionService {
 	}
 	
 	public ConnectionService() {
-		int result = LibUsb.init(context);
+		result = LibUsb.init(context);
+	    updateBoards();
+	}
+
+	public void updateBoards() {
+		boards.clear();
+		
 		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to initialize libusb.", result);
 
 		DeviceList list = new DeviceList();
@@ -64,12 +70,10 @@ public class ConnectionService {
 	        // Ensure the allocated device list is freed
 //	        LibUsb.freeDeviceList(list, true);
 	    }
-		
 	}
 
-	
-
 	public ArrayList<TreehopperUsb> getBoards() {
+		updateBoards();
 		return boards;
 	}
 
