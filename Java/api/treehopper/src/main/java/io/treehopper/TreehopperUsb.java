@@ -29,6 +29,8 @@ public class TreehopperUsb {
     private boolean led;
     private boolean connected;
 
+    SoftPwmManager softPwmManager;
+
     /**
      * Construct a Treehopper from a Connection
      *
@@ -47,6 +49,7 @@ public class TreehopperUsb {
         i2c = new HardwareI2c(this);
         spi = new HardwareSpi(this);
         uart = new Uart(this);
+        softPwmManager = new SoftPwmManager(this);
 
         hardwarePwmManager = new HardwarePwmManager(this);
     }
