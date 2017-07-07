@@ -56,8 +56,8 @@
       <Name>Treehopper.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\API\Treehopper\Treehopper.csproj">
-      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
-      <Name>Treehopper</Name>
+      <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>
+      <Name>TreehopperControlCenter.Mac</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Treehopper.Libraries\Treehopper.Libraries.csproj">
       <Project>{397B4612-9FF2-4288-A7D0-C2B2FC4F4816}</Project>

@@ -25,7 +25,7 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 
 		public static IOCFPlugInInterface GetPlugInInterfaceFromPtrPtr(IntPtr PtrPtr)
 		{
-			IntPtr pluginInterfacePtr = new IntPtr(Marshal.ReadInt32(PtrPtr));
+			IntPtr pluginInterfacePtr = new IntPtr(Marshal.ReadInt64(PtrPtr));
 			IOCFPlugInInterface pluginInterface = (IOCFPlugInInterface)Marshal.PtrToStructure(pluginInterfacePtr, typeof(IOCFPlugInInterface));
 			return pluginInterface;
 		}
