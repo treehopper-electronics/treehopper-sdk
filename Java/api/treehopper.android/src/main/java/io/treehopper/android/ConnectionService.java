@@ -29,7 +29,7 @@ public class ConnectionService extends BroadcastReceiver {
         return instance;
     }
 
-    public static final String ActionUsbPermission = "com.treehopper.library.USB_PERMISSION";
+    public static final String ActionUsbPermission = "io.treehopper.android.USB_PERMISSION";
 
     private UsbManager manager;
 
