@@ -26,16 +26,16 @@ SI_SEGMENT_VARIABLE(portBitNumber[], static const uint8_t, SI_SEG_CODE) = {
 	7,// pin15
 
 	// < Rev A2
-	3,// pin16
-	2,
-	1,
-	0,
+//	3,// pin16
+//	2,
+//	1,
+//	0,
 
 	// > Rev A2
-	// 0, // pin16
-	// 1,
-	// 2,
-	// 3
+	 0, // pin16
+	 1,
+	 2,
+	 3
 };
 
 void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull) {
@@ -173,9 +173,9 @@ void GPIO_WriteValue(uint8_t pinNumber, bool val) {
 
 bool GPIO_ReadValue(uint8_t pinNumber) {
 	uint8_t portBit = portBitNumber[pinNumber];
-	if (pinNumber < 9)
+	if (pinNumber < 8)
 		return P0 & (1 << portBit);
-	else if (pinNumber < 17)
+	else if (pinNumber < 16)
 		return P1 & (1 << portBit);
 	else
 		return P2 & (1 << portBit);
