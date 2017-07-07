@@ -100,10 +100,11 @@ namespace Treehopper
             if (_pins.Count > 0)
             {
                 foreach (var entry in _pins)
+                {
                     // for pins that use pulse width, calculate value based on resolution
                     if (entry.Value.UsePulseWidth)
                     {
-                        entry.Value.Ticks = (ushort) (entry.Value.PulseWidthUs / _resolution);
+                        entry.Value.Ticks = (ushort)(entry.Value.PulseWidthUs / _resolution);
 
                         // just in case the user wants to retrieve duty cycle, update its value, too
                         entry.Value.DutyCycle = entry.Value.Ticks / 65535d;
@@ -111,11 +112,13 @@ namespace Treehopper
                     else
                     {
                         // for pins that use duty-cycle, calculate based on period count
-                        entry.Value.Ticks = (ushort) Math.Round(entry.Value.DutyCycle * 65535);
+                        entry.Value.Ticks = (ushort)Math.Round(entry.Value.DutyCycle * 65535);
 
                         // just in case the user wants to retrieve pulse width, update its value too
-                        entry.Value.PulseWidthUs = (int) (entry.Value.Ticks * _resolution);
+                        entry.Value.PulseWidthUs = (int)(entry.Value.Ticks * _resolution);
                     }
+                }
+                    
 
                 // now the fun part; let's figure out the delta delays between each pin
                 var orderedValues = _pins.Values.OrderBy(pin => pin.Ticks);

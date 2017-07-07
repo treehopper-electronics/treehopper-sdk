@@ -189,9 +189,9 @@ namespace Treehopper.Uwp
                 {
                     bytesRead = await pinEventReader.LoadAsync(64);
 
-                    if (bytesRead == 64)
+                    if (bytesRead == 41)
                     {
-                        var data = new byte[64];
+                        var data = new byte[41];
                         pinEventReader.ReadBytes(data);
                         if (PinEventDataReceived != null)
                         {

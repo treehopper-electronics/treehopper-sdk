@@ -7,7 +7,7 @@ namespace Treehopper
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         The period of the SoftPwm module defaults to approximately 100 Hz. Changing this period will affect all active
+    ///         The period of the SoftPwm module defaults to approximately 60 Hz. Changing this period will affect all active
     ///         SoftPwm pins.
     ///     </para>
     ///     <para>
