@@ -51,7 +51,7 @@ namespace Treehopper.Desktop.MacUsb
 				return;
 			}
 
-			IntPtr deviceInterfacePtr = new IntPtr(Marshal.ReadInt32(deviceInterfacePtrPtr));
+			IntPtr deviceInterfacePtr = new IntPtr(Marshal.ReadInt64(deviceInterfacePtrPtr));
 			if (deviceInterfacePtr != IntPtr.Zero)
 			{
 				deviceInterface = (IOUSBDeviceInterface320)Marshal.PtrToStructure(deviceInterfacePtr, typeof(IOUSBDeviceInterface320));
@@ -68,7 +68,7 @@ namespace Treehopper.Desktop.MacUsb
 
 		public string Serial { get; private set; }
 
-		public int UpdateRate { get; set; }
+        public int UpdateRate { get; set; } = 10;
 
 		public short Version { get; set; }
 
@@ -170,9 +170,10 @@ namespace Treehopper.Desktop.MacUsb
 				return false;
 			}
 
-			IntPtr interfaceInterfacePtr = new IntPtr(Marshal.ReadInt32(interfaceInterfacePtrPtr));
+			IntPtr interfaceInterfacePtr = new IntPtr(Marshal.ReadInt64(interfaceInterfacePtrPtr));
 			if (interfaceInterfacePtr == IntPtr.Zero)
 			{
+                Debug.WriteLine("Bad InterfaceInterface pointer");
 				return false;
 			}
 
@@ -228,6 +229,7 @@ namespace Treehopper.Desktop.MacUsb
 								Debug.WriteLine("Can't clear pipe stall: " + status);
                             break;
                     }
+                    Thread.Sleep(UpdateRate);
 				}
 			});
 
