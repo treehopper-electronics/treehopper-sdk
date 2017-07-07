@@ -29,7 +29,7 @@ namespace TreehopperControlCenter
 	    public async Task Connect()
 	    {
 	        Debug.WriteLine("Waiting for board...");
-            Board = await ConnectionService.Instance.GetFirstDeviceAsync();
+Board = await ConnectionService.Instance.GetFirstDeviceAsync();
             
             await Board.ConnectAsync();
             Board.Connection.UpdateRate = 25;
