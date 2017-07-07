@@ -4,18 +4,28 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Hardware.Usb;
+using Java.Lang;
 
 namespace Treehopper.Android
 {
     public class UsbConnection : IConnection
     {
         UsbDeviceConnection connection;
+        readonly UsbManager usbManager;
         readonly UsbDevice usbDevice;
+
         UsbEndpoint pinConfigEndpoint;
         UsbEndpoint pinReportEndpoint;
         UsbEndpoint peripheralConfigEndpoint;
         UsbEndpoint peripheralResponseEndpoint;
-        readonly UsbManager usbManager;
+
+        Thread pinListenerThread;
+        bool pinListenerThreadRunning = false;
+
+        public UsbConnection(UsbDevice device, Context appContext) : this(device, (UsbManager) appContext.GetSystemService("usb"))
+        {
+
+        }
 
         public UsbConnection(UsbDevice device, UsbManager manager)
         {
@@ -60,9 +70,8 @@ namespace Treehopper.Android
             if (connected)
                 return false;
 
-            usbManager.RequestPermission(usbDevice, PendingIntent.GetBroadcast(ConnectionService.Instance.Context, 0, new Intent(ConnectionService.Instance.ActionUsbPermission), PendingIntentFlags.CancelCurrent));
-
-
+            //usbManager.RequestPermission(usbDevice, PendingIntent.GetBroadcast(ConnectionService.Instance.Context, 0, new Intent(ConnectionService.Instance.ActionUsbPermission), PendingIntentFlags.CancelCurrent));
+            
             UsbInterface intf = usbDevice.GetInterface(0);
             pinReportEndpoint = intf.GetEndpoint(0);
             peripheralResponseEndpoint = intf.GetEndpoint(1);
@@ -75,15 +84,35 @@ namespace Treehopper.Android
                 if (intfClaimed)
                 {
                     connected = true;
+
+                    pinListenerThread = new Thread(
+                        () =>
+                        {
+                            byte[] data = new byte[64];
+                            pinListenerThreadRunning = true;
+                            while (pinListenerThreadRunning)
+                            {
+                                int res =
+                                    connection.BulkTransfer(pinReportEndpoint, data, 41,
+                                        100); // pin reports are 41 bytes long now
+                                if (res > 0)
+                                    this.PinEventDataReceived?.Invoke(data);
+                            }
+                        });
+
+                    pinListenerThread.Start();
                     return true;
+
                 }
             }
             return false;
         }
 
-        public Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead)
+        public async Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead)
         {
-            throw new NotImplementedException();
+            byte[] data = new byte[bytesToRead];
+            int res = connection.BulkTransfer(peripheralResponseEndpoint, data, (int)bytesToRead, 1000);
+            return data;
         }
 
         public async Task SendDataPeripheralChannel(byte[] data)

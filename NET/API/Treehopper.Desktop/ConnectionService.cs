@@ -8,7 +8,7 @@ using Treehopper.Desktop.LibUsb;
 using Treehopper.Desktop.MacUsb;
 using Treehopper.Desktop.WinUsb;
 
-namespace Treehopper.Desktop
+namespace Treehopper
 {
     /// <summary>
     ///     This class is used for discovering <see cref="TreehopperUsb" /> devices attached to this computer.
