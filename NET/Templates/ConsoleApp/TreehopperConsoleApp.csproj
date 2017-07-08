@@ -5,7 +5,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <FileUpgradeFlags>40</FileUpgradeFlags>
     <OldToolsVersion>14.0</OldToolsVersion>
-    <UpgradeBackupLocation>D:\Git\treehopper-sdk\Backup3\NET\Templates\ConsoleApp\</UpgradeBackupLocation>
+    <UpgradeBackupLocation>D:\Git\treehopper-sdk\Backup7\</UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>

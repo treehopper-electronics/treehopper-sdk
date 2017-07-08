@@ -117,6 +117,8 @@ namespace TreehopperControlCenter
             Name = pin.Name;
             pin.DigitalValueChanged += Pin_DigitalValueChanged;
             pin.AnalogValueChanged += Pin_AnalogValueChanged;
+
+            SelectedPinMode = PinModes[0];
         }
 
         private void Pin_AnalogValueChanged(object sender, AnalogValueChangedEventArgs e)

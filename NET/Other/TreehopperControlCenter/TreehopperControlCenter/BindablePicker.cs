@@ -1,209 +1,214 @@
 ﻿using System;
-using Xamarin.Forms;
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Reflection;
+using Xamarin.Forms;
 
-namespace TreehopperControlCenter
+namespace JPC.BindablePicker
 {
     public class BindablePicker : Picker
     {
-        Boolean _disableNestedCalls = false;
+        public static readonly BindableProperty DisplayMemberPathProperty =
+             BindableProperty.Create(
+                 nameof(DisplayMemberPath),
+                 typeof(string),
+                 typeof(BindablePicker),
+                 default(string));
 
-        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create("ItemsSource", typeof(IEnumerable), typeof(BindablePicker), null, propertyChanged: OnItemsSourceChanged);
-        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create("SelectedItem", typeof(Object), typeof(BindablePicker), null, BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged);
-        public static readonly BindableProperty SelectedValueProperty = BindableProperty.Create("SelectedValue", typeof(Object), typeof(BindablePicker), null, BindingMode.TwoWay, propertyChanged: OnSelectedValueChanged);
-
-        public String DisplayMemberPath { get; set; }
-
-        public IEnumerable ItemsSource
+        public Func<object, string> DisplayMemberFunc
         {
-            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get { return (Func<object, string>)GetValue(DisplayMemberFuncProperty); }
+            set { SetValue(DisplayMemberFuncProperty, value); }
         }
 
-        public Object SelectedItem
-        {
-            get { return GetValue(SelectedItemProperty); }
-            set
-            {
-                if (SelectedItem != value)
-                {
-                    SetValue(SelectedItemProperty, value);
-                    InternalUpdateSelectedIndexSelectedValue();
-                }
-            }
-        }
+        public static readonly BindableProperty DisplayMemberFuncProperty =
+            BindableProperty.Create(
+                nameof(DisplayMemberFunc),
+                typeof(Func<object, string>),
+                typeof(BindablePicker));
 
-        public Object SelectedValue
-        {
-            get { return GetValue(SelectedValueProperty); }
-            set
-            {
-                SetValue(SelectedValueProperty, value);
-                InternalUpdateSelectedIndexSelectedValue();
-            }
-        }
+        public static readonly BindableProperty ItemsSourceProperty =
+            BindableProperty.Create(
+                nameof(ItemsSource),
+                typeof(IList),
+                typeof(BindablePicker),
+                default(IList),
+                propertyChanged: OnItemsSourceChanged);
 
-        public String SelectedValuePath { get; set; }
+        public static readonly BindableProperty SelectedItemProperty =
+            BindableProperty.Create(
+                nameof(SelectedItem),
+                typeof(object),
+                typeof(BindablePicker),
+                null,
+                BindingMode.TwoWay,
+                propertyChanged: OnSelectedItemChanged);
 
         public BindablePicker()
         {
-            this.SelectedIndexChanged += OnSelectedIndexChanged;
+            SelectedIndexChanged += OnSelectedIndexChanged;
         }
 
-        public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
-
-        void InternalUpdateSelectedIndexSelectedItem()
+        /// <summary>
+        /// Set the name of the property that should be used to display the objects in <see cref="ItemsSource"/>.
+        /// If left blank the <see cref="object.ToString"/> will be called
+        /// </summary>
+        /// <remarks>
+        /// Setting a value that does not exists on the object cause exception
+        /// </remarks>
+        /// <para>
+        /// Settings this value only affects objects that are not primitive types.
+        /// </para>
+        /// <exception cref="ArgumentException">Setting a value that does not exists on the object cause exception</exception>
+        public string DisplayMemberPath
         {
-            if (_disableNestedCalls)
-            {
-                return;
-            }
-
-            if (String.IsNullOrWhiteSpace(SelectedValuePath))
-            {
-                return;
-            }
-            var selectedIndex = -1;
-            Object selectedItem = null;
-            if (ItemsSource != null)
-            {
-                var index = 0;
-                foreach (var item in ItemsSource)
-                {
-                    if (item != null)
-                    {
-                        var type = item.GetType();
-                        var prop = type.GetRuntimeProperty(SelectedValuePath);
-                        if (prop.GetValue(item) == SelectedValue)
-                        {
-                            selectedIndex = index;
-                            selectedItem = item;
-                            break;
-                        }
-                    }
-
-                    index++;
-                }
-            }
-            _disableNestedCalls = true;
-            SelectedItem = selectedItem;
-            SelectedIndex = selectedIndex;
-            _disableNestedCalls = false;
+            get { return (string)GetValue(DisplayMemberPathProperty); }
+            set { SetValue(DisplayMemberPathProperty, value); }
         }
 
-        void InternalUpdateSelectedIndexSelectedValue()
+        public IList ItemsSource
         {
-            if (_disableNestedCalls)
-            {
-                return;
-            }
-
-            var selectedIndex = -1;
-            Object selectedValue = null;
-            if (ItemsSource != null)
-            {
-                var index = 0;
-                var hasSelectedValuePath = !String.IsNullOrWhiteSpace(SelectedValuePath);
-                foreach (var item in ItemsSource)
-                {
-                    if (item != null && item.Equals(SelectedItem))
-                    {
-                        selectedIndex = index;
-                        if (hasSelectedValuePath)
-                        {
-                            var type = item.GetType();
-                            var prop = type.GetRuntimeProperty(SelectedValuePath);
-                            selectedValue = prop.GetValue(item);
-                        }
-                        break;
-                    }
-                    index++;
-                }
-            }
-            _disableNestedCalls = true;
-            SelectedValue = selectedValue;
-            SelectedIndex = selectedIndex;
-            _disableNestedCalls = false;
+            get { return (IList)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
         }
 
-        static void OnItemsSourceChanged(BindableObject bindable, Object oldValue, Object newValue)
+        public object SelectedItem
+        {
+            get { return GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
+        }
+
+        private static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var picker = (BindablePicker)bindable;
-
-            if (Equals(newValue, null) && !Equals(oldValue, null))
-            {
-                return;
-            }
-
-            picker.Items.Clear();
-
-            if (!Equals(newValue, null))
-            {
-                var hasDisplayMemberPath = !String.IsNullOrWhiteSpace(picker.DisplayMemberPath);
-
-                foreach (var item in (IEnumerable)newValue)
-                {
-                    if (hasDisplayMemberPath)
-                    {
-                        var type = item.GetType();
-                        var prop = type.GetRuntimeProperty(picker.DisplayMemberPath);
-                        picker.Items.Add(prop.GetValue(item).ToString());
-                    }
-                    else
-                    {
-                        picker.Items.Add(item.ToString());
-                    }
-                }
-            }
-
-            picker.InternalUpdateSelectedIndexSelectedValue();
+            picker.SetSelectedItem(newValue);
         }
 
-        void OnSelectedIndexChanged(Object sender, EventArgs e)
+        private void SetSelectedItem(object selectedItem)
         {
-            if (SelectedIndex < 0 || ItemsSource == null || !ItemsSource.GetEnumerator().MoveNext())
+            var displayMember = GetDisplayMember(selectedItem);
+            var index = Items.IndexOf(displayMember);
+            SelectedIndex = index;
+        }
+
+        private static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var picker = (BindablePicker)bindable;
+            var observable = oldValue as INotifyCollectionChanged;
+            if (observable != null)
             {
-                SelectedItem = null;
-                SelectedValue = null;
+                observable.CollectionChanged -= picker.CollectionChanged;
+            }
+            observable = newValue as INotifyCollectionChanged;
+            picker.BindItems();
+            if (observable != null)
+            {
+                observable.CollectionChanged += picker.CollectionChanged;
+            }
+        }
+
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Replace:
+                    BindItems();
+                    return;
+                case NotifyCollectionChangedAction.Remove:
+                    RemoveItems(e);
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    AddItems(e);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void AddItems(NotifyCollectionChangedEventArgs e)
+        {
+            var index = e.NewStartingIndex < 0 ? Items.Count : e.NewStartingIndex;
+            foreach (var newItem in e.NewItems)
+            {
+                Items.Insert(index++, GetDisplayMember(newItem));
+            }
+        }
+
+        private void RemoveItems(NotifyCollectionChangedEventArgs e)
+        {
+            var index = e.OldStartingIndex < Items.Count ? e.OldStartingIndex : Items.Count;
+            // TODO: How do we determine the order of which the items were removed
+            foreach (var _ in e.OldItems)
+            {
+                Items.RemoveAt(index--);
+            }
+        }
+
+        private void OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            // coerceSelectedIndex ensures that SelectedIndex is in range [-1,ItemsSource.Count)
+            SelectedItem = SelectedIndex == -1 ? null : ItemsSource?[SelectedIndex];
+        }
+
+        private void BindItems()
+        {
+            Items.Clear();
+            if (ItemsSource == null)
+            {
                 return;
             }
-
-            var index = 0;
-            var hasSelectedValuePath = !String.IsNullOrWhiteSpace(SelectedValuePath);
             foreach (var item in ItemsSource)
             {
-                if (index == SelectedIndex)
-                {
-                    SelectedItem = item;
-                    if (hasSelectedValuePath)
-                    {
-                        var type = item.GetType();
-                        var prop = type.GetRuntimeProperty(SelectedValuePath);
-                        SelectedValue = prop.GetValue(item);
-                    }
-
-                    break;
-                }
-                index++;
+                Items.Add(GetDisplayMember(item));
             }
         }
 
-        static void OnSelectedItemChanged(BindableObject bindable, Object oldValue, Object newValue)
+        private static bool IsPrimitive(object item)
         {
-            var boundPicker = (BindablePicker)bindable;
-            if (boundPicker.ItemSelected != null)
+            // TODO Nullable types
+            return item is string || item is int || item is double || item is decimal || item is Enum ||
+                   item is DateTime;
+        }
+
+        /// <summary>
+        /// Get the value to display through reflection on <paramref name="item"/> using property <see cref="DisplayMemberPath"/>
+        /// </summary>
+        /// <param name="item">Item to get value from.</param>
+        /// <returns>Value of the property <see cref="DisplayMemberPath"/> if not <c>null</c>; otherwise ToString()</returns>
+        /// <exception cref="ArgumentException">If no property with name <see cref="DisplayMemberPath"/> is found</exception>
+        protected virtual string GetDisplayMember(object item)
+        {
+            if (DisplayMemberFunc != null)
             {
-                boundPicker.ItemSelected.Invoke(boundPicker, new SelectedItemChangedEventArgs(newValue));
-                boundPicker.InternalUpdateSelectedIndexSelectedValue();
+                return DisplayMemberFunc(item);
             }
-        }
-
-        static void OnSelectedValueChanged(BindableObject bindable, Object oldvalue, Object newvalue)
-        {
-            var boundPicker = (BindablePicker)bindable;
-            boundPicker.InternalUpdateSelectedIndexSelectedItem();
+            if (item == null)
+            {
+                return string.Empty;
+            }
+            if (IsPrimitive(item) || string.IsNullOrEmpty(DisplayMemberPath))
+            {
+                return item.ToString();
+            }
+            // Find the property by walking the display member path to find any nested properties
+            var propertyPathParts = DisplayMemberPath.Split('.');
+            object propertyValue = item;
+            foreach (var propertyPathPart in propertyPathParts)
+            {
+                var propInfo = propertyValue.GetType().GetTypeInfo().GetDeclaredProperty(propertyPathPart);
+                if (propInfo == null)
+                {
+                    throw new ArgumentException($"No property '{propertyPathPart}' was found on '{propertyValue.GetType().FullName}'");
+                }
+                propertyValue = propInfo.GetValue(propertyValue);
+            }
+            if (propertyValue == null)
+            {
+                throw new ArgumentException($"No property '{DisplayMemberPath}' was found on '{item.GetType().FullName}'");
+            }
+            return propertyValue as string;
         }
     }
 }
