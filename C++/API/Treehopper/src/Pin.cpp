@@ -172,11 +172,13 @@ namespace Treehopper
                 cmd[0] = (uint8_t)PinConfigCommands::MakeOpenDrainOutput;
                 cmd[1] = 0;
                 SendCommand(cmd, 2);
+                DigitalOut::_digitalValue; = false; // set initial state
                 break;
             case PinMode::PushPullOutput:
                 cmd[0] = (uint8_t)PinConfigCommands::MakePushPullOutput;
                 cmd[1] = 0;
                 SendCommand(cmd, 2);
+                DigitalOut::_digitalValue; = false; // set initial state
                 break;
             default:
                 cmd[0] = (uint8_t)PinConfigCommands::Reserved;

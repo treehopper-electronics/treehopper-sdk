@@ -120,9 +120,11 @@ public class Pin implements DigitalIO, SpiChipSelectPin {
                 break;
             case OpenDrainOutput:
                 sendCommand(new byte[]{(byte) PinConfigCommands.MakeOpenDrainOutput.ordinal(), 0x00});
+                digitalValue = false; // set initial state
                 break;
             case PushPullOutput:
                 sendCommand(new byte[]{(byte) PinConfigCommands.MakePushPullOutput.ordinal(), 0x00});
+                digitalValue = false; // set initial state
                 break;
         }
     }

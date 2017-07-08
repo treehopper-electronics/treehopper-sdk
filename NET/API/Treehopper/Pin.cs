@@ -72,6 +72,8 @@ namespace Treehopper
                             MakeDigitalOpenDrainOut().Forget();
                         else
                             MakeDigitalOpenDrainOut().Wait();
+
+                        _digitalValue = false; // set initial state
                         break;
 
                     case PinMode.PushPullOutput:
@@ -79,6 +81,8 @@ namespace Treehopper
                             MakeDigitalPushPullOut().Forget();
                         else
                             MakeDigitalPushPullOut().Wait();
+
+                        _digitalValue = false;
                         break;
                 }
             }
