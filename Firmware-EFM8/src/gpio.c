@@ -54,7 +54,7 @@ void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull) {
 			P1MDOUT |= (1 << portBit);
 		else
 			P1MDOUT &= ~(1 << portBit);
-	} else if(pinNumber < 20) {
+	} else {
 		P2SKIP &= ~(1 << portBit);
 		if (pushPull)
 			P2MDOUT |= (1 << portBit);
@@ -77,7 +77,6 @@ void GPIO_MakeInput(uint8_t pinNumber, uint8_t digital) {
 
 
 	if (pinNumber < 8) {
-
 		P0SKIP |= 1 << portBit;
 		if (digital) {
 			P0MDIN |= 1 << portBit;
@@ -85,7 +84,9 @@ void GPIO_MakeInput(uint8_t pinNumber, uint8_t digital) {
 		} else {
 			P0MDIN &= ~(1 << portBit);
 		}
+
 		P0MDOUT &= ~(1 << portBit);
+
 	} else if (pinNumber < 16) {
 		P1SKIP |= 1 << portBit;
 		if (digital) {
@@ -94,8 +95,10 @@ void GPIO_MakeInput(uint8_t pinNumber, uint8_t digital) {
 		} else {
 			P1MDIN &= ~(1 << portBit);
 		}
+
 		P1MDOUT &= ~(1 << portBit);
-	} else if(pinNumber < 20){
+
+	} else {
 		SFRPAGE = 0x20;
 		P2SKIP |= 1 << portBit;
 		if (digital) {
@@ -104,15 +107,19 @@ void GPIO_MakeInput(uint8_t pinNumber, uint8_t digital) {
 		} else {
 			P2MDIN &= ~(1 << portBit);
 		}
+
 		P2MDOUT &= ~(1 << portBit);
 	}
 	if(digital == true)
 		pins[pinNumber] = DigitalInput;
+
 	SFRPAGE = SFRPAGE_save;
 }
 
 void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType) {
 	uint8_t portBit = portBitNumber[pinNumber];
+	uint8_t SFRPAGE_save = SFRPAGE;
+	SFRPAGE = 0;
 
 	if(pinNumber >= TREEHOPPER_NUM_PINS) return;
 	// we're already the proper output type, no need to go further.
@@ -134,7 +141,7 @@ void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType) {
 			P1MDOUT |= 1 << portBit;
 		else
 			P1MDOUT &= ~(1 << portBit);
-	} else if(pinNumber < 20) {
+	} else {
 		P2SKIP |= 1 << portBit;
 		P2MDIN |= 1 << portBit;
 		if (OutputType == PushPullOutput)
@@ -142,6 +149,9 @@ void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType) {
 		else
 			P2MDOUT &= ~(1 << portBit);
 	}
+
+	SFRPAGE = SFRPAGE_save;
+
 	pins[pinNumber] = OutputType;
 }
 

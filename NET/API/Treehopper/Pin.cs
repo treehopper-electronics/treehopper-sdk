@@ -82,7 +82,7 @@ namespace Treehopper
                         else
                             MakeDigitalPushPullOut().Wait();
 
-                        _digitalValue = false;
+                        _digitalValue = false; // set initial state
                         break;
                 }
             }

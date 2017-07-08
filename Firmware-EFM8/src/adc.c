@@ -31,15 +31,15 @@ SI_SEGMENT_VARIABLE(adcMxVal[], static const uint8_t, SI_SEG_CODE) = {
 	15,// pin15
 
 	// Rev < A2
-	23,// pin16
-	22,
-	21,
-	20,
+//	23,// pin16
+//	22,
+//	21,
+//	20,
 	// Rev > A2
-//		20, // pin16
-//		21,
-//		22,
-//		23,
+		20, // pin16
+		21,
+		22,
+		23,
 };
 void ADC_Init() {
 
