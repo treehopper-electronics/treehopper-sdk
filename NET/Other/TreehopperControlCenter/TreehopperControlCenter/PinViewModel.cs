@@ -29,39 +29,49 @@ namespace TreehopperControlCenter
                 switch(selectedPinMode)
                 {
                     case "Digital Input":
-                        pin.SoftPwm.Enabled = false;
-                        pin.Mode = PinMode.DigitalInput;
+                        if (pin != null)
+                        {
+                            pin.SoftPwm.Enabled = false;
+                            pin.Mode = PinMode.DigitalInput;
+                        }
                         SwitchVisible = false;
-                        DigitalInputEnabled = true;
+                        DigitalInputVisible = true;
                         SliderVisible = false;
                         ProgressVisible = false;
                         SwitchEnabled = false;
                         break;
 
                     case "Analog Input":
-                        pin.SoftPwm.Enabled = false;
-                        pin.Mode = PinMode.AnalogInput;
+                        if (pin != null)
+                        {
+                            pin.SoftPwm.Enabled = false;
+                            pin.Mode = PinMode.AnalogInput;
+                        }
                         SwitchVisible = false;
-                        DigitalInputEnabled = false;
+                        DigitalInputVisible = false;
                         SliderVisible = false;
                         ProgressVisible = true;
                         SwitchEnabled = false;
                         break;
 
                     case "Digital Output":
-                        pin.SoftPwm.Enabled = false;
-                        pin.Mode = PinMode.PushPullOutput;
+
+                        if (pin != null)
+                        {
+                            pin.SoftPwm.Enabled = false;
+                            pin.Mode = PinMode.PushPullOutput; 
+                        }
                         SwitchVisible = true;
-                        DigitalInputEnabled = false;
+                        DigitalInputVisible = false;
                         SliderVisible = false;
                         ProgressVisible = false;
                         SwitchEnabled = true;
                         break;
 
                     case "SoftPWM":
-                        pin.SoftPwm.Enabled = true;
+                        if (pin != null) pin.SoftPwm.Enabled = true;
                         SwitchVisible = false;
-                        DigitalInputEnabled = false;
+                        DigitalInputVisible = false;
                         SliderVisible = true;
                         ProgressVisible = false;
                         SwitchEnabled = false;
@@ -72,7 +82,7 @@ namespace TreehopperControlCenter
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SliderVisible"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ProgressVisible"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SwitchEnabled"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DigitalInputEnabled"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DigitalInputVisible"));
             }
         }
 
@@ -113,6 +123,7 @@ namespace TreehopperControlCenter
         public PinViewModel()
         {
             Name = "test pin";
+            SelectedPinMode = PinModes[0];
         }
 
         public bool DigitalInputValue { get; set; }
@@ -144,7 +155,7 @@ namespace TreehopperControlCenter
         public bool SwitchVisible { get; set; }
         public bool SliderVisible { get; set; }
         public bool ProgressVisible { get; set; }
-        public bool DigitalInputEnabled { get; set; }
+        public bool DigitalInputVisible { get; set; }
 
     }
 }
