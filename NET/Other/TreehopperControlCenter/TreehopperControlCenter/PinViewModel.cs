@@ -31,7 +31,8 @@ namespace TreehopperControlCenter
                     case "Digital Input":
                         pin.SoftPwm.Enabled = false;
                         pin.Mode = PinMode.DigitalInput;
-                        SwitchVisible = true;
+                        SwitchVisible = false;
+                        DigitalInputEnabled = true;
                         SliderVisible = false;
                         ProgressVisible = false;
                         SwitchEnabled = false;
@@ -41,6 +42,7 @@ namespace TreehopperControlCenter
                         pin.SoftPwm.Enabled = false;
                         pin.Mode = PinMode.AnalogInput;
                         SwitchVisible = false;
+                        DigitalInputEnabled = false;
                         SliderVisible = false;
                         ProgressVisible = true;
                         SwitchEnabled = false;
@@ -50,6 +52,7 @@ namespace TreehopperControlCenter
                         pin.SoftPwm.Enabled = false;
                         pin.Mode = PinMode.PushPullOutput;
                         SwitchVisible = true;
+                        DigitalInputEnabled = false;
                         SliderVisible = false;
                         ProgressVisible = false;
                         SwitchEnabled = true;
@@ -58,6 +61,7 @@ namespace TreehopperControlCenter
                     case "SoftPWM":
                         pin.SoftPwm.Enabled = true;
                         SwitchVisible = false;
+                        DigitalInputEnabled = false;
                         SliderVisible = true;
                         ProgressVisible = false;
                         SwitchEnabled = false;
@@ -68,6 +72,7 @@ namespace TreehopperControlCenter
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SliderVisible"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ProgressVisible"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SwitchEnabled"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DigitalInputEnabled"));
             }
         }
 
@@ -110,6 +115,8 @@ namespace TreehopperControlCenter
             Name = "test pin";
         }
 
+        public bool DigitalInputValue { get; set; }
+
 
         public PinViewModel(Pin pin)
         {
@@ -129,15 +136,15 @@ namespace TreehopperControlCenter
 
         private void Pin_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
         {
-            SwitchValue = e.NewValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SwitchValue"));
+            DigitalInputValue = e.NewValue;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DigitalInputValue"));
         }
 
         public bool SwitchEnabled { get; set; }
         public bool SwitchVisible { get; set; }
         public bool SliderVisible { get; set; }
         public bool ProgressVisible { get; set; }
-
+        public bool DigitalInputEnabled { get; set; }
 
     }
 }

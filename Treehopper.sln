@@ -153,7 +153,9 @@ Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Demo", "NET\Libraries\Ardui
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		NET\Other\TreehopperControlCenter\TreehopperControlCenter\TreehopperControlCenter.projitems*{0c457ad6-8ee0-4e4b-8e38-e47d1db69c28}*SharedItemsImports = 4
 		NET\Other\TreehopperControlCenter\TreehopperControlCenter\TreehopperControlCenter.projitems*{0ffbcae9-86d0-4f5c-9249-01fe391ba1d8}*SharedItemsImports = 4
+		NET\Other\TreehopperControlCenter\TreehopperControlCenter\TreehopperControlCenter.projitems*{c4c4767e-890f-41e4-9a1a-c492dc9d3d93}*SharedItemsImports = 4
 		NET\Other\TreehopperControlCenter\TreehopperControlCenter\TreehopperControlCenter.projitems*{d1be0299-aa19-4ee8-8471-f948a617ce1b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

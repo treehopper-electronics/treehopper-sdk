@@ -23,9 +23,10 @@
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Name}" WidthRequest="100" />
                                 <jpc:BindablePicker ItemsSource="{Binding PinModes}" SelectedItem="{Binding SelectedPinMode, Mode=TwoWay}" WidthRequest="150"/>
-                                <Switch IsToggled="{Binding SwitchValue}" IsEnabled="{Binding SwitchEnabled}" IsVisible="{Binding SwitchVisible}" HorizontalOptions="CenterAndExpand"/>
-                                <Slider Value="{Binding SliderValue}" Minimum="0" Maximum="1" IsVisible="{Binding SliderVisible}" HorizontalOptions="FillAndExpand" />
-                                <ProgressBar Progress="{Binding ProgressValue}" IsVisible="{Binding ProgressVisible}" HorizontalOptions="FillAndExpand"/>
+                                <Label Text="{Binding DigitalInputValue}" IsEnabled="{Binding DigitalInputEnabled}" WidthRequest="50" />
+                                <Switch IsToggled="{Binding SwitchValue}" IsEnabled="{Binding SwitchEnabled}" IsVisible="{Binding SwitchVisible}" />
+                                <Slider Value="{Binding SliderValue}" Maximum="1" Minimum="0" MinimumWidthRequest="100" IsVisible="{Binding SliderVisible}" HorizontalOptions="FillAndExpand" />
+                                <ProgressBar Progress="{Binding ProgressValue}"  MinimumWidthRequest="100" IsVisible="{Binding ProgressVisible}" HorizontalOptions="FillAndExpand"/>
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>
