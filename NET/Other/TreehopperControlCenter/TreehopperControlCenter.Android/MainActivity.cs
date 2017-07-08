@@ -14,7 +14,7 @@ using Xamarin.Forms;
 
 namespace TreehopperControlCenter.Droid
 {
-	[Activity (Label = "TreehopperControlCenter", Icon = "@drawable/icon", Theme="@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity (Label = "Treehopper", Icon = "@drawable/icon", Theme="@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
 	    private ConnectionService connectionService = ConnectionService.Instance;
