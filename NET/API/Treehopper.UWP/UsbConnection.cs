@@ -173,7 +173,7 @@ namespace Treehopper.Uwp
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Close();
         }
 
         private async void pinEventListerner(CancellationToken ct)
