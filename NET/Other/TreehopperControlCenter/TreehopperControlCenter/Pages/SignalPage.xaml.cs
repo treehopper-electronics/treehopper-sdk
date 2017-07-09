@@ -30,7 +30,13 @@ namespace TreehopperControlCenter.Pages
             }
 
             pins.ItemsSource = Pins;
+            pins.ItemSelected += Pins_ItemSelected;
 
+        }
+
+        private void Pins_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            ((ListView)sender).SelectedItem = null;
         }
 
         private void LedSwitch_Toggled(object sender, ToggledEventArgs e)

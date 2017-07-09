@@ -24,6 +24,12 @@
       <DependentUpon>LibrariesPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\CardView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\LibraryComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\RotaryEncoder.xaml.cs">
+      <DependentUpon>RotaryEncoder.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\SignalPage.xaml.cs">
       <DependentUpon>SignalPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -54,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\LibrariesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Libraries\RotaryEncoder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
