@@ -13,7 +13,7 @@ namespace TreehopperControlCenter
 		{
 			InitializeComponent();
 
-			MainPage = new TreehopperControlCenter.MainPage();
+            MainPage = new NavigationPage(new MainPage());
 		}
 
 		protected override void OnStart ()

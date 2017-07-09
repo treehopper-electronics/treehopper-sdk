@@ -46,7 +46,8 @@ namespace TreehopperControlCenter.Droid
 
 	        IntentFilter filter = new IntentFilter();
 	        filter.AddAction(UsbManager.ActionUsbDeviceDetached);
-	        RegisterReceiver(connectionService, filter);
+            filter.AddAction(UsbManager.ActionUsbDeviceAttached);
+            RegisterReceiver(connectionService, filter);
 
 	        connectionService.Scan();
 

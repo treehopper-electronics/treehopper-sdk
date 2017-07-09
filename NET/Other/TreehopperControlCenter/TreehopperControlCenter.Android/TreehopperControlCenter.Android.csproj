@@ -170,6 +170,10 @@
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj">
+      <Project>{397b4612-9ff2-4288-a7d0-c2b2fc4f4816}</Project>
+      <Name>Treehopper.Libraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\TreehopperControlCenter\TreehopperControlCenter.projitems" Label="Shared" Condition="Exists('..\TreehopperControlCenter\TreehopperControlCenter.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
