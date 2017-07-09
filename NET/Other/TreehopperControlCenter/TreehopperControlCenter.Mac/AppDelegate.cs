@@ -1,5 +1,9 @@
-﻿using AppKit;
+﻿using System;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using AppKit;
 using Foundation;
+using Treehopper;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 
@@ -19,16 +23,29 @@ namespace TreehopperControlCenter.Mac
 			_window.TitleVisibility = NSWindowTitleVisibility.Hidden;
         }
 
-		public override NSWindow MainWindow
-		{
-			get { return _window; }
-		}
+        public override NSWindow MainWindow
+        {
+        	get { return _window; }
+        }
 
         public override void DidFinishLaunching(NSNotification notification)
         {
             Forms.Init();
             LoadApplication(new App());
+
             base.DidFinishLaunching(notification);
+            Debug.WriteLine("Got here");
+			//ConnectionService.Instance.Boards.CollectionChanged += (sender, e) =>
+			//{
+			//	if (e.Action == NotifyCollectionChangedAction.Add)
+			//	{
+			//		Debug.WriteLine("Board added!");
+			//	}
+			//	else if (e.Action == NotifyCollectionChangedAction.Remove)
+			//	{
+			//		Debug.WriteLine("Board added!");
+			//	}
+			//};
         }
 
         public override void WillTerminate(NSNotification notification)
