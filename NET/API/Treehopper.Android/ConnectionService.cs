@@ -116,9 +116,13 @@ namespace Treehopper
                 if (device.VendorId == 0x10c4 && device.ProductId == 0x8a7e)
                 {
 
-                    TreehopperUsb removedBoard = Boards.First(b => b.SerialNumber == device.SerialNumber);
-                    removedBoard.Disconnect();
-                    Boards.Remove(removedBoard);
+                    TreehopperUsb removedBoard = Boards.FirstOrDefault(b => b.SerialNumber == device.SerialNumber);
+                    if(removedBoard != null)
+                    {
+                        removedBoard.Disconnect();
+                        Boards.Remove(removedBoard);
+                    }
+                    
                 }
             }
 
