@@ -7,8 +7,8 @@
     <ProjectGuid>{C4C4767E-890F-41E4-9A1A-C492DC9D3D93}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TreehopperControlCenter.UWP</RootNamespace>
-    <AssemblyName>TreehopperControlCenter.UWP</AssemblyName>
+    <RootNamespace>TreehopperControlCenter</RootNamespace>
+    <AssemblyName>TreehopperControlCenter</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
