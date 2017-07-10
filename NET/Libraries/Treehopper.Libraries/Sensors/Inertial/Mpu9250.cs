@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Inertial
@@ -6,6 +7,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
     /// <summary>
     ///     InvenSense MPU9250 9-DoF IMU
     /// </summary>
+    [Supports("InvenSense", "MPU-9250")]
     public class Mpu9250 : Mpu6050, IMagnetometer
     {
         private readonly SMBusDevice mag;
@@ -15,16 +17,27 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// </summary>
         protected Vector3 magnetometer;
 
+
+        private Mpu9250(SMBusDevice dev, SMBusDevice mag) : base(dev)
+        {
+            this.mag = mag;
+            this.dev = dev;
+        }
+
         /// <summary>
         ///     Construct a new MPU9250 9-DoF IMU
         /// </summary>
         /// <param name="i2c">The i2C port to use</param>
         /// <param name="addressPin">The address pin state</param>
         /// <param name="rate">The rate, in kHz, to communicate at</param>
-        public Mpu9250(I2C i2c, bool addressPin = false, int rate = 400) : base(i2c, addressPin, rate)
+        public static async Task<Mpu9250> Create(I2C i2c, bool addressPin = false, int rate = 400)
         {
-            dev.WriteByteData((byte) Registers.INT_PIN_CFG, 0x22).Wait();
-            mag = new SMBusDevice(0x0C, i2c, rate);
+            var result = await Mpu6050.Create(i2c, addressPin, rate).ConfigureAwait(false);
+            var dev = result.dev;
+            await dev.WriteByteData((byte)Registers.INT_PIN_CFG, 0x22).ConfigureAwait(false);
+            var mag = new SMBusDevice(0x0C, i2c, rate);
+
+            return new Mpu9250(dev, mag);
         }
 
         /// <summary>
@@ -50,11 +63,11 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <returns></returns>
         public override async Task Update()
         {
-            await base.Update();
+            await base.Update().ConfigureAwait(false);
 
             if (!EnableMagnetometer) return;
 
-            var magData = await mag.ReadBufferData((byte) AK8975CRegisters.HXL, 6);
+            var magData = await mag.ReadBufferData((byte) AK8975CRegisters.HXL, 6).ConfigureAwait(false);
 
             magnetometer.X = (magData[1] << 8) | magData[0];
             magnetometer.Y = (magData[3] << 8) | magData[2];

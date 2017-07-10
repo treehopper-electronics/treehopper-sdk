@@ -125,7 +125,7 @@ namespace Treehopper.Uwp
             try
             {
                 pinConfigWriter.WriteBytes(data);
-                await pinConfigWriter.StoreAsync();
+                await pinConfigWriter.StoreAsync().AsTask().ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -140,7 +140,7 @@ namespace Treehopper.Uwp
             try
             {
                 peripheralWriter.WriteBytes(data);
-                await peripheralWriter.StoreAsync();
+                await peripheralWriter.StoreAsync().AsTask().ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -155,7 +155,7 @@ namespace Treehopper.Uwp
             uint bytesRead;
             try
             {
-                bytesRead = await peripheralReader.LoadAsync(bytesToRead);
+                bytesRead = await peripheralReader.LoadAsync(bytesToRead).AsTask().ConfigureAwait(false);
 
                 if (bytesRead == bytesToRead)
                 {

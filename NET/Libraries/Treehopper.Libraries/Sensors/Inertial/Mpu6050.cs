@@ -1,12 +1,15 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
+using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
     ///     InvenSense MPU6050 6-DoF IMU
     /// </summary>
+    [Supports("InvenSense", "MPU-6050")]
     public class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
     {
         /// <summary>
@@ -78,31 +81,41 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The I2c module this module is connected to.</param>
         /// <param name="addressPin">The address of the module</param>
         /// <param name="ratekHz">The rate, in kHz, to use with this IC</param>
-        public Mpu6050(I2C i2c, bool addressPin = false, int ratekHz = 400)
+        protected Mpu6050(SMBusDevice dev)
         {
-            dev = new SMBusDevice((byte) (addressPin ? 0x69 : 0x68), i2c, ratekHz);
+            this.dev = dev;
 
-            var result = dev.ReadByteData((byte) Registers.WHO_AM_I).Result;
+            ascale = AccelScale.AFS_2G;
+            gscale = GyroScale.GFS_250DPS;
+        }
+
+        public static async Task<Mpu6050> Create(I2C i2c, bool addressPin = false, int ratekHz = 400)
+        {
+            var dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
+
+            var result = await dev.ReadByteData((byte)Registers.WHO_AM_I).ConfigureAwait(false);
 
             //if (result != 0x71)
             //    throw new Exception("Incorrect part number attached to bus");
 
+            await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).ConfigureAwait(false); // wake up
+            await Task.Delay(100).ConfigureAwait(false);
+            await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x01).ConfigureAwait(false); // Auto select clock source to be PLL gyroscope reference if ready else
+            await Task.Delay(200).ConfigureAwait(false);
+            await dev.WriteByteData((byte)Registers.CONFIG, 0x03).ConfigureAwait(false);
+            await dev.WriteByteData((byte)Registers.SMPLRT_DIV, 0x04).ConfigureAwait(false);
 
-            dev.WriteByteData((byte) Registers.PWR_MGMT_1, 0x00).Wait(); // wake up
-            Task.Delay(100).Wait();
-            dev.WriteByteData((byte) Registers.PWR_MGMT_1, 0x01)
-                .Wait(); // Auto select clock source to be PLL gyroscope reference if ready else
-            Task.Delay(200).Wait();
-            dev.WriteByteData((byte) Registers.CONFIG, 0x03).Wait();
-            dev.WriteByteData((byte) Registers.SMPLRT_DIV, 0x04).Wait();
-
-            AccelerometerScale = AccelScale.AFS_2G;
-            GyroscopeScale = GyroScale.GFS_250DPS;
-
-            var c = dev.ReadByteData((byte) Registers.ACCEL_CONFIG2).Result;
+            var c = await dev.ReadByteData((byte)Registers.ACCEL_CONFIG2).ConfigureAwait(false);
             c &= ~0x0f & 0xff;
             c |= 0x03;
-            dev.WriteByteData((byte) Registers.ACCEL_CONFIG2, c).Wait();
+            await dev.WriteByteData((byte)Registers.ACCEL_CONFIG2, c).ConfigureAwait(false);
+
+            var imu = new Mpu6050(dev);
+
+            await imu.SetAccelerometerScale(AccelScale.AFS_2G).ConfigureAwait(false);
+            await imu.SetGyroScale(GyroScale.GFS_250DPS).ConfigureAwait(false);
+
+            return imu;
         }
 
         /// <summary>
@@ -115,12 +128,16 @@ namespace Treehopper.Libraries.Sensors.Inertial
             set
             {
                 ascale = value;
-
-                var c = dev.ReadByteData((byte) Registers.ACCEL_CONFIG).Result;
-                c &= ~0x18 & 0xff;
-                c |= (byte) ((byte) ascale << 3);
-                dev.WriteByteData((byte) Registers.ACCEL_CONFIG, c).Wait();
+                SetAccelerometerScale(ascale).Forget();
             }
+        }
+
+        private async Task SetAccelerometerScale(AccelScale ascale)
+        {
+            var c = await dev.ReadByteData((byte)Registers.ACCEL_CONFIG).ConfigureAwait(false);
+            c &= ~0x18 & 0xff;
+            c |= (byte)((byte)ascale << 3);
+            await dev.WriteByteData((byte)Registers.ACCEL_CONFIG, c).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -134,12 +151,17 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 gscale = value;
 
-                var c = dev.ReadByteData((byte) Registers.GYRO_CONFIG).Result;
-                c &= ~0x02 & 0xff;
-                c &= ~0x18 & 0xff;
-                c |= (byte) ((byte) gscale << 3);
-                dev.WriteByteData((byte) Registers.GYRO_CONFIG, c).Wait();
+                SetGyroScale(gscale);
             }
+        }
+
+        private async Task SetGyroScale(GyroScale gscale)
+        {
+            var c = await dev.ReadByteData((byte)Registers.GYRO_CONFIG).ConfigureAwait(false);
+            c &= ~0x02 & 0xff;
+            c &= ~0x18 & 0xff;
+            c |= (byte)((byte)gscale << 3);
+            await dev.WriteByteData((byte)Registers.GYRO_CONFIG, c).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -161,7 +183,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <returns></returns>
         public override async Task Update()
         {
-            var data = await dev.ReadBufferData((byte) Registers.ACCEL_XOUT_H, 14);
+            var data = await dev.ReadBufferData((byte) Registers.ACCEL_XOUT_H, 14).ConfigureAwait(false);
             var accelScale = getAccelScale();
             var gyroScale = getGyroScale();
             accelerometer.X = (float) ((short) ((data[0] << 8) | data[1]) * accelScale - accelerometerOffset.X);
