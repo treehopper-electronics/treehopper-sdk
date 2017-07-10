@@ -2,6 +2,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -128,9 +129,16 @@ namespace Treehopper.Libraries.Input
 
             ((DigitalInPeripheralPin) Z.Input).DigitalValue = (response[5] & 0x01) == 0;
             ((DigitalInPeripheralPin) C.Input).DigitalValue = (response[5] & 0x02) == 0;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Joystick)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Accelerometer)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(C)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Z)));
+
         }
 
         public event JoystickChangedDelegate JoystickChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public class JoystickEventArgs : EventArgs
         {
