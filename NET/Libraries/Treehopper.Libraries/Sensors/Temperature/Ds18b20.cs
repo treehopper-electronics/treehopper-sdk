@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
@@ -68,6 +69,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </remarks>
         public bool EnableGroupConversion { get; set; }
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         public override async Task Update()
         {
             if (!EnableGroupConversion)
@@ -100,6 +103,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
             var data = await oneWire.Receive(2);
 
             Celsius = (short) (data[0] | (data[1] << 8)) / 16d;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
         }
 
         /// <summary>

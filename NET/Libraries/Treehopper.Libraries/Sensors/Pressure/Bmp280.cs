@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
@@ -23,6 +24,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
         private double altitude;
         internal int tFine;
         private Trimming trimming;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Construct a BMP280 hooked up to the i2C bus
@@ -127,6 +130,15 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
 
             LastReceivedData = data; // hand off the data to any inherited classes
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Altitude)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Bar)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Psi)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Pascal)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Atm)));
         }
 
         private void Start()

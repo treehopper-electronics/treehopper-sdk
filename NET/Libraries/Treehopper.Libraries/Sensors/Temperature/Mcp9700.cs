@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
@@ -26,6 +27,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
         private readonly AdcPin pin;
         private readonly Type type;
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         ///     Construct a new Microchip MCP9700 or MCP9701
         /// </summary>
@@ -49,6 +52,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
             var v0 = type == Type.Mcp9700 ? 0.5 : 0.4;
             var tc = type == Type.Mcp9700 ? 0.01 : 0.0195;
             Celsius = (voltage - v0) / tc;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
         }
 
         private async void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)

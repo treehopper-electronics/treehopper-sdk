@@ -75,6 +75,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
         internal Vector3 gyroscope;
         private Vector3 gyroscopeOffset;
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         ///     Construct an MPU9150 9-Dof IMU
         /// </summary>
@@ -195,6 +197,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
             gyroscope.X = (float) ((short) ((data[8] << 8) | data[9]) * gyroScale - gyroscopeOffset.X);
             gyroscope.Y = (float) ((short) ((data[10] << 8) | data[11]) * gyroScale - gyroscopeOffset.Y);
             gyroscope.Z = (float) ((short) ((data[12] << 8) | data[13]) * gyroScale - gyroscopeOffset.Z);
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
         }
 
         /// <summary>

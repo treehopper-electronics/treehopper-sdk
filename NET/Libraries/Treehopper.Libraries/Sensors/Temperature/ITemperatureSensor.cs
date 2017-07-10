@@ -1,9 +1,11 @@
-﻿namespace Treehopper.Libraries.Sensors.Temperature
+﻿using System.ComponentModel;
+
+namespace Treehopper.Libraries.Sensors.Temperature
 {
     /// <summary>
     ///     Temperature sensor interface
     /// </summary>
-    public interface ITemperatureSensor : IPollable
+    public interface ITemperatureSensor : IPollable, INotifyPropertyChanged
     {
         /// <summary>
         ///     Celsius temperature

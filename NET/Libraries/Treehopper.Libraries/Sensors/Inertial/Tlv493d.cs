@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
 
@@ -50,6 +51,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
         }
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         /// Update the temperature and MagneticFlux properties with the latest values from the sensor
         /// </summary>
@@ -66,6 +69,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
             magneticFlux.X = ((short) (((value[0] << 4) | (value[4] >> 4)) << 4) >> 4) * 0.098f;
             magneticFlux.Y = ((short) (((value[1] << 4) | value[4]) << 4) >> 4) * 0.098f;
             magneticFlux.Z = ((short) (((value[2] << 4) | value[5]) << 4) >> 4) * 0.098f;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
         }
     }
 }
