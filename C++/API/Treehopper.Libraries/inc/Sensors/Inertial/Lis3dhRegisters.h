@@ -572,7 +572,7 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 long getValue() { return ((Value & 0x3FF) << 6); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 6 - 10)) >> (32 - 6 - 10);
+                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
                 }
             };
 
@@ -584,7 +584,7 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 long getValue() { return ((Value & 0x3FF) << 6); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 6 - 10)) >> (32 - 6 - 10);
+                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
                 }
             };
 
@@ -596,7 +596,7 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 long getValue() { return ((Value & 0x3FF) << 6); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 6 - 10)) >> (32 - 6 - 10);
+                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
                 }
             };
 
