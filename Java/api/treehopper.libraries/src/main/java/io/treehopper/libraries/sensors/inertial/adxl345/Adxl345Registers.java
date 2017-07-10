@@ -56,6 +56,8 @@ class Adxl345Registers extends RegisterManager
         DataFormatRegister(RegisterManager regManager) { super(regManager, 0x31, 1, false); }
 
         int Range;
+        int Justify;
+        int FullRes;
 
 
         public DataFormatRegister read()
@@ -64,10 +66,12 @@ class Adxl345Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Range & 0x3) << 0); }
+        public long getValue() { return ((Range & 0x3) << 0) | ((Justify & 0x1) << 2) | ((FullRes & 0x1) << 3); }
         public void setValue(long value)
         {
             Range = (int)((value >> 0) & 0x3);
+            Justify = (int)((value >> 2) & 0x1);
+            FullRes = (int)((value >> 3) & 0x1);
         }
     }
     class DataXRegister extends Register
@@ -83,10 +87,10 @@ class Adxl345Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((Value & 0x1FFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
         }
     }
     class DataYRegister extends Register
@@ -102,10 +106,10 @@ class Adxl345Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((Value & 0x1FFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
         }
     }
     class DataZRegister extends Register
@@ -121,10 +125,10 @@ class Adxl345Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((Value & 0x1FFF) << 0); }
         public void setValue(long value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
         }
     }
 }

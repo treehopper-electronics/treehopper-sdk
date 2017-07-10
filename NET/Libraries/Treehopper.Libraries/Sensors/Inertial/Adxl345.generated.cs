@@ -66,22 +66,28 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 internal DataFormatRegister(RegisterManager regManager) : base(regManager, 0x31, 1, false) { }
 
                 public int Range { get; set; }
+                public int Justify { get; set; }
+                public int FullRes { get; set; }
 
                 public async Task<DataFormatRegister> Read()
                 {
                     await manager.Read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Range & 0x3) << 0); }
+                internal override long GetValue() { return ((Range & 0x3) << 0) | ((Justify & 0x1) << 2) | ((FullRes & 0x1) << 3); }
                 internal override void SetValue(long value)
                 {
                     Range = (int)((value >> 0) & 0x3);
+                    Justify = (int)((value >> 2) & 0x1);
+                    FullRes = (int)((value >> 3) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
                     retVal += $"Range: { Range } (offset: 0, width: 2)\r\n";
+                    retVal += $"Justify: { Justify } (offset: 2, width: 1)\r\n";
+                    retVal += $"FullRes: { FullRes } (offset: 3, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -96,16 +102,16 @@ namespace Treehopper.Libraries.Sensors.Inertial
                     await manager.Read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
+                internal override long GetValue() { return ((Value & 0x1FFF) << 0); }
                 internal override void SetValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { Value } (offset: 0, width: 13)\r\n";
                     return retVal;
                 }
             }
@@ -120,16 +126,16 @@ namespace Treehopper.Libraries.Sensors.Inertial
                     await manager.Read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
+                internal override long GetValue() { return ((Value & 0x1FFF) << 0); }
                 internal override void SetValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { Value } (offset: 0, width: 13)\r\n";
                     return retVal;
                 }
             }
@@ -144,16 +150,16 @@ namespace Treehopper.Libraries.Sensors.Inertial
                     await manager.Read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
+                internal override long GetValue() { return ((Value & 0x1FFF) << 0); }
                 internal override void SetValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { Value } (offset: 0, width: 13)\r\n";
                     return retVal;
                 }
             }

@@ -13,28 +13,30 @@
       "address": "0x31",
       "access": "write",
       "values": {
-        "range": { "width": "2" }
+        "range": { "width": "2" },
+        "justify": {},
+        "fullRes": {}
       }
     },
 
     "dataX": {
       "address": "0x32",
       "access": "read",
-      "width": "16",
+      "width": "13",
       "isSigned": "true"
     },
 
     "dataY": {
       "address": "0x34",
       "access": "read",
-      "width": "16",
+      "width": "13",
       "isSigned": "true"
     },
 
     "dataZ": {
       "address": "0x36",
       "access": "read",
-      "width": "16",
+      "width": "13",
       "isSigned": "true"
     }
   }
