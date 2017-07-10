@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:LibraryComponent xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="clr-namespace:TreehopperControlCenter.Pages.Libraries"
+                    xmlns:jpc="clr-namespace:JPC.BindablePicker"
+             x:Class="TreehopperControlCenter.Pages.Libraries.Accelerometer">
+    <d:LibraryComponent.Configuration>
+        <StackLayout>
+            <jpc:BindablePicker Title="Select" ItemsSource="{Binding Accelerometers}" SelectedItem="{Binding SelectedAccelerometer}"/>
+            <Label Text="Some accelerometers have an address pin that can be tied low or high."/>
+            <Switch IsToggled="{Binding AddressBitSet}" />
+        </StackLayout>
+    </d:LibraryComponent.Configuration>
+    <StackLayout>
+        <Label FontSize="Large"  Text="Acceleration"/>
+        <StackLayout Orientation="Horizontal">
+            <Label VerticalTextAlignment="Center" Text="X"/>
+            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerX}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label VerticalTextAlignment="Center" Text="Y"/>
+            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerY}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label VerticalTextAlignment="Center" Text="Z"/>
+            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerZ}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+    </StackLayout>
+</d:LibraryComponent>
