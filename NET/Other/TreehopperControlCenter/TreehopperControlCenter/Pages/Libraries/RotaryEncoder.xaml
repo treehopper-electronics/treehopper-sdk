@@ -12,7 +12,6 @@
         </StackLayout>
   </d:LibraryComponent.Configuration>
     <StackLayout>
-        <Label Text="Current Position"/>
         <Label FontSize="Large" Text="{Binding Encoder.Position}"/>
     </StackLayout>
 </d:LibraryComponent>
