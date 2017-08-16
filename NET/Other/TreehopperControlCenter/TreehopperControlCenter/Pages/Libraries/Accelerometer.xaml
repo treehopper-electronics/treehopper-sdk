@@ -12,18 +12,17 @@
         </StackLayout>
     </d:LibraryComponent.Configuration>
     <StackLayout>
-        <Label FontSize="Large"  Text="Acceleration"/>
         <StackLayout Orientation="Horizontal">
             <Label VerticalTextAlignment="Center" Text="X"/>
-            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerX}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
+            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerX, Mode=OneWay}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
             <Label VerticalTextAlignment="Center" Text="Y"/>
-            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerY}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
+            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerY, Mode=OneWay}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
             <Label VerticalTextAlignment="Center" Text="Z"/>
-            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerZ}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
+            <Slider Maximum="2" Minimum="-2" Value="{Binding AccelerometerZ, Mode=OneWay}" IsEnabled="False" HorizontalOptions="FillAndExpand"/>
         </StackLayout>
     </StackLayout>
 </d:LibraryComponent>
