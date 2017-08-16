@@ -9,6 +9,6 @@ Visit our \ref getting-started guide to learn some Treehopper basics.
 
 ## Language-Specific Documentation
 If you're looking for API references for a particular language, here are the links:
-- <a href="C-Sharp">C# API Documentation</a>
-- <a href="Java">Java API Documentation</a>
-- <a href="Cpp">C++ API Documentation</a>
+- <a href="c-sharp">C# API Documentation</a>
+- <a href="java">Java API Documentation</a>
+- <a href="cpp">C++ API Documentation</a>
