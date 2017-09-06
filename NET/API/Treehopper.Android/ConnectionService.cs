@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -18,11 +19,7 @@ namespace Treehopper
 
         public static ConnectionService Instance => instance;
 
-        public Context ApplicationContext { get; set; }
-
-        public UsbManager Manager => (UsbManager)Context.GetSystemService(Context.UsbService);
-
-        PendingIntent mPendingIntent;
+        public UsbManager Manager => (UsbManager)context.GetSystemService(Context.UsbService);
 
         readonly static string ActionUsbPermission = "io.treehopper.android.USB_PERMISSION";
 
@@ -32,7 +29,7 @@ namespace Treehopper
 
         public ConnectionService() : base()
         {
-            Boards.CollectionChanged += Boards_CollectionChanged;
+            
         }
 
         private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -44,9 +41,36 @@ namespace Treehopper
                 waitForFirstBoard.TrySetResult(Boards[0]);
         }
 
+        public void ActivityOnStart(Activity activity)
+        {
+            this.activity = activity;
+            this.context = activity.ApplicationContext;
+            Boards.CollectionChanged += Boards_CollectionChanged;
+
+            Scan();
+
+            IntentFilter filter = new IntentFilter();
+            filter.AddAction(UsbManager.ActionUsbDeviceDetached);
+            filter.AddAction(UsbManager.ActionUsbDeviceAttached);
+            activity.RegisterReceiver(this, filter);
+        }
+
         private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 
         public ObservableCollection<TreehopperUsb> Boards { get; set; } = new ObservableCollection<TreehopperUsb>();
+
+        public void ActivityOnResume()
+        {
+            Intent intent = activity.Intent;
+            if (intent != null)
+            {
+                if (intent.Action == UsbManager.ActionUsbDeviceAttached)
+                {
+                    UsbDevice usbDevice = (UsbDevice)intent.GetParcelableExtra(UsbManager.ExtraDevice);
+                    DeviceAdded(usbDevice);
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -115,17 +139,14 @@ namespace Treehopper
             {
                 if (device.VendorId == 0x10c4 && device.ProductId == 0x8a7e)
                 {
-
                     TreehopperUsb removedBoard = Boards.FirstOrDefault(b => b.SerialNumber == device.SerialNumber);
                     if(removedBoard != null)
                     {
                         removedBoard.Disconnect();
                         Boards.Remove(removedBoard);
                     }
-                    
                 }
             }
-
         }
 
         private void createTreehopperFromDevice(UsbDevice device)
@@ -140,34 +161,14 @@ namespace Treehopper
                 else
                 {
                     Log.Info(TAG, "device not found. Adding.");
-                    //TreehopperUsb board = new TreehopperUsb(new UsbConnection(device, Manager));
-
-                    //Log.Info(TAG, "Added new board (name=" + board.Name + ", serial=" + board.SerialNumber + "). Total number of boards: " + Boards.Count);
-
 
                     Manager.RequestPermission(device, pendingIntent);
-
                 }
             }
         }
 
         private Context context;
-        public Context Context
-        {
-            get
-            {
-                return context;
-            }
-
-            set
-            {
-                if (context == value)
-                    return;
-
-                context = value;
-                //UpdateBoardList();
-            }
-        }
+        private Activity activity;
 
         public void Scan()
         {
@@ -178,36 +179,11 @@ namespace Treehopper
             IntentFilter filter = new IntentFilter(ActionUsbPermission);
             context.RegisterReceiver(this, filter);
 
-
             foreach (var entry in Manager.DeviceList)
             {
                 UsbDevice device = entry.Value;
                 createTreehopperFromDevice(device);
             }
         }
-
-        //public void UpdateBoardList()
-        //{
-        //    if (Context == null)
-        //        return;
-
-        //    // Create Treehopper boards from any new devices in the DeviceList
-        //    var addedBoards = Manager.DeviceList.Values.Where(board => !Boards.Any(existingBoard => existingBoard.SerialNumber == board.SerialNumber));
-        //    foreach(var newBoard in addedBoards)
-        //    {
-        //        Boards.Add(new TreehopperUsb(new UsbConnection(newBoard, Manager)));
-        //        if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Boards"));
-        //    }
-
-        //    // close and remove Treehopper boards that aren't in the DeviceList
-        //    var removedBoards = Boards.Where(board => !Manager.DeviceList.Values.Any(managerBoard => managerBoard.SerialNumber == board.SerialNumber));
-        //    foreach(var removedBoard in removedBoards)
-        //    {
-        //        removedBoard.Disconnect();
-        //        removedBoard.Dispose();
-        //        Boards.Remove(removedBoard);
-        //        if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Boards"));
-        //    }
-        //}
     }
 }

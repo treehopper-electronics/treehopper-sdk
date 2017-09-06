@@ -17,7 +17,7 @@ namespace TreehopperControlCenter.Droid
 	[Activity (Label = "Treehopper", Icon = "@drawable/icon", Theme="@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
-	    private ConnectionService connectionService = ConnectionService.Instance;
+        private ConnectionService connectionService = ConnectionService.Instance;
 
 	    public ObservableCollection<TreehopperUsb> Boards => connectionService.Boards;
 
@@ -28,8 +28,6 @@ namespace TreehopperControlCenter.Droid
 
 			base.OnCreate (bundle);
 
-		    connectionService.Context = ApplicationContext;
-
             global::Xamarin.Forms.Forms.Init (this, bundle);
 			LoadApplication (new TreehopperControlCenter.App ());
 		}
@@ -37,29 +35,15 @@ namespace TreehopperControlCenter.Droid
 	    protected override void OnStart()
 	    {
 	        base.OnStart();
-	        connectionService.Scan();
-	    }
 
-	    protected override void OnResume()
+            connectionService.ActivityOnStart(this);
+        }
+
+        protected override void OnResume()
 	    {
 	        base.OnResume();
 
-	        IntentFilter filter = new IntentFilter();
-	        filter.AddAction(UsbManager.ActionUsbDeviceDetached);
-            filter.AddAction(UsbManager.ActionUsbDeviceAttached);
-            RegisterReceiver(connectionService, filter);
-
-	        connectionService.Scan();
-
-	        Intent intent = this.Intent;
-	        if (intent != null)
-	        {
-	            if (intent.Action == UsbManager.ActionUsbDeviceAttached)
-	            {
-	                UsbDevice usbDevice = (UsbDevice)intent.GetParcelableExtra(UsbManager.ExtraDevice);
-	                connectionService.DeviceAdded(usbDevice);
-	            }
-	        }
+            connectionService.ActivityOnResume();
 	    }
     }
 }
