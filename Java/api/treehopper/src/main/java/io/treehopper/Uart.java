@@ -21,44 +21,78 @@ public class Uart implements IOneWire {
         this.device = board;
     }
 
-
+    /**
+     * Get the current mode the UART is operating in.
+     * @return the UART's current mode.
+     */
     public UartMode getMode() {
         return mode;
     }
 
-
+    /**
+     * Sets the mode to operate the UART in.
+     * @param mode the mode to use.
+     */
     public void setMode(UartMode mode) {
         this.mode = mode;
         updateConfig();
     }
 
+    /**
+     * Gets whether the UART is enabled.
+     * @return whether the UART is enabled.
+     */
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * Sets whether the UART should be enabled.
+     * @param enabled whether the UART should be enabled.
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         updateConfig();
     }
 
+    /**
+     * Get the baud of the UART.
+     * @return the current baud, in bits per second.
+     */
     public int getBaud() {
         return baud;
     }
 
+    /**
+     * Set the baud of the UART.
+     * @param baud the desired baud, in bits per second.
+     */
     public void setBaud(int baud) {
         this.baud = baud;
         updateConfig();
     }
 
+    /**
+     * Determine whether the UART is using open-drain Tx mode.
+     * @return whether the UART is using open-drain Tx mode.
+     */
     public boolean isOpenDrainTx() {
         return openDrainTx;
     }
 
+    /**
+     * Sets whether the UART should use open-drain Tx mode.
+     * @param openDrainTx whether the UART should use open-drain Tx mode.
+     */
     public void setOpenDrainTx(boolean openDrainTx) {
         this.openDrainTx = openDrainTx;
         updateConfig();
     }
 
+    /**
+     * Gets a string representation of the current state of the UART.
+     * @return
+     */
     @Override
     public String toString() {
         if (enabled)
@@ -67,10 +101,18 @@ public class Uart implements IOneWire {
             return "Not enabled";
     }
 
+    /**
+     * Send a byte of data out the UART in UART or One-Wire mode.
+     * @param data The byte to send
+     */
     public void send(byte data) {
         send(new byte[] { data });
     }
 
+    /**
+     * Send an array of data out the UART in UART or One-Wire mode.
+     * @param dataToSend  byte array of the data to send
+     */
     public void send(byte[] dataToSend)
     {
         if (dataToSend.length > 63)
@@ -91,11 +133,39 @@ public class Uart implements IOneWire {
         }
     }
 
-    public byte[] receive(int numBytes)
+    /**
+     * Receive the UART's entire RX buffer
+     * @return the bytes in the RX buffer
+     *
+     * As soon as the UART is enabled, any received byte will be added to a 32-byte buffer. Calling this Receive() function does two things:
+     *    - sends the current contents of this buffer to this function.
+     *    - reset the pointer in the buffer to the 0th element, effectively resetting it.
+     * If the buffer fills before the Receive() function is called, the existing buffer will be reset --- discarding all data in the buffer.
+     * Consequently, it's important to call the Receive() function frequently when expecting data.
+     *
+     * Owing to how it is implemented, you can clear the buffer at any point by calling Receive(). It's common to empty the buffer before
+     * requesting data from the device attached to the UART; this way, you do not have to worry about existing gibberish data that
+     * might have been inadvertently received.
+     */
+    public byte[] receive()
+    {
+        return this.receive(0);
+    }
+
+    /**
+     * Receive bytes from the UART in One-Wire Mode
+     * @param oneWireNumBytes the number of bytes to request from the One-Wire device
+     * @return the bytes received
+     * This function overload should only be called when the UART is in One-Wire mode. Treehopper will request oneWireNumBytes from the device,
+     * and return this data as an array.
+     */
+    public byte[] receive(int oneWireNumBytes)
     {
         byte[] retVal = new byte[0];
         if (mode == UartMode.Uart)
         {
+            if(oneWireNumBytes != 0)
+                Utilities.error("oneWireNumBytes is only used when the UART is in One-Wire mode");
             byte[] data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction.ordinal();
             data[1] = (byte)UartCommand.Receive.ordinal();
@@ -113,7 +183,7 @@ public class Uart implements IOneWire {
             byte[] data = new byte[3];
             data[0] = (byte)DeviceCommands.UartTransaction.ordinal();
             data[1] = (byte)UartCommand.Receive.ordinal();
-            data[2] = (byte)numBytes;
+            data[2] = (byte)oneWireNumBytes;
 
             synchronized (device.comsLock) {
                 device.sendPeripheralConfigPacket(data);
@@ -190,6 +260,10 @@ public class Uart implements IOneWire {
         }
     }
 
+    /**
+     * Send a One-Wire reset command.
+     * @return True if at least one device was found.
+     */
     public boolean oneWireReset() {
         if (mode != UartMode.OneWire)
             Utilities.error("The UART must be in OneWire mode to issue a oneWireReset command");
@@ -210,6 +284,10 @@ public class Uart implements IOneWire {
         return retVal;
     }
 
+    /**
+     * Search for devices on the One-Wire bus.
+     * @return a list of device addresses found on the One-Wire bus.
+     */
     public ArrayList<Long> oneWireSearch()
     {
         if (mode != UartMode.OneWire)
@@ -241,8 +319,8 @@ public class Uart implements IOneWire {
     }
 
     /**
-     * Reset and match a device on the OneWire bus
-     * @param address the address to reset and match
+     * Reset and match a device on the OneWire bus.
+     * @param address the address to reset and match.
      */
     public void oneWireResetAndMatchAddress(long address)
     {
@@ -261,6 +339,9 @@ public class Uart implements IOneWire {
         send(buffer.array());
     }
 
+    /**
+     * Enable the UART and put it in One-Wire mode.
+     */
     public void startOneWire()
     {
         setMode(UartMode.OneWire);
