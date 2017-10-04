@@ -23,7 +23,27 @@ namespace TreehopperControlCenter
 			InitializeComponent();
 
             Debug.WriteLine("Waiting for board...");
-            ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
+            });
+
+
+            Pins.Add(new PinViewModel());
+            Pins.Add(new PinViewModel());
+            Pins.Add(new PinViewModel());
+            Pins.Add(new PinViewModel());
+
+            Pins[1].SelectedPinMode = "Digital Output";
+            Pins[2].SelectedPinMode = "SoftPWM";
+            Pins[3].SelectedPinMode = "Analog Input";
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            ConnectionService.Instance.Dispose();
         }
 
         private void Pins_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -40,19 +60,33 @@ namespace TreehopperControlCenter
             await Navigation.PushAsync(new ConnectedPage(Board));
         }
 
-        private async void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
                 if (Board != null) return; // we already have a board, thank you.
 
                 Board = (TreehopperUsb)e.NewItems[0];
-                await Start();
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Start();
+                });
+
 
             } else if(e.Action == NotifyCollectionChangedAction.Remove)
             {
                 await Navigation.PopToRootAsync();
                 Board.Disconnect();
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    ledSwitch.Toggled -= LedSwitch_Toggled;
+                    Debug.WriteLine("Board disconnected!");
+                    boardViewer.IsVisible = false;
+                    connectMessage.IsVisible = true;
+                    Pins.Clear();
+                    Board = null;
+                });
+
                 Debug.WriteLine("Board disconnected!");
                 Board = null;
             }

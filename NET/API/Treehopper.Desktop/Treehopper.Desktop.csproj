@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Treehopper.Mac.Shared\Treehopper.Mac.Shared.projitems" Label="Shared" Condition="Exists('..\Treehopper.Mac.Shared\Treehopper.Mac.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -62,29 +63,12 @@
     <Compile Include="WinUsb\WinUsb.cs" />
     <Compile Include="WinUsb\WinUsbConnection.cs" />
     <Compile Include="WinUsb\WinUsbConnectionService.cs" />
-    <Compile Include="MacUsb\IOKit\CFObject.cs" />
-    <Compile Include="MacUsb\IOKit\IOIterator.cs" />
-    <Compile Include="MacUsb\IOKit\IOKitFramework.cs" />
-    <Compile Include="MacUsb\IOKit\IOObject.cs" />
-    <Compile Include="MacUsb\MacConnectionService.cs" />
-    <Compile Include="MacUsb\IOKit\IUnknownCGuts.cs" />
-    <Compile Include="MacUsb\IOKit\IOCFPlugInInterface.cs" />
-    <Compile Include="MacUsb\IOKit\IOUSBDeviceInterface320.cs" />
-    <Compile Include="MacUsb\IOKit\NativeMethods.cs" />
-    <Compile Include="MacUsb\IOKit\CFNumberType.cs" />
-    <Compile Include="MacUsb\IOKit\CFStringEncoding.cs" />
-    <Compile Include="MacUsb\MacUsbConnection.cs" />
-    <Compile Include="MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" />
-    <Compile Include="MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" />
-    <Compile Include="MacUsb\IOKit\IOUSBInterfaceInterface197.cs" />
     <Compile Include="LibUsb\LibUsbConnection.cs" />
     <Compile Include="LibUsb\NativeMethods.cs" />
     <Compile Include="LibUsb\LibUsbDeviceHandle.cs" />
     <Compile Include="LibUsb\LibUsbDeviceDescriptor.cs" />
     <Compile Include="LibUsb\HotplugEvent.cs" />
     <Compile Include="LibUsb\LibUsbError.cs" />
-    <Compile Include="MacUsb\TreehopperData.cs" />
-    <Compile Include="MacUsb\IOKit\IOKitError.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
