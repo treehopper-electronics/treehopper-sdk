@@ -57,6 +57,8 @@ public class UsbConnection implements Connection {
 	
 	private String serialNumber;
 	private String name;
+	
+	private int result;
 
 	public UsbConnection(Device device) {
 		this.device = device;
@@ -89,7 +91,6 @@ public class UsbConnection implements Connection {
 		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to open USB device", result);
 
 		LibUsb.claimInterface(deviceHandle, 0);
-		
 		// we need to start a thread to constantly read from the pinReportEndpoint
 		pinListenerThread = new Thread() {
 			@Override

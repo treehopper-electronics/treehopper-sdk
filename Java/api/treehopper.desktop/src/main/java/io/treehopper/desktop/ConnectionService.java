@@ -73,7 +73,7 @@ public class ConnectionService {
 	}
 
 	public ArrayList<TreehopperUsb> getBoards() {
-		updateBoards();
+//		updateBoards();
 		return boards;
 	}
 
