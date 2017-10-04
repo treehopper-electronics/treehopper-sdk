@@ -125,7 +125,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Receive bytes from the UART in regular or One-Wire mode
+        ///     Receive bytes from the UART in UART or One-Wire mode
         /// </summary>
         /// <param name="oneWireNumBytes">In One-Wire mode, the number of bytes to receive. Not used in UART mode.</param>
         /// <returns>The bytes received</returns>
