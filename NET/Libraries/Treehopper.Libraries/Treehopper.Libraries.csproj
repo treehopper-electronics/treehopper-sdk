@@ -37,13 +37,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\API\Treehopper\Treehopper.csproj">
-      <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>
-      <Name>TreehopperControlCenter.Mac</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="ArduinoShim\SerialShim.cs" />
     <Compile Include="ArduinoShim\Sketch.cs" />
     <Compile Include="Displays\Apa102.cs" />
@@ -185,6 +178,7 @@
     <Compile Include="Sensors\Temperature\TemperatureSensor.cs" />
     <Compile Include="SMBusDevice.cs" />
     <Compile Include="SpiDevice.cs" />
+    <Compile Include="Supports.cs" />
     <Compile Include="Utilities\BinaryConverters.cs" />
     <Compile Include="Utilities\Int24.cs" />
     <Compile Include="Utilities\StructConverter.cs" />
@@ -193,12 +187,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\API\Treehopper\Treehopper.csproj">
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Numerics.Vectors, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\System.Numerics.Vectors.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

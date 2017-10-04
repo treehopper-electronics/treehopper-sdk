@@ -2,7 +2,7 @@
 
 # Introduction {#intro}
 
-This documentation contains all C#-specific information for interfacing with Treehopper. For hardware documentation, or for documentation for other languages, visit <a href="http://treehopper.io/Documentation">http://treehopper.io/documentation</a>.
+This documentation contains all C#-specific information for interfacing with Treehopper. For hardware documentation, or for documentation for other languages, visit <a href="https://docs.treehopper.io/">https://docs.treehopper.io/</a>.
 
 
 ## Features {#features}
@@ -18,7 +18,7 @@ Because so many different execution contexts are supported, Treehopper's C# code
     - Treehopper.Desktop.dll: provides platform-agnostic connectivity for traditional console or desktop applications running on Windows, macOS, or Linux. Exposes the Treehopper.Desktop namespace. On Windows, we call into native WinUSB functions provided by Windows; on other platforms, we call into LibUSB functions. If you're running in a non-Windows environment, make sure you have LibUSB runtime libraries installed (this is less critical on Linux, but macOS users will need to install them via brew).
     - Treehopper.Android.dll: provides connectivity for C# Xamarin projects that target Android. Exposes the Treehopper.Android namespace.
     - Treehopper.Uwp.dll: provides connectivity for UWP (Windows Store) apps that can be deployed on all Windows 10 platforms. Exposes the Treehopper.Uwp namespace. This library also provides MVVM-friendly helpers to abstract away some of the tedious state-handling of Treehopper connectivity.
-- Treehopper.Libraries.dll: provides support for more than 100 commonly-used ICs and peripherals.
+- Treehopper.Libraries.dll: provides support for more than 100 commonly-used ICs and peripherals, found in the Treehopper.Libraries namespace.
 
 # Concepts
 Before you dive into the C# API, you should familiarize yourself with some core concepts found in the API, along with the overall API philosophy. This will help you anticipate how to interact with the API so that you don't have to constantly consult the docs directly.

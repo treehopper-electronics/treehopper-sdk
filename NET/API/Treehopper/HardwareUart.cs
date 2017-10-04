@@ -55,8 +55,10 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Set or get the baud of the UART
+        ///     Set or get the baud of the UART.
         /// </summary>
+        /// 
+        /// Baud can range from 7813 - 2400000 baud, but values less than 2000000 (2 Mbaud) are recommended.
         public int Baud
         {
             get { return _baud; }
@@ -123,15 +125,26 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Receive bytes from the UART
+        ///     Receive bytes from the UART in regular or One-Wire mode
         /// </summary>
-        /// <param name="numBytes">The number of bytes to receive</param>
+        /// <param name="oneWireNumBytes">In One-Wire mode, the number of bytes to receive. Not used in UART mode.</param>
         /// <returns>The bytes received</returns>
-        public async Task<byte[]> Receive(int numBytes = 0)
+        /// As soon as the UART is enabled, any received byte will be added to a 32-byte buffer. Calling this Receive() function does two things:
+        ///    - sends the current contents of this buffer to this function.
+        ///    - reset the pointer in the buffer to the 0th element, effectively resetting it.
+        /// If the buffer fills before the Receive() function is called, the existing buffer will be reset --- discarding all data in the buffer.
+        /// Consequently, it's important to call the Receive() function frequently when expecting data. 
+        /// 
+        /// Owing to how it is implemented, you can clear the buffer at any point by calling Receive(). It's common to empty the buffer before 
+        /// requesting data from the device attached to the UART; this way, you do not have to worry about existing gibberish data that
+        /// might have been inadvertently received.
+        public async Task<byte[]> Receive(int oneWireNumBytes = 0)
         {
             byte[] retVal;
             if (_mode == UartMode.Uart)
             {
+                if(oneWireNumBytes != 0)
+                    Utilities.Utility.Error("Since the UART is not in One-Wire Mode, the oneWireNumBytes parameter is ignored");
                 var data = new byte[2];
                 data[0] = (byte) DeviceCommands.UartTransaction;
                 data[1] = (byte) UartCommand.Receive;
@@ -147,10 +160,12 @@ namespace Treehopper
             }
             else
             {
+                if (oneWireNumBytes == 0)
+                    throw new Exception("You must specify the number of bytes to receive in One-Wire Mode");
                 var data = new byte[3];
                 data[0] = (byte) DeviceCommands.UartTransaction;
                 data[1] = (byte) UartCommand.Receive;
-                data[2] = (byte) numBytes;
+                data[2] = (byte) oneWireNumBytes;
 
                 using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {

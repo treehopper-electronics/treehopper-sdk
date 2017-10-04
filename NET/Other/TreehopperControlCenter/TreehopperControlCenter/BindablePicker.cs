@@ -27,7 +27,7 @@ namespace JPC.BindablePicker
                 typeof(Func<object, string>),
                 typeof(BindablePicker));
 
-        public static readonly BindableProperty ItemsSourceProperty =
+        public static new readonly BindableProperty ItemsSourceProperty =
             BindableProperty.Create(
                 nameof(ItemsSource),
                 typeof(IList),
@@ -35,7 +35,7 @@ namespace JPC.BindablePicker
                 default(IList),
                 propertyChanged: OnItemsSourceChanged);
 
-        public static readonly BindableProperty SelectedItemProperty =
+        public static new readonly BindableProperty SelectedItemProperty =
             BindableProperty.Create(
                 nameof(SelectedItem),
                 typeof(object),
@@ -66,13 +66,13 @@ namespace JPC.BindablePicker
             set { SetValue(DisplayMemberPathProperty, value); }
         }
 
-        public IList ItemsSource
+        public new IList ItemsSource
         {
             get { return (IList)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-        public object SelectedItem
+        public new object SelectedItem
         {
             get { return GetValue(SelectedItemProperty); }
             set { SetValue(SelectedItemProperty, value); }

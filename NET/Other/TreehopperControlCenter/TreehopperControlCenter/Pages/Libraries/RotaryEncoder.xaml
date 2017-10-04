@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:LibraryComponent xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="clr-namespace:TreehopperControlCenter.Pages.Libraries"
+                    xmlns:jpc="clr-namespace:JPC.BindablePicker"
+             x:Class="TreehopperControlCenter.Pages.Libraries.RotaryEncoder">
+    <d:LibraryComponent.Configuration>
+        <StackLayout>
+            <jpc:BindablePicker ItemsSource="{Binding Board.Pins}" SelectedItem="{Binding A}" DisplayMemberPath="Name" Title="A Channel" />
+            <jpc:BindablePicker ItemsSource="{Binding Board.Pins}" SelectedItem="{Binding B}" DisplayMemberPath="Name" Title="B Channel" />
+            <Entry Keyboard="Numeric" Text="{Binding Increment}" />
+        </StackLayout>
+  </d:LibraryComponent.Configuration>
+    <StackLayout>
+        <Label FontSize="Large" Text="{Binding Encoder.Position}"/>
+    </StackLayout>
+</d:LibraryComponent>

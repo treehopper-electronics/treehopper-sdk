@@ -1,6 +1,4 @@
 package io.treehopper.blink;
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,8 +16,17 @@ public class MainActivity extends TreehopperActivity {
     @Override
     protected void boardAdded(TreehopperUsb boardAdded) {
         boardAdded.connect();
-        boardAdded.setLed(true);
-        boardAdded.setLed(false);
+        while(true)
+        {
+            try {
+                boardAdded.setLed(true);
+                Thread.sleep(500);
+                boardAdded.setLed(false);
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

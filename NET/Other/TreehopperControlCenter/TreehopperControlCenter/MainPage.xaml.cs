@@ -8,21 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Treehopper;
+using Xamarin.Forms.Xaml;
 
 namespace TreehopperControlCenter
 {
-	public partial class MainPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class MainPage : ContentPage
+    {
 
         public TreehopperUsb Board { get; set; }
-
-        public ObservableCollection<PinViewModel> Pins { get; set; } = new ObservableCollection<PinViewModel>();
 
 		public MainPage()
 		{
 			InitializeComponent();
-		    pins.ItemsSource = Pins;
-            pins.ItemSelected += Pins_ItemSelected;
 
             Debug.WriteLine("Waiting for board...");
             Device.BeginInvokeOnMainThread(() =>
@@ -56,14 +54,10 @@ namespace TreehopperControlCenter
         public async Task Start()
 	    {
             await Board.ConnectAsync();
-            connectMessage.IsVisible = false;
-            boardViewer.IsVisible = true;
             Board.Connection.UpdateRate = 25;
-            ledSwitch.Toggled += LedSwitch_Toggled;
             Debug.WriteLine("Board connected!");
-            Pins.Clear();
-            foreach (var pin in Board.Pins)
-                Pins.Add(new PinViewModel(pin));
+
+            await Navigation.PushAsync(new ConnectedPage(Board));
         }
 
         private void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -81,6 +75,7 @@ namespace TreehopperControlCenter
 
             } else if(e.Action == NotifyCollectionChangedAction.Remove)
             {
+                await Navigation.PopToRootAsync();
                 Board.Disconnect();
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -92,12 +87,14 @@ namespace TreehopperControlCenter
                     Board = null;
                 });
 
+                Debug.WriteLine("Board disconnected!");
+                Board = null;
             }
         }
 
-        private void LedSwitch_Toggled(object sender, ToggledEventArgs e)
+        protected override bool OnBackButtonPressed()
         {
-            Board.Led = e.Value;
+            return true;
         }
     }
 }

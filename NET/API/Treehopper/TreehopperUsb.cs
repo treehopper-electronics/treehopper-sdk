@@ -453,7 +453,7 @@ namespace Treehopper
         /// <returns>The string</returns>
         public override string ToString()
         {
-            return $"{Name}, ({SerialNumber})";
+            return $"{Name} ({SerialNumber})";
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
@@ -49,6 +50,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 this.dev = dev;
             }
 
+            public override event PropertyChangedEventHandler PropertyChanged;
+
             /// <summary>
             ///     Update the temperature register
             /// </summary>
@@ -59,6 +62,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
                 data &= 0x7FFF; // chop off the error bit of the high byte
                 Celsius = data * 0.02 - 273.15;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
             }
         }
     }

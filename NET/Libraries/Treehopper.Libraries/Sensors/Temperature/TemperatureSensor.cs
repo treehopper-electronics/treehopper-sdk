@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
@@ -8,6 +9,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
     public abstract class TemperatureSensor : ITemperatureSensor
     {
         private double temperatureCelsius;
+
+        public abstract event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Gets or sets whether this temperature sensor should be updated when read from

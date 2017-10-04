@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
@@ -28,6 +29,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
             dev = new SMBusDevice((byte) (0x48 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c);
         }
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         ///     Force an update of the LM75 temperature sensor
         /// </summary>
@@ -36,6 +39,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
         {
             var data = (short) await dev.ReadWordDataBE(0x00);
             Celsius = data / 32.0 / 8.0;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
         }
     }
 }

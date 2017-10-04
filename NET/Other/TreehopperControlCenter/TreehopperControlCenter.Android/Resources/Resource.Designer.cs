@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("TreehopperControlCenter.Droid.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("TreehopperControlCenter.Resource", IsApplication=true)]
 
-namespace TreehopperControlCenter.Droid
+namespace TreehopperControlCenter
 {
 	
 	
@@ -26,8 +26,8 @@ namespace TreehopperControlCenter.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Treehopper.Resource.String.library_name = global::TreehopperControlCenter.Droid.Resource.String.library_name;
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::TreehopperControlCenter.Droid.Resource.Attribute.actionBarSize;
+			global::Treehopper.Resource.String.library_name = global::TreehopperControlCenter.Resource.String.library_name;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::TreehopperControlCenter.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

@@ -2,46 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TreehopperControlCenter"
+            xmlns:pages="clr-namespace:TreehopperControlCenter.Pages"
              xmlns:jpc="clr-namespace:JPC.BindablePicker"
              x:Class="TreehopperControlCenter.MainPage" >
-    <ContentPage.Padding>
+    <TabbedPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
                     iOS="20, 40, 20, 20"
                     Android="20, 20, 20, 20"
                     WinPhone="20, 20, 20, 20" />
-    </ContentPage.Padding>
-    <StackLayout>
-        <StackLayout x:Name="connectMessage" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-            <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="Please Connect a Treehopper"></Label>
-        </StackLayout>
-        <StackLayout Orientation="Vertical" x:Name="boardViewer" IsVisible="False">
-            <StackLayout Orientation="Horizontal">
-                <Label Text="LED" WidthRequest="100"/>
-                <Switch x:Name="ledSwitch" />
+    </TabbedPage.Padding>
+         <StackLayout>
+            <StackLayout x:Name="connectMessage" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="Please Connect a Treehopper"></Label>
             </StackLayout>
-            <ListView  x:Name="pins" RowHeight="80">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical">
-                                <StackLayout.Padding>
-                                        <OnPlatform x:TypeArguments="Thickness"
-                                            WinPhone="0, 0, 10, 0" />
-                                    </StackLayout.Padding>
-                                <Label Text="{Binding Name}"/>
-                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="0, 0, 10, 0">
-                                    <!--<Label VerticalTextAlignment="Center" FontSize="18" Text="Mode:" Margin="0, 0, 10, 0" />-->
-                                    <jpc:BindablePicker ItemsSource="{Binding PinModes}" SelectedItem="{Binding SelectedPinMode, Mode=TwoWay}" WidthRequest="150" />
-                                    <Label VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontSize="20" Text="{Binding DigitalInputValue}" IsVisible="{Binding DigitalInputVisible}" WidthRequest="75" HorizontalOptions="EndAndExpand" />
-                                    <Switch IsToggled="{Binding SwitchValue}" IsEnabled="{Binding SwitchEnabled}" IsVisible="{Binding SwitchVisible}" HorizontalOptions="EndAndExpand" />
-                                    <Slider Value="{Binding SliderValue}" Maximum="1" Minimum="0" MinimumWidthRequest="100" IsVisible="{Binding SliderVisible}" HorizontalOptions="FillAndExpand" />
-                                    <ProgressBar Progress="{Binding ProgressValue}"  MinimumWidthRequest="100" IsVisible="{Binding ProgressVisible}" HorizontalOptions="FillAndExpand"/>
-                                </StackLayout>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
         </StackLayout>
-    </StackLayout>
+
 </ContentPage>
