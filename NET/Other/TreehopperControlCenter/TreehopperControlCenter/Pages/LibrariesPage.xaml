@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TreehopperControlCenter.Pages.LibrariesPage"
+             xmlns:libraries="clr-namespace:TreehopperControlCenter.Pages.Libraries"
+             xmlns:rep="clr-namespace:Xamarin.CustomControls;assembly=Xamarin.CustomControls.RepeaterView"
+             Title="Libraries"
+             >
+    <ContentPage.Content>
+        <StackLayout Margin="10, 10, 10, 10">
+            <ScrollView>
+                <rep:RepeaterView x:Name="components">
+                    <rep:RepeaterView.ItemTemplate>
+                        <DataTemplate>
+                                <libraries:CardView>
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding Title}" FontSize="20" VerticalTextAlignment="Center"/>
+                                            <Button Text="Remove" HorizontalOptions="EndAndExpand" Command="{Binding RemoveCommand}"/>
+                                        </StackLayout>
+                                        <ContentView IsVisible="{Binding IsStopped}" Content="{Binding Configuration}"/>
+                                        <ContentView IsVisible="{Binding IsRunning}" Content="{Binding Content}"/>
+                                        <Button Text="{Binding StartButtonText}" Command="{Binding StartCommand}" />
+                                    </StackLayout>
+                                </libraries:CardView>
+                        </DataTemplate>
+                    </rep:RepeaterView.ItemTemplate>
+                </rep:RepeaterView>
+            </ScrollView>
+            
+            <Button Text="Add" Clicked="Button_Clicked" VerticalOptions="EndAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

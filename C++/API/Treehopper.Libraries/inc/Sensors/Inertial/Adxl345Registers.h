@@ -34,11 +34,15 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             {
                 public:
                 int Range;
+                int Justify;
+                int FullRes;
 
-                long getValue() { return ((Range & 0x3) << 0); }
+                long getValue() { return ((Range & 0x3) << 0) | ((Justify & 0x1) << 2) | ((FullRes & 0x1) << 3); }
                 void setValue(long value)
                 {
                     Range = (int)((value >> 0) & 0x3);
+                    Justify = (int)((value >> 2) & 0x1);
+                    FullRes = (int)((value >> 3) & 0x1);
                 }
             };
 
@@ -47,10 +51,10 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Value;
 
-                long getValue() { return ((Value & 0xFFFF) << 0); }
+                long getValue() { return ((Value & 0x1FFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
+                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
             };
 
@@ -59,10 +63,10 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Value;
 
-                long getValue() { return ((Value & 0xFFFF) << 0); }
+                long getValue() { return ((Value & 0x1FFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
+                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
             };
 
@@ -71,10 +75,10 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
                 public:
                 int Value;
 
-                long getValue() { return ((Value & 0xFFFF) << 0); }
+                long getValue() { return ((Value & 0x1FFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 0 - 16)) >> (32 - 0 - 16);
+                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
             };
 

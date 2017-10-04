@@ -114,7 +114,7 @@ namespace Treehopper { namespace Libraries { namespace IO { namespace Adc {
                 long getValue() { return ((Value & 0xFFFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 0 - 24)) >> (32 - 0 - 24);
+                    Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
                 }
             };
 

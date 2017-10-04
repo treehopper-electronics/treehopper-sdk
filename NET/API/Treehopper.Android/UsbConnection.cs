@@ -61,6 +61,9 @@ namespace Treehopper.Android
             if (!connected)
                 return;
 
+            pinListenerThreadRunning = false;
+            pinListenerThread.Join();
+
             connection.Close();
             connected = false;
         }

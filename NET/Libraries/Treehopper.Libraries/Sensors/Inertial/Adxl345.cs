@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
+    [Supports("Analog Devices", "ADXL-345")]
     public partial class Adxl345 : IAccelerometer
     {
         private Vector3 _accelerometer;
@@ -18,7 +20,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
             registers.PowerCtl.Sleep = 0;
             registers.PowerCtl.Measure = 1;
             registers.DataFormat.Range = 0x03;
-            registers.WriteRange(registers.PowerCtl, registers.DataFormat).Wait();
+            registers.DataFormat.FullRes = 1;
+            registers.WriteRange(registers.PowerCtl, registers.DataFormat);
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
@@ -26,10 +29,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public async Task Update()
         {
-            await registers.ReadRange(registers.DataX, registers.DataZ);
-            _accelerometer.X = registers.DataX.Value * 0.04f;
-            _accelerometer.Y = registers.DataY.Value * 0.04f;
-            _accelerometer.Z = registers.DataZ.Value * 0.04f;
+            await registers.ReadRange(registers.DataX, registers.DataZ).ConfigureAwait(false);
+            _accelerometer.X = registers.DataX.Value / 255f;
+            _accelerometer.Y = registers.DataY.Value / 255f;
+            _accelerometer.Z = registers.DataZ.Value / 255f;
         }
 
         public Vector3 Accelerometer

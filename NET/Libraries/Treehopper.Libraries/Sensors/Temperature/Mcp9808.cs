@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Temperature
 {
@@ -21,6 +22,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
             dev = new SMBusDevice((byte) (0x18 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c);
         }
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         ///     Force an update of the MCP9808 temperature sensor
         /// </summary>
@@ -33,6 +36,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
             if ((data & 0x1000) > 0)
                 temp -= 256;
             Celsius = temp;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
         }
     }
 }

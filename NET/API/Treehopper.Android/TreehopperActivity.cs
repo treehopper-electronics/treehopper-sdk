@@ -24,35 +24,18 @@ namespace Treehopper.Android
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            connectionService.Context = ApplicationContext;
-            // Create your application here
         }
 
         protected override void OnStart()
         {
             base.OnStart();
-            connectionService.Scan();
+            connectionService.ActivityOnStart(this);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-
-            IntentFilter filter = new IntentFilter();
-            filter.AddAction(UsbManager.ActionUsbDeviceDetached);
-            RegisterReceiver(connectionService, filter);
-
-            connectionService.Scan();
-
-            Intent intent = this.Intent;
-            if (intent != null)
-            {
-                if (intent.Action == UsbManager.ActionUsbDeviceAttached)
-                {
-                    UsbDevice usbDevice = (UsbDevice)intent.GetParcelableExtra(UsbManager.ExtraDevice);
-                    connectionService.DeviceAdded(usbDevice);
-                }
-            }
+            connectionService.ActivityOnResume();
         }
     }
 }

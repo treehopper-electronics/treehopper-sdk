@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Input
@@ -35,7 +36,7 @@ namespace Treehopper.Libraries.Input
     ///         million years, which should be sufficient for most users.
     ///     </para>
     /// </remarks>
-    public class RotaryEncoder
+    public class RotaryEncoder : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         ///     Rotary encoder position changed delegate
@@ -122,6 +123,11 @@ namespace Treehopper.Libraries.Input
         /// </summary>
         public event PositionChangedDelegate PositionChanged;
 
+        /// <summary>
+        /// Fires whenever the position has changed
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private void updatePosition()
         {
             if (position % stepsPerTick == 0)
@@ -131,8 +137,15 @@ namespace Treehopper.Libraries.Input
                 if (Position == oldPosition) return;
 
                 PositionChanged?.Invoke(this, new PositionChangedEventArgs {NewPosition = Position});
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position)));
                 oldPosition = Position;
             }
+        }
+
+        public void Dispose()
+        {
+            a.DigitalValueChanged -= A_DigitalValueChanged;
+            b.DigitalValueChanged -= B_DigitalValueChanged;
         }
 
         /// <summary>
