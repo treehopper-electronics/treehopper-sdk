@@ -84,7 +84,7 @@
       <Name>Treehopper.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\API\Treehopper.MVVM\Treehopper.MVVM.csproj">
-      <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
+      <Project>{781CA33D-0821-4C30-9F1C-D7920E6F5949}</Project>
       <Name>Treehopper.MVVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\API\Treehopper.WPF\Treehopper.WPF.csproj">

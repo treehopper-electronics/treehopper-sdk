@@ -41,11 +41,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\NET\API\Treehopper.UWP\Treehopper.UWP.csproj">
       <Project>{F85FFD61-CEC5-420E-A521-31C475580CAD}</Project>
-      <Name>Treehopper.UWP</Name>
+      <Name>Treehopper.Uwp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.nuproj">
       <Project>{41E80DEE-6FCA-4EDA-B7C4-40EA5F829DAD}</Project>
-      <Name>Treehopper.MVVM</Name>
+      <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Treehopper\Treehopper.nuproj">
       <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>

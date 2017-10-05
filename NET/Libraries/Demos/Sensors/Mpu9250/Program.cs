@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Treehopper.Desktop;
+using Treehopper;
 using Treehopper.Libraries.Sensors.Inertial;
 
 namespace Mpu9250Demo
@@ -17,7 +17,7 @@ namespace Mpu9250Demo
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
 
-            var imu = new Mpu6050(board.I2c);
+            var imu = await Mpu6050.Create(board.I2c);
 
             while(!Console.KeyAvailable)
             {
