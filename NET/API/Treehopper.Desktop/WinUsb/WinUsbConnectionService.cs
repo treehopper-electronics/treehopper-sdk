@@ -49,7 +49,7 @@ namespace Treehopper.Desktop.WinUsb
         private void initialAdd()
         {
             var query =
-                $@"Select DeviceID, HardwareID, Name From Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%VID_{
+                $@"Select DeviceID, HardwareID, Name From Win32_PnPEntity WHERE DeviceID LIKE '%VID_{
                         TreehopperUsb.Settings.Vid
                     :X}&PID_{TreehopperUsb.Settings.Pid:X}%'";
 
