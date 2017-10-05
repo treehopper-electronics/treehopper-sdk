@@ -4,8 +4,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
+/// <summary>
+/// LibUSB-based Treehopper library for Linux support
+/// </summary>
 namespace Treehopper.Desktop.LibUsb
 {
+    /// <summary>
+    /// LibUSB-based ConnectionService implementation
+    /// </summary>
     public class LibUsbConnectionService : ConnectionService
     {
         private readonly IntPtr context;

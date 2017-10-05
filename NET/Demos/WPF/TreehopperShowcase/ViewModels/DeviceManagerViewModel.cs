@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using Treehopper;
-using Treehopper.Mvvm.ViewModel;
+using Treehopper.Mvvm.ViewModels;
 using Treehopper.Mvvm.Messages;
 using Treehopper.Utilities;
 using Treehopper.Firmware;

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using Treehopper.Desktop;
 
-namespace Treehopper.Mvvm.ViewModel
+namespace Treehopper.Mvvm.ViewModels
 {
     /// <summary>
     ///     WPF SelectorViewModel implementation

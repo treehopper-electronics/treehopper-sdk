@@ -7,8 +7,8 @@
     <ProjectGuid>{B9FA9617-FFAF-45E0-95FF-96FF5CDAFBFA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Treehopper.WPF</RootNamespace>
-    <AssemblyName>Treehopper.WPF</AssemblyName>
+    <RootNamespace>Treehopper.Wpf</RootNamespace>
+    <AssemblyName>Treehopper.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -33,7 +33,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
-    <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.WPF.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.Wpf.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
@@ -72,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="SystemTrayWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\SelectorViewModel.cs" />
@@ -93,9 +94,9 @@
       <Project>{8c1a6bb5-a978-4582-834c-16a37a3b5484}</Project>
       <Name>Treehopper.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.csproj">
+    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.Mvvm.csproj">
       <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
-      <Name>Treehopper.MVVM</Name>
+      <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
       <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>

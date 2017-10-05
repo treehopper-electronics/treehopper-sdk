@@ -123,6 +123,7 @@
     <Compile Include="IO\PortExpander\ShiftOutPin.cs" />
     <Compile Include="IO\PortExpander\Hc166.cs" />
     <Compile Include="IO\PortExpander\Hc595.cs" />
+    <Compile Include="Memory\NamespaceDoc.cs" />
     <Compile Include="Memory\SpiFlash.cs" />
     <Compile Include="Motors\Amis30624.cs" />
     <Compile Include="Motors\AnalogFeedbackServo.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Supports.cs" />
     <Compile Include="Utilities\BinaryConverters.cs" />
     <Compile Include="Utilities\Int24.cs" />
+    <Compile Include="Utilities\NamespaceDoc.cs" />
     <Compile Include="Utilities\StructConverter.cs" />
   </ItemGroup>
   <ItemGroup>

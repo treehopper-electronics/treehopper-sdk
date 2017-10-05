@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace Treehopper.WPF
+namespace Treehopper.Wpf
 {
     /// <summary>
     ///     A utility class for easily minimizing WPF windows to the system tray

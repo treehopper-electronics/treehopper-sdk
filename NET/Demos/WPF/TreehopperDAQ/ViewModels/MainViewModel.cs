@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
-using Treehopper.Mvvm.ViewModel;
+using Treehopper.Mvvm.ViewModels;
 using Treehopper;
 using Treehopper.Mvvm;
 using TreehopperDAQ.Models;

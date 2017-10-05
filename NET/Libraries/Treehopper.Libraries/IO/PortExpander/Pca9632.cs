@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Utilities;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     NXP PCA9632 4 channel, 8-bit PWM driver

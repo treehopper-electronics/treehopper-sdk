@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.IO
 {
     /// <summary>
     ///     Represents a flushable output port

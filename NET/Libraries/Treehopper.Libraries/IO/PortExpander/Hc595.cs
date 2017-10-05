@@ -1,4 +1,4 @@
-﻿namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     74HC595 serial-in, parallel-out shift register.

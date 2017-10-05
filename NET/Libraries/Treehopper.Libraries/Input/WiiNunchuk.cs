@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper.Libraries.IO.PortExpander;
 using Treehopper.Libraries.Sensors;
 using Treehopper.Libraries.Sensors.Inertial;
 

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.Mux
+namespace Treehopper.Libraries.IO.Mux
 {
     /// <summary>
     ///     I2C mux port

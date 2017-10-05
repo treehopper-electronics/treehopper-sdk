@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.IO
 {
     /// <summary>
     ///     A class that represents a WriteOnlyParallelInterface constructed from a

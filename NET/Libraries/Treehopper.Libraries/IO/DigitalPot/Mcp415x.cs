@@ -1,4 +1,4 @@
-namespace Treehopper.Libraries.Interface.DigitalPot
+namespace Treehopper.Libraries.IO.DigitalPot
 {
     public class Mcp415x : Mcp413x
     {

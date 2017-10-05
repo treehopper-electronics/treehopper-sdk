@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     A digital output pin part of a shift register output

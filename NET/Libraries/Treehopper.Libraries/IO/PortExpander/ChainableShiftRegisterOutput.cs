@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Treehopper.ThirdParty;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     Any shift-register-like device that can be daisy-chained onto other shift registers.

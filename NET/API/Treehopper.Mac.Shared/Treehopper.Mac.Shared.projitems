@@ -9,6 +9,7 @@
     <Import_RootNamespace>Treehopper.Mac.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)MacUsb\DeviceWatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MacUsb\IOKit\CFNumberType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MacUsb\IOKit\CFObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MacUsb\IOKit\CFStringEncoding.cs" />
@@ -26,8 +27,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)MacUsb\MacConnectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MacUsb\MacUsbConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MacUsb\TreehopperData.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)MacUsb\" />
   </ItemGroup>
 </Project>

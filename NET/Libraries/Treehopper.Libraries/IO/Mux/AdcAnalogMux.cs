@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.Mux
+namespace Treehopper.Libraries.IO.Mux
 {
     /// <summary>
     ///     Analog mux for ADC expansion

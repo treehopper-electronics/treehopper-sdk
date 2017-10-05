@@ -7,8 +7,8 @@
     <ProjectGuid>{F85FFD61-CEC5-420E-A521-31C475580CAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Treehopper.UWP</RootNamespace>
-    <AssemblyName>Treehopper.UWP</AssemblyName>
+    <RootNamespace>Treehopper.Uwp</RootNamespace>
+    <AssemblyName>Treehopper.Uwp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -120,9 +120,9 @@
     <EmbeddedResource Include="Properties\Treehopper.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.MVVM.csproj">
+    <ProjectReference Include="..\Treehopper.MVVM\Treehopper.Mvvm.csproj">
       <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
-      <Name>Treehopper.MVVM</Name>
+      <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>

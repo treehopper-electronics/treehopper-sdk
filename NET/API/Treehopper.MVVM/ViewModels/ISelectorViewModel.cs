@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using GalaSoft.MvvmLight.Command;
 
-namespace Treehopper.Mvvm.ViewModel
+namespace Treehopper.Mvvm.ViewModels
 {
     /// <summary>
     ///     A delegate called when the selected board changes

@@ -5,14 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Treehopper.Utilities;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     NXP PCA9685 16-channel, 12-bit PWM driver
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         You'll notice this driver lives in <see cref="Treehopper.Libraries.Interface" />, and not
+    ///         You'll notice this driver lives in <see cref="Treehopper.Libraries.IO" />, and not
     ///         <see cref="Treehopper.Libraries.Displays" /> (as other LED drivers do). While the PCA9685 is advertised as an
     ///         LED controller, it has several unique features not found in most LED drivers, such as adjustable PWM frequency
     ///         (via <see cref="Frequency" />), configurable output drive modes (via <see cref="Pca9685.OutputDrive" />)

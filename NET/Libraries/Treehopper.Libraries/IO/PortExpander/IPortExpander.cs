@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     A port expander

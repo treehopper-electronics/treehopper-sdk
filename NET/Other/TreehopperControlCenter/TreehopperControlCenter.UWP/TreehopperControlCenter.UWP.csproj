@@ -148,13 +148,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\API\Treehopper.MVVM\Treehopper.MVVM.csproj">
+    <ProjectReference Include="..\..\..\API\Treehopper.MVVM\Treehopper.Mvvm.csproj">
       <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
-      <Name>Treehopper.MVVM</Name>
+      <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\API\Treehopper.UWP\Treehopper.UWP.csproj">
+    <ProjectReference Include="..\..\..\API\Treehopper.UWP\Treehopper.Uwp.csproj">
       <Project>{f85ffd61-cec5-420e-a521-31c475580cad}</Project>
-      <Name>Treehopper.UWP</Name>
+      <Name>Treehopper.Uwp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>

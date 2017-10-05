@@ -1,4 +1,4 @@
-﻿namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     PCF8575 16-bit I/O port expander

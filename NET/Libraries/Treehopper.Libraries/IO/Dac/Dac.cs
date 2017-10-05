@@ -1,4 +1,4 @@
-﻿namespace Treehopper.Libraries.Interface.Dac
+﻿namespace Treehopper.Libraries.IO.Dac
 {
     /// <summary>
     ///     Represents a single DAC channel

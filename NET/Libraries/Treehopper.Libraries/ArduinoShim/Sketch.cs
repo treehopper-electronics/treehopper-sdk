@@ -3,6 +3,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Treehopper.Utilities;
 
+/// <summary>
+/// Provide some Arduino functions to make it easier to run Arduino code with Treehopper in C#
+/// </summary>
 namespace Treehopper.Libraries.ArduinoShim
 {
     /// <summary>

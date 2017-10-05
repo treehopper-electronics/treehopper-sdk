@@ -1,4 +1,4 @@
-﻿namespace Treehopper.Libraries.Interface.PortExpander
+﻿namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     A port expander pin

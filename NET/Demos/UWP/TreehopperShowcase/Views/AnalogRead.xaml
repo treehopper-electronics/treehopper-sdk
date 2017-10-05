@@ -9,7 +9,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:TreehopperShowcase.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:treehoppervm="using:Treehopper.Mvvm.ViewModel"
+      xmlns:treehoppervm="using:Treehopper.Mvvm.ViewModels"
       xmlns:vm="using:TreehopperShowcase.ViewModels" mc:Ignorable="d"
       xmlns:views="using:Treehopper.Mvvm.Views"
     xmlns:treehopper="using:Treehopper">

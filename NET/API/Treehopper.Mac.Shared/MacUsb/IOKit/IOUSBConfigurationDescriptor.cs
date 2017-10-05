@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
-namespace Treehopper.Desktop
+namespace Treehopper.Desktop.MacUsb.IOKit
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]

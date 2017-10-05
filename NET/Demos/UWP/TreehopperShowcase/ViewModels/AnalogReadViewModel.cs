@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Treehopper;
 using Treehopper.Mvvm.Messages;
-using Treehopper.Mvvm.ViewModel;
+using Treehopper.Mvvm.ViewModels;
 
 namespace TreehopperShowcase.ViewModels
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Treehopper.Utilities;
 
-namespace Treehopper.Libraries.Interface.Dac
+namespace Treehopper.Libraries.IO.Dac
 {
     /// <summary>
     ///     Microchip MCP4725 12-bit DAC

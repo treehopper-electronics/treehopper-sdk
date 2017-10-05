@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Treehopper.Libraries.Interface.Mux
+namespace Treehopper.Libraries.IO.Mux
 {
     /// <summary>
     ///     Use a standard analog mux as a I2c mux

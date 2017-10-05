@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace Treehopper
+namespace Treehopper.Mvvm
 {
     /// <summary>
     ///     A DesignTime connection service useful for developing GUIs

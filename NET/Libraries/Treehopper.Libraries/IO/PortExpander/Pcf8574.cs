@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     PCF8574 8-bit I/O expander

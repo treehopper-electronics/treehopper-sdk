@@ -7,7 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Treehopper.Mvvm.Messages;
 
-namespace Treehopper.Mvvm.ViewModel
+namespace Treehopper.Mvvm.ViewModels
 {
     /// <summary>
     ///     Base class to implement a Selector view model

@@ -5,7 +5,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Treehopper.Uwp;
 
-namespace Treehopper.Mvvm.ViewModel
+namespace Treehopper.Mvvm.ViewModels
 {
     public class SelectorViewModel : SelectorViewModelBase
     {

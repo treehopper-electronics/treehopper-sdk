@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     74HC166 parallel-in, serial-out shift register

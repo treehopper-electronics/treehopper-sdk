@@ -1,6 +1,6 @@
 using System;
 
-namespace Treehopper.Libraries.Interface.DigitalPot
+namespace Treehopper.Libraries.IO.DigitalPot
 {
     public class Mcp423x : Mcp413x
     {

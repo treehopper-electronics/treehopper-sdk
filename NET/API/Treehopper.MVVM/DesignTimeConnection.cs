@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Treehopper.Utilities;
 
-namespace Treehopper
+namespace Treehopper.Mvvm
 {
     /// <summary>
     ///     This class implements a fake Treehopper connection

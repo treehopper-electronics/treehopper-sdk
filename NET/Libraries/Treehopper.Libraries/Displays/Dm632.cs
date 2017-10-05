@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper.Libraries.IO.PortExpander;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays

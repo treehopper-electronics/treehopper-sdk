@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.IO
 {
     /// <summary>
     ///     Represents any object that has a flushable interface

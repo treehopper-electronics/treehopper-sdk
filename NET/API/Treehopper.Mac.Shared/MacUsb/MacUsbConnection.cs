@@ -8,6 +8,10 @@ using Treehopper.Desktop.MacUsb.IOKit;
 
 namespace Treehopper.Desktop.MacUsb
 {
+    /// <summary>
+    /// IOKit-based UsbConnection
+    /// </summary>
+    /// This class is available in both the Treehopper.Desktop assembly, as well as the Treehopper.Mac assembly
 	public class MacUsbConnection : IConnection
 	{
 	    readonly IOUSBDeviceInterface320 deviceInterface;

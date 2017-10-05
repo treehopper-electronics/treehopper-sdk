@@ -1,7 +1,6 @@
 ﻿/// <summary>
-/// Base flushable types
+/// Input/output devices
 /// </summary>
-
-namespace Treehopper.Libraries.Interface
+namespace Treehopper.Libraries.IO
 {
 }

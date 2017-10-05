@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper.Libraries.IO.PortExpander;
 
 namespace Treehopper.Libraries.Displays
 {

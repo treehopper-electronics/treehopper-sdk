@@ -11,6 +11,14 @@ using Treehopper.Desktop.WinUsb;
 namespace Treehopper
 {
     /// <summary>
+    /// Win32, Mono, and IOKit implementations for running Treehopper on Windows, macOS, and Linux
+    /// </summary>
+    namespace Desktop
+    {
+        /// Dummy namespace just for nicer documentation
+    }
+
+    /// <summary>
     ///     This class is used for discovering <see cref="TreehopperUsb" /> devices attached to this computer.
     /// </summary>
     public abstract class ConnectionService : IConnectionService, IDisposable

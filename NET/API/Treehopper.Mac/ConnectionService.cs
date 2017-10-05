@@ -13,13 +13,7 @@ namespace Treehopper
     /// </summary>
     public abstract class ConnectionService : IConnectionService, IDisposable
     {
-private static readonly Lazy<MacUsbConnectionService> macUsbInstance = new Lazy<MacUsbConnectionService>();
-
-        private static bool? isLinux;
-
-        private static bool? isWindows;
-
-        private static bool? isMac;
+        private static readonly Lazy<MacUsbConnectionService> macUsbInstance = new Lazy<MacUsbConnectionService>();
 
         private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 

@@ -6,6 +6,9 @@ using Android.Content;
 using Android.Hardware.Usb;
 using Java.Lang;
 
+/// <summary>
+/// Android-based Treehopper library
+/// </summary>
 namespace Treehopper.Android
 {
     public class UsbConnection : IConnection

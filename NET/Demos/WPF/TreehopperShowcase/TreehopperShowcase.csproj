@@ -164,13 +164,13 @@
       <Project>{8c1a6bb5-a978-4582-834c-16a37a3b5484}</Project>
       <Name>Treehopper.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\API\Treehopper.MVVM\Treehopper.MVVM.csproj">
+    <ProjectReference Include="..\..\..\API\Treehopper.MVVM\Treehopper.Mvvm.csproj">
       <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
-      <Name>Treehopper.MVVM</Name>
+      <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\API\Treehopper.WPF\Treehopper.WPF.csproj">
+    <ProjectReference Include="..\..\..\API\Treehopper.WPF\Treehopper.Wpf.csproj">
       <Project>{b9fa9617-ffaf-45e0-95ff-96ff5cdafbfa}</Project>
-      <Name>Treehopper.WPF</Name>
+      <Name>Treehopper.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
       <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>

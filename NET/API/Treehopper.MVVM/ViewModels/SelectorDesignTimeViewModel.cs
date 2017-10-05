@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace Treehopper.Mvvm.ViewModel
+namespace Treehopper.Mvvm.ViewModels
 {
     /// <summary>
     ///     A view model used to power a XAML Selector view

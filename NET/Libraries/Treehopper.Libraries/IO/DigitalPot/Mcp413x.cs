@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.DigitalPot
+namespace Treehopper.Libraries.IO.DigitalPot
 {
     public class Mcp413x
     {

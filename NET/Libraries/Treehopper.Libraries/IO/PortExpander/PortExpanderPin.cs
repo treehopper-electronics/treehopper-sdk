@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Interface.PortExpander
+namespace Treehopper.Libraries.IO.PortExpander
 {
     /// <summary>
     ///     Represents a digital I/O pin's mode

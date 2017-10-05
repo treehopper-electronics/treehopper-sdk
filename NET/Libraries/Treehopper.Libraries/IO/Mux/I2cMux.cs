@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Treehopper.Libraries.Interface.Mux
+namespace Treehopper.Libraries.IO.Mux
 {
     /// <summary>
     ///     Base class for any circuit that implements an i2C mux

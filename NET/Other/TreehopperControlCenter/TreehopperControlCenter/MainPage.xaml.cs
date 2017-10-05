@@ -27,16 +27,6 @@ namespace TreehopperControlCenter
             {
                 ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
             });
-
-
-            Pins.Add(new PinViewModel());
-            Pins.Add(new PinViewModel());
-            Pins.Add(new PinViewModel());
-            Pins.Add(new PinViewModel());
-
-            Pins[1].SelectedPinMode = "Digital Output";
-            Pins[2].SelectedPinMode = "SoftPWM";
-            Pins[3].SelectedPinMode = "Analog Input";
         }
 
         protected override void OnDisappearing()
@@ -60,7 +50,7 @@ namespace TreehopperControlCenter
             await Navigation.PushAsync(new ConnectedPage(Board));
         }
 
-        private void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private async void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
@@ -79,11 +69,11 @@ namespace TreehopperControlCenter
                 Board.Disconnect();
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    ledSwitch.Toggled -= LedSwitch_Toggled;
+                    //ledSwitch.Toggled -= LedSwitch_Toggled;
                     Debug.WriteLine("Board disconnected!");
-                    boardViewer.IsVisible = false;
+                    //boardViewer.IsVisible = false;
                     connectMessage.IsVisible = true;
-                    Pins.Clear();
+                    //Pins.Clear();
                     Board = null;
                 });
 

@@ -7,6 +7,9 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.Usb;
 using Windows.Storage.Streams;
 
+/// <summary>
+/// Windows 10 UWP support for Treehopper
+/// </summary>
 namespace Treehopper.Uwp
 {
     public class UsbConnection : IConnection, INotifyPropertyChanged
