@@ -22,7 +22,7 @@ namespace TreehopperControlCenter.Pages.Libraries
                     BackgroundColor = Color.Transparent;
                     break;
 
-                case Device.Windows:
+                case Device.UWP:
                     BackgroundColor = Color.FromRgb(0xF0, 0xF0, 0xF0);
                     break;
             }

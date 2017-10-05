@@ -16,5 +16,4 @@
                 <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="Please Connect a Treehopper"></Label>
             </StackLayout>
         </StackLayout>
-
 </ContentPage>

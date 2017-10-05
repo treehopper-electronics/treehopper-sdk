@@ -40,9 +40,8 @@
       <HintPath>..\..\..\..\..\packages\Charlotte.0.1.50\lib\Charlotte.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="M2Mqtt, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\M2Mqtt.3.6\lib\net45\M2Mqtt.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

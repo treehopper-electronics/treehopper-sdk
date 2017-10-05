@@ -43,6 +43,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)PinViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repeater.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml">
