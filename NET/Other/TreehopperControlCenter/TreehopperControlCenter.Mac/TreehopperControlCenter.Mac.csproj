@@ -109,6 +109,10 @@
       <Project>{CD55540B-A745-453C-A7A3-68AD63B433CC}</Project>
       <Name>Treehopper.Mac</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj">
+      <Project>{397B4612-9FF2-4288-A7D0-C2B2FC4F4816}</Project>
+      <Name>Treehopper.Libraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\TreehopperControlCenter\TreehopperControlCenter.projitems" Label="Shared" Condition="Exists('..\TreehopperControlCenter\TreehopperControlCenter.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
