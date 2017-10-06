@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "Microsoft.Bcl.Build": "1.0.21",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.4.0",
     "MvvmLightLibs": "5.3.0",
     "System.Numerics.Vectors": "4.4.0",
