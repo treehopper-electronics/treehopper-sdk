@@ -17,42 +17,95 @@ namespace FirmwareUpdate
         {
             while(true)
             {
-                while (FirmwareUpdater.Boards.Count == 0)
+                Console.WriteLine("Press P to program, and T to test");
+                var response = Console.ReadLine();
+
+                if (response.ToLower() == "t")
                 {
-                    Console.WriteLine("Couldn't find a Treehopper board in bootloader mode. Searching for Treehoppers to reboot...");
-                    var board = await ConnectionService.Instance.GetFirstDeviceAsync();
-                    if (board != null)
+                    await SelfTest().ConfigureAwait(false);
+                } else
+                {
+                    while (FirmwareUpdater.Boards.Count == 0)
                     {
-                        Console.WriteLine("Found board. Connecting to reboot into bootloader mode");
-                        if (!await board.ConnectAsync())
-                            Console.WriteLine("Couldn't connect to board. Retrying in 5 seconds...");
-                        else
-                        board.RebootIntoBootloader();
+                        Console.WriteLine("Couldn't find a Treehopper board in bootloader mode. Searching for Treehoppers to reboot...");
+                        var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+                        if (board != null)
+                        {
+                            Console.WriteLine("Found board. Connecting to reboot into bootloader mode");
+                            if (!await board.ConnectAsync())
+                                Console.WriteLine("Couldn't connect to board. Retrying in 5 seconds...");
+                            else
+                                board.RebootIntoBootloader();
+                        }
+                        Console.WriteLine("Waiting 5 seconds to reconnect...");
+                        await Task.Delay(5000);
                     }
-                    Console.WriteLine("Waiting 5 seconds to reconnect...");
-                    await Task.Delay(5000);
-                }
 
-                var dfu = FirmwareUpdater.Boards[0];
-                dfu.ProgressChanged += Dfu_ProgressChanged;
+                    var dfu = FirmwareUpdater.Boards[0];
+                    dfu.ProgressChanged += Dfu_ProgressChanged;
 
-                Console.WriteLine("Ready to load firmware. Would you like to load with the built-in default? (Y/n)");
-                string response = Console.ReadLine();
-                if(response.ToLower() == "y" || response.Length == 0)
-                {
-                    Console.WriteLine("Loading default firmware from the Treehopper assembly");
-                    await dfu.LoadAsync();
-                }
-                else
-                {
-                    Console.Write("Specify the full file name to use: ");
+                    Console.WriteLine("Ready to load firmware. Would you like to load with the built-in default? (Y/n)");
                     response = Console.ReadLine();
-                    await dfu.Load(response);
+                    if (response.ToLower() == "y" || response.Length == 0)
+                    {
+                        Console.WriteLine("Loading default firmware from the Treehopper assembly");
+                        await dfu.LoadAsync();
+                    }
+                    else
+                    {
+                        Console.Write("Specify the full file name to use: ");
+                        response = Console.ReadLine();
+                        await dfu.Load(response);
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine("Firmware loaded! Press any key to start again, or close this window to exit.");
+                    Console.ReadKey();
                 }
-                Console.WriteLine();
-                Console.WriteLine("Firmware loaded! Press any key to start again, or close this window to exit.");
-                Console.ReadKey();
+
+                
             }
+        }
+
+        private static async Task<bool> SelfTest()
+        {
+            Console.WriteLine("Beginning self test...");
+            var board = await ConnectionService.Instance.GetFirstDeviceAsync().ConfigureAwait(false);
+            await board.ConnectAsync().ConfigureAwait(false);
+            bool retVal = true;
+
+            // make each pin an input
+            foreach(var pin in board.Pins)
+            {
+                await pin.MakeDigitalIn().ConfigureAwait(false);
+                await Task.Delay(100).ConfigureAwait(false);
+
+                if(pin.DigitalValue == false)
+                {
+                    retVal = false;
+                    Console.WriteLine($"{pin.Name} shorted to ground.");
+                }
+            }
+
+            
+            for (int i = 0;i<board.Pins.Count-1;i++)
+            {
+                board.Pins[i].Mode = PinMode.PushPullOutput;
+                await board.Pins[i].WriteDigitalValueAsync(false).ConfigureAwait(false);
+                await board.AwaitPinUpdate().ConfigureAwait(false);
+                if(board.Pins[i+1].DigitalValue == false)
+                {
+                    Console.WriteLine($"Short detected on pins {i} and {i+1}.");
+                    retVal = false;
+                }
+            }
+            if(retVal == false)
+            {
+                Console.WriteLine("Errors found during self-test!");
+            } else
+            {
+                Console.WriteLine("Self-test passed!");
+            }
+            return retVal;
         }
 
         private static void Dfu_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
