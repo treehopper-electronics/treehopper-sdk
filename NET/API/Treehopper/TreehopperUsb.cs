@@ -27,6 +27,7 @@ namespace Treehopper
         private const int MinimumSupportedFirmwareVersion = 110;
         internal readonly AsyncLock ComsLock = new AsyncLock();
         private bool _led;
+        private TaskCompletionSource<bool> _pinUpdateReportReceived = new TaskCompletionSource<bool>();
 
         /// <summary>
         ///     Construct a new TreehopperUsb board from a connection
@@ -249,6 +250,12 @@ namespace Treehopper
         {
             Disconnect();
             Connection.Dispose();
+        }
+
+        public Task AwaitPinUpdate()
+        {
+            _pinUpdateReportReceived = new TaskCompletionSource<bool>();
+            return _pinUpdateReportReceived.Task;
         }
 
         /// <summary>
@@ -504,6 +511,7 @@ namespace Treehopper
 
         private void Connection_PinEventDataReceived(byte[] pinStateBuffer)
         {
+            _pinUpdateReportReceived.TrySetResult(false);
             if (pinStateBuffer[0] != 0x00)
             {
                 var i = 1;
