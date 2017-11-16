@@ -62,12 +62,14 @@ namespace Treehopper
             {
                 if (_dutyCycle.CloseTo(value)) return;
                 if (value > 1.0 || value < 0.0)
+                {
                     Utility.Error("DutyCycle must be between 0.0 and 1.0");
-                _dutyCycle = value.Constrain();
+                    _dutyCycle = value.Constrain();
+                }
 
                 // update the pulseWidth just in case the user wants to read from the value
                 _pulseWidth = _dutyCycle * _board.HardwarePwmManager.PeriodMicroseconds;
-                _board.HardwarePwmManager.SetDutyCycle(_pin, value);
+                _board.HardwarePwmManager.SetDutyCycle(_pin, _dutyCycle);
             }
         }
 
@@ -82,8 +84,10 @@ namespace Treehopper
             {
                 if (_pulseWidth.CloseTo(value)) return;
                 if (value > _board.HardwarePwmManager.PeriodMicroseconds || value < 0.0)
+                {
                     Utility.Error($"PulseWidth must be between 0.0 and {_board.HardwarePwmManager.PeriodMicroseconds}");
-                _pulseWidth = value.Constrain(0, _board.HardwarePwmManager.PeriodMicroseconds);
+                    _pulseWidth = value.Constrain(0, _board.HardwarePwmManager.PeriodMicroseconds);
+                }
 
                 DutyCycle = _pulseWidth / _board.HardwarePwmManager.PeriodMicroseconds;
             }
