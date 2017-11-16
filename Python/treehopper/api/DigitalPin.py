@@ -1,5 +1,5 @@
 from treehopper.utils.EventHandler import EventHandler
-
+from abc import ABC, abstractmethod
 
 class DigitalBase:
     def __init__(self):
@@ -15,8 +15,16 @@ class DigitalIn(DigitalBase):
     def digital_value(self) -> bool:
         return self._digital_value
 
+    @abstractmethod
     def make_digital_in(self):
         pass
+
+    def _update_value(self, value: bool):
+        if value == self._digital_value:
+            return
+
+        self._digital_value = value
+        self.digital_value_changed(value)
 
 
 class DigitalOut(DigitalBase):
@@ -28,8 +36,10 @@ class DigitalOut(DigitalBase):
         return self._digital_value
 
     @digital_value.setter
+    @abstractmethod
     def digital_value(self, value):
         pass
 
+    @abstractmethod
     def make_digital_out(self):
         pass
