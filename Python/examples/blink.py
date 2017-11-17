@@ -1,4 +1,4 @@
-from treehopper.api import find_boards, PinMode
+from treehopper.api import *
 from time import sleep
 
 board = find_boards()[0]

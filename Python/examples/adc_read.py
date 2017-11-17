@@ -1,4 +1,4 @@
-from treehopper.api import find_boards, PinMode
+from treehopper.api import *
 
 
 def handler(sender, value):
