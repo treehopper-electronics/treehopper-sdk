@@ -12,7 +12,7 @@ class HardwarePwm(Pwm):
         self._duty_cycle = 0
         self._pulse_width = 0
         self._enabled = False
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
 
     @property
     def enabled(self):
@@ -42,7 +42,7 @@ class HardwarePwm(Pwm):
         self._duty_cycle = value
 
         if value > 1.0 or value < 0.0:
-            self.logger.warning("duty_cycle called with out-of-bounds value. Constraining to [0.0, 1.0]")
+            self._logger.warning("duty_cycle called with out-of-bounds value. Constraining to [0.0, 1.0]")
             self._duty_cycle = utils.constrain(self._duty_cycle)
 
         self._pulse_width = self._duty_cycle * self._board.hardware_pwm_manager.period_microseconds
@@ -60,7 +60,7 @@ class HardwarePwm(Pwm):
         self._duty_cycle = value
 
         if value > self._board.hardware_pwm_manager.period_microseconds or value < 0.0:
-            self.logger.warning("pulse_width called with out-of-bounds value. Constraining to [0.0, {}]".format(self._board.hardware_pwm_manager.period_microseconds))
+            self._logger.warning("pulse_width called with out-of-bounds value. Constraining to [0.0, {}]".format(self._board.hardware_pwm_manager.period_microseconds))
             self._duty_cycle = utils.constrain(self._duty_cycle)
 
         self.duty_cycle = self._pulse_width / self._board.hardware_pwm_manager.period_microseconds
