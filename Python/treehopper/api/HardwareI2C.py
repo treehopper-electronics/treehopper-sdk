@@ -1,9 +1,10 @@
 import logging
 import math
 from treehopper.api.I2C import I2C
+from treehopper.api.Pin import PinMode
 from treehopper.utils.utils import *
 from treehopper.api.DeviceCommands import DeviceCommands
-from treehopper.api.PinMode import PinMode
+
 
 class I2CTransferError:
     ArbitrationLostError, NackError, UnknownError, TxunderError = range(4)

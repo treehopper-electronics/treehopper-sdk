@@ -1,5 +1,6 @@
 from treehopper.utils.EventHandler import EventHandler
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+
 
 class DigitalBase:
     def __init__(self):

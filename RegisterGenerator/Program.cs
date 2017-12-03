@@ -55,6 +55,12 @@ namespace RegisterGenerator
                     Render.FileToFile("Templates\\Registers.h", library, outPath);
                 }
                 {
+                    // Python
+                    var outPath = $"{treehopperRoot}\\Python\\treehopper\\libraries\\{path.Replace("Libraries\\", "").ToLower()}\\{library.Name}Registers.py";
+                    Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+                    Render.FileToFile("Templates\\Registers.py", library, outPath);
+                }
+                {
                     // Java
                     var outPath = $"{treehopperRoot}\\Java\\api\\treehopper.libraries\\src\\main\\java\\io\\treehopper\\{path.ToLower()}\\{library.Name.ToLower()}";
                     Directory.CreateDirectory(outPath);

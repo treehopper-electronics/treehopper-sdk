@@ -1,10 +1,14 @@
-from treehopper.api import Pin
-from treehopper.api.HardwarePwmFrequency import HardwarePwmFrequency
+from treehopper.api.Pin import Pin
 from treehopper.api.DeviceCommands import DeviceCommands
 import logging
 
+
 class PwmPinEnableMode:
     NoPin, Pin7, Pin7Pin8, Pin7Pin8Pin9 = range(4)
+
+
+class HardwarePwmFrequency:
+    Freq_732Hz, Freq_183Hz, Freq_61Hz = range(3)
 
 
 class HardwarePwmManager:

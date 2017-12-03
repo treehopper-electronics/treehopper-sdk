@@ -4,12 +4,12 @@ import usb.core
 import usb.util
 import threading
 from events import Events
-from treehopper.api.DeviceCommands import DeviceCommands
 from treehopper.api.HardwarePwmManager import HardwarePwmManager
 from treehopper.utils.EventHandler import EventHandler
 from treehopper.api.Pin import Pin
 from treehopper.api.HardwarePwm import HardwarePwm
 from treehopper.api.HardwareI2C import HardwareI2C
+from treehopper.api.DeviceCommands import DeviceCommands
 
 class TreehopperUsb:
     """Core object for communicating with Treehopper USB boards"""

@@ -1,9 +1,18 @@
 # from treehopper.api.TreehopperUsb import TreehopperUsb
 from treehopper.api.DigitalPin import DigitalIn, DigitalOut
 from treehopper.api.AdcPin import AdcPin
-from treehopper.api.PinConfigCommands import PinConfigCommands
-from treehopper.api.PinMode import PinMode
-from treehopper.api.ReferenceLevel import ReferenceLevel
+
+class PinMode:
+    Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, Unassigned = range(6)
+
+
+class PinConfigCommands:
+    Reserved, MakeDigitalInput, MakePushPullOutput, MakeOpenDrainOutput, MakeAnalogInput, SetDigitalValue = range(6)
+
+
+class ReferenceLevel:
+    Vref_3V3, Vref_1V65, Vref_1V8, Vref_2V4, Vref_3V3Derived, Vref_3V6 = range(6)
+
 
 class Pin(AdcPin, DigitalIn, DigitalOut):
     def __init__(self, board, pin_number : int):

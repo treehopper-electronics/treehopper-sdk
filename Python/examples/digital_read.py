@@ -11,4 +11,6 @@ pin = board.pins[0]
 pin.mode = PinMode.DigitalInput
 pin.digital_value_changed += handler
 
-# this program will run until terminated or board.disconnect() is called
+
+input("Press [ENTER] to stop and disconnect\n")
+board.disconnect()

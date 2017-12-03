@@ -1,7 +1,7 @@
 import math
 import logging
 from treehopper.api.Pwm import Pwm
-from treehopper.api.PinMode import PinMode
+from treehopper.api.Pin import PinMode
 from treehopper.utils import utils
 
 

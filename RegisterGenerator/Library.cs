@@ -13,6 +13,7 @@ namespace RegisterGenerator
         public string Namespace { get; set; }
         public string NamespaceLower => Namespace.ToLower();
         public string MultiRegisterAccess { get; set; }
+        public string MultiRegisterAccessCapitalized => MultiRegisterAccess.ToPascalCase();
         /// <summary>
         /// Unordered dictionary of registers (what's serialized)
         /// </summary>
