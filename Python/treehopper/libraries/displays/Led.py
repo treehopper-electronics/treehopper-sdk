@@ -1,8 +1,12 @@
 import math
 from treehopper.utils.utils import constrain
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from treehopper.libraries.displays.LedDriver import LedDriver
+
 class Led:
-    def __init__(self, driver, channel=0, has_brightness_control=False):
+    def __init__(self, driver: 'LedDriver', channel=0, has_brightness_control=False):
         self._brightness = 1.0
         self._state = False
         self.brightness_control = has_brightness_control
