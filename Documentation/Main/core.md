@@ -7,16 +7,16 @@ Treehopper boards have up to 20 pins — each of which can be used as analog inp
 # Digital & Analog Pins {#pins}
 Each Treehopper pin functions can read and output digital values, as well as read analog voltages.
 
-# Pin Mode
+## Pin Mode
 You can choose whether a pin should be a digital input, output, or analog input by setting the pin's mode property. Consult the API documentation for the language you're using to determine how to set the pin mode.
 
 ## Digital outputs
 All pins on Treehopper support both push-pull and open-drain outputs. Writing a true or false to the pin's digital value will flush that value to the pin.
-## Push-Pull
+### Push-Pull
 Push-pull is the commonly used output mode; when a pin is set to true, Treehopper will attempt to drive the pin to logic HIGH (3.3V) — when a pin is set to false, Treehopper will attempt to drive the pin to logic LOW (0V — also referred to as ground).
-## Open-Drain
+### Open-Drain
 Open-drain outputs can only drive a strong logic LOW (0V); in the other state, the pin is allowed to float.
-## Output Current Limitations
+### Output Current Limitations
 Treehopper can source approximately 20 mA of current out of each pin when short-circuited. Treehopper can sink approximately 40 mA of current into each pin when short-circuited. While this is plenty of current for peripheral ICs and small indicator LEDs, do not expect to drive large arrays of LEDs, or low-impedance loads like motors, solenoids, or speakers directly from Treehopper's pins. There are a wide variety of peripherals in the Treehopper.Libraries namespace that can be used for interfacing with these peripherals.
 \warning <b>To avoid damaging the device permanently, do not source or sink more than 400 mA of combined current out of the pins on the board!</b> Note that these limits have nothing to do with the supply pins found on Treehopper; you can comfortably source 500 mA out of either the 5V or 3.3V supply pins on the board.
 ## Digital input {#pins_digitalin}
@@ -160,6 +160,36 @@ If your 5V device has TTL-compatible logic (i.e., a V<sub>IH</sub> of 2V), no lo
 
 On the opposite end of the spectrum, if you're dealing with 2.8V devices, make sure to pull up the bus to 2.8 --- not 3.3 --- volts. If you have lower-voltage devices, you'll need to build or buy a bidirectional logic level converter (which can be [as simple as a transistor and some pull-ups](http://www.nxp.com/documents/application_note/AN10441.pdf)). 
 
+# UART {#uart}
+The UART peripheral allows you to send and receive standard-format RS-232-style asynchronous serial communications. 
+
+## Pins
+When the UART is enabled, the following pins will be unavailable for other use:
+ - <b>TX</b> <i>(Transmit)</i>: This pin carries data from Treehopper to the device you've attached to the UART.
+ - <b>RX</b> <i>(Receive)</i>: This pin carries data from the device to Treehopper.
+
+Note that UART cross-over is a common problem when people are attaching devices together; always consult the documentation for the device you're attaching to Treehopper to ensure that the TX signal from Treehopper is flowing into the receive input (RX, DIN, etc) of the device, and vice-versa. Since you are unlikely to damage either device by misconnecting, it is a common troubleshooting practice to simply swap TX and RX if the system doesn't appear to be functioning properly.
+
+## One-Wire Mode
+Treehopper's UART has built-in support for One-Wire mode with few external circuitry requirements. When you use the UART in One-Wire mode, the TX pin will switch to an open-drain mode. You must physically tie the RX and TX pins together --- this is the data pin for the One-Wire bus. Most One-Wire sensors and devices you use will require an external pull-up resistor on the bus.
+
+While One-Wire mode uses the UART, all its routines --- including searching --- are implemented in firmware on the Treehopper board itself, instead in the host-side software. This should provide good performance without being overly chatty over the USB interface.
+
+## Implementation Details
+Treehopper's UART is designed for average baud rates; the range of supported rates is 7813 baud to 2.4 Mbaud, though communication will be less reliable above 1-2 Mbaud.
+
+Transmitting data is straightforward: simply pass a byte array --- up to 63 characters long --- to the Send() function once the UART is enabled. Consult the appropriate language API for details.
+
+Receiving data is more challenging, since incoming data can appear on the RX pin at any moment when the UART is enabled. Since all actions on Treehopper are initiated on the host, to get around UART's inherent asynchronicity, a 32-byte buffer holds any received data that comes in while the UART is enabled. Then, when the host wants to access this data, it can Receive() it from the board to obtain the buffer (consule your language API for the specifics).
+
+Whenever Receive() is called, the entire buffer is sent to the host, and the buffer's pointer is reset to 0 (i.e., the buffer is reset). This can be useful for clearing out any gibberish and returning the UART to a known state before you expect to receive data --- for example, if you're addressing a device that you send commands to, and read responses back from, you may wish to call Receive() before sending the command; that way, parsing the received data will be simpler.
+
+## Other Considerations
+This ping-pong short-packet-oriented back-and-forth scenario is what Treehopper's UART is built for, as it's what's most commonly needed when interfacing with embedded devices that use a UART. 
+
+There is a tight window of possible baud rates where it is plausible to receive data continuously without interruption. For example, at 9600 baud, the Receive() function only need to finish execution every 33 milliseconds, which can easily be accomplished in most operating systems. However, because data is not double-buffered on the board, under improbable circumstances, continuously-transmitted data may inadvertently be discarded.
+
+Treehopper's UART is not designed to replace a high-quality CDC-class USB-to-serial converter, especially for high data-rate applications. In addition to streaming large volumes of data continuously, USB CDC-class UARTs should also offer lower latency for receiving data. Treehopper also has no way of exposing its UART to the operating system as a COM port, so it's most certainly not a suitable replacement for a USB-to-serial converter in most applications.
 
 # PWM {#pwm}
 Treehopper has three high-resolution 16-bit PWM channels.
