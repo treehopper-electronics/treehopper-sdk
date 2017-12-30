@@ -249,3 +249,5 @@ xcuserdata/
 cmake-build-debug/
 
 PCB/treehopper/treehopper\.\$\$\$
+
+*.pyc
