@@ -92,10 +92,10 @@ namespace Treehopper
             // first check to make sure the previous PWM pins have been enabled first.
             if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7)
                 throw new Exception(
-                    "You must enable PWM functionality on Pin 8 (PWM1) before you enable PWM functionality on Pin 9 (PWM2). See http://treehopper.io/pwm");
+                    "You must enable PWM functionality on Pin 7 (PWM1) before you enable PWM functionality on Pin 8 (PWM2).");
             if (pin.PinNumber == 9 && _mode != PwmPinEnableMode.Pin7Pin8)
                 throw new Exception(
-                    "You must enable PWM functionality on Pin 8 and 9 (PWM1 and PWM2) before you enable PWM functionality on Pin 10 (PWM3). See http://treehopper.io/pwm");
+                    "You must enable PWM functionality on Pin 7 and 8 (PWM1 and PWM2) before you enable PWM functionality on Pin 9 (PWM3).");
 
             switch (pin.PinNumber)
             {
@@ -118,10 +118,10 @@ namespace Treehopper
             // first check to make sure the higher PWM pins have been disabled first
             if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7Pin8)
                 throw new Exception(
-                    "You must disable PWM functionality on Pin 10 (PWM3) before disabling Pin 9's PWM functionality. See http://treehopper.io/pwm");
+                    "You must disable PWM functionality on Pin 9 (PWM3) before disabling Pin 8's PWM functionality.");
             if (pin.PinNumber == 7 && _mode != PwmPinEnableMode.Pin7)
                 throw new Exception(
-                    "You must disable PWM functionality on Pin 9 and 10 (PWM2 and PWM3) before disabling Pin 8's PWM functionality. See http://treehopper.io/pwm");
+                    "You must disable PWM functionality on Pin 8 and 9 (PWM2 and PWM3) before disabling Pin 7's PWM functionality.");
 
             switch (pin.PinNumber)
             {
