@@ -52,11 +52,6 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     The global brightness, from 0.0-1.0, of the LEDs attached to this driver
         /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         This property is meaningless when <see cref="HasGlobalBrightnessControl" />  is false
-        ///     </para>
-        /// </remarks>
         public double Brightness
         {
             get { return brightness; }

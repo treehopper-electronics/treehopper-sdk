@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Treehopper.Desktop;
+using Treehopper;
 using Treehopper.Libraries.Displays;
 
 namespace Ht16k33Demo
@@ -17,15 +17,15 @@ namespace Ht16k33Demo
             await board.ConnectAsync();
 
             var driver = new Ht16k33(board.I2c, Ht16k33.Package.Sop20_64Led);
-            for(int i=0;i<driver.Leds.Count;i++)
+            foreach(var led in driver.Leds)
             {
-                driver.Leds[i].State = true;
+                led.State = true;
                 await Task.Delay(40);
             }
 
-            for (int i = 0; i < driver.Leds.Count; i++)
+            foreach(var led in driver.Leds)
             {
-                driver.Leds[i].State = false;
+                led.State = false;
                 await Task.Delay(40);
             }
 

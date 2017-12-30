@@ -17,6 +17,7 @@ namespace RegisterGenerator
         public string Access { get; set; }
         public int Width { get; set; }
         public string IsBigEndian { get; set; }
+        public string IsBigEndianCapitalized => IsBigEndian.ToPascalCase();
         public Dictionary<string, Value> Values { get; set; }
         public bool IsReadOnly => Access == "read";
         public bool IsWriteOnly => Access == "write";
