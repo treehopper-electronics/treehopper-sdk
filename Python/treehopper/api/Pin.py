@@ -27,10 +27,17 @@ class Pin(AdcPin, DigitalIn, DigitalOut):
 
     @property
     def number(self):
+        """Get the pin number"""
         return self._number
 
     @property
     def digital_value(self) -> bool:
+        """Digital value for the pin.
+
+        :type: bool        
+        :getter: Returns the last digital value received
+        :setter: Sets the pin's value immediately
+        """
         return self._digital_value
 
     @digital_value.setter
@@ -40,6 +47,12 @@ class Pin(AdcPin, DigitalIn, DigitalOut):
 
     @property
     def reference_level(self) -> ReferenceLevel:
+        """Reference level for the pin.
+
+        :type: ReferenceLevel        
+        :getter: Returns the current ReferenceLevel
+        :setter: Sets the desired ReferenceLevel
+        """
         return self._reference_level
 
     @reference_level.setter
@@ -52,15 +65,19 @@ class Pin(AdcPin, DigitalIn, DigitalOut):
             self.make_analog_in()
 
     def make_analog_in(self):
+        """Make the pin an analog input"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakeAnalogInput, self._reference_level])
 
     def make_digital_open_drain_out(self):
+        """Make the pin an open-drain output"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakeOpenDrainOutput])
 
     def make_digital_push_pull_out(self):
+        """Make the pin a push-pull output"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakePushPullOutput])
 
     def make_digital_in(self):
+        """Make the pin a digital input"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakeDigitalInput])
 
     def _update_value(self, b0, b1):
@@ -72,6 +89,12 @@ class Pin(AdcPin, DigitalIn, DigitalOut):
 
     @property
     def mode(self) -> PinMode:
+        """The pin's mode.
+
+        :type: PinMode
+        :getter: Returns the current mode
+        :setter: Sets the pin's mode
+        """
         return self._mode
 
     @mode.setter
