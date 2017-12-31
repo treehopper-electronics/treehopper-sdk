@@ -1,13 +1,17 @@
 \page hosts Supported Hosts
-All Treehopper APIs are designed to run on USB-equipped hosts -- you can't program a Treehopper board to act on its own when disconnected from a computer (unless you want to do \ref native-development). This page goes over host requirements, and provides a few examples of supported devices. We provide some platform-specific instructions on our \ref getting-started pages.
+
+This page goes over host requirements, and provides a few examples of supported devices. We provide some platform-specific instructions on our \ref getting-started pages.
 
 # Desktop and Laptop Computers {#desktop}
-Treehopper supports essentially all desktops and laptops with USB ports. The only software requirements are that the device runs either:
- - <b>Windows 7 or newer.</b> This is needed for automatic WinUSB installation, but an adventurous user may be able to get older Windows systems working.
- - <b>Some form of LibUSB-supported operating system.</b> All Treehopper language APIs use LibUSB in non-Windows systems for USB interfacing. *We regularly test on Linux and macOS, but LibUSB also supports OpenBSD, NetBSD, and FreeBSD, so our libraries should work there, too.*
+Treehopper supports essentially all desktops and laptops with USB ports. The only software requirements are that the device runs:
+ - **Windows 7 or newer:** This is needed for automatic WinUSB installation, but an adventurous user may be able to get older Windows systems working. Windows 10 is recommended, since it provides support for UWP app development. Windows 8 or newer is also needed for named WinUSB-based devices (so your device will appear in your operating system as "Treehopper" or whatever custom name you choose). In Windows 7, the device will always appear as "WinUsb Device."
+ - **macOS 10.4 or newer:** The C# and C++ API directly call into macOS's native IOKit-based USB access layer, so there's no additional software needed on macOS. If you're using Python or Java APIs, you'll need to install LibUSB.
+ - **Linux:** Treehopper language APIs support Linux through LibUSB. Unless you are targeting an extremely resource-constrained device with a custom root filesystem, you'll most certainly have LibUSB already installed. We regularly test on Linux, but LibUSB also supports OpenBSD, NetBSD, and FreeBSD, so our libraries should work there, too --- perhaps with minor patching for dynamic runtime OS detection (needed in the case of the C# API).
 
 # Embedded Devices {#embedded-linux}
-Many embedded devices running Linux or Windows can be used with Treehopper. The [Raspberry Pi](https://www.raspberrypi.org/) is one such device, and, when running Linux, it works well as a host for apps that use Treehopper -- whether written in C# (via mono), Java, or C++. We also support Raspberry Pi under [Windows 10 IoT Core](https://developer.microsoft.com/en-us/windows/iot/explore/iotcore) through our C# UWP API.
+Many embedded devices running Linux or Windows can be used with Treehopper. The [Raspberry Pi](https://www.raspberrypi.org/) is one such device, and, when running Linux, it works well as a host for apps that use Treehopper -- whether written in C# (via mono), Java, or C++. 
+
+We also support Raspberry Pi under [Windows 10 IoT Core](https://developer.microsoft.com/en-us/windows/iot/explore/iotcore) through our C# UWP API.
 
 Even low-cost OpenWRT-powered routers should be able to run Treehopper apps written in C++ (though probably not C# or Java).
 
