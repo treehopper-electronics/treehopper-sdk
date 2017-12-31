@@ -1,15 +1,30 @@
 /* Treehopper Doxy style */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700|Roboto:400,700');
 
 body {
-	font-family: "Segoe UI";
+	font-family: "Roboto";
 }
 
 p {
 	margin: 0 0 10px 0;
 }
 
+.title {
+	font-family: "Roboto Slab", sans-serif;
+	font-weight: bold;
+}
+
+#projectname {
+	font-family: "Roboto Slab", sans-serif;
+}
+
+h1, h2, h3 {
+	/* font-weight: normal; */
+	font-family: "Roboto Slab","ff-tisa-web-pro","Georgia",Arial,sans-serif
+}
+
 h1, h2 {
-	font-weight: lighter;
+	margin-top: 25px;
 }
 
 body, table, div, p, dl {
@@ -27,8 +42,9 @@ h1.groupheader {
 }
 
 .title {
-	font-size: 38px;
+	font-size: 52px;
 	font-weight: lighter;
+	text-transform: uppercase;
 	margin: 10px 0 0 12px;
 }
 
@@ -48,7 +64,7 @@ h3.groupheader {
 
 h1, h2, h3, h4, h5, h6 {
 	margin-right: 15px;
-	margin-bottom: 0px;
+	margin-bottom: 10px;
 }
 
 h1.glow, h2.glow, h3.glow, h4.glow, h5.glow, h6.glow {
@@ -123,7 +139,14 @@ div.navtab {
 a {
 	color: #000;
 	font-weight: normal;
-	/*text-decoration: none;*/
+	text-decoration: none;
+}
+
+a.el {
+	/* color: #538d11; */
+	/* border-bottom: 2px dashed #888; */
+	font-weight: bold;
+
 }
 
 /*.contents a:visited {
@@ -132,6 +155,7 @@ a {
 
 a:hover {
 	text-decoration: underline;
+	/* border-bottom: 2px dashed #888; */
 }
 
 a.qindex {
@@ -147,13 +171,6 @@ a.qindexHL {
 
 .contents a.qindexHL:visited {
         color: #ffffff;
-}
-
-a.el {
-	font-weight: bold;
-}
-
-a.elRef {
 }
 
 a.code, a.code:visited, a.line, a.line:visited {
@@ -484,12 +501,18 @@ table.memberdecls {
 .memtitle {
 	padding: 8px;
 	margin-bottom: -1px;
-	background-color: #eee;
+	/* background-color: #eee; */
 	color: #333;
 	line-height: 1.25;
 	font-weight: 300;
 	float:left;
 }
+
+.memtitle .permalink a {
+	color: #8bc34a;
+	line-height: 4px;
+    }
+    
 
 .permalink
 {
@@ -574,7 +597,7 @@ dl.reflist dd {
 }
 
 .paramname {
-	color: #602020;
+	color: rgba(100, 11, 122, 1);
 	white-space: nowrap;
 }
 .paramname em {
@@ -624,16 +647,17 @@ span.mlabels {
 }
 
 span.mlabel {
-        background-color: #666;
+        background-color: #8bc34a;
 	border: 1px #aaa;
 	text-shadow: none;
 	color: white;
 	margin-right: 4px;
 	padding: 5px;
-	font-size: 7pt;
+	font-size: 9pt;
 	white-space: nowrap;
 	vertical-align: middle;
 	text-transform: uppercase;
+	font-weight: normal;
 }
 
 /* @end */
@@ -699,11 +723,11 @@ div.directory {
         cursor: pointer;
         padding-left: 2px;
         padding-right: 2px;
-	color: #3D578C;
+	color: #8bc34a;
 }
 
 .arrow {
-    color: #9CAFD4;
+    color: #8bc34a;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -815,8 +839,9 @@ table.doxtable th {
 
 table.fieldtable {
         margin-bottom: 10px;
-        border: 1px solid #444;
-        border-spacing: 0px;
+        border: 1px solid #8bc34a;
+	border-spacing: 0px;
+	font-size:14px;
 }
 
 .fieldtable td, .fieldtable th {
@@ -825,8 +850,8 @@ table.fieldtable {
 
 .fieldtable td.fieldtype, .fieldtable td.fieldname {
         white-space: nowrap;
-        border-right: 1px solid #444;
-        border-bottom: 1px solid #444;
+        border-right: 1px solid #8bc34a;
+        border-bottom: 1px solid #8bc34a;
         vertical-align: top;
 }
 
@@ -835,7 +860,7 @@ table.fieldtable {
 }
 
 .fieldtable td.fielddoc {
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid #8bc34a;
 }
 
 .fieldtable td.fielddoc p:first-child {
@@ -851,14 +876,15 @@ table.fieldtable {
 }
 
 .fieldtable th {
-        background-color: #444;
+        background-color: #8bc34a;
         font-size: 90%;
         color: #fff;
         padding-bottom: 4px;
         padding-top: 5px;
         text-align:left;
         font-weight: 400;
-        border-bottom: 1px solid #444;
+	border-bottom: 1px solid #8bc34a;
+	text-transform: uppercase;
 }
 
 .tabsearch {
@@ -874,13 +900,12 @@ table.fieldtable {
 .navpath ul
 {
 	font-size: 11px;
-	background-image:url('tab_b.png');
-	background-repeat:repeat-x;
-	background-position: 0 -5px;
-	height:30px;
-	line-height:30px;
-	color:#8AA0CC;
-	border:solid 1px #C2CDE4;
+	/* background-image:url('tab_b.png'); */
+	/* background-repeat:repeat-x;
+	background-position: 0 -5px; */
+	height:32px;
+	line-height:32px;
+	background-color:#8bc34a;
 	overflow:hidden;
 	margin:0px;
 	padding:0px;
@@ -904,9 +929,7 @@ table.fieldtable {
 	display:block;
 	text-decoration: none;
 	outline: none;
-	color: #283A5D;
-	font-family: 'Lucida Grande',Geneva,Helvetica,Arial,sans-serif;
-	text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
+	color: #FFF;
 	text-decoration: none;        
 }
 
@@ -924,7 +947,7 @@ table.fieldtable {
         background-image:none;
         background-repeat:no-repeat;
         background-position:right;
-        color:#364D7C;
+        color:rgba(100, 11, 122, 1);
         font-size: 8pt;
 }
 
@@ -1097,7 +1120,6 @@ dl.section dd {
 	padding: 0px;
 	margin: 0px;
 	width: 100%;
-	border-bottom: 1px solid #5373B4;
 }
 
 .image
@@ -1221,7 +1243,7 @@ div.toc li.level4 {
 }
 
 tr.heading h2 {
-	font-weight: lighter;
+	/* font-weight: lighter; */
 	font-size: 30px;
         margin-top: 12px;
         margin-bottom: 0px;
@@ -1496,17 +1518,25 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter {
 
 
 /* tabs.css overrides */
+.sm-dox a:hover {
+	background: black;
+	background-image: none;
+}
 
 .sm-dox {
-	background: black;
+	background: #8bc34a;
 }
 
 .sm-dox a, .sm-dox a.highlighted, .sm-dox a:focus, .sm-dox a:hover {
 	text-shadow: none;
 	color: #ffffff;
-	font-weight: lighter;
-	font-family: "Segoe UI Light", sans-serif;
-	font-size: 20px;
+	font-family: "Roboto Slab", sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+}
+
+.sm-dox ul a, .sm-dox ul a:focus, .sm-dox ul a:hover, .sm-dox ul a:active {
+	background: #333;
 }
 
 /* navtree.css overrides */
@@ -1522,14 +1552,31 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter {
 	background: #888;
 	text-shadow: none;
 }
+
+#nav-tree li {
+	line-height: 22px;
+}
+
 /* @end */
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 700px) {
 	#projectname {
 		font-size:30px;
 	}
 
-	.sm-dox a {
+	.sm-dox a, .sm-dox a.highlighted, .sm-dox a:focus, .sm-dox a:hover {
 		font-size: 15px;
+	}
+
+	.sm-dox a, .sm-dox a:focus, .sm-dox a:hover, .sm-dox a:active {
+		line-height:24px;
+	}
+
+	#side-nav {
+		width: 0px;
+	}
+
+	.title {
+		font-size: 40px;
 	}
 }
