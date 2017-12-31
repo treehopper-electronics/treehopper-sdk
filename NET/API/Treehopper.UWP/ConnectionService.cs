@@ -46,7 +46,7 @@ namespace Treehopper
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // TODO: Clean stuff up
         }
 
         public void AddBoard()
