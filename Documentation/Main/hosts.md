@@ -13,14 +13,16 @@ Many embedded devices running Linux or Windows can be used with Treehopper. The 
 
 We also support Raspberry Pi under [Windows 10 IoT Core](https://developer.microsoft.com/en-us/windows/iot/explore/iotcore) through our C# UWP API.
 
-Even low-cost OpenWRT-powered routers should be able to run Treehopper apps written in C++ (though probably not C# or Java).
+Even low-cost resource-constrained devices --- like the $20 OpenWRT-powered routers out there --- can run Treehopper apps written in C++ (and potentially C#, Java, or Python).
 
 # Windows tablets, phones, and set-top-boxes {#windows-tablets-phones}
-Most Windows tablets work great for running Treehopper projects, as nearly all of them have USB OTG support. While there were a few WinRT tablets running an ARM version of Windows, all current-generation Windows 10 tablets on the market use Intel Atom processors and run the full x86-based version of Windows. This means they can be used with all the Treehopper language APIs seamlessly -- C# Desktop, Windows UWP, Java, or C++. And since these tablets are the same architecture as your desktop or laptop computer, you can literally drag-and-drop apps -- even ones written in native C++ -- from your computer to the tablet to deploy. 
+Most Windows tablets work great for running Treehopper projects, as nearly all of them have USB OTG support. All current-generation Windows 10 tablets on the market use Intel Atom processors and run the full x86-based version of Windows. This means they can be used with all the Treehopper language APIs seamlessly -- C# Desktop, Windows UWP, Python, Java, or C++. And since these tablets are the same architecture as your desktop or laptop computer, you can literally drag-and-drop compiled apps -- even ones written in native C++ -- from your computer to the tablet to deploy. 
 
-An emerging category of device is the Windows 10 set-top-box and the Windows 10 compute stick form-factors. We regularly test with various offerings from [MeeGoPad](http://www.x86pad.com/), [Wintel](https://www.amazon.com/dp/B06W2LWQKC), and [Intel](http://www.intel.com/content/www/us/en/compute-stick/intel-compute-stick.html).
+An emerging category of device is the Windows 10 set-top-box and the Windows 10 compute stick form-factors. We regularly test with various offerings from [MeeGoPad](http://www.x86pad.com/), [Wintel](https://www.amazon.com/dp/B06W2LWQKC), and [Intel](http://www.intel.com/content/www/us/en/compute-stick/intel-compute-stick.html). There are issues with using these devices for general computing (some do not have genuine Windows installed, and many have limited RAM), but these can work well for dedicated deployed projects.
 
-Of all the Microsoft Lumia phones on the market, only the Lumia 950 and 950 XL support the USB OTG role needed to run Treehopper. Some phones from other manufacturers with USB OTG functionality include the Alcatel Idol 4S, HP Elite X3, and CUBE WP10.
+Of all the Microsoft Lumia phones on the market, only the Lumia 950 and 950 XL support the USB OTG role needed to run Treehopper. Some phones from other manufacturers with USB OTG functionality include the Alcatel Idol 4S, HP Elite X3, and CUBE WP10. As Windows 10 Mobile is nearly dead, these Windows devices can usually be found at reasonable prices.
+
+The 
 
 # Android Tablets, Smartphones, and Set-top-boxes {#android}
 Any Android device running Lollipop (5.0 -- "API Level 21" in developer speak) with USB Host capability can run Treehopper (note that on devices that charge through their USB port, this might be referred to as "USB OTG Support"). Almost all high-end devices have this functionality, and many newer lower-end and middle-tier devices can also serve as USB hosts. 
