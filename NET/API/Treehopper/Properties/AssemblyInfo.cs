@@ -10,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Treehopper LLC")]
 [assembly: AssemblyProduct("Treehopper")]
-[assembly: AssemblyCopyright("Copyright © 2016 Treehopper, LLC")]
+[assembly: AssemblyCopyright("Copyright © 2018 Treehopper, LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
