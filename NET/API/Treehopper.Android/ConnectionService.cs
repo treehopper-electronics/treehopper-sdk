@@ -185,5 +185,10 @@ namespace Treehopper
                 createTreehopperFromDevice(device);
             }
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

@@ -3,14 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TreehopperControlCenter.Pages.LibrariesPage"
              xmlns:libraries="clr-namespace:TreehopperControlCenter.Pages.Libraries"
-             xmlns:controls="clr-namespace:TreehopperControlCenter.Controls"
-             Title="Libraries"
-             >
+             xmlns:controls="clr-namespace:Xamarin.CustomControls;assembly=Xamarin.CustomControls.RepeaterView"
+             Title="Libraries">
     <ContentPage.Content>
         <StackLayout Margin="10, 10, 10, 10">
             <ScrollView>
-                <controls:Repeater x:Name="components">
-                    <controls:Repeater.ItemTemplate>
+                <controls:RepeaterView x:Name="components">
+                    <controls:RepeaterView.ItemTemplate>
                         <DataTemplate>
                                 <libraries:CardView>
                                     <StackLayout>
@@ -24,10 +23,9 @@
                                     </StackLayout>
                                 </libraries:CardView>
                         </DataTemplate>
-                    </controls:Repeater.ItemTemplate>
-                </controls:Repeater>
+                    </controls:RepeaterView.ItemTemplate>
+                </controls:RepeaterView>
             </ScrollView>
-            
             <Button Text="Add" Clicked="Button_Clicked" VerticalOptions="EndAndExpand"/>
         </StackLayout>
     </ContentPage.Content>

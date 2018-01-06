@@ -6,11 +6,14 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace TreehopperControlCenter.Pages.Libraries
 {
     public abstract class LibraryComponent : ContentView, IDisposable
     {
+        private Timer timer;
+
         public LibraryComponent(string title, LibrariesPage Parent)
         {
             this.Title = title;
@@ -30,7 +33,8 @@ namespace TreehopperControlCenter.Pages.Libraries
                     // start
                     StartButtonText = "Stop";
                     IsRunning = true;
-                    Start();
+                    Start(); // call component-specific start
+                    StartTimer(); // start the update timer
                 } else
                 {
                     StartButtonText = "Start";
@@ -66,6 +70,27 @@ namespace TreehopperControlCenter.Pages.Libraries
                 startButtonText = value;
                 OnPropertyChanged(nameof(StartButtonText));
             }
+        }
+
+        protected void StartTimer()
+        {
+            timer = new Timer(timerCallback, null, 100, Timeout.Infinite);
+        }
+
+        private async void timerCallback(object state)
+        {
+            //iterate over a temp list, just in case components are added / removed.
+
+            var tcs = new TaskCompletionSource<bool>();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Update().ConfigureAwait(false);
+                tcs.SetResult(true);
+            });
+            await tcs.Task.ConfigureAwait(false);
+
+            if(IsRunning)
+                timer = new Timer(timerCallback, null, 100, Timeout.Infinite);
         }
 
         protected abstract Task Start();

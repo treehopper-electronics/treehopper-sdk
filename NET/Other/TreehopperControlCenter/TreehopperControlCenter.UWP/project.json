@@ -2,11 +2,12 @@
   "dependencies": {
     "Microsoft.Bcl.Build": "1.0.21",
     "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.5",
-    "MvvmLightLibs": "5.3.0",
+    "MvvmLightLibs": "5.4.0-alpha",
+    "NETStandard.Library": "2.0.1",
     "System.Numerics.Vectors": "4.4.0",
     "System.Runtime": "4.3.0",
-    "Xamarin.CustomControls.RepeaterView": "1.2.2",
-    "Xamarin.Forms": "2.5.0.121934"
+    "Xamarin.CustomControls.RepeaterView": "1.0.10",
+    "Xamarin.Forms": "2.3.4.270"
   },
   "frameworks": {
     "uap10.0.10240": {}

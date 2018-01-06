@@ -4,7 +4,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Runtime.Serialization;
 using System.Text;
 using Treehopper.Utilities;
 
@@ -13,7 +12,6 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     Describes a 32-bit packed color.
     /// </summary>
-    [DataContract]
     [DebuggerDisplay("{DebugDisplayString,nq}")]
     public struct Color : IEquatable<Color>
     {
@@ -296,7 +294,6 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     Gets or sets the blue component.
         /// </summary>
-        [DataMember]
         public byte B
         {
             get
@@ -312,7 +309,6 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     Gets or sets the green component.
         /// </summary>
-        [DataMember]
         public byte G
         {
             get
@@ -328,7 +324,6 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     Gets or sets the red component.
         /// </summary>
-        [DataMember]
         public byte R
         {
             get
@@ -344,7 +339,6 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     Gets or sets the alpha component.
         /// </summary>
-        [DataMember]
         public byte A
         {
             get

@@ -77,30 +77,30 @@ namespace Treehopper.Libraries.Sensors.Temperature
             {
                 if (Address == 0)
                 {
-                    await oneWire.OneWireReset();
-                    await oneWire.Send(new byte[] {0xCC, 0x44});
+                    await oneWire.OneWireReset().ConfigureAwait(false);
+                    await oneWire.Send(new byte[] { 0xCC, 0x44 }).ConfigureAwait(false);
                 }
                 else
                 {
-                    await oneWire.OneWireResetAndMatchAddress(Address);
-                    await oneWire.Send(0x44);
+                    await oneWire.OneWireResetAndMatchAddress(Address).ConfigureAwait(false);
+                    await oneWire.Send(0x44).ConfigureAwait(false);
                 }
 
-                await Task.Delay(750);
+                await Task.Delay(750).ConfigureAwait(false);
             }
 
             if (Address == 0)
             {
-                await oneWire.OneWireReset();
-                await oneWire.Send(new byte[] {0xCC, 0xBE});
+                await oneWire.OneWireReset().ConfigureAwait(false);
+                await oneWire.Send(new byte[] {0xCC, 0xBE}).ConfigureAwait(false);
             }
             else
             {
-                await oneWire.OneWireResetAndMatchAddress(Address);
-                await oneWire.Send(0xBE);
+                await oneWire.OneWireResetAndMatchAddress(Address).ConfigureAwait(false);
+                await oneWire.Send(0xBE).ConfigureAwait(false);
             }
 
-            var data = await oneWire.Receive(2);
+            var data = await oneWire.Receive(2).ConfigureAwait(false);
 
             Celsius = (short) (data[0] | (data[1] << 8)) / 16d;
 
