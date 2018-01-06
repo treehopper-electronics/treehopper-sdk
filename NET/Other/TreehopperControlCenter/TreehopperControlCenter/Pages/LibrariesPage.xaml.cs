@@ -22,15 +22,9 @@ namespace TreehopperControlCenter.Pages
 
         TreehopperUsb Board;
 
-        Timer timer;
-
         public LibrariesPage (TreehopperUsb Board)
 		{
             InitializeComponent ();
-
-            //components.ItemSelected += Components_ItemSelected;
-
-            timer = new Timer(timerCallback, null, 100, 100);
 
             this.Board = Board;
 
@@ -41,22 +35,6 @@ namespace TreehopperControlCenter.Pages
                 LibraryComponent item = (LibraryComponent)Activator.CreateInstance(type, new object[] { this, Board });
 
                 ComponentList.Add(item.Title, type);
-            }
-        }
-
-        private void Components_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            ((ListView)sender).SelectedItem = null;
-        }
-
-        private async void timerCallback(object state)
-        {
-            foreach(var item in Components)
-            {
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await item.Update();
-                });
             }
         }
 
