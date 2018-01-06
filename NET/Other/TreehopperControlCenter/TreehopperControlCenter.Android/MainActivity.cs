@@ -44,7 +44,7 @@ namespace TreehopperControlCenter.Droid
 	        base.OnResume();
 
             connectionService.ActivityOnResume();
-	    }
+        }
     }
 }
 
