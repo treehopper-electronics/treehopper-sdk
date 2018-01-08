@@ -34,18 +34,6 @@ namespace TreehopperControlCenter.Mac
             LoadApplication(new App());
 
             base.DidFinishLaunching(notification);
-            Debug.WriteLine("Got here");
-			//ConnectionService.Instance.Boards.CollectionChanged += (sender, e) =>
-			//{
-			//	if (e.Action == NotifyCollectionChangedAction.Add)
-			//	{
-			//		Debug.WriteLine("Board added!");
-			//	}
-			//	else if (e.Action == NotifyCollectionChangedAction.Remove)
-			//	{
-			//		Debug.WriteLine("Board added!");
-			//	}
-			//};
         }
 
         public override void WillTerminate(NSNotification notification)

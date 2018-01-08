@@ -36,10 +36,10 @@ namespace Treehopper.Desktop.MacUsb.IOKit
 		public static extern IntPtr CFRunLoopGetCurrent();
 
 		[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-		public static extern IOKitError IOServiceAddInterestNotification(IntPtr notifyPort, IntPtr service, string interestType, IOServiceInterestCallback callback, int refCon, ref IntPtr notification );
+        public static extern IOKitError IOServiceAddInterestNotification(IntPtr notifyPort, IntPtr service, string interestType, IOServiceInterestCallback callback, DeviceWatcherCallbackReference refCon, ref IntPtr notification );
 
 		[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
-		public static extern IOKitError IOServiceAddMatchingNotification(IntPtr notifyPort, string notificationType, IntPtr matching, IOServiceMatchingCallback callback, IntPtr refCon, ref IntPtr notification );
+        public static extern IOKitError IOServiceAddMatchingNotification(IntPtr notifyPort, string notificationType, IntPtr matching, IOServiceMatchingCallback callback, IntPtr refCon, ref IntPtr notification );
 
 		[DllImport(IOKitFrameworkPath, CharSet = CharSet.Ansi)]
 		public static extern IntPtr IONotificationPortGetRunLoopSource(IntPtr notify);

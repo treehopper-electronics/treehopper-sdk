@@ -33,7 +33,7 @@ namespace TreehopperControlCenter
         {
             base.OnDisappearing();
 
-            ConnectionService.Instance.Dispose();
+            //ConnectionService.Instance.Dispose();
         }
 
         private void Pins_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -65,10 +65,10 @@ namespace TreehopperControlCenter
 
             } else if(e.Action == NotifyCollectionChangedAction.Remove)
             {
-                await Navigation.PopToRootAsync();
                 Board.Disconnect();
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    Navigation.PopToRootAsync();
                     //ledSwitch.Toggled -= LedSwitch_Toggled;
                     Debug.WriteLine("Board disconnected!");
                     //boardViewer.IsVisible = false;

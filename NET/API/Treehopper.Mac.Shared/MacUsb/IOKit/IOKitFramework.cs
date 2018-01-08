@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 namespace Treehopper.Desktop.MacUsb.IOKit
 {
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void IOServiceMatchingCallback(IntPtr refCon, IntPtr iterator);
+    public delegate void IOServiceMatchingCallback(IntPtr refCon, IntPtr iterator);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void IOServiceInterestCallback(int refCon, IntPtr service, uint messageType, IntPtr messageArgument);
+    public delegate void IOServiceInterestCallback(DeviceWatcherCallbackReference refCon, IntPtr service, uint messageType, IntPtr messageArgument);
 
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public static class IOKitFramework

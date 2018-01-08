@@ -3,10 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Treehopper.Desktop.MacUsb.IOKit;
+using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.MacUsb
 {
-    class DeviceWatcher
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public class DeviceWatcherCallbackReference
+    {
+        public IntPtr removedCallback;
+        public int deviceIndex;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public class DeviceWatcher
     {
         protected DeviceAdded OnDeviceAdded = null;
         protected DeviceRemoved OnDeviceRemoved = null;
@@ -70,12 +79,13 @@ namespace Treehopper.Desktop.MacUsb
             NativeMethods.CFRunLoopRun();
         }
 
-        private void DeviceRemoved(int data, IntPtr service, uint messageType, IntPtr messageArgument)
+        private void DeviceRemoved(DeviceWatcherCallbackReference data, IntPtr service, uint messageType, IntPtr messageArgument)
         {
             if (messageType == IOKitFramework.kIOMessageServiceIsTerminated)
             {
                 Debug.WriteLine("Device Removed");
-                OnDeviceRemoved(data);
+                var removed = (DeviceRemoved)(GCHandle.FromIntPtr(data.removedCallback).Target);
+                removed(data.deviceIndex);
             }
         }
 
@@ -100,12 +110,19 @@ namespace Treehopper.Desktop.MacUsb
 
                 var idx = OnDeviceAdded(usbDevice, productString, serialNumber);
 
+                var ptr = GCHandle.ToIntPtr(GCHandle.Alloc(this.OnDeviceRemoved, GCHandleType.Pinned));
+                var removedCallback = new DeviceWatcherCallbackReference() { deviceIndex = idx, removedCallback = ptr };
+
+                GCHandle.Alloc(removedCallback, GCHandleType.Pinned);
+                GCHandle.Alloc(this, GCHandleType.Pinned);
+                GCHandle.Alloc(this.OnDeviceRemoved, GCHandleType.Pinned);
+
                 var kr = NativeMethods.IOServiceAddInterestNotification(
                     gNotifyPort,                // notifyPort
                     usbDevice.Handle,                   // service
                     IOKitFramework.kIOGeneralInterest,  // interestType
                     DeviceRemoved,                      // callback
-                    idx,                            // refCon
+                    removedCallback,                            // refCon
                     ref notificationPtr             // notification
                     );
 

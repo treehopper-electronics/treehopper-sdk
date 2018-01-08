@@ -44,8 +44,6 @@ namespace Treehopper
             get
             {
                 return macUsbInstance.Value;
-
-                throw new Exception("Unsupported operating system");
             }
         }
 

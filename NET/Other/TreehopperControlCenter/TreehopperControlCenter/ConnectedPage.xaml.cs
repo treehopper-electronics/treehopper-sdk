@@ -14,8 +14,10 @@ namespace TreehopperControlCenter
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConnectedPage : Xamarin.Forms.TabbedPage
     {
+        TreehopperUsb Board;
         public ConnectedPage (TreehopperUsb Board)
         {
+            this.Board = Board;
             Title = Board.ToString();
             On<Xamarin.Forms.PlatformConfiguration.Android>().SetIsSwipePagingEnabled(false);
             Children.Add(new Pages.SignalPage(Board));
@@ -29,6 +31,13 @@ namespace TreehopperControlCenter
         protected override bool OnBackButtonPressed()
         {
             return true;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            //Board.Dispose();
+            //ConnectionService.Instance.Dispose();
         }
     }
 }
