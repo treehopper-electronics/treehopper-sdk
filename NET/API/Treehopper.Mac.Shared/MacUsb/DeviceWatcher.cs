@@ -65,16 +65,19 @@ namespace Treehopper.Desktop.MacUsb
 
             IOServiceMatchingCallback deviceAdded = new IOServiceMatchingCallback(DeviceAdded);
 
+            DeviceWatcherCallbackReference callbackRef = new DeviceWatcherCallbackReference();
+
+
             var kr = NativeMethods.IOServiceAddMatchingNotification(
                 gNotifyPort,                            // notifyPort
                 IOKitFramework.kIOFirstMatchNotification,       // notificationType
                 matchingDict,                           // matching
                 DeviceAdded,                            // callback
-                IntPtr.Zero,                            // refCon
+                callbackRef,                            // refCon
                 ref gAddedIter                          // notification
                 );
 
-            DeviceAdded(IntPtr.Zero, gAddedIter);
+            DeviceAdded(callbackRef, gAddedIter);
 
             NativeMethods.CFRunLoopRun();
         }
@@ -89,7 +92,8 @@ namespace Treehopper.Desktop.MacUsb
             }
         }
 
-        private async void DeviceAdded(IntPtr refCon, IntPtr iterator)
+        // why does this have to be async?
+        private async void DeviceAdded(DeviceWatcherCallbackReference callbackRef, IntPtr iterator)
         {
             var it = new IOIterator(iterator);
 
