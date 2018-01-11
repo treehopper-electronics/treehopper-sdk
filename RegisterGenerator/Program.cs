@@ -18,10 +18,15 @@ namespace RegisterGenerator
 
         static void Main(string[] args)
         {
+            if(args.Length != 1)
+            {
+                Console.WriteLine("USAGE: RegisterGenerator.exe <treehopper-sdk repo location>");
+                return;
+            }
             treehopperRoot = args[0];
-            project = collection.LoadProject($"{treehopperRoot}\\NET\\Libraries\\Treehopper.Libraries\\Treehopper.Libraries.csproj");
+            //project = collection.LoadProject($"{treehopperRoot}\\NET\\Libraries\\Treehopper.Libraries\\Treehopper.Libraries.csproj");
             ProcessDirectory("Libraries");
-            project.Save();
+            //project.Save();
         }
 
         public static void ProcessDirectory(string path)
@@ -44,9 +49,10 @@ namespace RegisterGenerator
                     Render.FileToFile("Templates\\Registers.cs", library, outPath);
 
                     // add to the csproj file
-                    var relativePath = $"{path.Replace("Libraries\\", "")}\\{library.Name}.generated.cs";
-                    if (project.Items.Count(i => i.UnevaluatedInclude == relativePath) == 0)
-                        project.AddItem("Compile", relativePath, new[] { new KeyValuePair<string, string>("DependentUpon", $"{library.Name}.cs") });
+                    // no longer needed, because of switch to .NET Standard
+                    //var relativePath = $"{path.Replace("Libraries\\", "")}\\{library.Name}.generated.cs";
+                    //if (project.Items.Count(i => i.UnevaluatedInclude == relativePath) == 0)
+                    //    project.AddItem("Compile", relativePath, new[] { new KeyValuePair<string, string>("DependentUpon", $"{library.Name}.cs") });
                 }
                 {
                     // C++

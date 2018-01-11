@@ -122,8 +122,9 @@ class Lis3dhRegisters(RegisterManager):
             self.twoAxisDataOverrun = 0
             self.dataOverrun = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -154,8 +155,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x08, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -174,8 +176,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x0A, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -194,8 +197,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x0C, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -214,8 +218,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x0f, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -233,15 +238,10 @@ class Lis3dhRegisters(RegisterManager):
         def __init__(self, reg_manager: RegisterManager):
             Register.__init__(self, reg_manager, 0x1E, 1, False)
             self.sdoPuDisc = 0
-        def get_SdoPuDiscs(self):
-            return (SdoPuDiscs)SdoPuDisc
-
-        def set_SdoPuDiscs(self, enumVal: self.SdoPuDiscs):
-            self.SdoPuDisc = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -261,8 +261,9 @@ class Lis3dhRegisters(RegisterManager):
             self.adcEn = 0
             self.tempEn = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -287,15 +288,10 @@ class Lis3dhRegisters(RegisterManager):
             self.filterDataPassThru = 0
             self.highPassFilterCutoffFrequency = 0
             self.highPassFilterModeSelection = 0
-        def get_HighPassFilterModeSelections(self):
-            return (HighPassFilterModeSelections)HighPassFilterModeSelection
-
-        def set_HighPassFilterModeSelections(self, enumVal: self.HighPassFilterModeSelections):
-            self.HighPassFilterModeSelection = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -330,8 +326,9 @@ class Lis3dhRegisters(RegisterManager):
             self.ia1 = 0
             self.click = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -366,15 +363,10 @@ class Lis3dhRegisters(RegisterManager):
             self.fullScaleSelection = 0
             self.bigEndian = 0
             self.blockDataUpdate = 0
-        def get_Scale(self):
-            return (Scale)FullScaleSelection
-
-        def set_Scale(self, enumVal: self.Scale):
-            self.FullScaleSelection = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -408,8 +400,9 @@ class Lis3dhRegisters(RegisterManager):
             self.fifoEnable = 0
             self.rebootMemoryContent = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -443,8 +436,9 @@ class Lis3dhRegisters(RegisterManager):
             self.ia1 = 0
             self.click = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -473,8 +467,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x26, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -500,8 +495,9 @@ class Lis3dhRegisters(RegisterManager):
             self.zor = 0
             self.zyxor = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -535,15 +531,10 @@ class Lis3dhRegisters(RegisterManager):
             self.fifoThreshold = 0
             self.triggerSelection = 0
             self.fifoMode = 0
-        def get_FifoModes(self):
-            return (FifoModes)FifoMode
-
-        def set_FifoModes(self, enumVal: self.FifoModes):
-            self.FifoMode = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -569,8 +560,9 @@ class Lis3dhRegisters(RegisterManager):
             self.overrunFifo = 0
             self.watermark = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -602,8 +594,9 @@ class Lis3dhRegisters(RegisterManager):
             self.enable6D = 0
             self.andOrInterruptEvents = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -642,8 +635,9 @@ class Lis3dhRegisters(RegisterManager):
             self.zHigh = 0
             self.interruptActive = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -674,8 +668,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x32, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -694,8 +689,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x33, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -721,8 +717,9 @@ class Lis3dhRegisters(RegisterManager):
             self.enable6D = 0
             self.andOrInterruptEvents = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -761,8 +758,9 @@ class Lis3dhRegisters(RegisterManager):
             self.zHigh = 0
             self.interruptActive = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -793,8 +791,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x36, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -813,8 +812,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x37, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -839,8 +839,9 @@ class Lis3dhRegisters(RegisterManager):
             self.doubleClickEnable = 0
             self.interruptActive = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -872,8 +873,9 @@ class Lis3dhRegisters(RegisterManager):
             self.threshold = 0
             self.lirClick = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -894,8 +896,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x3B, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -914,8 +917,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x3C, 10, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -934,8 +938,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x3D, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -954,8 +959,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x3E, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -974,8 +980,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0x3F, 1, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -997,15 +1004,10 @@ class Lis3dhRegisters(RegisterManager):
             self.zAxisEnable = 0
             self.lowPowerEnable = 0
             self.outputDataRate = 0
-        def get_OutputDataRates(self):
-            return (OutputDataRates)OutputDataRate
-
-        def set_OutputDataRates(self, enumVal: self.OutputDataRates):
-            self.OutputDataRate = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -1032,8 +1034,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0xA8, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -1052,8 +1055,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0xAA, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -1072,8 +1076,9 @@ class Lis3dhRegisters(RegisterManager):
             Register.__init__(self, reg_manager, 0xAC, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):

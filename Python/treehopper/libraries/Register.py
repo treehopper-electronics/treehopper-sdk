@@ -19,9 +19,9 @@ class Register:
 
     def get_bytes(self)->bytes:
         if self._is_big_endian:
-            return self.get_value().to_bytes(length=self.width, byteorder='big')
+            return list(self.get_value().to_bytes(length=self.width, byteorder='big'))
         else:
-            return self.get_value().to_bytes(length=self.width, byteorder='little')
+            return list(self.get_value().to_bytes(length=self.width, byteorder='little'))
 
     def set_bytes(self, byte_array):
         if self._is_big_endian:

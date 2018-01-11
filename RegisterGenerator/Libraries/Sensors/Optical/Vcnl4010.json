@@ -1,0 +1,173 @@
+{
+    "multiRegisterAccess": "true",
+    "registers" : {
+
+        "command" : {
+            "address" : "0x80",
+            "access" : "write",
+            "values" : {
+                "selfTimedEnable" : {},
+                "proxPeriodicEnable" : {},
+                "alsPeriodicEnable" : {},
+                "proxOnDemandStart" : {},
+                "alsOnDemandStart" : {},
+                "proxDataReady" : {},
+                "alsDataReady" : {},
+                "configLock" : {}
+            }
+        },
+
+        "productId" : {
+            "address" : "0x82",
+            "access" : "read",
+            "values" : {
+                "revisionId" : {
+                    "width": 4
+                },
+                "productId" : {
+                    "width" : 4
+                }
+            }
+        },
+
+        "proximityRate" : {
+            "address" : "0x82",
+            "access" : "write",
+            "values" : {
+                "rate": {
+                    "width" : 4,
+                    "enum" : {
+                        "values" : {
+                            "Hz_1_95" : null,
+                            "Hz_3_90625" : null,
+                            "Hz_7_8125" : null,
+                            "Hz_16_625" : null,
+                            "Hz_31_25" : null,
+                            "Hz_62_5" : null,
+                            "Hz_125" : null,
+                            "Hz_250" : null
+                        }
+                    }
+
+                }
+            }
+        },
+
+        "ledCurrent" : {
+            "address" : "0x83",
+            "access" : "write",
+            "values" : {
+                "irLedCurrentValue" : {
+                    "width" : 6
+                },
+                "fuseProgId" : {
+                    "width" : 2
+                }
+            }
+        },
+
+        "ambientLightParameters" : {
+            "address" : "0x84",
+            "access" : "write",
+            "values" : {
+                "averagingSamples" : {
+                    "width" : 3
+                },
+
+                "autoOffsetCompensation" : {},
+                "alsRate" : {
+                    "width" : 3,
+                    "enum" : {
+                        "values" : {
+                            "Hz_1" : null,
+                            "Hz_2" : null,
+                            "Hz_3" : null,
+                            "Hz_4" : null,
+                            "Hz_5" : null,
+                            "Hz_6" : null,
+                            "Hz_8" : null,
+                            "Hz_10" : null
+                        }
+                    }
+                },
+                "continuousConversionMode" : {}
+            }
+        },
+
+        "ambientLightResult" : {
+            "address": "0x85",
+            "width" : 16,
+            "access" : "read"
+        }, 
+        
+        "proximityResult" : {
+            "address" : "0x87",
+            "width" : 16,
+            "access" : "read",
+            "isBigEndian":"true"
+        },
+
+        "interruptControl" : {
+            "address" : "0x89",
+            "values" : {
+                "interruptThresholdSelect" : {},
+                "interruptThresholdEnable" : {},
+                "interruptAlsReadyEnable" : {},
+                "interruptAlsReadyEnable" : {},
+                "intCountExceed" : {
+                    "width" : 3,
+                    "offset" : 5,
+                    "enum":{
+                        "values":{
+                            "count_1" : null,
+                            "count_2" : null,
+                            "count_4" : null,
+                            "count_8" : null,
+                            "count_16" : null,
+                            "count_32" : null,
+                            "count_64" : null,
+                            "count_128" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "lowThreshold" : {
+            "address" : "0x8A",
+            "width" : 16,
+            "isBigEndian":"true"
+        },
+
+        "highThreshold" : {
+            "address" : "0x8C",
+            "width" : 16,
+            "isBigEndian":"true"
+        },
+
+        "interruptStatus" : {
+            "address" : "0x8E",
+            "values" : {
+                "intThresholdHighExceeded" : {},
+                "intThresholdLowExceeded" : {},
+                "intAlsReady" : {},
+                "intProxReady" : {}
+            }
+        },
+        
+        "proxModulatorTimingAdustment" : {
+            "address" : "0x8F",
+            "values" : {
+                "modulationDeadTime" : {
+                    "width" : 3
+                }, 
+                "proximityFrequency" : {
+                    "width" : 2
+                }, 
+                "modulationDelayTime" : {
+                    "width" : 3
+                }
+            }
+        }
+    }
+}

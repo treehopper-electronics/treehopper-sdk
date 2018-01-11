@@ -29,19 +29,10 @@ class {{Name}}Registers(RegisterManager):
         {{#Values.Values}}
             self.{{Name}} = 0
         {{/Values.Values}}
-{{#Values.Values}}
-    {{#Enum}}
-        def get_{{Name}}(self):
-            return ({{Name}}){{CapitalizedName}}
 
-        def set_{{Name}}(self, enumVal: self.{{Name}}):
-            self.{{CapitalizedName}} = (int)enumVal
-
-{{/Enum}}
-{{/Values.Values}}
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):

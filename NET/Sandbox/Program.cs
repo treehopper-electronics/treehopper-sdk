@@ -3,8 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
-using Treehopper.Libraries.IO.Adc;
-using Treehopper.Libraries.Sensors.Inertial;
+using Treehopper.Libraries.Sensors.Optical;
 
 namespace Sandbox
 {
@@ -25,25 +24,14 @@ namespace Sandbox
 
 			await board.ConnectAsync();
 
-            var adc = new Nau7802(board.I2c);
-            //board.Pins[0].Mode = PinMode.PushPullOutput;
-
-            //var imu = new Adxl345(board.I2c);
-            long avg = 0;
-            Console.WriteLine("taring, please wait...");
-            for (int i = 0; i < 50; i++)
-            {
-                avg += adc.AdcValue;
-                await Task.Delay(100);
-            }
-
-            avg /= 50;
-
-
+            var sensor = new Vcnl4010(board.I2c);
+            sensor.AutoUpdateWhenPropertyRead = false;
 
             while (board.IsConnected && !Console.KeyAvailable)
 			{
-                Console.WriteLine(adc.AdcValue - avg);
+                await sensor.Update().ConfigureAwait(false);
+                Console.WriteLine("lux: " + sensor.Lux);
+                Console.WriteLine("prox: " + sensor.Inches);
                 //Console.WriteLine(imu.Accelerometer);
                 await Task.Delay(100);
 			}

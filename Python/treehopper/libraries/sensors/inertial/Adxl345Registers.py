@@ -23,8 +23,9 @@ class Adxl345Registers(RegisterManager):
             self.sleep = 0
             self.measure = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -47,8 +48,9 @@ class Adxl345Registers(RegisterManager):
             self.justify = 0
             self.fullRes = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -71,8 +73,9 @@ class Adxl345Registers(RegisterManager):
             Register.__init__(self, reg_manager, 0x32, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -91,8 +94,9 @@ class Adxl345Registers(RegisterManager):
             Register.__init__(self, reg_manager, 0x34, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -111,8 +115,9 @@ class Adxl345Registers(RegisterManager):
             Register.__init__(self, reg_manager, 0x36, 2, False)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):

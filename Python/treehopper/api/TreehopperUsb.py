@@ -3,7 +3,6 @@ from typing import List
 import usb.core
 import usb.util
 import threading
-from events import Events
 from treehopper.api.HardwarePwmManager import HardwarePwmManager
 from treehopper.utils.EventHandler import EventHandler
 from treehopper.api.Pin import Pin

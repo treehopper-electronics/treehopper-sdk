@@ -76,8 +76,9 @@ class Nau7802Registers(RegisterManager):
             self.useExternalCrystal = 0
             self.useInternalLdo = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -112,21 +113,10 @@ class Nau7802Registers(RegisterManager):
             self.vldo = 0
             self.drdySelect = 0
             self.conversionReadyPinPolarity = 0
-        def get_Gains(self):
-            return (Gains)Gain
-
-        def set_Gains(self, enumVal: self.Gains):
-            self.Gain = (int)enumVal
-
-        def get_LdoVoltage(self):
-            return (LdoVoltage)Vldo
-
-        def set_LdoVoltage(self, enumVal: self.LdoVoltage):
-            self.Vldo = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -154,21 +144,10 @@ class Nau7802Registers(RegisterManager):
             self.calError = 0
             self.conversionRate = 0
             self.channelSelect = 0
-        def get_CalMods(self):
-            return (CalMods)CalMod
-
-        def set_CalMods(self, enumVal: self.CalMods):
-            self.CalMod = (int)enumVal
-
-        def get_ConversionRates(self):
-            return (ConversionRates)ConversionRate
-
-        def set_ConversionRates(self, enumVal: self.ConversionRates):
-            self.ConversionRate = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -202,8 +181,9 @@ class Nau7802Registers(RegisterManager):
             self.frd = 0
             self.crsd = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -236,8 +216,9 @@ class Nau7802Registers(RegisterManager):
             Register.__init__(self, reg_manager, 0x12, 3, True)
             self.value = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -257,21 +238,10 @@ class Nau7802Registers(RegisterManager):
             self.regChp = 0
             self.adcVcm = 0
             self.regChpFreq = 0
-        def get_AdcVcms(self):
-            return (AdcVcms)AdcVcm
-
-        def set_AdcVcms(self, enumVal: self.AdcVcms):
-            self.AdcVcm = (int)enumVal
-
-        def get_RegChpFreqs(self):
-            return (RegChpFreqs)RegChpFreq
-
-        def set_RegChpFreqs(self, enumVal: self.RegChpFreqs):
-            self.RegChpFreq = (int)enumVal
 
 
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -298,8 +268,9 @@ class Nau7802Registers(RegisterManager):
             self.ldoMode = 0
             self.rdOptSel = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
@@ -329,8 +300,9 @@ class Nau7802Registers(RegisterManager):
             self.masterBiasCurr = 0
             self.pgaCapEn = 0
 
+
         def read(self):
-            self.manager.read(self)
+            self._manager.read(self)
             return self
             
         def get_value(self):
