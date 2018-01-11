@@ -251,3 +251,5 @@ cmake-build-debug/
 PCB/treehopper/treehopper\.\$\$\$
 
 *.pyc
+
+Python/\.vscode/
