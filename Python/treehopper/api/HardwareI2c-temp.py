@@ -1,6 +1,6 @@
 import logging
 import math
-from treehopper.api.I2C import I2C
+from treehopper.api.I2c import I2c
 from treehopper.api.Pin import PinMode
 from treehopper.utils.utils import *
 from treehopper.api.DeviceCommands import DeviceCommands
@@ -23,7 +23,7 @@ class I2CTransferError:
             return "Success"
 
 
-class HardwareI2C(I2C):
+class HardwareI2c(I2c):
     def __init__(self, board):
         self._board = board
         self._enabled = False

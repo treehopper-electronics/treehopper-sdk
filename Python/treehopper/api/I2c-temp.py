@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class I2C(ABC):
+class I2c(ABC):
 
     @property
     @abstractmethod
