@@ -1,4 +1,6 @@
-﻿namespace Treehopper.Libraries.Displays
+﻿using System.Drawing;
+
+namespace Treehopper.Libraries.Displays
 {
     internal interface IRgbLed
     {

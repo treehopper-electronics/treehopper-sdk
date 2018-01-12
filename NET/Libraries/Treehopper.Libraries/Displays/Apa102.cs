@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Treehopper.Libraries.IO;
+using Treehopper.Libraries.Utilities;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Displays
@@ -155,7 +157,7 @@ namespace Treehopper.Libraries.Displays
             /// <param name="luminance">The luminance, from 0-100, of the desired color</param>
             public void SetHsl(float hue, float saturation, float luminance)
             {
-                SetRgb(Color.FromHsl(hue, saturation, luminance));
+                SetRgb(ColorConverter.FromHsl(hue, saturation, luminance));
             }
 
             /// <summary>
