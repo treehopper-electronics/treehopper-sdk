@@ -13,4 +13,4 @@ def bit_list_to_bytes(bits, byteorder='big'):
     return int_value.to_bytes(length=int(len(bits)/8), byteorder=byteorder)
 
 def byte_to_bit_list(byte):
-    return [((byte << i) & 0x80) > 0 for i in range(8)]
+    return [((byte >> i) & 0x01) > 0 for i in range(8)]

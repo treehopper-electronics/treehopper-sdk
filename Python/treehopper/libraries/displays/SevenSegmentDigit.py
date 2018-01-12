@@ -45,7 +45,7 @@ class SevenSegmentDigit(Flushable):
             return
 
         self._char = value
-        leds = byte_to_bit_list(SevenSegmentDigit.char_table[self._char])
+        leds = byte_to_bit_list(SevenSegmentDigit.char_table[ord(self._char)])
         for i in range(8):
             self.leds[i].state = leds[i]
 

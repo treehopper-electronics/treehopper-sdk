@@ -18,7 +18,7 @@ namespace Demo
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
             board.Pins[10].Mode = PinMode.AnalogInput;
-            var controller = new Max7219(board.Spi, board.Pins[9]);
+            var controller = new Max7219(board.Spi, board.Pins[15]);
 
             var display = new SevenSegmentDisplay(controller.Leds, true);
 

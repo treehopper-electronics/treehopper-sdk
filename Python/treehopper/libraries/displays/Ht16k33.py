@@ -1,4 +1,4 @@
-from treehopper.api import I2C
+from treehopper.api import I2c
 from treehopper.utils.utils import bit_list_to_bytes
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.displays.LedDriver import LedDriver
@@ -9,7 +9,7 @@ class Ht16k33(LedDriver):
     _command_brightness = 0xe0
     _command_blink = 0x80
 
-    def __init__(self, i2c: I2C, package: int, a0=False, a1=False, a2=False, address=None):
+    def __init__(self, i2c: I2c, package: int, a0=False, a1=False, a2=False, address=None):
         if not address:
             address = 0x70
             if a0:

@@ -58,3 +58,11 @@ class LedDriver(Flushable):
     @brightness.getter
     def brightness(self):
         return self._brightness
+
+    def clear(self):
+        autoflush_save = self.auto_flush
+        self.auto_flush = False
+        for led in self.leds:
+            led.state = False
+        self.flush(True)
+        self.auto_flush = autoflush_save
