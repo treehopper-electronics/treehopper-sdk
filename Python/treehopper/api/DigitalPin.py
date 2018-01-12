@@ -42,5 +42,5 @@ class DigitalOut(DigitalBase):
         pass
 
     @abstractmethod
-    def make_digital_out(self):
+    def make_digital_push_pull_out(self):
         pass

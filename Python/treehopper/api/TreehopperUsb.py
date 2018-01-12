@@ -4,10 +4,12 @@ import usb.core
 import usb.util
 import threading
 from treehopper.api.HardwarePwmManager import HardwarePwmManager
+from treehopper.api.HardwareSpi import HardwareSpi
+from treehopper.api.Spi import Spi
 from treehopper.utils.EventHandler import EventHandler
 from treehopper.api.Pin import Pin
 from treehopper.api.HardwarePwm import HardwarePwm
-from treehopper.api.HardwareI2C import HardwareI2C
+from treehopper.api.HardwareI2c import HardwareI2c
 from treehopper.api.DeviceCommands import DeviceCommands
 
 class TreehopperUsb:
@@ -38,8 +40,8 @@ class TreehopperUsb:
         self.pins[8].name = "Pin 8 (PWM2)"
         self.pins[9].name = "Pin 9 (PWM3)"
 
-        self.i2c = HardwareI2C(self)
-
+        self.i2c = HardwareI2c(self)
+        self.spi = HardwareSpi(self)
         self.hardware_pwm_manager = HardwarePwmManager(self)
         self.pwm1 = HardwarePwm(self.pins[7])
         self.pwm2 = HardwarePwm(self.pins[8])

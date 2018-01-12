@@ -9,6 +9,8 @@ from treehopper.api.HardwarePwm import HardwarePwm
 from treehopper.api.Pwm import Pwm
 from treehopper.api.TreehopperUsb import TreehopperUsb
 from treehopper.api.find_boards import find_boards
-from treehopper.api.I2C import I2C
+from treehopper.api.I2c import I2c
+from treehopper.api.HardwareSpi import HardwareSpi
+from treehopper.api.HardwareI2c import HardwareI2c
 
-__all__ = ['find_boards', 'TreehopperUsb', 'DeviceCommands', 'HardwarePwm', 'Pin', 'PinMode', 'AdcPin', 'DigitalIn', 'DigitalOut', 'ReferenceLevel', 'I2C']
+__all__ = ['find_boards', 'TreehopperUsb', 'DeviceCommands', 'HardwarePwm', 'Pin', 'PinMode', 'AdcPin', 'DigitalIn', 'DigitalOut', 'ReferenceLevel', 'I2c', 'HardwareSpi', 'Spi']

@@ -1,6 +1,6 @@
-# from treehopper.api.TreehopperUsb import TreehopperUsb
 from treehopper.api.DigitalPin import DigitalIn, DigitalOut
 from treehopper.api.AdcPin import AdcPin
+from abc import ABC, abstractmethod
 
 class PinMode:
     Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, Unassigned = range(6)
@@ -14,8 +14,20 @@ class ReferenceLevel:
     Vref_3V3, Vref_1V65, Vref_1V8, Vref_2V4, Vref_3V3Derived, Vref_3V6 = range(6)
 
 
-class Pin(AdcPin, DigitalIn, DigitalOut):
-    def __init__(self, board, pin_number : int):
+class SpiChipSelectPin(DigitalOut):
+    @property
+    @abstractmethod
+    def spi_module(self):
+        pass
+
+    @property
+    @abstractmethod
+    def number(self):
+        pass
+
+
+class Pin(AdcPin, DigitalIn, SpiChipSelectPin):
+    def __init__(self, board, pin_number: int):
         AdcPin.__init__(self, 12, 3.3)
         DigitalIn.__init__(self)
         DigitalOut.__init__(self)
@@ -24,6 +36,10 @@ class Pin(AdcPin, DigitalIn, DigitalOut):
         self._board = board
         self._number = pin_number
         self._mode = PinMode.Unassigned                  # type: PinMode
+
+    @property
+    def spi_module(self):
+        return self._board.spi
 
     @property
     def number(self):
