@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Treehopper.Desktop;
+using Treehopper;
 using Treehopper.Libraries.Displays;
 
 namespace Tm1650SevenSeg

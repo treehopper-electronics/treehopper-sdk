@@ -8,8 +8,8 @@ using System.Windows;
 using Treehopper;
 using Treehopper.Mvvm.ViewModels;
 using Treehopper.Mvvm.Messages;
-using Treehopper.Utilities;
 using Treehopper.Firmware;
+using Treehopper.Utilities;
 
 namespace DeviceManager.ViewModels
 {

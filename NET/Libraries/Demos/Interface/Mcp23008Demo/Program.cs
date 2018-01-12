@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Treehopper.Desktop;
-using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper;
+using Treehopper.Libraries.IO.PortExpander;
 
 namespace Mcp23008Demo
 {

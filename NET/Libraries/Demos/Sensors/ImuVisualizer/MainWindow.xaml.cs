@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Media3D;
 using Treehopper.Libraries.Sensors.Inertial;
-using Treehopper.Mvvm.ViewModel;
+using Treehopper.Mvvm.ViewModels;
 
 namespace ImuVisualizer
 {

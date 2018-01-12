@@ -99,8 +99,8 @@
       <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Treehopper\Treehopper.csproj">
-      <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>
-      <Name>TreehopperControlCenter.Mac</Name>
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

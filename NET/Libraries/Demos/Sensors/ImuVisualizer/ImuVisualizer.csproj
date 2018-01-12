@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImuVisualizer</RootNamespace>
     <AssemblyName>ImuVisualizer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +46,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -83,17 +89,17 @@
       <Project>{8c1a6bb5-a978-4582-834c-16a37a3b5484}</Project>
       <Name>Treehopper.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\API\Treehopper.MVVM\Treehopper.MVVM.csproj">
-      <Project>{781CA33D-0821-4C30-9F1C-D7920E6F5949}</Project>
-      <Name>Treehopper.MVVM</Name>
+    <ProjectReference Include="..\..\..\..\API\Treehopper.MVVM\Treehopper.Mvvm.csproj">
+      <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
+      <Name>Treehopper.Mvvm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\API\Treehopper.WPF\Treehopper.WPF.csproj">
       <Project>{b9fa9617-ffaf-45e0-95ff-96ff5cdafbfa}</Project>
       <Name>Treehopper.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\API\Treehopper\Treehopper.csproj">
-      <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>
-      <Name>TreehopperControlCenter.Mac</Name>
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Treehopper.Libraries\Treehopper.Libraries.csproj">
       <Project>{397b4612-9ff2-4288-a7d0-c2b2fc4f4816}</Project>

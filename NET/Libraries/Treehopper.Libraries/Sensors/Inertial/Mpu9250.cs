@@ -18,26 +18,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
         protected Vector3 magnetometer;
 
 
-        private Mpu9250(SMBusDevice dev, SMBusDevice mag) : base(dev)
+        public Mpu9250(I2C i2c, bool addressPin = false, int rate = 400) : base(i2c)
         {
-            this.mag = mag;
-            this.dev = dev;
-        }
-
-        /// <summary>
-        ///     Construct a new MPU9250 9-DoF IMU
-        /// </summary>
-        /// <param name="i2c">The i2C port to use</param>
-        /// <param name="addressPin">The address pin state</param>
-        /// <param name="rate">The rate, in kHz, to communicate at</param>
-        public static async Task<Mpu9250> Create(I2C i2c, bool addressPin = false, int rate = 400)
-        {
-            var result = await Mpu6050.Create(i2c, addressPin, rate).ConfigureAwait(false);
-            var dev = result.dev;
-            await dev.WriteByteData((byte)Registers.INT_PIN_CFG, 0x22).ConfigureAwait(false);
             var mag = new SMBusDevice(0x0C, i2c, rate);
-
-            return new Mpu9250(dev, mag);
+            this.mag = mag;
+            Task.Run(async () =>
+            {
+                await dev.WriteByteData((byte)Registers.INT_PIN_CFG, 0x22).ConfigureAwait(false);
+            });
         }
 
         /// <summary>

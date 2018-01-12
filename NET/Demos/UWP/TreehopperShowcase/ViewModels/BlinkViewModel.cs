@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Treehopper;
+using Treehopper.Mvvm;
 using Treehopper.Uwp;
 
 namespace TreehopperShowcase.ViewModels

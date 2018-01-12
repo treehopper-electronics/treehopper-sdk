@@ -1,10 +1,9 @@
-﻿using Treehopper.Libraries.IO.Adc;
-
-namespace AdcDemo
+﻿namespace AdcDemo
 {
     using System;
     using System.Threading.Tasks;
-    using Treehopper.Desktop;
+    using Treehopper;
+    using Treehopper.Libraries.IO.Adc;
 
     class Program
     {

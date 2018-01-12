@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Treehopper;
-using Treehopper.Desktop;
-using Treehopper.Libraries.Interface.Mux;
+using Treehopper.Libraries.IO.Mux;
 using Treehopper.Libraries.Sensors.Temperature;
 
 namespace I2cAnalogMuxDemo

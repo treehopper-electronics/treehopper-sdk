@@ -34,10 +34,6 @@ namespace Blink
 
             GetSystemService(Context.UsbService);
 
-            ConnectionService.Instance.Context = this.ApplicationContext; // we have to set the context before we do anything
-
-            RegisterReceiver(ConnectionService.Instance, ConnectionService.Instance.UsbPermissionIntentFilter);
-
             board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
 
@@ -45,6 +41,18 @@ namespace Blink
             board[0].DigitalValue = false;
 
             button.Click += Button_Click;
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            ConnectionService.Instance.ActivityOnStart(this);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            ConnectionService.Instance.ActivityOnResume();
         }
 
         private void Button_Click(object sender, EventArgs e)

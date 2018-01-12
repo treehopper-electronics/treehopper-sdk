@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Displays;
-using Treehopper.Desktop;
+using Treehopper;
 
 namespace Ssd1306Oled128x32
 {

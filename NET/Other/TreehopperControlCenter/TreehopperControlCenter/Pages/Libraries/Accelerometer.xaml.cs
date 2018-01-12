@@ -46,7 +46,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             switch(SelectedAccelerometer)
             {
                 case "MPU-9250":
-                    Sensor = await Mpu9250.Create(Board.I2c, AddressBitSet).ConfigureAwait(false);
+                    Sensor = new Mpu9250(Board.I2c, AddressBitSet);
                     break;
 
                 case "ADXL-345":

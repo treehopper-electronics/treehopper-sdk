@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Treehopper.Utilities;
 using Treehopper.Libraries.Motors;
-using Treehopper.Desktop;
+using Treehopper;
 
 namespace MotorizedFaderDemo
 {

@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Treehopper;
-using Treehopper.Libraries.Interface.PortExpander;
+using Treehopper.Libraries.IO.PortExpander;
 using Treehopper.Libraries.Displays;
 using Treehopper.Utilities;
-using Treehopper.Desktop;
+using Treehopper;
 
 namespace Sn74hc595Demo
 {

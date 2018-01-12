@@ -83,41 +83,35 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The I2c module this module is connected to.</param>
         /// <param name="addressPin">The address of the module</param>
         /// <param name="ratekHz">The rate, in kHz, to use with this IC</param>
-        protected Mpu6050(SMBusDevice dev)
+        public Mpu6050(I2C i2c, bool addressPin = false, int ratekHz = 400)
         {
-            this.dev = dev;
-
             ascale = AccelScale.AFS_2G;
             gscale = GyroScale.GFS_250DPS;
-        }
 
-        public static async Task<Mpu6050> Create(I2C i2c, bool addressPin = false, int ratekHz = 400)
-        {
-            var dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
+            this.dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
 
-            var result = await dev.ReadByteData((byte)Registers.WHO_AM_I).ConfigureAwait(false);
+            Task.Run(async () =>
+            {
+                var result = await dev.ReadByteData((byte)Registers.WHO_AM_I).ConfigureAwait(false);
 
-            //if (result != 0x71)
-            //    throw new Exception("Incorrect part number attached to bus");
+                //if (result != 0x71)
+                //    throw new Exception("Incorrect part number attached to bus");
 
-            await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).ConfigureAwait(false); // wake up
-            await Task.Delay(100).ConfigureAwait(false);
-            await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x01).ConfigureAwait(false); // Auto select clock source to be PLL gyroscope reference if ready else
-            await Task.Delay(200).ConfigureAwait(false);
-            await dev.WriteByteData((byte)Registers.CONFIG, 0x03).ConfigureAwait(false);
-            await dev.WriteByteData((byte)Registers.SMPLRT_DIV, 0x04).ConfigureAwait(false);
+                await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).ConfigureAwait(false); // wake up
+                await Task.Delay(100).ConfigureAwait(false);
+                await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x01).ConfigureAwait(false); // Auto select clock source to be PLL gyroscope reference if ready else
+                await Task.Delay(200).ConfigureAwait(false);
+                await dev.WriteByteData((byte)Registers.CONFIG, 0x03).ConfigureAwait(false);
+                await dev.WriteByteData((byte)Registers.SMPLRT_DIV, 0x04).ConfigureAwait(false);
 
-            var c = await dev.ReadByteData((byte)Registers.ACCEL_CONFIG2).ConfigureAwait(false);
-            c &= ~0x0f & 0xff;
-            c |= 0x03;
-            await dev.WriteByteData((byte)Registers.ACCEL_CONFIG2, c).ConfigureAwait(false);
+                var c = await dev.ReadByteData((byte)Registers.ACCEL_CONFIG2).ConfigureAwait(false);
+                c &= ~0x0f & 0xff;
+                c |= 0x03;
+                await dev.WriteByteData((byte)Registers.ACCEL_CONFIG2, c).ConfigureAwait(false);
 
-            var imu = new Mpu6050(dev);
-
-            await imu.SetAccelerometerScale(AccelScale.AFS_2G).ConfigureAwait(false);
-            await imu.SetGyroScale(GyroScale.GFS_250DPS).ConfigureAwait(false);
-
-            return imu;
+                await SetAccelerometerScale(AccelScale.AFS_2G).ConfigureAwait(false);
+                await SetGyroScale(GyroScale.GFS_250DPS).ConfigureAwait(false);
+            });
         }
 
         /// <summary>

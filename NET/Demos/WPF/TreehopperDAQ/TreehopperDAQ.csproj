@@ -93,7 +93,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ReachFramework" />
-    <Reference Include="Syncfusion.SfChart.WPF, Version=14.3460.0.49, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfChart.WPF, Version=15.4460.0.17, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Printing" />
@@ -155,8 +155,8 @@
       <Name>Treehopper.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
-      <Project>{0C457AD6-8EE0-4E4B-8E38-E47D1DB69C28}</Project>
-      <Name>TreehopperControlCenter.Mac</Name>
+      <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>
+      <Name>Treehopper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
