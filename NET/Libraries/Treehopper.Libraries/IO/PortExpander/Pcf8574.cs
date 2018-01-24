@@ -22,8 +22,8 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <param name="Address1">The state of the Address1 pin</param>
         /// <param name="Address2">The state of the Address2 pin</param>
         /// <param name="baseAddress">The base address of the chip</param>
-        public Pcf8574(I2C i2c, int numPins, bool Address0, bool Address1, bool Address2,
-            byte baseAddress) : base(numPins)
+        public Pcf8574(I2C i2c, bool Address0, bool Address1, bool Address2,
+            byte baseAddress = 0x20, int numPins = 8) : base(numPins)
         {
             var address = (byte) (baseAddress | (Address0 ? 1 : 0) | ((Address1 ? 1 : 0) << 1) |
                                   ((Address2 ? 1 : 0) << 2));
@@ -76,7 +76,9 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <param name="portExpanderPin">The pin whose value changed</param>
         protected override Task outputValueChanged(IPortExpanderPin portExpanderPin)
         {
-            return Flush();
+            if(AutoFlush)
+                return Flush();
+            return Task.Delay(0);
         }
 
         /// <summary>
@@ -87,7 +89,9 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             // we set the I/O mode by writing a 1 or 0 to the output port, so just
             // flush out the data
-            return Flush();
+            if (AutoFlush)
+                return Flush();
+            return Task.Delay(0);
         }
 
         /// <summary>

@@ -22,6 +22,7 @@ namespace Treehopper.Libraries.IO
         public FlushableParallelInterface(IFlushableOutputPort<T> outputPort)
         {
             port = outputPort;
+            port.AutoFlush = false;
         }
 
         /// <summary>
@@ -74,11 +75,12 @@ namespace Treehopper.Libraries.IO
                         ReadWritePin.MakeDigitalPushPullOut();
                     EnablePin.MakeDigitalPushPullOut();
 
-                    port.Flush().Wait(); // write out port settings
+                    Task.Run(() => port.Flush()).Wait(); // write out port settings
+                    port.AutoFlush = oldAutoflushSettings; // restore old autoflush settings
                 }
                 else
                 {
-                    port.AutoFlush = oldAutoflushSettings; // restore old autoflush settings
+                    
                 }
             }
         }
@@ -136,6 +138,7 @@ namespace Treehopper.Libraries.IO
             foreach (var val in busValues)
             {
                 SetDataBus(val);
+                await port.Flush().ConfigureAwait(false);
                 await Pulse().ConfigureAwait(false);
             }
         }

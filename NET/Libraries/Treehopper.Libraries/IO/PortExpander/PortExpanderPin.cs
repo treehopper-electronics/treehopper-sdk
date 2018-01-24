@@ -142,6 +142,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         public Task MakeDigitalPushPullOut()
         {
+            this.Mode = PortExpanderPinMode.DigitalOutput;
             return portExpander.OutputModeChanged(this);
         }
 
