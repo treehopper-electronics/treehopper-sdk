@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.IO.PortExpander
 {
@@ -8,21 +9,21 @@ namespace Treehopper.Libraries.IO.PortExpander
     public class Pcf8574 : PortExpander
     {
         private readonly SMBusDevice dev;
-        private readonly byte[] newValues;
+        private byte[] newValues;
         private readonly int numBytes;
 
-        private readonly byte[] oldValues;
+        private byte[] oldValues;
 
         /// <summary>
         ///     Construct a PCF-series I/O expander
         /// </summary>
         /// <param name="i2c">the I2c module to use</param>
-        /// <param name="numPins">The number of pins of this expander</param>
         /// <param name="Address0">The state of the Address0 pin</param>
         /// <param name="Address1">The state of the Address1 pin</param>
         /// <param name="Address2">The state of the Address2 pin</param>
         /// <param name="baseAddress">The base address of the chip</param>
-        public Pcf8574(I2C i2c, bool Address0, bool Address1, bool Address2,
+        /// <param name="numPins">The number of pins of this expander</param>
+        public Pcf8574(I2C i2c, bool Address0 = false, bool Address1 = false, bool Address2 = false,
             byte baseAddress = 0x20, int numPins = 8) : base(numPins)
         {
             var address = (byte) (baseAddress | (Address0 ? 1 : 0) | ((Address1 ? 1 : 0) << 1) |
@@ -32,14 +33,13 @@ namespace Treehopper.Libraries.IO.PortExpander
             numBytes = numPins / 8;
 
             oldValues = new byte[numBytes];
-            newValues = new byte[numBytes];
 
             // make all pins inputs by default
             AutoFlush = false;
             foreach (var pin in Pins)
                 pin.Mode = PortExpanderPinMode.DigitalInput;
             AutoFlush = true;
-            Flush(true).Wait();
+            Task.Run(() => Flush(true)).Wait();
         }
 
         /// <summary>
@@ -49,12 +49,15 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <returns>An awaitable task that completes when finished</returns>
         public override async Task Flush(bool force = false)
         {
+            newValues = new byte[numBytes];
             for (var i = 0; i < Pins.Count; i++)
+            {
                 // recall that we make a pin a digital input by setting it high and reading from it
                 if (Pins[i].DigitalValue || Pins[i].Mode == PortExpanderPinMode.DigitalInput)
-                    newValues[i / 8] |= (byte) (1 << (i % 8));
+                    newValues[i / 8] |= (byte)(1 << (i % 8));
                 else
-                    newValues[i / 8] &= (byte) ~(1 << (i % 8));
+                    newValues[i / 8] &= (byte)~(1 << (i % 8));
+            }
 
             var shouldResend = false;
 
@@ -78,7 +81,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             if(AutoFlush)
                 return Flush();
-            return Task.Delay(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -91,7 +94,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             // flush out the data
             if (AutoFlush)
                 return Flush();
-            return Task.Delay(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>

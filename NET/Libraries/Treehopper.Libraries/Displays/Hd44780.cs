@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
@@ -191,13 +192,13 @@ namespace Treehopper.Libraries.Displays
 
             if (bits == BitMode.FourBit)
             {
-                iface.WriteCommand(new uint[] {0x03}).Wait();
-                Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] {0x03}).Wait();
-                Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] {0x03}).Wait();
-                Task.Delay(10).Wait();
-                iface.WriteCommand(new uint[] {0x02}).Wait();
+                Task.Run(() => iface.WriteCommand(new uint[] {0x03})).Wait();
+                Thread.Sleep(10);
+                Task.Run(() => iface.WriteCommand(new uint[] {0x03})).Wait();
+                Thread.Sleep(10);
+                Task.Run(() => iface.WriteCommand(new uint[] {0x03})).Wait();
+                Thread.Sleep(10);
+                Task.Run(() => iface.WriteCommand(new uint[] {0x02})).Wait();
             }
 
 
@@ -240,7 +241,7 @@ namespace Treehopper.Libraries.Displays
             {
                 if (display == value) return;
                 display = value;
-                updateDisplayControl().Wait();
+                Task.Run(updateDisplayControl).Wait();
             }
         }
 
@@ -254,7 +255,7 @@ namespace Treehopper.Libraries.Displays
             {
                 if (cursor == value) return;
                 cursor = value;
-                updateDisplayControl().Wait();
+                Task.Run(updateDisplayControl).Wait();
             }
         }
 

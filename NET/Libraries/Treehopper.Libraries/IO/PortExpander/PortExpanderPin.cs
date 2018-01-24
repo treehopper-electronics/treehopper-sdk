@@ -56,12 +56,13 @@ namespace Treehopper.Libraries.IO.PortExpander
             get { return mode; }
             set
             {
-                if (mode == value) return;
-                mode = value;
+                if (mode == value)
+                    return;
+
                 if (mode == PortExpanderPinMode.DigitalOutput)
-                    MakeDigitalPushPullOut();
+                    Task.Run(MakeDigitalPushPullOut).Wait();
                 else
-                    MakeDigitalIn();
+                    Task.Run(MakeDigitalIn).Wait();
             }
         }
 
@@ -73,16 +74,18 @@ namespace Treehopper.Libraries.IO.PortExpander
             get
             {
                 if (mode == PortExpanderPinMode.DigitalInput && portExpander.AutoUpdateWhenPropertyRead)
-                    portExpander.Update().Wait();
+                    Task.Run(portExpander.Update).Wait();
                 return digitalValue;
             }
 
             set
             {
-                MakeDigitalPushPullOut(); // if we try to write to the pin, set it as an output
-                if (digitalValue == value) return;
+                Task.Run(MakeDigitalPushPullOut).Wait(); // if we try to write to the pin, set it as an output
+                if (digitalValue == value)
+                    return;
+
                 digitalValue = value;
-                portExpander.OutputValueChanged(this);
+                Task.Run(() => portExpander.OutputValueChanged(this)).Wait();
             }
         }
 
@@ -142,7 +145,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         public Task MakeDigitalPushPullOut()
         {
-            this.Mode = PortExpanderPinMode.DigitalOutput;
+            this.mode = PortExpanderPinMode.DigitalOutput;
             return portExpander.OutputModeChanged(this);
         }
 
@@ -152,6 +155,24 @@ namespace Treehopper.Libraries.IO.PortExpander
             digitalValue = value;
             DigitalValueChanged?.Invoke(this, new DigitalInValueChangedEventArgs(digitalValue));
             digitalSignal.TrySetResult(digitalValue);
+        }
+
+        /// <summary>
+        ///     Gets a string representation of the pin's current state
+        /// </summary>
+        /// <returns>the pin's current state</returns>
+        public override string ToString()
+        {
+            switch (Mode)
+            {
+                case PortExpanderPinMode.DigitalInput:
+                    return $"Pin {pinNumber}: Digital input, {DigitalValue}";
+                case PortExpanderPinMode.DigitalOutput:
+                    return $"Pin {pinNumber}: Digital output, {DigitalValue}";
+
+                default:
+                    return $"Pin {pinNumber}: Unknown";
+            }
         }
     }
 }

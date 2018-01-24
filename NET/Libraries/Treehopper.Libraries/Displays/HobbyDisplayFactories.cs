@@ -66,6 +66,7 @@ namespace Treehopper.Libraries.Displays
         /// </remarks>
         public static Hd44780 GetCharacterDisplayFromPcf8574(Pcf8574 ioExpander, int columns = 16, int rows = 2)
         {
+            ioExpander.AutoUpdateWhenPropertyRead = false;
             var parallelInterface = new FlushableParallelInterface<PortExpanderPin>(ioExpander);
 
             parallelInterface.RegisterSelectPin = ioExpander.Pins[0];
