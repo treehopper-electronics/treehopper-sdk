@@ -6,6 +6,9 @@ from treehopper.utils import utils
 
 
 class HardwarePwm(Pwm):
+    """
+    Hardware PWM module
+    """
     def __init__(self, pin):
         self._pin = pin
         self._board = pin._board

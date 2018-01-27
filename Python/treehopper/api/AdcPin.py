@@ -38,7 +38,7 @@ class AdcPin:
     def adc_value(self) -> int:
         """Immediately returns the last ADC value (0-4095) captured from the pin
 
-        :type: int        
+        :rtype: int
         """
         return self._adc_value
 

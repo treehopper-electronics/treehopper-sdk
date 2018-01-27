@@ -24,6 +24,9 @@ class I2CTransferError:
 
 
 class HardwareI2c(I2c):
+    """
+    Hardware I2C module
+    """
     def __init__(self, board):
         self._board = board
         self._enabled = False
