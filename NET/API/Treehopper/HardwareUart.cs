@@ -188,8 +188,6 @@ namespace Treehopper
         {
             Mode = UartMode.OneWire;
             Enabled = true;
-            if (_mode != UartMode.OneWire)
-                throw new Exception("The UART must be in OneWire mode to issue a OneWireReset command");
             bool retVal;
             var data = new byte[2];
             data[0] = (byte) DeviceCommands.UartTransaction;
@@ -294,7 +292,7 @@ namespace Treehopper
                 double noPrescalerError = Math.Abs(_baud - 24000000 / (256 - timerValNoPrescaler));
 
                 if (prescalerOutOfBounds && noPrescalerOutOfBounds)
-                    throw new Exception("The specified baud rate was out of bounds.");
+                    throw new Exception("The specified baud rate is out of bounds.");
                 if (prescalerOutOfBounds)
                 {
                     usePrescaler = false;
