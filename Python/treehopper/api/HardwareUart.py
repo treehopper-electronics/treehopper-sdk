@@ -1,7 +1,7 @@
 import logging
 from typing import List, TYPE_CHECKING
 if TYPE_CHECKING:
-    from treehopper.api import TreehopperUsb
+    from treehopper.api.TreehopperUsb import TreehopperUsb
 from treehopper.api import DeviceCommands
 from treehopper.api.IOneWire import IOneWire
 from treehopper.utils.error import error

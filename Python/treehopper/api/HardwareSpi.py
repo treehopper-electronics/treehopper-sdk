@@ -3,7 +3,7 @@ import math
 from typing import List, TYPE_CHECKING, Sequence
 
 if TYPE_CHECKING:
-    from treehopper.api import TreehopperUsb
+    from treehopper.api.TreehopperUsb import TreehopperUsb
 from treehopper.api.Spi import Spi, SpiBurstMode, ChipSelectMode, SpiMode
 from treehopper.api.Pin import PinMode
 from treehopper.utils.utils import *
