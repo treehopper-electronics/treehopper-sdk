@@ -29,7 +29,7 @@ namespace Treehopper
         {
             Board = board;
             PinNumber = pinNumber;
-            SoftPwm = new SoftPwm(Board, this);
+            SoftPwm = new SoftPwm(this);
             ReferenceLevel = AdcReferenceLevel.Vref_3V3;
             Name = "Pin " + pinNumber; // default name
         }

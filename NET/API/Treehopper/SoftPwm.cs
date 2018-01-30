@@ -23,9 +23,9 @@ namespace Treehopper
         private readonly Pin _pin;
         private bool _isEnabled;
 
-        internal SoftPwm(TreehopperUsb board, Pin pin)
+        internal SoftPwm(Pin pin)
         {
-            _board = board;
+            _board = pin.Board;
             _pin = pin;
         }
 
