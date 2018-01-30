@@ -11,6 +11,7 @@ from treehopper.api.Pin import Pin
 from treehopper.api.HardwarePwm import HardwarePwm
 from treehopper.api.HardwareI2c import HardwareI2c
 from treehopper.api.DeviceCommands import DeviceCommands
+from treehopper.api.SoftPwmManager import SoftPwmManager
 
 
 class TreehopperUsb:
@@ -45,6 +46,7 @@ class TreehopperUsb:
         self.i2c = HardwareI2c(self)
         self.spi = HardwareSpi(self)
         self.hardware_pwm_manager = HardwarePwmManager(self)
+        self._soft_pwm_manager = SoftPwmManager(self)
         self.pwm1 = HardwarePwm(self.pins[7])
         self.pwm2 = HardwarePwm(self.pins[8])
         self.pwm3 = HardwarePwm(self.pins[9])

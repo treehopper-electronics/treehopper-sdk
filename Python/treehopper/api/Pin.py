@@ -1,9 +1,14 @@
 from treehopper.api.DigitalPin import DigitalIn, DigitalOut
 from treehopper.api.AdcPin import AdcPin
-from abc import ABC, abstractmethod
+from treehopper.api.Pwm import Pwm
+from abc import abstractmethod
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from treehopper.api.TreehopperUsb import TreehopperUsb
+
 
 class PinMode:
-    Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, Unassigned = range(6)
+    Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, SoftPwm, Unassigned = range(7)
 
 
 class PinConfigCommands:
@@ -26,8 +31,8 @@ class SpiChipSelectPin(DigitalOut):
         pass
 
 
-class Pin(AdcPin, DigitalIn, SpiChipSelectPin):
-    def __init__(self, board, pin_number: int):
+class Pin(AdcPin, DigitalIn, SpiChipSelectPin, Pwm):
+    def __init__(self, board: 'TreehopperUsb', pin_number: int):
         AdcPin.__init__(self, 12, 3.3)
         DigitalIn.__init__(self)
         DigitalOut.__init__(self)
@@ -83,18 +88,22 @@ class Pin(AdcPin, DigitalIn, SpiChipSelectPin):
     def make_analog_in(self):
         """Make the pin an analog input"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakeAnalogInput, self._reference_level])
+        self._mode = PinMode.AnalogInput
 
     def make_digital_open_drain_out(self):
         """Make the pin an open-drain output"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakeOpenDrainOutput])
+        self._mode = PinMode.OpenDrainOutput
 
     def make_digital_push_pull_out(self):
         """Make the pin a push-pull output"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakePushPullOutput])
+        self._mode = PinMode.PushPullOutput
 
     def make_digital_in(self):
         """Make the pin a digital input"""
         self._board._send_pin_config([self._number, PinConfigCommands.MakeDigitalInput])
+        self._mode = PinMode.DigitalInput
 
     def _update_value(self, b0, b1):
         if self.mode == PinMode.AnalogInput:
@@ -136,6 +145,30 @@ class Pin(AdcPin, DigitalIn, SpiChipSelectPin):
         elif value == PinMode.PushPullOutput:
             self.make_digital_push_pull_out()
             self._digital_value = False
+
+        elif value == PinMode.SoftPwm:
+            self.enable_pwm()
+
+    @property
+    def duty_cycle(self):
+        return self._board._soft_pwm_manager.get_duty_cycle(self)
+
+    @duty_cycle.setter
+    def duty_cycle(self, value):
+        self._board._soft_pwm_manager.set_duty_cycle(self, value)
+
+    @property
+    def pulse_width(self):
+        return self._board._soft_pwm_manager.get_pulse_width(self)
+
+    @pulse_width.setter
+    def pulse_width(self, value):
+        self._board._soft_pwm_manager.set_pulse_width(self, value)
+
+    def enable_pwm(self):
+        self._mode = PinMode.SoftPwm
+        self._board._send_pin_config([self._number, PinConfigCommands.MakePushPullOutput])  #
+        self._board._soft_pwm_manager.start_pin(self)
 
     def __str__(self):
         if self.mode == PinMode.AnalogInput:
