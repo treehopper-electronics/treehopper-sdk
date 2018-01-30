@@ -10,7 +10,7 @@ namespace Treehopper
     ///     Represents an I/O pin on Treehopper; it provides core digital I/O (GPIO) and ADC functionality.
     /// </summary>
     // ReSharper disable once RedundantExtendsListEntry
-    public class Pin : INotifyPropertyChanged, DigitalIn, DigitalOut, AdcPin, SpiChipSelectPin
+    public class Pin : INotifyPropertyChanged, DigitalIn, DigitalOut, AdcPin, SpiChipSelectPin, Pwm
     {
         private int _adcValue;
         private TaskCompletionSource<int> _adcValueSignal = new TaskCompletionSource<int>();
@@ -29,7 +29,6 @@ namespace Treehopper
         {
             Board = board;
             PinNumber = pinNumber;
-            SoftPwm = new SoftPwm(this);
             ReferenceLevel = AdcReferenceLevel.Vref_3V3;
             Name = "Pin " + pinNumber; // default name
         }
@@ -57,21 +56,21 @@ namespace Treehopper
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
                             MakeAnalogIn().Forget();
                         else
-                            MakeAnalogIn().Wait();
+                            Task.Run(MakeAnalogIn).Wait();
                         break;
 
                     case PinMode.DigitalInput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
                             MakeDigitalIn().Forget();
                         else
-                            MakeDigitalIn().Wait();
+                            Task.Run(MakeDigitalIn).Wait();
                         break;
 
                     case PinMode.OpenDrainOutput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
                             MakeDigitalOpenDrainOut().Forget();
                         else
-                            MakeDigitalOpenDrainOut().Wait();
+                            Task.Run(MakeDigitalOpenDrainOut).Wait();
 
                         _digitalValue = false; // set initial state
                         break;
@@ -80,9 +79,16 @@ namespace Treehopper
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
                             MakeDigitalPushPullOut().Forget();
                         else
-                            MakeDigitalPushPullOut().Wait();
+                            Task.Run(MakeDigitalPushPullOut).Wait();
 
                         _digitalValue = false; // set initial state
+                        break;
+
+                    case PinMode.SoftPwm:
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            EnablePwm().Forget();
+                        else
+                            Task.Run(EnablePwm).Wait();
                         break;
                 }
             }
@@ -97,11 +103,6 @@ namespace Treehopper
         ///     Gets the name of the pin
         /// </summary>
         public string Name { get; internal set; }
-
-        /// <summary>
-        ///     The SoftPwm functions associated with this pin.
-        /// </summary>
-        public SoftPwm SoftPwm { get; internal set; }
 
         /// <summary>
         ///     Sets the ADC reference value used
@@ -339,6 +340,18 @@ namespace Treehopper
         /// </remarks>
         public Spi SpiModule => Board.Spi;
 
+        public double DutyCycle
+        {
+            get => Board.SoftPwmMgr.GetDutyCycle(this);
+            set => Board.SoftPwmMgr.SetDutyCycle(this, value);
+        }
+
+        public double PulseWidth
+        {
+            get => Board.SoftPwmMgr.GetPulseWidth(this);
+            set => Board.SoftPwmMgr.SetPulseWidth(this, value);
+        }
+
         /// <summary>
         ///     Write a value to a pin
         /// </summary>
@@ -406,20 +419,20 @@ namespace Treehopper
         /// <returns>the pin's current state</returns>
         public override string ToString()
         {
-            if (SoftPwm.Enabled)
-                return Name + ": " + SoftPwm;
             switch (Mode)
             {
                 case PinMode.AnalogInput:
-                    return Name + ": " + $"Analog input, {AnalogVoltage:0.00} volts";
+                    return $"{Name}: Analog input, {AnalogVoltage:0.00} volts";
                 case PinMode.DigitalInput:
-                    return Name + ": " + $"Digital input, {DigitalValue}";
+                    return $"{Name}: Digital input, {DigitalValue}";
                 case PinMode.OpenDrainOutput:
-                    return Name + ": " + $"Open-drain output, {DigitalValue}";
+                    return $"{Name}: Open-drain output, {DigitalValue}";
                 case PinMode.PushPullOutput:
-                    return Name + ": " + $"Push-pull output, {DigitalValue}";
+                    return $"{Name}: Push-pull output, {DigitalValue}";
+                case PinMode.SoftPwm:
+                    return $"{Name}: {DutyCycle * 100:0.00}% duty cycle ({PulseWidth:0.00} us pulse width)";
                 case PinMode.Reserved:
-                    return Name + ": In use by peripheral";
+                    return $"{Name}: In use by peripheral";
 
                 default:
                     return Name + ": Unassigned";
@@ -499,6 +512,13 @@ namespace Treehopper
             data[0] = (byte) PinNumber;
             cmd.CopyTo(data, 1);
             return Board.SendPinConfigPacket(data);
+        }
+
+        public async Task EnablePwm()
+        {
+            _mode = PinMode.SoftPwm;
+            await SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0 }).ConfigureAwait(false);
+            await Board.SoftPwmMgr.StartPin(this).ConfigureAwait(false);
         }
 
         internal enum PinConfigCommands

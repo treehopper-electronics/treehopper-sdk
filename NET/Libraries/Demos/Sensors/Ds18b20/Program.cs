@@ -44,7 +44,7 @@ namespace Ds18b20Test
                         await temp.Update(); // retrieve the conversion
                         Console.WriteLine(
                             $"Sensor {temp.Address} reports a temperature of {temp.Celsius} °C ({temp.Fahrenheit} °F)");
-                    }
+                    } 
                 }
 
                 Console.WriteLine("\n");

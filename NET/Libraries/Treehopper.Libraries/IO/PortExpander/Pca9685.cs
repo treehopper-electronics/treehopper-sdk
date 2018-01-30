@@ -320,5 +320,10 @@ namespace Treehopper.Libraries.IO.PortExpander
             get { return DutyCycle * 1000000 / driver.Frequency; }
             set { DutyCycle = value * driver.Frequency / 1000000.0; }
         }
+
+        public Task EnablePwm()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

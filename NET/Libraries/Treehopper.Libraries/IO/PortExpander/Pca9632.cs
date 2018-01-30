@@ -210,6 +210,11 @@ namespace Treehopper.Libraries.IO.PortExpander
                 get { return DutyCycle * 1000000 / 15625; }
                 set { DutyCycle = value * 15625 / 1000000.0; }
             }
+
+            public Task EnablePwm()
+            {
+                return Task.CompletedTask;
+            }
         }
     }
 }

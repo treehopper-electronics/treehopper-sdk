@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Treehopper.ThirdParty;
+using Treehopper.Utilities;
 
 namespace Treehopper
 {
@@ -40,46 +42,52 @@ namespace Treehopper
             return "No SoftPwm pins running";
         }
 
-        internal void Stop()
+        internal Task Stop()
         {
             foreach (var entry in _pins)
                 entry.Value.Pin.Mode = PinMode.DigitalInput;
 
             _pins.Clear();
-            UpdateConfig();
+            return UpdateConfig();
         }
 
-        internal void StartPin(Pin pin)
+        internal Task StartPin(Pin pin)
         {
             if (_pins.ContainsKey(pin.PinNumber))
-                return;
+                return Task.CompletedTask;
             _pins.Add(pin.PinNumber, new SoftPwmPinConfig {Pin = pin, PulseWidthUs = 0, UsePulseWidth = true});
-            UpdateConfig();
+            return UpdateConfig();
         }
 
-        internal void StopPin(Pin pin)
+        internal Task StopPin(Pin pin)
         {
             _pins.Remove(pin.PinNumber);
-            UpdateConfig();
+            return UpdateConfig();
         }
 
         internal async void SetDutyCycle(Pin pin, double dutyCycle)
         {
+            if (dutyCycle > 1.0 || dutyCycle < 0.0)
+                Utility.Error("DutyCycle must be between 0.0 and 1.0");
+
             using (await _mutex.LockAsync().ConfigureAwait(false))
             {
                 _pins[pin.PinNumber].DutyCycle = dutyCycle;
                 _pins[pin.PinNumber].UsePulseWidth = false;
-                UpdateConfig();
+                await UpdateConfig().ConfigureAwait(false);
             }
         }
 
         internal async void SetPulseWidth(Pin pin, double pulseWidth)
         {
+            if (pulseWidth > 16409 || pulseWidth < 0.0)
+                Utility.Error("PulseWidth must be between 0 and 16409");
+
             using (await _mutex.LockAsync().ConfigureAwait(false))
             {
                 _pins[pin.PinNumber].PulseWidthUs = pulseWidth;
                 _pins[pin.PinNumber].UsePulseWidth = true;
-                UpdateConfig();
+                await UpdateConfig().ConfigureAwait(false);
             }
         }
 
@@ -95,7 +103,7 @@ namespace Treehopper
             return _pins[pin.PinNumber].PulseWidthUs;
         }
 
-        private void UpdateConfig()
+        private Task UpdateConfig()
         {
             if (_pins.Count > 0)
             {
@@ -159,12 +167,12 @@ namespace Treehopper
                     config[1] = 0;
                 }
 
-                _board.SendPeripheralConfigPacket(config);
+                return _board.SendPeripheralConfigPacket(config);
             }
             else
             {
                 // disable SoftPWM
-                _board.SendPeripheralConfigPacket(new byte[] {(byte) DeviceCommands.SoftPwmConfig, 0});
+                return _board.SendPeripheralConfigPacket(new byte[] {(byte) DeviceCommands.SoftPwmConfig, 0});
             }
         }
     }

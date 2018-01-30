@@ -90,17 +90,17 @@ namespace Treehopper
         /// <summary>
         ///     Hardware PWM #1
         /// </summary>
-        public Pwm Pwm1 { get; }
+        public HardwarePwm Pwm1 { get; }
 
         /// <summary>
         ///     Hardware PWM #2
         /// </summary>
-        public Pwm Pwm2 { get; }
+        public HardwarePwm Pwm2 { get; }
 
         /// <summary>
         ///     Hardware PWM #3
         /// </summary>
-        public Pwm Pwm3 { get; }
+        public HardwarePwm Pwm3 { get; }
 
         /// <summary>
         ///     8080-style parallel interface

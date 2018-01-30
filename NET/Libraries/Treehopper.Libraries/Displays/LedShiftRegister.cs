@@ -254,7 +254,7 @@ namespace Treehopper.Libraries.Displays
             }
             else if (oePwm != null)
             {
-                oePwm.Enabled = true;
+                oePwm.EnablePwm();
                 oePwm.PulseWidth = 0;
                 HasGlobalBrightnessControl = true;
             }

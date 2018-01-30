@@ -23,9 +23,9 @@ namespace Treehopper.Libraries.Motors
         /// <param name="Enable">The PWM input used to control the output enable</param>
         public DualHalfBridge(DigitalOut A, DigitalOut B, Pwm Enable)
         {
-            Enable.Enabled = true;
+            Enable.EnablePwm();
             Enable.DutyCycle = 0;
-            Enable.Enabled = true;
+            Enable.EnablePwm();
             A.MakeDigitalPushPullOut();
             B.MakeDigitalPushPullOut();
 
