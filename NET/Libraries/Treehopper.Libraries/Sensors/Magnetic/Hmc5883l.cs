@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Utilities;
 
-namespace Treehopper.Libraries.Sensors.Inertial
+namespace Treehopper.Libraries.Sensors.Magnetic
 {
     /// <summary>
     ///     Honeywell HMC5883L 3-axis digital compass

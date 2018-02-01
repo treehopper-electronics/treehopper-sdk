@@ -10,7 +10,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
     ///     InvenSense MPU6050 6-DoF IMU
     /// </summary>
     [Supports("InvenSense", "MPU-6050")]
-    public class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
+    public partial class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
     {
         /// <summary>
         ///     Accelerometer scales
@@ -111,7 +111,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 await SetAccelerometerScale(AccelScale.AFS_2G).ConfigureAwait(false);
                 await SetGyroScale(GyroScale.GFS_250DPS).ConfigureAwait(false);
-            });
+            }).Wait();
         }
 
         /// <summary>

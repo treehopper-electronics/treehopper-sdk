@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
 using System.Threading.Tasks;
+using Treehopper.Libraries.Sensors.Magnetic;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {

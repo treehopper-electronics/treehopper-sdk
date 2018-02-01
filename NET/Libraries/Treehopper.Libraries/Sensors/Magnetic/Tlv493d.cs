@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
 
-namespace Treehopper.Libraries.Sensors.Inertial
+namespace Treehopper.Libraries.Sensors.Magnetic
 {
     /// <summary>
     /// TLV493D-A1B6 3D magnetic / temperature sensor

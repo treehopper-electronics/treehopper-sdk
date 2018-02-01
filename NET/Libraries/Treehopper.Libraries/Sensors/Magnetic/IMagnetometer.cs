@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Treehopper.Libraries.Sensors.Inertial
+namespace Treehopper.Libraries.Sensors.Magnetic
 {
     /// <summary>
     ///     Three-axis magnetometer (digital compass)

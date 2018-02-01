@@ -1,0 +1,588 @@
+{
+    "registers" : {
+        "self_test_x_gyro" : {
+            "address" : "0x00",
+            "width" : 8
+        },
+
+        "self_test_y_gyro" : {
+            "address" : "0x01",
+            "width" : 8
+        },
+
+        "self_test_z_gyro" : {
+            "address" : "0x02",
+            "width" : 8
+        },
+
+        "self_test_x_accel" : {
+            "address" : "0x0d",
+            "width" : 8
+        },
+
+        "self_test_y_accel" : {
+            "address" : "0x0e",
+            "width" : 8
+        },
+
+        "self_test_z_accel" : {
+            "address" : "0x0f",
+            "width" : 8
+        },
+
+        "xGyroOffsUsr" : {
+            "address" : "0x13",
+            "width" : 16
+        },
+
+        "yGyroOffsUsr" : {
+            "address" : "0x15",
+            "width" : 16
+        },
+
+        "zGyroOffsUsr" : {
+            "address" : "0x17",
+            "width" : 16
+        },
+
+        "sampleRateDivider" : {
+            "address" : "0x19",
+            "width" : 8
+        },
+
+        "configuration" : {
+            "address" : "0x1a",
+            "values" : {
+                "dlpf" : {
+                    "width" : 3
+                },
+
+                "extSyncSet" : {
+                    "width": 3,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                          "Disabled": null,
+                          "TempOutL": null,
+                          "GyroXoutL": null,
+                          "GyroYoutL": null,
+                          "GyroZoutL": null,
+                          "AccelXoutL": null,
+                          "AccelYoutL": null,
+                          "AccelZoutL": null
+                        }
+                    }
+                },
+
+                "fifoMode" : {}
+            }
+        },
+
+        "gyroConfig" : {
+            "address" : "0x1b",
+            "values" : {
+                "fChoiceBypass" : {
+                    "width" : 2
+                },
+    
+                "gyroFsSel" : {
+                    "width": 2,
+                    "offset": 3,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                            "Dps_250": null,
+                            "Dps_500": null,
+                            "Dps_1000": null,
+                            "Dps_2000": null
+                        }
+                    }
+                },
+    
+                "zGyroCten" : {},
+    
+                "yGyroCten" : {},
+    
+                "zGyroCten" : {}
+            }
+        },
+        
+        "accelConfig" : {
+            "address" : "0x1c",
+            "values" : {
+                "accelFsSel" : {
+                    "width": 2,
+                    "offset": 3,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                            "Fs_2g": null,
+                            "Fs_4g": null,
+                            "Fs_8g": null,
+                            "Fs_16g": null
+                        }
+                    }
+                },
+
+                "accelZselfTest" : {},
+
+                "accelYselfTest" : {},
+
+                "accelXselfTest" : {}
+            }
+        },
+
+        "accelConfig2" : {
+            "address" : "0x1d",
+            "values" : {
+                "dlpfCfg" : {
+                    "width" : 3
+                },
+                "accelFchoice" : {}
+            }
+        },       
+
+        "lowPowerAccelerometerOdrControl" : {
+            "address" : "0x1e",
+            "width" : 4
+        },
+
+        "womThreshold" : {
+            "address" : "0x1f",
+            "width" : 8
+        },
+
+        "fifoEnable" : {
+            "address" : "0x23",
+            "values" : {
+                "slv0" : {},
+                "slv1" : {},
+                "slv2" : {},
+                "accel" : {},
+                "gyroZout" : {},
+                "gyroYout" : {},
+                "gyroXout" : {},
+                "tempOut" : {}
+            }
+        },
+
+        "i2cMasterControl" : {
+            "address" : "0x24",
+            "values" : {
+                "i2cMasterClock" : {
+                    "width" : 4
+                },
+                "i2cMstPnsr" : {},
+                "slv3FifoEn" : {},
+                "waitForEs" : {},
+                "multMstEn" : {}
+            }
+        },
+
+
+
+        "i2cSlv0Addr" : {
+            "address" : "0x25",
+            "values" : {
+                "id" : {
+                    "width" : 7
+                },
+                "rnw" : {}
+            }
+        },
+
+        "i2cSlv0Reg" : {
+            "address" : "0x26",
+            "width" : 8
+        },
+
+        "i2cSlv0Ctrl" : {
+            "address" : "0x27",
+            "Length" : {
+                "width" : 4
+            }, 
+            "Grp" : {},
+            "RegDis" : {},
+            "ByteSw" : {},
+            "En" : {}
+        },
+
+
+        "i2cSlv1Addr" : {
+            "address" : "0x28",
+            "values" : {
+                "id" : {
+                    "width" : 7
+                },
+                "rnw" : {}
+            }
+        },
+
+        "i2cSlv1Reg" : {
+            "address" : "0x29",
+            "width" : 8
+        },
+
+        "i2cSlv1Ctrl" : {
+            "address" : "0x2a",
+            "Length" : {
+                "width" : 4
+            }, 
+            "Grp" : {},
+            "RegDis" : {},
+            "ByteSw" : {},
+            "En" : {}
+        },
+
+
+        "i2cSlv2Addr" : {
+            "address" : "0x2b",
+            "values" : {
+                "id" : {
+                    "width" : 7
+                },
+                "rnw" : {}
+            }
+        },
+
+        "i2cSlv2Reg" : {
+            "address" : "0x2c",
+            "width" : 8
+        },
+
+        "i2cSlv2Ctrl" : {
+            "address" : "0x2d",
+            "Length" : {
+                "width" : 4
+            }, 
+            "Grp" : {},
+            "RegDis" : {},
+            "ByteSw" : {},
+            "En" : {}
+        },
+
+
+        "i2cSlv3Addr" : {
+            "address" : "0x2e",
+            "values" : {
+                "id" : {
+                    "width" : 7
+                },
+                "rnw" : {}
+            }
+        },
+
+        "i2cSlv3Reg" : {
+            "address" : "0x2f",
+            "width" : 8
+        },
+
+        "i2cSlv3Ctrl" : {
+            "address" : "0x30",
+            "Length" : {
+                "width" : 4
+            }, 
+            "Grp" : {},
+            "RegDis" : {},
+            "ByteSw" : {},
+            "En" : {}
+        },
+
+
+        "i2cSlv4Addr" : {
+            "address" : "0x31",
+            "values" : {
+                "id" : {
+                    "width" : 7
+                },
+                "rnw" : {}
+            }
+        },
+
+        "i2cSlv4Reg" : {
+            "address" : "0x32",
+            "width" : 8
+        },
+
+        "i2cSlv4Do" : {
+            "address" : "0x33",
+            "width" : 8
+        },
+
+        "i2cSlv4Ctrl" : {
+            "address" : "0x34",
+            "MstDelay" : {
+                "width" : 5
+            }, 
+            "RegDis" : {},
+            "DoneIntEn" : {},
+            "En" : {}
+        },
+
+        "i2cSlv4Di" : {
+            "address" : "0x35",
+            "width" : 8
+        },
+
+        "i2cMstStatus" : {
+            "address" : "0x36",
+            "values" : {
+                "slv0Nack" : {},
+                "slv1Nack" : {},
+                "slv2Nack" : {},
+                "slv3Nack" : {},
+                "slv4Nack" : {},
+                "lostArb" : {},
+                "slv4Done" : {},
+                "passThrough" : {}
+            }
+        },
+
+        "intPinCfg" : {
+            "address" : "0x37",
+            "values" : {
+                "bypassEn" : {
+                    "offset" : 1,
+                    "width" : 1
+                },
+                "fsyncIntModeEnable" : {},
+                "actlFsync" : {},
+                "intAnyRd2Clear" : {},
+                "latchIntEn" : {},
+                "open" : {},
+                "actl" : {}
+            }
+        },
+
+        "intEnable" : {
+            "address" : "0x38",
+            "values" : {
+                "RawReadyEnable" : {},
+                "fsyncIntEnable" : {
+                    "offset" : 2,
+                    "width" : 1
+                },
+                "fifoIntEnable" : {},
+                "fifoOverflowEnable" : {},
+                "womEnable" : {
+                    "offset" : 1,
+                    "width" : 1
+                }
+            }
+        },
+
+        "intStatus" : {
+            "address" : "0x3a",
+            "values" : {
+                "rawDataReadyInt" : {},
+                "fsyncInt" : {
+                    "offset" : 2,
+                    "width" : 1
+                },
+                "fifoOverflowInt" : {},
+                "womInt" : {
+                    "offset" : 1,
+                    "width" : 1
+                }
+            }
+        },
+
+        "accel_x" : {
+            "address" : "0x3b",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "accel_y" : {
+            "address" : "0x3d",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "accel_z" : {
+            "address" : "0x3f",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "temp" : {
+            "address" : "0x41",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "gyro_x" : {
+            "address" : "0x43",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "gyro_y" : {
+            "address" : "0x45",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "gyro_z" : {
+            "address" : "0x47",
+            "width" : 16,
+            "access" : "read",
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "extSensData" : {
+            "address" : "0x49",
+            "width" : "192"
+        },
+
+        "i2cSlv0do" : {
+            "address" : "0x63",
+            "width" : "8"
+        },
+
+        "i2cSlv1do" : {
+            "address" : "0x64",
+            "width" : "8"
+        },
+
+        "i2cSlv2do" : {
+            "address" : "0x65",
+            "width" : "8"
+        },
+
+        "i2cSlv3do" : {
+            "address" : "0x66",
+            "width" : "8"
+        },
+
+        "i2cMstDelayCtrl" : {
+            "address" : "0x67",
+            "values" : {
+                "slv0DelayEn" : {},
+                "slv1DelayEn" : {},
+                "slv2DelayEn" : {},
+                "slv3DelayEn" : {},
+                "slv4DelayEn" : {},
+                "delayEsShadow" : {
+                    "offset" : 2,
+                    "width" : 1
+                }
+            }
+        },
+
+        "signalPathReset" : {
+            "address" : "0x68",
+            "values" : {
+                "tempReset" : {},
+                "accelReset" : {},
+                "gyroReset" : {}
+            }
+        },
+
+        "accelIntCtrl" : {
+            "address" : "0x69",
+            "values" : {
+                "accelIntelMode" : {
+                    "offset":6,
+                    "width":1
+                },
+                "accelIntelEnable" : {}
+            }
+        },
+
+        "userCtrl" : {
+            "address" : "0x6a",
+            "values" : {
+                "sigConditionReset" : {},
+                "i2cMasterReset" : {},
+                "fifoReset" : {},
+                "i2cIfDisable" : {
+                    "offset":1,
+                    "width":1
+                },
+                "i2cMasterEnable" : {},
+                "fifoEnable" : {}
+            }
+        },
+
+        "powerMgmt1" : {
+            "address" : "0x6b",
+            "values" : {
+                "clockSel" : {
+                    "width": 3,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                            "InternalOscillator": 0,
+                            "AutoSelect": 1,
+                            "Reset": 7
+                            }
+                    }
+                },
+                "powerDownPtat" : {},
+                "gyroStandby" : {},
+                "cycle" : {},
+                "sleep" : {},
+                "reset" : {}
+            }
+        },
+
+        "powerMgmt2" : {
+            "address" : "0x6c",
+            "values" : {
+                "disableZG" : {},
+                "disableYG" : {},
+                "disableXG" : {},
+                "disableZA" : {},
+                "disableYA" : {},
+                "disableXA" : {}
+            }
+        },
+
+        "fifoCount" : {
+            "address" : "0x72",
+            "width" : "13"
+        },
+
+        "fifoRW" : {
+            "address" : "0x74",
+            "width" : "8"
+        },
+
+        "whoAmI" : {
+            "address" : "0x75",
+            "width" : "8"
+        },
+
+        "xAccelOffset" : {
+            "address" : "0x77",
+            "width" : 15,
+            "offset" : 1
+        },
+
+        "yAccelOffset" : {
+            "address" : "0x7a",
+            "width" : 15,
+            "offset" : 1
+        },
+
+        "zAccelOffset" : {
+            "address" : "0x7d",
+            "width" : 15,
+            "offset" : 1
+        }
+    }
+}
