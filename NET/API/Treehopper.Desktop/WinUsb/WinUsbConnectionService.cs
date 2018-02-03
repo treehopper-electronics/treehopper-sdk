@@ -147,8 +147,9 @@ namespace Treehopper.Desktop.WinUsb
                 if (Handle != IntPtr.Zero)
                 {
                     mDevInterfaceHandle = NativeMethods.RegisterDeviceNotification(Handle, mDevInterface, 0);
-                    if (mDevInterfaceHandle != null && !mDevInterfaceHandle.IsInvalid)
+                    if (mDevInterfaceHandle == null || mDevInterfaceHandle.IsInvalid)
                     {
+                        Debug.WriteLine($"Device notification register failed with error {Marshal.GetLastWin32Error()}");
                     }
                 }
                 base.OnHandleChange();
