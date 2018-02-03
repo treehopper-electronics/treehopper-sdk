@@ -206,11 +206,11 @@ namespace Treehopper.Desktop.WinUsb
             [StructLayout(LayoutKind.Sequential)]
             internal class DevBroadcastHdr
             {
-                public Guid ClassGuid = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED");
-                public int devType = DBT_DEVTYP_DEVICEINTERFACE;
-                private char mNameHolder;
-                public int Rsrvd1;
                 public int Size;
+                public int DeviceType = DBT_DEVTYP_DEVICEINTERFACE;
+                public int Reserved;
+                public Guid ClassGuid = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED");
+                private char mNameHolder;
 
                 internal DevBroadcastHdr()
                 {
@@ -222,13 +222,11 @@ namespace Treehopper.Desktop.WinUsb
             [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
             public class DevBroadcastDeviceInterface
             {
-                public Guid ClassGuid;
-
-                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)] public string DevicePath;
-
+                public int Size;
                 public int DeviceType;
                 public int Reserved;
-                public int Size;
+                public Guid ClassGuid;
+                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)] public string DevicePath;
             }
 
             internal class DevNotifySafeHandle : SafeHandleZeroOrMinusOneIsInvalid
