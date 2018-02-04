@@ -14,49 +14,28 @@ namespace Treehopper.Firmware
     /// <summary>
     ///     A class for uploading new firmware images to a board
     /// </summary>
-    public class FirmwareUpdater
+    public class FirmwareUpdateDevice : INotifyPropertyChanged
     {
         private const int SizeIn = 4;
         private const int SizeOut = 64;
-        private static readonly HidDeviceLoader loader = new HidDeviceLoader();
 
         private readonly HidDevice connection;
         private HidStream stream;
 
-        public FirmwareUpdater(HidDevice connection)
+        public int Progress { get; set; }
+
+        public string DevicePath => connection.DevicePath;
+
+        public FirmwareUpdateDevice(HidDevice connection)
         {
             this.connection = connection;
         }
-
-        public static IList<FirmwareUpdater> Boards
-        {
-            get
-            {
-                var collection = new Collection<FirmwareUpdater>();
-                var devices = loader.GetDevices(BootloaderVid, BootloaderPid);
-                foreach (var device in devices)
-                    collection.Add(new FirmwareUpdater(device));
-
-                return collection;
-            }
-        }
-
-
-        /// <summary>
-        ///     The PID used by the bootloader
-        /// </summary>
-        public static int BootloaderPid { get; set; } = 0xeac9;
-
-        /// <summary>
-        ///     The VID used by the bootloader
-        /// </summary>
-        public static int BootloaderVid { get; set; } = 0x10c4;
-
 
         /// <summary>
         ///     Fires whenever firmware updating progress has changed.
         /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Load a firmware image specified by the path
@@ -90,9 +69,9 @@ namespace Treehopper.Firmware
                 if (Encoding.UTF8.GetChars(reply)[0] != '@')
                     throw new Exception("Received an invalid response");
 
-                var progress = (int) (100.0 * data.Position / data.Length);
-                if (ProgressChanged != null)
-                    ProgressChanged(this, new ProgressChangedEventArgs(progress, null));
+                Progress = (int) (100.0 * data.Position / data.Length);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Progress"));
+                ProgressChanged?.Invoke(this, new ProgressChangedEventArgs(Progress, null));
             }
 
             stream.Close();
@@ -135,6 +114,11 @@ namespace Treehopper.Firmware
                 retVal[i] = (byte) source.ReadByte();
 
             return retVal;
+        }
+
+        public override string ToString()
+        {
+            return DevicePath;
         }
     }
 }
