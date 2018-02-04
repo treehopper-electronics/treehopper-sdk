@@ -49,6 +49,7 @@ void Treehopper_Init() {
 
 	SerialNumber_Init();
 	LED_Init();
+	PWM_Init();
 	SPI_Disable();
 	UART_Disable();
 	I2C_Disable();
