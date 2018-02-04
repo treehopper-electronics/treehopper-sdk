@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Treehopper.Utilities
@@ -51,6 +52,16 @@ namespace Treehopper.Utilities
 
             return retVal;
         }
+
+
+        public static string ToHexString(this byte[] ba)
+        {
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+            foreach (byte b in ba)
+                hex.AppendFormat("{0:x2}, ", b);
+            return hex.ToString();
+        }
+
 
         /// <summary>
         ///     Empty method which prevents VS from generating warnings from un-awaited calls.
