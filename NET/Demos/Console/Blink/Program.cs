@@ -41,7 +41,6 @@ namespace Blink
 					await Task.Delay(100);
 				}
 
-                Console.ReadKey();
                 Board.Disconnect();
             }
         }
