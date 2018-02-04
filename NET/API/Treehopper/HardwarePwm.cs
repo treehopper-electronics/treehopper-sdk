@@ -73,8 +73,8 @@ namespace Treehopper
                 if (value > 1.0 || value < 0.0)
                 {
                     Utility.Error("DutyCycle must be between 0.0 and 1.0");
-                    _dutyCycle = value.Constrain();
                 }
+                _dutyCycle = value.Constrain();
 
                 // update the pulseWidth just in case the user wants to read from the value
                 _pulseWidth = _dutyCycle * _board.HardwarePwmManager.PeriodMicroseconds;
