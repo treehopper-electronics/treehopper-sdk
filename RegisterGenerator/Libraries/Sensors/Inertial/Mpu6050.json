@@ -85,7 +85,7 @@
                     "width" : 2
                 },
     
-                "gyroFsSel" : {
+                "gyroScale" : {
                     "width": 2,
                     "offset": 3,
                     "enum": {
@@ -110,7 +110,7 @@
         "accelConfig" : {
             "address" : "0x1c",
             "values" : {
-                "accelFsSel" : {
+                "accelScale" : {
                     "width": 2,
                     "offset": 3,
                     "enum": {

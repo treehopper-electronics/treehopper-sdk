@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             AccelZoutL = 7
         }
 
-        public enum GyroFsSels
+        public enum GyroScales
         {
             Dps_250 = 0,
             Dps_500 = 1,
@@ -32,7 +32,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Dps_2000 = 3
         }
 
-        public enum AccelFsSels
+        public enum AccelScales
         {
             Fs_2g = 0,
             Fs_4g = 1,
@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Reset = 7
         }
 
-        internal class Mpu6050Registers : RegisterManager
+        protected class Mpu6050Registers : RegisterManager
         {
             internal Mpu6050Registers(SMBusDevice dev = null) : base(dev, true)
             {
@@ -520,22 +520,22 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 internal GyroConfigRegister(RegisterManager regManager) : base(regManager, 0x1b, 1, false) { }
 
                 public int FChoiceBypass { get; set; }
-                public int GyroFsSel { get; set; }
+                public int GyroScale { get; set; }
                 public int ZGyroCten { get; set; }
                 public int YGyroCten { get; set; }
-                public GyroFsSels GetGyroFsSel() { return (GyroFsSels)GyroFsSel; }
-                public void SetGyroFsSel(GyroFsSels enumVal) { GyroFsSel = (int)enumVal; }
+                public GyroScales GetGyroScale() { return (GyroScales)GyroScale; }
+                public void SetGyroScale(GyroScales enumVal) { GyroScale = (int)enumVal; }
 
                 public async Task<GyroConfigRegister> Read()
                 {
                     await manager.Read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroFsSel & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
+                internal override long GetValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroScale & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
                 internal override void SetValue(long value)
                 {
                     FChoiceBypass = (int)((value >> 0) & 0x3);
-                    GyroFsSel = (int)((value >> 3) & 0x3);
+                    GyroScale = (int)((value >> 3) & 0x3);
                     ZGyroCten = (int)((value >> 5) & 0x1);
                     YGyroCten = (int)((value >> 6) & 0x1);
                 }
@@ -544,7 +544,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 {
                     string retVal = "";
                     retVal += $"FChoiceBypass: { FChoiceBypass } (offset: 0, width: 2)\r\n";
-                    retVal += $"GyroFsSel: { GyroFsSel } (offset: 3, width: 2)\r\n";
+                    retVal += $"GyroScale: { GyroScale } (offset: 3, width: 2)\r\n";
                     retVal += $"ZGyroCten: { ZGyroCten } (offset: 5, width: 1)\r\n";
                     retVal += $"YGyroCten: { YGyroCten } (offset: 6, width: 1)\r\n";
                     return retVal;
@@ -554,22 +554,22 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal AccelConfigRegister(RegisterManager regManager) : base(regManager, 0x1c, 1, false) { }
 
-                public int AccelFsSel { get; set; }
+                public int AccelScale { get; set; }
                 public int AccelZselfTest { get; set; }
                 public int AccelYselfTest { get; set; }
                 public int AccelXselfTest { get; set; }
-                public AccelFsSels GetAccelFsSel() { return (AccelFsSels)AccelFsSel; }
-                public void SetAccelFsSel(AccelFsSels enumVal) { AccelFsSel = (int)enumVal; }
+                public AccelScales GetAccelScale() { return (AccelScales)AccelScale; }
+                public void SetAccelScale(AccelScales enumVal) { AccelScale = (int)enumVal; }
 
                 public async Task<AccelConfigRegister> Read()
                 {
                     await manager.Read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((AccelFsSel & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
+                internal override long GetValue() { return ((AccelScale & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
                 internal override void SetValue(long value)
                 {
-                    AccelFsSel = (int)((value >> 3) & 0x3);
+                    AccelScale = (int)((value >> 3) & 0x3);
                     AccelZselfTest = (int)((value >> 5) & 0x1);
                     AccelYselfTest = (int)((value >> 6) & 0x1);
                     AccelXselfTest = (int)((value >> 7) & 0x1);
@@ -578,7 +578,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"AccelFsSel: { AccelFsSel } (offset: 3, width: 2)\r\n";
+                    retVal += $"AccelScale: { AccelScale } (offset: 3, width: 2)\r\n";
                     retVal += $"AccelZselfTest: { AccelZselfTest } (offset: 5, width: 1)\r\n";
                     retVal += $"AccelYselfTest: { AccelYselfTest } (offset: 6, width: 1)\r\n";
                     retVal += $"AccelXselfTest: { AccelXselfTest } (offset: 7, width: 1)\r\n";

@@ -13,13 +13,13 @@ class ExtSyncSets:
     AccelYoutL = 6
     AccelZoutL = 7
     
-class GyroFsSels:
+class GyroScales:
     Dps_250 = 0
     Dps_500 = 1
     Dps_1000 = 2
     Dps_2000 = 3
     
-class AccelFsSels:
+class AccelScales:
     Fs_2g = 0
     Fs_4g = 1
     Fs_8g = 2
@@ -401,7 +401,7 @@ class Mpu6050Registers(RegisterManager):
         def __init__(self, reg_manager: RegisterManager):
             Register.__init__(self, reg_manager, 0x1b, 1, False)
             self.fChoiceBypass = 0
-            self.gyroFsSel = 0
+            self.gyroScale = 0
             self.zGyroCten = 0
             self.yGyroCten = 0
 
@@ -411,18 +411,18 @@ class Mpu6050Registers(RegisterManager):
             return self
             
         def get_value(self):
-            return ((self.fChoiceBypass & 0x3) << 0) | ((self.gyroFsSel & 0x3) << 3) | ((self.zGyroCten & 0x1) << 5) | ((self.yGyroCten & 0x1) << 6)
+            return ((self.fChoiceBypass & 0x3) << 0) | ((self.gyroScale & 0x3) << 3) | ((self.zGyroCten & 0x1) << 5) | ((self.yGyroCten & 0x1) << 6)
 
         def set_value(self, value: int):
             self.fChoiceBypass = ((value >> 0) & 0x3)
-            self.gyroFsSel = ((value >> 3) & 0x3)
+            self.gyroScale = ((value >> 3) & 0x3)
             self.zGyroCten = ((value >> 5) & 0x1)
             self.yGyroCten = ((value >> 6) & 0x1)
 
         def __str__(self):
             retVal = ""
             retVal += "FChoiceBypass: {} (offset: 0, width: 2)\r\n".format(self.fChoiceBypass)
-            retVal += "GyroFsSel: {} (offset: 3, width: 2)\r\n".format(self.gyroFsSel)
+            retVal += "GyroScale: {} (offset: 3, width: 2)\r\n".format(self.gyroScale)
             retVal += "ZGyroCten: {} (offset: 5, width: 1)\r\n".format(self.zGyroCten)
             retVal += "YGyroCten: {} (offset: 6, width: 1)\r\n".format(self.yGyroCten)
             return retVal
@@ -430,7 +430,7 @@ class Mpu6050Registers(RegisterManager):
     class AccelConfigRegister(Register):
         def __init__(self, reg_manager: RegisterManager):
             Register.__init__(self, reg_manager, 0x1c, 1, False)
-            self.accelFsSel = 0
+            self.accelScale = 0
             self.accelZselfTest = 0
             self.accelYselfTest = 0
             self.accelXselfTest = 0
@@ -441,17 +441,17 @@ class Mpu6050Registers(RegisterManager):
             return self
             
         def get_value(self):
-            return ((self.accelFsSel & 0x3) << 3) | ((self.accelZselfTest & 0x1) << 5) | ((self.accelYselfTest & 0x1) << 6) | ((self.accelXselfTest & 0x1) << 7)
+            return ((self.accelScale & 0x3) << 3) | ((self.accelZselfTest & 0x1) << 5) | ((self.accelYselfTest & 0x1) << 6) | ((self.accelXselfTest & 0x1) << 7)
 
         def set_value(self, value: int):
-            self.accelFsSel = ((value >> 3) & 0x3)
+            self.accelScale = ((value >> 3) & 0x3)
             self.accelZselfTest = ((value >> 5) & 0x1)
             self.accelYselfTest = ((value >> 6) & 0x1)
             self.accelXselfTest = ((value >> 7) & 0x1)
 
         def __str__(self):
             retVal = ""
-            retVal += "AccelFsSel: {} (offset: 3, width: 2)\r\n".format(self.accelFsSel)
+            retVal += "AccelScale: {} (offset: 3, width: 2)\r\n".format(self.accelScale)
             retVal += "AccelZselfTest: {} (offset: 5, width: 1)\r\n".format(self.accelZselfTest)
             retVal += "AccelYselfTest: {} (offset: 6, width: 1)\r\n".format(self.accelYselfTest)
             retVal += "AccelXselfTest: {} (offset: 7, width: 1)\r\n".format(self.accelXselfTest)

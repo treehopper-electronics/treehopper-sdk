@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.{{Namespace}}
         {{/Enum}}
         {{/Values.Values}}
         {{/RegisterList}}
-        internal class {{Name}}Registers : RegisterManager
+        protected class {{Name}}Registers : RegisterManager
         {
             internal {{Name}}Registers(SMBusDevice dev = null) : base(dev, {{MultiRegisterAccess}})
             {

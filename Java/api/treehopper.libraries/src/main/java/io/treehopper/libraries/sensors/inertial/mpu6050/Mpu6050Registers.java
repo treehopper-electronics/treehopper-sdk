@@ -424,12 +424,12 @@ class Mpu6050Registers extends RegisterManager
         GyroConfigRegister(RegisterManager regManager) { super(regManager, 0x1b, 1, false); }
 
         int FChoiceBypass;
-        int GyroFsSel;
+        int GyroScale;
         int ZGyroCten;
         int YGyroCten;
 
-                public GyroFsSels getGyroFsSel() { for (GyroFsSels b : GyroFsSels.values()) { if(b.getVal() == GyroFsSel) return b; } return GyroFsSels.values()[0]; }
-                public void setGyroFsSel(GyroFsSels enumVal) { GyroFsSel = enumVal.getVal(); }
+                public GyroScales getGyroScale() { for (GyroScales b : GyroScales.values()) { if(b.getVal() == GyroScale) return b; } return GyroScales.values()[0]; }
+                public void setGyroScale(GyroScales enumVal) { GyroScale = enumVal.getVal(); }
 
         public GyroConfigRegister read()
         {
@@ -437,11 +437,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroFsSel & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
+        public long getValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroScale & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
         public void setValue(long value)
         {
             FChoiceBypass = (int)((value >> 0) & 0x3);
-            GyroFsSel = (int)((value >> 3) & 0x3);
+            GyroScale = (int)((value >> 3) & 0x3);
             ZGyroCten = (int)((value >> 5) & 0x1);
             YGyroCten = (int)((value >> 6) & 0x1);
         }
@@ -450,13 +450,13 @@ class Mpu6050Registers extends RegisterManager
     {
         AccelConfigRegister(RegisterManager regManager) { super(regManager, 0x1c, 1, false); }
 
-        int AccelFsSel;
+        int AccelScale;
         int AccelZselfTest;
         int AccelYselfTest;
         int AccelXselfTest;
 
-                public AccelFsSels getAccelFsSel() { for (AccelFsSels b : AccelFsSels.values()) { if(b.getVal() == AccelFsSel) return b; } return AccelFsSels.values()[0]; }
-                public void setAccelFsSel(AccelFsSels enumVal) { AccelFsSel = enumVal.getVal(); }
+                public AccelScales getAccelScale() { for (AccelScales b : AccelScales.values()) { if(b.getVal() == AccelScale) return b; } return AccelScales.values()[0]; }
+                public void setAccelScale(AccelScales enumVal) { AccelScale = enumVal.getVal(); }
 
         public AccelConfigRegister read()
         {
@@ -464,10 +464,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((AccelFsSel & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
+        public long getValue() { return ((AccelScale & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
         public void setValue(long value)
         {
-            AccelFsSel = (int)((value >> 3) & 0x3);
+            AccelScale = (int)((value >> 3) & 0x3);
             AccelZselfTest = (int)((value >> 5) & 0x1);
             AccelYselfTest = (int)((value >> 6) & 0x1);
             AccelXselfTest = (int)((value >> 7) & 0x1);

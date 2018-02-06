@@ -156,15 +156,15 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             {
                 public:
                 int FChoiceBypass;
-                int GyroFsSel;
+                int GyroScale;
                 int ZGyroCten;
                 int YGyroCten;
 
-                long getValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroFsSel & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
+                long getValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroScale & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
                 void setValue(long value)
                 {
                     FChoiceBypass = (int)((value >> 0) & 0x3);
-                    GyroFsSel = (int)((value >> 3) & 0x3);
+                    GyroScale = (int)((value >> 3) & 0x3);
                     ZGyroCten = (int)((value >> 5) & 0x1);
                     YGyroCten = (int)((value >> 6) & 0x1);
                 }
@@ -173,15 +173,15 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             class AccelConfigRegister
             {
                 public:
-                int AccelFsSel;
+                int AccelScale;
                 int AccelZselfTest;
                 int AccelYselfTest;
                 int AccelXselfTest;
 
-                long getValue() { return ((AccelFsSel & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
+                long getValue() { return ((AccelScale & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    AccelFsSel = (int)((value >> 3) & 0x3);
+                    AccelScale = (int)((value >> 3) & 0x3);
                     AccelZselfTest = (int)((value >> 5) & 0x1);
                     AccelYselfTest = (int)((value >> 6) & 0x1);
                     AccelXselfTest = (int)((value >> 7) & 0x1);

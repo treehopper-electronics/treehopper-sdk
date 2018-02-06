@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 {
     public partial class Ak8975
     {
-        internal class Ak8975Registers : RegisterManager
+        protected class Ak8975Registers : RegisterManager
         {
             internal Ak8975Registers(SMBusDevice dev = null) : base(dev, true)
             {

@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             count_128 = 7
         }
 
-        internal class Vcnl4010Registers : RegisterManager
+        protected class Vcnl4010Registers : RegisterManager
         {
             internal Vcnl4010Registers(SMBusDevice dev = null) : base(dev, true)
             {

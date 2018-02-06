@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 {
     public partial class Adxl345
     {
-        internal class Adxl345Registers : RegisterManager
+        protected class Adxl345Registers : RegisterManager
         {
             internal Adxl345Registers(SMBusDevice dev = null) : base(dev, true)
             {

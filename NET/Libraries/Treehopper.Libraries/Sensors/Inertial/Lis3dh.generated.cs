@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Hz_1344_5376 = 9
         }
 
-        internal class Lis3dhRegisters : RegisterManager
+        protected class Lis3dhRegisters : RegisterManager
         {
             internal Lis3dhRegisters(SMBusDevice dev = null) : base(dev, true)
             {

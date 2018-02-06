@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.IO.Adc
             off = 3
         }
 
-        internal class Nau7802Registers : RegisterManager
+        protected class Nau7802Registers : RegisterManager
         {
             internal Nau7802Registers(SMBusDevice dev = null) : base(dev, true)
             {

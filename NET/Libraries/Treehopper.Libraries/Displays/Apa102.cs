@@ -78,6 +78,8 @@ namespace Treehopper.Libraries.Displays
                 bytes.Add(0x00);
 
             var message = header.Concat(bytes).ToArray();
+            //var footer = new byte[] {0xff, 0xff, 0xff, 0xff };
+            //message = message.Concat(footer).ToArray();
 
             var chunkCount = 0;
             while (true)
@@ -86,7 +88,7 @@ namespace Treehopper.Libraries.Displays
                 if (chunk.Length == 0)
                     break;
 
-                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, 8, SpiBurstMode.BurstTx,
+                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, 0.001, SpiBurstMode.BurstTx,
                     SpiMode.Mode11);
                 chunkCount++;
             }

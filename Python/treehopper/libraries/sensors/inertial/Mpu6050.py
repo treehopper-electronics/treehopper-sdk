@@ -30,7 +30,6 @@ class Mpu6050(Accelerometer, Gyroscope, Temperature):
 
     def __init__(self, i2c: I2c, alt_address=False, rate=100):
         super().__init__()
-        self._accel_scale = 2
         self._dev = SMBusDevice((0x69 if alt_address else 0x68), i2c, rate)
         self._registers = Mpu6050Registers(self._dev)
         self._registers.powerMgmt1.reset = 1
@@ -50,14 +49,13 @@ class Mpu6050(Accelerometer, Gyroscope, Temperature):
 
     @property
     def accel_scale(self):
-        return self._accel_scale
+        return self._registers.accelConfig.accelScale
 
     @accel_scale.setter
     def accel_scale(self, value: int):
         if value != 2 and value != 4 and value != 8 and value != 16:
             raise ValueError("Accelerometer scale must be 2, 4, 8, or 16")
-        self._accel_scale = value
-        self._registers.accelConfig.accelFsSel = int(log2(value)-1)
+        self._registers.accelConfig.accelScale = int(log2(value)-1)
         self._registers.accelConfig.write()
 
     def update(self):

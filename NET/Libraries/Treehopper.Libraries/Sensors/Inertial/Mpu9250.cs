@@ -11,22 +11,19 @@ namespace Treehopper.Libraries.Sensors.Inertial
     [Supports("InvenSense", "MPU-9250")]
     public class Mpu9250 : Mpu6050, IMagnetometer
     {
-        private readonly SMBusDevice mag;
-
         /// <summary>
         ///     The 3-axis magnetometer data
         /// </summary>
         protected Vector3 magnetometer;
-
+        Ak8975 mag;
 
         public Mpu9250(I2C i2c, bool addressPin = false, int rate = 400) : base(i2c)
         {
-            var mag = new SMBusDevice(0x0C, i2c, rate);
-            this.mag = mag;
-            Task.Run(async () =>
-            {
-                await dev.WriteByteData((byte)Registers.INT_PIN_CFG, 0x22).ConfigureAwait(false);
-            });
+            mag = new Ak8975(i2c);
+            mag.AutoUpdateWhenPropertyRead = false;
+            _registers.IntPinCfg.BypassEn = 1;
+            _registers.IntPinCfg.LatchIntEn = 1;
+            Task.Run(_registers.IntPinCfg.Write).Wait();
         }
 
         /// <summary>
@@ -55,39 +52,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
             await base.Update().ConfigureAwait(false);
 
             if (!EnableMagnetometer) return;
-
-            var magData = await mag.ReadBufferData((byte) AK8975CRegisters.HXL, 6).ConfigureAwait(false);
-
-            magnetometer.X = (magData[1] << 8) | magData[0];
-            magnetometer.Y = (magData[3] << 8) | magData[2];
-            magnetometer.Z = (magData[5] << 8) | magData[4];
-        }
-
-        /// <summary>
-        ///     Registers for the AK8975C magnetometer
-        /// </summary>
-        private enum AK8975CRegisters
-        {
-            WIA = 0x00,
-            INFO = 0x01,
-            ST1 = 0x02,
-            HXL = 0x03,
-            HXH = 0x04,
-            HYL = 0x05,
-            HYH = 0x06,
-            HZL = 0x07,
-            HZH = 0x08,
-
-            ST2 = 0x09,
-            CNTL = 0x0A,
-            RSV = 0x0B,
-            ASTC = 0x0C,
-            TS1 = 0x0D,
-            TS2 = 0x0E,
-            I2CDIS = 0x0F,
-            ASAX = 0x10,
-            ASAY = 0x11,
-            ASAZ = 0x12
+            await mag.Update().ConfigureAwait(false);
+            magnetometer = mag.Magnetometer;
         }
     }
 }

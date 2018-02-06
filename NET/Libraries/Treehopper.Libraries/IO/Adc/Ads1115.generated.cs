@@ -54,7 +54,7 @@ namespace Treehopper.Libraries.IO.Adc
             ain3_gnd = 7
         }
 
-        internal class Ads1115Registers : RegisterManager
+        protected class Ads1115Registers : RegisterManager
         {
             internal Ads1115Registers(SMBusDevice dev = null) : base(dev, true)
             {
