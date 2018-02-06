@@ -46,14 +46,12 @@ public class ConnectionService {
 
 		if (!LibUsb.hasCapability(LibUsb.CAP_HAS_HOTPLUG))
 		{
-			System.err.println("libusb doesn't support hotplug on this system");
-			System.exit(1);
+			System.err.println("libusb doesn't support hotplug on this system. Call update() to update board list.");
 		}
 
 		eventThread = new Thread() {
 			@Override
 			public void run() {
-
 				LibUsb.hotplugRegisterCallback(context, LibUsb.HOTPLUG_EVENT_DEVICE_ARRIVED | LibUsb.HOTPLUG_EVENT_DEVICE_LEFT, LibUsb.HOTPLUG_ENUMERATE, LibUsb.HOTPLUG_MATCH_ANY, LibUsb.HOTPLUG_MATCH_ANY, LibUsb.HOTPLUG_MATCH_ANY,  myCallback, null, myBogusCallbackHandle);
 
 				while(isRunning) {
@@ -123,8 +121,12 @@ public class ConnectionService {
 	}
 
 	public ArrayList<TreehopperUsb> getBoards() {
-//		updateBoards();
 		return boards;
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		LibUsb.exit(context);
+	}
 }
