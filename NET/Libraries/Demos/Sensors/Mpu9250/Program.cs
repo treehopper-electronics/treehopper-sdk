@@ -17,7 +17,21 @@ namespace Mpu9250Demo
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
 
-            var imu = new Mpu9250(board.I2c);
+            Mpu9250 imu;
+            while(true)
+            {
+                var imuList = Mpu9250.Probe(board.I2c); // find the first MPU9250 attached to the bus
+                if (imuList.Count == 0)
+                {
+                    Console.WriteLine("No MPU9250 attached (Are you sure you're not using an MPU6050?). Press any key to try again.");
+                    Console.ReadKey();
+                } else
+                {
+                    imu = imuList[0];
+                    break;
+                }
+            }
+            
             imu.AutoUpdateWhenPropertyRead = false;
             while(!Console.KeyAvailable)
             {

@@ -34,6 +34,7 @@ class Mpu6050(Accelerometer, Gyroscope, Temperature):
         self._registers = Mpu6050Registers(self._dev)
         self._registers.powerMgmt1.reset = 1
         self._registers.powerMgmt1.write()
+        self._registers.powerMgmt1.reset = 0
         self._registers.powerMgmt1.sleep = 0
         self._registers.powerMgmt1.write()
         self._registers.powerMgmt1.clockSel = 1

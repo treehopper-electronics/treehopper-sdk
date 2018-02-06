@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
@@ -24,6 +26,30 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
+        public static IList<Mpu6050> Probe(I2C i2c, bool includeMpu9250 = false)
+        {
+            var retVal = new List<Mpu6050>();
+            try
+            {
+                var dev = new SMBusDevice(0x68, i2c, 100);
+                var whoAmI = Task.Run(() => dev.ReadByteData(0x75)).Result;
+                if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
+                    retVal.Add(new Mpu6050(i2c, false));
+            }
+            catch (Exception ex) { }
+
+            try
+            {
+                var dev = new SMBusDevice(0x69, i2c, 100);
+                var whoAmI = Task.Run(() => dev.ReadByteData(0x75)).Result;
+                if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
+                    retVal.Add(new Mpu6050(i2c, true));
+            }
+            catch (Exception ex) { }
+
+            return retVal;
+        }
+
         /// <summary>
         ///     Construct an MPU9150 9-Dof IMU
         /// </summary>
@@ -36,21 +62,26 @@ namespace Treehopper.Libraries.Sensors.Inertial
             this._registers = new Mpu6050Registers(dev);
             Task.Run(async () =>
             {
+                await _registers.PowerMgmt1.Read().ConfigureAwait(false);
                 _registers.PowerMgmt1.Reset = 1;
-                await _registers.PowerMgmt1.Write();
+                await _registers.PowerMgmt1.Write().ConfigureAwait(false);
+                _registers.PowerMgmt1.Reset = 0;
                 _registers.PowerMgmt1.Sleep = 0;
-                await _registers.PowerMgmt1.Write();
+                await _registers.PowerMgmt1.Write().ConfigureAwait(false);
                 _registers.PowerMgmt1.ClockSel = 1;
-                await _registers.PowerMgmt1.Write();
+                await _registers.PowerMgmt1.Write().ConfigureAwait(false);
                 _registers.Configuration.Dlpf = 3;
-                await _registers.Configuration.Write();
+                await _registers.Configuration.Write().ConfigureAwait(false);
                 _registers.SampleRateDivider.Value = 4;
-                await _registers.SampleRateDivider.Write();
-                await _registers.AccelConfig2.Read();
+                await _registers.SampleRateDivider.Write().ConfigureAwait(false);
+                await _registers.AccelConfig2.Read().ConfigureAwait(false);
                 _registers.AccelConfig2.AccelFchoice = 0;
                 _registers.AccelConfig2.DlpfCfg = 3;
-                await _registers.AccelConfig2.Write();
+                await _registers.AccelConfig2.Write().ConfigureAwait(false);
+                await _registers.PowerMgmt1.Read().ConfigureAwait(false);
             }).Wait();
+            AccelerometerScale = AccelScales.Fs_2g;
+            GyroscopeScale = GyroScales.Dps_250;
         }
 
         /// <summary>
