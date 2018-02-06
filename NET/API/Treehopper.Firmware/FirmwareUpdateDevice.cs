@@ -26,6 +26,8 @@ namespace Treehopper.Firmware
 
         public string DevicePath => connection.DevicePath;
 
+        public bool IsLoading { get; set; }
+
         public FirmwareUpdateDevice(HidDevice connection)
         {
             this.connection = connection;
@@ -54,6 +56,7 @@ namespace Treehopper.Firmware
         /// <returns>An awaitable bool indicating whether loading was successful.</returns>
         public async Task<bool> Load(Stream data)
         {
+            IsLoading = true;
             stream = connection.Open();
             var dollarSign = Encoding.UTF8.GetBytes("$")[0];
             var header = ReadBytes(data, 2);
@@ -75,7 +78,7 @@ namespace Treehopper.Firmware
             }
 
             stream.Close();
-
+            IsLoading = false;
             return true;
         }
 
