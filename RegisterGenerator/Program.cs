@@ -77,7 +77,7 @@ namespace RegisterGenerator
                         {
                             if (value.Enum != null)
                             {
-                                Render.FileToFile("Templates\\Enum.java", new { Enum = value.Enum, Package = library.NamespaceLower+"."+library.NameLower }, outPath + $"\\{value.Enum.Name}.java");
+                                Render.FileToFile("Templates\\Enum.java", new { Enum = value.Enum, Package = library.NamespaceLower+"."+library.NameLower }, outPath + $"\\{value.Enum.PluralizedName}.java");
                             }
                         }
                     }

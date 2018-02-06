@@ -52,87 +52,87 @@ namespace Treehopper.Libraries.Sensors.Optical
         {
             internal Vcnl4010Registers(SMBusDevice dev = null) : base(dev, true)
             {
-                Command = new CommandRegister(this);
-                _registers.Add(Command);
-                ProductId = new ProductIdRegister(this);
-                _registers.Add(ProductId);
-                ProximityRate = new ProximityRateRegister(this);
-                _registers.Add(ProximityRate);
-                LedCurrent = new LedCurrentRegister(this);
-                _registers.Add(LedCurrent);
-                AmbientLightParameters = new AmbientLightParametersRegister(this);
-                _registers.Add(AmbientLightParameters);
-                AmbientLightResult = new AmbientLightResultRegister(this);
-                _registers.Add(AmbientLightResult);
-                ProximityResult = new ProximityResultRegister(this);
-                _registers.Add(ProximityResult);
-                InterruptControl = new InterruptControlRegister(this);
-                _registers.Add(InterruptControl);
-                LowThreshold = new LowThresholdRegister(this);
-                _registers.Add(LowThreshold);
-                HighThreshold = new HighThresholdRegister(this);
-                _registers.Add(HighThreshold);
-                InterruptStatus = new InterruptStatusRegister(this);
-                _registers.Add(InterruptStatus);
-                ProxModulatorTimingAdustment = new ProxModulatorTimingAdustmentRegister(this);
-                _registers.Add(ProxModulatorTimingAdustment);
+                command = new CommandRegister(this);
+                _registers.Add(command);
+                productId = new ProductIdRegister(this);
+                _registers.Add(productId);
+                proximityRate = new ProximityRateRegister(this);
+                _registers.Add(proximityRate);
+                ledCurrent = new LedCurrentRegister(this);
+                _registers.Add(ledCurrent);
+                ambientLightParameters = new AmbientLightParametersRegister(this);
+                _registers.Add(ambientLightParameters);
+                ambientLightResult = new AmbientLightResultRegister(this);
+                _registers.Add(ambientLightResult);
+                proximityResult = new ProximityResultRegister(this);
+                _registers.Add(proximityResult);
+                interruptControl = new InterruptControlRegister(this);
+                _registers.Add(interruptControl);
+                lowThreshold = new LowThresholdRegister(this);
+                _registers.Add(lowThreshold);
+                highThreshold = new HighThresholdRegister(this);
+                _registers.Add(highThreshold);
+                interruptStatus = new InterruptStatusRegister(this);
+                _registers.Add(interruptStatus);
+                proxModulatorTimingAdustment = new ProxModulatorTimingAdustmentRegister(this);
+                _registers.Add(proxModulatorTimingAdustment);
             }
 
-            internal CommandRegister Command;
-            internal ProductIdRegister ProductId;
-            internal ProximityRateRegister ProximityRate;
-            internal LedCurrentRegister LedCurrent;
-            internal AmbientLightParametersRegister AmbientLightParameters;
-            internal AmbientLightResultRegister AmbientLightResult;
-            internal ProximityResultRegister ProximityResult;
-            internal InterruptControlRegister InterruptControl;
-            internal LowThresholdRegister LowThreshold;
-            internal HighThresholdRegister HighThreshold;
-            internal InterruptStatusRegister InterruptStatus;
-            internal ProxModulatorTimingAdustmentRegister ProxModulatorTimingAdustment;
+            internal CommandRegister command;
+            internal ProductIdRegister productId;
+            internal ProximityRateRegister proximityRate;
+            internal LedCurrentRegister ledCurrent;
+            internal AmbientLightParametersRegister ambientLightParameters;
+            internal AmbientLightResultRegister ambientLightResult;
+            internal ProximityResultRegister proximityResult;
+            internal InterruptControlRegister interruptControl;
+            internal LowThresholdRegister lowThreshold;
+            internal HighThresholdRegister highThreshold;
+            internal InterruptStatusRegister interruptStatus;
+            internal ProxModulatorTimingAdustmentRegister proxModulatorTimingAdustment;
 
             internal class CommandRegister : Register
             {
                 internal CommandRegister(RegisterManager regManager) : base(regManager, 0x80, 1, false) { }
 
-                public int SelfTimedEnable { get; set; }
-                public int ProxPeriodicEnable { get; set; }
-                public int AlsPeriodicEnable { get; set; }
-                public int ProxOnDemandStart { get; set; }
-                public int AlsOnDemandStart { get; set; }
-                public int ProxDataReady { get; set; }
-                public int AlsDataReady { get; set; }
-                public int ConfigLock { get; set; }
+                public int selfTimedEnable { get; set; }
+                public int proxPeriodicEnable { get; set; }
+                public int alsPeriodicEnable { get; set; }
+                public int proxOnDemandStart { get; set; }
+                public int alsOnDemandStart { get; set; }
+                public int proxDataReady { get; set; }
+                public int alsDataReady { get; set; }
+                public int configLock { get; set; }
 
-                public async Task<CommandRegister> Read()
+                public async Task<CommandRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((SelfTimedEnable & 0x1) << 0) | ((ProxPeriodicEnable & 0x1) << 1) | ((AlsPeriodicEnable & 0x1) << 2) | ((ProxOnDemandStart & 0x1) << 3) | ((AlsOnDemandStart & 0x1) << 4) | ((ProxDataReady & 0x1) << 5) | ((AlsDataReady & 0x1) << 6) | ((ConfigLock & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((selfTimedEnable & 0x1) << 0) | ((proxPeriodicEnable & 0x1) << 1) | ((alsPeriodicEnable & 0x1) << 2) | ((proxOnDemandStart & 0x1) << 3) | ((alsOnDemandStart & 0x1) << 4) | ((proxDataReady & 0x1) << 5) | ((alsDataReady & 0x1) << 6) | ((configLock & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    SelfTimedEnable = (int)((value >> 0) & 0x1);
-                    ProxPeriodicEnable = (int)((value >> 1) & 0x1);
-                    AlsPeriodicEnable = (int)((value >> 2) & 0x1);
-                    ProxOnDemandStart = (int)((value >> 3) & 0x1);
-                    AlsOnDemandStart = (int)((value >> 4) & 0x1);
-                    ProxDataReady = (int)((value >> 5) & 0x1);
-                    AlsDataReady = (int)((value >> 6) & 0x1);
-                    ConfigLock = (int)((value >> 7) & 0x1);
+                    selfTimedEnable = (int)((_value >> 0) & 0x1);
+                    proxPeriodicEnable = (int)((_value >> 1) & 0x1);
+                    alsPeriodicEnable = (int)((_value >> 2) & 0x1);
+                    proxOnDemandStart = (int)((_value >> 3) & 0x1);
+                    alsOnDemandStart = (int)((_value >> 4) & 0x1);
+                    proxDataReady = (int)((_value >> 5) & 0x1);
+                    alsDataReady = (int)((_value >> 6) & 0x1);
+                    configLock = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"SelfTimedEnable: { SelfTimedEnable } (offset: 0, width: 1)\r\n";
-                    retVal += $"ProxPeriodicEnable: { ProxPeriodicEnable } (offset: 1, width: 1)\r\n";
-                    retVal += $"AlsPeriodicEnable: { AlsPeriodicEnable } (offset: 2, width: 1)\r\n";
-                    retVal += $"ProxOnDemandStart: { ProxOnDemandStart } (offset: 3, width: 1)\r\n";
-                    retVal += $"AlsOnDemandStart: { AlsOnDemandStart } (offset: 4, width: 1)\r\n";
-                    retVal += $"ProxDataReady: { ProxDataReady } (offset: 5, width: 1)\r\n";
-                    retVal += $"AlsDataReady: { AlsDataReady } (offset: 6, width: 1)\r\n";
-                    retVal += $"ConfigLock: { ConfigLock } (offset: 7, width: 1)\r\n";
+                    retVal += $"SelfTimedEnable: { selfTimedEnable } (offset: 0, width: 1)\r\n";
+                    retVal += $"ProxPeriodicEnable: { proxPeriodicEnable } (offset: 1, width: 1)\r\n";
+                    retVal += $"AlsPeriodicEnable: { alsPeriodicEnable } (offset: 2, width: 1)\r\n";
+                    retVal += $"ProxOnDemandStart: { proxOnDemandStart } (offset: 3, width: 1)\r\n";
+                    retVal += $"AlsOnDemandStart: { alsOnDemandStart } (offset: 4, width: 1)\r\n";
+                    retVal += $"ProxDataReady: { proxDataReady } (offset: 5, width: 1)\r\n";
+                    retVal += $"AlsDataReady: { alsDataReady } (offset: 6, width: 1)\r\n";
+                    retVal += $"ConfigLock: { configLock } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -140,26 +140,26 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal ProductIdRegister(RegisterManager regManager) : base(regManager, 0x82, 1, false) { }
 
-                public int RevisionId { get; set; }
-                public int ProductId { get; set; }
+                public int revisionId { get; set; }
+                public int productId { get; set; }
 
-                public async Task<ProductIdRegister> Read()
+                public async Task<ProductIdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((RevisionId & 0xF) << 0) | ((ProductId & 0xF) << 4); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((revisionId & 0xF) << 0) | ((productId & 0xF) << 4); }
+                internal override void setValue(long _value)
                 {
-                    RevisionId = (int)((value >> 0) & 0xF);
-                    ProductId = (int)((value >> 4) & 0xF);
+                    revisionId = (int)((_value >> 0) & 0xF);
+                    productId = (int)((_value >> 4) & 0xF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"RevisionId: { RevisionId } (offset: 0, width: 4)\r\n";
-                    retVal += $"ProductId: { ProductId } (offset: 4, width: 4)\r\n";
+                    retVal += $"RevisionId: { revisionId } (offset: 0, width: 4)\r\n";
+                    retVal += $"ProductId: { productId } (offset: 4, width: 4)\r\n";
                     return retVal;
                 }
             }
@@ -167,25 +167,25 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal ProximityRateRegister(RegisterManager regManager) : base(regManager, 0x82, 1, false) { }
 
-                public int Rate { get; set; }
-                public Rates GetRate() { return (Rates)Rate; }
-                public void SetRate(Rates enumVal) { Rate = (int)enumVal; }
+                public int rate { get; set; }
+                public Rates getRate() { return (Rates)rate; }
+                public void setRate(Rates enumVal) { rate = (int)enumVal; }
 
-                public async Task<ProximityRateRegister> Read()
+                public async Task<ProximityRateRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Rate & 0xF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((rate & 0xF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Rate = (int)((value >> 0) & 0xF);
+                    rate = (int)((_value >> 0) & 0xF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Rate: { Rate } (offset: 0, width: 4)\r\n";
+                    retVal += $"Rate: { rate } (offset: 0, width: 4)\r\n";
                     return retVal;
                 }
             }
@@ -193,26 +193,26 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal LedCurrentRegister(RegisterManager regManager) : base(regManager, 0x83, 1, false) { }
 
-                public int IrLedCurrentValue { get; set; }
-                public int FuseProgId { get; set; }
+                public int irLedCurrentValue { get; set; }
+                public int fuseProgId { get; set; }
 
-                public async Task<LedCurrentRegister> Read()
+                public async Task<LedCurrentRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((IrLedCurrentValue & 0x3F) << 0) | ((FuseProgId & 0x3) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((irLedCurrentValue & 0x3F) << 0) | ((fuseProgId & 0x3) << 6); }
+                internal override void setValue(long _value)
                 {
-                    IrLedCurrentValue = (int)((value >> 0) & 0x3F);
-                    FuseProgId = (int)((value >> 6) & 0x3);
+                    irLedCurrentValue = (int)((_value >> 0) & 0x3F);
+                    fuseProgId = (int)((_value >> 6) & 0x3);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"IrLedCurrentValue: { IrLedCurrentValue } (offset: 0, width: 6)\r\n";
-                    retVal += $"FuseProgId: { FuseProgId } (offset: 6, width: 2)\r\n";
+                    retVal += $"IrLedCurrentValue: { irLedCurrentValue } (offset: 0, width: 6)\r\n";
+                    retVal += $"FuseProgId: { fuseProgId } (offset: 6, width: 2)\r\n";
                     return retVal;
                 }
             }
@@ -220,34 +220,34 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal AmbientLightParametersRegister(RegisterManager regManager) : base(regManager, 0x84, 1, false) { }
 
-                public int AveragingSamples { get; set; }
-                public int AutoOffsetCompensation { get; set; }
-                public int AlsRate { get; set; }
-                public int ContinuousConversionMode { get; set; }
-                public AlsRates GetAlsRate() { return (AlsRates)AlsRate; }
-                public void SetAlsRate(AlsRates enumVal) { AlsRate = (int)enumVal; }
+                public int averagingSamples { get; set; }
+                public int autoOffsetCompensation { get; set; }
+                public int alsRate { get; set; }
+                public int continuousConversionMode { get; set; }
+                public AlsRates getAlsRate() { return (AlsRates)alsRate; }
+                public void setAlsRate(AlsRates enumVal) { alsRate = (int)enumVal; }
 
-                public async Task<AmbientLightParametersRegister> Read()
+                public async Task<AmbientLightParametersRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((AveragingSamples & 0x7) << 0) | ((AutoOffsetCompensation & 0x1) << 3) | ((AlsRate & 0x7) << 4) | ((ContinuousConversionMode & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((averagingSamples & 0x7) << 0) | ((autoOffsetCompensation & 0x1) << 3) | ((alsRate & 0x7) << 4) | ((continuousConversionMode & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    AveragingSamples = (int)((value >> 0) & 0x7);
-                    AutoOffsetCompensation = (int)((value >> 3) & 0x1);
-                    AlsRate = (int)((value >> 4) & 0x7);
-                    ContinuousConversionMode = (int)((value >> 7) & 0x1);
+                    averagingSamples = (int)((_value >> 0) & 0x7);
+                    autoOffsetCompensation = (int)((_value >> 3) & 0x1);
+                    alsRate = (int)((_value >> 4) & 0x7);
+                    continuousConversionMode = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"AveragingSamples: { AveragingSamples } (offset: 0, width: 3)\r\n";
-                    retVal += $"AutoOffsetCompensation: { AutoOffsetCompensation } (offset: 3, width: 1)\r\n";
-                    retVal += $"AlsRate: { AlsRate } (offset: 4, width: 3)\r\n";
-                    retVal += $"ContinuousConversionMode: { ContinuousConversionMode } (offset: 7, width: 1)\r\n";
+                    retVal += $"AveragingSamples: { averagingSamples } (offset: 0, width: 3)\r\n";
+                    retVal += $"AutoOffsetCompensation: { autoOffsetCompensation } (offset: 3, width: 1)\r\n";
+                    retVal += $"AlsRate: { alsRate } (offset: 4, width: 3)\r\n";
+                    retVal += $"ContinuousConversionMode: { continuousConversionMode } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -255,23 +255,23 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal AmbientLightResultRegister(RegisterManager regManager) : base(regManager, 0x85, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<AmbientLightResultRegister> Read()
+                public async Task<AmbientLightResultRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((_value >> 0) & 0xFFFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -279,23 +279,23 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal ProximityResultRegister(RegisterManager regManager) : base(regManager, 0x87, 2, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<ProximityResultRegister> Read()
+                public async Task<ProximityResultRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((_value >> 0) & 0xFFFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -303,34 +303,34 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal InterruptControlRegister(RegisterManager regManager) : base(regManager, 0x89, 1, false) { }
 
-                public int InterruptThresholdSelect { get; set; }
-                public int InterruptThresholdEnable { get; set; }
-                public int InterruptAlsReadyEnable { get; set; }
-                public int IntCountExceed { get; set; }
-                public IntCountExceeds GetIntCountExceed() { return (IntCountExceeds)IntCountExceed; }
-                public void SetIntCountExceed(IntCountExceeds enumVal) { IntCountExceed = (int)enumVal; }
+                public int interruptThresholdSelect { get; set; }
+                public int interruptThresholdEnable { get; set; }
+                public int interruptAlsReadyEnable { get; set; }
+                public int intCountExceed { get; set; }
+                public IntCountExceeds getIntCountExceed() { return (IntCountExceeds)intCountExceed; }
+                public void setIntCountExceed(IntCountExceeds enumVal) { intCountExceed = (int)enumVal; }
 
-                public async Task<InterruptControlRegister> Read()
+                public async Task<InterruptControlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((InterruptThresholdSelect & 0x1) << 0) | ((InterruptThresholdEnable & 0x1) << 1) | ((InterruptAlsReadyEnable & 0x1) << 2) | ((IntCountExceed & 0x7) << 5); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((interruptThresholdSelect & 0x1) << 0) | ((interruptThresholdEnable & 0x1) << 1) | ((interruptAlsReadyEnable & 0x1) << 2) | ((intCountExceed & 0x7) << 5); }
+                internal override void setValue(long _value)
                 {
-                    InterruptThresholdSelect = (int)((value >> 0) & 0x1);
-                    InterruptThresholdEnable = (int)((value >> 1) & 0x1);
-                    InterruptAlsReadyEnable = (int)((value >> 2) & 0x1);
-                    IntCountExceed = (int)((value >> 5) & 0x7);
+                    interruptThresholdSelect = (int)((_value >> 0) & 0x1);
+                    interruptThresholdEnable = (int)((_value >> 1) & 0x1);
+                    interruptAlsReadyEnable = (int)((_value >> 2) & 0x1);
+                    intCountExceed = (int)((_value >> 5) & 0x7);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"InterruptThresholdSelect: { InterruptThresholdSelect } (offset: 0, width: 1)\r\n";
-                    retVal += $"InterruptThresholdEnable: { InterruptThresholdEnable } (offset: 1, width: 1)\r\n";
-                    retVal += $"InterruptAlsReadyEnable: { InterruptAlsReadyEnable } (offset: 2, width: 1)\r\n";
-                    retVal += $"IntCountExceed: { IntCountExceed } (offset: 5, width: 3)\r\n";
+                    retVal += $"InterruptThresholdSelect: { interruptThresholdSelect } (offset: 0, width: 1)\r\n";
+                    retVal += $"InterruptThresholdEnable: { interruptThresholdEnable } (offset: 1, width: 1)\r\n";
+                    retVal += $"InterruptAlsReadyEnable: { interruptAlsReadyEnable } (offset: 2, width: 1)\r\n";
+                    retVal += $"IntCountExceed: { intCountExceed } (offset: 5, width: 3)\r\n";
                     return retVal;
                 }
             }
@@ -338,23 +338,23 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal LowThresholdRegister(RegisterManager regManager) : base(regManager, 0x8A, 2, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<LowThresholdRegister> Read()
+                public async Task<LowThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((_value >> 0) & 0xFFFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -362,23 +362,23 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal HighThresholdRegister(RegisterManager regManager) : base(regManager, 0x8C, 2, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<HighThresholdRegister> Read()
+                public async Task<HighThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((_value >> 0) & 0xFFFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -386,32 +386,32 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal InterruptStatusRegister(RegisterManager regManager) : base(regManager, 0x8E, 1, false) { }
 
-                public int IntThresholdHighExceeded { get; set; }
-                public int IntThresholdLowExceeded { get; set; }
-                public int IntAlsReady { get; set; }
-                public int IntProxReady { get; set; }
+                public int intThresholdHighExceeded { get; set; }
+                public int intThresholdLowExceeded { get; set; }
+                public int intAlsReady { get; set; }
+                public int intProxReady { get; set; }
 
-                public async Task<InterruptStatusRegister> Read()
+                public async Task<InterruptStatusRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((IntThresholdHighExceeded & 0x1) << 0) | ((IntThresholdLowExceeded & 0x1) << 1) | ((IntAlsReady & 0x1) << 2) | ((IntProxReady & 0x1) << 3); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((intThresholdHighExceeded & 0x1) << 0) | ((intThresholdLowExceeded & 0x1) << 1) | ((intAlsReady & 0x1) << 2) | ((intProxReady & 0x1) << 3); }
+                internal override void setValue(long _value)
                 {
-                    IntThresholdHighExceeded = (int)((value >> 0) & 0x1);
-                    IntThresholdLowExceeded = (int)((value >> 1) & 0x1);
-                    IntAlsReady = (int)((value >> 2) & 0x1);
-                    IntProxReady = (int)((value >> 3) & 0x1);
+                    intThresholdHighExceeded = (int)((_value >> 0) & 0x1);
+                    intThresholdLowExceeded = (int)((_value >> 1) & 0x1);
+                    intAlsReady = (int)((_value >> 2) & 0x1);
+                    intProxReady = (int)((_value >> 3) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"IntThresholdHighExceeded: { IntThresholdHighExceeded } (offset: 0, width: 1)\r\n";
-                    retVal += $"IntThresholdLowExceeded: { IntThresholdLowExceeded } (offset: 1, width: 1)\r\n";
-                    retVal += $"IntAlsReady: { IntAlsReady } (offset: 2, width: 1)\r\n";
-                    retVal += $"IntProxReady: { IntProxReady } (offset: 3, width: 1)\r\n";
+                    retVal += $"IntThresholdHighExceeded: { intThresholdHighExceeded } (offset: 0, width: 1)\r\n";
+                    retVal += $"IntThresholdLowExceeded: { intThresholdLowExceeded } (offset: 1, width: 1)\r\n";
+                    retVal += $"IntAlsReady: { intAlsReady } (offset: 2, width: 1)\r\n";
+                    retVal += $"IntProxReady: { intProxReady } (offset: 3, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -419,29 +419,29 @@ namespace Treehopper.Libraries.Sensors.Optical
             {
                 internal ProxModulatorTimingAdustmentRegister(RegisterManager regManager) : base(regManager, 0x8F, 1, false) { }
 
-                public int ModulationDeadTime { get; set; }
-                public int ProximityFrequency { get; set; }
-                public int ModulationDelayTime { get; set; }
+                public int modulationDeadTime { get; set; }
+                public int proximityFrequency { get; set; }
+                public int modulationDelayTime { get; set; }
 
-                public async Task<ProxModulatorTimingAdustmentRegister> Read()
+                public async Task<ProxModulatorTimingAdustmentRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((ModulationDeadTime & 0x7) << 0) | ((ProximityFrequency & 0x3) << 3) | ((ModulationDelayTime & 0x7) << 5); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((modulationDeadTime & 0x7) << 0) | ((proximityFrequency & 0x3) << 3) | ((modulationDelayTime & 0x7) << 5); }
+                internal override void setValue(long _value)
                 {
-                    ModulationDeadTime = (int)((value >> 0) & 0x7);
-                    ProximityFrequency = (int)((value >> 3) & 0x3);
-                    ModulationDelayTime = (int)((value >> 5) & 0x7);
+                    modulationDeadTime = (int)((_value >> 0) & 0x7);
+                    proximityFrequency = (int)((_value >> 3) & 0x3);
+                    modulationDelayTime = (int)((_value >> 5) & 0x7);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"ModulationDeadTime: { ModulationDeadTime } (offset: 0, width: 3)\r\n";
-                    retVal += $"ProximityFrequency: { ProximityFrequency } (offset: 3, width: 2)\r\n";
-                    retVal += $"ModulationDelayTime: { ModulationDelayTime } (offset: 5, width: 3)\r\n";
+                    retVal += $"ModulationDeadTime: { modulationDeadTime } (offset: 0, width: 3)\r\n";
+                    retVal += $"ProximityFrequency: { proximityFrequency } (offset: 3, width: 2)\r\n";
+                    retVal += $"ModulationDelayTime: { modulationDelayTime } (offset: 5, width: 3)\r\n";
                     return retVal;
                 }
             }

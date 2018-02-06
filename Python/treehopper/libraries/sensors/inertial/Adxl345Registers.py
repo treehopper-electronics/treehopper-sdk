@@ -28,10 +28,10 @@ class Adxl345Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.sleep & 0x1) << 2) | ((self.measure & 0x1) << 3)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.sleep = ((value >> 2) & 0x1)
             self.measure = ((value >> 3) & 0x1)
 
@@ -53,10 +53,10 @@ class Adxl345Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.range & 0x3) << 0) | ((self.justify & 0x1) << 2) | ((self.fullRes & 0x1) << 3)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.range = ((value >> 0) & 0x3)
             self.justify = ((value >> 2) & 0x1)
             self.fullRes = ((value >> 3) & 0x1)
@@ -78,10 +78,10 @@ class Adxl345Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x1FFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0x1FFF, 13)
 
         def __str__(self):
@@ -99,10 +99,10 @@ class Adxl345Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x1FFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0x1FFF, 13)
 
         def __str__(self):
@@ -120,10 +120,10 @@ class Adxl345Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x1FFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0x1FFF, 13)
 
         def __str__(self):

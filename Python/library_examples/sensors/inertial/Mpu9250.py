@@ -20,4 +20,4 @@ while True:
     print(imu.gyroscope)
     print(imu.magnetometer)
     print(imu.fahrenheit)
-    sleep(0.1)
+    sleep(0.5)

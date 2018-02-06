@@ -31,14 +31,14 @@ namespace Treehopper.Libraries.IO.Adc
             dev = new SMBusDevice(0x2A, i2c);
             registers = new Nau7802Registers(dev);
 
-            registers.PuCtrl.RegisterReset = 1;  // reset all registers
-            registers.PuCtrl.Write().Wait();
-            registers.PuCtrl.RegisterReset = 0;  // clear reset
-            registers.PuCtrl.PowerUpDigital = 1; // power up digital
-            registers.PuCtrl.Write().Wait();
+            registers.puCtrl.registerReset = 1;  // reset all registers
+            registers.puCtrl.write().Wait();
+            registers.puCtrl.registerReset = 0;  // clear reset
+            registers.puCtrl.powerUpDigital = 1; // power up digital
+            registers.puCtrl.write().Wait();
 
             Task.Delay(10).Wait();
-            if (registers.PuCtrl.Read().Result.PowerUpReady == 0)
+            if (registers.puCtrl.read().Result.powerUpReady == 0)
             {
                 Utility.Error("Could not power up NAU7802");
                 return;
@@ -46,35 +46,33 @@ namespace Treehopper.Libraries.IO.Adc
 
 
             // useful defaults
-            registers.PuCtrl.UseExternalCrystal = 0;
-            registers.PuCtrl.UseInternalLdo = 1;
-            registers.PuCtrl.PowerUpDigital = 1;
-            registers.PuCtrl.PowerUpAnalog = 1;
-            registers.PuCtrl.Write().Wait();
+            registers.puCtrl.useExternalCrystal = 0;
+            registers.puCtrl.useInternalLdo = 1;
+            registers.puCtrl.powerUpDigital = 1;
+            registers.puCtrl.powerUpAnalog = 1;
+            registers.puCtrl.write().Wait();
 
-            registers.Ctrl1.SetVldo(LdoVoltage.mV_3000);
-            registers.Ctrl1.Write().Wait();
+            registers.ctrl1.setVldo(Vldoes.mV_3000);
+            registers.ctrl1.write().Wait();
 
             UpdateReferenceVoltage(); // set the pins up with the default gains
 
-            registers.Pga.PgaBypass = 0;
-            registers.Pga.DisableChopper = 1;
-            registers.Pga.Write().Wait();
+            registers.pga.pgaBypass = 0;
+            registers.pga.disableChopper = 1;
+            registers.pga.write().Wait();
 
-            registers.Adc.SetRegChpFreq(RegChpFreqs.off);
-            registers.Adc.RegChp = 0;
-            registers.Adc.Write().Wait();
+            registers.adc.setRegChpFreq(RegChpFreqs.off);
+            registers.adc.regChp = 0;
+            registers.adc.write().Wait();
 
-            registers.I2cCtrl.BgpCp = 0;
-            registers.I2cCtrl.Write().Wait();
+            registers.i2cCtrl.bgpCp = 0;
+            registers.i2cCtrl.write().Wait();
 
-            registers.Ctrl2.SetConversionRate(ConversionRates.Sps_10);
-            registers.Ctrl2.Write().Wait();
+            registers.ctrl2.setConversionRate(ConversionRates.Sps_10);
+            registers.ctrl2.write().Wait();
 
-            registers.PuCtrl.CycleStart = 1;
-            registers.PuCtrl.Write().Wait();
-
-
+            registers.puCtrl.cycleStart = 1;
+            registers.puCtrl.write().Wait();
         }
 
         public bool AutoUpdateWhenPropertyRead
@@ -99,60 +97,60 @@ namespace Treehopper.Libraries.IO.Adc
             if (drdy == null)
                 while (!await ConversionDone()) ;
 
-            await registers.AdcResult.Read();
-            return registers.AdcResult.Value;
+            await registers.adcResult.read();
+            return registers.adcResult.value;
         }
 
         private async Task<bool> ConversionDone()
         {
-            await registers.Read(registers.PuCtrl);
-            return registers.PuCtrl.CycleReady == 1;
+            await registers.read(registers.puCtrl);
+            return registers.puCtrl.cycleReady == 1;
         }
 
         private void UpdateReferenceVoltage()
         {
-            var ldoVoltage = 4.5 - registers.Ctrl1.Vldo * 0.3;
-            double gain = 1 << registers.Ctrl1.Gain;
+            var ldoVoltage = 4.5 - registers.ctrl1.vldo * 0.3;
+            double gain = 1 << registers.ctrl1.gain;
 
             ReferenceVoltage = ldoVoltage / gain;
         }
 
         public async Task<bool> Calibrate()
         {
-            registers.Ctrl2.CalStart = 1;
-            await registers.Ctrl2.Write().ConfigureAwait(false);
-            registers.Ctrl2.CalStart = 1;
+            registers.ctrl2.calStart = 1;
+            await registers.ctrl2.write().ConfigureAwait(false);
+            registers.ctrl2.calStart = 1;
 
-            while ((await registers.Ctrl2.Read()).CalStart == 1) ;
+            while ((await registers.ctrl2.read()).calStart == 1) ;
 
-            return (registers.Ctrl2.CalError == 0);
+            return (registers.ctrl2.calError == 0);
         }
 
         public Gains Gain
         {
-            get { return registers.Ctrl1.GetGain(); }
+            get { return registers.ctrl1.getGain(); }
             set {
-                registers.Ctrl1.SetGain(value);
-                registers.Ctrl1.Write().Wait();
+                registers.ctrl1.setGain(value);
+                registers.ctrl1.write().Wait();
             }
         }
 
         public bool Cfilter
         {
-            get { return registers.PowerCtrl.PgaCapEn > 0; }
+            get { return registers.powerCtrl.pgaCapEn > 0; }
             set {
-                registers.PowerCtrl.PgaCapEn = value ? 1 : 0;
-                registers.PowerCtrl.Write().Wait();
+                registers.powerCtrl.pgaCapEn = value ? 1 : 0;
+                registers.powerCtrl.write().Wait();
             }
         }
 
         public ConversionRates ConversionRate
         {
-            get { return registers.Ctrl2.GetConversionRate(); }
+            get { return registers.ctrl2.getConversionRate(); }
             set
             {
-                registers.Ctrl2.SetConversionRate(value);
-                registers.Ctrl2.Write().Wait();
+                registers.ctrl2.setConversionRate(value);
+                registers.ctrl2.write().Wait();
             }
         }
 
@@ -164,8 +162,8 @@ namespace Treehopper.Libraries.IO.Adc
 
         public async Task SetChannel(int channel)
         {
-            registers.Ctrl2.ChannelSelect = channel;
-            await registers.Ctrl2.Write();
+            registers.ctrl2.channelSelect = channel;
+            await registers.ctrl2.write();
             await Calibrate();
         }
     }

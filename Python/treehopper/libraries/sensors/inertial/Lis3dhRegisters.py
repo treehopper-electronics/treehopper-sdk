@@ -3,29 +3,29 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class SdoPuDiscs:
+class sdoPuDisc:
     SdoPullUpDisconnected = 144
     SdoPullUpConnected = 16
     
-class HighPassFilterModeSelections:
+class highPassFilterModeSelection:
     NormalMode = 0
     ReferenceSignal = 1
     Normal = 2
     AutoresetOnInterrupt = 3
     
-class Scale:
+class fullScaleSelection:
     scale_2G = 0
     scale_4G = 1
     scale_8G = 2
     scale_16G = 3
     
-class FifoModes:
+class fifoMode:
     Bypass = 0
     Fifo = 1
     Stream = 2
     StreamToFifo = 3
     
-class OutputDataRates:
+class outputDataRate:
     PowerDown = 0
     Hz_1 = 1
     Hz_10 = 2
@@ -127,10 +127,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.oneAxisDataAvailable & 0x1) << 0) | ((self.twoAxisDataAvailable & 0x1) << 1) | ((self.threeAxisDataAvailable & 0x1) << 2) | ((self.dataAvailable & 0x1) << 3) | ((self.oneAxisDataOverrun & 0x1) << 4) | ((self.twoAxisDataOverrun & 0x1) << 5) | ((self.dataOverrun & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.oneAxisDataAvailable = ((value >> 0) & 0x1)
             self.twoAxisDataAvailable = ((value >> 1) & 0x1)
             self.threeAxisDataAvailable = ((value >> 2) & 0x1)
@@ -160,10 +160,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x3FF) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 6) & 0x3FF)
 
         def __str__(self):
@@ -181,10 +181,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x3FF) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 6) & 0x3FF)
 
         def __str__(self):
@@ -202,10 +202,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x3FF) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 6) & 0x3FF)
 
         def __str__(self):
@@ -223,10 +223,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -244,10 +244,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.sdoPuDisc & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.sdoPuDisc = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -266,10 +266,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.adcEn & 0x1) << 7) | ((self.tempEn & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.adcEn = ((value >> 7) & 0x1)
             self.tempEn = ((value >> 6) & 0x1)
 
@@ -294,10 +294,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.highPassAoiInt1Enable & 0x1) << 0) | ((self.highPassAoiInt2Enable & 0x1) << 1) | ((self.highPassClickEnable & 0x1) << 2) | ((self.filterDataPassThru & 0x1) << 3) | ((self.highPassFilterCutoffFrequency & 0x3) << 4) | ((self.highPassFilterModeSelection & 0x3) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.highPassAoiInt1Enable = ((value >> 0) & 0x1)
             self.highPassAoiInt2Enable = ((value >> 1) & 0x1)
             self.highPassClickEnable = ((value >> 2) & 0x1)
@@ -331,10 +331,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.overrun & 0x1) << 1) | ((self.fifoWatermark & 0x1) << 2) | ((self.da321 & 0x1) << 3) | ((self.zyxda & 0x1) << 4) | ((self.ia2 & 0x1) << 5) | ((self.ia1 & 0x1) << 6) | ((self.click & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.overrun = ((value >> 1) & 0x1)
             self.fifoWatermark = ((value >> 2) & 0x1)
             self.da321 = ((value >> 3) & 0x1)
@@ -369,10 +369,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.spiInterfaceMode & 0x1) << 0) | ((self.selfTestEnable & 0x3) << 1) | ((self.highResolutionOutput & 0x1) << 3) | ((self.fullScaleSelection & 0x3) << 4) | ((self.bigEndian & 0x1) << 6) | ((self.blockDataUpdate & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.spiInterfaceMode = ((value >> 0) & 0x1)
             self.selfTestEnable = ((value >> 1) & 0x3)
             self.highResolutionOutput = ((value >> 3) & 0x1)
@@ -405,10 +405,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.enable4DInt2 & 0x1) << 0) | ((self.latchInt2 & 0x1) << 1) | ((self.enable4DInt1 & 0x1) << 2) | ((self.latchInt1 & 0x1) << 3) | ((self.fifoEnable & 0x1) << 4) | ((self.rebootMemoryContent & 0x1) << 5)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.enable4DInt2 = ((value >> 0) & 0x1)
             self.latchInt2 = ((value >> 1) & 0x1)
             self.enable4DInt1 = ((value >> 2) & 0x1)
@@ -441,10 +441,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.intPolarity & 0x1) << 1) | ((self.act & 0x1) << 3) | ((self.boot & 0x1) << 4) | ((self.ia2 & 0x1) << 5) | ((self.ia1 & 0x1) << 6) | ((self.click & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.intPolarity = ((value >> 1) & 0x1)
             self.act = ((value >> 3) & 0x1)
             self.boot = ((value >> 4) & 0x1)
@@ -472,10 +472,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -500,10 +500,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.xda & 0x1) << 0) | ((self.yda & 0x1) << 1) | ((self.zda & 0x1) << 2) | ((self.zyxda & 0x1) << 3) | ((self.xor & 0x1) << 4) | ((self.yor & 0x1) << 5) | ((self.zor & 0x1) << 6) | ((self.zyxor & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.xda = ((value >> 0) & 0x1)
             self.yda = ((value >> 1) & 0x1)
             self.zda = ((value >> 2) & 0x1)
@@ -537,10 +537,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.fifoThreshold & 0x1F) << 0) | ((self.triggerSelection & 0x1) << 5) | ((self.fifoMode & 0x3) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.fifoThreshold = ((value >> 0) & 0x1F)
             self.triggerSelection = ((value >> 5) & 0x1)
             self.fifoMode = ((value >> 6) & 0x3)
@@ -565,10 +565,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.fss & 0x1F) << 0) | ((self.emtpy & 0x1) << 5) | ((self.overrunFifo & 0x1) << 6) | ((self.watermark & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.fss = ((value >> 0) & 0x1F)
             self.emtpy = ((value >> 5) & 0x1)
             self.overrunFifo = ((value >> 6) & 0x1)
@@ -599,10 +599,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.enableXLowEvent & 0x1) << 0) | ((self.enableXHighEvent & 0x1) << 1) | ((self.enableYLowEvent & 0x1) << 2) | ((self.enableYHighEvent & 0x1) << 3) | ((self.enableZLowEvent & 0x1) << 4) | ((self.enableZHighEvent & 0x1) << 5) | ((self.enable6D & 0x1) << 6) | ((self.andOrInterruptEvents & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.enableXLowEvent = ((value >> 0) & 0x1)
             self.enableXHighEvent = ((value >> 1) & 0x1)
             self.enableYLowEvent = ((value >> 2) & 0x1)
@@ -640,10 +640,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.xLow & 0x1) << 0) | ((self.xHigh & 0x1) << 1) | ((self.yLow & 0x1) << 2) | ((self.yHigh & 0x1) << 3) | ((self.zLow & 0x1) << 4) | ((self.zHigh & 0x1) << 5) | ((self.interruptActive & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.xLow = ((value >> 0) & 0x1)
             self.xHigh = ((value >> 1) & 0x1)
             self.yLow = ((value >> 2) & 0x1)
@@ -673,10 +673,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7F) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7F)
 
         def __str__(self):
@@ -694,10 +694,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7F) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7F)
 
         def __str__(self):
@@ -722,10 +722,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.enableXLowEvent & 0x1) << 0) | ((self.enableXHighEvent & 0x1) << 1) | ((self.enableYLowEvent & 0x1) << 2) | ((self.enableYHighEvent & 0x1) << 3) | ((self.enableZLowEvent & 0x1) << 4) | ((self.enableZHighEvent & 0x1) << 5) | ((self.enable6D & 0x1) << 6) | ((self.andOrInterruptEvents & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.enableXLowEvent = ((value >> 0) & 0x1)
             self.enableXHighEvent = ((value >> 1) & 0x1)
             self.enableYLowEvent = ((value >> 2) & 0x1)
@@ -763,10 +763,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.xLow & 0x1) << 0) | ((self.xHigh & 0x1) << 1) | ((self.yLow & 0x1) << 2) | ((self.yHigh & 0x1) << 3) | ((self.zLow & 0x1) << 4) | ((self.zHigh & 0x1) << 5) | ((self.interruptActive & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.xLow = ((value >> 0) & 0x1)
             self.xHigh = ((value >> 1) & 0x1)
             self.yLow = ((value >> 2) & 0x1)
@@ -796,10 +796,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7F) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7F)
 
         def __str__(self):
@@ -817,10 +817,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7F) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7F)
 
         def __str__(self):
@@ -844,10 +844,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.x & 0x1) << 0) | ((self.y & 0x1) << 1) | ((self.z & 0x1) << 2) | ((self.sign & 0x1) << 3) | ((self.singleClickEnable & 0x1) << 4) | ((self.doubleClickEnable & 0x1) << 5) | ((self.interruptActive & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.x = ((value >> 0) & 0x1)
             self.y = ((value >> 1) & 0x1)
             self.z = ((value >> 2) & 0x1)
@@ -878,10 +878,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.threshold & 0x7F) << 0) | ((self.lirClick & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.threshold = ((value >> 0) & 0x7F)
             self.lirClick = ((value >> 7) & 0x1)
 
@@ -901,10 +901,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7F) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7F)
 
         def __str__(self):
@@ -922,10 +922,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7FFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7FFF)
 
         def __str__(self):
@@ -943,10 +943,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -964,10 +964,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7F) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x7F)
 
         def __str__(self):
@@ -985,10 +985,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1010,10 +1010,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.xAxisEnable & 0x1) << 0) | ((self.yAxisEnable & 0x1) << 1) | ((self.zAxisEnable & 0x1) << 2) | ((self.lowPowerEnable & 0x1) << 3) | ((self.outputDataRate & 0xF) << 4)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.xAxisEnable = ((value >> 0) & 0x1)
             self.yAxisEnable = ((value >> 1) & 0x1)
             self.zAxisEnable = ((value >> 2) & 0x1)
@@ -1039,10 +1039,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x3FF) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 6) & 0x3FF, 10)
 
         def __str__(self):
@@ -1060,10 +1060,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x3FF) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 6) & 0x3FF, 10)
 
         def __str__(self):
@@ -1081,10 +1081,10 @@ class Lis3dhRegisters(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x3FF) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 6) & 0x3FF, 10)
 
         def __str__(self):

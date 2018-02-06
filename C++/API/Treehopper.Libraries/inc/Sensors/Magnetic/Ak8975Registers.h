@@ -19,148 +19,148 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Magne
             class WiaRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((value >> 0) & 0xFF);
                 }
             };
 
             class InfoRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((value >> 0) & 0xFF);
                 }
             };
 
             class Status1Register
             {
                 public:
-                int Drdy;
+                int drdy;
 
                 long getValue() { return ((Drdy & 0x1) << 0); }
                 void setValue(long value)
                 {
-                    Drdy = (int)((value >> 0) & 0x1);
+                    drdy = (int)((value >> 0) & 0x1);
                 }
             };
 
             class HxRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
             };
 
             class HyRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
             };
 
             class HzRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
             };
 
             class Status2Register
             {
                 public:
-                int Derr;
-                int Hofl;
+                int derr;
+                int hofl;
 
                 long getValue() { return ((Derr & 0x1) << 2) | ((Hofl & 0x1) << 3); }
                 void setValue(long value)
                 {
-                    Derr = (int)((value >> 2) & 0x1);
-                    Hofl = (int)((value >> 3) & 0x1);
+                    derr = (int)((value >> 2) & 0x1);
+                    hofl = (int)((value >> 3) & 0x1);
                 }
             };
 
             class ControlRegister
             {
                 public:
-                int Mode;
+                int mode;
 
                 long getValue() { return ((Mode & 0xF) << 0); }
                 void setValue(long value)
                 {
-                    Mode = (int)((value >> 0) & 0xF);
+                    mode = (int)((value >> 0) & 0xF);
                 }
             };
 
             class SensitivityXRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((value >> 0) & 0xFF);
                 }
             };
 
             class SensitivityYRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((value >> 0) & 0xFF);
                 }
             };
 
             class SensitivityZRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((value >> 0) & 0xFF);
                 }
             };
 
-            WiaRegister Wia;
-            InfoRegister Info;
-            Status1Register Status1;
-            HxRegister Hx;
-            HyRegister Hy;
-            HzRegister Hz;
-            Status2Register Status2;
-            ControlRegister Control;
-            SensitivityXRegister SensitivityX;
-            SensitivityYRegister SensitivityY;
-            SensitivityZRegister SensitivityZ;
+            WiaRegister wia;
+            InfoRegister info;
+            Status1Register status1;
+            HxRegister hx;
+            HyRegister hy;
+            HzRegister hz;
+            Status2Register status2;
+            ControlRegister control;
+            SensitivityXRegister sensitivityX;
+            SensitivityYRegister sensitivityY;
+            SensitivityZRegister sensitivityZ;
 
         void getBytes(long val, int width, bool isLittleEndian, uint8_t* output)
         {

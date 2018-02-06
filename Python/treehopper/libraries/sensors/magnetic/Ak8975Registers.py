@@ -39,10 +39,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -60,10 +60,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -81,10 +81,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.drdy & 0x1) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.drdy = ((value >> 0) & 0x1)
 
         def __str__(self):
@@ -102,10 +102,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -123,10 +123,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -144,10 +144,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -166,10 +166,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.derr & 0x1) << 2) | ((self.hofl & 0x1) << 3)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.derr = ((value >> 2) & 0x1)
             self.hofl = ((value >> 3) & 0x1)
 
@@ -189,10 +189,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.mode & 0xF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.mode = ((value >> 0) & 0xF)
 
         def __str__(self):
@@ -210,10 +210,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -231,10 +231,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -252,10 +252,10 @@ class Ak8975Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):

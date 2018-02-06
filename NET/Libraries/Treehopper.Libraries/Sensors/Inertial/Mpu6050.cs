@@ -62,23 +62,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             this._registers = new Mpu6050Registers(dev);
             Task.Run(async () =>
             {
-                await _registers.PowerMgmt1.Read().ConfigureAwait(false);
-                _registers.PowerMgmt1.Reset = 1;
-                await _registers.PowerMgmt1.Write().ConfigureAwait(false);
-                _registers.PowerMgmt1.Reset = 0;
-                _registers.PowerMgmt1.Sleep = 0;
-                await _registers.PowerMgmt1.Write().ConfigureAwait(false);
-                _registers.PowerMgmt1.ClockSel = 1;
-                await _registers.PowerMgmt1.Write().ConfigureAwait(false);
-                _registers.Configuration.Dlpf = 3;
-                await _registers.Configuration.Write().ConfigureAwait(false);
-                _registers.SampleRateDivider.Value = 4;
-                await _registers.SampleRateDivider.Write().ConfigureAwait(false);
-                await _registers.AccelConfig2.Read().ConfigureAwait(false);
-                _registers.AccelConfig2.AccelFchoice = 0;
-                _registers.AccelConfig2.DlpfCfg = 3;
-                await _registers.AccelConfig2.Write().ConfigureAwait(false);
-                await _registers.PowerMgmt1.Read().ConfigureAwait(false);
+                await _registers.powerMgmt1.read().ConfigureAwait(false);
+                _registers.powerMgmt1.reset = 1;
+                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                _registers.powerMgmt1.reset = 0;
+                _registers.powerMgmt1.sleep = 0;
+                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                _registers.powerMgmt1.clockSel = 1;
+                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                _registers.configuration.dlpf = 3;
+                await _registers.configuration.write().ConfigureAwait(false);
+                _registers.sampleRateDivider.value = 4;
+                await _registers.sampleRateDivider.write().ConfigureAwait(false);
+                await _registers.accelConfig2.read().ConfigureAwait(false);
+                _registers.accelConfig2.accelFchoice = 0;
+                _registers.accelConfig2.dlpfCfg = 3;
+                await _registers.accelConfig2.write().ConfigureAwait(false);
+                await _registers.powerMgmt1.read().ConfigureAwait(false);
             }).Wait();
             AccelerometerScale = AccelScales.Fs_2g;
             GyroscopeScale = GyroScales.Dps_250;
@@ -91,13 +91,13 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             get
             {
-                return _registers.AccelConfig.GetAccelScale();
+                return _registers.accelConfig.getAccelScale();
             }
 
             set
             {
-                _registers.AccelConfig.SetAccelScale(value);
-                Task.Run(_registers.AccelConfig.Write).Wait();
+                _registers.accelConfig.setAccelScale(value);
+                Task.Run(_registers.accelConfig.write).Wait();
             }
         }
 
@@ -107,13 +107,13 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public GyroScales GyroscopeScale
         {
             get {
-                return _registers.GyroConfig.GetGyroScale();
+                return _registers.gyroConfig.getGyroScale();
             }
 
             set
             {
-                _registers.GyroConfig.SetGyroScale(value);
-                Task.Run(_registers.GyroConfig.Write).Wait();
+                _registers.gyroConfig.setGyroScale(value);
+                Task.Run(_registers.gyroConfig.write).Wait();
             }
         }
 
@@ -135,18 +135,18 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <returns></returns>
         public override async Task Update()
         {
-            await _registers.ReadRange(_registers.Accel_x, _registers.Gyro_z).ConfigureAwait(false);
+            await _registers.readRange(_registers.accel_x, _registers.gyro_z).ConfigureAwait(false);
             var accelScale = getAccelScale();
             var gyroScale = getGyroScale();
-            accelerometer.X = (float)(_registers.Accel_x.Value * accelScale - accelerometerOffset.X);
-            accelerometer.Y = (float)(_registers.Accel_y.Value * accelScale - accelerometerOffset.Y);
-            accelerometer.Z = (float)(_registers.Accel_z.Value * accelScale - accelerometerOffset.Z);
+            accelerometer.X = (float)(_registers.accel_x.value * accelScale - accelerometerOffset.X);
+            accelerometer.Y = (float)(_registers.accel_y.value * accelScale - accelerometerOffset.Y);
+            accelerometer.Z = (float)(_registers.accel_z.value * accelScale - accelerometerOffset.Z);
 
-            Celsius = _registers.Temp.Value / 333.87 + 21.0;
+            Celsius = _registers.temp.value / 333.87 + 21.0;
 
-            gyroscope.X = (float) (_registers.Gyro_x.Value * gyroScale - gyroscopeOffset.X);
-            gyroscope.Y = (float) (_registers.Gyro_y.Value * gyroScale - gyroscopeOffset.Y);
-            gyroscope.Z = (float) (_registers.Gyro_z.Value * gyroScale - gyroscopeOffset.Z);
+            gyroscope.X = (float) (_registers.gyro_x.value * gyroScale - gyroscopeOffset.X);
+            gyroscope.Y = (float) (_registers.gyro_y.value * gyroScale - gyroscopeOffset.Y);
+            gyroscope.Z = (float) (_registers.gyro_z.value * gyroScale - gyroscopeOffset.Z);
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));

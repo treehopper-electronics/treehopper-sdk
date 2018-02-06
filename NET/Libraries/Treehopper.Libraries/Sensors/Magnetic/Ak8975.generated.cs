@@ -16,63 +16,63 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         {
             internal Ak8975Registers(SMBusDevice dev = null) : base(dev, true)
             {
-                Wia = new WiaRegister(this);
-                _registers.Add(Wia);
-                Info = new InfoRegister(this);
-                _registers.Add(Info);
-                Status1 = new Status1Register(this);
-                _registers.Add(Status1);
-                Hx = new HxRegister(this);
-                _registers.Add(Hx);
-                Hy = new HyRegister(this);
-                _registers.Add(Hy);
-                Hz = new HzRegister(this);
-                _registers.Add(Hz);
-                Status2 = new Status2Register(this);
-                _registers.Add(Status2);
-                Control = new ControlRegister(this);
-                _registers.Add(Control);
-                SensitivityX = new SensitivityXRegister(this);
-                _registers.Add(SensitivityX);
-                SensitivityY = new SensitivityYRegister(this);
-                _registers.Add(SensitivityY);
-                SensitivityZ = new SensitivityZRegister(this);
-                _registers.Add(SensitivityZ);
+                wia = new WiaRegister(this);
+                _registers.Add(wia);
+                info = new InfoRegister(this);
+                _registers.Add(info);
+                status1 = new Status1Register(this);
+                _registers.Add(status1);
+                hx = new HxRegister(this);
+                _registers.Add(hx);
+                hy = new HyRegister(this);
+                _registers.Add(hy);
+                hz = new HzRegister(this);
+                _registers.Add(hz);
+                status2 = new Status2Register(this);
+                _registers.Add(status2);
+                control = new ControlRegister(this);
+                _registers.Add(control);
+                sensitivityX = new SensitivityXRegister(this);
+                _registers.Add(sensitivityX);
+                sensitivityY = new SensitivityYRegister(this);
+                _registers.Add(sensitivityY);
+                sensitivityZ = new SensitivityZRegister(this);
+                _registers.Add(sensitivityZ);
             }
 
-            internal WiaRegister Wia;
-            internal InfoRegister Info;
-            internal Status1Register Status1;
-            internal HxRegister Hx;
-            internal HyRegister Hy;
-            internal HzRegister Hz;
-            internal Status2Register Status2;
-            internal ControlRegister Control;
-            internal SensitivityXRegister SensitivityX;
-            internal SensitivityYRegister SensitivityY;
-            internal SensitivityZRegister SensitivityZ;
+            internal WiaRegister wia;
+            internal InfoRegister info;
+            internal Status1Register status1;
+            internal HxRegister hx;
+            internal HyRegister hy;
+            internal HzRegister hz;
+            internal Status2Register status2;
+            internal ControlRegister control;
+            internal SensitivityXRegister sensitivityX;
+            internal SensitivityYRegister sensitivityY;
+            internal SensitivityZRegister sensitivityZ;
 
             internal class WiaRegister : Register
             {
                 internal WiaRegister(RegisterManager regManager) : base(regManager, 0x00, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<WiaRegister> Read()
+                public async Task<WiaRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -80,23 +80,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal InfoRegister(RegisterManager regManager) : base(regManager, 0x01, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<InfoRegister> Read()
+                public async Task<InfoRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -104,23 +104,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal Status1Register(RegisterManager regManager) : base(regManager, 0x02, 1, false) { }
 
-                public int Drdy { get; set; }
+                public int drdy { get; set; }
 
-                public async Task<Status1Register> Read()
+                public async Task<Status1Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Drdy & 0x1) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((drdy & 0x1) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Drdy = (int)((value >> 0) & 0x1);
+                    drdy = (int)((_value >> 0) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Drdy: { Drdy } (offset: 0, width: 1)\r\n";
+                    retVal += $"Drdy: { drdy } (offset: 0, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -128,23 +128,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal HxRegister(RegisterManager regManager) : base(regManager, 0x03, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<HxRegister> Read()
+                public async Task<HxRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -152,23 +152,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal HyRegister(RegisterManager regManager) : base(regManager, 0x05, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<HyRegister> Read()
+                public async Task<HyRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -176,23 +176,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal HzRegister(RegisterManager regManager) : base(regManager, 0x07, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<HzRegister> Read()
+                public async Task<HzRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -200,26 +200,26 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal Status2Register(RegisterManager regManager) : base(regManager, 0x09, 1, false) { }
 
-                public int Derr { get; set; }
-                public int Hofl { get; set; }
+                public int derr { get; set; }
+                public int hofl { get; set; }
 
-                public async Task<Status2Register> Read()
+                public async Task<Status2Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Derr & 0x1) << 2) | ((Hofl & 0x1) << 3); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((derr & 0x1) << 2) | ((hofl & 0x1) << 3); }
+                internal override void setValue(long _value)
                 {
-                    Derr = (int)((value >> 2) & 0x1);
-                    Hofl = (int)((value >> 3) & 0x1);
+                    derr = (int)((_value >> 2) & 0x1);
+                    hofl = (int)((_value >> 3) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Derr: { Derr } (offset: 2, width: 1)\r\n";
-                    retVal += $"Hofl: { Hofl } (offset: 3, width: 1)\r\n";
+                    retVal += $"Derr: { derr } (offset: 2, width: 1)\r\n";
+                    retVal += $"Hofl: { hofl } (offset: 3, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -227,23 +227,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal ControlRegister(RegisterManager regManager) : base(regManager, 0x0a, 1, false) { }
 
-                public int Mode { get; set; }
+                public int mode { get; set; }
 
-                public async Task<ControlRegister> Read()
+                public async Task<ControlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Mode & 0xF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((mode & 0xF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Mode = (int)((value >> 0) & 0xF);
+                    mode = (int)((_value >> 0) & 0xF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Mode: { Mode } (offset: 0, width: 4)\r\n";
+                    retVal += $"Mode: { mode } (offset: 0, width: 4)\r\n";
                     return retVal;
                 }
             }
@@ -251,23 +251,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal SensitivityXRegister(RegisterManager regManager) : base(regManager, 0x10, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<SensitivityXRegister> Read()
+                public async Task<SensitivityXRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -275,23 +275,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal SensitivityYRegister(RegisterManager regManager) : base(regManager, 0x11, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<SensitivityYRegister> Read()
+                public async Task<SensitivityYRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -299,23 +299,23 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             {
                 internal SensitivityZRegister(RegisterManager regManager) : base(regManager, 0x12, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<SensitivityZRegister> Read()
+                public async Task<SensitivityZRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }

@@ -12,47 +12,47 @@ class Ak8975Registers extends RegisterManager
     Ak8975Registers(SMBusDevice dev)
     {
         super(dev);
-        Wia = new WiaRegister(this);
-        _registers.add(Wia);
-        Info = new InfoRegister(this);
-        _registers.add(Info);
-        Status1 = new Status1Register(this);
-        _registers.add(Status1);
-        Hx = new HxRegister(this);
-        _registers.add(Hx);
-        Hy = new HyRegister(this);
-        _registers.add(Hy);
-        Hz = new HzRegister(this);
-        _registers.add(Hz);
-        Status2 = new Status2Register(this);
-        _registers.add(Status2);
-        Control = new ControlRegister(this);
-        _registers.add(Control);
-        SensitivityX = new SensitivityXRegister(this);
-        _registers.add(SensitivityX);
-        SensitivityY = new SensitivityYRegister(this);
-        _registers.add(SensitivityY);
-        SensitivityZ = new SensitivityZRegister(this);
-        _registers.add(SensitivityZ);
+        wia = new WiaRegister(this);
+        _registers.add(wia);
+        info = new InfoRegister(this);
+        _registers.add(info);
+        status1 = new Status1Register(this);
+        _registers.add(status1);
+        hx = new HxRegister(this);
+        _registers.add(hx);
+        hy = new HyRegister(this);
+        _registers.add(hy);
+        hz = new HzRegister(this);
+        _registers.add(hz);
+        status2 = new Status2Register(this);
+        _registers.add(status2);
+        control = new ControlRegister(this);
+        _registers.add(control);
+        sensitivityX = new SensitivityXRegister(this);
+        _registers.add(sensitivityX);
+        sensitivityY = new SensitivityYRegister(this);
+        _registers.add(sensitivityY);
+        sensitivityZ = new SensitivityZRegister(this);
+        _registers.add(sensitivityZ);
     }
 
-    WiaRegister Wia;
-    InfoRegister Info;
-    Status1Register Status1;
-    HxRegister Hx;
-    HyRegister Hy;
-    HzRegister Hz;
-    Status2Register Status2;
-    ControlRegister Control;
-    SensitivityXRegister SensitivityX;
-    SensitivityYRegister SensitivityY;
-    SensitivityZRegister SensitivityZ;
+    WiaRegister wia;
+    InfoRegister info;
+    Status1Register status1;
+    HxRegister hx;
+    HyRegister hy;
+    HzRegister hz;
+    Status2Register status2;
+    ControlRegister control;
+    SensitivityXRegister sensitivityX;
+    SensitivityYRegister sensitivityY;
+    SensitivityZRegister sensitivityZ;
 
     class WiaRegister extends Register
     {
         WiaRegister(RegisterManager regManager) { super(regManager, 0x00, 1, false); }
 
-        int Value;
+        int value;
 
 
         public WiaRegister read()
@@ -62,16 +62,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)((value >> 0) & 0xFF);
+            Value = (int)((_value >> 0) & 0xFF);
         }
     }
     class InfoRegister extends Register
     {
         InfoRegister(RegisterManager regManager) { super(regManager, 0x01, 1, false); }
 
-        int Value;
+        int value;
 
 
         public InfoRegister read()
@@ -81,16 +81,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)((value >> 0) & 0xFF);
+            Value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Status1Register extends Register
     {
         Status1Register(RegisterManager regManager) { super(regManager, 0x02, 1, false); }
 
-        int Drdy;
+        int drdy;
 
 
         public Status1Register read()
@@ -100,16 +100,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Drdy & 0x1) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Drdy = (int)((value >> 0) & 0x1);
+            Drdy = (int)((_value >> 0) & 0x1);
         }
     }
     class HxRegister extends Register
     {
         HxRegister(RegisterManager regManager) { super(regManager, 0x03, 2, false); }
 
-        int Value;
+        int value;
 
 
         public HxRegister read()
@@ -119,16 +119,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class HyRegister extends Register
     {
         HyRegister(RegisterManager regManager) { super(regManager, 0x05, 2, false); }
 
-        int Value;
+        int value;
 
 
         public HyRegister read()
@@ -138,16 +138,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class HzRegister extends Register
     {
         HzRegister(RegisterManager regManager) { super(regManager, 0x07, 2, false); }
 
-        int Value;
+        int value;
 
 
         public HzRegister read()
@@ -157,17 +157,17 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Status2Register extends Register
     {
         Status2Register(RegisterManager regManager) { super(regManager, 0x09, 1, false); }
 
-        int Derr;
-        int Hofl;
+        int derr;
+        int hofl;
 
 
         public Status2Register read()
@@ -177,17 +177,17 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Derr & 0x1) << 2) | ((Hofl & 0x1) << 3); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Derr = (int)((value >> 2) & 0x1);
-            Hofl = (int)((value >> 3) & 0x1);
+            Derr = (int)((_value >> 2) & 0x1);
+            Hofl = (int)((_value >> 3) & 0x1);
         }
     }
     class ControlRegister extends Register
     {
         ControlRegister(RegisterManager regManager) { super(regManager, 0x0a, 1, false); }
 
-        int Mode;
+        int mode;
 
 
         public ControlRegister read()
@@ -197,16 +197,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Mode & 0xF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Mode = (int)((value >> 0) & 0xF);
+            Mode = (int)((_value >> 0) & 0xF);
         }
     }
     class SensitivityXRegister extends Register
     {
         SensitivityXRegister(RegisterManager regManager) { super(regManager, 0x10, 1, false); }
 
-        int Value;
+        int value;
 
 
         public SensitivityXRegister read()
@@ -216,16 +216,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)((value >> 0) & 0xFF);
+            Value = (int)((_value >> 0) & 0xFF);
         }
     }
     class SensitivityYRegister extends Register
     {
         SensitivityYRegister(RegisterManager regManager) { super(regManager, 0x11, 1, false); }
 
-        int Value;
+        int value;
 
 
         public SensitivityYRegister read()
@@ -235,16 +235,16 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)((value >> 0) & 0xFF);
+            Value = (int)((_value >> 0) & 0xFF);
         }
     }
     class SensitivityZRegister extends Register
     {
         SensitivityZRegister(RegisterManager regManager) { super(regManager, 0x12, 1, false); }
 
-        int Value;
+        int value;
 
 
         public SensitivityZRegister read()
@@ -254,9 +254,9 @@ class Ak8975Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)((value >> 0) & 0xFF);
+            Value = (int)((_value >> 0) & 0xFF);
         }
     }
 }

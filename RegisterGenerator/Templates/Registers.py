@@ -35,10 +35,10 @@ class {{Name}}Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return {{#Values.Values}}((self.{{Name}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             {{#Values.Values}}
             {{#IsSigned}}
             self.{{Name}} = sign_extend((value >> {{Offset}}) & {{Bitmask}}, {{Width}})

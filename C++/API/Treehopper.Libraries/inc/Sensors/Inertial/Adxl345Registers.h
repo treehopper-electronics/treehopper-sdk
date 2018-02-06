@@ -19,74 +19,74 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             class PowerCtlRegister
             {
                 public:
-                int Sleep;
-                int Measure;
+                int sleep;
+                int measure;
 
                 long getValue() { return ((Sleep & 0x1) << 2) | ((Measure & 0x1) << 3); }
                 void setValue(long value)
                 {
-                    Sleep = (int)((value >> 2) & 0x1);
-                    Measure = (int)((value >> 3) & 0x1);
+                    sleep = (int)((value >> 2) & 0x1);
+                    measure = (int)((value >> 3) & 0x1);
                 }
             };
 
             class DataFormatRegister
             {
                 public:
-                int Range;
-                int Justify;
-                int FullRes;
+                int range;
+                int justify;
+                int fullRes;
 
                 long getValue() { return ((Range & 0x3) << 0) | ((Justify & 0x1) << 2) | ((FullRes & 0x1) << 3); }
                 void setValue(long value)
                 {
-                    Range = (int)((value >> 0) & 0x3);
-                    Justify = (int)((value >> 2) & 0x1);
-                    FullRes = (int)((value >> 3) & 0x1);
+                    range = (int)((value >> 0) & 0x3);
+                    justify = (int)((value >> 2) & 0x1);
+                    fullRes = (int)((value >> 3) & 0x1);
                 }
             };
 
             class DataXRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0x1FFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+                    value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
             };
 
             class DataYRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0x1FFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+                    value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
             };
 
             class DataZRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0x1FFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+                    value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
             };
 
-            PowerCtlRegister PowerCtl;
-            DataFormatRegister DataFormat;
-            DataXRegister DataX;
-            DataYRegister DataY;
-            DataZRegister DataZ;
+            PowerCtlRegister powerCtl;
+            DataFormatRegister dataFormat;
+            DataXRegister dataX;
+            DataYRegister dataY;
+            DataZRegister dataZ;
 
         void getBytes(long val, int width, bool isLittleEndian, uint8_t* output)
         {
@@ -115,9 +115,9 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
         void flush()
         {
             uint8_t bytes[8];
-            getBytes(PowerCtl.getValue(), 1, , bytes);
+            getBytes(powerCtl.getValue(), 1, , bytes);
             _dev.writeBufferData(0x2D, bytes, 1);
-            getBytes(DataFormat.getValue(), 1, , bytes);
+            getBytes(dataFormat.getValue(), 1, , bytes);
             _dev.writeBufferData(0x31, bytes, 1);
         }
 
@@ -126,11 +126,11 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             uint8_t bytes[6];
             int i = 0;
             _dev.readBufferData(50, bytes, 6);
-            DataX.setValue(getValue(&bytes[i], 2, ));
+            dataX.setValue(getValue(&bytes[i], 2, ));
             i += 2;
-            DataY.setValue(getValue(&bytes[i], 2, ));
+            dataY.setValue(getValue(&bytes[i], 2, ));
             i += 2;
-            DataZ.setValue(getValue(&bytes[i], 2, ));
+            dataZ.setValue(getValue(&bytes[i], 2, ));
             i += 2;
         }
 

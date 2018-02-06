@@ -12,26 +12,26 @@ class Ads1115Registers extends RegisterManager
     Ads1115Registers(SMBusDevice dev)
     {
         super(dev);
-        Conversion = new ConversionRegister(this);
-        _registers.add(Conversion);
-        Config = new ConfigRegister(this);
-        _registers.add(Config);
-        LowThreshold = new LowThresholdRegister(this);
-        _registers.add(LowThreshold);
-        HighThreshold = new HighThresholdRegister(this);
-        _registers.add(HighThreshold);
+        conversion = new ConversionRegister(this);
+        _registers.add(conversion);
+        config = new ConfigRegister(this);
+        _registers.add(config);
+        lowThreshold = new LowThresholdRegister(this);
+        _registers.add(lowThreshold);
+        highThreshold = new HighThresholdRegister(this);
+        _registers.add(highThreshold);
     }
 
-    ConversionRegister Conversion;
-    ConfigRegister Config;
-    LowThresholdRegister LowThreshold;
-    HighThresholdRegister HighThreshold;
+    ConversionRegister conversion;
+    ConfigRegister config;
+    LowThresholdRegister lowThreshold;
+    HighThresholdRegister highThreshold;
 
     class ConversionRegister extends Register
     {
         ConversionRegister(RegisterManager regManager) { super(regManager, 0x00, 2, true); }
 
-        int Value;
+        int value;
 
 
         public ConversionRegister read()
@@ -41,33 +41,33 @@ class Ads1115Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class ConfigRegister extends Register
     {
         ConfigRegister(RegisterManager regManager) { super(regManager, 0x01, 2, false); }
 
-        int ComparatorQueue;
-        int LatchingComparator;
-        int ComparatorPolarity;
-        int ComparatorMode;
-        int DataRate;
-        int OperatingMode;
-        int Pga;
-        int Mux;
-        int OperationalStatus;
+        int comparatorQueue;
+        int latchingComparator;
+        int comparatorPolarity;
+        int comparatorMode;
+        int dataRate;
+        int operatingMode;
+        int pga;
+        int mux;
+        int operationalStatus;
 
-                public ComparatorQueues getComparatorQueue() { for (ComparatorQueues b : ComparatorQueues.values()) { if(b.getVal() == ComparatorQueue) return b; } return ComparatorQueues.values()[0]; }
-                public void setComparatorQueue(ComparatorQueues enumVal) { ComparatorQueue = enumVal.getVal(); }
-                public DataRates getDataRate() { for (DataRates b : DataRates.values()) { if(b.getVal() == DataRate) return b; } return DataRates.values()[0]; }
-                public void setDataRate(DataRates enumVal) { DataRate = enumVal.getVal(); }
-                public Pgas getPga() { for (Pgas b : Pgas.values()) { if(b.getVal() == Pga) return b; } return Pgas.values()[0]; }
-                public void setPga(Pgas enumVal) { Pga = enumVal.getVal(); }
-                public Muxes getMux() { for (Muxes b : Muxes.values()) { if(b.getVal() == Mux) return b; } return Muxes.values()[0]; }
-                public void setMux(Muxes enumVal) { Mux = enumVal.getVal(); }
+                public comparatorQueue getComparatorQueue() { for (comparatorQueue b : comparatorQueue.values()) { if(b.getVal() == ComparatorQueue) return b; } return comparatorQueue.values()[0]; }
+                public void setComparatorQueue(comparatorQueue enumVal) { ComparatorQueue = enumVal.getVal(); }
+                public dataRate getDataRate() { for (dataRate b : dataRate.values()) { if(b.getVal() == DataRate) return b; } return dataRate.values()[0]; }
+                public void setDataRate(dataRate enumVal) { DataRate = enumVal.getVal(); }
+                public pga getPga() { for (pga b : pga.values()) { if(b.getVal() == Pga) return b; } return pga.values()[0]; }
+                public void setPga(pga enumVal) { Pga = enumVal.getVal(); }
+                public mux getMux() { for (mux b : mux.values()) { if(b.getVal() == Mux) return b; } return mux.values()[0]; }
+                public void setMux(mux enumVal) { Mux = enumVal.getVal(); }
 
         public ConfigRegister read()
         {
@@ -76,24 +76,24 @@ class Ads1115Registers extends RegisterManager
         }
 
         public long getValue() { return ((ComparatorQueue & 0x3) << 0) | ((LatchingComparator & 0x1) << 2) | ((ComparatorPolarity & 0x1) << 3) | ((ComparatorMode & 0x1) << 4) | ((DataRate & 0x7) << 5) | ((OperatingMode & 0x1) << 8) | ((Pga & 0x7) << 9) | ((Mux & 0x7) << 12) | ((OperationalStatus & 0x1) << 15); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            ComparatorQueue = (int)((value >> 0) & 0x3);
-            LatchingComparator = (int)((value >> 2) & 0x1);
-            ComparatorPolarity = (int)((value >> 3) & 0x1);
-            ComparatorMode = (int)((value >> 4) & 0x1);
-            DataRate = (int)((value >> 5) & 0x7);
-            OperatingMode = (int)((value >> 8) & 0x1);
-            Pga = (int)((value >> 9) & 0x7);
-            Mux = (int)((value >> 12) & 0x7);
-            OperationalStatus = (int)((value >> 15) & 0x1);
+            ComparatorQueue = (int)((_value >> 0) & 0x3);
+            LatchingComparator = (int)((_value >> 2) & 0x1);
+            ComparatorPolarity = (int)((_value >> 3) & 0x1);
+            ComparatorMode = (int)((_value >> 4) & 0x1);
+            DataRate = (int)((_value >> 5) & 0x7);
+            OperatingMode = (int)((_value >> 8) & 0x1);
+            Pga = (int)((_value >> 9) & 0x7);
+            Mux = (int)((_value >> 12) & 0x7);
+            OperationalStatus = (int)((_value >> 15) & 0x1);
         }
     }
     class LowThresholdRegister extends Register
     {
         LowThresholdRegister(RegisterManager regManager) { super(regManager, 0x02, 2, true); }
 
-        int Value;
+        int value;
 
 
         public LowThresholdRegister read()
@@ -103,16 +103,16 @@ class Ads1115Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class HighThresholdRegister extends Register
     {
         HighThresholdRegister(RegisterManager regManager) { super(regManager, 0x03, 2, true); }
 
-        int Value;
+        int value;
 
 
         public HighThresholdRegister read()
@@ -122,9 +122,9 @@ class Ads1115Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
 }

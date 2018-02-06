@@ -10,7 +10,7 @@ namespace RegisterGenerator
     {
         public bool IsPublic { get; set; }
         public Dictionary<string, int?> Values { get; set; }
-        public string Name { get; set; }
+        public string PluralizedName { get; set; }
         public List<KeyValuePair<string, EnumVal>> ValuesList = new List<KeyValuePair<string, EnumVal>>();
         public void Preprocess()
         {

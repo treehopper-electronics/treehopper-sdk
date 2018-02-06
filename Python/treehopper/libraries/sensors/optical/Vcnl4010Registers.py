@@ -3,7 +3,7 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class Rates:
+class rate:
     Hz_1_95 = 0
     Hz_3_90625 = 1
     Hz_7_8125 = 2
@@ -13,7 +13,7 @@ class Rates:
     Hz_125 = 6
     Hz_250 = 7
     
-class AlsRates:
+class alsRate:
     Hz_1 = 0
     Hz_2 = 1
     Hz_3 = 2
@@ -23,7 +23,7 @@ class AlsRates:
     Hz_8 = 6
     Hz_10 = 7
     
-class IntCountExceeds:
+class intCountExceed:
     count_1 = 0
     count_2 = 1
     count_4 = 2
@@ -78,10 +78,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.selfTimedEnable & 0x1) << 0) | ((self.proxPeriodicEnable & 0x1) << 1) | ((self.alsPeriodicEnable & 0x1) << 2) | ((self.proxOnDemandStart & 0x1) << 3) | ((self.alsOnDemandStart & 0x1) << 4) | ((self.proxDataReady & 0x1) << 5) | ((self.alsDataReady & 0x1) << 6) | ((self.configLock & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.selfTimedEnable = ((value >> 0) & 0x1)
             self.proxPeriodicEnable = ((value >> 1) & 0x1)
             self.alsPeriodicEnable = ((value >> 2) & 0x1)
@@ -114,10 +114,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.revisionId & 0xF) << 0) | ((self.productId & 0xF) << 4)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.revisionId = ((value >> 0) & 0xF)
             self.productId = ((value >> 4) & 0xF)
 
@@ -137,10 +137,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.rate & 0xF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.rate = ((value >> 0) & 0xF)
 
         def __str__(self):
@@ -159,10 +159,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.irLedCurrentValue & 0x3F) << 0) | ((self.fuseProgId & 0x3) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.irLedCurrentValue = ((value >> 0) & 0x3F)
             self.fuseProgId = ((value >> 6) & 0x3)
 
@@ -185,10 +185,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.averagingSamples & 0x7) << 0) | ((self.autoOffsetCompensation & 0x1) << 3) | ((self.alsRate & 0x7) << 4) | ((self.continuousConversionMode & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.averagingSamples = ((value >> 0) & 0x7)
             self.autoOffsetCompensation = ((value >> 3) & 0x1)
             self.alsRate = ((value >> 4) & 0x7)
@@ -212,10 +212,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -233,10 +233,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -257,10 +257,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.interruptThresholdSelect & 0x1) << 0) | ((self.interruptThresholdEnable & 0x1) << 1) | ((self.interruptAlsReadyEnable & 0x1) << 2) | ((self.intCountExceed & 0x7) << 5)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.interruptThresholdSelect = ((value >> 0) & 0x1)
             self.interruptThresholdEnable = ((value >> 1) & 0x1)
             self.interruptAlsReadyEnable = ((value >> 2) & 0x1)
@@ -284,10 +284,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -305,10 +305,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -329,10 +329,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.intThresholdHighExceeded & 0x1) << 0) | ((self.intThresholdLowExceeded & 0x1) << 1) | ((self.intAlsReady & 0x1) << 2) | ((self.intProxReady & 0x1) << 3)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.intThresholdHighExceeded = ((value >> 0) & 0x1)
             self.intThresholdLowExceeded = ((value >> 1) & 0x1)
             self.intAlsReady = ((value >> 2) & 0x1)
@@ -358,10 +358,10 @@ class Vcnl4010Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.modulationDeadTime & 0x7) << 0) | ((self.proximityFrequency & 0x3) << 3) | ((self.modulationDelayTime & 0x7) << 5)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.modulationDeadTime = ((value >> 0) & 0x7)
             self.proximityFrequency = ((value >> 3) & 0x3)
             self.modulationDelayTime = ((value >> 5) & 0x7)

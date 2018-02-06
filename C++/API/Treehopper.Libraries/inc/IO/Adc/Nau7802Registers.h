@@ -19,167 +19,167 @@ namespace Treehopper { namespace Libraries { namespace IO { namespace Adc {
             class PuCtrlRegister
             {
                 public:
-                int RegisterReset;
-                int PowerUpDigital;
-                int PowerUpAnalog;
-                int PowerUpReady;
-                int CycleStart;
-                int CycleReady;
-                int UseExternalCrystal;
-                int UseInternalLdo;
+                int registerReset;
+                int powerUpDigital;
+                int powerUpAnalog;
+                int powerUpReady;
+                int cycleStart;
+                int cycleReady;
+                int useExternalCrystal;
+                int useInternalLdo;
 
                 long getValue() { return ((RegisterReset & 0x1) << 0) | ((PowerUpDigital & 0x1) << 1) | ((PowerUpAnalog & 0x1) << 2) | ((PowerUpReady & 0x1) << 3) | ((CycleStart & 0x1) << 4) | ((CycleReady & 0x1) << 5) | ((UseExternalCrystal & 0x1) << 6) | ((UseInternalLdo & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    RegisterReset = (int)((value >> 0) & 0x1);
-                    PowerUpDigital = (int)((value >> 1) & 0x1);
-                    PowerUpAnalog = (int)((value >> 2) & 0x1);
-                    PowerUpReady = (int)((value >> 3) & 0x1);
-                    CycleStart = (int)((value >> 4) & 0x1);
-                    CycleReady = (int)((value >> 5) & 0x1);
-                    UseExternalCrystal = (int)((value >> 6) & 0x1);
-                    UseInternalLdo = (int)((value >> 7) & 0x1);
+                    registerReset = (int)((value >> 0) & 0x1);
+                    powerUpDigital = (int)((value >> 1) & 0x1);
+                    powerUpAnalog = (int)((value >> 2) & 0x1);
+                    powerUpReady = (int)((value >> 3) & 0x1);
+                    cycleStart = (int)((value >> 4) & 0x1);
+                    cycleReady = (int)((value >> 5) & 0x1);
+                    useExternalCrystal = (int)((value >> 6) & 0x1);
+                    useInternalLdo = (int)((value >> 7) & 0x1);
                 }
             };
 
             class Ctrl1Register
             {
                 public:
-                int Gain;
-                int Vldo;
-                int DrdySelect;
-                int ConversionReadyPinPolarity;
+                int gain;
+                int vldo;
+                int drdySelect;
+                int conversionReadyPinPolarity;
 
                 long getValue() { return ((Gain & 0x7) << 0) | ((Vldo & 0x7) << 3) | ((DrdySelect & 0x1) << 6) | ((ConversionReadyPinPolarity & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    Gain = (int)((value >> 0) & 0x7);
-                    Vldo = (int)((value >> 3) & 0x7);
-                    DrdySelect = (int)((value >> 6) & 0x1);
-                    ConversionReadyPinPolarity = (int)((value >> 7) & 0x1);
+                    gain = (int)((value >> 0) & 0x7);
+                    vldo = (int)((value >> 3) & 0x7);
+                    drdySelect = (int)((value >> 6) & 0x1);
+                    conversionReadyPinPolarity = (int)((value >> 7) & 0x1);
                 }
             };
 
             class Ctrl2Register
             {
                 public:
-                int CalMod;
-                int CalStart;
-                int CalError;
-                int ConversionRate;
-                int ChannelSelect;
+                int calMod;
+                int calStart;
+                int calError;
+                int conversionRate;
+                int channelSelect;
 
                 long getValue() { return ((CalMod & 0x3) << 0) | ((CalStart & 0x1) << 2) | ((CalError & 0x1) << 3) | ((ConversionRate & 0x7) << 4) | ((ChannelSelect & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    CalMod = (int)((value >> 0) & 0x3);
-                    CalStart = (int)((value >> 2) & 0x1);
-                    CalError = (int)((value >> 3) & 0x1);
-                    ConversionRate = (int)((value >> 4) & 0x7);
-                    ChannelSelect = (int)((value >> 7) & 0x1);
+                    calMod = (int)((value >> 0) & 0x3);
+                    calStart = (int)((value >> 2) & 0x1);
+                    calError = (int)((value >> 3) & 0x1);
+                    conversionRate = (int)((value >> 4) & 0x7);
+                    channelSelect = (int)((value >> 7) & 0x1);
                 }
             };
 
             class I2cCtrlRegister
             {
                 public:
-                int BgpCp;
-                int Ts;
-                int BoPga;
-                int Si;
-                int Wpd;
-                int Spe;
-                int Frd;
-                int Crsd;
+                int bgpCp;
+                int ts;
+                int boPga;
+                int si;
+                int wpd;
+                int spe;
+                int frd;
+                int crsd;
 
                 long getValue() { return ((BgpCp & 0x1) << 0) | ((Ts & 0x1) << 1) | ((BoPga & 0x1) << 2) | ((Si & 0x1) << 3) | ((Wpd & 0x1) << 4) | ((Spe & 0x1) << 5) | ((Frd & 0x1) << 6) | ((Crsd & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    BgpCp = (int)((value >> 0) & 0x1);
-                    Ts = (int)((value >> 1) & 0x1);
-                    BoPga = (int)((value >> 2) & 0x1);
-                    Si = (int)((value >> 3) & 0x1);
-                    Wpd = (int)((value >> 4) & 0x1);
-                    Spe = (int)((value >> 5) & 0x1);
-                    Frd = (int)((value >> 6) & 0x1);
-                    Crsd = (int)((value >> 7) & 0x1);
+                    bgpCp = (int)((value >> 0) & 0x1);
+                    ts = (int)((value >> 1) & 0x1);
+                    boPga = (int)((value >> 2) & 0x1);
+                    si = (int)((value >> 3) & 0x1);
+                    wpd = (int)((value >> 4) & 0x1);
+                    spe = (int)((value >> 5) & 0x1);
+                    frd = (int)((value >> 6) & 0x1);
+                    crsd = (int)((value >> 7) & 0x1);
                 }
             };
 
             class AdcResultRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
+                    value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
                 }
             };
 
             class AdcRegister
             {
                 public:
-                int RegChp;
-                int AdcVcm;
-                int RegChpFreq;
+                int regChp;
+                int adcVcm;
+                int regChpFreq;
 
                 long getValue() { return ((RegChp & 0x3) << 0) | ((AdcVcm & 0x3) << 2) | ((RegChpFreq & 0x3) << 4); }
                 void setValue(long value)
                 {
-                    RegChp = (int)((value >> 0) & 0x3);
-                    AdcVcm = (int)((value >> 2) & 0x3);
-                    RegChpFreq = (int)((value >> 4) & 0x3);
+                    regChp = (int)((value >> 0) & 0x3);
+                    adcVcm = (int)((value >> 2) & 0x3);
+                    regChpFreq = (int)((value >> 4) & 0x3);
                 }
             };
 
             class PgaRegister
             {
                 public:
-                int DisableChopper;
-                int PgaInv;
-                int PgaBypass;
-                int LdoMode;
-                int RdOptSel;
+                int disableChopper;
+                int pgaInv;
+                int pgaBypass;
+                int ldoMode;
+                int rdOptSel;
 
                 long getValue() { return ((DisableChopper & 0x1) << 0) | ((PgaInv & 0x1) << 3) | ((PgaBypass & 0x1) << 4) | ((LdoMode & 0x1) << 5) | ((RdOptSel & 0x1) << 6); }
                 void setValue(long value)
                 {
-                    DisableChopper = (int)((value >> 0) & 0x1);
-                    PgaInv = (int)((value >> 3) & 0x1);
-                    PgaBypass = (int)((value >> 4) & 0x1);
-                    LdoMode = (int)((value >> 5) & 0x1);
-                    RdOptSel = (int)((value >> 6) & 0x1);
+                    disableChopper = (int)((value >> 0) & 0x1);
+                    pgaInv = (int)((value >> 3) & 0x1);
+                    pgaBypass = (int)((value >> 4) & 0x1);
+                    ldoMode = (int)((value >> 5) & 0x1);
+                    rdOptSel = (int)((value >> 6) & 0x1);
                 }
             };
 
             class PowerCtrlRegister
             {
                 public:
-                int PgaCurr;
-                int AdcCurr;
-                int MasterBiasCurr;
-                int PgaCapEn;
+                int pgaCurr;
+                int adcCurr;
+                int masterBiasCurr;
+                int pgaCapEn;
 
                 long getValue() { return ((PgaCurr & 0x3) << 0) | ((AdcCurr & 0x3) << 2) | ((MasterBiasCurr & 0x7) << 4) | ((PgaCapEn & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    PgaCurr = (int)((value >> 0) & 0x3);
-                    AdcCurr = (int)((value >> 2) & 0x3);
-                    MasterBiasCurr = (int)((value >> 4) & 0x7);
-                    PgaCapEn = (int)((value >> 7) & 0x1);
+                    pgaCurr = (int)((value >> 0) & 0x3);
+                    adcCurr = (int)((value >> 2) & 0x3);
+                    masterBiasCurr = (int)((value >> 4) & 0x7);
+                    pgaCapEn = (int)((value >> 7) & 0x1);
                 }
             };
 
-            PuCtrlRegister PuCtrl;
-            Ctrl1Register Ctrl1;
-            Ctrl2Register Ctrl2;
-            I2cCtrlRegister I2cCtrl;
-            AdcResultRegister AdcResult;
-            AdcRegister Adc;
-            PgaRegister Pga;
-            PowerCtrlRegister PowerCtrl;
+            PuCtrlRegister puCtrl;
+            Ctrl1Register ctrl1;
+            Ctrl2Register ctrl2;
+            I2cCtrlRegister i2cCtrl;
+            AdcResultRegister adcResult;
+            AdcRegister adc;
+            PgaRegister pga;
+            PowerCtrlRegister powerCtrl;
 
         void getBytes(long val, int width, bool isLittleEndian, uint8_t* output)
         {
@@ -208,19 +208,19 @@ namespace Treehopper { namespace Libraries { namespace IO { namespace Adc {
         void flush()
         {
             uint8_t bytes[8];
-            getBytes(PuCtrl.getValue(), 1, , bytes);
+            getBytes(puCtrl.getValue(), 1, , bytes);
             _dev.writeBufferData(0x00, bytes, 1);
-            getBytes(Ctrl1.getValue(), 1, , bytes);
+            getBytes(ctrl1.getValue(), 1, , bytes);
             _dev.writeBufferData(0x01, bytes, 1);
-            getBytes(Ctrl2.getValue(), 1, , bytes);
+            getBytes(ctrl2.getValue(), 1, , bytes);
             _dev.writeBufferData(0x02, bytes, 1);
-            getBytes(I2cCtrl.getValue(), 1, , bytes);
+            getBytes(i2cCtrl.getValue(), 1, , bytes);
             _dev.writeBufferData(0x11, bytes, 1);
-            getBytes(Adc.getValue(), 1, , bytes);
+            getBytes(adc.getValue(), 1, , bytes);
             _dev.writeBufferData(0x15, bytes, 1);
-            getBytes(Pga.getValue(), 1, , bytes);
+            getBytes(pga.getValue(), 1, , bytes);
             _dev.writeBufferData(0x1B, bytes, 1);
-            getBytes(PowerCtrl.getValue(), 1, , bytes);
+            getBytes(powerCtrl.getValue(), 1, , bytes);
             _dev.writeBufferData(0x1C, bytes, 1);
         }
 
@@ -229,7 +229,7 @@ namespace Treehopper { namespace Libraries { namespace IO { namespace Adc {
             uint8_t bytes[3];
             int i = 0;
             _dev.readBufferData(18, bytes, 3);
-            AdcResult.setValue(getValue(&bytes[i], 3, ));
+            adcResult.setValue(getValue(&bytes[i], 3, ));
             i += 3;
         }
 

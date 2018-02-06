@@ -12,30 +12,30 @@ class Adxl345Registers extends RegisterManager
     Adxl345Registers(SMBusDevice dev)
     {
         super(dev);
-        PowerCtl = new PowerCtlRegister(this);
-        _registers.add(PowerCtl);
-        DataFormat = new DataFormatRegister(this);
-        _registers.add(DataFormat);
-        DataX = new DataXRegister(this);
-        _registers.add(DataX);
-        DataY = new DataYRegister(this);
-        _registers.add(DataY);
-        DataZ = new DataZRegister(this);
-        _registers.add(DataZ);
+        powerCtl = new PowerCtlRegister(this);
+        _registers.add(powerCtl);
+        dataFormat = new DataFormatRegister(this);
+        _registers.add(dataFormat);
+        dataX = new DataXRegister(this);
+        _registers.add(dataX);
+        dataY = new DataYRegister(this);
+        _registers.add(dataY);
+        dataZ = new DataZRegister(this);
+        _registers.add(dataZ);
     }
 
-    PowerCtlRegister PowerCtl;
-    DataFormatRegister DataFormat;
-    DataXRegister DataX;
-    DataYRegister DataY;
-    DataZRegister DataZ;
+    PowerCtlRegister powerCtl;
+    DataFormatRegister dataFormat;
+    DataXRegister dataX;
+    DataYRegister dataY;
+    DataZRegister dataZ;
 
     class PowerCtlRegister extends Register
     {
         PowerCtlRegister(RegisterManager regManager) { super(regManager, 0x2D, 1, false); }
 
-        int Sleep;
-        int Measure;
+        int sleep;
+        int measure;
 
 
         public PowerCtlRegister read()
@@ -45,19 +45,19 @@ class Adxl345Registers extends RegisterManager
         }
 
         public long getValue() { return ((Sleep & 0x1) << 2) | ((Measure & 0x1) << 3); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Sleep = (int)((value >> 2) & 0x1);
-            Measure = (int)((value >> 3) & 0x1);
+            Sleep = (int)((_value >> 2) & 0x1);
+            Measure = (int)((_value >> 3) & 0x1);
         }
     }
     class DataFormatRegister extends Register
     {
         DataFormatRegister(RegisterManager regManager) { super(regManager, 0x31, 1, false); }
 
-        int Range;
-        int Justify;
-        int FullRes;
+        int range;
+        int justify;
+        int fullRes;
 
 
         public DataFormatRegister read()
@@ -67,18 +67,18 @@ class Adxl345Registers extends RegisterManager
         }
 
         public long getValue() { return ((Range & 0x3) << 0) | ((Justify & 0x1) << 2) | ((FullRes & 0x1) << 3); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Range = (int)((value >> 0) & 0x3);
-            Justify = (int)((value >> 2) & 0x1);
-            FullRes = (int)((value >> 3) & 0x1);
+            Range = (int)((_value >> 0) & 0x3);
+            Justify = (int)((_value >> 2) & 0x1);
+            FullRes = (int)((_value >> 3) & 0x1);
         }
     }
     class DataXRegister extends Register
     {
         DataXRegister(RegisterManager regManager) { super(regManager, 0x32, 2, false); }
 
-        int Value;
+        int value;
 
 
         public DataXRegister read()
@@ -88,16 +88,16 @@ class Adxl345Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0x1FFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+            Value = (int)(((_value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
         }
     }
     class DataYRegister extends Register
     {
         DataYRegister(RegisterManager regManager) { super(regManager, 0x34, 2, false); }
 
-        int Value;
+        int value;
 
 
         public DataYRegister read()
@@ -107,16 +107,16 @@ class Adxl345Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0x1FFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+            Value = (int)(((_value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
         }
     }
     class DataZRegister extends Register
     {
         DataZRegister(RegisterManager regManager) { super(regManager, 0x36, 2, false); }
 
-        int Value;
+        int value;
 
 
         public DataZRegister read()
@@ -126,9 +126,9 @@ class Adxl345Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0x1FFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+            Value = (int)(((_value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
         }
     }
 }

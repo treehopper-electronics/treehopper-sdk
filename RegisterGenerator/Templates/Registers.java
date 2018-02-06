@@ -13,13 +13,13 @@ class {{Name}}Registers extends RegisterManager
     {
         super(dev);
         {{#RegisterList}}
-        {{CapitalizedName}} = new {{CapitalizedName}}Register(this);
-        _registers.add({{CapitalizedName}});
+        {{Name}} = new {{CapitalizedName}}Register(this);
+        _registers.add({{Name}});
         {{/RegisterList}}
     }
 
 {{#RegisterList}}
-    {{CapitalizedName}}Register {{CapitalizedName}};
+    {{CapitalizedName}}Register {{Name}};
 {{/RegisterList}}
 
 {{#RegisterList}}
@@ -28,7 +28,7 @@ class {{Name}}Registers extends RegisterManager
         {{CapitalizedName}}Register(RegisterManager regManager) { super(regManager, {{Address}}, {{NumBytes}}, {{IsBigEndian}}); }
 
     {{#Values.Values}}
-        int {{CapitalizedName}};
+        int {{Name}};
     {{/Values.Values}}
 
 {{#Values.Values}}
@@ -45,14 +45,14 @@ class {{Name}}Registers extends RegisterManager
         }
 
         public long getValue() { return {{#Values.Values}}(({{CapitalizedName}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}; }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
             {{#Values.Values}}
             {{#IsSigned}}
-            {{CapitalizedName}} = (int)(((value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
+            {{CapitalizedName}} = (int)(((_value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
             {{/IsSigned}}
             {{^IsSigned}}
-            {{CapitalizedName}} = (int)((value >> {{Offset}}) & {{Bitmask}});
+            {{CapitalizedName}} = (int)((_value >> {{Offset}}) & {{Bitmask}});
             {{/IsSigned}}
             {{/Values.Values}}
         }

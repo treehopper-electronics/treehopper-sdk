@@ -12,45 +12,45 @@ class Nau7802Registers extends RegisterManager
     Nau7802Registers(SMBusDevice dev)
     {
         super(dev);
-        PuCtrl = new PuCtrlRegister(this);
-        _registers.add(PuCtrl);
-        Ctrl1 = new Ctrl1Register(this);
-        _registers.add(Ctrl1);
-        Ctrl2 = new Ctrl2Register(this);
-        _registers.add(Ctrl2);
-        I2cCtrl = new I2cCtrlRegister(this);
-        _registers.add(I2cCtrl);
-        AdcResult = new AdcResultRegister(this);
-        _registers.add(AdcResult);
-        Adc = new AdcRegister(this);
-        _registers.add(Adc);
-        Pga = new PgaRegister(this);
-        _registers.add(Pga);
-        PowerCtrl = new PowerCtrlRegister(this);
-        _registers.add(PowerCtrl);
+        puCtrl = new PuCtrlRegister(this);
+        _registers.add(puCtrl);
+        ctrl1 = new Ctrl1Register(this);
+        _registers.add(ctrl1);
+        ctrl2 = new Ctrl2Register(this);
+        _registers.add(ctrl2);
+        i2cCtrl = new I2cCtrlRegister(this);
+        _registers.add(i2cCtrl);
+        adcResult = new AdcResultRegister(this);
+        _registers.add(adcResult);
+        adc = new AdcRegister(this);
+        _registers.add(adc);
+        pga = new PgaRegister(this);
+        _registers.add(pga);
+        powerCtrl = new PowerCtrlRegister(this);
+        _registers.add(powerCtrl);
     }
 
-    PuCtrlRegister PuCtrl;
-    Ctrl1Register Ctrl1;
-    Ctrl2Register Ctrl2;
-    I2cCtrlRegister I2cCtrl;
-    AdcResultRegister AdcResult;
-    AdcRegister Adc;
-    PgaRegister Pga;
-    PowerCtrlRegister PowerCtrl;
+    PuCtrlRegister puCtrl;
+    Ctrl1Register ctrl1;
+    Ctrl2Register ctrl2;
+    I2cCtrlRegister i2cCtrl;
+    AdcResultRegister adcResult;
+    AdcRegister adc;
+    PgaRegister pga;
+    PowerCtrlRegister powerCtrl;
 
     class PuCtrlRegister extends Register
     {
         PuCtrlRegister(RegisterManager regManager) { super(regManager, 0x00, 1, false); }
 
-        int RegisterReset;
-        int PowerUpDigital;
-        int PowerUpAnalog;
-        int PowerUpReady;
-        int CycleStart;
-        int CycleReady;
-        int UseExternalCrystal;
-        int UseInternalLdo;
+        int registerReset;
+        int powerUpDigital;
+        int powerUpAnalog;
+        int powerUpReady;
+        int cycleStart;
+        int cycleReady;
+        int useExternalCrystal;
+        int useInternalLdo;
 
 
         public PuCtrlRegister read()
@@ -60,31 +60,31 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((RegisterReset & 0x1) << 0) | ((PowerUpDigital & 0x1) << 1) | ((PowerUpAnalog & 0x1) << 2) | ((PowerUpReady & 0x1) << 3) | ((CycleStart & 0x1) << 4) | ((CycleReady & 0x1) << 5) | ((UseExternalCrystal & 0x1) << 6) | ((UseInternalLdo & 0x1) << 7); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            RegisterReset = (int)((value >> 0) & 0x1);
-            PowerUpDigital = (int)((value >> 1) & 0x1);
-            PowerUpAnalog = (int)((value >> 2) & 0x1);
-            PowerUpReady = (int)((value >> 3) & 0x1);
-            CycleStart = (int)((value >> 4) & 0x1);
-            CycleReady = (int)((value >> 5) & 0x1);
-            UseExternalCrystal = (int)((value >> 6) & 0x1);
-            UseInternalLdo = (int)((value >> 7) & 0x1);
+            RegisterReset = (int)((_value >> 0) & 0x1);
+            PowerUpDigital = (int)((_value >> 1) & 0x1);
+            PowerUpAnalog = (int)((_value >> 2) & 0x1);
+            PowerUpReady = (int)((_value >> 3) & 0x1);
+            CycleStart = (int)((_value >> 4) & 0x1);
+            CycleReady = (int)((_value >> 5) & 0x1);
+            UseExternalCrystal = (int)((_value >> 6) & 0x1);
+            UseInternalLdo = (int)((_value >> 7) & 0x1);
         }
     }
     class Ctrl1Register extends Register
     {
         Ctrl1Register(RegisterManager regManager) { super(regManager, 0x01, 1, false); }
 
-        int Gain;
-        int Vldo;
-        int DrdySelect;
-        int ConversionReadyPinPolarity;
+        int gain;
+        int vldo;
+        int drdySelect;
+        int conversionReadyPinPolarity;
 
-                public Gains getGain() { for (Gains b : Gains.values()) { if(b.getVal() == Gain) return b; } return Gains.values()[0]; }
-                public void setGain(Gains enumVal) { Gain = enumVal.getVal(); }
-                public LdoVoltage getVldo() { for (LdoVoltage b : LdoVoltage.values()) { if(b.getVal() == Vldo) return b; } return LdoVoltage.values()[0]; }
-                public void setVldo(LdoVoltage enumVal) { Vldo = enumVal.getVal(); }
+                public gain getGain() { for (gain b : gain.values()) { if(b.getVal() == Gain) return b; } return gain.values()[0]; }
+                public void setGain(gain enumVal) { Gain = enumVal.getVal(); }
+                public vldo getVldo() { for (vldo b : vldo.values()) { if(b.getVal() == Vldo) return b; } return vldo.values()[0]; }
+                public void setVldo(vldo enumVal) { Vldo = enumVal.getVal(); }
 
         public Ctrl1Register read()
         {
@@ -93,28 +93,28 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((Gain & 0x7) << 0) | ((Vldo & 0x7) << 3) | ((DrdySelect & 0x1) << 6) | ((ConversionReadyPinPolarity & 0x1) << 7); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Gain = (int)((value >> 0) & 0x7);
-            Vldo = (int)((value >> 3) & 0x7);
-            DrdySelect = (int)((value >> 6) & 0x1);
-            ConversionReadyPinPolarity = (int)((value >> 7) & 0x1);
+            Gain = (int)((_value >> 0) & 0x7);
+            Vldo = (int)((_value >> 3) & 0x7);
+            DrdySelect = (int)((_value >> 6) & 0x1);
+            ConversionReadyPinPolarity = (int)((_value >> 7) & 0x1);
         }
     }
     class Ctrl2Register extends Register
     {
         Ctrl2Register(RegisterManager regManager) { super(regManager, 0x02, 1, false); }
 
-        int CalMod;
-        int CalStart;
-        int CalError;
-        int ConversionRate;
-        int ChannelSelect;
+        int calMod;
+        int calStart;
+        int calError;
+        int conversionRate;
+        int channelSelect;
 
-                public CalMods getCalMod() { for (CalMods b : CalMods.values()) { if(b.getVal() == CalMod) return b; } return CalMods.values()[0]; }
-                public void setCalMod(CalMods enumVal) { CalMod = enumVal.getVal(); }
-                public ConversionRates getConversionRate() { for (ConversionRates b : ConversionRates.values()) { if(b.getVal() == ConversionRate) return b; } return ConversionRates.values()[0]; }
-                public void setConversionRate(ConversionRates enumVal) { ConversionRate = enumVal.getVal(); }
+                public calMod getCalMod() { for (calMod b : calMod.values()) { if(b.getVal() == CalMod) return b; } return calMod.values()[0]; }
+                public void setCalMod(calMod enumVal) { CalMod = enumVal.getVal(); }
+                public conversionRate getConversionRate() { for (conversionRate b : conversionRate.values()) { if(b.getVal() == ConversionRate) return b; } return conversionRate.values()[0]; }
+                public void setConversionRate(conversionRate enumVal) { ConversionRate = enumVal.getVal(); }
 
         public Ctrl2Register read()
         {
@@ -123,27 +123,27 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((CalMod & 0x3) << 0) | ((CalStart & 0x1) << 2) | ((CalError & 0x1) << 3) | ((ConversionRate & 0x7) << 4) | ((ChannelSelect & 0x1) << 7); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            CalMod = (int)((value >> 0) & 0x3);
-            CalStart = (int)((value >> 2) & 0x1);
-            CalError = (int)((value >> 3) & 0x1);
-            ConversionRate = (int)((value >> 4) & 0x7);
-            ChannelSelect = (int)((value >> 7) & 0x1);
+            CalMod = (int)((_value >> 0) & 0x3);
+            CalStart = (int)((_value >> 2) & 0x1);
+            CalError = (int)((_value >> 3) & 0x1);
+            ConversionRate = (int)((_value >> 4) & 0x7);
+            ChannelSelect = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cCtrlRegister extends Register
     {
         I2cCtrlRegister(RegisterManager regManager) { super(regManager, 0x11, 1, false); }
 
-        int BgpCp;
-        int Ts;
-        int BoPga;
-        int Si;
-        int Wpd;
-        int Spe;
-        int Frd;
-        int Crsd;
+        int bgpCp;
+        int ts;
+        int boPga;
+        int si;
+        int wpd;
+        int spe;
+        int frd;
+        int crsd;
 
 
         public I2cCtrlRegister read()
@@ -153,23 +153,23 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((BgpCp & 0x1) << 0) | ((Ts & 0x1) << 1) | ((BoPga & 0x1) << 2) | ((Si & 0x1) << 3) | ((Wpd & 0x1) << 4) | ((Spe & 0x1) << 5) | ((Frd & 0x1) << 6) | ((Crsd & 0x1) << 7); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            BgpCp = (int)((value >> 0) & 0x1);
-            Ts = (int)((value >> 1) & 0x1);
-            BoPga = (int)((value >> 2) & 0x1);
-            Si = (int)((value >> 3) & 0x1);
-            Wpd = (int)((value >> 4) & 0x1);
-            Spe = (int)((value >> 5) & 0x1);
-            Frd = (int)((value >> 6) & 0x1);
-            Crsd = (int)((value >> 7) & 0x1);
+            BgpCp = (int)((_value >> 0) & 0x1);
+            Ts = (int)((_value >> 1) & 0x1);
+            BoPga = (int)((_value >> 2) & 0x1);
+            Si = (int)((_value >> 3) & 0x1);
+            Wpd = (int)((_value >> 4) & 0x1);
+            Spe = (int)((_value >> 5) & 0x1);
+            Frd = (int)((_value >> 6) & 0x1);
+            Crsd = (int)((_value >> 7) & 0x1);
         }
     }
     class AdcResultRegister extends Register
     {
         AdcResultRegister(RegisterManager regManager) { super(regManager, 0x12, 3, true); }
 
-        int Value;
+        int value;
 
 
         public AdcResultRegister read()
@@ -179,23 +179,23 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((Value & 0xFFFFFF) << 0); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
+            Value = (int)(((_value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
         }
     }
     class AdcRegister extends Register
     {
         AdcRegister(RegisterManager regManager) { super(regManager, 0x15, 1, false); }
 
-        int RegChp;
-        int AdcVcm;
-        int RegChpFreq;
+        int regChp;
+        int adcVcm;
+        int regChpFreq;
 
-                public AdcVcms getAdcVcm() { for (AdcVcms b : AdcVcms.values()) { if(b.getVal() == AdcVcm) return b; } return AdcVcms.values()[0]; }
-                public void setAdcVcm(AdcVcms enumVal) { AdcVcm = enumVal.getVal(); }
-                public RegChpFreqs getRegChpFreq() { for (RegChpFreqs b : RegChpFreqs.values()) { if(b.getVal() == RegChpFreq) return b; } return RegChpFreqs.values()[0]; }
-                public void setRegChpFreq(RegChpFreqs enumVal) { RegChpFreq = enumVal.getVal(); }
+                public adcVcm getAdcVcm() { for (adcVcm b : adcVcm.values()) { if(b.getVal() == AdcVcm) return b; } return adcVcm.values()[0]; }
+                public void setAdcVcm(adcVcm enumVal) { AdcVcm = enumVal.getVal(); }
+                public regChpFreq getRegChpFreq() { for (regChpFreq b : regChpFreq.values()) { if(b.getVal() == RegChpFreq) return b; } return regChpFreq.values()[0]; }
+                public void setRegChpFreq(regChpFreq enumVal) { RegChpFreq = enumVal.getVal(); }
 
         public AdcRegister read()
         {
@@ -204,22 +204,22 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((RegChp & 0x3) << 0) | ((AdcVcm & 0x3) << 2) | ((RegChpFreq & 0x3) << 4); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            RegChp = (int)((value >> 0) & 0x3);
-            AdcVcm = (int)((value >> 2) & 0x3);
-            RegChpFreq = (int)((value >> 4) & 0x3);
+            RegChp = (int)((_value >> 0) & 0x3);
+            AdcVcm = (int)((_value >> 2) & 0x3);
+            RegChpFreq = (int)((_value >> 4) & 0x3);
         }
     }
     class PgaRegister extends Register
     {
         PgaRegister(RegisterManager regManager) { super(regManager, 0x1B, 1, false); }
 
-        int DisableChopper;
-        int PgaInv;
-        int PgaBypass;
-        int LdoMode;
-        int RdOptSel;
+        int disableChopper;
+        int pgaInv;
+        int pgaBypass;
+        int ldoMode;
+        int rdOptSel;
 
 
         public PgaRegister read()
@@ -229,23 +229,23 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((DisableChopper & 0x1) << 0) | ((PgaInv & 0x1) << 3) | ((PgaBypass & 0x1) << 4) | ((LdoMode & 0x1) << 5) | ((RdOptSel & 0x1) << 6); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            DisableChopper = (int)((value >> 0) & 0x1);
-            PgaInv = (int)((value >> 3) & 0x1);
-            PgaBypass = (int)((value >> 4) & 0x1);
-            LdoMode = (int)((value >> 5) & 0x1);
-            RdOptSel = (int)((value >> 6) & 0x1);
+            DisableChopper = (int)((_value >> 0) & 0x1);
+            PgaInv = (int)((_value >> 3) & 0x1);
+            PgaBypass = (int)((_value >> 4) & 0x1);
+            LdoMode = (int)((_value >> 5) & 0x1);
+            RdOptSel = (int)((_value >> 6) & 0x1);
         }
     }
     class PowerCtrlRegister extends Register
     {
         PowerCtrlRegister(RegisterManager regManager) { super(regManager, 0x1C, 1, false); }
 
-        int PgaCurr;
-        int AdcCurr;
-        int MasterBiasCurr;
-        int PgaCapEn;
+        int pgaCurr;
+        int adcCurr;
+        int masterBiasCurr;
+        int pgaCapEn;
 
 
         public PowerCtrlRegister read()
@@ -255,12 +255,12 @@ class Nau7802Registers extends RegisterManager
         }
 
         public long getValue() { return ((PgaCurr & 0x3) << 0) | ((AdcCurr & 0x3) << 2) | ((MasterBiasCurr & 0x7) << 4) | ((PgaCapEn & 0x1) << 7); }
-        public void setValue(long value)
+        public void setValue(long _value)
         {
-            PgaCurr = (int)((value >> 0) & 0x3);
-            AdcCurr = (int)((value >> 2) & 0x3);
-            MasterBiasCurr = (int)((value >> 4) & 0x7);
-            PgaCapEn = (int)((value >> 7) & 0x1);
+            PgaCurr = (int)((_value >> 0) & 0x3);
+            AdcCurr = (int)((_value >> 2) & 0x3);
+            MasterBiasCurr = (int)((_value >> 4) & 0x7);
+            PgaCapEn = (int)((_value >> 7) & 0x1);
         }
     }
 }

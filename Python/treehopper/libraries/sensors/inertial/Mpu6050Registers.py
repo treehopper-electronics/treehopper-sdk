@@ -3,7 +3,7 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class ExtSyncSets:
+class extSyncSet:
     Disabled = 0
     TempOutL = 1
     GyroXoutL = 2
@@ -13,19 +13,19 @@ class ExtSyncSets:
     AccelYoutL = 6
     AccelZoutL = 7
     
-class GyroScales:
+class gyroScale:
     Dps_250 = 0
     Dps_500 = 1
     Dps_1000 = 2
     Dps_2000 = 3
     
-class AccelScales:
+class accelScale:
     Fs_2g = 0
     Fs_4g = 1
     Fs_8g = 2
     Fs_16g = 3
     
-class ClockSels:
+class clockSel:
     InternalOscillator = 0
     AutoSelect = 1
     Reset = 7
@@ -170,10 +170,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -191,10 +191,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -212,10 +212,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -233,10 +233,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -254,10 +254,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -275,10 +275,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -296,10 +296,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -317,10 +317,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -338,10 +338,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFFFF)
 
         def __str__(self):
@@ -359,10 +359,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -382,10 +382,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.dlpf & 0x7) << 0) | ((self.extSyncSet & 0x7) << 3) | ((self.fifoMode & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.dlpf = ((value >> 0) & 0x7)
             self.extSyncSet = ((value >> 3) & 0x7)
             self.fifoMode = ((value >> 6) & 0x1)
@@ -410,10 +410,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.fChoiceBypass & 0x3) << 0) | ((self.gyroScale & 0x3) << 3) | ((self.zGyroCten & 0x1) << 5) | ((self.yGyroCten & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.fChoiceBypass = ((value >> 0) & 0x3)
             self.gyroScale = ((value >> 3) & 0x3)
             self.zGyroCten = ((value >> 5) & 0x1)
@@ -440,10 +440,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.accelScale & 0x3) << 3) | ((self.accelZselfTest & 0x1) << 5) | ((self.accelYselfTest & 0x1) << 6) | ((self.accelXselfTest & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.accelScale = ((value >> 3) & 0x3)
             self.accelZselfTest = ((value >> 5) & 0x1)
             self.accelYselfTest = ((value >> 6) & 0x1)
@@ -468,10 +468,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.dlpfCfg & 0x7) << 0) | ((self.accelFchoice & 0x1) << 3)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.dlpfCfg = ((value >> 0) & 0x7)
             self.accelFchoice = ((value >> 3) & 0x1)
 
@@ -491,10 +491,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xF)
 
         def __str__(self):
@@ -512,10 +512,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -540,10 +540,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.slv0 & 0x1) << 0) | ((self.slv1 & 0x1) << 1) | ((self.slv2 & 0x1) << 2) | ((self.accel & 0x1) << 3) | ((self.gyroZout & 0x1) << 4) | ((self.gyroYout & 0x1) << 5) | ((self.gyroXout & 0x1) << 6) | ((self.tempOut & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.slv0 = ((value >> 0) & 0x1)
             self.slv1 = ((value >> 1) & 0x1)
             self.slv2 = ((value >> 2) & 0x1)
@@ -579,10 +579,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.i2cMasterClock & 0xF) << 0) | ((self.i2cMstPnsr & 0x1) << 4) | ((self.slv3FifoEn & 0x1) << 5) | ((self.waitForEs & 0x1) << 6) | ((self.multMstEn & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.i2cMasterClock = ((value >> 0) & 0xF)
             self.i2cMstPnsr = ((value >> 4) & 0x1)
             self.slv3FifoEn = ((value >> 5) & 0x1)
@@ -609,10 +609,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.id & 0x7F) << 0) | ((self.rnw & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.id = ((value >> 0) & 0x7F)
             self.rnw = ((value >> 7) & 0x1)
 
@@ -632,10 +632,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -653,10 +653,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -675,10 +675,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.id & 0x7F) << 0) | ((self.rnw & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.id = ((value >> 0) & 0x7F)
             self.rnw = ((value >> 7) & 0x1)
 
@@ -698,10 +698,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -719,10 +719,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -741,10 +741,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.id & 0x7F) << 0) | ((self.rnw & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.id = ((value >> 0) & 0x7F)
             self.rnw = ((value >> 7) & 0x1)
 
@@ -764,10 +764,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -785,10 +785,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -807,10 +807,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.id & 0x7F) << 0) | ((self.rnw & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.id = ((value >> 0) & 0x7F)
             self.rnw = ((value >> 7) & 0x1)
 
@@ -830,10 +830,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -851,10 +851,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -873,10 +873,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.id & 0x7F) << 0) | ((self.rnw & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.id = ((value >> 0) & 0x7F)
             self.rnw = ((value >> 7) & 0x1)
 
@@ -896,10 +896,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -917,10 +917,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -938,10 +938,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -959,10 +959,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -987,10 +987,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.slv0Nack & 0x1) << 0) | ((self.slv1Nack & 0x1) << 1) | ((self.slv2Nack & 0x1) << 2) | ((self.slv3Nack & 0x1) << 3) | ((self.slv4Nack & 0x1) << 4) | ((self.lostArb & 0x1) << 5) | ((self.slv4Done & 0x1) << 6) | ((self.passThrough & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.slv0Nack = ((value >> 0) & 0x1)
             self.slv1Nack = ((value >> 1) & 0x1)
             self.slv2Nack = ((value >> 2) & 0x1)
@@ -1028,10 +1028,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.bypassEn & 0x1) << 1) | ((self.fsyncIntModeEnable & 0x1) << 2) | ((self.actlFsync & 0x1) << 3) | ((self.intAnyRd2Clear & 0x1) << 4) | ((self.latchIntEn & 0x1) << 5) | ((self.open & 0x1) << 6) | ((self.actl & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.bypassEn = ((value >> 1) & 0x1)
             self.fsyncIntModeEnable = ((value >> 2) & 0x1)
             self.actlFsync = ((value >> 3) & 0x1)
@@ -1065,10 +1065,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.RawReadyEnable & 0x1) << 0) | ((self.fsyncIntEnable & 0x1) << 2) | ((self.fifoIntEnable & 0x1) << 3) | ((self.fifoOverflowEnable & 0x1) << 4) | ((self.womEnable & 0x1) << 1)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.RawReadyEnable = ((value >> 0) & 0x1)
             self.fsyncIntEnable = ((value >> 2) & 0x1)
             self.fifoIntEnable = ((value >> 3) & 0x1)
@@ -1097,10 +1097,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.rawDataReadyInt & 0x1) << 0) | ((self.fsyncInt & 0x1) << 2) | ((self.fifoOverflowInt & 0x1) << 3) | ((self.womInt & 0x1) << 1)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.rawDataReadyInt = ((value >> 0) & 0x1)
             self.fsyncInt = ((value >> 2) & 0x1)
             self.fifoOverflowInt = ((value >> 3) & 0x1)
@@ -1124,10 +1124,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1145,10 +1145,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1166,10 +1166,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1187,10 +1187,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1208,10 +1208,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1229,10 +1229,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1250,10 +1250,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFF, 16)
 
         def __str__(self):
@@ -1271,10 +1271,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x0) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x0)
 
         def __str__(self):
@@ -1292,10 +1292,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1313,10 +1313,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1334,10 +1334,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1355,10 +1355,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1381,10 +1381,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.slv0DelayEn & 0x1) << 0) | ((self.slv1DelayEn & 0x1) << 1) | ((self.slv2DelayEn & 0x1) << 2) | ((self.slv3DelayEn & 0x1) << 3) | ((self.slv4DelayEn & 0x1) << 4) | ((self.delayEsShadow & 0x1) << 2)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.slv0DelayEn = ((value >> 0) & 0x1)
             self.slv1DelayEn = ((value >> 1) & 0x1)
             self.slv2DelayEn = ((value >> 2) & 0x1)
@@ -1414,10 +1414,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.tempReset & 0x1) << 0) | ((self.accelReset & 0x1) << 1) | ((self.gyroReset & 0x1) << 2)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.tempReset = ((value >> 0) & 0x1)
             self.accelReset = ((value >> 1) & 0x1)
             self.gyroReset = ((value >> 2) & 0x1)
@@ -1440,10 +1440,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.accelIntelMode & 0x1) << 6) | ((self.accelIntelEnable & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.accelIntelMode = ((value >> 6) & 0x1)
             self.accelIntelEnable = ((value >> 7) & 0x1)
 
@@ -1468,10 +1468,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.sigConditionReset & 0x1) << 0) | ((self.i2cMasterReset & 0x1) << 1) | ((self.fifoReset & 0x1) << 2) | ((self.i2cIfDisable & 0x1) << 1) | ((self.i2cMasterEnable & 0x1) << 2) | ((self.fifoEnable & 0x1) << 3)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.sigConditionReset = ((value >> 0) & 0x1)
             self.i2cMasterReset = ((value >> 1) & 0x1)
             self.fifoReset = ((value >> 2) & 0x1)
@@ -1504,10 +1504,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.clockSel & 0x7) << 0) | ((self.powerDownPtat & 0x1) << 3) | ((self.gyroStandby & 0x1) << 4) | ((self.cycle & 0x1) << 5) | ((self.sleep & 0x1) << 6) | ((self.reset & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.clockSel = ((value >> 0) & 0x7)
             self.powerDownPtat = ((value >> 3) & 0x1)
             self.gyroStandby = ((value >> 4) & 0x1)
@@ -1540,10 +1540,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.disableZG & 0x1) << 0) | ((self.disableYG & 0x1) << 1) | ((self.disableXG & 0x1) << 2) | ((self.disableZA & 0x1) << 3) | ((self.disableYA & 0x1) << 4) | ((self.disableXA & 0x1) << 5)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.disableZG = ((value >> 0) & 0x1)
             self.disableYG = ((value >> 1) & 0x1)
             self.disableXG = ((value >> 2) & 0x1)
@@ -1571,10 +1571,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x1FFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0x1FFF)
 
         def __str__(self):
@@ -1592,10 +1592,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1613,10 +1613,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 0) & 0xFF)
 
         def __str__(self):
@@ -1634,10 +1634,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7FFF) << 1)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 1) & 0x7FFF)
 
         def __str__(self):
@@ -1655,10 +1655,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7FFF) << 1)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 1) & 0x7FFF)
 
         def __str__(self):
@@ -1676,10 +1676,10 @@ class Mpu6050Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0x7FFF) << 1)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = ((value >> 1) & 0x7FFF)
 
         def __str__(self):

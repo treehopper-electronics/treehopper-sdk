@@ -46,9 +46,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             mag = new Ak8975(i2c);
             mag.AutoUpdateWhenPropertyRead = false;
-            _registers.IntPinCfg.BypassEn = 1;
-            _registers.IntPinCfg.LatchIntEn = 1;
-            Task.Run(_registers.IntPinCfg.Write).Wait();
+            _registers.intPinCfg.bypassEn = 1;
+            _registers.intPinCfg.latchIntEn = 1;
+            Task.Run(_registers.intPinCfg.write).Wait();
         }
 
         /// <summary>

@@ -33,19 +33,19 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
         public async Task Update()
         {
-            _registers.Control.Mode = 1;
-            Task.Run(_registers.Control.Write).Wait();
+            _registers.control.mode = 1;
+            Task.Run(_registers.control.write).Wait();
             while(true)
             {
-                await _registers.Status1.Read().ConfigureAwait(false);
-                if (_registers.Status1.Drdy == 1)
+                await _registers.status1.read().ConfigureAwait(false);
+                if (_registers.status1.drdy == 1)
                     break;
             }
 
-            await _registers.ReadRange(_registers.Hx, _registers.Hz).ConfigureAwait(false);
-            _magnetometer.X = _registers.Hx.Value;
-            _magnetometer.Y = _registers.Hy.Value;
-            _magnetometer.Z = _registers.Hz.Value;
+            await _registers.readRange(_registers.hx, _registers.hz).ConfigureAwait(false);
+            _magnetometer.X = _registers.hx.value;
+            _magnetometer.Y = _registers.hy.value;
+            _magnetometer.Z = _registers.hz.value;
         }
     }
 }

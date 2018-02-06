@@ -47,10 +47,11 @@ class Mpu6050(Accelerometer, Gyroscope, Temperature):
         self._registers.accelConfig2.accelFchoice = 0
         self._registers.accelConfig2.dlpfCfg = 3
         self._registers.accelConfig2.write()
+        self.accel_scale = 2
 
     @property
     def accel_scale(self):
-        return self._registers.accelConfig.accelScale
+        return 2*pow(2, self._registers.accelConfig.accelScale)
 
     @accel_scale.setter
     def accel_scale(self, value: int):
@@ -60,7 +61,7 @@ class Mpu6050(Accelerometer, Gyroscope, Temperature):
         self._registers.accelConfig.write()
 
     def update(self):
-        self._registers.read_range(self._registers.accel_x, self._registers.gyro_z)
+        self._registers.readRange(self._registers.accel_x, self._registers.gyro_z)
         self._accelerometer = [self._registers.accel_x.value * self.accel_scale / 32768.0,
                                self._registers.accel_y.value * self.accel_scale / 32768.0,
                                self._registers.accel_z.value * self.accel_scale / 32768.0]

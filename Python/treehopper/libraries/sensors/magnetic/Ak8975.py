@@ -18,7 +18,7 @@ class Ak8975(Magnetometer):
             if self._registers.status1.drdy:
                 break
 
-        self._registers.read_range(self._registers.hx, self._registers.hz)
+        self._registers.readRange(self._registers.hx, self._registers.hz)
         self._magnetometer = [self._registers.hx.value,
                              self._registers.hy.value,
                              self._registers.hz.value]

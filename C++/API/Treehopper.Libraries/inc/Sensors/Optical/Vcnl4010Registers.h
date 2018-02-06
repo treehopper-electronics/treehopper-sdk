@@ -19,199 +19,199 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Optic
             class CommandRegister
             {
                 public:
-                int SelfTimedEnable;
-                int ProxPeriodicEnable;
-                int AlsPeriodicEnable;
-                int ProxOnDemandStart;
-                int AlsOnDemandStart;
-                int ProxDataReady;
-                int AlsDataReady;
-                int ConfigLock;
+                int selfTimedEnable;
+                int proxPeriodicEnable;
+                int alsPeriodicEnable;
+                int proxOnDemandStart;
+                int alsOnDemandStart;
+                int proxDataReady;
+                int alsDataReady;
+                int configLock;
 
                 long getValue() { return ((SelfTimedEnable & 0x1) << 0) | ((ProxPeriodicEnable & 0x1) << 1) | ((AlsPeriodicEnable & 0x1) << 2) | ((ProxOnDemandStart & 0x1) << 3) | ((AlsOnDemandStart & 0x1) << 4) | ((ProxDataReady & 0x1) << 5) | ((AlsDataReady & 0x1) << 6) | ((ConfigLock & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    SelfTimedEnable = (int)((value >> 0) & 0x1);
-                    ProxPeriodicEnable = (int)((value >> 1) & 0x1);
-                    AlsPeriodicEnable = (int)((value >> 2) & 0x1);
-                    ProxOnDemandStart = (int)((value >> 3) & 0x1);
-                    AlsOnDemandStart = (int)((value >> 4) & 0x1);
-                    ProxDataReady = (int)((value >> 5) & 0x1);
-                    AlsDataReady = (int)((value >> 6) & 0x1);
-                    ConfigLock = (int)((value >> 7) & 0x1);
+                    selfTimedEnable = (int)((value >> 0) & 0x1);
+                    proxPeriodicEnable = (int)((value >> 1) & 0x1);
+                    alsPeriodicEnable = (int)((value >> 2) & 0x1);
+                    proxOnDemandStart = (int)((value >> 3) & 0x1);
+                    alsOnDemandStart = (int)((value >> 4) & 0x1);
+                    proxDataReady = (int)((value >> 5) & 0x1);
+                    alsDataReady = (int)((value >> 6) & 0x1);
+                    configLock = (int)((value >> 7) & 0x1);
                 }
             };
 
             class ProductIdRegister
             {
                 public:
-                int RevisionId;
-                int ProductId;
+                int revisionId;
+                int productId;
 
                 long getValue() { return ((RevisionId & 0xF) << 0) | ((ProductId & 0xF) << 4); }
                 void setValue(long value)
                 {
-                    RevisionId = (int)((value >> 0) & 0xF);
-                    ProductId = (int)((value >> 4) & 0xF);
+                    revisionId = (int)((value >> 0) & 0xF);
+                    productId = (int)((value >> 4) & 0xF);
                 }
             };
 
             class ProximityRateRegister
             {
                 public:
-                int Rate;
+                int rate;
 
                 long getValue() { return ((Rate & 0xF) << 0); }
                 void setValue(long value)
                 {
-                    Rate = (int)((value >> 0) & 0xF);
+                    rate = (int)((value >> 0) & 0xF);
                 }
             };
 
             class LedCurrentRegister
             {
                 public:
-                int IrLedCurrentValue;
-                int FuseProgId;
+                int irLedCurrentValue;
+                int fuseProgId;
 
                 long getValue() { return ((IrLedCurrentValue & 0x3F) << 0) | ((FuseProgId & 0x3) << 6); }
                 void setValue(long value)
                 {
-                    IrLedCurrentValue = (int)((value >> 0) & 0x3F);
-                    FuseProgId = (int)((value >> 6) & 0x3);
+                    irLedCurrentValue = (int)((value >> 0) & 0x3F);
+                    fuseProgId = (int)((value >> 6) & 0x3);
                 }
             };
 
             class AmbientLightParametersRegister
             {
                 public:
-                int AveragingSamples;
-                int AutoOffsetCompensation;
-                int AlsRate;
-                int ContinuousConversionMode;
+                int averagingSamples;
+                int autoOffsetCompensation;
+                int alsRate;
+                int continuousConversionMode;
 
                 long getValue() { return ((AveragingSamples & 0x7) << 0) | ((AutoOffsetCompensation & 0x1) << 3) | ((AlsRate & 0x7) << 4) | ((ContinuousConversionMode & 0x1) << 7); }
                 void setValue(long value)
                 {
-                    AveragingSamples = (int)((value >> 0) & 0x7);
-                    AutoOffsetCompensation = (int)((value >> 3) & 0x1);
-                    AlsRate = (int)((value >> 4) & 0x7);
-                    ContinuousConversionMode = (int)((value >> 7) & 0x1);
+                    averagingSamples = (int)((value >> 0) & 0x7);
+                    autoOffsetCompensation = (int)((value >> 3) & 0x1);
+                    alsRate = (int)((value >> 4) & 0x7);
+                    continuousConversionMode = (int)((value >> 7) & 0x1);
                 }
             };
 
             class AmbientLightResultRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((value >> 0) & 0xFFFF);
                 }
             };
 
             class ProximityResultRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((value >> 0) & 0xFFFF);
                 }
             };
 
             class InterruptControlRegister
             {
                 public:
-                int InterruptThresholdSelect;
-                int InterruptThresholdEnable;
-                int InterruptAlsReadyEnable;
-                int IntCountExceed;
+                int interruptThresholdSelect;
+                int interruptThresholdEnable;
+                int interruptAlsReadyEnable;
+                int intCountExceed;
 
                 long getValue() { return ((InterruptThresholdSelect & 0x1) << 0) | ((InterruptThresholdEnable & 0x1) << 1) | ((InterruptAlsReadyEnable & 0x1) << 2) | ((IntCountExceed & 0x7) << 5); }
                 void setValue(long value)
                 {
-                    InterruptThresholdSelect = (int)((value >> 0) & 0x1);
-                    InterruptThresholdEnable = (int)((value >> 1) & 0x1);
-                    InterruptAlsReadyEnable = (int)((value >> 2) & 0x1);
-                    IntCountExceed = (int)((value >> 5) & 0x7);
+                    interruptThresholdSelect = (int)((value >> 0) & 0x1);
+                    interruptThresholdEnable = (int)((value >> 1) & 0x1);
+                    interruptAlsReadyEnable = (int)((value >> 2) & 0x1);
+                    intCountExceed = (int)((value >> 5) & 0x7);
                 }
             };
 
             class LowThresholdRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((value >> 0) & 0xFFFF);
                 }
             };
 
             class HighThresholdRegister
             {
                 public:
-                int Value;
+                int value;
 
                 long getValue() { return ((Value & 0xFFFF) << 0); }
                 void setValue(long value)
                 {
-                    Value = (int)((value >> 0) & 0xFFFF);
+                    value = (int)((value >> 0) & 0xFFFF);
                 }
             };
 
             class InterruptStatusRegister
             {
                 public:
-                int IntThresholdHighExceeded;
-                int IntThresholdLowExceeded;
-                int IntAlsReady;
-                int IntProxReady;
+                int intThresholdHighExceeded;
+                int intThresholdLowExceeded;
+                int intAlsReady;
+                int intProxReady;
 
                 long getValue() { return ((IntThresholdHighExceeded & 0x1) << 0) | ((IntThresholdLowExceeded & 0x1) << 1) | ((IntAlsReady & 0x1) << 2) | ((IntProxReady & 0x1) << 3); }
                 void setValue(long value)
                 {
-                    IntThresholdHighExceeded = (int)((value >> 0) & 0x1);
-                    IntThresholdLowExceeded = (int)((value >> 1) & 0x1);
-                    IntAlsReady = (int)((value >> 2) & 0x1);
-                    IntProxReady = (int)((value >> 3) & 0x1);
+                    intThresholdHighExceeded = (int)((value >> 0) & 0x1);
+                    intThresholdLowExceeded = (int)((value >> 1) & 0x1);
+                    intAlsReady = (int)((value >> 2) & 0x1);
+                    intProxReady = (int)((value >> 3) & 0x1);
                 }
             };
 
             class ProxModulatorTimingAdustmentRegister
             {
                 public:
-                int ModulationDeadTime;
-                int ProximityFrequency;
-                int ModulationDelayTime;
+                int modulationDeadTime;
+                int proximityFrequency;
+                int modulationDelayTime;
 
                 long getValue() { return ((ModulationDeadTime & 0x7) << 0) | ((ProximityFrequency & 0x3) << 3) | ((ModulationDelayTime & 0x7) << 5); }
                 void setValue(long value)
                 {
-                    ModulationDeadTime = (int)((value >> 0) & 0x7);
-                    ProximityFrequency = (int)((value >> 3) & 0x3);
-                    ModulationDelayTime = (int)((value >> 5) & 0x7);
+                    modulationDeadTime = (int)((value >> 0) & 0x7);
+                    proximityFrequency = (int)((value >> 3) & 0x3);
+                    modulationDelayTime = (int)((value >> 5) & 0x7);
                 }
             };
 
-            CommandRegister Command;
-            ProductIdRegister ProductId;
-            ProximityRateRegister ProximityRate;
-            LedCurrentRegister LedCurrent;
-            AmbientLightParametersRegister AmbientLightParameters;
-            AmbientLightResultRegister AmbientLightResult;
-            ProximityResultRegister ProximityResult;
-            InterruptControlRegister InterruptControl;
-            LowThresholdRegister LowThreshold;
-            HighThresholdRegister HighThreshold;
-            InterruptStatusRegister InterruptStatus;
-            ProxModulatorTimingAdustmentRegister ProxModulatorTimingAdustment;
+            CommandRegister command;
+            ProductIdRegister productId;
+            ProximityRateRegister proximityRate;
+            LedCurrentRegister ledCurrent;
+            AmbientLightParametersRegister ambientLightParameters;
+            AmbientLightResultRegister ambientLightResult;
+            ProximityResultRegister proximityResult;
+            InterruptControlRegister interruptControl;
+            LowThresholdRegister lowThreshold;
+            HighThresholdRegister highThreshold;
+            InterruptStatusRegister interruptStatus;
+            ProxModulatorTimingAdustmentRegister proxModulatorTimingAdustment;
 
         void getBytes(long val, int width, bool isLittleEndian, uint8_t* output)
         {
@@ -240,13 +240,13 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Optic
         void flush()
         {
             uint8_t bytes[8];
-            getBytes(Command.getValue(), 1, , bytes);
+            getBytes(command.getValue(), 1, , bytes);
             _dev.writeBufferData(0x80, bytes, 1);
-            getBytes(ProximityRate.getValue(), 1, , bytes);
+            getBytes(proximityRate.getValue(), 1, , bytes);
             _dev.writeBufferData(0x82, bytes, 1);
-            getBytes(LedCurrent.getValue(), 1, , bytes);
+            getBytes(ledCurrent.getValue(), 1, , bytes);
             _dev.writeBufferData(0x83, bytes, 1);
-            getBytes(AmbientLightParameters.getValue(), 1, , bytes);
+            getBytes(ambientLightParameters.getValue(), 1, , bytes);
             _dev.writeBufferData(0x84, bytes, 1);
         }
 
@@ -255,11 +255,11 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Optic
             uint8_t bytes[7];
             int i = 0;
             _dev.readBufferData(130, bytes, 7);
-            ProductId.setValue(getValue(&bytes[i], 1, ));
+            productId.setValue(getValue(&bytes[i], 1, ));
             i += 1;
-            AmbientLightResult.setValue(getValue(&bytes[i], 2, ));
+            ambientLightResult.setValue(getValue(&bytes[i], 2, ));
             i += 2;
-            ProximityResult.setValue(getValue(&bytes[i], 2, ));
+            proximityResult.setValue(getValue(&bytes[i], 2, ));
             i += 2;
         }
 

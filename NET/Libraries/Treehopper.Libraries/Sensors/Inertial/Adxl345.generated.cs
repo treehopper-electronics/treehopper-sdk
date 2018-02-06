@@ -16,48 +16,48 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             internal Adxl345Registers(SMBusDevice dev = null) : base(dev, true)
             {
-                PowerCtl = new PowerCtlRegister(this);
-                _registers.Add(PowerCtl);
-                DataFormat = new DataFormatRegister(this);
-                _registers.Add(DataFormat);
-                DataX = new DataXRegister(this);
-                _registers.Add(DataX);
-                DataY = new DataYRegister(this);
-                _registers.Add(DataY);
-                DataZ = new DataZRegister(this);
-                _registers.Add(DataZ);
+                powerCtl = new PowerCtlRegister(this);
+                _registers.Add(powerCtl);
+                dataFormat = new DataFormatRegister(this);
+                _registers.Add(dataFormat);
+                dataX = new DataXRegister(this);
+                _registers.Add(dataX);
+                dataY = new DataYRegister(this);
+                _registers.Add(dataY);
+                dataZ = new DataZRegister(this);
+                _registers.Add(dataZ);
             }
 
-            internal PowerCtlRegister PowerCtl;
-            internal DataFormatRegister DataFormat;
-            internal DataXRegister DataX;
-            internal DataYRegister DataY;
-            internal DataZRegister DataZ;
+            internal PowerCtlRegister powerCtl;
+            internal DataFormatRegister dataFormat;
+            internal DataXRegister dataX;
+            internal DataYRegister dataY;
+            internal DataZRegister dataZ;
 
             internal class PowerCtlRegister : Register
             {
                 internal PowerCtlRegister(RegisterManager regManager) : base(regManager, 0x2D, 1, false) { }
 
-                public int Sleep { get; set; }
-                public int Measure { get; set; }
+                public int sleep { get; set; }
+                public int measure { get; set; }
 
-                public async Task<PowerCtlRegister> Read()
+                public async Task<PowerCtlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Sleep & 0x1) << 2) | ((Measure & 0x1) << 3); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((sleep & 0x1) << 2) | ((measure & 0x1) << 3); }
+                internal override void setValue(long _value)
                 {
-                    Sleep = (int)((value >> 2) & 0x1);
-                    Measure = (int)((value >> 3) & 0x1);
+                    sleep = (int)((_value >> 2) & 0x1);
+                    measure = (int)((_value >> 3) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Sleep: { Sleep } (offset: 2, width: 1)\r\n";
-                    retVal += $"Measure: { Measure } (offset: 3, width: 1)\r\n";
+                    retVal += $"Sleep: { sleep } (offset: 2, width: 1)\r\n";
+                    retVal += $"Measure: { measure } (offset: 3, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -65,29 +65,29 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal DataFormatRegister(RegisterManager regManager) : base(regManager, 0x31, 1, false) { }
 
-                public int Range { get; set; }
-                public int Justify { get; set; }
-                public int FullRes { get; set; }
+                public int range { get; set; }
+                public int justify { get; set; }
+                public int fullRes { get; set; }
 
-                public async Task<DataFormatRegister> Read()
+                public async Task<DataFormatRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Range & 0x3) << 0) | ((Justify & 0x1) << 2) | ((FullRes & 0x1) << 3); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((range & 0x3) << 0) | ((justify & 0x1) << 2) | ((fullRes & 0x1) << 3); }
+                internal override void setValue(long _value)
                 {
-                    Range = (int)((value >> 0) & 0x3);
-                    Justify = (int)((value >> 2) & 0x1);
-                    FullRes = (int)((value >> 3) & 0x1);
+                    range = (int)((_value >> 0) & 0x3);
+                    justify = (int)((_value >> 2) & 0x1);
+                    fullRes = (int)((_value >> 3) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Range: { Range } (offset: 0, width: 2)\r\n";
-                    retVal += $"Justify: { Justify } (offset: 2, width: 1)\r\n";
-                    retVal += $"FullRes: { FullRes } (offset: 3, width: 1)\r\n";
+                    retVal += $"Range: { range } (offset: 0, width: 2)\r\n";
+                    retVal += $"Justify: { justify } (offset: 2, width: 1)\r\n";
+                    retVal += $"FullRes: { fullRes } (offset: 3, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -95,23 +95,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal DataXRegister(RegisterManager regManager) : base(regManager, 0x32, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<DataXRegister> Read()
+                public async Task<DataXRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x1FFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x1FFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+                    value = (int)(((_value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 13)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 13)\r\n";
                     return retVal;
                 }
             }
@@ -119,23 +119,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal DataYRegister(RegisterManager regManager) : base(regManager, 0x34, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<DataYRegister> Read()
+                public async Task<DataYRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x1FFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x1FFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+                    value = (int)(((_value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 13)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 13)\r\n";
                     return retVal;
                 }
             }
@@ -143,23 +143,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal DataZRegister(RegisterManager regManager) : base(regManager, 0x36, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<DataZRegister> Read()
+                public async Task<DataZRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x1FFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x1FFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
+                    value = (int)(((_value >> 0) & 0x1FFF) << (32 - 13)) >> (32 - 13);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 13)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 13)\r\n";
                     return retVal;
                 }
             }

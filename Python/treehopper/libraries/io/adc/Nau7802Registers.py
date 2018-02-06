@@ -3,7 +3,7 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class Gains:
+class gain:
     x1 = 0
     x4 = 1
     x2 = 2
@@ -13,7 +13,7 @@ class Gains:
     x64 = 6
     x128 = 7
     
-class LdoVoltage:
+class vldo:
     mV_4500 = 0
     mV_4200 = 1
     mV_3900 = 2
@@ -23,25 +23,25 @@ class LdoVoltage:
     mV_2700 = 6
     mV_2400 = 7
     
-class CalMods:
+class calMod:
     OffsetCalibrationInternal = 0
     Reserved = 1
     OffsetCalibrationSystem = 2
     GainCalibrationSystem = 3
     
-class ConversionRates:
+class conversionRate:
     Sps_10 = 0
     Sps_20 = 1
     Sps_40 = 2
     Sps_80 = 3
     Sps_320 = 7
     
-class AdcVcms:
+class adcVcm:
     ExtendedCommonModeRefp = 3
     ExtendedCommonModeRefn = 2
     disable = 0
     
-class RegChpFreqs:
+class regChpFreq:
     off = 3
     
 class Nau7802Registers(RegisterManager):
@@ -81,10 +81,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.registerReset & 0x1) << 0) | ((self.powerUpDigital & 0x1) << 1) | ((self.powerUpAnalog & 0x1) << 2) | ((self.powerUpReady & 0x1) << 3) | ((self.cycleStart & 0x1) << 4) | ((self.cycleReady & 0x1) << 5) | ((self.useExternalCrystal & 0x1) << 6) | ((self.useInternalLdo & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.registerReset = ((value >> 0) & 0x1)
             self.powerUpDigital = ((value >> 1) & 0x1)
             self.powerUpAnalog = ((value >> 2) & 0x1)
@@ -119,10 +119,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.gain & 0x7) << 0) | ((self.vldo & 0x7) << 3) | ((self.drdySelect & 0x1) << 6) | ((self.conversionReadyPinPolarity & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.gain = ((value >> 0) & 0x7)
             self.vldo = ((value >> 3) & 0x7)
             self.drdySelect = ((value >> 6) & 0x1)
@@ -150,10 +150,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.calMod & 0x3) << 0) | ((self.calStart & 0x1) << 2) | ((self.calError & 0x1) << 3) | ((self.conversionRate & 0x7) << 4) | ((self.channelSelect & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.calMod = ((value >> 0) & 0x3)
             self.calStart = ((value >> 2) & 0x1)
             self.calError = ((value >> 3) & 0x1)
@@ -186,10 +186,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.bgpCp & 0x1) << 0) | ((self.ts & 0x1) << 1) | ((self.boPga & 0x1) << 2) | ((self.si & 0x1) << 3) | ((self.wpd & 0x1) << 4) | ((self.spe & 0x1) << 5) | ((self.frd & 0x1) << 6) | ((self.crsd & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.bgpCp = ((value >> 0) & 0x1)
             self.ts = ((value >> 1) & 0x1)
             self.boPga = ((value >> 2) & 0x1)
@@ -221,10 +221,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.value & 0xFFFFFF) << 0)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.value = sign_extend((value >> 0) & 0xFFFFFF, 24)
 
         def __str__(self):
@@ -244,10 +244,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.regChp & 0x3) << 0) | ((self.adcVcm & 0x3) << 2) | ((self.regChpFreq & 0x3) << 4)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.regChp = ((value >> 0) & 0x3)
             self.adcVcm = ((value >> 2) & 0x3)
             self.regChpFreq = ((value >> 4) & 0x3)
@@ -273,10 +273,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.disableChopper & 0x1) << 0) | ((self.pgaInv & 0x1) << 3) | ((self.pgaBypass & 0x1) << 4) | ((self.ldoMode & 0x1) << 5) | ((self.rdOptSel & 0x1) << 6)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.disableChopper = ((value >> 0) & 0x1)
             self.pgaInv = ((value >> 3) & 0x1)
             self.pgaBypass = ((value >> 4) & 0x1)
@@ -305,10 +305,10 @@ class Nau7802Registers(RegisterManager):
             self._manager.read(self)
             return self
             
-        def get_value(self):
+        def getValue(self):
             return ((self.pgaCurr & 0x3) << 0) | ((self.adcCurr & 0x3) << 2) | ((self.masterBiasCurr & 0x7) << 4) | ((self.pgaCapEn & 0x1) << 7)
 
-        def set_value(self, value: int):
+        def setValue(self, value: int):
             self.pgaCurr = ((value >> 0) & 0x3)
             self.adcCurr = ((value >> 2) & 0x3)
             self.masterBiasCurr = ((value >> 4) & 0x7)

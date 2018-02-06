@@ -58,42 +58,42 @@ namespace Treehopper.Libraries.IO.Adc
         {
             internal Ads1115Registers(SMBusDevice dev = null) : base(dev, true)
             {
-                Conversion = new ConversionRegister(this);
-                _registers.Add(Conversion);
-                Config = new ConfigRegister(this);
-                _registers.Add(Config);
-                LowThreshold = new LowThresholdRegister(this);
-                _registers.Add(LowThreshold);
-                HighThreshold = new HighThresholdRegister(this);
-                _registers.Add(HighThreshold);
+                conversion = new ConversionRegister(this);
+                _registers.Add(conversion);
+                config = new ConfigRegister(this);
+                _registers.Add(config);
+                lowThreshold = new LowThresholdRegister(this);
+                _registers.Add(lowThreshold);
+                highThreshold = new HighThresholdRegister(this);
+                _registers.Add(highThreshold);
             }
 
-            internal ConversionRegister Conversion;
-            internal ConfigRegister Config;
-            internal LowThresholdRegister LowThreshold;
-            internal HighThresholdRegister HighThreshold;
+            internal ConversionRegister conversion;
+            internal ConfigRegister config;
+            internal LowThresholdRegister lowThreshold;
+            internal HighThresholdRegister highThreshold;
 
             internal class ConversionRegister : Register
             {
                 internal ConversionRegister(RegisterManager regManager) : base(regManager, 0x00, 2, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<ConversionRegister> Read()
+                public async Task<ConversionRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -101,55 +101,55 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal ConfigRegister(RegisterManager regManager) : base(regManager, 0x01, 2, false) { }
 
-                public int ComparatorQueue { get; set; }
-                public int LatchingComparator { get; set; }
-                public int ComparatorPolarity { get; set; }
-                public int ComparatorMode { get; set; }
-                public int DataRate { get; set; }
-                public int OperatingMode { get; set; }
-                public int Pga { get; set; }
-                public int Mux { get; set; }
-                public int OperationalStatus { get; set; }
-                public ComparatorQueues GetComparatorQueue() { return (ComparatorQueues)ComparatorQueue; }
-                public void SetComparatorQueue(ComparatorQueues enumVal) { ComparatorQueue = (int)enumVal; }
-                public DataRates GetDataRate() { return (DataRates)DataRate; }
-                public void SetDataRate(DataRates enumVal) { DataRate = (int)enumVal; }
-                public Pgas GetPga() { return (Pgas)Pga; }
-                public void SetPga(Pgas enumVal) { Pga = (int)enumVal; }
-                public Muxes GetMux() { return (Muxes)Mux; }
-                public void SetMux(Muxes enumVal) { Mux = (int)enumVal; }
+                public int comparatorQueue { get; set; }
+                public int latchingComparator { get; set; }
+                public int comparatorPolarity { get; set; }
+                public int comparatorMode { get; set; }
+                public int dataRate { get; set; }
+                public int operatingMode { get; set; }
+                public int pga { get; set; }
+                public int mux { get; set; }
+                public int operationalStatus { get; set; }
+                public ComparatorQueues getComparatorQueue() { return (ComparatorQueues)comparatorQueue; }
+                public void setComparatorQueue(ComparatorQueues enumVal) { comparatorQueue = (int)enumVal; }
+                public DataRates getDataRate() { return (DataRates)dataRate; }
+                public void setDataRate(DataRates enumVal) { dataRate = (int)enumVal; }
+                public Pgas getPga() { return (Pgas)pga; }
+                public void setPga(Pgas enumVal) { pga = (int)enumVal; }
+                public Muxes getMux() { return (Muxes)mux; }
+                public void setMux(Muxes enumVal) { mux = (int)enumVal; }
 
-                public async Task<ConfigRegister> Read()
+                public async Task<ConfigRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((ComparatorQueue & 0x3) << 0) | ((LatchingComparator & 0x1) << 2) | ((ComparatorPolarity & 0x1) << 3) | ((ComparatorMode & 0x1) << 4) | ((DataRate & 0x7) << 5) | ((OperatingMode & 0x1) << 8) | ((Pga & 0x7) << 9) | ((Mux & 0x7) << 12) | ((OperationalStatus & 0x1) << 15); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((comparatorQueue & 0x3) << 0) | ((latchingComparator & 0x1) << 2) | ((comparatorPolarity & 0x1) << 3) | ((comparatorMode & 0x1) << 4) | ((dataRate & 0x7) << 5) | ((operatingMode & 0x1) << 8) | ((pga & 0x7) << 9) | ((mux & 0x7) << 12) | ((operationalStatus & 0x1) << 15); }
+                internal override void setValue(long _value)
                 {
-                    ComparatorQueue = (int)((value >> 0) & 0x3);
-                    LatchingComparator = (int)((value >> 2) & 0x1);
-                    ComparatorPolarity = (int)((value >> 3) & 0x1);
-                    ComparatorMode = (int)((value >> 4) & 0x1);
-                    DataRate = (int)((value >> 5) & 0x7);
-                    OperatingMode = (int)((value >> 8) & 0x1);
-                    Pga = (int)((value >> 9) & 0x7);
-                    Mux = (int)((value >> 12) & 0x7);
-                    OperationalStatus = (int)((value >> 15) & 0x1);
+                    comparatorQueue = (int)((_value >> 0) & 0x3);
+                    latchingComparator = (int)((_value >> 2) & 0x1);
+                    comparatorPolarity = (int)((_value >> 3) & 0x1);
+                    comparatorMode = (int)((_value >> 4) & 0x1);
+                    dataRate = (int)((_value >> 5) & 0x7);
+                    operatingMode = (int)((_value >> 8) & 0x1);
+                    pga = (int)((_value >> 9) & 0x7);
+                    mux = (int)((_value >> 12) & 0x7);
+                    operationalStatus = (int)((_value >> 15) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"ComparatorQueue: { ComparatorQueue } (offset: 0, width: 2)\r\n";
-                    retVal += $"LatchingComparator: { LatchingComparator } (offset: 2, width: 1)\r\n";
-                    retVal += $"ComparatorPolarity: { ComparatorPolarity } (offset: 3, width: 1)\r\n";
-                    retVal += $"ComparatorMode: { ComparatorMode } (offset: 4, width: 1)\r\n";
-                    retVal += $"DataRate: { DataRate } (offset: 5, width: 3)\r\n";
-                    retVal += $"OperatingMode: { OperatingMode } (offset: 8, width: 1)\r\n";
-                    retVal += $"Pga: { Pga } (offset: 9, width: 3)\r\n";
-                    retVal += $"Mux: { Mux } (offset: 12, width: 3)\r\n";
-                    retVal += $"OperationalStatus: { OperationalStatus } (offset: 15, width: 1)\r\n";
+                    retVal += $"ComparatorQueue: { comparatorQueue } (offset: 0, width: 2)\r\n";
+                    retVal += $"LatchingComparator: { latchingComparator } (offset: 2, width: 1)\r\n";
+                    retVal += $"ComparatorPolarity: { comparatorPolarity } (offset: 3, width: 1)\r\n";
+                    retVal += $"ComparatorMode: { comparatorMode } (offset: 4, width: 1)\r\n";
+                    retVal += $"DataRate: { dataRate } (offset: 5, width: 3)\r\n";
+                    retVal += $"OperatingMode: { operatingMode } (offset: 8, width: 1)\r\n";
+                    retVal += $"Pga: { pga } (offset: 9, width: 3)\r\n";
+                    retVal += $"Mux: { mux } (offset: 12, width: 3)\r\n";
+                    retVal += $"OperationalStatus: { operationalStatus } (offset: 15, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -157,23 +157,23 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal LowThresholdRegister(RegisterManager regManager) : base(regManager, 0x02, 2, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<LowThresholdRegister> Read()
+                public async Task<LowThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }
@@ -181,23 +181,23 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal HighThresholdRegister(RegisterManager regManager) : base(regManager, 0x03, 2, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<HighThresholdRegister> Read()
+                public async Task<HighThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 16)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }

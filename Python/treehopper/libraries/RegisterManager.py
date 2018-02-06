@@ -10,7 +10,7 @@ class RegisterManager:
     def read(self, reg: Register):
         reg.set_bytes(self.dev.read_buffer_data(register=reg.address, num_bytes=reg.width))
 
-    def read_range(self, start: Register, end: Register):
+    def readRange(self, start: Register, end: Register):
         start_address = start.address
         count = end.address - start.address + end.width
         regs = [x for x in self.registers if start.address <= x.address <= end.address]
@@ -27,7 +27,7 @@ class RegisterManager:
     def write(self, reg: Register):
         self.dev.write_buffer_data(reg.address, reg.get_bytes())
 
-    def write_range(self, start: Register, end: Register):
+    def writeRange(self, start: Register, end: Register):
         start_address = start.address
         count = end.address - start.address + end.address
         regs = [x for x in self.registers if start.address <= x.address <= end.address]

@@ -18,13 +18,13 @@ namespace Treehopper.Libraries
             this.multiRegisterAccess = multiRegisterAccess;
         }
 
-        public async Task Read(Register register)
+        public async Task read(Register register)
         {
             var data = await _dev.ReadBufferData((byte) register.Address, register.Width).ConfigureAwait(false);
-            register.SetBytes(data);
+            register.setBytes(data);
         }
 
-        public async Task ReadRange(Register start, Register end)
+        public async Task readRange(Register start, Register end)
         {
             if (multiRegisterAccess)
             {
@@ -33,7 +33,7 @@ namespace Treehopper.Libraries
                 int i = 0;
                 foreach (var reg in _registers.Where(reg => reg.Address >= start.Address && reg.Address <= end.Address))
                 {
-                    reg.SetBytes(bytes.Skip(i).Take(reg.Width).ToArray());
+                    reg.setBytes(bytes.Skip(i).Take(reg.Width).ToArray());
                     i += reg.Width;
                 }
             }
@@ -41,25 +41,25 @@ namespace Treehopper.Libraries
             {
                 foreach (var reg in _registers.Where(reg => reg.Address >= start.Address && reg.Address <= end.Address))
                 {
-                    await Read(reg);
+                    await read(reg);
                 }
             }
 
         }
 
-        public Task Write(Register register)
+        public Task write(Register register)
         {
-            return _dev.WriteBufferData((byte) register.Address, register.GetBytes());
+            return _dev.WriteBufferData((byte) register.Address, register.getBytes());
         }
 
-        public async Task WriteRange(Register start, Register end)
+        public async Task writeRange(Register start, Register end)
         {
             if (multiRegisterAccess)
             {
                 List<byte> bytes = new List<byte>();
                 foreach (var reg in _registers.Where(reg => reg.Address >= start.Address && reg.Address <= end.Address))
                 {
-                    bytes.AddRange(reg.GetBytes());
+                    bytes.AddRange(reg.getBytes());
                 }
                 await _dev.WriteBufferData((byte) start.Address, bytes.ToArray()).ConfigureAwait(false);
             }
@@ -67,7 +67,7 @@ namespace Treehopper.Libraries
             {
                 foreach (var reg in _registers.Where(reg => reg.Address >= start.Address && reg.Address <= end.Address))
                 {
-                    await Write(reg).ConfigureAwait(false);
+                    await write(reg).ConfigureAwait(false);
                 }
             }
 

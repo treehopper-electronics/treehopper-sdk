@@ -20,17 +20,17 @@ namespace Treehopper.Libraries.Sensors.Inertial
             dev = new SMBusDevice((byte)(sdo ? 0x19 : 0x18), i2c);
             reg = new Lis3dhRegisters(dev);
 
-            if (reg.WhoAmI.Read().Result.Value != 0x33)
+            if (Task.Run(reg.whoAmI.read).Result.value != 0x33)
             {
                 Utility.Error("Incorrect chip ID found when addressing the LIS3DH");
             }
 
-            reg.Ctrl1.XAxisEnable = 1;
-            reg.Ctrl1.YAxisEnable = 1;
-            reg.Ctrl1.ZAxisEnable = 1;
-            reg.Ctrl1.SetOutputDataRate(OutputDataRates.Hz_1);
-            reg.Ctrl1.LowPowerEnable = 0;
-            reg.Ctrl1.Write().Wait();
+            reg.ctrl1.xAxisEnable = 1;
+            reg.ctrl1.yAxisEnable = 1;
+            reg.ctrl1.zAxisEnable = 1;
+            reg.ctrl1.setOutputDataRate(OutputDataRates.Hz_1);
+            reg.ctrl1.lowPowerEnable = 0;
+            Task.Run(reg.ctrl1.write).Wait();
 
             //reg.TempCfgReg.AdcEn = 1;
             //reg.TempCfgReg.TempEn = 1;
@@ -46,10 +46,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public int AwaitPollingInterval { get; set; } = 10;
         public async Task Update()
         {
-            await reg.ReadRange(reg.OutX, reg.OutZ).ConfigureAwait(false);
-            accel.X = (float) reg.OutX.Value;
-            accel.Y = (float)reg.OutY.Value;
-            accel.Z = (float)reg.OutZ.Value;
+            await reg.readRange(reg.outX, reg.outZ).ConfigureAwait(false);
+            accel.X = (float) reg.outX.value;
+            accel.Y = (float)reg.outY.value;
+            accel.Z = (float)reg.outZ.value;
         }
 
         public Vector3 Accelerometer
