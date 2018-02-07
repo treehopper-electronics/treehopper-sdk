@@ -91,6 +91,9 @@
     <None Include="Libraries\Sensors\Magnetic\Ak8975.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Libraries\Sensors\Optical\Tsl2591.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Templates\Registers.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -6,146 +6,102 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// <summary>
     ///     ams TSL2591 High-dynamic range digital light sensor
     /// </summary>
-    public class Tsl2591 : SMBusDevice
+    public partial class Tsl2591 : AmbientLight
     {
-        /// <summary>
-        ///     Gain settings
-        /// </summary>
-        public enum Gain
+
+        public static async Task<Tsl2591> Probe(I2C i2c)
         {
-            /// <summary>
-            ///     Low
-            /// </summary>
-            Low,
+            var dev = new SMBusDevice(0x29, i2c, 100);
+            var result = await dev.ReadByteData(0xB2);
+            if (result == 0x50)
+                return new Tsl2591(i2c);
 
-            /// <summary>
-            ///     Medium
-            /// </summary>
-            Medium,
-
-            /// <summary>
-            ///     High
-            /// </summary>
-            High,
-
-            /// <summary>
-            ///     Maximum
-            /// </summary>
-            Maximum
+            return null;
         }
 
-        /// <summary>
-        ///     Integration times
-        /// </summary>
-        public enum IntegrationTime
-        {
-            /// <summary>
-            ///     100 ms
-            /// </summary>
-            Time_100ms,
-
-            /// <summary>
-            ///     200 ms
-            /// </summary>
-            Time_200ms,
-
-            /// <summary>
-            ///     300 ms
-            /// </summary>
-            Time_300ms,
-
-            /// <summary>
-            ///     400 ms
-            /// </summary>
-            Time_400ms,
-
-            /// <summary>
-            ///     500 ms
-            /// </summary>
-            Time_500ms,
-
-            /// <summary>
-            ///     600 ms
-            /// </summary>
-            Time_600ms
-        }
-
-        private const byte CommandBit = 0xA0;
-        private const byte ReadBit = 0x01;
-
-        private Gain gain = Gain.Low;
-        private IntegrationTime integrationTime = IntegrationTime.Time_100ms;
-
+        private Tsl2591Registers registers;
 
         /// <summary>
         ///     Construct a TSL2591 ambient light sensor
         /// </summary>
-        /// <param name="I2cModule">The I2c module this sensor is attached to</param>
-        public Tsl2591(I2C I2cModule) : base(0x29, I2cModule, 100)
+        /// <param name="i2c">The I2c module this sensor is attached to</param>
+        public Tsl2591(I2C i2c)
         {
-            var t = ReadByteData(CommandBit | (byte) Registers.DeviceId);
-            t.Wait();
-            var retVal = t.Result;
-            if (retVal != 0x50)
-                throw new Exception("TSL2591 not found on bus. Check your connections");
+            registers = new Tsl2591Registers(new SMBusDevice(0x29, i2c, 100));
+            registers.enable.powerOn = 1;
+            registers.enable.alsEnable = 1;
+            Task.Run(registers.enable.write).Wait();
+        }
+
+        public int IntegrationTimeValue
+        {
+            get
+            {
+                return (registers.config.alsTime + 1) * 100;
+            }
+        }
+
+        public int GainSettingValue
+        {
+            get
+            {
+                switch (registers.config.getAlsGain())
+                {
+                    case AlsGains.Low:
+                    default:
+                        return 1;
+                    case AlsGains.Medium:
+                        return 25;
+                    case AlsGains.High:
+                        return 428;
+                    case AlsGains.Max:
+                        return 9876;
+                }
+            }
         }
 
         /// <summary>
         ///     Get or set the integration time of this sensor
         /// </summary>
-        public IntegrationTime IntegrationTimeSetting
+        public AlsTimes IntegrationTime
         {
-            get { return integrationTime; }
+            get
+            {
+                return registers.config.getAlsTime();
+            }
             set
             {
-                if (integrationTime == value)
+                if (registers.config.getAlsTime() == value)
                     return;
-                integrationTime = value;
-                sendConfig().Wait();
+
+                registers.config.setAlsTime(value);
+                Task.Run(registers.config.write).Wait();
             }
         }
 
         /// <summary>
         ///     Get or set the gain setting
         /// </summary>
-        public Gain GainSetting
+        public AlsGains GainSetting
         {
-            get { return gain; }
+            get
+            {
+                return registers.config.getAlsGain();
+            }
             set
             {
-                if (gain == value)
+                if (registers.config.getAlsGain() == value)
                     return;
-                gain = value;
-                sendConfig().Wait();
+                registers.config.setAlsGain(value);
+                Task.Run(registers.config.write).Wait();
             }
         }
 
-        private async Task sendConfig()
+        public override async Task Update()
         {
-            var config = (byte) ((byte) integrationTime | ((byte) gain << 4));
-            await WriteByteData((byte) Registers.Control, config);
-        }
-
-        private enum Registers
-        {
-            Enable = 0x00,
-            Control = 0x01,
-            InterruptLowThresholdLowByte = 0x04,
-            InterruptLowThresholdHighByte = 0x05,
-            InterruptHighThresholdLowByte = 0x06,
-            InterruptHighThresholdHighByte = 0x07,
-            NoPersistInterruptLowThresholdLowByte = 0x08,
-            NoPersistInterruptLowThresholdHighByte = 0x09,
-            NoPersistInterruptHighThresholdLowByte = 0x0A,
-            NoPersistInterruptHighThresholdHighByte = 0x0B,
-            InterruptPersistenceFilter = 0x0C,
-            PackageId = 0x11,
-            DeviceId = 0x12,
-            DeviceStatus = 0x13,
-            Ch0LowByte = 0x14,
-            Ch0HighByte = 0x15,
-            Ch1LowByte = 0x16,
-            Ch1HighByte = 0x17
+            await registers.readRange(registers.ch0, registers.ch1);
+            double cpl = (IntegrationTimeValue * GainSettingValue) / 408.0;
+            this.lux = (registers.ch0.value - registers.ch1.value) * (1.0 - ((double)registers.ch1.value / registers.ch0.value)) / cpl;
         }
     }
 }
