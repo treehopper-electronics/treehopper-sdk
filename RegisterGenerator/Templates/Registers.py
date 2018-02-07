@@ -6,7 +6,7 @@ from treehopper.libraries.Register import sign_extend
 {{#RegisterList}}
 {{#Values.Values}}
 {{#Enum}}
-class {{Name}}:
+class {{PluralizedName}}:
 {{#ValuesList}}
     {{Key}} = {{#Value}}{{Value}}{{/Value}}
 {{/ValuesList}}

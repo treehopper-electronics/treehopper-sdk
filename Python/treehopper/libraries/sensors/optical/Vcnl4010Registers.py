@@ -3,7 +3,7 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class rate:
+class Rates:
     Hz_1_95 = 0
     Hz_3_90625 = 1
     Hz_7_8125 = 2
@@ -13,7 +13,7 @@ class rate:
     Hz_125 = 6
     Hz_250 = 7
     
-class alsRate:
+class AlsRates:
     Hz_1 = 0
     Hz_2 = 1
     Hz_3 = 2
@@ -23,7 +23,7 @@ class alsRate:
     Hz_8 = 6
     Hz_10 = 7
     
-class intCountExceed:
+class IntCountExceeds:
     count_1 = 0
     count_2 = 1
     count_4 = 2

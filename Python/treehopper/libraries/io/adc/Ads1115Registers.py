@@ -3,13 +3,13 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class comparatorQueue:
+class ComparatorQueues:
     AssertAfterOneConversion = 0
     AssertAfterTwoConversions = 1
     AssertAfterFourConversions = 2
     DisableComparator = 3
     
-class dataRate:
+class DataRates:
     Sps_8 = 0
     Sps_16 = 1
     Sps_32 = 2
@@ -19,7 +19,7 @@ class dataRate:
     Sps_475 = 6
     Sps_860 = 7
     
-class pga:
+class Pgas:
     Fsr_6144 = 0
     Fsr_4096 = 1
     Fsr_2048 = 2
@@ -27,7 +27,7 @@ class pga:
     Fsr_512 = 4
     Fsr_256 = 5
     
-class mux:
+class Muxes:
     ain0_ain1 = 0
     ain0_ain3 = 1
     ain1_ain3 = 2

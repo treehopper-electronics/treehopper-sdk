@@ -3,7 +3,7 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class gain:
+class Gains:
     x1 = 0
     x4 = 1
     x2 = 2
@@ -13,7 +13,7 @@ class gain:
     x64 = 6
     x128 = 7
     
-class vldo:
+class Vldoes:
     mV_4500 = 0
     mV_4200 = 1
     mV_3900 = 2
@@ -23,25 +23,25 @@ class vldo:
     mV_2700 = 6
     mV_2400 = 7
     
-class calMod:
+class CalMods:
     OffsetCalibrationInternal = 0
     Reserved = 1
     OffsetCalibrationSystem = 2
     GainCalibrationSystem = 3
     
-class conversionRate:
+class ConversionRates:
     Sps_10 = 0
     Sps_20 = 1
     Sps_40 = 2
     Sps_80 = 3
     Sps_320 = 7
     
-class adcVcm:
+class AdcVcms:
     ExtendedCommonModeRefp = 3
     ExtendedCommonModeRefn = 2
     disable = 0
     
-class regChpFreq:
+class RegChpFreqs:
     off = 3
     
 class Nau7802Registers(RegisterManager):

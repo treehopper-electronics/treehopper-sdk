@@ -3,7 +3,7 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class extSyncSet:
+class ExtSyncSets:
     Disabled = 0
     TempOutL = 1
     GyroXoutL = 2
@@ -13,19 +13,19 @@ class extSyncSet:
     AccelYoutL = 6
     AccelZoutL = 7
     
-class gyroScale:
+class GyroScales:
     Dps_250 = 0
     Dps_500 = 1
     Dps_1000 = 2
     Dps_2000 = 3
     
-class accelScale:
+class AccelScales:
     Fs_2g = 0
     Fs_4g = 1
     Fs_8g = 2
     Fs_16g = 3
     
-class clockSel:
+class ClockSels:
     InternalOscillator = 0
     AutoSelect = 1
     Reset = 7

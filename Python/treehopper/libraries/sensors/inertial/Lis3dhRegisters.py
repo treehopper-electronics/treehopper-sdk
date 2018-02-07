@@ -3,29 +3,29 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
-class sdoPuDisc:
+class SdoPuDiscs:
     SdoPullUpDisconnected = 144
     SdoPullUpConnected = 16
     
-class highPassFilterModeSelection:
+class HighPassFilterModeSelections:
     NormalMode = 0
     ReferenceSignal = 1
     Normal = 2
     AutoresetOnInterrupt = 3
     
-class fullScaleSelection:
+class FullScaleSelections:
     scale_2G = 0
     scale_4G = 1
     scale_8G = 2
     scale_16G = 3
     
-class fifoMode:
+class FifoModes:
     Bypass = 0
     Fifo = 1
     Stream = 2
     StreamToFifo = 3
     
-class outputDataRate:
+class OutputDataRates:
     PowerDown = 0
     Hz_1 = 1
     Hz_10 = 2
