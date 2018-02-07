@@ -1,6 +1,6 @@
 package io.treehopper.libraries.displays;
 
-import io.treehopper.libraries.io.IFlushable;
+import io.treehopper.libraries.IFlushable;
 import java.util.ArrayList;
 import java.util.List;
 

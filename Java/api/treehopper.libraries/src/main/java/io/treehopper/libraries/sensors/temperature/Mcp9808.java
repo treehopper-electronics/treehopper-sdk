@@ -24,12 +24,13 @@ public class Mcp9808 extends TemperatureSensor {
     }
 
     @Override
-    public double getTemperatureCelsius() {
+    public void update() {
         int data = device.readWordDataBE((byte)0x05);
         double temp = data & 0x0FFF;
         temp /= 16.0;
         if ((data & 0x1000) > 0)
             temp -= 256;
-        return temp;
+
+        celsius = temp;
     }
 }

@@ -19,10 +19,10 @@ public class Mlx90614 {
         }
 
         @Override
-        public double getTemperatureCelsius() {
+        public void update() {
             int data = dev.readWordData(register);
             data &= 0x7FFF; // chop off the error bit of the high byte
-            return (data * 0.02 - 273.15);
+            this.celsius = data * 0.02 - 273.15;
         }
     }
 

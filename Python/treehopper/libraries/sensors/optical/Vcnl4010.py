@@ -10,13 +10,13 @@ class Vcnl4010(AmbientLight, Proximity):
     """Vishay VCNL4010 proximity and ambient light sensor."""
     def __init__(self, i2c: I2C):
         self.registers = Vcnl4010Registers(SMBusDevice(0x13, i2c))
-        self.registers.read_range(self.registers.command, self.registers.ambientLightParameters)
+        self.registers.readRange(self.registers.command, self.registers.ambientLightParameters)
         self.registers.proximityRate.set_value(Rates.Hz_7_8125)
         self.registers.ledCurrent.irLedCurrentValue = 20
         self.registers.ambientLightParameters.set_value(AlsRates.Hz_10)
         self.registers.ambientLightParameters.autoOffsetCompensation = 1
         self.registers.ambientLightParameters.averagingSamples = 5
-        self.registers.write_range(self.registers.command, self.registers.ambientLightParameters)
+        self.registers.writeRange(self.registers.command, self.registers.ambientLightParameters)
         self._raw_proximity = 0
 
     def update(self):

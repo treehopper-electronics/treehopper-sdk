@@ -8,22 +8,44 @@ import io.treehopper.libraries.sensors.inertial.IAccelerometer;
 import io.treehopper.libraries.sensors.inertial.IGyroscope;
 import io.treehopper.libraries.sensors.temperature.TemperatureSensor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * InvenSense MPU6050 6-DoF IMU
  */
 public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyroscope {
+
+    public static List<Mpu6050> Probe(I2c i2c, boolean includeMpu9250)
+    {
+        List<Mpu6050> devs = new ArrayList<>();
+
+        try {
+            SMBusDevice dev = new SMBusDevice((byte)0x68, i2c, 100);
+            byte whoAmI = dev.readByteData((byte)0x75);
+            if(whoAmI == (byte)0x68 || (whoAmI == 0x71 && includeMpu9250)) {
+                devs.add(new Mpu6050(i2c, false, 100));
+            }
+        } catch(Exception ex) { }
+
+        try {
+            SMBusDevice dev = new SMBusDevice((byte)0x69, i2c, 100);
+            byte whoAmI = dev.readByteData((byte)0x75);
+            if(whoAmI == (byte)0x68 || (whoAmI == 0x71 && includeMpu9250)) {
+                devs.add(new Mpu6050(i2c, true, 100));
+            }
+        } catch(Exception ex) { }
+
+        return devs;
+    }
+
 	private Vector3 accelerometer;
 	private Vector3 gyroscope;
-	private Vector3 accelOffset;
-	private Vector3 gyroOffset;
-	private double temperature;
-	Mpu6050Registers registers;
+	private Mpu6050Registers registers;
 
     public Mpu6050(I2c i2c, boolean addressPin, int ratekHz) {
     	this.accelerometer = new Vector3();
     	this.gyroscope = new Vector3();
-    	this.accelOffset = new Vector3();
-    	this.gyroOffset = new Vector3();
 
     	byte addr = (byte) 0x68;
     	if(addressPin) {
@@ -46,111 +68,69 @@ public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyros
 		registers.accelConfig2.accelFchoice = 0;
 		registers.accelConfig2.dlpfCfg = 3;
 		registers.accelConfig2.write();
+        setAccelScale(AccelScales.Fs_2g);
+        setGyroScale(GyroScales.Dps_250);
     }
-    
-	public SMBusDevice getDev() {
-		return dev;
-	}
-
-	public void setDev(SMBusDevice dev) {
-		this.dev = dev;
-	}
 
 	public Vector3 getAccelerometer() {
+    	if(autoUpdateWhenPropertyRead)
+    		update();
+
 		return accelerometer;
 	}
-
-	public void setAccelerometer(Vector3 accelerometer) {
-		this.accelerometer = accelerometer;
-	}
-
 	public Vector3 getGyroscope() {
-		return gyroscope;
+        if(autoUpdateWhenPropertyRead)
+            update();
+
+        return gyroscope;
 	}
 
-	public void setGyroscope(Vector3 gyroscope) {
-		this.gyroscope = gyroscope;
-	}
-
-	public int getAccelScale() {
-		return accelScale;
-	}
-
-	public void setAccellScale(int accellScale) {
-		this.accelScale = accellScale;
-	}
-
-	public int getGyrosScale() {
-		return gyroScale;
-	}
-
-	public void setGyrosScale(int gyrosScale) {
-		this.gyroScale = gyrosScale;
-	}
-
-	@Override
-	public double getTemperatureCelsius() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-    
-    public void update() {
-        registers.read_range(registers.accel_x, registers.gyro_z)
-        this.accelerometer.x = registers.accel_x.value * self.accel_scale / 32768.0;
-        this.accelerometer.x = registers.accel_y.value * self.accel_scale / 32768.0;
-        this.accelerometer.x = registers.accel_z.value * self.accel_scale / 32768.0;
-
-        this.gyroscope.x = registers.gyro_x.value;
-        this.gyroscope.y = registers.gyro_x.value;
-        this.gyroscope.z = registers.gyro_x.value;
-                
-
-        celsius = registers.temp.value / 333.87 + 21.0
-
-    	byte[] data = getDev().readBufferData(ACCEL_XOUT_H, 14);
-    	double accelScale = getAccelScale();
-    	double gyroScale = getGyrosScale();
-    	
-    	getAccelerometer().x = (float)(((short)((data[0] & 0xff) << 8 |(data[1] & 0xff))/32768.0) * accelScale - getAccelOffset().x);
-    	getAccelerometer().y = (float)(((short)((data[2] & 0xff) << 8 | (data[3] & 0xff))/32768.0) * accelScale - getAccelOffset().y);
-    	getAccelerometer().z = (float)(((short)((data[4] & 0xff) << 8 | (data[5] & 0xff))/32768.0) * accelScale - getAccelOffset().z);
-    	
-    	setTemperature((data[6] << 8 | data[7]) / 333.87 + 21.0);
-    	
-    	getGyroscope().x = (float)(((short)((data[8] & 0xff) << 8 | (data[9] & 0xff))/32768.0) * gyroScale - getGyroOffset().x);
-    	getGyroscope().y = (float)(((short)((data[10] & 0xff) << 8 | (data[11] & 0xff))/32768.0) * gyroScale - getGyroOffset().y);
-    	getGyroscope().z = (float)(((short)((data[12] & 0xff) << 8 | (data[13] & 0xff))/32768.0) * gyroScale - getGyroOffset().z);
+    public AccelScales getAccelScale() {
+        return AccelScales.values()[registers.accelConfig.accelScale];
     }
 
-	public Vector3 getAccelOffset() {
-		return accelOffset;
-	}
+	public int getAccelScaleValue() {
+        return (int) (2 * Math.pow(2, registers.accelConfig.accelScale));
+    }
 
-	public void setAccellOffset(Vector3 accellOffset) {
-		this.accelOffset = accellOffset;
-	}
+    public void setAccelScale(AccelScales value) {
+        registers.accelConfig.accelScale = value.getVal();
+        registers.accelConfig.write();
+    }
 
-	public int getGyroScale() {
-		return gyroScale;
-	}
+    public void setAccelScaleValue(int value) {
+        registers.accelConfig.accelScale = (int) (Math.log(value) / Math.log(2) - 1);
+        registers.accelConfig.write();
+    }
 
-	public void setGyroScale(int gyroScale) {
-		this.gyroScale = gyroScale;
-	}
+    public GyroScales getGyroScale() {
+        return GyroScales.values()[registers.gyroConfig.gyroScale];
+    }
 
-	public double getTemperature() {
-		return temperature;
-	}
+    public int getGyroScaleValue() {
+        return (int) (250 * Math.pow(2, registers.gyroConfig.gyroScale));
+    }
 
-	public void setTemperature(double temperature) {
-		this.temperature = temperature;
-	}
+    public void setGyroScale(GyroScales value) {
+        registers.gyroConfig.gyroScale = value.getVal();
+        registers.gyroConfig.write();
+    }
 
-	public Vector3 getGyroOffset() {
-		return gyroOffset;
-	}
+    public void setGyroScaleValue(int value) {
+        registers.gyroConfig.gyroScale = (int) (Math.log(value/250) / Math.log(2));
+        registers.gyroConfig.write();
+    }
 
-	public void setGyroOffset(Vector3 gyroOffset) {
-		this.gyroOffset = gyroOffset;
-	}
+    public void update() {
+        registers.readRange(registers.accel_x, registers.gyro_z);
+        this.accelerometer.x = (float)(registers.accel_x.value * getAccelScaleValue() / 32768.0);
+        this.accelerometer.y = (float)(registers.accel_y.value * getAccelScaleValue() / 32768.0);
+        this.accelerometer.z = (float)(registers.accel_z.value * getAccelScaleValue() / 32768.0);
+
+        this.gyroscope.x = (float)(registers.gyro_x.value * getGyroScaleValue() / 32768.0);
+        this.gyroscope.y = (float)(registers.gyro_x.value * getGyroScaleValue() / 32768.0);
+        this.gyroscope.z = (float)(registers.gyro_x.value * getGyroScaleValue() / 32768.0);
+
+        this.celsius = registers.temp.value / 333.87 + 21.0;
+    }
 }

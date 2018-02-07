@@ -8,6 +8,7 @@ import io.treehopper.interfaces.I2c;
  */
 public class Lm75 extends TemperatureSensor {
     private final SMBusDevice device;
+    private boolean autoUpdateWhenPropertyRead = true;
 
     public Lm75(I2c device)
     {
@@ -23,9 +24,10 @@ public class Lm75 extends TemperatureSensor {
     {
         this.device = new SMBusDevice(address, device);
     }
+
     @Override
-    public double getTemperatureCelsius() {
-        short data = (short)device.readWordDataBE((byte)0x00);
-        return (data / 32.0) / 8.0;
+    public void update() {
+        short data = device.readWordDataBE((byte)0x00);
+        celsius = (data / 32.0) / 8.0;
     }
 }

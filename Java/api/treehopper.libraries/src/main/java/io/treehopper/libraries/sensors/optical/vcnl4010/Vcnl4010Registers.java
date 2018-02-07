@@ -71,17 +71,17 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((SelfTimedEnable & 0x1) << 0) | ((ProxPeriodicEnable & 0x1) << 1) | ((AlsPeriodicEnable & 0x1) << 2) | ((ProxOnDemandStart & 0x1) << 3) | ((AlsOnDemandStart & 0x1) << 4) | ((ProxDataReady & 0x1) << 5) | ((AlsDataReady & 0x1) << 6) | ((ConfigLock & 0x1) << 7); }
+        public long getValue() { return ((selfTimedEnable & 0x1) << 0) | ((proxPeriodicEnable & 0x1) << 1) | ((alsPeriodicEnable & 0x1) << 2) | ((proxOnDemandStart & 0x1) << 3) | ((alsOnDemandStart & 0x1) << 4) | ((proxDataReady & 0x1) << 5) | ((alsDataReady & 0x1) << 6) | ((configLock & 0x1) << 7); }
         public void setValue(long _value)
         {
-            SelfTimedEnable = (int)((_value >> 0) & 0x1);
-            ProxPeriodicEnable = (int)((_value >> 1) & 0x1);
-            AlsPeriodicEnable = (int)((_value >> 2) & 0x1);
-            ProxOnDemandStart = (int)((_value >> 3) & 0x1);
-            AlsOnDemandStart = (int)((_value >> 4) & 0x1);
-            ProxDataReady = (int)((_value >> 5) & 0x1);
-            AlsDataReady = (int)((_value >> 6) & 0x1);
-            ConfigLock = (int)((_value >> 7) & 0x1);
+            selfTimedEnable = (int)((_value >> 0) & 0x1);
+            proxPeriodicEnable = (int)((_value >> 1) & 0x1);
+            alsPeriodicEnable = (int)((_value >> 2) & 0x1);
+            proxOnDemandStart = (int)((_value >> 3) & 0x1);
+            alsOnDemandStart = (int)((_value >> 4) & 0x1);
+            proxDataReady = (int)((_value >> 5) & 0x1);
+            alsDataReady = (int)((_value >> 6) & 0x1);
+            configLock = (int)((_value >> 7) & 0x1);
         }
     }
     class ProductIdRegister extends Register
@@ -98,11 +98,11 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((RevisionId & 0xF) << 0) | ((ProductId & 0xF) << 4); }
+        public long getValue() { return ((revisionId & 0xF) << 0) | ((productId & 0xF) << 4); }
         public void setValue(long _value)
         {
-            RevisionId = (int)((_value >> 0) & 0xF);
-            ProductId = (int)((_value >> 4) & 0xF);
+            revisionId = (int)((_value >> 0) & 0xF);
+            productId = (int)((_value >> 4) & 0xF);
         }
     }
     class ProximityRateRegister extends Register
@@ -111,8 +111,8 @@ class Vcnl4010Registers extends RegisterManager
 
         int rate;
 
-                public rate getRate() { for (rate b : rate.values()) { if(b.getVal() == Rate) return b; } return rate.values()[0]; }
-                public void setRate(rate enumVal) { Rate = enumVal.getVal(); }
+                public Rates getRate() { for (Rates b : Rates.values()) { if(b.getVal() == rate) return b; } return Rates.values()[0]; }
+                public void setRate(Rates enumVal) { rate = enumVal.getVal(); }
 
         public ProximityRateRegister read()
         {
@@ -120,10 +120,10 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Rate & 0xF) << 0); }
+        public long getValue() { return ((rate & 0xF) << 0); }
         public void setValue(long _value)
         {
-            Rate = (int)((_value >> 0) & 0xF);
+            rate = (int)((_value >> 0) & 0xF);
         }
     }
     class LedCurrentRegister extends Register
@@ -140,11 +140,11 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((IrLedCurrentValue & 0x3F) << 0) | ((FuseProgId & 0x3) << 6); }
+        public long getValue() { return ((irLedCurrentValue & 0x3F) << 0) | ((fuseProgId & 0x3) << 6); }
         public void setValue(long _value)
         {
-            IrLedCurrentValue = (int)((_value >> 0) & 0x3F);
-            FuseProgId = (int)((_value >> 6) & 0x3);
+            irLedCurrentValue = (int)((_value >> 0) & 0x3F);
+            fuseProgId = (int)((_value >> 6) & 0x3);
         }
     }
     class AmbientLightParametersRegister extends Register
@@ -156,8 +156,8 @@ class Vcnl4010Registers extends RegisterManager
         int alsRate;
         int continuousConversionMode;
 
-                public alsRate getAlsRate() { for (alsRate b : alsRate.values()) { if(b.getVal() == AlsRate) return b; } return alsRate.values()[0]; }
-                public void setAlsRate(alsRate enumVal) { AlsRate = enumVal.getVal(); }
+                public AlsRates getAlsRate() { for (AlsRates b : AlsRates.values()) { if(b.getVal() == alsRate) return b; } return AlsRates.values()[0]; }
+                public void setAlsRate(AlsRates enumVal) { alsRate = enumVal.getVal(); }
 
         public AmbientLightParametersRegister read()
         {
@@ -165,13 +165,13 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((AveragingSamples & 0x7) << 0) | ((AutoOffsetCompensation & 0x1) << 3) | ((AlsRate & 0x7) << 4) | ((ContinuousConversionMode & 0x1) << 7); }
+        public long getValue() { return ((averagingSamples & 0x7) << 0) | ((autoOffsetCompensation & 0x1) << 3) | ((alsRate & 0x7) << 4) | ((continuousConversionMode & 0x1) << 7); }
         public void setValue(long _value)
         {
-            AveragingSamples = (int)((_value >> 0) & 0x7);
-            AutoOffsetCompensation = (int)((_value >> 3) & 0x1);
-            AlsRate = (int)((_value >> 4) & 0x7);
-            ContinuousConversionMode = (int)((_value >> 7) & 0x1);
+            averagingSamples = (int)((_value >> 0) & 0x7);
+            autoOffsetCompensation = (int)((_value >> 3) & 0x1);
+            alsRate = (int)((_value >> 4) & 0x7);
+            continuousConversionMode = (int)((_value >> 7) & 0x1);
         }
     }
     class AmbientLightResultRegister extends Register
@@ -187,10 +187,10 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class ProximityResultRegister extends Register
@@ -206,10 +206,10 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class InterruptControlRegister extends Register
@@ -221,8 +221,8 @@ class Vcnl4010Registers extends RegisterManager
         int interruptAlsReadyEnable;
         int intCountExceed;
 
-                public intCountExceed getIntCountExceed() { for (intCountExceed b : intCountExceed.values()) { if(b.getVal() == IntCountExceed) return b; } return intCountExceed.values()[0]; }
-                public void setIntCountExceed(intCountExceed enumVal) { IntCountExceed = enumVal.getVal(); }
+                public IntCountExceeds getIntCountExceed() { for (IntCountExceeds b : IntCountExceeds.values()) { if(b.getVal() == intCountExceed) return b; } return IntCountExceeds.values()[0]; }
+                public void setIntCountExceed(IntCountExceeds enumVal) { intCountExceed = enumVal.getVal(); }
 
         public InterruptControlRegister read()
         {
@@ -230,13 +230,13 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((InterruptThresholdSelect & 0x1) << 0) | ((InterruptThresholdEnable & 0x1) << 1) | ((InterruptAlsReadyEnable & 0x1) << 2) | ((IntCountExceed & 0x7) << 5); }
+        public long getValue() { return ((interruptThresholdSelect & 0x1) << 0) | ((interruptThresholdEnable & 0x1) << 1) | ((interruptAlsReadyEnable & 0x1) << 2) | ((intCountExceed & 0x7) << 5); }
         public void setValue(long _value)
         {
-            InterruptThresholdSelect = (int)((_value >> 0) & 0x1);
-            InterruptThresholdEnable = (int)((_value >> 1) & 0x1);
-            InterruptAlsReadyEnable = (int)((_value >> 2) & 0x1);
-            IntCountExceed = (int)((_value >> 5) & 0x7);
+            interruptThresholdSelect = (int)((_value >> 0) & 0x1);
+            interruptThresholdEnable = (int)((_value >> 1) & 0x1);
+            interruptAlsReadyEnable = (int)((_value >> 2) & 0x1);
+            intCountExceed = (int)((_value >> 5) & 0x7);
         }
     }
     class LowThresholdRegister extends Register
@@ -252,10 +252,10 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class HighThresholdRegister extends Register
@@ -271,10 +271,10 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class InterruptStatusRegister extends Register
@@ -293,13 +293,13 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((IntThresholdHighExceeded & 0x1) << 0) | ((IntThresholdLowExceeded & 0x1) << 1) | ((IntAlsReady & 0x1) << 2) | ((IntProxReady & 0x1) << 3); }
+        public long getValue() { return ((intThresholdHighExceeded & 0x1) << 0) | ((intThresholdLowExceeded & 0x1) << 1) | ((intAlsReady & 0x1) << 2) | ((intProxReady & 0x1) << 3); }
         public void setValue(long _value)
         {
-            IntThresholdHighExceeded = (int)((_value >> 0) & 0x1);
-            IntThresholdLowExceeded = (int)((_value >> 1) & 0x1);
-            IntAlsReady = (int)((_value >> 2) & 0x1);
-            IntProxReady = (int)((_value >> 3) & 0x1);
+            intThresholdHighExceeded = (int)((_value >> 0) & 0x1);
+            intThresholdLowExceeded = (int)((_value >> 1) & 0x1);
+            intAlsReady = (int)((_value >> 2) & 0x1);
+            intProxReady = (int)((_value >> 3) & 0x1);
         }
     }
     class ProxModulatorTimingAdustmentRegister extends Register
@@ -317,12 +317,12 @@ class Vcnl4010Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((ModulationDeadTime & 0x7) << 0) | ((ProximityFrequency & 0x3) << 3) | ((ModulationDelayTime & 0x7) << 5); }
+        public long getValue() { return ((modulationDeadTime & 0x7) << 0) | ((proximityFrequency & 0x3) << 3) | ((modulationDelayTime & 0x7) << 5); }
         public void setValue(long _value)
         {
-            ModulationDeadTime = (int)((_value >> 0) & 0x7);
-            ProximityFrequency = (int)((_value >> 3) & 0x3);
-            ModulationDelayTime = (int)((_value >> 5) & 0x7);
+            modulationDeadTime = (int)((_value >> 0) & 0x7);
+            proximityFrequency = (int)((_value >> 3) & 0x3);
+            modulationDelayTime = (int)((_value >> 5) & 0x7);
         }
     }
 }

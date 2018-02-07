@@ -1,4 +1,4 @@
-package io.treehopper.libraries.io;
+package io.treehopper.libraries;
 
 /**
  * An output interface that can be flushed

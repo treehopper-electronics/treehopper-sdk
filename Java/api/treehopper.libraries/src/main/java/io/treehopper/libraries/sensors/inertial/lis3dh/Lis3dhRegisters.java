@@ -139,16 +139,16 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((OneAxisDataAvailable & 0x1) << 0) | ((TwoAxisDataAvailable & 0x1) << 1) | ((ThreeAxisDataAvailable & 0x1) << 2) | ((DataAvailable & 0x1) << 3) | ((OneAxisDataOverrun & 0x1) << 4) | ((TwoAxisDataOverrun & 0x1) << 5) | ((DataOverrun & 0x1) << 6); }
+        public long getValue() { return ((oneAxisDataAvailable & 0x1) << 0) | ((twoAxisDataAvailable & 0x1) << 1) | ((threeAxisDataAvailable & 0x1) << 2) | ((dataAvailable & 0x1) << 3) | ((oneAxisDataOverrun & 0x1) << 4) | ((twoAxisDataOverrun & 0x1) << 5) | ((dataOverrun & 0x1) << 6); }
         public void setValue(long _value)
         {
-            OneAxisDataAvailable = (int)((_value >> 0) & 0x1);
-            TwoAxisDataAvailable = (int)((_value >> 1) & 0x1);
-            ThreeAxisDataAvailable = (int)((_value >> 2) & 0x1);
-            DataAvailable = (int)((_value >> 3) & 0x1);
-            OneAxisDataOverrun = (int)((_value >> 4) & 0x1);
-            TwoAxisDataOverrun = (int)((_value >> 5) & 0x1);
-            DataOverrun = (int)((_value >> 6) & 0x1);
+            oneAxisDataAvailable = (int)((_value >> 0) & 0x1);
+            twoAxisDataAvailable = (int)((_value >> 1) & 0x1);
+            threeAxisDataAvailable = (int)((_value >> 2) & 0x1);
+            dataAvailable = (int)((_value >> 3) & 0x1);
+            oneAxisDataOverrun = (int)((_value >> 4) & 0x1);
+            twoAxisDataOverrun = (int)((_value >> 5) & 0x1);
+            dataOverrun = (int)((_value >> 6) & 0x1);
         }
     }
     class OutAdc1Register extends Register
@@ -164,10 +164,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x3FF) << 6); }
+        public long getValue() { return ((value & 0x3FF) << 6); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 6) & 0x3FF);
+            value = (int)((_value >> 6) & 0x3FF);
         }
     }
     class OutAdc2Register extends Register
@@ -183,10 +183,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x3FF) << 6); }
+        public long getValue() { return ((value & 0x3FF) << 6); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 6) & 0x3FF);
+            value = (int)((_value >> 6) & 0x3FF);
         }
     }
     class OutAdc3Register extends Register
@@ -202,10 +202,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x3FF) << 6); }
+        public long getValue() { return ((value & 0x3FF) << 6); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 6) & 0x3FF);
+            value = (int)((_value >> 6) & 0x3FF);
         }
     }
     class WhoAmIRegister extends Register
@@ -221,10 +221,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Ctrl0Register extends Register
@@ -233,8 +233,8 @@ class Lis3dhRegisters extends RegisterManager
 
         int sdoPuDisc;
 
-                public sdoPuDisc getSdoPuDisc() { for (sdoPuDisc b : sdoPuDisc.values()) { if(b.getVal() == SdoPuDisc) return b; } return sdoPuDisc.values()[0]; }
-                public void setSdoPuDisc(sdoPuDisc enumVal) { SdoPuDisc = enumVal.getVal(); }
+                public SdoPuDiscs getSdoPuDisc() { for (SdoPuDiscs b : SdoPuDiscs.values()) { if(b.getVal() == sdoPuDisc) return b; } return SdoPuDiscs.values()[0]; }
+                public void setSdoPuDisc(SdoPuDiscs enumVal) { sdoPuDisc = enumVal.getVal(); }
 
         public Ctrl0Register read()
         {
@@ -242,10 +242,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((SdoPuDisc & 0xFF) << 0); }
+        public long getValue() { return ((sdoPuDisc & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            SdoPuDisc = (int)((_value >> 0) & 0xFF);
+            sdoPuDisc = (int)((_value >> 0) & 0xFF);
         }
     }
     class TempCfgRegRegister extends Register
@@ -262,11 +262,11 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((AdcEn & 0x1) << 7) | ((TempEn & 0x1) << 6); }
+        public long getValue() { return ((adcEn & 0x1) << 7) | ((tempEn & 0x1) << 6); }
         public void setValue(long _value)
         {
-            AdcEn = (int)((_value >> 7) & 0x1);
-            TempEn = (int)((_value >> 6) & 0x1);
+            adcEn = (int)((_value >> 7) & 0x1);
+            tempEn = (int)((_value >> 6) & 0x1);
         }
     }
     class Ctrl2Register extends Register
@@ -280,8 +280,8 @@ class Lis3dhRegisters extends RegisterManager
         int highPassFilterCutoffFrequency;
         int highPassFilterModeSelection;
 
-                public highPassFilterModeSelection getHighPassFilterModeSelection() { for (highPassFilterModeSelection b : highPassFilterModeSelection.values()) { if(b.getVal() == HighPassFilterModeSelection) return b; } return highPassFilterModeSelection.values()[0]; }
-                public void setHighPassFilterModeSelection(highPassFilterModeSelection enumVal) { HighPassFilterModeSelection = enumVal.getVal(); }
+                public HighPassFilterModeSelections getHighPassFilterModeSelection() { for (HighPassFilterModeSelections b : HighPassFilterModeSelections.values()) { if(b.getVal() == highPassFilterModeSelection) return b; } return HighPassFilterModeSelections.values()[0]; }
+                public void setHighPassFilterModeSelection(HighPassFilterModeSelections enumVal) { highPassFilterModeSelection = enumVal.getVal(); }
 
         public Ctrl2Register read()
         {
@@ -289,15 +289,15 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((HighPassAoiInt1Enable & 0x1) << 0) | ((HighPassAoiInt2Enable & 0x1) << 1) | ((HighPassClickEnable & 0x1) << 2) | ((FilterDataPassThru & 0x1) << 3) | ((HighPassFilterCutoffFrequency & 0x3) << 4) | ((HighPassFilterModeSelection & 0x3) << 6); }
+        public long getValue() { return ((highPassAoiInt1Enable & 0x1) << 0) | ((highPassAoiInt2Enable & 0x1) << 1) | ((highPassClickEnable & 0x1) << 2) | ((filterDataPassThru & 0x1) << 3) | ((highPassFilterCutoffFrequency & 0x3) << 4) | ((highPassFilterModeSelection & 0x3) << 6); }
         public void setValue(long _value)
         {
-            HighPassAoiInt1Enable = (int)((_value >> 0) & 0x1);
-            HighPassAoiInt2Enable = (int)((_value >> 1) & 0x1);
-            HighPassClickEnable = (int)((_value >> 2) & 0x1);
-            FilterDataPassThru = (int)((_value >> 3) & 0x1);
-            HighPassFilterCutoffFrequency = (int)((_value >> 4) & 0x3);
-            HighPassFilterModeSelection = (int)((_value >> 6) & 0x3);
+            highPassAoiInt1Enable = (int)((_value >> 0) & 0x1);
+            highPassAoiInt2Enable = (int)((_value >> 1) & 0x1);
+            highPassClickEnable = (int)((_value >> 2) & 0x1);
+            filterDataPassThru = (int)((_value >> 3) & 0x1);
+            highPassFilterCutoffFrequency = (int)((_value >> 4) & 0x3);
+            highPassFilterModeSelection = (int)((_value >> 6) & 0x3);
         }
     }
     class Ctrl3Register extends Register
@@ -319,16 +319,16 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Overrun & 0x1) << 1) | ((FifoWatermark & 0x1) << 2) | ((Da321 & 0x1) << 3) | ((Zyxda & 0x1) << 4) | ((Ia2 & 0x1) << 5) | ((Ia1 & 0x1) << 6) | ((Click & 0x1) << 7); }
+        public long getValue() { return ((overrun & 0x1) << 1) | ((fifoWatermark & 0x1) << 2) | ((da321 & 0x1) << 3) | ((zyxda & 0x1) << 4) | ((ia2 & 0x1) << 5) | ((ia1 & 0x1) << 6) | ((click & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Overrun = (int)((_value >> 1) & 0x1);
-            FifoWatermark = (int)((_value >> 2) & 0x1);
-            Da321 = (int)((_value >> 3) & 0x1);
-            Zyxda = (int)((_value >> 4) & 0x1);
-            Ia2 = (int)((_value >> 5) & 0x1);
-            Ia1 = (int)((_value >> 6) & 0x1);
-            Click = (int)((_value >> 7) & 0x1);
+            overrun = (int)((_value >> 1) & 0x1);
+            fifoWatermark = (int)((_value >> 2) & 0x1);
+            da321 = (int)((_value >> 3) & 0x1);
+            zyxda = (int)((_value >> 4) & 0x1);
+            ia2 = (int)((_value >> 5) & 0x1);
+            ia1 = (int)((_value >> 6) & 0x1);
+            click = (int)((_value >> 7) & 0x1);
         }
     }
     class Ctrl4Register extends Register
@@ -342,8 +342,8 @@ class Lis3dhRegisters extends RegisterManager
         int bigEndian;
         int blockDataUpdate;
 
-                public fullScaleSelection getFullScaleSelection() { for (fullScaleSelection b : fullScaleSelection.values()) { if(b.getVal() == FullScaleSelection) return b; } return fullScaleSelection.values()[0]; }
-                public void setFullScaleSelection(fullScaleSelection enumVal) { FullScaleSelection = enumVal.getVal(); }
+                public FullScaleSelections getFullScaleSelection() { for (FullScaleSelections b : FullScaleSelections.values()) { if(b.getVal() == fullScaleSelection) return b; } return FullScaleSelections.values()[0]; }
+                public void setFullScaleSelection(FullScaleSelections enumVal) { fullScaleSelection = enumVal.getVal(); }
 
         public Ctrl4Register read()
         {
@@ -351,15 +351,15 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((SpiInterfaceMode & 0x1) << 0) | ((SelfTestEnable & 0x3) << 1) | ((HighResolutionOutput & 0x1) << 3) | ((FullScaleSelection & 0x3) << 4) | ((BigEndian & 0x1) << 6) | ((BlockDataUpdate & 0x1) << 7); }
+        public long getValue() { return ((spiInterfaceMode & 0x1) << 0) | ((selfTestEnable & 0x3) << 1) | ((highResolutionOutput & 0x1) << 3) | ((fullScaleSelection & 0x3) << 4) | ((bigEndian & 0x1) << 6) | ((blockDataUpdate & 0x1) << 7); }
         public void setValue(long _value)
         {
-            SpiInterfaceMode = (int)((_value >> 0) & 0x1);
-            SelfTestEnable = (int)((_value >> 1) & 0x3);
-            HighResolutionOutput = (int)((_value >> 3) & 0x1);
-            FullScaleSelection = (int)((_value >> 4) & 0x3);
-            BigEndian = (int)((_value >> 6) & 0x1);
-            BlockDataUpdate = (int)((_value >> 7) & 0x1);
+            spiInterfaceMode = (int)((_value >> 0) & 0x1);
+            selfTestEnable = (int)((_value >> 1) & 0x3);
+            highResolutionOutput = (int)((_value >> 3) & 0x1);
+            fullScaleSelection = (int)((_value >> 4) & 0x3);
+            bigEndian = (int)((_value >> 6) & 0x1);
+            blockDataUpdate = (int)((_value >> 7) & 0x1);
         }
     }
     class Ctrl5Register extends Register
@@ -380,15 +380,15 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Enable4DInt2 & 0x1) << 0) | ((LatchInt2 & 0x1) << 1) | ((Enable4DInt1 & 0x1) << 2) | ((LatchInt1 & 0x1) << 3) | ((FifoEnable & 0x1) << 4) | ((RebootMemoryContent & 0x1) << 5); }
+        public long getValue() { return ((enable4DInt2 & 0x1) << 0) | ((latchInt2 & 0x1) << 1) | ((enable4DInt1 & 0x1) << 2) | ((latchInt1 & 0x1) << 3) | ((fifoEnable & 0x1) << 4) | ((rebootMemoryContent & 0x1) << 5); }
         public void setValue(long _value)
         {
-            Enable4DInt2 = (int)((_value >> 0) & 0x1);
-            LatchInt2 = (int)((_value >> 1) & 0x1);
-            Enable4DInt1 = (int)((_value >> 2) & 0x1);
-            LatchInt1 = (int)((_value >> 3) & 0x1);
-            FifoEnable = (int)((_value >> 4) & 0x1);
-            RebootMemoryContent = (int)((_value >> 5) & 0x1);
+            enable4DInt2 = (int)((_value >> 0) & 0x1);
+            latchInt2 = (int)((_value >> 1) & 0x1);
+            enable4DInt1 = (int)((_value >> 2) & 0x1);
+            latchInt1 = (int)((_value >> 3) & 0x1);
+            fifoEnable = (int)((_value >> 4) & 0x1);
+            rebootMemoryContent = (int)((_value >> 5) & 0x1);
         }
     }
     class Ctrl6Register extends Register
@@ -409,15 +409,15 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((IntPolarity & 0x1) << 1) | ((Act & 0x1) << 3) | ((Boot & 0x1) << 4) | ((Ia2 & 0x1) << 5) | ((Ia1 & 0x1) << 6) | ((Click & 0x1) << 7); }
+        public long getValue() { return ((intPolarity & 0x1) << 1) | ((act & 0x1) << 3) | ((boot & 0x1) << 4) | ((ia2 & 0x1) << 5) | ((ia1 & 0x1) << 6) | ((click & 0x1) << 7); }
         public void setValue(long _value)
         {
-            IntPolarity = (int)((_value >> 1) & 0x1);
-            Act = (int)((_value >> 3) & 0x1);
-            Boot = (int)((_value >> 4) & 0x1);
-            Ia2 = (int)((_value >> 5) & 0x1);
-            Ia1 = (int)((_value >> 6) & 0x1);
-            Click = (int)((_value >> 7) & 0x1);
+            intPolarity = (int)((_value >> 1) & 0x1);
+            act = (int)((_value >> 3) & 0x1);
+            boot = (int)((_value >> 4) & 0x1);
+            ia2 = (int)((_value >> 5) & 0x1);
+            ia1 = (int)((_value >> 6) & 0x1);
+            click = (int)((_value >> 7) & 0x1);
         }
     }
     class ReferenceRegister extends Register
@@ -433,10 +433,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class StatusRegister extends Register
@@ -459,17 +459,17 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Xda & 0x1) << 0) | ((Yda & 0x1) << 1) | ((Zda & 0x1) << 2) | ((Zyxda & 0x1) << 3) | ((Xor & 0x1) << 4) | ((Yor & 0x1) << 5) | ((Zor & 0x1) << 6) | ((Zyxor & 0x1) << 7); }
+        public long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((xor & 0x1) << 4) | ((yor & 0x1) << 5) | ((zor & 0x1) << 6) | ((zyxor & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Xda = (int)((_value >> 0) & 0x1);
-            Yda = (int)((_value >> 1) & 0x1);
-            Zda = (int)((_value >> 2) & 0x1);
-            Zyxda = (int)((_value >> 3) & 0x1);
-            Xor = (int)((_value >> 4) & 0x1);
-            Yor = (int)((_value >> 5) & 0x1);
-            Zor = (int)((_value >> 6) & 0x1);
-            Zyxor = (int)((_value >> 7) & 0x1);
+            xda = (int)((_value >> 0) & 0x1);
+            yda = (int)((_value >> 1) & 0x1);
+            zda = (int)((_value >> 2) & 0x1);
+            zyxda = (int)((_value >> 3) & 0x1);
+            xor = (int)((_value >> 4) & 0x1);
+            yor = (int)((_value >> 5) & 0x1);
+            zor = (int)((_value >> 6) & 0x1);
+            zyxor = (int)((_value >> 7) & 0x1);
         }
     }
     class FifoCtrlRegister extends Register
@@ -480,8 +480,8 @@ class Lis3dhRegisters extends RegisterManager
         int triggerSelection;
         int fifoMode;
 
-                public fifoMode getFifoMode() { for (fifoMode b : fifoMode.values()) { if(b.getVal() == FifoMode) return b; } return fifoMode.values()[0]; }
-                public void setFifoMode(fifoMode enumVal) { FifoMode = enumVal.getVal(); }
+                public FifoModes getFifoMode() { for (FifoModes b : FifoModes.values()) { if(b.getVal() == fifoMode) return b; } return FifoModes.values()[0]; }
+                public void setFifoMode(FifoModes enumVal) { fifoMode = enumVal.getVal(); }
 
         public FifoCtrlRegister read()
         {
@@ -489,12 +489,12 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((FifoThreshold & 0x1F) << 0) | ((TriggerSelection & 0x1) << 5) | ((FifoMode & 0x3) << 6); }
+        public long getValue() { return ((fifoThreshold & 0x1F) << 0) | ((triggerSelection & 0x1) << 5) | ((fifoMode & 0x3) << 6); }
         public void setValue(long _value)
         {
-            FifoThreshold = (int)((_value >> 0) & 0x1F);
-            TriggerSelection = (int)((_value >> 5) & 0x1);
-            FifoMode = (int)((_value >> 6) & 0x3);
+            fifoThreshold = (int)((_value >> 0) & 0x1F);
+            triggerSelection = (int)((_value >> 5) & 0x1);
+            fifoMode = (int)((_value >> 6) & 0x3);
         }
     }
     class FifoSrcRegister extends Register
@@ -513,13 +513,13 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Fss & 0x1F) << 0) | ((Emtpy & 0x1) << 5) | ((OverrunFifo & 0x1) << 6) | ((Watermark & 0x1) << 7); }
+        public long getValue() { return ((fss & 0x1F) << 0) | ((emtpy & 0x1) << 5) | ((overrunFifo & 0x1) << 6) | ((watermark & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Fss = (int)((_value >> 0) & 0x1F);
-            Emtpy = (int)((_value >> 5) & 0x1);
-            OverrunFifo = (int)((_value >> 6) & 0x1);
-            Watermark = (int)((_value >> 7) & 0x1);
+            fss = (int)((_value >> 0) & 0x1F);
+            emtpy = (int)((_value >> 5) & 0x1);
+            overrunFifo = (int)((_value >> 6) & 0x1);
+            watermark = (int)((_value >> 7) & 0x1);
         }
     }
     class Int1CfgRegister extends Register
@@ -542,17 +542,17 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((EnableXLowEvent & 0x1) << 0) | ((EnableXHighEvent & 0x1) << 1) | ((EnableYLowEvent & 0x1) << 2) | ((EnableYHighEvent & 0x1) << 3) | ((EnableZLowEvent & 0x1) << 4) | ((EnableZHighEvent & 0x1) << 5) | ((Enable6D & 0x1) << 6) | ((AndOrInterruptEvents & 0x1) << 7); }
+        public long getValue() { return ((enableXLowEvent & 0x1) << 0) | ((enableXHighEvent & 0x1) << 1) | ((enableYLowEvent & 0x1) << 2) | ((enableYHighEvent & 0x1) << 3) | ((enableZLowEvent & 0x1) << 4) | ((enableZHighEvent & 0x1) << 5) | ((enable6D & 0x1) << 6) | ((andOrInterruptEvents & 0x1) << 7); }
         public void setValue(long _value)
         {
-            EnableXLowEvent = (int)((_value >> 0) & 0x1);
-            EnableXHighEvent = (int)((_value >> 1) & 0x1);
-            EnableYLowEvent = (int)((_value >> 2) & 0x1);
-            EnableYHighEvent = (int)((_value >> 3) & 0x1);
-            EnableZLowEvent = (int)((_value >> 4) & 0x1);
-            EnableZHighEvent = (int)((_value >> 5) & 0x1);
-            Enable6D = (int)((_value >> 6) & 0x1);
-            AndOrInterruptEvents = (int)((_value >> 7) & 0x1);
+            enableXLowEvent = (int)((_value >> 0) & 0x1);
+            enableXHighEvent = (int)((_value >> 1) & 0x1);
+            enableYLowEvent = (int)((_value >> 2) & 0x1);
+            enableYHighEvent = (int)((_value >> 3) & 0x1);
+            enableZLowEvent = (int)((_value >> 4) & 0x1);
+            enableZHighEvent = (int)((_value >> 5) & 0x1);
+            enable6D = (int)((_value >> 6) & 0x1);
+            andOrInterruptEvents = (int)((_value >> 7) & 0x1);
         }
     }
     class Int1SrcRegister extends Register
@@ -574,16 +574,16 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((XLow & 0x1) << 0) | ((XHigh & 0x1) << 1) | ((YLow & 0x1) << 2) | ((YHigh & 0x1) << 3) | ((ZLow & 0x1) << 4) | ((ZHigh & 0x1) << 5) | ((InterruptActive & 0x1) << 6); }
+        public long getValue() { return ((xLow & 0x1) << 0) | ((xHigh & 0x1) << 1) | ((yLow & 0x1) << 2) | ((yHigh & 0x1) << 3) | ((zLow & 0x1) << 4) | ((zHigh & 0x1) << 5) | ((interruptActive & 0x1) << 6); }
         public void setValue(long _value)
         {
-            XLow = (int)((_value >> 0) & 0x1);
-            XHigh = (int)((_value >> 1) & 0x1);
-            YLow = (int)((_value >> 2) & 0x1);
-            YHigh = (int)((_value >> 3) & 0x1);
-            ZLow = (int)((_value >> 4) & 0x1);
-            ZHigh = (int)((_value >> 5) & 0x1);
-            InterruptActive = (int)((_value >> 6) & 0x1);
+            xLow = (int)((_value >> 0) & 0x1);
+            xHigh = (int)((_value >> 1) & 0x1);
+            yLow = (int)((_value >> 2) & 0x1);
+            yHigh = (int)((_value >> 3) & 0x1);
+            zLow = (int)((_value >> 4) & 0x1);
+            zHigh = (int)((_value >> 5) & 0x1);
+            interruptActive = (int)((_value >> 6) & 0x1);
         }
     }
     class Int1ThresholdRegister extends Register
@@ -599,10 +599,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7F) << 0); }
+        public long getValue() { return ((value & 0x7F) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7F);
+            value = (int)((_value >> 0) & 0x7F);
         }
     }
     class Int1DurationRegister extends Register
@@ -618,10 +618,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7F) << 0); }
+        public long getValue() { return ((value & 0x7F) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7F);
+            value = (int)((_value >> 0) & 0x7F);
         }
     }
     class Int2CfgRegister extends Register
@@ -644,17 +644,17 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((EnableXLowEvent & 0x1) << 0) | ((EnableXHighEvent & 0x1) << 1) | ((EnableYLowEvent & 0x1) << 2) | ((EnableYHighEvent & 0x1) << 3) | ((EnableZLowEvent & 0x1) << 4) | ((EnableZHighEvent & 0x1) << 5) | ((Enable6D & 0x1) << 6) | ((AndOrInterruptEvents & 0x1) << 7); }
+        public long getValue() { return ((enableXLowEvent & 0x1) << 0) | ((enableXHighEvent & 0x1) << 1) | ((enableYLowEvent & 0x1) << 2) | ((enableYHighEvent & 0x1) << 3) | ((enableZLowEvent & 0x1) << 4) | ((enableZHighEvent & 0x1) << 5) | ((enable6D & 0x1) << 6) | ((andOrInterruptEvents & 0x1) << 7); }
         public void setValue(long _value)
         {
-            EnableXLowEvent = (int)((_value >> 0) & 0x1);
-            EnableXHighEvent = (int)((_value >> 1) & 0x1);
-            EnableYLowEvent = (int)((_value >> 2) & 0x1);
-            EnableYHighEvent = (int)((_value >> 3) & 0x1);
-            EnableZLowEvent = (int)((_value >> 4) & 0x1);
-            EnableZHighEvent = (int)((_value >> 5) & 0x1);
-            Enable6D = (int)((_value >> 6) & 0x1);
-            AndOrInterruptEvents = (int)((_value >> 7) & 0x1);
+            enableXLowEvent = (int)((_value >> 0) & 0x1);
+            enableXHighEvent = (int)((_value >> 1) & 0x1);
+            enableYLowEvent = (int)((_value >> 2) & 0x1);
+            enableYHighEvent = (int)((_value >> 3) & 0x1);
+            enableZLowEvent = (int)((_value >> 4) & 0x1);
+            enableZHighEvent = (int)((_value >> 5) & 0x1);
+            enable6D = (int)((_value >> 6) & 0x1);
+            andOrInterruptEvents = (int)((_value >> 7) & 0x1);
         }
     }
     class Int2SrcRegister extends Register
@@ -676,16 +676,16 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((XLow & 0x1) << 0) | ((XHigh & 0x1) << 1) | ((YLow & 0x1) << 2) | ((YHigh & 0x1) << 3) | ((ZLow & 0x1) << 4) | ((ZHigh & 0x1) << 5) | ((InterruptActive & 0x1) << 6); }
+        public long getValue() { return ((xLow & 0x1) << 0) | ((xHigh & 0x1) << 1) | ((yLow & 0x1) << 2) | ((yHigh & 0x1) << 3) | ((zLow & 0x1) << 4) | ((zHigh & 0x1) << 5) | ((interruptActive & 0x1) << 6); }
         public void setValue(long _value)
         {
-            XLow = (int)((_value >> 0) & 0x1);
-            XHigh = (int)((_value >> 1) & 0x1);
-            YLow = (int)((_value >> 2) & 0x1);
-            YHigh = (int)((_value >> 3) & 0x1);
-            ZLow = (int)((_value >> 4) & 0x1);
-            ZHigh = (int)((_value >> 5) & 0x1);
-            InterruptActive = (int)((_value >> 6) & 0x1);
+            xLow = (int)((_value >> 0) & 0x1);
+            xHigh = (int)((_value >> 1) & 0x1);
+            yLow = (int)((_value >> 2) & 0x1);
+            yHigh = (int)((_value >> 3) & 0x1);
+            zLow = (int)((_value >> 4) & 0x1);
+            zHigh = (int)((_value >> 5) & 0x1);
+            interruptActive = (int)((_value >> 6) & 0x1);
         }
     }
     class Int2ThresholdRegister extends Register
@@ -701,10 +701,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7F) << 0); }
+        public long getValue() { return ((value & 0x7F) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7F);
+            value = (int)((_value >> 0) & 0x7F);
         }
     }
     class Int2DurationRegister extends Register
@@ -720,10 +720,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7F) << 0); }
+        public long getValue() { return ((value & 0x7F) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7F);
+            value = (int)((_value >> 0) & 0x7F);
         }
     }
     class ClickSourceRegister extends Register
@@ -745,16 +745,16 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((X & 0x1) << 0) | ((Y & 0x1) << 1) | ((Z & 0x1) << 2) | ((Sign & 0x1) << 3) | ((SingleClickEnable & 0x1) << 4) | ((DoubleClickEnable & 0x1) << 5) | ((InterruptActive & 0x1) << 6); }
+        public long getValue() { return ((x & 0x1) << 0) | ((y & 0x1) << 1) | ((z & 0x1) << 2) | ((sign & 0x1) << 3) | ((singleClickEnable & 0x1) << 4) | ((doubleClickEnable & 0x1) << 5) | ((interruptActive & 0x1) << 6); }
         public void setValue(long _value)
         {
-            X = (int)((_value >> 0) & 0x1);
-            Y = (int)((_value >> 1) & 0x1);
-            Z = (int)((_value >> 2) & 0x1);
-            Sign = (int)((_value >> 3) & 0x1);
-            SingleClickEnable = (int)((_value >> 4) & 0x1);
-            DoubleClickEnable = (int)((_value >> 5) & 0x1);
-            InterruptActive = (int)((_value >> 6) & 0x1);
+            x = (int)((_value >> 0) & 0x1);
+            y = (int)((_value >> 1) & 0x1);
+            z = (int)((_value >> 2) & 0x1);
+            sign = (int)((_value >> 3) & 0x1);
+            singleClickEnable = (int)((_value >> 4) & 0x1);
+            doubleClickEnable = (int)((_value >> 5) & 0x1);
+            interruptActive = (int)((_value >> 6) & 0x1);
         }
     }
     class ClickThresholdRegister extends Register
@@ -771,11 +771,11 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Threshold & 0x7F) << 0) | ((LirClick & 0x1) << 7); }
+        public long getValue() { return ((threshold & 0x7F) << 0) | ((lirClick & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Threshold = (int)((_value >> 0) & 0x7F);
-            LirClick = (int)((_value >> 7) & 0x1);
+            threshold = (int)((_value >> 0) & 0x7F);
+            lirClick = (int)((_value >> 7) & 0x1);
         }
     }
     class TimeLimitRegister extends Register
@@ -791,10 +791,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7F) << 0); }
+        public long getValue() { return ((value & 0x7F) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7F);
+            value = (int)((_value >> 0) & 0x7F);
         }
     }
     class TimeLatencyRegister extends Register
@@ -810,10 +810,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7FFF) << 0); }
+        public long getValue() { return ((value & 0x7FFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7FFF);
+            value = (int)((_value >> 0) & 0x7FFF);
         }
     }
     class TimeWindowRegister extends Register
@@ -829,10 +829,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class ActivationThresholdRegister extends Register
@@ -848,10 +848,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7F) << 0); }
+        public long getValue() { return ((value & 0x7F) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x7F);
+            value = (int)((_value >> 0) & 0x7F);
         }
     }
     class ActivationDurationRegister extends Register
@@ -867,10 +867,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Ctrl1Register extends Register
@@ -883,8 +883,8 @@ class Lis3dhRegisters extends RegisterManager
         int lowPowerEnable;
         int outputDataRate;
 
-                public outputDataRate getOutputDataRate() { for (outputDataRate b : outputDataRate.values()) { if(b.getVal() == OutputDataRate) return b; } return outputDataRate.values()[0]; }
-                public void setOutputDataRate(outputDataRate enumVal) { OutputDataRate = enumVal.getVal(); }
+                public OutputDataRates getOutputDataRate() { for (OutputDataRates b : OutputDataRates.values()) { if(b.getVal() == outputDataRate) return b; } return OutputDataRates.values()[0]; }
+                public void setOutputDataRate(OutputDataRates enumVal) { outputDataRate = enumVal.getVal(); }
 
         public Ctrl1Register read()
         {
@@ -892,14 +892,14 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((XAxisEnable & 0x1) << 0) | ((YAxisEnable & 0x1) << 1) | ((ZAxisEnable & 0x1) << 2) | ((LowPowerEnable & 0x1) << 3) | ((OutputDataRate & 0xF) << 4); }
+        public long getValue() { return ((xAxisEnable & 0x1) << 0) | ((yAxisEnable & 0x1) << 1) | ((zAxisEnable & 0x1) << 2) | ((lowPowerEnable & 0x1) << 3) | ((outputDataRate & 0xF) << 4); }
         public void setValue(long _value)
         {
-            XAxisEnable = (int)((_value >> 0) & 0x1);
-            YAxisEnable = (int)((_value >> 1) & 0x1);
-            ZAxisEnable = (int)((_value >> 2) & 0x1);
-            LowPowerEnable = (int)((_value >> 3) & 0x1);
-            OutputDataRate = (int)((_value >> 4) & 0xF);
+            xAxisEnable = (int)((_value >> 0) & 0x1);
+            yAxisEnable = (int)((_value >> 1) & 0x1);
+            zAxisEnable = (int)((_value >> 2) & 0x1);
+            lowPowerEnable = (int)((_value >> 3) & 0x1);
+            outputDataRate = (int)((_value >> 4) & 0xF);
         }
     }
     class OutXRegister extends Register
@@ -915,10 +915,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x3FF) << 6); }
+        public long getValue() { return ((value & 0x3FF) << 6); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
+            value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
         }
     }
     class OutYRegister extends Register
@@ -934,10 +934,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x3FF) << 6); }
+        public long getValue() { return ((value & 0x3FF) << 6); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
+            value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
         }
     }
     class OutZRegister extends Register
@@ -953,10 +953,10 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x3FF) << 6); }
+        public long getValue() { return ((value & 0x3FF) << 6); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
+            value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
         }
     }
 }

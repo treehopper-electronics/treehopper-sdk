@@ -15,11 +15,11 @@ public class Nau7802 {
         dev = new SMBusDevice((byte)0x2A, i2c);
         registers = new Nau7802Registers(dev);
 
-        registers.PuCtrl.RegisterReset = 1;  // reset all registers
-        registers.PuCtrl.write();
-        registers.PuCtrl.RegisterReset = 0;  // clear reset
-        registers.PuCtrl.PowerUpDigital = 1; // power up digital
-        registers.PuCtrl.write();
+        registers.puCtrl.registerReset = 1;  // reset all registers
+        registers.puCtrl.write();
+        registers.puCtrl.registerReset = 0;  // clear reset
+        registers.puCtrl.powerUpDigital = 1; // power up digital
+        registers.puCtrl.write();
 
         try {
             Thread.sleep(10);
@@ -28,34 +28,34 @@ public class Nau7802 {
         }
 
         // useful defaults
-        registers.PuCtrl.UseExternalCrystal = 0;
-        registers.PuCtrl.UseInternalLdo = 1;
-        registers.PuCtrl.PowerUpDigital = 1;
-        registers.PuCtrl.PowerUpAnalog = 1;
-        registers.PuCtrl.write();
+        registers.puCtrl.useExternalCrystal = 0;
+        registers.puCtrl.useInternalLdo = 1;
+        registers.puCtrl.powerUpDigital = 1;
+        registers.puCtrl.powerUpAnalog = 1;
+        registers.puCtrl.write();
 
-        registers.Ctrl1.setVldo(LdoVoltage.mV_3000);
-        registers.Ctrl1.setGain(Gains.x1);
-        registers.Ctrl1.write();
+        registers.ctrl1.setVldo(Vldoes.mV_3000);
+        registers.ctrl1.setGain(Gains.x1);
+        registers.ctrl1.write();
 
         updateReferenceVoltage(); // set the pins up with the default gains
 
-        registers.Pga.PgaBypass = 0;
-        registers.Pga.DisableChopper = 1;
-        registers.Pga.write();
+        registers.pga.pgaBypass = 0;
+        registers.pga.disableChopper = 1;
+        registers.pga.write();
 
-        registers.Adc.setRegChpFreq(RegChpFreqs.off);
-        registers.Adc.RegChp = 0;
-        registers.Adc.write();
+        registers.adc.setRegChpFreq(RegChpFreqs.off);
+        registers.adc.regChp = 0;
+        registers.adc.write();
 
-        registers.I2cCtrl.BgpCp = 0;
-        registers.I2cCtrl.write();
+        registers.i2cCtrl.bgpCp = 0;
+        registers.i2cCtrl.write();
 
-        registers.Ctrl2.setConversionRate(ConversionRates.Sps_10);
-        registers.Ctrl2.write();
+        registers.ctrl2.setConversionRate(ConversionRates.Sps_10);
+        registers.ctrl2.write();
 
-        registers.PuCtrl.CycleStart = 1;
-        registers.PuCtrl.write();
+        registers.puCtrl.cycleStart = 1;
+        registers.puCtrl.write();
     }
 
     public int getAdcValue() {
@@ -63,50 +63,50 @@ public class Nau7802 {
     }
 
     public void setConversionRate(ConversionRates rate) {
-        registers.Ctrl2.setConversionRate(rate);
+        registers.ctrl2.setConversionRate(rate);
     }
 
     public void setGain(Gains gain) {
-        registers.Ctrl1.setGain(gain);
+        registers.ctrl1.setGain(gain);
     }
 
     private int PerformConversion()
     {
         while(!ConversionDone());
 
-        registers.AdcResult.read();
-        return registers.AdcResult.Value;
+        registers.adcResult.read();
+        return registers.adcResult.value;
     }
 
     private boolean ConversionDone()
     {
-        registers.read(registers.PuCtrl);
-        return registers.PuCtrl.CycleReady == 1;
+        registers.read(registers.puCtrl);
+        return registers.puCtrl.cycleReady == 1;
     }
 
     private void updateReferenceVoltage()
     {
-        double ldoVoltage = 4.5 - registers.Ctrl1.Vldo * 0.3;
-        double gain = 1 << registers.Ctrl1.Gain;
+        double ldoVoltage = 4.5 - registers.ctrl1.vldo * 0.3;
+        double gain = 1 << registers.ctrl1.gain;
 
         referenceVoltage = ldoVoltage / gain;
     }
 
     public boolean calibrate()
     {
-        registers.Ctrl2.CalStart = 1;
-        registers.Ctrl2.write();
-        registers.Ctrl2.CalStart = 1;
+        registers.ctrl2.calStart = 1;
+        registers.ctrl2.write();
+        registers.ctrl2.calStart = 1;
 
-        while (registers.Ctrl2.read().CalStart == 1);
+        while (registers.ctrl2.read().calStart == 1);
 
-        return (registers.Ctrl2.CalError == 0);
+        return (registers.ctrl2.calError == 0);
     }
 
     public void SetChannel(int channel)
     {
-        registers.Ctrl2.ChannelSelect = channel;
-        registers.Ctrl2.write();
+        registers.ctrl2.channelSelect = channel;
+        registers.ctrl2.write();
         calibrate();
     }
 }

@@ -217,10 +217,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Self_test_y_gyroRegister extends Register
@@ -236,10 +236,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Self_test_z_gyroRegister extends Register
@@ -255,10 +255,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Self_test_x_accelRegister extends Register
@@ -274,10 +274,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Self_test_y_accelRegister extends Register
@@ -293,10 +293,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Self_test_z_accelRegister extends Register
@@ -312,10 +312,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class XGyroOffsUsrRegister extends Register
@@ -331,10 +331,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class YGyroOffsUsrRegister extends Register
@@ -350,10 +350,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class ZGyroOffsUsrRegister extends Register
@@ -369,10 +369,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFFFF);
+            value = (int)((_value >> 0) & 0xFFFF);
         }
     }
     class SampleRateDividerRegister extends Register
@@ -388,10 +388,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class ConfigurationRegister extends Register
@@ -402,8 +402,8 @@ class Mpu6050Registers extends RegisterManager
         int extSyncSet;
         int fifoMode;
 
-                public extSyncSet getExtSyncSet() { for (extSyncSet b : extSyncSet.values()) { if(b.getVal() == ExtSyncSet) return b; } return extSyncSet.values()[0]; }
-                public void setExtSyncSet(extSyncSet enumVal) { ExtSyncSet = enumVal.getVal(); }
+                public ExtSyncSets getExtSyncSet() { for (ExtSyncSets b : ExtSyncSets.values()) { if(b.getVal() == extSyncSet) return b; } return ExtSyncSets.values()[0]; }
+                public void setExtSyncSet(ExtSyncSets enumVal) { extSyncSet = enumVal.getVal(); }
 
         public ConfigurationRegister read()
         {
@@ -411,12 +411,12 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Dlpf & 0x7) << 0) | ((ExtSyncSet & 0x7) << 3) | ((FifoMode & 0x1) << 6); }
+        public long getValue() { return ((dlpf & 0x7) << 0) | ((extSyncSet & 0x7) << 3) | ((fifoMode & 0x1) << 6); }
         public void setValue(long _value)
         {
-            Dlpf = (int)((_value >> 0) & 0x7);
-            ExtSyncSet = (int)((_value >> 3) & 0x7);
-            FifoMode = (int)((_value >> 6) & 0x1);
+            dlpf = (int)((_value >> 0) & 0x7);
+            extSyncSet = (int)((_value >> 3) & 0x7);
+            fifoMode = (int)((_value >> 6) & 0x1);
         }
     }
     class GyroConfigRegister extends Register
@@ -428,8 +428,8 @@ class Mpu6050Registers extends RegisterManager
         int zGyroCten;
         int yGyroCten;
 
-                public gyroScale getGyroScale() { for (gyroScale b : gyroScale.values()) { if(b.getVal() == GyroScale) return b; } return gyroScale.values()[0]; }
-                public void setGyroScale(gyroScale enumVal) { GyroScale = enumVal.getVal(); }
+                public GyroScales getGyroScale() { for (GyroScales b : GyroScales.values()) { if(b.getVal() == gyroScale) return b; } return GyroScales.values()[0]; }
+                public void setGyroScale(GyroScales enumVal) { gyroScale = enumVal.getVal(); }
 
         public GyroConfigRegister read()
         {
@@ -437,13 +437,13 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((FChoiceBypass & 0x3) << 0) | ((GyroScale & 0x3) << 3) | ((ZGyroCten & 0x1) << 5) | ((YGyroCten & 0x1) << 6); }
+        public long getValue() { return ((fChoiceBypass & 0x3) << 0) | ((gyroScale & 0x3) << 3) | ((zGyroCten & 0x1) << 5) | ((yGyroCten & 0x1) << 6); }
         public void setValue(long _value)
         {
-            FChoiceBypass = (int)((_value >> 0) & 0x3);
-            GyroScale = (int)((_value >> 3) & 0x3);
-            ZGyroCten = (int)((_value >> 5) & 0x1);
-            YGyroCten = (int)((_value >> 6) & 0x1);
+            fChoiceBypass = (int)((_value >> 0) & 0x3);
+            gyroScale = (int)((_value >> 3) & 0x3);
+            zGyroCten = (int)((_value >> 5) & 0x1);
+            yGyroCten = (int)((_value >> 6) & 0x1);
         }
     }
     class AccelConfigRegister extends Register
@@ -455,8 +455,8 @@ class Mpu6050Registers extends RegisterManager
         int accelYselfTest;
         int accelXselfTest;
 
-                public accelScale getAccelScale() { for (accelScale b : accelScale.values()) { if(b.getVal() == AccelScale) return b; } return accelScale.values()[0]; }
-                public void setAccelScale(accelScale enumVal) { AccelScale = enumVal.getVal(); }
+                public AccelScales getAccelScale() { for (AccelScales b : AccelScales.values()) { if(b.getVal() == accelScale) return b; } return AccelScales.values()[0]; }
+                public void setAccelScale(AccelScales enumVal) { accelScale = enumVal.getVal(); }
 
         public AccelConfigRegister read()
         {
@@ -464,13 +464,13 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((AccelScale & 0x3) << 3) | ((AccelZselfTest & 0x1) << 5) | ((AccelYselfTest & 0x1) << 6) | ((AccelXselfTest & 0x1) << 7); }
+        public long getValue() { return ((accelScale & 0x3) << 3) | ((accelZselfTest & 0x1) << 5) | ((accelYselfTest & 0x1) << 6) | ((accelXselfTest & 0x1) << 7); }
         public void setValue(long _value)
         {
-            AccelScale = (int)((_value >> 3) & 0x3);
-            AccelZselfTest = (int)((_value >> 5) & 0x1);
-            AccelYselfTest = (int)((_value >> 6) & 0x1);
-            AccelXselfTest = (int)((_value >> 7) & 0x1);
+            accelScale = (int)((_value >> 3) & 0x3);
+            accelZselfTest = (int)((_value >> 5) & 0x1);
+            accelYselfTest = (int)((_value >> 6) & 0x1);
+            accelXselfTest = (int)((_value >> 7) & 0x1);
         }
     }
     class AccelConfig2Register extends Register
@@ -487,11 +487,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((DlpfCfg & 0x7) << 0) | ((AccelFchoice & 0x1) << 3); }
+        public long getValue() { return ((dlpfCfg & 0x7) << 0) | ((accelFchoice & 0x1) << 3); }
         public void setValue(long _value)
         {
-            DlpfCfg = (int)((_value >> 0) & 0x7);
-            AccelFchoice = (int)((_value >> 3) & 0x1);
+            dlpfCfg = (int)((_value >> 0) & 0x7);
+            accelFchoice = (int)((_value >> 3) & 0x1);
         }
     }
     class LowPowerAccelerometerOdrControlRegister extends Register
@@ -507,10 +507,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xF) << 0); }
+        public long getValue() { return ((value & 0xF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xF);
+            value = (int)((_value >> 0) & 0xF);
         }
     }
     class WomThresholdRegister extends Register
@@ -526,10 +526,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class FifoEnableRegister extends Register
@@ -552,17 +552,17 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Slv0 & 0x1) << 0) | ((Slv1 & 0x1) << 1) | ((Slv2 & 0x1) << 2) | ((Accel & 0x1) << 3) | ((GyroZout & 0x1) << 4) | ((GyroYout & 0x1) << 5) | ((GyroXout & 0x1) << 6) | ((TempOut & 0x1) << 7); }
+        public long getValue() { return ((slv0 & 0x1) << 0) | ((slv1 & 0x1) << 1) | ((slv2 & 0x1) << 2) | ((accel & 0x1) << 3) | ((gyroZout & 0x1) << 4) | ((gyroYout & 0x1) << 5) | ((gyroXout & 0x1) << 6) | ((tempOut & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Slv0 = (int)((_value >> 0) & 0x1);
-            Slv1 = (int)((_value >> 1) & 0x1);
-            Slv2 = (int)((_value >> 2) & 0x1);
-            Accel = (int)((_value >> 3) & 0x1);
-            GyroZout = (int)((_value >> 4) & 0x1);
-            GyroYout = (int)((_value >> 5) & 0x1);
-            GyroXout = (int)((_value >> 6) & 0x1);
-            TempOut = (int)((_value >> 7) & 0x1);
+            slv0 = (int)((_value >> 0) & 0x1);
+            slv1 = (int)((_value >> 1) & 0x1);
+            slv2 = (int)((_value >> 2) & 0x1);
+            accel = (int)((_value >> 3) & 0x1);
+            gyroZout = (int)((_value >> 4) & 0x1);
+            gyroYout = (int)((_value >> 5) & 0x1);
+            gyroXout = (int)((_value >> 6) & 0x1);
+            tempOut = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cMasterControlRegister extends Register
@@ -582,14 +582,14 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((I2cMasterClock & 0xF) << 0) | ((I2cMstPnsr & 0x1) << 4) | ((Slv3FifoEn & 0x1) << 5) | ((WaitForEs & 0x1) << 6) | ((MultMstEn & 0x1) << 7); }
+        public long getValue() { return ((i2cMasterClock & 0xF) << 0) | ((i2cMstPnsr & 0x1) << 4) | ((slv3FifoEn & 0x1) << 5) | ((waitForEs & 0x1) << 6) | ((multMstEn & 0x1) << 7); }
         public void setValue(long _value)
         {
-            I2cMasterClock = (int)((_value >> 0) & 0xF);
-            I2cMstPnsr = (int)((_value >> 4) & 0x1);
-            Slv3FifoEn = (int)((_value >> 5) & 0x1);
-            WaitForEs = (int)((_value >> 6) & 0x1);
-            MultMstEn = (int)((_value >> 7) & 0x1);
+            i2cMasterClock = (int)((_value >> 0) & 0xF);
+            i2cMstPnsr = (int)((_value >> 4) & 0x1);
+            slv3FifoEn = (int)((_value >> 5) & 0x1);
+            waitForEs = (int)((_value >> 6) & 0x1);
+            multMstEn = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cSlv0AddrRegister extends Register
@@ -606,11 +606,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Id & 0x7F) << 0) | ((Rnw & 0x1) << 7); }
+        public long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Id = (int)((_value >> 0) & 0x7F);
-            Rnw = (int)((_value >> 7) & 0x1);
+            id = (int)((_value >> 0) & 0x7F);
+            rnw = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cSlv0RegRegister extends Register
@@ -626,10 +626,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv0CtrlRegister extends Register
@@ -645,10 +645,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv1AddrRegister extends Register
@@ -665,11 +665,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Id & 0x7F) << 0) | ((Rnw & 0x1) << 7); }
+        public long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Id = (int)((_value >> 0) & 0x7F);
-            Rnw = (int)((_value >> 7) & 0x1);
+            id = (int)((_value >> 0) & 0x7F);
+            rnw = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cSlv1RegRegister extends Register
@@ -685,10 +685,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv1CtrlRegister extends Register
@@ -704,10 +704,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv2AddrRegister extends Register
@@ -724,11 +724,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Id & 0x7F) << 0) | ((Rnw & 0x1) << 7); }
+        public long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Id = (int)((_value >> 0) & 0x7F);
-            Rnw = (int)((_value >> 7) & 0x1);
+            id = (int)((_value >> 0) & 0x7F);
+            rnw = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cSlv2RegRegister extends Register
@@ -744,10 +744,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv2CtrlRegister extends Register
@@ -763,10 +763,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv3AddrRegister extends Register
@@ -783,11 +783,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Id & 0x7F) << 0) | ((Rnw & 0x1) << 7); }
+        public long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Id = (int)((_value >> 0) & 0x7F);
-            Rnw = (int)((_value >> 7) & 0x1);
+            id = (int)((_value >> 0) & 0x7F);
+            rnw = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cSlv3RegRegister extends Register
@@ -803,10 +803,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv3CtrlRegister extends Register
@@ -822,10 +822,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv4AddrRegister extends Register
@@ -842,11 +842,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Id & 0x7F) << 0) | ((Rnw & 0x1) << 7); }
+        public long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Id = (int)((_value >> 0) & 0x7F);
-            Rnw = (int)((_value >> 7) & 0x1);
+            id = (int)((_value >> 0) & 0x7F);
+            rnw = (int)((_value >> 7) & 0x1);
         }
     }
     class I2cSlv4RegRegister extends Register
@@ -862,10 +862,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv4DoRegister extends Register
@@ -881,10 +881,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv4CtrlRegister extends Register
@@ -900,10 +900,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv4DiRegister extends Register
@@ -919,10 +919,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cMstStatusRegister extends Register
@@ -945,17 +945,17 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Slv0Nack & 0x1) << 0) | ((Slv1Nack & 0x1) << 1) | ((Slv2Nack & 0x1) << 2) | ((Slv3Nack & 0x1) << 3) | ((Slv4Nack & 0x1) << 4) | ((LostArb & 0x1) << 5) | ((Slv4Done & 0x1) << 6) | ((PassThrough & 0x1) << 7); }
+        public long getValue() { return ((slv0Nack & 0x1) << 0) | ((slv1Nack & 0x1) << 1) | ((slv2Nack & 0x1) << 2) | ((slv3Nack & 0x1) << 3) | ((slv4Nack & 0x1) << 4) | ((lostArb & 0x1) << 5) | ((slv4Done & 0x1) << 6) | ((passThrough & 0x1) << 7); }
         public void setValue(long _value)
         {
-            Slv0Nack = (int)((_value >> 0) & 0x1);
-            Slv1Nack = (int)((_value >> 1) & 0x1);
-            Slv2Nack = (int)((_value >> 2) & 0x1);
-            Slv3Nack = (int)((_value >> 3) & 0x1);
-            Slv4Nack = (int)((_value >> 4) & 0x1);
-            LostArb = (int)((_value >> 5) & 0x1);
-            Slv4Done = (int)((_value >> 6) & 0x1);
-            PassThrough = (int)((_value >> 7) & 0x1);
+            slv0Nack = (int)((_value >> 0) & 0x1);
+            slv1Nack = (int)((_value >> 1) & 0x1);
+            slv2Nack = (int)((_value >> 2) & 0x1);
+            slv3Nack = (int)((_value >> 3) & 0x1);
+            slv4Nack = (int)((_value >> 4) & 0x1);
+            lostArb = (int)((_value >> 5) & 0x1);
+            slv4Done = (int)((_value >> 6) & 0x1);
+            passThrough = (int)((_value >> 7) & 0x1);
         }
     }
     class IntPinCfgRegister extends Register
@@ -977,16 +977,16 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((BypassEn & 0x1) << 1) | ((FsyncIntModeEnable & 0x1) << 2) | ((ActlFsync & 0x1) << 3) | ((IntAnyRd2Clear & 0x1) << 4) | ((LatchIntEn & 0x1) << 5) | ((Open & 0x1) << 6) | ((Actl & 0x1) << 7); }
+        public long getValue() { return ((bypassEn & 0x1) << 1) | ((fsyncIntModeEnable & 0x1) << 2) | ((actlFsync & 0x1) << 3) | ((intAnyRd2Clear & 0x1) << 4) | ((latchIntEn & 0x1) << 5) | ((open & 0x1) << 6) | ((actl & 0x1) << 7); }
         public void setValue(long _value)
         {
-            BypassEn = (int)((_value >> 1) & 0x1);
-            FsyncIntModeEnable = (int)((_value >> 2) & 0x1);
-            ActlFsync = (int)((_value >> 3) & 0x1);
-            IntAnyRd2Clear = (int)((_value >> 4) & 0x1);
-            LatchIntEn = (int)((_value >> 5) & 0x1);
-            Open = (int)((_value >> 6) & 0x1);
-            Actl = (int)((_value >> 7) & 0x1);
+            bypassEn = (int)((_value >> 1) & 0x1);
+            fsyncIntModeEnable = (int)((_value >> 2) & 0x1);
+            actlFsync = (int)((_value >> 3) & 0x1);
+            intAnyRd2Clear = (int)((_value >> 4) & 0x1);
+            latchIntEn = (int)((_value >> 5) & 0x1);
+            open = (int)((_value >> 6) & 0x1);
+            actl = (int)((_value >> 7) & 0x1);
         }
     }
     class IntEnableRegister extends Register
@@ -1006,14 +1006,14 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((RawReadyEnable & 0x1) << 0) | ((FsyncIntEnable & 0x1) << 2) | ((FifoIntEnable & 0x1) << 3) | ((FifoOverflowEnable & 0x1) << 4) | ((WomEnable & 0x1) << 1); }
+        public long getValue() { return ((RawReadyEnable & 0x1) << 0) | ((fsyncIntEnable & 0x1) << 2) | ((fifoIntEnable & 0x1) << 3) | ((fifoOverflowEnable & 0x1) << 4) | ((womEnable & 0x1) << 1); }
         public void setValue(long _value)
         {
             RawReadyEnable = (int)((_value >> 0) & 0x1);
-            FsyncIntEnable = (int)((_value >> 2) & 0x1);
-            FifoIntEnable = (int)((_value >> 3) & 0x1);
-            FifoOverflowEnable = (int)((_value >> 4) & 0x1);
-            WomEnable = (int)((_value >> 1) & 0x1);
+            fsyncIntEnable = (int)((_value >> 2) & 0x1);
+            fifoIntEnable = (int)((_value >> 3) & 0x1);
+            fifoOverflowEnable = (int)((_value >> 4) & 0x1);
+            womEnable = (int)((_value >> 1) & 0x1);
         }
     }
     class IntStatusRegister extends Register
@@ -1032,13 +1032,13 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((RawDataReadyInt & 0x1) << 0) | ((FsyncInt & 0x1) << 2) | ((FifoOverflowInt & 0x1) << 3) | ((WomInt & 0x1) << 1); }
+        public long getValue() { return ((rawDataReadyInt & 0x1) << 0) | ((fsyncInt & 0x1) << 2) | ((fifoOverflowInt & 0x1) << 3) | ((womInt & 0x1) << 1); }
         public void setValue(long _value)
         {
-            RawDataReadyInt = (int)((_value >> 0) & 0x1);
-            FsyncInt = (int)((_value >> 2) & 0x1);
-            FifoOverflowInt = (int)((_value >> 3) & 0x1);
-            WomInt = (int)((_value >> 1) & 0x1);
+            rawDataReadyInt = (int)((_value >> 0) & 0x1);
+            fsyncInt = (int)((_value >> 2) & 0x1);
+            fifoOverflowInt = (int)((_value >> 3) & 0x1);
+            womInt = (int)((_value >> 1) & 0x1);
         }
     }
     class Accel_xRegister extends Register
@@ -1054,10 +1054,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Accel_yRegister extends Register
@@ -1073,10 +1073,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Accel_zRegister extends Register
@@ -1092,10 +1092,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class TempRegister extends Register
@@ -1111,10 +1111,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Gyro_xRegister extends Register
@@ -1130,10 +1130,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Gyro_yRegister extends Register
@@ -1149,10 +1149,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Gyro_zRegister extends Register
@@ -1168,10 +1168,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class ExtSensDataRegister extends Register
@@ -1187,10 +1187,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x0) << 0); }
+        public long getValue() { return ((value & 0x0) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x0);
+            value = (int)((_value >> 0) & 0x0);
         }
     }
     class I2cSlv0doRegister extends Register
@@ -1206,10 +1206,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv1doRegister extends Register
@@ -1225,10 +1225,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv2doRegister extends Register
@@ -1244,10 +1244,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cSlv3doRegister extends Register
@@ -1263,10 +1263,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class I2cMstDelayCtrlRegister extends Register
@@ -1287,15 +1287,15 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Slv0DelayEn & 0x1) << 0) | ((Slv1DelayEn & 0x1) << 1) | ((Slv2DelayEn & 0x1) << 2) | ((Slv3DelayEn & 0x1) << 3) | ((Slv4DelayEn & 0x1) << 4) | ((DelayEsShadow & 0x1) << 2); }
+        public long getValue() { return ((slv0DelayEn & 0x1) << 0) | ((slv1DelayEn & 0x1) << 1) | ((slv2DelayEn & 0x1) << 2) | ((slv3DelayEn & 0x1) << 3) | ((slv4DelayEn & 0x1) << 4) | ((delayEsShadow & 0x1) << 2); }
         public void setValue(long _value)
         {
-            Slv0DelayEn = (int)((_value >> 0) & 0x1);
-            Slv1DelayEn = (int)((_value >> 1) & 0x1);
-            Slv2DelayEn = (int)((_value >> 2) & 0x1);
-            Slv3DelayEn = (int)((_value >> 3) & 0x1);
-            Slv4DelayEn = (int)((_value >> 4) & 0x1);
-            DelayEsShadow = (int)((_value >> 2) & 0x1);
+            slv0DelayEn = (int)((_value >> 0) & 0x1);
+            slv1DelayEn = (int)((_value >> 1) & 0x1);
+            slv2DelayEn = (int)((_value >> 2) & 0x1);
+            slv3DelayEn = (int)((_value >> 3) & 0x1);
+            slv4DelayEn = (int)((_value >> 4) & 0x1);
+            delayEsShadow = (int)((_value >> 2) & 0x1);
         }
     }
     class SignalPathResetRegister extends Register
@@ -1313,12 +1313,12 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((TempReset & 0x1) << 0) | ((AccelReset & 0x1) << 1) | ((GyroReset & 0x1) << 2); }
+        public long getValue() { return ((tempReset & 0x1) << 0) | ((accelReset & 0x1) << 1) | ((gyroReset & 0x1) << 2); }
         public void setValue(long _value)
         {
-            TempReset = (int)((_value >> 0) & 0x1);
-            AccelReset = (int)((_value >> 1) & 0x1);
-            GyroReset = (int)((_value >> 2) & 0x1);
+            tempReset = (int)((_value >> 0) & 0x1);
+            accelReset = (int)((_value >> 1) & 0x1);
+            gyroReset = (int)((_value >> 2) & 0x1);
         }
     }
     class AccelIntCtrlRegister extends Register
@@ -1335,11 +1335,11 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((AccelIntelMode & 0x1) << 6) | ((AccelIntelEnable & 0x1) << 7); }
+        public long getValue() { return ((accelIntelMode & 0x1) << 6) | ((accelIntelEnable & 0x1) << 7); }
         public void setValue(long _value)
         {
-            AccelIntelMode = (int)((_value >> 6) & 0x1);
-            AccelIntelEnable = (int)((_value >> 7) & 0x1);
+            accelIntelMode = (int)((_value >> 6) & 0x1);
+            accelIntelEnable = (int)((_value >> 7) & 0x1);
         }
     }
     class UserCtrlRegister extends Register
@@ -1360,15 +1360,15 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((SigConditionReset & 0x1) << 0) | ((I2cMasterReset & 0x1) << 1) | ((FifoReset & 0x1) << 2) | ((I2cIfDisable & 0x1) << 1) | ((I2cMasterEnable & 0x1) << 2) | ((FifoEnable & 0x1) << 3); }
+        public long getValue() { return ((sigConditionReset & 0x1) << 0) | ((i2cMasterReset & 0x1) << 1) | ((fifoReset & 0x1) << 2) | ((i2cIfDisable & 0x1) << 1) | ((i2cMasterEnable & 0x1) << 2) | ((fifoEnable & 0x1) << 3); }
         public void setValue(long _value)
         {
-            SigConditionReset = (int)((_value >> 0) & 0x1);
-            I2cMasterReset = (int)((_value >> 1) & 0x1);
-            FifoReset = (int)((_value >> 2) & 0x1);
-            I2cIfDisable = (int)((_value >> 1) & 0x1);
-            I2cMasterEnable = (int)((_value >> 2) & 0x1);
-            FifoEnable = (int)((_value >> 3) & 0x1);
+            sigConditionReset = (int)((_value >> 0) & 0x1);
+            i2cMasterReset = (int)((_value >> 1) & 0x1);
+            fifoReset = (int)((_value >> 2) & 0x1);
+            i2cIfDisable = (int)((_value >> 1) & 0x1);
+            i2cMasterEnable = (int)((_value >> 2) & 0x1);
+            fifoEnable = (int)((_value >> 3) & 0x1);
         }
     }
     class PowerMgmt1Register extends Register
@@ -1382,8 +1382,8 @@ class Mpu6050Registers extends RegisterManager
         int sleep;
         int reset;
 
-                public clockSel getClockSel() { for (clockSel b : clockSel.values()) { if(b.getVal() == ClockSel) return b; } return clockSel.values()[0]; }
-                public void setClockSel(clockSel enumVal) { ClockSel = enumVal.getVal(); }
+                public ClockSels getClockSel() { for (ClockSels b : ClockSels.values()) { if(b.getVal() == clockSel) return b; } return ClockSels.values()[0]; }
+                public void setClockSel(ClockSels enumVal) { clockSel = enumVal.getVal(); }
 
         public PowerMgmt1Register read()
         {
@@ -1391,15 +1391,15 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((ClockSel & 0x7) << 0) | ((PowerDownPtat & 0x1) << 3) | ((GyroStandby & 0x1) << 4) | ((Cycle & 0x1) << 5) | ((Sleep & 0x1) << 6) | ((Reset & 0x1) << 7); }
+        public long getValue() { return ((clockSel & 0x7) << 0) | ((powerDownPtat & 0x1) << 3) | ((gyroStandby & 0x1) << 4) | ((cycle & 0x1) << 5) | ((sleep & 0x1) << 6) | ((reset & 0x1) << 7); }
         public void setValue(long _value)
         {
-            ClockSel = (int)((_value >> 0) & 0x7);
-            PowerDownPtat = (int)((_value >> 3) & 0x1);
-            GyroStandby = (int)((_value >> 4) & 0x1);
-            Cycle = (int)((_value >> 5) & 0x1);
-            Sleep = (int)((_value >> 6) & 0x1);
-            Reset = (int)((_value >> 7) & 0x1);
+            clockSel = (int)((_value >> 0) & 0x7);
+            powerDownPtat = (int)((_value >> 3) & 0x1);
+            gyroStandby = (int)((_value >> 4) & 0x1);
+            cycle = (int)((_value >> 5) & 0x1);
+            sleep = (int)((_value >> 6) & 0x1);
+            reset = (int)((_value >> 7) & 0x1);
         }
     }
     class PowerMgmt2Register extends Register
@@ -1420,15 +1420,15 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((DisableZG & 0x1) << 0) | ((DisableYG & 0x1) << 1) | ((DisableXG & 0x1) << 2) | ((DisableZA & 0x1) << 3) | ((DisableYA & 0x1) << 4) | ((DisableXA & 0x1) << 5); }
+        public long getValue() { return ((disableZG & 0x1) << 0) | ((disableYG & 0x1) << 1) | ((disableXG & 0x1) << 2) | ((disableZA & 0x1) << 3) | ((disableYA & 0x1) << 4) | ((disableXA & 0x1) << 5); }
         public void setValue(long _value)
         {
-            DisableZG = (int)((_value >> 0) & 0x1);
-            DisableYG = (int)((_value >> 1) & 0x1);
-            DisableXG = (int)((_value >> 2) & 0x1);
-            DisableZA = (int)((_value >> 3) & 0x1);
-            DisableYA = (int)((_value >> 4) & 0x1);
-            DisableXA = (int)((_value >> 5) & 0x1);
+            disableZG = (int)((_value >> 0) & 0x1);
+            disableYG = (int)((_value >> 1) & 0x1);
+            disableXG = (int)((_value >> 2) & 0x1);
+            disableZA = (int)((_value >> 3) & 0x1);
+            disableYA = (int)((_value >> 4) & 0x1);
+            disableXA = (int)((_value >> 5) & 0x1);
         }
     }
     class FifoCountRegister extends Register
@@ -1444,10 +1444,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x1FFF) << 0); }
+        public long getValue() { return ((value & 0x1FFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0x1FFF);
+            value = (int)((_value >> 0) & 0x1FFF);
         }
     }
     class FifoRWRegister extends Register
@@ -1463,10 +1463,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class WhoAmIRegister extends Register
@@ -1482,10 +1482,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class XAccelOffsetRegister extends Register
@@ -1501,10 +1501,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7FFF) << 1); }
+        public long getValue() { return ((value & 0x7FFF) << 1); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 1) & 0x7FFF);
+            value = (int)((_value >> 1) & 0x7FFF);
         }
     }
     class YAccelOffsetRegister extends Register
@@ -1520,10 +1520,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7FFF) << 1); }
+        public long getValue() { return ((value & 0x7FFF) << 1); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 1) & 0x7FFF);
+            value = (int)((_value >> 1) & 0x7FFF);
         }
     }
     class ZAccelOffsetRegister extends Register
@@ -1539,10 +1539,10 @@ class Mpu6050Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0x7FFF) << 1); }
+        public long getValue() { return ((value & 0x7FFF) << 1); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 1) & 0x7FFF);
+            value = (int)((_value >> 1) & 0x7FFF);
         }
     }
 }

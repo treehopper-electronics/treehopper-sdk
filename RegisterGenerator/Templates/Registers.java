@@ -33,8 +33,8 @@ class {{Name}}Registers extends RegisterManager
 
 {{#Values.Values}}
         {{#Enum}}
-                public {{Name}} get{{CapitalizedName}}() { for ({{Name}} b : {{Name}}.values()) { if(b.getVal() == {{CapitalizedName}}) return b; } return {{Name}}.values()[0]; }
-                public void set{{CapitalizedName}}({{Name}} enumVal) { {{CapitalizedName}} = enumVal.getVal(); }
+                public {{PluralizedName}} get{{CapitalizedName}}() { for ({{PluralizedName}} b : {{PluralizedName}}.values()) { if(b.getVal() == {{Name}}) return b; } return {{PluralizedName}}.values()[0]; }
+                public void set{{CapitalizedName}}({{PluralizedName}} enumVal) { {{Name}} = enumVal.getVal(); }
         {{/Enum}}
 {{/Values.Values}}
 
@@ -44,15 +44,15 @@ class {{Name}}Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return {{#Values.Values}}(({{CapitalizedName}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}; }
+        public long getValue() { return {{#Values.Values}}(({{Name}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}; }
         public void setValue(long _value)
         {
             {{#Values.Values}}
             {{#IsSigned}}
-            {{CapitalizedName}} = (int)(((_value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
+            {{Name}} = (int)(((_value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
             {{/IsSigned}}
             {{^IsSigned}}
-            {{CapitalizedName}} = (int)((_value >> {{Offset}}) & {{Bitmask}});
+            {{Name}} = (int)((_value >> {{Offset}}) & {{Bitmask}});
             {{/IsSigned}}
             {{/Values.Values}}
         }

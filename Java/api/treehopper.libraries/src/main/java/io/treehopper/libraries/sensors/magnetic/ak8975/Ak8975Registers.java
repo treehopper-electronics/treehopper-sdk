@@ -61,10 +61,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class InfoRegister extends Register
@@ -80,10 +80,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class Status1Register extends Register
@@ -99,10 +99,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Drdy & 0x1) << 0); }
+        public long getValue() { return ((drdy & 0x1) << 0); }
         public void setValue(long _value)
         {
-            Drdy = (int)((_value >> 0) & 0x1);
+            drdy = (int)((_value >> 0) & 0x1);
         }
     }
     class HxRegister extends Register
@@ -118,10 +118,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class HyRegister extends Register
@@ -137,10 +137,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class HzRegister extends Register
@@ -156,10 +156,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFFFF) << 0); }
+        public long getValue() { return ((value & 0xFFFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
     class Status2Register extends Register
@@ -176,11 +176,11 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Derr & 0x1) << 2) | ((Hofl & 0x1) << 3); }
+        public long getValue() { return ((derr & 0x1) << 2) | ((hofl & 0x1) << 3); }
         public void setValue(long _value)
         {
-            Derr = (int)((_value >> 2) & 0x1);
-            Hofl = (int)((_value >> 3) & 0x1);
+            derr = (int)((_value >> 2) & 0x1);
+            hofl = (int)((_value >> 3) & 0x1);
         }
     }
     class ControlRegister extends Register
@@ -196,10 +196,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Mode & 0xF) << 0); }
+        public long getValue() { return ((mode & 0xF) << 0); }
         public void setValue(long _value)
         {
-            Mode = (int)((_value >> 0) & 0xF);
+            mode = (int)((_value >> 0) & 0xF);
         }
     }
     class SensitivityXRegister extends Register
@@ -215,10 +215,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class SensitivityYRegister extends Register
@@ -234,10 +234,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
     class SensitivityZRegister extends Register
@@ -253,10 +253,10 @@ class Ak8975Registers extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((Value & 0xFF) << 0); }
+        public long getValue() { return ((value & 0xFF) << 0); }
         public void setValue(long _value)
         {
-            Value = (int)((_value >> 0) & 0xFF);
+            value = (int)((_value >> 0) & 0xFF);
         }
     }
 }

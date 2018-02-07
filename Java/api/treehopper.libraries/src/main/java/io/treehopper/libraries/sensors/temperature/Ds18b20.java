@@ -32,8 +32,9 @@ public class Ds18b20 extends TemperatureSensor {
         this.groupConversion = groupConversion;
     }
 
+
     @Override
-    public double getTemperatureCelsius() {
+    public void update() {
         if(!groupConversion)
         {
             if(address == 0)
@@ -67,6 +68,6 @@ public class Ds18b20 extends TemperatureSensor {
 
         byte[] data = oneWire.receive(2);
 
-        return ((short)(data[0] | (data[1] << 8))) / 16d;
+        celsius = ((short)(data[0] | (data[1] << 8))) / 16d;
     }
 }
