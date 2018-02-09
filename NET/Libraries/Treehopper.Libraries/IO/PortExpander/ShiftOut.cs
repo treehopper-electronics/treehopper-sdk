@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Treehopper.Libraries.Utilities;
 
 namespace Treehopper.Libraries.IO.PortExpander
@@ -56,7 +57,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             for (var i = 0; i < numPins; i++)
                 Pins.Add(new ShiftOutPin(this, i));
 
-            requestWrite().Wait();
+            Task.Run(() => Flush()).Wait();
         }
 
         internal void UpdateOutput(ShiftOutPin shiftOutPin)
