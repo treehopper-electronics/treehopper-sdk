@@ -6,6 +6,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// <summary>
     ///     Avago ADJD-S311 ambient light sensor
     /// </summary>
+    [Supports("Avago", "ADJD-S311")]
     public class Adjds311 : SMBusDevice, INotifyPropertyChanged
     {
         private readonly I2C _I2C;

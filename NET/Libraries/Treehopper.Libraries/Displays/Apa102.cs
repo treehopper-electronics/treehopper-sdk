@@ -17,6 +17,7 @@ namespace Treehopper.Libraries.Displays
     ///         The APA102
     ///     </para>
     /// </remarks>
+    [Supports("Shiji Lighting Co.", "iPixel APA102C")]
     public class Apa102 : IFlushable
     {
         private readonly Spi spi;

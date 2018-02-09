@@ -7,6 +7,7 @@ namespace Treehopper.Libraries.Input
     /// <summary>
     ///     Nintendo Super NES (SNES) Controller
     /// </summary>
+    [Supports("Nintendo", "Super NES (SNES) Controller")]
     public class SuperNesController : NesController
     {
         public SuperNesController(Spi spi, SpiChipSelectPin ps) : base(spi, ps)

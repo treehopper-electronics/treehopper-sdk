@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
     /// <summary>
     ///     Honeywell HMC5883L 3-axis digital compass
     /// </summary>
+    [Supports("Honewell", "HMC5883L")]
     public class Hmc5883l : IMagnetometer
     {
         /// <summary>

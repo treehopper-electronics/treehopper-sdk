@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// <summary>
     ///     Microchip MCP23008 8-bit I/O expander with I2c interface
     /// </summary>
+    [Supports("Microchip", "MCP23008")]
     public class Mcp23008 : IPortExpander<Mcp23008.Pin>, IPortExpanderParent
     {
         private readonly SMBusDevice dev;

@@ -7,6 +7,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// <summary>
     ///     FLIR Lepton
     /// </summary>
+    [Supports("FLIR", "Lepton")]
     public class FlirLepton
     {
         private readonly ushort[,] blackFrame;

@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// <summary>
     ///     NXP PCA9632 4 channel, 8-bit PWM driver
     /// </summary>
+    [Supports("NXP", "PCA9632")]
     public class Pca9632
     {
         /// <summary>

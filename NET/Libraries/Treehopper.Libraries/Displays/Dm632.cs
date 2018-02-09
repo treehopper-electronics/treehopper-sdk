@@ -9,6 +9,9 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     SiTI DM632/DM633/DM634 16-channel, 16-bit PWM constant-current LED driver
     /// </summary>
+    [Supports("SiTI", "DM632")]
+    [Supports("SiTI", "DM633")]
+    [Supports("SiTI", "DM634")]
     public class Dm632 : ChainableShiftRegisterOutput, ILedDriver
     {
         private double globalBrightness = 1.0;

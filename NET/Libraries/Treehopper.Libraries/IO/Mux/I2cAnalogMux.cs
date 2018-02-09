@@ -5,6 +5,7 @@ namespace Treehopper.Libraries.IO.Mux
     /// <summary>
     ///     Use a standard analog mux as a I2c mux
     /// </summary>
+    [Supports("Generic", "4052")]
     public class I2cAnalogMux : I2cMux
     {
         private readonly DigitalOut[] pins;

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Magnetic
 {
+    [Supports("AKM", "AK8975")]
+    [Supports("AKM", "AK8975C")]
     public partial class Ak8975 : IMagnetometer
     {
         SMBusDevice dev;

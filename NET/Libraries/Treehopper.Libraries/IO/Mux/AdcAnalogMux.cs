@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.IO.Mux
     /// <summary>
     ///     Analog mux for ADC expansion
     /// </summary>
+    [Supports("Generic", "4052")]
     public class AdcAnalogMux
     {
         private readonly DigitalOut[] pins;

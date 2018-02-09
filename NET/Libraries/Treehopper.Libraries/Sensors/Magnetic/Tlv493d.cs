@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
     /// <summary>
     /// TLV493D-A1B6 3D magnetic / temperature sensor
     /// </summary>
+    [Supports("Infineon", "TLV493D-A1B6")]
     public class Tlv493d : TemperatureSensor
     {
         private readonly byte address;

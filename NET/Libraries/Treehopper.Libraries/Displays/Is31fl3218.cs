@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    ///     ISSI IS31F13218 I2c 18-channel 16-bit PWM constant-current LED driver
+    ///     ISSI IS31FL3218 I2c 18-channel 16-bit PWM constant-current LED driver
     /// </summary>
+    [Supports("ISSI", "IS31FL3218")]
     public class Is31fl3218 : LedDriver
     {
         private readonly bool[] currentStates = new bool[18];

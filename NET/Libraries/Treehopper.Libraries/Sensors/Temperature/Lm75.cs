@@ -13,6 +13,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
     ///         provide as high as 0.125 degree resolution.
     ///     </para>
     /// </remarks>
+    [Supports("Maxim", "LM75")]
+    [Supports("NXP", "LM75")]
+    [Supports("STMicroelectronics", "LM75")]
+    [Supports("Texas Instruments", "LM75")]
     public class Lm75 : TemperatureSensor
     {
         private readonly SMBusDevice dev;

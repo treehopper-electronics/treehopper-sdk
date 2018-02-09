@@ -5,6 +5,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// <summary>
     ///     74HC166 parallel-in, serial-out shift register
     /// </summary>
+    [Supports("Generic", "74HC166")]
     public class Hc166
     {
         /// <summary>

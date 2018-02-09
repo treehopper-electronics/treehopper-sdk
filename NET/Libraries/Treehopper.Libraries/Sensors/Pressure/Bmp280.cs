@@ -16,6 +16,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
     ///         This library supports both 4-wire SPI and 2-wire I2c operation
     ///     </para>
     /// </remarks>
+    [Supports("Bosch", "BMP280")]
     public class Bmp280 : PressureSensor, ITemperatureSensor
     {
         private readonly SMBusDevice i2cDev;

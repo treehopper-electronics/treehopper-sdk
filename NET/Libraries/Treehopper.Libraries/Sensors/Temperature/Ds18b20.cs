@@ -21,6 +21,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     ///     a 4.7 k resistor to 3.3V. We recommend supplying 5V power if possible -- especially if multiple sensors are
     ///     attached to the bus.
     /// </remarks>
+    [Supports("Maxim", "DS18B20")]
     public class Ds18b20 : TemperatureSensor
     {
         private readonly IOneWire oneWire;

@@ -6,6 +6,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
     /// <summary>
     ///     Bosch BME280 barometric pressure, temperature, and humidity sensor
     /// </summary>
+    [Supports("Bosch", "BME280")]
     public class Bme280 : Bmp280, IHumiditySensor
     {
         private byte H1;

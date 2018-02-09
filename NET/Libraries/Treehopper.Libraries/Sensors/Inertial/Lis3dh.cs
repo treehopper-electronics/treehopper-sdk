@@ -8,7 +8,7 @@ using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
-    [Supports("ST", "LIS3DH")]
+    [Supports("STMicroelectronics", "LIS3DH")]
     public partial class Lis3dh : IAccelerometer
     {
         private SMBusDevice dev;

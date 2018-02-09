@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.IO.Adc
     /// <summary>
     ///     Nuvoton NAU7802 24-bit dual-channel ADC for bridge sensors
     /// </summary>
+    [Supports("Nuvoton", "NAU7802")]
     public partial class Nau7802 : AdcPeripheralPin, IAdcPeripheral
     {
         private DigitalIn drdy;

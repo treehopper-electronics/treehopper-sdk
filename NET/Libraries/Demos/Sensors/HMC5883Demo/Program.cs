@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
-using Treehopper.Libraries.Sensors.Inertial;
+using Treehopper.Libraries.Sensors.Magnetic;
 using Treehopper.Utilities;
 
 namespace HMC5883Demo

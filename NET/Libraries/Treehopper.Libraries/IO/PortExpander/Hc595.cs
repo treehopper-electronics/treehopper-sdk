@@ -3,6 +3,7 @@
     /// <summary>
     ///     74HC595 serial-in, parallel-out shift register.
     /// </summary>
+    [Supports("Generic", "74HC595")]
     public class Hc595 : ShiftOut
     {
         /// <summary>

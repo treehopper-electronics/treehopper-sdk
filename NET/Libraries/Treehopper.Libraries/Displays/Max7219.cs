@@ -6,6 +6,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     Maxim MAX7219 SPI 8x8 matrix LED driver
     /// </summary>
+    [Supports("Maxim", "MAX7219")]
     public class Max7219 : LedDriver
     {
         private static int numDevices;

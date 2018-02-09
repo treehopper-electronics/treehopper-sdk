@@ -26,6 +26,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     ///         collection of <see cref="Treehopper.Libraries.Displays.Led" />s with the
     ///     </para>
     /// </remarks>
+    [Supports("NXP", "PCA9685")]
     public class Pca9685 : IFlushable
     {
         /// <summary>

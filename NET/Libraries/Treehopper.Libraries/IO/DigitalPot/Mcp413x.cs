@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.IO.DigitalPot
 {
+    [Supports("Microchip", "MCP4131")]
+    [Supports("Microchip", "MCP4132")]
+    [Supports("Microchip", "MCP4141")]
+    [Supports("Microchip", "MCP4142")]
     public class Mcp413x
     {
         protected SpiDevice dev;

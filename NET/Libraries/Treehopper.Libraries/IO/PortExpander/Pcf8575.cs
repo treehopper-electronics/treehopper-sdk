@@ -3,6 +3,8 @@
     /// <summary>
     ///     PCF8575 16-bit I/O port expander
     /// </summary>
+    [Supports("Texas Instruments", "PCF8575")]
+    [Supports("NXP", "PCF8575")]
     public class Pcf8575 : Pcf8574
     {
         /// <summary>

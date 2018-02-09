@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
+    [Supports("Rohm Semiconductor", "BH1750FVI")]
     public class Bh1750 : AmbientLight
     {
         public static async Task<IList<Bh1750>> Probe(I2C i2c)

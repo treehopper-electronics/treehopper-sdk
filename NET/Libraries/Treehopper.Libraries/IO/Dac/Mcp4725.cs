@@ -6,6 +6,7 @@ namespace Treehopper.Libraries.IO.Dac
     /// <summary>
     ///     Microchip MCP4725 12-bit DAC
     /// </summary>
+    [Supports("Nuvoton", "MCP4725")]
     public class Mcp4725 : Dac
     {
         private readonly SMBusDevice dev;

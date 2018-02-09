@@ -7,6 +7,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     HD44780-compatible character display
     /// </summary>
+    [Supports("Hitachi", "HD44780")]
     public class Hd44780 : CharacterDisplay
     {
         /// <summary>
