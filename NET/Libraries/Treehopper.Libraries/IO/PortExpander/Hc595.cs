@@ -12,7 +12,7 @@
         /// <remarks>
         ///     This class supports all 74HC595 shift registers. The name of the class comes from the widely-available TI part.
         /// </remarks>
-        public Hc595(Spi spiModule, SpiChipSelectPin latchPin, double speedMhz = 1) : base(spiModule, latchPin, 8,
+        public Hc595(Spi spiModule, SpiChipSelectPin latchPin, double speedMhz = 6) : base(spiModule, latchPin, 8,
             SpiMode.Mode00, ChipSelectMode.PulseHighAtEnd, speedMhz)
         {
         }

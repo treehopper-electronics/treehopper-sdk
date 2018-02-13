@@ -21,16 +21,18 @@ namespace Treehopper.Libraries.Displays
     public class Apa102 : IFlushable
     {
         private readonly Spi spi;
+        private double freq;
 
         /// <summary>
         ///     Construct a new chain of APA102-based smart LEDs.
         /// </summary>
         /// <param name="spi">The SPI port to use</param>
         /// <param name="numLeds">The number of APA102 smart LEDs in this chain</param>
-        public Apa102(Spi spi, int numLeds)
+        public Apa102(Spi spi, int numLeds, double frequency = 6)
         {
             this.spi = spi;
             spi.Enabled = true;
+            this.freq = frequency;
             for (var i = 0; i < numLeds; i++)
                 Leds.Add(new Led(this));
         }
@@ -89,7 +91,7 @@ namespace Treehopper.Libraries.Displays
                 if (chunk.Length == 0)
                     break;
 
-                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, 0.001, SpiBurstMode.BurstTx,
+                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, freq, SpiBurstMode.BurstTx,
                     SpiMode.Mode11);
                 chunkCount++;
             }

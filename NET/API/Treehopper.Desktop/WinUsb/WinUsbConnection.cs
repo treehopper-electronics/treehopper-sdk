@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*  Adapted from WinUSBNet library
+ *  (C) 2010 Thomas Bleeker (www.madwizard.org)
+ *  
+ *  Licensed under the MIT license, see license.txt or:
+ *  http://www.opensource.org/licenses/mit-license.php
+ *  https://github.com/madwizard-thomas/winusbnet
+ */
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -161,7 +169,7 @@ namespace Treehopper.Desktop.WinUsb
             else
             {
                 var bytesWritten = 0;
-                WinUsb.NativeMethods.WinUsb_WritePipe(winUsbHandle, peripheralResponseEndpoint, data, data.Length,
+                WinUsb.NativeMethods.WinUsb_WritePipe(winUsbHandle, peripheralConfigEndpoint, data, data.Length,
                     out bytesWritten, IntPtr.Zero);
             }
         }

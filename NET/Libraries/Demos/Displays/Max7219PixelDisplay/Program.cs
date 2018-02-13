@@ -17,9 +17,6 @@ namespace Max7219PixelDisplay
         {
             var board = await ConnectionService.Instance.GetFirstDeviceAsync();
             await board.ConnectAsync();
-
-            board.Pins[19].Mode = PinMode.AnalogInput;
-
             var display = HobbyDisplayFactories.GetMax7219GraphicLedDisplay(board.Spi, board.Pins[9], 16);
 
             display.Brightness = 0.2;

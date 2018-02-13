@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <param name="csMode">The ChipSelectMode to use for all shift registers in this chain</param>
         /// <param name="speedMhz">The speed to use for all shift registers in this chain</param>
         public ChainableShiftRegisterOutput(Spi spiModule, SpiChipSelectPin latchPin, int numBytes = 1,
-            double speedMhz = 5, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd)
+            double speedMhz = 6, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd)
         {
             spiDevice = new SpiDevice(spiModule, latchPin, csMode, speedMhz, mode);
             this.numBytes = numBytes;
