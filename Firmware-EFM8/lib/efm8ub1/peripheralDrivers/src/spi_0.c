@@ -7,6 +7,9 @@
 #include "efm8_config.h"
 #include "SI_EFM8UB1_Register_Enums.h"
 #include "spi_0.h"
+#ifdef SPI_DEBUGGING
+	#include "gpio.h"
+#endif
 
 #if EFM8PDL_SPI0_AUTO_PAGE == 1
 // declare variable needed for autopage enter/exit
@@ -216,6 +219,7 @@ SPI0_pollTransfer(SI_VARIABLE_SEGMENT_POINTER(pTxBuffer, uint8_t,
   // Note: xferCount tracks the number of bytes received
   while (xferCount)
   {
+	SPI_DEBUG_PIN0_HIGH();
     // If the transmit buffer is empty and there are still bytes to
     // write, then write a byte out
     if (SPI0CN0_TXNF && txCount)
@@ -223,8 +227,10 @@ SPI0_pollTransfer(SI_VARIABLE_SEGMENT_POINTER(pTxBuffer, uint8_t,
       // If user provided a write buffer then use that
       if (dir & SPI0_TRANSFER_TX)
       {
+    	SPI_DEBUG_PIN1_HIGH();
         SPI0DAT = *pTxBuffer;
         ++pTxBuffer;
+        SPI_DEBUG_PIN1_LOW();
       }
 
       // else user did not provide write buffer so just use zeroes
@@ -242,8 +248,10 @@ SPI0_pollTransfer(SI_VARIABLE_SEGMENT_POINTER(pTxBuffer, uint8_t,
       // If user provided RX buffer, then read byte into buffer
       if (dir & SPI0_TRANSFER_RX)
       {
+    	SPI_DEBUG_PIN2_HIGH();
         *pRxBuffer = SPI0DAT;
         ++pRxBuffer;
+        SPI_DEBUG_PIN2_LOW();
       }
 
       // else there is no RX buffer so just throw away the incoming byte
@@ -278,6 +286,7 @@ SPI0_pollTransfer(SI_VARIABLE_SEGMENT_POINTER(pTxBuffer, uint8_t,
         }
       }
     }
+    SPI_DEBUG_PIN0_LOW();
   }
 
   // Transfer is done.  Deassert NSS (if used)
@@ -389,6 +398,13 @@ void SPI0_init(SPI0_ClockMode_t clockMode, bool isMasterMode, bool is4wire)
   DECL_PAGE;
 
   SET_PAGE(SPI_SFR_PAGE);
+
+#ifdef SPI_DEBUGGING
+	GPIO_MakeOutput(8, PushPullOutput);
+	GPIO_MakeOutput(9, PushPullOutput);
+	GPIO_MakeOutput(10, PushPullOutput);
+	GPIO_MakeOutput(11, PushPullOutput);
+#endif
 
   // Figure out if this driver controls NSS signal (chip select)
   modeIsMaster = isMasterMode;
