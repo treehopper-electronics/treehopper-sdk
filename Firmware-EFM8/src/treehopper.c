@@ -205,7 +205,7 @@ void ProcessPeripheralConfigPacket() {
 			DEBUG_PIN_COMMS_EXTRA_LOW();
 		}
 
-		SPI_Transaction(&spiConfig, totalTransactionBytes, &Treehopper_PeripheralConfig[7], Treehopper_RxBuffer);
+		SPI_Transaction(&spiConfig, totalTransactionBytes, &Treehopper_PeripheralConfig[7], Treehopper_RxBuffer, burst);
 
 		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
 		if (burst != Burst_Tx) {

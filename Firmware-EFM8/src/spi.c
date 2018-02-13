@@ -23,8 +23,8 @@ void SPI_Init() {
 
 }
 
-void SPI_Transaction(SpiConfigData_t* config, uint8_t count, uint8_t* dataToSend, uint8_t* dataToReceive) {
-
+void SPI_Transaction(SpiConfigData_t* config, uint8_t count, uint8_t* dataToSend, uint8_t* dataToReceive, BurstMode_t burst_mode) {
+	SPI0_TransferDirection_t transfer_direction = SPI0_TRANSFER_RXTX;
 	SFRPAGE = 0x00;
 	SPI0CKR = config->CkrVal;
 	// if we want to change the SPI Mode, we have to reinit the peripheral, so only do it if necessary.
@@ -52,7 +52,12 @@ void SPI_Transaction(SpiConfigData_t* config, uint8_t count, uint8_t* dataToSend
 		break;
 	}
 
-	SPI0_pollTransfer(dataToSend, dataToReceive, SPI0_TRANSFER_RXTX, count);
+	if(burst_mode == Burst_Tx)
+		transfer_direction = SPI0_TRANSFER_TX;
+	else if(burst_mode == Burst_Rx)
+		transfer_direction = SPI0_TRANSFER_RX;
+
+	SPI0_pollTransfer(dataToSend, dataToReceive, transfer_direction, count);
 
 	switch(config->CsMode)
 	{

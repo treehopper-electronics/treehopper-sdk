@@ -9,6 +9,7 @@
 #define SPI_H_
 
 #include "SI_EFM8UB1_Register_Enums.h"
+#include "treehopper.h"
 
 #define SPI_HEADER_COUNT	7
 
@@ -55,7 +56,7 @@ typedef struct SpiConfigData {
 
 void SPI_Init();
 void SPI_SetConfig(uint8_t enable);
-void SPI_Transaction(SpiConfigData_t* config, uint8_t count, uint8_t* dataToSend, uint8_t* dataToReceive);
+void SPI_Transaction(SpiConfigData_t* config, uint8_t count, uint8_t* dataToSend, uint8_t* dataToReceive, BurstMode_t burst_mode);
 void SPI_Enable();
 void SPI_Disable();
 void SPI_ActivateCs();
