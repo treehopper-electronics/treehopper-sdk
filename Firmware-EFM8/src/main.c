@@ -37,7 +37,14 @@ int16_t main(void) {
 	Treehopper_Init();
 
 #ifdef ENABLE_TIMING_DEBUGGING
-	GPIO_MakeOutput(10, PushPullOutput);
+	GPIO_MakeOutput(12, PushPullOutput);
+	GPIO_MakeOutput(13, PushPullOutput);
+	GPIO_MakeOutput(14, PushPullOutput);
+	GPIO_MakeOutput(15, PushPullOutput);
+	GPIO_MakeOutput(16, PushPullOutput);
+	GPIO_MakeOutput(17, PushPullOutput);
+	GPIO_MakeOutput(18, PushPullOutput);
+	GPIO_MakeOutput(19, PushPullOutput);
 #endif
 
 #ifdef ENABLE_UART_DEBGUGGING

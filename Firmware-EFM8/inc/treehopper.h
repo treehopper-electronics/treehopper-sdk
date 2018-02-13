@@ -15,21 +15,21 @@
 // and received (not implemented yet -- sorry!)
 // #define ENABLE_UART_DEBGUGGING
 
-// Timing debugging lets you check how long
-// it's taking to process packets. The high
-// time tells you how long it's taking to process
-// the task, and the low time is telling you
-// how long USB traffic is taking. The debug
-// pin is set as P1_B2 (which is Pin 10)
-// #define	ENABLE_TIMING_DEBUGGING
+/** Timing debugging lets you check how long
+ * it's taking to process packets. The pinout is as follows:
+ * Pin 12 -> Pin State loop
+ * Pin 13 -> Pin state packet sent
+ * Pin 14 -> Pin Config packets
+ * Pin 15 -> Peripheral config ISR
+ * Pin 16 -> SPI config
+ * Pin 17 -> I2C config
+ * Pin 18 -> UART config
+ * Pin 19 -> Comms packet sent
+ */
 
-#ifdef ENABLE_TIMING_DEBUGGING
-	#define DEBUG_HIGH();	P1_B2 = true;
-	#define DEBUG_LOW();		P1_B2 = false;
-#else
-	#define DEBUG_HIGH() { }
-	#define DEBUG_LOW() { }
-#endif
+
+#define	ENABLE_TIMING_DEBUGGING
+#define SEND_PIN_STATUS_ON_CHANGE
 
 typedef enum GlobalCommands {
 	GlobalCommandsReserved = 0,
@@ -125,6 +125,54 @@ extern SI_SEGMENT_VARIABLE(Treehopper_PeripheralResponse[64], uint8_t, SI_SEG_XD
 #define EP_PinConfig           EP1OUT
 #define EP_PeripheralResponse  EP2IN
 #define EP_PeripheralConfig    EP2OUT
+
+
+/** Pin map:
+ * Pin 12 -> Pin State loop
+ * Pin 13 -> Pin state packet sent
+ * Pin 14 -> Pin Config packets
+ * Pin 15 -> Peripheral config ISR
+ * Pin 16 -> SPI config
+ * Pin 17 -> I2C config
+ * Pin 18 -> UART config
+ * Pin 19 -> Comms packet sent
+ */
+#ifdef ENABLE_TIMING_DEBUGGING
+	#define DEBUG_PIN_STATE_HIGH();			PIN12 = true;
+	#define DEBUG_PIN_STATE_LOW();			PIN12 = false;
+	#define DEBUG_PIN_PACKET_SENT_HIGH();	PIN13 = true;
+	#define DEBUG_PIN_PACKET_SENT_LOW();	PIN13 = false;
+	#define DEBUG_PIN_CONFIG_HIGH();		PIN14 = true;
+	#define DEBUG_PIN_CONFIG_LOW();			PIN14 = false;
+	#define DEBUG_PIN_PERIPHERAL_HIGH();	PIN15 = true;
+	#define DEBUG_PIN_PERIPHERAL_LOW();		PIN15 = false;
+	#define DEBUG_PIN_COMMS_HIGH();			PIN16 = true;
+	#define DEBUG_PIN_COMMS_LOW();			PIN16 = false;
+	#define DEBUG_PIN_COMMS_EXTRA_HIGH();	PIN17 = true;
+	#define DEBUG_PIN_COMMS_EXTRA_LOW();	PIN17 = false;
+	#define DEBUG_PIN_UART_HIGH();			PIN18 = true;
+	#define DEBUG_PIN_UART_LOW();			PIN18 = false;
+	#define DEBUG_PIN_COMMS_SENT_HIGH();	PIN19 = true;
+	#define DEBUG_PIN_COMMS_SENT_LOW();		PIN19 = false;
+
+#else
+	#define DEBUG_PIN_STATE_HIGH();
+	#define DEBUG_PIN_STATE_LOW();
+	#define DEBUG_PIN_PACKET_SENT_HIGH();
+	#define DEBUG_PIN_PACKET_SENT_LOW();
+	#define DEBUG_PIN_CONFIG_HIGH();
+	#define DEBUG_PIN_CONFIG_LOW();
+	#define DEBUG_PIN_PERIPHERAL_HIGH();
+	#define DEBUG_PIN_PERIPHERAL_LOW();
+	#define DEBUG_PIN_SPI_HIGH();
+	#define DEBUG_PIN_SPI_LOW();
+	#define DEBUG_PIN_I2C_HIGH();
+	#define DEBUG_PIN_I2C_LOW();
+	#define DEBUG_PIN_UART_HIGH();
+	#define DEBUG_PIN_UART_LOW();
+	#define DEBUG_PIN_COMMS_SENT_HIGH();
+	#define DEBUG_PIN_COMMS_SENT_LOW();
+#endif
 
 
 void Treehopper_Init();

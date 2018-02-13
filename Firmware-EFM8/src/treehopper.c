@@ -83,22 +83,23 @@ void configureDevice(uint8_t config) {
 }
 
 void Treehopper_Task() {
-	DEBUG_HIGH();
 	if (!USBD_EpIsBusy(EP_PinConfig)) {
 		ProcessPinConfigPacket();
 	}
 	if (!USBD_EpIsBusy(EP_PeripheralConfig)) {
 		ProcessPeripheralConfigPacket();
 	}
-	if(!USBD_EpIsBusy(EP_PinStatus))
+	if(!USBD_EpIsBusy(EP_PinStatus)) {
+		DEBUG_PIN_PACKET_SENT_LOW(); // we finished sending our previous packet
 		SendPinStatus();
-	DEBUG_LOW();
+	}
 }
 
 void SendPinStatus() {
 	uint8_t i = 0;
 	uint16_t val;
 	Treehopper_ReportData[0] = DeviceResponse_CurrentReadings;
+	DEBUG_PIN_STATE_HIGH();
 	for (i = 0; i < 20; i++) {
 		switch (pins[i]) {
 		case DigitalInput:
@@ -115,17 +116,24 @@ void SendPinStatus() {
 			Treehopper_ReportData[i * 2 + 2] = 0xff;
 		}
 	}
+#ifdef SEND_PIN_STATUS_ON_CHANGE
 	// if the pins have changed, send the update. Otherwise no need!
 	if(memcmp(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData)) != 0)
 	{
+#endif
+		DEBUG_PIN_PACKET_SENT_HIGH();
 		USBD_Write(EP1IN, Treehopper_ReportData, sizeof(Treehopper_ReportData), false);
 
+#ifdef SEND_PIN_STATUS_ON_CHANGE
 		// save the old report so we can compare to it next time around to see if anything has changed
 		memcpy(lastReportData, Treehopper_ReportData, sizeof(Treehopper_ReportData));
 	}
+#endif
+	DEBUG_PIN_STATE_LOW();
 }
 
 void ProcessPinConfigPacket() {
+	DEBUG_PIN_CONFIG_HIGH();
 	switch (Treehopper_PinConfig.PinCommand) {
 		case PinConfig_MakeDigitalInput:
 			GPIO_MakeInput(Treehopper_PinConfig.PinNumber, true);
@@ -149,6 +157,7 @@ void ProcessPinConfigPacket() {
 	memset(&Treehopper_PinConfig, 0, sizeof(pinConfigPacket_t)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP_PinConfig, (uint8_t *)&Treehopper_PinConfig, sizeof(pinConfigPacket_t), false);
+	DEBUG_PIN_CONFIG_LOW();
 }
 
 // this gets called whenever we received peripheral config data from the host
@@ -157,6 +166,7 @@ void ProcessPeripheralConfigPacket() {
 	uint8_t totalReadBytes;
 	uint8_t burst;
 	SpiConfigData_t spiConfig;
+	DEBUG_PIN_PERIPHERAL_HIGH();
 	switch (Treehopper_PeripheralConfig[0]) {
 	case ConfigureDevice:
 		configureDevice(Treehopper_PeripheralConfig[1]);
@@ -174,6 +184,7 @@ void ProcessPeripheralConfigPacket() {
 		SPI_SetConfig(Treehopper_PeripheralConfig[1]);
 		break;
 	case SPITransaction:
+		DEBUG_PIN_COMMS_HIGH();
 		spiConfig.CsPin = Treehopper_PeripheralConfig[1];
 		spiConfig.CsMode = Treehopper_PeripheralConfig[2];
 		spiConfig.CkrVal = Treehopper_PeripheralConfig[3];
@@ -187,9 +198,11 @@ void ProcessPeripheralConfigPacket() {
 		{
 			timeout = 0;
 			// we can request all the remaining bytes at once; just hang in while() until they all come in.
+			DEBUG_PIN_COMMS_EXTRA_HIGH();
 			USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig[64], (totalTransactionBytes+7)-64, false);
 			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralConfig));
 			USBD_AbortTransfer(EP_PeripheralConfig);
+			DEBUG_PIN_COMMS_EXTRA_LOW();
 		}
 
 		SPI_Transaction(&spiConfig, totalTransactionBytes, &Treehopper_PeripheralConfig[7], Treehopper_RxBuffer);
@@ -197,10 +210,14 @@ void ProcessPeripheralConfigPacket() {
 		// if we're doing a Tx burst, we don't care about Rx data -- don't bother sending it
 		if (burst != Burst_Tx) {
 			timeout = 0;
+			DEBUG_PIN_COMMS_SENT_HIGH();
 			USBD_Write(EP_PeripheralResponse, Treehopper_RxBuffer, totalTransactionBytes, false);
 			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
 			USBD_AbortTransfer(EP_PeripheralResponse);
+			DEBUG_PIN_COMMS_SENT_LOW();
 		}
+
+		DEBUG_PIN_COMMS_LOW();
 		break;
 
 	case I2CConfig:
@@ -208,24 +225,30 @@ void ProcessPeripheralConfigPacket() {
 		break;
 
 	case I2CTransaction:
+		DEBUG_PIN_COMMS_HIGH();
 		totalTransactionBytes = Treehopper_PeripheralConfig[2];
 		totalReadBytes = Treehopper_PeripheralConfig[3];
 
 		if(totalTransactionBytes > 64-4)
 		{
 			timeout = 0;
+			DEBUG_PIN_COMMS_EXTRA_HIGH();
 			USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig[64], (totalTransactionBytes+4)-64, false);
 			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralConfig));
 			USBD_AbortTransfer(EP_PeripheralConfig);
+			DEBUG_PIN_COMMS_EXTRA_LOW();
 		}
 
 		I2C_Transaction(Treehopper_PeripheralConfig[1], &Treehopper_PeripheralConfig[4],
 						Treehopper_RxBuffer, totalTransactionBytes, totalReadBytes);
 
 		timeout = 0;
+		DEBUG_PIN_COMMS_SENT_HIGH();
 		USBD_Write(EP2IN, Treehopper_RxBuffer, totalReadBytes+1, false);
 		while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralResponse));
 		USBD_AbortTransfer(EP_PeripheralResponse);
+		DEBUG_PIN_COMMS_SENT_LOW();
+		DEBUG_PIN_COMMS_LOW();
 		break;
 
 	case UARTConfig:
@@ -233,7 +256,9 @@ void ProcessPeripheralConfigPacket() {
 		break;
 
 	case UARTTransaction:
+		DEBUG_PIN_UART_HIGH();
 		UART_Transaction(&(Treehopper_PeripheralConfig[1]));
+		DEBUG_PIN_UART_LOW();
 		break;
 
 	case FirmwareUpdateSerial:
@@ -276,4 +301,5 @@ void ProcessPeripheralConfigPacket() {
 	memset(Treehopper_PeripheralConfig, 0, sizeof(Treehopper_PeripheralConfig)); // reset the buffer to zero to avoid accidentally re-processing data
 	// when we're all done, re-arm the endpoint.
 	USBD_Read(EP_PeripheralConfig, Treehopper_PeripheralConfig, 64, false);
+	DEBUG_PIN_PERIPHERAL_LOW();
 }
