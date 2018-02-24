@@ -17,9 +17,7 @@ namespace TreehopperControlCenter.Droid
 	[Activity (Label = "Treehopper", Icon = "@drawable/icon", Theme="@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
-        private ConnectionService connectionService = ConnectionService.Instance;
-
-	    public ObservableCollection<TreehopperUsb> Boards => connectionService.Boards;
+	    public ObservableCollection<TreehopperUsb> Boards => ConnectionService.Instance.Boards;
 
         protected override void OnCreate (Bundle bundle)
 		{
@@ -36,14 +34,14 @@ namespace TreehopperControlCenter.Droid
 	    {
 	        base.OnStart();
 
-            connectionService.ActivityOnStart(this);
+            ConnectionService.Instance.ActivityOnStart(this);
         }
 
         protected override void OnResume()
 	    {
 	        base.OnResume();
 
-            connectionService.ActivityOnResume();
+            ConnectionService.Instance.ActivityOnResume();
         }
     }
 }

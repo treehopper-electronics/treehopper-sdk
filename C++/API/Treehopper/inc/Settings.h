@@ -15,7 +15,7 @@ namespace Treehopper
 		}
 
 		bool throwExceptions = false;
-		bool printExceptions = false;
+		bool printExceptions = true;
 		uint16_t vid = 0x10c4;
 		uint16_t pid = 0x8a7e;
 		uint16_t bootloaderPid = 0xeac9;

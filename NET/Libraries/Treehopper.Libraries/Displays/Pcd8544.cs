@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
 {
+    [Supports("Philips", "PCD8544")]
     public class Pcd8544 : MonoGraphicDisplay
     {
         private readonly DigitalOut dc;

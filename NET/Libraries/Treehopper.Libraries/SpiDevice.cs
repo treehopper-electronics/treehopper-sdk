@@ -18,7 +18,7 @@ namespace Treehopper.Libraries
         /// <param name="speedMhz">The speed to operate this device at</param>
         /// <param name="mode">The SpiMode of this device</param>
         public SpiDevice(Spi spiModule, SpiChipSelectPin chipSelect,
-            ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1,
+            ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 6,
             SpiMode mode = SpiMode.Mode00)
         {
             ChipSelectMode = chipSelectMode;

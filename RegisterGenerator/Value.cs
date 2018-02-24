@@ -22,10 +22,10 @@ namespace RegisterGenerator
         public void Preprocess()
         {
             if (Enum == null) return;
-            if (Enum.Name == null)
+            if (Enum.PluralizedName == null)
             {
                 PluralizationService service = PluralizationService.CreateService(CultureInfo.CurrentCulture);
-                Enum.Name = service.Pluralize(CapitalizedName);
+                Enum.PluralizedName = service.Pluralize(CapitalizedName);
             }
 
             Enum.Preprocess();

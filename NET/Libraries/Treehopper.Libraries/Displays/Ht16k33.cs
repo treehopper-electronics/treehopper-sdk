@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     Holtek HT16K33 16x8 LED driver
     /// </summary>
+    [Supports("Holtek", "HT16K33")]
     public class Ht16k33 : LedDriver
     {
         /// <summary>

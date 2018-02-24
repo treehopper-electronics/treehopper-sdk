@@ -23,8 +23,10 @@ uint8_t PWM_3H = 0;
 
 uint8_t oldMode = 0;
 uint8_t oldFreq = 0;
-void PWM_Init() {
 
+void PWM_Init() {
+	oldMode = 0;
+	oldFreq = 0;
 }
 
 void PWM_SetConfig(uint8_t* configuration) {

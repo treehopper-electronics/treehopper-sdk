@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,14 +17,36 @@ namespace Treehopper.Libraries.Sensors.Pressure
     ///         This library supports both 4-wire SPI and 2-wire I2c operation
     ///     </para>
     /// </remarks>
-    public class Bmp280 : PressureSensor, ITemperatureSensor
+    [Supports("Bosch", "BMP280")]
+    public partial class Bmp280 : PressureSensor, ITemperatureSensor
     {
-        private readonly SMBusDevice i2cDev;
-        private readonly SpiDevice spiDev;
+        public static async Task<IList<Bmp280>> Probe(I2C i2c, bool includeBme280 = true)
+        {
+            var deviceList = new List<Bmp280>();
+            try
+            {
+                var dev = new SMBusDevice(0x76, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                if (whoAmI == 0x58 || (whoAmI == 0x60 & includeBme280))
+                    deviceList.Add(new Bmp280(i2c, false));
+            }
+            catch (Exception ex) { }
 
+            try
+            {
+                var dev = new SMBusDevice(0x77, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                if (whoAmI == 0x58 || (whoAmI == 0x60 & includeBme280))
+                    deviceList.Add(new Bmp280(i2c, true));
+            }
+            catch (Exception ex) { }
+            return deviceList;
+        }
+
+        protected Bmp280Registers registers;
+        protected double tFine;
         private double altitude;
-        internal int tFine;
-        private Trimming trimming;
+        private readonly SMBusDevice i2cDev;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,26 +54,21 @@ namespace Treehopper.Libraries.Sensors.Pressure
         ///     Construct a BMP280 hooked up to the i2C bus
         /// </summary>
         /// <param name="i2c">the i2C bus to use</param>
-        /// <param name="sdo">the state of the SDO pin, which sets the address</param>
-        public Bmp280(I2C i2c, bool sdo = false)
+        /// <param name="sdoPin">the state of the SDO pin, which sets the address</param>
+        public Bmp280(I2C i2c, bool sdoPin = false)
         {
-            i2cDev = new SMBusDevice((byte) (0x76 | (sdo ? 1 : 0)), i2c);
-            Start();
+            i2cDev = new SMBusDevice((byte)(0x76 | (sdoPin ? 1 : 0)), i2c);
+            registers = new Bmp280Registers(i2cDev);
+
+            registers.ctrlMeasure.setMode(Modes.Normal);
+            registers.ctrlMeasure.setOversamplingPressure(OversamplingPressures.Oversampling_x16);
+            registers.ctrlMeasure.setOversamplingTemperature(OversamplingTemperatures.Oversampling_x16);
+            Task.Run(registers.ctrlMeasure.write).Wait();
+
+            Task.Run(() => registers.readRange(registers.t1, registers.h1)).Wait();
         }
 
-        /// <summary>
-        ///     Construct a BMP280 hooked up to the SPI bus
-        /// </summary>
-        /// <param name="spi">the SPI bus to use</param>
-        /// <param name="csPin">the chip select pin to use</param>
-        /// <param name="speedMhz">the speed to operate at</param>
-        public Bmp280(Spi spi, SpiChipSelectPin csPin, double speedMhz = 6)
-        {
-            spiDev = new SpiDevice(spi, csPin, ChipSelectMode.SpiActiveLow, speedMhz, SpiMode.Mode00);
-            Start();
-        }
-
-        internal byte ChipId => 0x58;
+        public double ReferencePressure { get; set; } = 101325;
 
         /// <summary>
         ///     Altitude, in meters
@@ -90,46 +108,36 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// <returns>An awaitable task</returns>
         public override async Task Update()
         {
-            // do a burst read
-            var data = await Read((byte) Registers.PressureMsb, PayloadSize);
+            await registers.readRange(registers.pressure, registers.humidity).ConfigureAwait(false); // even though this the BMP280, assume it's a BME280 so the bus is less chatty.
 
-            // weirdo 20-bit datatypes, so just handle the bits manually
-            var uPressure = ((data[0] << 0x10) | (data[1] << 0x08) | data[2]) >> 4;
-            var uTemp = ((data[3] << 0x10) | (data[4] << 0x08) | data[5]) >> 4;
+            // From Appendix A of the Bosch BMP280 datasheet
+            var var1 = (registers.temperature.value / 16384.0 - registers.t1.value / 1024.0) * registers.t2.value;
+            var var2 = ((registers.temperature.value / 131072.0 - registers.t1.value / 8192.0) * (registers.temperature.value / 131072.0 - registers.t1.value / 8192.0)) * registers.t3.value;
+            tFine = (var1 + var2);
+            Celsius = (var1 + var2) / 5120.0;
 
-            // From Bosch BMP280 datasheet
-            var tVar1 = (((uTemp >> 3) - (trimming.T1 << 1)) * trimming.T2) >> 11;
-            var tVar2 = (((((uTemp >> 4) - trimming.T1) * ((uTemp >> 4) - trimming.T1)) >> 12) * trimming.T3) >> 14;
-            tFine = tVar1 + tVar2;
-            var temperature = ((tFine * 5 + 128) >> 8) / 100.0;
-            Celsius = temperature;
-
-
-            var var1 = (long) tFine - 128000;
-            var var2 = var1 * var1 * trimming.P6;
-            var2 = var2 + ((var1 * trimming.P5) << 17);
-            var2 = var2 + ((long) trimming.P4 << 35);
-            var1 = ((var1 * var1 * trimming.P3) >> 8) +
-                   ((var1 * trimming.P2) << 12);
-            var1 = ((((long) 1 << 47) + var1) * trimming.P1) >> 33;
-
-            if (var1 != 0)
+            double p;
+            var1 = tFine / 2.0 - 64000.0;
+            var2 = var1 * var1 * registers.p6.value / 32768.0;
+            var2 = var2 + var1 * registers.p5.value * 2.0;
+            var2 = (var2 / 4.0) + registers.p4.value * 65536.0;
+            var1 = (registers.p3.value * var1 * var1 / 524288.0 + registers.p2.value * var1) / 524288.0;
+            var1 = (1.0 + var1 / 32768.0) * registers.p1.value;
+            if (var1 == 0.0)
             {
-                long p = 1048576 - uPressure;
-                p = ((p << 31) - var2) * 3125 / var1;
-                var1 = (trimming.P9 * (p >> 13) * (p >> 13)) >> 25;
-                var2 = (trimming.P8 * p) >> 19;
-
-                p = ((p + var1 + var2) >> 8) + ((long) trimming.P7 << 4);
-                var pressure = p / 256.0;
-                Pascal = pressure;
-
-                // calculate altitutde
-                var kelvin = TemperatureSensor.ToKelvin(temperature);
-                altitude = AltitudeFromPressure(kelvin, pressure);
+                // avoid exception caused by division by zero
             }
-
-            LastReceivedData = data; // hand off the data to any inherited classes
+            else
+            {
+                p = 1048576.0 - registers.pressure.value;
+                p = (p - (var2 / 4096.0)) * 6250.0 / var1;
+                var1 = registers.p9.value * p * p / 2147483648.0;
+                var2 = p * registers.p8.value / 32768.0;
+                p = p + (var1 + var2 + registers.p7.value) / 16.0;
+                Pascal = p;
+                var kelvin = TemperatureSensor.ToKelvin(Celsius);
+                altitude = AltitudeFromPressure(kelvin, Pascal);
+            }
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
@@ -141,47 +149,23 @@ namespace Treehopper.Libraries.Sensors.Pressure
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Atm)));
         }
 
-        private void Start()
-        {
-            if (Read((byte) Registers.ChipId, 1).Result[0] != ChipId)
-                Utility.Error("BMP280 not found. Are you sure you're not using a BME280?");
-
-            Write((byte) Registers.CtrlMeasure, 0x3F).Wait();
-            var trimmingParameters = Read((byte) Registers.TrimmingStart, 24).Result;
-            trimming = trimmingParameters.BytesToStruct<Trimming>(Endianness.LittleEndian);
-        }
-
-        internal Task Write(byte reg, byte val)
-        {
-            return i2cDev?.WriteByteData(reg, val) ?? spiDev?.SendReceive(new[] {(byte) (reg | 0x80), val});
-        }
-
-        internal async Task<byte[]> Read(byte reg, int numBytesToRead)
-        {
-            return await i2cDev?.ReadBufferData(reg, numBytesToRead) ??
-                   (await spiDev?.SendReceive(new[] {(byte) Registers.TrimmingStart}.Concat(new byte[24]).ToArray()))
-                   .Skip(1)
-                   .Take(numBytesToRead)
-                   .ToArray();
-        }
-
-        private double AltitudeFromPressure(double temperature, double pressure, double seaLevelPressure = 101325)
+        private double AltitudeFromPressure(double temperature, double pressure)
         {
             var M = 0.0289644; // molar mass of earths' air
             var g = 9.80665; // gravity
             var R = 8.31432; // universal gas constant
-            if (seaLevelPressure / pressure < 101325 / 22632.1)
+            if (ReferencePressure / pressure < 101325 / 22632.1)
             {
                 var d = -0.0065;
                 var e = 0;
-                var j = Math.Pow(pressure / seaLevelPressure, R * d / (g * M));
+                var j = Math.Pow(pressure / ReferencePressure, R * d / (g * M));
                 return e + temperature * (1 / j - 1) / d;
             }
-            if (seaLevelPressure / pressure < 101325 / 5474.89)
+            if (ReferencePressure / pressure < 101325 / 5474.89)
             {
                 var e = 11000;
                 var b = temperature - 71.5;
-                var f = R * b * Math.Log(pressure / seaLevelPressure) / (-g * M);
+                var f = R * b * Math.Log(pressure / ReferencePressure) / (-g * M);
                 var l = 101325;
                 var c = 22632.1;
                 var h = R * b * Math.Log(l / c) / (-g * M) + e;
@@ -189,50 +173,5 @@ namespace Treehopper.Libraries.Sensors.Pressure
             }
             return double.NaN;
         }
-
-        //public enum Filter
-        //{
-        //    FilterOff,
-        //    Filter2,
-        //    Filter4,
-        //    Filter8,
-        //    Filter16
-        //}
-
-        internal enum Registers
-        {
-            ChipId = 0xD0,
-            Rst = 0xE0,
-            Stat = 0xF3,
-            CtrlMeasure = 0xF4,
-            Config = 0xF5,
-            PressureMsb = 0xF7,
-            PressureLsb = 0xF8,
-            PressureXlsb = 0xF9,
-            TemperatureMsb = 0xFA,
-            TemperatureLsb = 0xFB,
-            TemperatureXlsb = 0xFC,
-            TrimmingStart = 0x88
-        }
-
-#pragma warning disable 649
-
-        internal struct Trimming
-        {
-            public ushort T1;
-            public short T2;
-            public short T3;
-            public ushort P1;
-            public short P2;
-            public short P3;
-            public short P4;
-            public short P5;
-            public short P6;
-            public short P7;
-            public short P8;
-            public short P9;
-        }
-
-#pragma warning restore 649
     }
 }

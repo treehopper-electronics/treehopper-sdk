@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Treehopper;
 using Treehopper.Desktop;
@@ -14,7 +16,7 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-			App().Wait();
+            App();
         }
 
 
@@ -23,6 +25,9 @@ namespace Sandbox
 			var board = await ConnectionService.Instance.GetFirstDeviceAsync();
 
 			await board.ConnectAsync();
+            board.Spi.Enabled = true;
+            //var adc = new Nau7802(board.I2c);
+            ////board.Pins[0].Mode = PinMode.PushPullOutput;
 
             var sensor = new Vcnl4010(board.I2c);
             sensor.AutoUpdateWhenPropertyRead = false;
@@ -33,7 +38,10 @@ namespace Sandbox
                 Console.WriteLine("lux: " + sensor.Lux);
                 Console.WriteLine("prox: " + sensor.Inches);
                 //Console.WriteLine(imu.Accelerometer);
-                await Task.Delay(100);
+                await board.Spi.SendReceive(message, null, ChipSelectMode.SpiActiveLow, 0.1, SpiBurstMode.BurstTx,
+                    SpiMode.Mode11);
+
+                Task.Delay(10).Wait();
 			}
 
         }

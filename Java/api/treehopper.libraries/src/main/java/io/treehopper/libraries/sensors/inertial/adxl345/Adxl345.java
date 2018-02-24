@@ -3,36 +3,32 @@ package io.treehopper.libraries.sensors.inertial.adxl345;
 import com.badlogic.gdx.math.Vector3;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.sensors.inertial.Accelerometer;
 import io.treehopper.libraries.sensors.inertial.adxl345.Adxl345Registers;
 import io.treehopper.libraries.sensors.inertial.IAccelerometer;
 
 /**
  * Created by JayLocal on 4/29/2017.
  */
-public class Adxl345 implements IAccelerometer {
-    private SMBusDevice _dev;
+public class Adxl345 extends Accelerometer {
     private Adxl345Registers registers;
 
     public Adxl345(I2c i2c, boolean altAddress, int rate)
     {
-        _dev = new SMBusDevice((byte)(!altAddress ? 0x53 : 0x1D), i2c, rate);
-        registers = new Adxl345Registers(_dev);
-        registers.PowerCtl.Sleep = 0;
-        registers.PowerCtl.Measure = 1;
-        registers.DataFormat.Range = 0x03;
-        registers.PowerCtl.write();
-        registers.DataFormat.write();
+        SMBusDevice dev = new SMBusDevice((byte) (!altAddress ? 0x53 : 0x1D), i2c, rate);
+        registers = new Adxl345Registers(dev);
+        registers.powerCtl.sleep = 0;
+        registers.powerCtl.measure = 1;
+        registers.dataFormat.range = 0x03;
+        registers.powerCtl.write();
+        registers.dataFormat.write();
     }
 
     @Override
-    public Vector3 getAccelerometer() {
-        registers.readRange(registers.DataX, registers.DataZ);
-
-        Vector3 _accelerometer = new Vector3();
-        _accelerometer.x = registers.DataX.Value * 0.04f;
-        _accelerometer.y = registers.DataY.Value * 0.04f;
-        _accelerometer.z = registers.DataZ.Value * 0.04f;
-
-        return _accelerometer;
+    public void update() {
+        accelerometer = new Vector3();
+        accelerometer.x = registers.dataX.value * 0.04f;
+        accelerometer.y = registers.dataY.value * 0.04f;
+        accelerometer.z = registers.dataZ.value * 0.04f;
     }
 }

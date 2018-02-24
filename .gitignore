@@ -253,3 +253,5 @@ PCB/treehopper/treehopper\.\$\$\$
 *.pyc
 
 Python/\.vscode/
+
+C\+\+/\.vscode/

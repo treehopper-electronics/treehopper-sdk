@@ -10,6 +10,9 @@ import javax.usb.UsbException;
 import javax.usb.UsbHostManager;
 import javax.usb.UsbHub;
 
+import org.apache.logging.log4j.MarkerManager;
+import org.usb4java.*;
+
 import io.treehopper.TreehopperUsb;
 
 /**
@@ -17,8 +20,9 @@ import io.treehopper.TreehopperUsb;
  */
 public class ConnectionService {
 	// these are the Treehopper USB VID/PID
-	private int vendorId = 0x10c4;
-	private int productId = 0x8a7e;
+	private int result;
+
+	private static final Context context  = new Context();
 
 	// singleton stuff so we don't need a DI
 	private static final ConnectionService instance = new ConnectionService();
@@ -30,47 +34,99 @@ public class ConnectionService {
 		return instance;
 	}
 
+	Boolean isRunning = true;
+	Thread eventThread;
+
+	HotplugCallbackHandle myBogusCallbackHandle = new HotplugCallbackHandle();
+
 	public ConnectionService() {
-		try {
-			recursiveTreehopperSearch(UsbHostManager.getUsbServices().getRootUsbHub());
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UsbException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		result = LibUsb.init(context);
+
+	    updateBoards();
+
+		if (!LibUsb.hasCapability(LibUsb.CAP_HAS_HOTPLUG))
+		{
+			System.err.println("libusb doesn't support hotplug on this system. Call update() to update board list.");
 		}
+
+		eventThread = new Thread() {
+			@Override
+			public void run() {
+				LibUsb.hotplugRegisterCallback(context, LibUsb.HOTPLUG_EVENT_DEVICE_ARRIVED | LibUsb.HOTPLUG_EVENT_DEVICE_LEFT, LibUsb.HOTPLUG_ENUMERATE, LibUsb.HOTPLUG_MATCH_ANY, LibUsb.HOTPLUG_MATCH_ANY, LibUsb.HOTPLUG_MATCH_ANY,  myCallback, null, myBogusCallbackHandle);
+
+				while(isRunning) {
+					LibUsb.handleEvents(context);
+				}
+			}
+		};
+
+		eventThread.start();
 	}
 
-	// We might have USB hubs attached to USB hubs, so we need to recursively
-	// walk through
-	// everything to make sure we find all our devices
-	private void recursiveTreehopperSearch(UsbHub hub) {
-		for (UsbDevice device : (List<UsbDevice>) hub.getAttachedUsbDevices()) {
-			UsbDeviceDescriptor desc = device.getUsbDeviceDescriptor();
-//			System.out.println("Vendor ID: " + Integer.toHexString(desc.idVendor()));
-//			System.out.println("Product ID: " + Integer.toHexString(desc.idProduct()));
-			if ((desc.idVendor() & 0xFFFF) == vendorId && (desc.idProduct() & 0xFFFF) == productId) {
-				// we found a board!
-				// make a new io.treehopper.api.javax.UsbConnection
-				UsbConnection newConnection = new UsbConnection(device);
-				// make a new TreehopperUsb board
-				TreehopperUsb newBoard = new TreehopperUsb(newConnection);
-				// add it to our hash of boards (with the serial number as the
-				// key!)
-//				String serialNumber = newConnection.getSerialNumber();
-				boards.add(newBoard);
-
-			} else if (( device).isUsbHub()) // we found another hub. Recursively
-											// call this function
+	HotplugCallback myCallback = new HotplugCallback() {
+		@Override
+		public int processEvent(Context context, Device device, int event, Object userData) {
+			if (event == LibUsb.HOTPLUG_EVENT_DEVICE_ARRIVED)
 			{
-				recursiveTreehopperSearch((UsbHub) device);
+				TreehopperUsb board = new TreehopperUsb(new UsbConnection(device));
+				System.err.print("Adding: " + board);
+				boards.add(board);
 			}
+			else if (event == LibUsb.HOTPLUG_EVENT_DEVICE_LEFT)
+			{
+				for(TreehopperUsb board : boards)
+				{
+					if(((UsbConnection)(board.getConnection())).getDevice() == device)
+					{
+						System.err.print("Removing: " + board);
+						boards.remove(board);
+					}
+				}
+			}
+
+			return 0;
 		}
+	};
+
+	public void updateBoards() {
+		boards.clear();
+		
+		if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to initialize libusb.", result);
+
+		DeviceList list = new DeviceList();
+	    result = LibUsb.getDeviceList(context, list);
+	    if (result < 0) throw new LibUsbException("Unable to get device list", result);
+
+	    try
+	    {
+	        // Iterate over all devices and scan for the right one
+	        for (Device device: list)
+	        {
+	            DeviceDescriptor descriptor = new DeviceDescriptor();
+	            result = LibUsb.getDeviceDescriptor(device, descriptor);
+	            if (result != LibUsb.SUCCESS) throw new LibUsbException("Unable to read device descriptor", result);
+	            if (descriptor.idVendor() == (short)TreehopperUsb.Settings.getVid() && descriptor.idProduct() == (short)TreehopperUsb.Settings.getPid())
+	            {
+	            	LibUsb.refDevice(device);
+	            	TreehopperUsb board = new TreehopperUsb(new UsbConnection(device));
+	            	boards.add(board);
+	            }
+	        }
+	    }
+	    finally
+	    {
+	        // Ensure the allocated device list is freed
+//	        LibUsb.freeDeviceList(list, true);
+	    }
 	}
 
 	public ArrayList<TreehopperUsb> getBoards() {
 		return boards;
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		LibUsb.exit(context);
+	}
 }

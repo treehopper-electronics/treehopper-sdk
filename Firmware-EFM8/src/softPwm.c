@@ -12,14 +12,17 @@
 static SI_SEGMENT_VARIABLE(currentConfig[TREEHOPPER_NUM_PINS], softPwmPinConfig_t, SI_SEG_XDATA);
 static SI_SEGMENT_VARIABLE(newConfig[TREEHOPPER_NUM_PINS], softPwmPinConfig_t, SI_SEG_XDATA);
 
-uint8_t currentNumConfigs = 0;
-uint8_t newNumConfigs = 0;
+uint8_t currentNumConfigs;
+uint8_t newNumConfigs;
 
-uint8_t currentConfigIdx = 0;
+uint8_t currentConfigIdx;
 
 volatile bit lock = false;
 bit isRunning = false;
 void SoftPwm_Init() {
+	currentNumConfigs = 0;
+	newNumConfigs = 0;
+	currentConfigIdx = 0;
 	memset(currentConfig, 0, TREEHOPPER_NUM_PINS * sizeof(softPwmPinConfig_t));
 	memset(newConfig, 0, TREEHOPPER_NUM_PINS * sizeof(softPwmPinConfig_t));
 	TMR4CN0 &= ~(TMR4CN0_TR4__BMASK); // disable timer

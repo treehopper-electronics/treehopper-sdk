@@ -2,6 +2,10 @@ using System;
 
 namespace Treehopper.Libraries.IO.DigitalPot
 {
+    [Supports("Microchip", "MCP4231")]
+    [Supports("Microchip", "MCP4232")]
+    [Supports("Microchip", "MCP4241")]
+    [Supports("Microchip", "MCP4242")]
     public class Mcp423x : Mcp413x
     {
         public Mcp423x(Spi spi, SpiChipSelectPin cs) : base(spi, cs)

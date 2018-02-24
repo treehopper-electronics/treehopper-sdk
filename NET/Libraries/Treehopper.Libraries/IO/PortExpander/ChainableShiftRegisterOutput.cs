@@ -18,15 +18,13 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// </remarks>
     public abstract class ChainableShiftRegisterOutput : IFlushable
     {
-        private static SpiDevice spiDevice;
+        private readonly AsyncLock lockObject = new AsyncLock();
 
-        private static readonly Collection<ChainableShiftRegisterOutput> shiftRegisters =
-            new Collection<ChainableShiftRegisterOutput>();
-
-        private static readonly AsyncLock lockObject = new AsyncLock();
-
-        private readonly byte[] lastValues;
+        private byte[] lastValues;
+        private SpiDevice spiDevice;
         private int numBytes;
+
+        public IList<ChainableShiftRegisterOutput> Children { get; set; } = new List<ChainableShiftRegisterOutput>();
 
         /// <summary>
         ///     Set up a ChainableShiftRegisterOutput connected to an SPI port.
@@ -38,10 +36,9 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <param name="csMode">The ChipSelectMode to use for all shift registers in this chain</param>
         /// <param name="speedMhz">The speed to use for all shift registers in this chain</param>
         public ChainableShiftRegisterOutput(Spi spiModule, SpiChipSelectPin latchPin, int numBytes = 1,
-            double speedMhz = 5, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd)
+            double speedMhz = 6, SpiMode mode = SpiMode.Mode00, ChipSelectMode csMode = ChipSelectMode.PulseHighAtEnd)
         {
-            setupSpi(spiModule, latchPin, speedMhz, mode, csMode);
-            shiftRegisters.Add(this);
+            spiDevice = new SpiDevice(spiModule, latchPin, csMode, speedMhz, mode);
             this.numBytes = numBytes;
             CurrentValue = new byte[numBytes];
             lastValues = new byte[numBytes];
@@ -54,12 +51,12 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <param name="numBytes">The number of bytes this device occupies in the chain</param>
         public ChainableShiftRegisterOutput(ChainableShiftRegisterOutput upstreamDevice, int numBytes = 1)
         {
-            if (upstreamDevice.Parent != null)
-                Parent = upstreamDevice.Parent;
-            else
+            if (upstreamDevice.Parent == null)
                 Parent = upstreamDevice;
+            else
+                Parent = upstreamDevice.Parent;
 
-            shiftRegisters.Add(this);
+            ((ChainableShiftRegisterOutput)Parent).Children.Add(this);
             this.numBytes = numBytes;
             CurrentValue = new byte[numBytes];
             lastValues = new byte[numBytes];
@@ -89,17 +86,32 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             if (!CurrentValue.SequenceEqual(lastValues) || force)
             {
-                await requestWrite();
+                if(Parent != null)
+                {
+                    await Parent.Flush();
+                }
+                else
+                {
+                    using (await lockObject.LockAsync())
+                    {
+                        // build the byte array to flush out of the port
+                        var bytes = new List<byte>();
+
+                        var reversed = Children.Reverse().ToList(); // bytes are shuffled out last-device-first
+                        reversed.Add(this); // add ourselves
+
+                        foreach (var shift in reversed)
+                        {
+                            var shiftBytes = shift.CurrentValue;
+                            bytes.AddRange(shiftBytes.Reverse());
+                        }
+
+                        await spiDevice.SendReceive(bytes.ToArray(), SpiBurstMode.BurstTx);
+                    }
+                }
                 CurrentValue.CopyTo(lastValues, 0);
             }
         }
-
-        private void setupSpi(Spi spiModule, SpiChipSelectPin latchPin, double speedMhz, SpiMode mode,
-            ChipSelectMode csMode)
-        {
-            spiDevice = new SpiDevice(spiModule, latchPin, csMode, speedMhz, mode);
-        }
-
 
         /// <summary>
         ///     Immediately update all the pins at once with the given value. Flush() will be implicity called.
@@ -131,26 +143,5 @@ namespace Treehopper.Libraries.IO.PortExpander
         ///     Update internal data structures from current value
         /// </summary>
         protected abstract void updateFromCurrentValue();
-
-        /// <summary>
-        ///     called to request a write to the device in chain (subsequently updating all devices in the chain)
-        /// </summary>
-        /// <returns></returns>
-        protected static async Task requestWrite()
-        {
-            using (await lockObject.LockAsync())
-            {
-                // build the byte array to flush out of the port
-                var bytes = new List<byte>();
-                var reversedList = shiftRegisters.Reverse(); // we push out the last device's data first
-                foreach (var shift in reversedList)
-                {
-                    var shiftBytes = shift.CurrentValue;
-                    bytes.AddRange(shiftBytes.Reverse());
-                }
-
-                await spiDevice.SendReceive(bytes.ToArray(), SpiBurstMode.BurstTx);
-            }
-        }
     }
 }

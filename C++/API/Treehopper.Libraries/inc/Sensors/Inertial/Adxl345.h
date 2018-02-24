@@ -8,14 +8,14 @@ namespace Treehopper {
 	namespace Libraries {
 		namespace Sensors {
 			namespace Inertial {
-				class Adxl345
+				class Adxl345 : public Accelerometer
 				{
 				public:
 					Adxl345(I2c& i2c, bool altAddress = false, int rate = 100) : _dev(!altAddress ? 0x53 : 0x1D, i2c, rate), registers(_dev)
 					{
-						registers.PowerCtl.Sleep = 0;
-						registers.PowerCtl.Measure = 1;
-						registers.DataFormat.Range = 0x03;
+						registers.powerCtl.sleep = 0;
+						registers.powerCtl.measure = 1;
+						registers.dataFormat.range = 0x03;
 						registers.flush();
 					}
 				private:

@@ -11,6 +11,7 @@ namespace Treehopper.Libraries
         protected RegisterManager manager;
         public bool IsLittleEndian { get; }
         public int Address { get;  }
+        public int Width { get; }
 
         public Register(RegisterManager regManager, int address, int width, bool isBigEndian)
         {
@@ -20,20 +21,19 @@ namespace Treehopper.Libraries
             Address = address;
         }
 
-        public Task Write()
+        public Task write()
         {
-            return manager.Write(this);
+            return manager.write(this);
         }
 
-        public int Width { get; }
-        internal abstract long GetValue();
-        internal abstract void SetValue(long value);
+        internal abstract long getValue();
+        internal abstract void setValue(long value);
 
-        internal byte[] GetBytes()
+        internal byte[] getBytes()
         {
             var retVal = new byte[Width];
             for (var i = 0; i < Width; i++)
-                retVal[i] = (byte)((GetValue() >> (8 * i)) & 0xFF);
+                retVal[i] = (byte)((getValue() >> (8 * i)) & 0xFF);
 
             if (BitConverter.IsLittleEndian ^ IsLittleEndian)
                 retVal = retVal.Reverse().ToArray();
@@ -41,7 +41,7 @@ namespace Treehopper.Libraries
             return retVal;
         }
 
-        internal void SetBytes(byte[] bytes)
+        internal void setBytes(byte[] bytes)
         {
             if (BitConverter.IsLittleEndian ^ IsLittleEndian)
                 bytes = bytes.Reverse().ToArray();
@@ -51,7 +51,7 @@ namespace Treehopper.Libraries
             for (var i = 0; i < bytes.Length; i++)
                 regVal |= bytes[i] << (i * 8);
 
-            SetValue(regVal);
+            setValue(regVal);
         }
     }
 }

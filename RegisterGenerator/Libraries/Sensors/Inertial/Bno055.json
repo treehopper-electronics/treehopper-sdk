@@ -1,0 +1,405 @@
+﻿{
+    "multiRegisterAccess": "true",
+    "registers" : {
+        "chipId" : {
+            "address" : "0x00",
+            "width": 8
+        },
+
+        "accelChipId" : {
+            "address" : "0x01",
+            "width": 8
+        },
+
+        "magChipId" : {
+            "address" : "0x02",
+            "width": 8
+        },
+
+        "gyroChipId" : {
+            "address" : "0x03",
+            "width": 8
+        },
+
+        "swRevision" : {
+            "address" : "0x04",
+            "width": 16
+        },
+
+        "bootloaderVersion" : {
+            "address" : "0x06",
+            "width": 8
+        },
+
+        "pageId" : {
+            "address" : "0x07",
+            "width": 8
+        },
+
+        "accelX" : {
+            "address" : "0x08",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "accelY" : {
+            "address" : "0x0A",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "accelZ" : {
+            "address" : "0x0C",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "magnetometerX" : {
+            "address" : "0x0E",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "magnetometerY" : {
+            "address" : "0x10",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "magnetometerZ" : {
+            "address" : "0x12",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "gyroX" : {
+            "address" : "0x14",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "gyroY" : {
+            "address" : "0x16",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "gyroZ" : {
+            "address" : "0x18",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "eulHeading" : {
+            "address" : "0x1A",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "eulRoll" : {
+            "address" : "0x1C",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "eulPitch" : {
+            "address" : "0x1E",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "quaW" : {
+            "address" : "0x20",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "quaX" : {
+            "address" : "0x22",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "quaY" : {
+            "address" : "0x24",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "quaZ" : {
+            "address" : "0x26",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "linX" : {
+            "address" : "0x28",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "linY" : {
+            "address" : "0x2A",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "linZ" : {
+            "address" : "0x2C",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "gravX" : {
+            "address" : "0x2E",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "gravY" : {
+            "address" : "0x30",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "gravZ" : {
+            "address" : "0x32",
+            "isSigned": "true",
+            "width": 16
+        },
+
+        "temp" : {
+            "address" : "0x34",
+            "width": 8
+        },
+
+        "calibStat" : {
+            "address" : "0x35",
+            "values" : {
+                "magCalibStatus" : {
+                    "width" : 2
+                },
+                "accelCalibStatus" : {
+                    "width" : 2
+                },
+                "gyroCalibStatus" : {
+                    "width" : 2
+                },
+                "sysCalibStatus" : {
+                    "width" : 2
+                }
+            }
+        },
+
+        "selfTestResult" : {
+            "address" : "0x36",
+            "values" : {
+                "accel" : {},
+                "mag" : {},
+                "gyro" : {},
+                "mcu" : {}
+            }
+        },
+
+        "interruptStatus" : {
+            "address" : "0x37",
+            "values" : {
+                "gyroAnyMotion" : {
+                    "offset" : 2
+                },
+                "gyroHighRate" : {},
+                "accelHighG" : {
+                    "offset" : 5
+                },
+                "accelAnyMotion" : {},
+                "accelNoMotion" : {}
+            }
+        },
+
+        "sysClockStatus": {
+            "address" : "0x38",
+            "values" : {
+                "mainClock" : {}
+            }
+        },
+
+        "sysStatus" : {
+            "address" : "0x39",
+            "width" : 8
+        },
+
+        "sysErr" : {
+            "address" : "0x3a",
+            "width" : 8
+        },
+
+        "unitSel" : {
+            "address" : "0x3b",
+            "values" : {
+                "accel" : {},
+                "gyro" : {},
+                "eular" : {},
+                "temp" : {
+                    "offset" : 4
+                },
+                "orientationMode" : {
+                    "offset" : 7
+                }
+            }
+        },
+
+        "operatingMode" : {
+            "address": "0x3d",
+            "values" : {
+                "operatingMode" : {
+                    "width" : 4,
+                    "isPublic": "true",
+                    "enum" : {
+                        "values" : {
+                            "ConfigMode" : null,
+                            "AccelOnly" : null,
+                            "MagOnly" : null,
+                            "GyroOnly" : null,
+                            "AccelMag" : null,
+                            "AccelGyro" : null,
+                            "MagGyro" : null,
+                            "AccelMagGyro" : null,
+                            "IMU" : null,
+                            "Compass" : null,
+                            "MagnetForGyroscope" : null,
+                            "NdofFmcOff" : null,
+                            "NineDegreesOfFreedom" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "powerMode" : {
+            "address" : "0x3e",
+            "values" : {
+                "powerMode" : {
+                    "width" : 2,
+                    "enum" : {
+                        "values" : {
+                            "Normal" : null,
+                            "LowPower" : null,
+                            "Suspend" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "sysTrigger" : {
+            "address" : "0x3f",
+            "values" : {
+                "selfTest" : {},
+                "resetSys" : {
+                    "offset" : 5
+                },
+                "resetInt" : {},
+                "clockSel" : {}
+            }
+        },
+
+        "tempSource" : {
+            "address" : "0x40",
+            "values" : {
+                "source" : {
+                    "width" : 2
+                }
+            }
+        },
+
+        "axisMapConfig" : {
+            "address" : "0x41",
+            "values" : {
+                "x" : {
+                    "width" : 2
+                },
+                "y" : {
+                    "width" : 2
+                },
+                "z" : {
+                    "width" : 2
+                }
+            }
+        },
+
+        "axisMapSign" : {
+            "address" : "0x41",
+            "values" : {
+                "x" : {},
+                "y" : {},
+                "z" : {}
+            }
+        },
+
+        "accelOffsetX" : {
+            "address" : "0x55",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "accelOffsetY" : {
+            "address" : "0x57",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "accelOffsetZ" : {
+            "address" : "0x59",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "magnetometerOffsetX" : {
+            "address" : "0x5B",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "magnetometerOffsetY" : {
+            "address" : "0x5D",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "magnetometerOffsetZ" : {
+            "address" : "0x5F",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "gyroOffsetX" : {
+            "address" : "0x61",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "gyroOffsetY" : {
+            "address" : "0x63",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "gyroOffsetZ" : {
+            "address" : "0x65",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "accelRadius" : {
+            "address" : "0x67",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+        
+        "magRadius" : {
+            "address" : "0x69",
+            "width" : 16,
+            "isSigned" : "true"
+        }
+    }
+}

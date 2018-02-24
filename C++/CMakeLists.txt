@@ -18,6 +18,7 @@ add_subdirectory(Demos/Blink)
 add_subdirectory(Demos/DigitalIn)
 add_subdirectory(Demos/I2cDeviceScanner)
 add_subdirectory(Demos/Pwm)
+add_subdirectory(Demos/Sandbox)
 
 add_subdirectory(API/Treehopper.Libraries)
 add_subdirectory(Libraries/Demos/RotaryEncoder)

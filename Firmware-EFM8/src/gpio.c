@@ -55,6 +55,7 @@ void GPIO_MakeSpecialFunction(uint8_t pinNumber, uint8_t pushPull) {
 		else
 			P1MDOUT &= ~(1 << portBit);
 	} else {
+		SFRPAGE = 0x20;
 		P2SKIP &= ~(1 << portBit);
 		if (pushPull)
 			P2MDOUT |= (1 << portBit);
@@ -142,6 +143,7 @@ void GPIO_MakeOutput(uint8_t pinNumber, uint8_t OutputType) {
 		else
 			P1MDOUT &= ~(1 << portBit);
 	} else {
+		SFRPAGE = 0x20;
 		P2SKIP |= 1 << portBit;
 		P2MDIN |= 1 << portBit;
 		if (OutputType == PushPullOutput)

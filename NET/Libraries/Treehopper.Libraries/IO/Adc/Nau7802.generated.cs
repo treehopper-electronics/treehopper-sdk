@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.IO.Adc
             x128 = 7
         }
 
-        public enum LdoVoltage
+        public enum Vldoes
         {
             mV_4500 = 0,
             mV_4200 = 1,
@@ -65,79 +65,79 @@ namespace Treehopper.Libraries.IO.Adc
             off = 3
         }
 
-        internal class Nau7802Registers : RegisterManager
+        protected class Nau7802Registers : RegisterManager
         {
             internal Nau7802Registers(SMBusDevice dev = null) : base(dev, true)
             {
-                PuCtrl = new PuCtrlRegister(this);
-                _registers.Add(PuCtrl);
-                Ctrl1 = new Ctrl1Register(this);
-                _registers.Add(Ctrl1);
-                Ctrl2 = new Ctrl2Register(this);
-                _registers.Add(Ctrl2);
-                I2cCtrl = new I2cCtrlRegister(this);
-                _registers.Add(I2cCtrl);
-                AdcResult = new AdcResultRegister(this);
-                _registers.Add(AdcResult);
-                Adc = new AdcRegister(this);
-                _registers.Add(Adc);
-                Pga = new PgaRegister(this);
-                _registers.Add(Pga);
-                PowerCtrl = new PowerCtrlRegister(this);
-                _registers.Add(PowerCtrl);
+                puCtrl = new PuCtrlRegister(this);
+                _registers.Add(puCtrl);
+                ctrl1 = new Ctrl1Register(this);
+                _registers.Add(ctrl1);
+                ctrl2 = new Ctrl2Register(this);
+                _registers.Add(ctrl2);
+                i2cCtrl = new I2cCtrlRegister(this);
+                _registers.Add(i2cCtrl);
+                adcResult = new AdcResultRegister(this);
+                _registers.Add(adcResult);
+                adc = new AdcRegister(this);
+                _registers.Add(adc);
+                pga = new PgaRegister(this);
+                _registers.Add(pga);
+                powerCtrl = new PowerCtrlRegister(this);
+                _registers.Add(powerCtrl);
             }
 
-            internal PuCtrlRegister PuCtrl;
-            internal Ctrl1Register Ctrl1;
-            internal Ctrl2Register Ctrl2;
-            internal I2cCtrlRegister I2cCtrl;
-            internal AdcResultRegister AdcResult;
-            internal AdcRegister Adc;
-            internal PgaRegister Pga;
-            internal PowerCtrlRegister PowerCtrl;
+            internal PuCtrlRegister puCtrl;
+            internal Ctrl1Register ctrl1;
+            internal Ctrl2Register ctrl2;
+            internal I2cCtrlRegister i2cCtrl;
+            internal AdcResultRegister adcResult;
+            internal AdcRegister adc;
+            internal PgaRegister pga;
+            internal PowerCtrlRegister powerCtrl;
 
             internal class PuCtrlRegister : Register
             {
                 internal PuCtrlRegister(RegisterManager regManager) : base(regManager, 0x00, 1, false) { }
 
-                public int RegisterReset { get; set; }
-                public int PowerUpDigital { get; set; }
-                public int PowerUpAnalog { get; set; }
-                public int PowerUpReady { get; set; }
-                public int CycleStart { get; set; }
-                public int CycleReady { get; set; }
-                public int UseExternalCrystal { get; set; }
-                public int UseInternalLdo { get; set; }
+                public int registerReset { get; set; }
+                public int powerUpDigital { get; set; }
+                public int powerUpAnalog { get; set; }
+                public int powerUpReady { get; set; }
+                public int cycleStart { get; set; }
+                public int cycleReady { get; set; }
+                public int useExternalCrystal { get; set; }
+                public int useInternalLdo { get; set; }
 
-                public async Task<PuCtrlRegister> Read()
+                public async Task<PuCtrlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((RegisterReset & 0x1) << 0) | ((PowerUpDigital & 0x1) << 1) | ((PowerUpAnalog & 0x1) << 2) | ((PowerUpReady & 0x1) << 3) | ((CycleStart & 0x1) << 4) | ((CycleReady & 0x1) << 5) | ((UseExternalCrystal & 0x1) << 6) | ((UseInternalLdo & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((registerReset & 0x1) << 0) | ((powerUpDigital & 0x1) << 1) | ((powerUpAnalog & 0x1) << 2) | ((powerUpReady & 0x1) << 3) | ((cycleStart & 0x1) << 4) | ((cycleReady & 0x1) << 5) | ((useExternalCrystal & 0x1) << 6) | ((useInternalLdo & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    RegisterReset = (int)((value >> 0) & 0x1);
-                    PowerUpDigital = (int)((value >> 1) & 0x1);
-                    PowerUpAnalog = (int)((value >> 2) & 0x1);
-                    PowerUpReady = (int)((value >> 3) & 0x1);
-                    CycleStart = (int)((value >> 4) & 0x1);
-                    CycleReady = (int)((value >> 5) & 0x1);
-                    UseExternalCrystal = (int)((value >> 6) & 0x1);
-                    UseInternalLdo = (int)((value >> 7) & 0x1);
+                    registerReset = (int)((_value >> 0) & 0x1);
+                    powerUpDigital = (int)((_value >> 1) & 0x1);
+                    powerUpAnalog = (int)((_value >> 2) & 0x1);
+                    powerUpReady = (int)((_value >> 3) & 0x1);
+                    cycleStart = (int)((_value >> 4) & 0x1);
+                    cycleReady = (int)((_value >> 5) & 0x1);
+                    useExternalCrystal = (int)((_value >> 6) & 0x1);
+                    useInternalLdo = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"RegisterReset: { RegisterReset } (offset: 0, width: 1)\r\n";
-                    retVal += $"PowerUpDigital: { PowerUpDigital } (offset: 1, width: 1)\r\n";
-                    retVal += $"PowerUpAnalog: { PowerUpAnalog } (offset: 2, width: 1)\r\n";
-                    retVal += $"PowerUpReady: { PowerUpReady } (offset: 3, width: 1)\r\n";
-                    retVal += $"CycleStart: { CycleStart } (offset: 4, width: 1)\r\n";
-                    retVal += $"CycleReady: { CycleReady } (offset: 5, width: 1)\r\n";
-                    retVal += $"UseExternalCrystal: { UseExternalCrystal } (offset: 6, width: 1)\r\n";
-                    retVal += $"UseInternalLdo: { UseInternalLdo } (offset: 7, width: 1)\r\n";
+                    retVal += $"RegisterReset: { registerReset } (offset: 0, width: 1)\r\n";
+                    retVal += $"PowerUpDigital: { powerUpDigital } (offset: 1, width: 1)\r\n";
+                    retVal += $"PowerUpAnalog: { powerUpAnalog } (offset: 2, width: 1)\r\n";
+                    retVal += $"PowerUpReady: { powerUpReady } (offset: 3, width: 1)\r\n";
+                    retVal += $"CycleStart: { cycleStart } (offset: 4, width: 1)\r\n";
+                    retVal += $"CycleReady: { cycleReady } (offset: 5, width: 1)\r\n";
+                    retVal += $"UseExternalCrystal: { useExternalCrystal } (offset: 6, width: 1)\r\n";
+                    retVal += $"UseInternalLdo: { useInternalLdo } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -145,36 +145,36 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal Ctrl1Register(RegisterManager regManager) : base(regManager, 0x01, 1, false) { }
 
-                public int Gain { get; set; }
-                public int Vldo { get; set; }
-                public int DrdySelect { get; set; }
-                public int ConversionReadyPinPolarity { get; set; }
-                public Gains GetGain() { return (Gains)Gain; }
-                public void SetGain(Gains enumVal) { Gain = (int)enumVal; }
-                public LdoVoltage GetVldo() { return (LdoVoltage)Vldo; }
-                public void SetVldo(LdoVoltage enumVal) { Vldo = (int)enumVal; }
+                public int gain { get; set; }
+                public int vldo { get; set; }
+                public int drdySelect { get; set; }
+                public int conversionReadyPinPolarity { get; set; }
+                public Gains getGain() { return (Gains)gain; }
+                public void setGain(Gains enumVal) { gain = (int)enumVal; }
+                public Vldoes getVldo() { return (Vldoes)vldo; }
+                public void setVldo(Vldoes enumVal) { vldo = (int)enumVal; }
 
-                public async Task<Ctrl1Register> Read()
+                public async Task<Ctrl1Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Gain & 0x7) << 0) | ((Vldo & 0x7) << 3) | ((DrdySelect & 0x1) << 6) | ((ConversionReadyPinPolarity & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((gain & 0x7) << 0) | ((vldo & 0x7) << 3) | ((drdySelect & 0x1) << 6) | ((conversionReadyPinPolarity & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    Gain = (int)((value >> 0) & 0x7);
-                    Vldo = (int)((value >> 3) & 0x7);
-                    DrdySelect = (int)((value >> 6) & 0x1);
-                    ConversionReadyPinPolarity = (int)((value >> 7) & 0x1);
+                    gain = (int)((_value >> 0) & 0x7);
+                    vldo = (int)((_value >> 3) & 0x7);
+                    drdySelect = (int)((_value >> 6) & 0x1);
+                    conversionReadyPinPolarity = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Gain: { Gain } (offset: 0, width: 3)\r\n";
-                    retVal += $"Vldo: { Vldo } (offset: 3, width: 3)\r\n";
-                    retVal += $"DrdySelect: { DrdySelect } (offset: 6, width: 1)\r\n";
-                    retVal += $"ConversionReadyPinPolarity: { ConversionReadyPinPolarity } (offset: 7, width: 1)\r\n";
+                    retVal += $"Gain: { gain } (offset: 0, width: 3)\r\n";
+                    retVal += $"Vldo: { vldo } (offset: 3, width: 3)\r\n";
+                    retVal += $"DrdySelect: { drdySelect } (offset: 6, width: 1)\r\n";
+                    retVal += $"ConversionReadyPinPolarity: { conversionReadyPinPolarity } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -182,39 +182,39 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal Ctrl2Register(RegisterManager regManager) : base(regManager, 0x02, 1, false) { }
 
-                public int CalMod { get; set; }
-                public int CalStart { get; set; }
-                public int CalError { get; set; }
-                public int ConversionRate { get; set; }
-                public int ChannelSelect { get; set; }
-                public CalMods GetCalMod() { return (CalMods)CalMod; }
-                public void SetCalMod(CalMods enumVal) { CalMod = (int)enumVal; }
-                public ConversionRates GetConversionRate() { return (ConversionRates)ConversionRate; }
-                public void SetConversionRate(ConversionRates enumVal) { ConversionRate = (int)enumVal; }
+                public int calMod { get; set; }
+                public int calStart { get; set; }
+                public int calError { get; set; }
+                public int conversionRate { get; set; }
+                public int channelSelect { get; set; }
+                public CalMods getCalMod() { return (CalMods)calMod; }
+                public void setCalMod(CalMods enumVal) { calMod = (int)enumVal; }
+                public ConversionRates getConversionRate() { return (ConversionRates)conversionRate; }
+                public void setConversionRate(ConversionRates enumVal) { conversionRate = (int)enumVal; }
 
-                public async Task<Ctrl2Register> Read()
+                public async Task<Ctrl2Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((CalMod & 0x3) << 0) | ((CalStart & 0x1) << 2) | ((CalError & 0x1) << 3) | ((ConversionRate & 0x7) << 4) | ((ChannelSelect & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((calMod & 0x3) << 0) | ((calStart & 0x1) << 2) | ((calError & 0x1) << 3) | ((conversionRate & 0x7) << 4) | ((channelSelect & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    CalMod = (int)((value >> 0) & 0x3);
-                    CalStart = (int)((value >> 2) & 0x1);
-                    CalError = (int)((value >> 3) & 0x1);
-                    ConversionRate = (int)((value >> 4) & 0x7);
-                    ChannelSelect = (int)((value >> 7) & 0x1);
+                    calMod = (int)((_value >> 0) & 0x3);
+                    calStart = (int)((_value >> 2) & 0x1);
+                    calError = (int)((_value >> 3) & 0x1);
+                    conversionRate = (int)((_value >> 4) & 0x7);
+                    channelSelect = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"CalMod: { CalMod } (offset: 0, width: 2)\r\n";
-                    retVal += $"CalStart: { CalStart } (offset: 2, width: 1)\r\n";
-                    retVal += $"CalError: { CalError } (offset: 3, width: 1)\r\n";
-                    retVal += $"ConversionRate: { ConversionRate } (offset: 4, width: 3)\r\n";
-                    retVal += $"ChannelSelect: { ChannelSelect } (offset: 7, width: 1)\r\n";
+                    retVal += $"CalMod: { calMod } (offset: 0, width: 2)\r\n";
+                    retVal += $"CalStart: { calStart } (offset: 2, width: 1)\r\n";
+                    retVal += $"CalError: { calError } (offset: 3, width: 1)\r\n";
+                    retVal += $"ConversionRate: { conversionRate } (offset: 4, width: 3)\r\n";
+                    retVal += $"ChannelSelect: { channelSelect } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -222,44 +222,44 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal I2cCtrlRegister(RegisterManager regManager) : base(regManager, 0x11, 1, false) { }
 
-                public int BgpCp { get; set; }
-                public int Ts { get; set; }
-                public int BoPga { get; set; }
-                public int Si { get; set; }
-                public int Wpd { get; set; }
-                public int Spe { get; set; }
-                public int Frd { get; set; }
-                public int Crsd { get; set; }
+                public int bgpCp { get; set; }
+                public int ts { get; set; }
+                public int boPga { get; set; }
+                public int si { get; set; }
+                public int wpd { get; set; }
+                public int spe { get; set; }
+                public int frd { get; set; }
+                public int crsd { get; set; }
 
-                public async Task<I2cCtrlRegister> Read()
+                public async Task<I2cCtrlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((BgpCp & 0x1) << 0) | ((Ts & 0x1) << 1) | ((BoPga & 0x1) << 2) | ((Si & 0x1) << 3) | ((Wpd & 0x1) << 4) | ((Spe & 0x1) << 5) | ((Frd & 0x1) << 6) | ((Crsd & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((bgpCp & 0x1) << 0) | ((ts & 0x1) << 1) | ((boPga & 0x1) << 2) | ((si & 0x1) << 3) | ((wpd & 0x1) << 4) | ((spe & 0x1) << 5) | ((frd & 0x1) << 6) | ((crsd & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    BgpCp = (int)((value >> 0) & 0x1);
-                    Ts = (int)((value >> 1) & 0x1);
-                    BoPga = (int)((value >> 2) & 0x1);
-                    Si = (int)((value >> 3) & 0x1);
-                    Wpd = (int)((value >> 4) & 0x1);
-                    Spe = (int)((value >> 5) & 0x1);
-                    Frd = (int)((value >> 6) & 0x1);
-                    Crsd = (int)((value >> 7) & 0x1);
+                    bgpCp = (int)((_value >> 0) & 0x1);
+                    ts = (int)((_value >> 1) & 0x1);
+                    boPga = (int)((_value >> 2) & 0x1);
+                    si = (int)((_value >> 3) & 0x1);
+                    wpd = (int)((_value >> 4) & 0x1);
+                    spe = (int)((_value >> 5) & 0x1);
+                    frd = (int)((_value >> 6) & 0x1);
+                    crsd = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"BgpCp: { BgpCp } (offset: 0, width: 1)\r\n";
-                    retVal += $"Ts: { Ts } (offset: 1, width: 1)\r\n";
-                    retVal += $"BoPga: { BoPga } (offset: 2, width: 1)\r\n";
-                    retVal += $"Si: { Si } (offset: 3, width: 1)\r\n";
-                    retVal += $"Wpd: { Wpd } (offset: 4, width: 1)\r\n";
-                    retVal += $"Spe: { Spe } (offset: 5, width: 1)\r\n";
-                    retVal += $"Frd: { Frd } (offset: 6, width: 1)\r\n";
-                    retVal += $"Crsd: { Crsd } (offset: 7, width: 1)\r\n";
+                    retVal += $"BgpCp: { bgpCp } (offset: 0, width: 1)\r\n";
+                    retVal += $"Ts: { ts } (offset: 1, width: 1)\r\n";
+                    retVal += $"BoPga: { boPga } (offset: 2, width: 1)\r\n";
+                    retVal += $"Si: { si } (offset: 3, width: 1)\r\n";
+                    retVal += $"Wpd: { wpd } (offset: 4, width: 1)\r\n";
+                    retVal += $"Spe: { spe } (offset: 5, width: 1)\r\n";
+                    retVal += $"Frd: { frd } (offset: 6, width: 1)\r\n";
+                    retVal += $"Crsd: { crsd } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -267,23 +267,23 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal AdcResultRegister(RegisterManager regManager) : base(regManager, 0x12, 3, true) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<AdcResultRegister> Read()
+                public async Task<AdcResultRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFFFFFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFFFFFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
+                    value = (int)(((_value >> 0) & 0xFFFFFF) << (32 - 24)) >> (32 - 24);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 24)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 24)\r\n";
                     return retVal;
                 }
             }
@@ -291,33 +291,33 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal AdcRegister(RegisterManager regManager) : base(regManager, 0x15, 1, false) { }
 
-                public int RegChp { get; set; }
-                public int AdcVcm { get; set; }
-                public int RegChpFreq { get; set; }
-                public AdcVcms GetAdcVcm() { return (AdcVcms)AdcVcm; }
-                public void SetAdcVcm(AdcVcms enumVal) { AdcVcm = (int)enumVal; }
-                public RegChpFreqs GetRegChpFreq() { return (RegChpFreqs)RegChpFreq; }
-                public void SetRegChpFreq(RegChpFreqs enumVal) { RegChpFreq = (int)enumVal; }
+                public int regChp { get; set; }
+                public int adcVcm { get; set; }
+                public int regChpFreq { get; set; }
+                public AdcVcms getAdcVcm() { return (AdcVcms)adcVcm; }
+                public void setAdcVcm(AdcVcms enumVal) { adcVcm = (int)enumVal; }
+                public RegChpFreqs getRegChpFreq() { return (RegChpFreqs)regChpFreq; }
+                public void setRegChpFreq(RegChpFreqs enumVal) { regChpFreq = (int)enumVal; }
 
-                public async Task<AdcRegister> Read()
+                public async Task<AdcRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((RegChp & 0x3) << 0) | ((AdcVcm & 0x3) << 2) | ((RegChpFreq & 0x3) << 4); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((regChp & 0x3) << 0) | ((adcVcm & 0x3) << 2) | ((regChpFreq & 0x3) << 4); }
+                internal override void setValue(long _value)
                 {
-                    RegChp = (int)((value >> 0) & 0x3);
-                    AdcVcm = (int)((value >> 2) & 0x3);
-                    RegChpFreq = (int)((value >> 4) & 0x3);
+                    regChp = (int)((_value >> 0) & 0x3);
+                    adcVcm = (int)((_value >> 2) & 0x3);
+                    regChpFreq = (int)((_value >> 4) & 0x3);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"RegChp: { RegChp } (offset: 0, width: 2)\r\n";
-                    retVal += $"AdcVcm: { AdcVcm } (offset: 2, width: 2)\r\n";
-                    retVal += $"RegChpFreq: { RegChpFreq } (offset: 4, width: 2)\r\n";
+                    retVal += $"RegChp: { regChp } (offset: 0, width: 2)\r\n";
+                    retVal += $"AdcVcm: { adcVcm } (offset: 2, width: 2)\r\n";
+                    retVal += $"RegChpFreq: { regChpFreq } (offset: 4, width: 2)\r\n";
                     return retVal;
                 }
             }
@@ -325,35 +325,35 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal PgaRegister(RegisterManager regManager) : base(regManager, 0x1B, 1, false) { }
 
-                public int DisableChopper { get; set; }
-                public int PgaInv { get; set; }
-                public int PgaBypass { get; set; }
-                public int LdoMode { get; set; }
-                public int RdOptSel { get; set; }
+                public int disableChopper { get; set; }
+                public int pgaInv { get; set; }
+                public int pgaBypass { get; set; }
+                public int ldoMode { get; set; }
+                public int rdOptSel { get; set; }
 
-                public async Task<PgaRegister> Read()
+                public async Task<PgaRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((DisableChopper & 0x1) << 0) | ((PgaInv & 0x1) << 3) | ((PgaBypass & 0x1) << 4) | ((LdoMode & 0x1) << 5) | ((RdOptSel & 0x1) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((disableChopper & 0x1) << 0) | ((pgaInv & 0x1) << 3) | ((pgaBypass & 0x1) << 4) | ((ldoMode & 0x1) << 5) | ((rdOptSel & 0x1) << 6); }
+                internal override void setValue(long _value)
                 {
-                    DisableChopper = (int)((value >> 0) & 0x1);
-                    PgaInv = (int)((value >> 3) & 0x1);
-                    PgaBypass = (int)((value >> 4) & 0x1);
-                    LdoMode = (int)((value >> 5) & 0x1);
-                    RdOptSel = (int)((value >> 6) & 0x1);
+                    disableChopper = (int)((_value >> 0) & 0x1);
+                    pgaInv = (int)((_value >> 3) & 0x1);
+                    pgaBypass = (int)((_value >> 4) & 0x1);
+                    ldoMode = (int)((_value >> 5) & 0x1);
+                    rdOptSel = (int)((_value >> 6) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"DisableChopper: { DisableChopper } (offset: 0, width: 1)\r\n";
-                    retVal += $"PgaInv: { PgaInv } (offset: 3, width: 1)\r\n";
-                    retVal += $"PgaBypass: { PgaBypass } (offset: 4, width: 1)\r\n";
-                    retVal += $"LdoMode: { LdoMode } (offset: 5, width: 1)\r\n";
-                    retVal += $"RdOptSel: { RdOptSel } (offset: 6, width: 1)\r\n";
+                    retVal += $"DisableChopper: { disableChopper } (offset: 0, width: 1)\r\n";
+                    retVal += $"PgaInv: { pgaInv } (offset: 3, width: 1)\r\n";
+                    retVal += $"PgaBypass: { pgaBypass } (offset: 4, width: 1)\r\n";
+                    retVal += $"LdoMode: { ldoMode } (offset: 5, width: 1)\r\n";
+                    retVal += $"RdOptSel: { rdOptSel } (offset: 6, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -361,32 +361,32 @@ namespace Treehopper.Libraries.IO.Adc
             {
                 internal PowerCtrlRegister(RegisterManager regManager) : base(regManager, 0x1C, 1, false) { }
 
-                public int PgaCurr { get; set; }
-                public int AdcCurr { get; set; }
-                public int MasterBiasCurr { get; set; }
-                public int PgaCapEn { get; set; }
+                public int pgaCurr { get; set; }
+                public int adcCurr { get; set; }
+                public int masterBiasCurr { get; set; }
+                public int pgaCapEn { get; set; }
 
-                public async Task<PowerCtrlRegister> Read()
+                public async Task<PowerCtrlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((PgaCurr & 0x3) << 0) | ((AdcCurr & 0x3) << 2) | ((MasterBiasCurr & 0x7) << 4) | ((PgaCapEn & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((pgaCurr & 0x3) << 0) | ((adcCurr & 0x3) << 2) | ((masterBiasCurr & 0x7) << 4) | ((pgaCapEn & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    PgaCurr = (int)((value >> 0) & 0x3);
-                    AdcCurr = (int)((value >> 2) & 0x3);
-                    MasterBiasCurr = (int)((value >> 4) & 0x7);
-                    PgaCapEn = (int)((value >> 7) & 0x1);
+                    pgaCurr = (int)((_value >> 0) & 0x3);
+                    adcCurr = (int)((_value >> 2) & 0x3);
+                    masterBiasCurr = (int)((_value >> 4) & 0x7);
+                    pgaCapEn = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"PgaCurr: { PgaCurr } (offset: 0, width: 2)\r\n";
-                    retVal += $"AdcCurr: { AdcCurr } (offset: 2, width: 2)\r\n";
-                    retVal += $"MasterBiasCurr: { MasterBiasCurr } (offset: 4, width: 3)\r\n";
-                    retVal += $"PgaCapEn: { PgaCapEn } (offset: 7, width: 1)\r\n";
+                    retVal += $"PgaCurr: { pgaCurr } (offset: 0, width: 2)\r\n";
+                    retVal += $"AdcCurr: { adcCurr } (offset: 2, width: 2)\r\n";
+                    retVal += $"MasterBiasCurr: { masterBiasCurr } (offset: 4, width: 3)\r\n";
+                    retVal += $"PgaCapEn: { pgaCapEn } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }

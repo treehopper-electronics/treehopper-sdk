@@ -31,6 +31,11 @@
         AnalogInput,
 
         /// <summary>
+        ///     Pin is a SoftPWM output
+        /// </summary>
+        SoftPwm,
+
+        /// <summary>
         ///     Pin is unassigned
         /// </summary>
         Unassigned

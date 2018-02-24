@@ -1,4 +1,6 @@
-﻿using System;
+﻿// TODO: Needs to be rewritten to inherit from Adc
+
+using System;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.IO.Adc
@@ -6,6 +8,7 @@ namespace Treehopper.Libraries.IO.Adc
     /// <summary>
     ///     Linear LTC2305 12-bit two-channel ADC
     /// </summary>
+    [Supports("Linear", "LTC2305")]
     public class Ltc2305
     {
         /// <summary>

@@ -1,5 +1,9 @@
 import logging
 import math
+from typing import List, TYPE_CHECKING, Sequence
+
+if TYPE_CHECKING:
+    from treehopper.api.TreehopperUsb import TreehopperUsb
 from treehopper.api.Spi import Spi, SpiBurstMode, ChipSelectMode, SpiMode
 from treehopper.api.Pin import PinMode
 from treehopper.utils.utils import *
@@ -7,7 +11,10 @@ from treehopper.api.DeviceCommands import DeviceCommands
 
 
 class HardwareSpi(Spi):
-    def __init__(self, board):
+    """
+    Hardware SPI module
+    """
+    def __init__(self, board: 'TreehopperUsb'):
         self._board = board
         self._enabled = False
         self._logger = logging.getLogger(__name__)
@@ -36,8 +43,8 @@ class HardwareSpi(Spi):
 
         self._send_config()
 
-    def send_receive(self, data_to_write, chip_select=None, chip_select_mode=ChipSelectMode.SpiActiveLow, speed_mhz=1,
-                     burst_mode=SpiBurstMode.NoBurst, spi_mode=SpiMode.Mode00):
+    def send_receive(self, data_to_write: List[int], chip_select=None, chip_select_mode=ChipSelectMode.SpiActiveLow, speed_mhz=1,
+                     burst_mode=SpiBurstMode.NoBurst, spi_mode=SpiMode.Mode00) -> List[int]:
         if not self._enabled:
             self._logger.error("spi.send_receive() called before enabling the peripheral. This call will be ignored.")
             return

@@ -9,6 +9,7 @@ namespace Treehopper.Libraries.Motors
     /// <summary>
     /// 1A, 36-V dual H-bridge motor controller
     /// </summary>
+    [Supports("Texas Instruments", "L293D")]
     public class L293d
     {
         /// <summary>

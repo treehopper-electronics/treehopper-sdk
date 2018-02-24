@@ -1,0 +1,13 @@
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':api:treehopper.desktop')
+    compile project(':api:treehopper.libraries')
+}

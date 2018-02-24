@@ -1,4 +1,6 @@
-﻿namespace Treehopper
+﻿using System.Threading.Tasks;
+
+namespace Treehopper
 {
     /// <summary>
     ///     This provides a generic interface to PWM operation.
@@ -33,8 +35,8 @@
         double PulseWidth { get; set; }
 
         /// <summary>
-        ///     Gets or sets the value determining whether the PWM functionality of the pin is enabled.
+        ///     Enable the PWM functionality
         /// </summary>
-        bool Enabled { get; set; }
+        Task EnablePwm();
     }
 }

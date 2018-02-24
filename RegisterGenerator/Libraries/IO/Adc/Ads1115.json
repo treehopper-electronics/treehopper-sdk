@@ -1,0 +1,105 @@
+{
+    "registers" : {
+        "conversion" : {
+            "address" : "0x00",
+            "access" : "read",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "config" : {
+            "address" : "0x01",
+            "access" : "write",
+            "values" : {
+                "comparatorQueue" : {
+                    "width": 2,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                            "AssertAfterOneConversion": null,
+                            "AssertAfterTwoConversions": null,
+                            "AssertAfterFourConversions": null,
+                            "DisableComparator": null
+                        }
+                    }
+                },
+
+                "latchingComparator" : {},
+
+                "comparatorPolarity" : {},
+
+                "comparatorMode" : {},
+                
+                "dataRate" : {
+                    "width": 3,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                            "Sps_8": null,
+                            "Sps_16": null,
+                            "Sps_32": null,
+                            "Sps_64": null,
+                            "Sps_128": null,
+                            "Sps_250" : null,
+                            "Sps_475" : null,
+                            "Sps_860" : null
+                        }
+                    }
+                },
+
+                "operatingMode" : {},
+                
+                "pga" : {
+                    "width": 3,
+                    "enum": {
+                        "isPublic": "true",
+                        "values": {
+                            "Fsr_6144": null,
+                            "Fsr_4096": null,
+                            "Fsr_2048": null,
+                            "Fsr_1024": null,
+                            "Fsr_512" : null,
+                            "Fsr_256" : null
+                        }
+                    }
+                }, 
+
+                "mux" : {
+                    "width": 3,
+                    "enum": {
+                        "isPublic": "false",
+                        "values": {
+                            "ain0_ain1": null,
+                            "ain0_ain3": null,
+                            "ain1_ain3": null,
+                            "ain2_ain3": null,
+                            "ain0_gnd" : null,
+                            "ain1_gnd" : null,
+                            "ain2_gnd" : null,
+                            "ain3_gnd" : null
+                        }
+                    }
+                },
+
+                "operationalStatus" : {}
+            }
+        },
+
+        "lowThreshold" : {
+            "address" : "0x02",
+            "access" : "read",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "highThreshold" : {
+            "address" : "0x03",
+            "access" : "read",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        }
+    }
+}

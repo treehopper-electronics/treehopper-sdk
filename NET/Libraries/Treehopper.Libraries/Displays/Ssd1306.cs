@@ -6,6 +6,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     Solomon SSD1306 128x64 OLED display controller
     /// </summary>
+    [Supports("Solomon", "SSD1306")]
     public class Ssd1306 : MonoGraphicDisplay
     {
         /// <summary>

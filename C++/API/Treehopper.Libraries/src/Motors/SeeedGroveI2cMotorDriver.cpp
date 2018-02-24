@@ -1,6 +1,7 @@
 #include "Motors/SeeedGroveI2cMotorDriver.h"
 #include <cstdlib>
 #include <cmath>
+#include <vector>
 
 namespace Treehopper {
 	namespace Libraries {
@@ -20,10 +21,8 @@ namespace Treehopper {
 			{
 				freq = value;
 
-				uint8_t data[2];
-				data[0] = (uint8_t)freq;
-				data[1] = 0x01;
-				dev.writeBufferData((uint8_t)Registers::PwmFrequencySet, data, 2);
+				std::vector<uint8_t> data = { (uint8_t)freq, 0x01 };
+				dev.writeBufferData((uint8_t)Registers::PwmFrequencySet, data);
 			}
 
 			SeeedGroveI2cMotorDriver::PrescalerFrequency SeeedGroveI2cMotorDriver::frequency()
@@ -55,12 +54,10 @@ namespace Treehopper {
 
 			void SeeedGroveI2cMotorDriver::update()
 			{
-				uint8_t data[2];
-				data[0] = (uint8_t)round(abs(m1) * 255);
-				data[1] = (uint8_t)round(abs(m2) * 255);
-				dev.writeBufferData((uint8_t)Registers::MotorSpeedSet, data, 2);
+				std::vector<uint8_t> data = { (uint8_t)round(abs(m1) * 255), (uint8_t)round(abs(m2) * 255) };
+				dev.writeBufferData((uint8_t)Registers::MotorSpeedSet, data);
 
-				uint8_t dir[2];
+				auto dir = std::vector<uint8_t>(2);
 				dir[1] = 0x01;
 
 				if (m1 >= 0 && m2 >= 0)
@@ -72,6 +69,6 @@ namespace Treehopper {
 				else if (m1 < 0 && m2 >= 0)
 					dir[0] = (uint8_t)MotorSetDirection::Motor1CounterClockwiseMotor2Clockwise;
 			
-				dev.writeBufferData((uint8_t)Registers::DirectionSet, dir, 2);
+				dev.writeBufferData((uint8_t)Registers::DirectionSet, dir);
 			}
 } } }

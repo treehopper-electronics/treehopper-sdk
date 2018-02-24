@@ -1,1 +1,1 @@
-efm8load "..\..\NET\API\Treehopper\treehopper.tfi"
+efm8load "..\..\NET\API\Treehopper.Firmware\treehopper.tfi"

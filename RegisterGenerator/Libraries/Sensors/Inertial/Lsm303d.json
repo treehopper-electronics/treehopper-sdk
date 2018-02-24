@@ -1,0 +1,487 @@
+{
+    "multiRegisterAccess": "true",
+    "registers" : {
+        "tempOut" : {
+            "address" : "0x05",
+            "width" : 12,
+            "isSigned" : "true"
+        },
+
+        "status" : {
+            "address" : "0x07",
+            "values" : {
+                "xDataAvailable" : {},
+                "yDataAvailable" : {},
+                "zDataAvailable" : {},
+                "zyxDataAvailable" : {},
+                "xDataOverrun" : {},
+                "yDataOverrun" : {},
+                "zDataOverrun" : {},
+                "zyxDataOverrun" : {}
+            }
+        },
+
+        "outX" : {
+            "address" : "0x08",
+            "width" : 16
+        },
+
+        "outY" : {
+            "address" : "0x0A",
+            "width" : 16
+        },
+
+        "outZ" : {
+            "address" : "0x0C",
+            "width" : 16
+        },
+
+        "whoAmI" : {
+            "address" : "0x0f"
+        },
+
+        "intCtrl" : {
+            "address" : "0x12",
+            "values" : {
+                "magInterruptEnable" : {},
+                "enable4D" : {},
+                "latchInterruptRequest" : {},
+                "interruptPolarity" : {},
+                "interruptPinPushPull" : {},
+                "zInterruptEnable" : {},
+                "yInterruptEnable" : {},
+                "xInterruptEnable" : {}
+            }
+        },
+
+        "intSource" : {
+            "address" : "0x13",
+            "values" : {
+                "mint" : {},
+                "measurementRangeOverflow" : {},
+                "negativeThresholdZ" : {},
+                "negativeThresholdY" : {},
+                "negativeThresholdX" : {},
+                "positiveThresholdZ" : {},
+                "positiveThresholdY" : {},
+                "positiveThresholdX" : {}
+            }
+        },
+
+        "intThreshold" : {
+            "address" : "0x14",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "offsetX" : {
+            "address" : "0x16",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "offsetY" : {
+            "address" : "0x18",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "offsetZ" : {
+            "address" : "0x1A",
+            "width" : 16,
+            "isSigned" : "true"
+        },
+
+        "referenceX" : {
+            "address" : "0x1c",
+            "width" : 8
+        },
+        
+        "referenceY" : {
+            "address" : "0x1d",
+            "width" : 8
+        },
+
+        "referenceZ" : {
+            "address" : "0x1E",
+            "width" : 8
+        },
+
+        "ctrl0" : {
+            "address" : "0x1f",
+            "values" : {
+                "hpis2" : {},
+                "hpis1" : {},
+                "hpClick" : {},
+                "fifoThresholdEnable" : {
+                    "offset" : 5
+                },
+                "fifoEnable" : {},
+                "boot" : {}
+            }
+        },
+
+        "ctrl1" : {
+            "address" : "0x20",
+            "values" : {
+                "xEnable" : {},
+                "yEnable" : {},
+                "zEnable" : {},
+                "blockDataUpdate" : {},
+                "outputDataRate" : {
+                    "width" : 4,
+                    "enum" : {
+                        "values" : {
+                            "powerDown" : null,
+                            "Hz_3_125" : null,
+                            "Hz_6_25" : null,
+                            "Hz_12_5" : null,
+                            "Hz_25" : null,
+                            "Hz_50" : null,
+                            "Hz_100" : null,
+                            "Hz_200" : null,
+                            "Hz_400" : null,
+                            "Hz_800" : null,
+                            "Hz_1600" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "ctrl2" : {
+            "address" : "0x21",
+            "values" : {
+                "spiModeSelection" : {},
+                "accelerationSelfTest" : {},
+                "fullScaleSelection" : {
+                    "width" : 3,
+                    "offset" : 3,
+                    "enum" : {
+                        "values" : {
+                            "Fs_2g" : null,
+                            "Fs_4g" : null,
+                            "Fs_6g" : null,
+                            "Fs_8g" : null,
+                            "Fs_16g" : null
+                        }
+                    }
+                },
+                "antiAliasFilterBandwidth" : {
+                    "width" : 2,
+                    "enum" : {
+                        "values" : {
+                            "Hz_773" : null,
+                            "Hz_194" : null,
+                            "Hz_362" : null,
+                            "Hz_50" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "ctrl3" : {
+            "address" : "0x22",
+            "values" : {
+                "fifoEmptyOnInt1" : {},
+                "magReadyOnInt1" : {},
+                "accelReadyOnInt1" : {},
+                "magGenOnInt1" : {},
+                "inertialGen2OnInt1" : {},
+                "inertialGen1OnInt1" : {},
+                "clickGenOnInt1" : {},
+                "bootOnInt1" : {}
+            }
+        },
+
+        "ctrl4" : {
+            "address" : "0x23",
+            "values" : {
+                "fifoThresholdOnInt2" : {},
+                "fifoOverrunOnInt2" : {},
+                "magDataReadyOnInt2" : {},
+                "accelDataReadyOnInt2" : {},
+                "magIntOnInt2" : {},
+                "inertialGen2OnInt2" : {},
+                "inertialGen1OnInt2" : {},
+                "clickGenOnInt2" : {}
+            }
+        },
+
+        "ctrl5" : {
+            "address" : "0x24",
+            "values" : {
+                "latchIntOnInt1" : {},
+                "latchIntOnInt2" : {},
+                "magDataRate" : {
+                    "width" : 3,
+                    "enum" : {
+                        "values" : {
+                            "Hz_3_125" : null,
+                            "Hz_6_25" : null,
+                            "Hz_12_5" : null,
+                            "Hz_25" : null,
+                            "Hz_50" : null,
+                            "Hz_100" : null
+                        }
+                    }
+                },
+                "magResolution" : {
+                    "width" : 2,
+                    "enum" : {
+                        "values" : {
+                            "lowResolution" : 0,
+                            "highResolution" : 3
+                        }
+                    }
+                },
+                "tempEnable" : {}
+            }
+        },
+
+        "ctrl6" : {
+            "address" : "0x25",
+            "values" : {
+                "magFullScaleSelection" : {
+                    "width" : 2,
+                    "offset" : 5,
+                    "enum" : {
+                        "values" : {
+                            "gauss_2" : null,
+                            "gauss_4" : null,
+                            "gauss_8" : null,
+                            "gauss_12" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "ctrl7" : {
+            "address" : "0x26",
+            "values" : {
+                "magSensorMode" : {
+                    "width" : 2,
+                    "enum" : {
+                        "values" : {
+                            "ContinuousConversion" : null,
+                            "SingleConversion" : null,
+                            "PowerDown" : null
+                        }
+                    }
+                },
+                "magLowPowerMode" : {},
+                "tempOnly" : {
+                    "offset" : 4
+                },
+                "filteredAccelData" : {},
+                "accelhighPassMode" : {
+                    "width" : 2,
+                    "enum" : {
+                        "values" : {
+                            "Reset" : null,
+                            "ReferenceSignal" : null,
+                            "Normal" : null,
+                            "AutoResetOnInterrupt" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "statusA" : {
+            "address": "0x27",
+            "values" : {
+                "accelXAvailable" : {},
+                "accelYAvailable" : {},
+                "accelZAvailable" : {},
+                "accelXYZAvailable" : {},
+                "accelXOverrun" : {},
+                "accelYOverrun" : {},
+                "accelZOverrun" : {},
+                "accelXYZOverrun" : {}
+            }
+        },
+
+        "outAccelX" : {
+            "address" : "0x28",
+            "width" : 16,
+            "isSigned" : true
+        },
+
+        "outAccelY" : {
+            "address" : "0x2A",
+            "width" : 16,
+            "isSigned" : true
+        },
+
+        "outAccelZ" : {
+            "address" : "0x2C",
+            "width" : 16,
+            "isSigned" : true
+        },
+
+        "fifoControl" : {
+            "address" : "0x2E",
+            "values" : {
+                "fifoThreshold" : {
+                    "width" : 5
+                },
+                "fifoMode" : {
+                    "width" : 3,
+                    "enum" : {
+                        "values" : {
+                            "Bypass" : null,
+                            "Fifo" : null,
+                            "Stream" : null,
+                            "StreamToFifo" : null,
+                            "BypassToStream" : null
+                        }
+                    }
+                }
+            }
+        },
+
+        "fifoSource" : {
+            "address" : "0x2f",
+            "values" : {
+                "fifoStoredLevel" : {
+                    "width" : 5
+                },
+                "empty" : {},
+                "overrun" : {},
+                "fifoThreshold" : {}
+            }
+        },
+
+        "inertialIntGen1Config" : {
+            "address" : "0x30",
+            "values" : {
+                "xLowInterruptEnable" : {},
+                "xHighInterruptEnable" : {},
+                "yLowInterruptEnable" : {},
+                "yHighInterruptEnable" : {},
+                "zLowInterruptEvent" : {},
+                "zHighInterruptEnable" : {},
+                "detect6D" : {},
+                "andOrInterruptEvents" : {}
+            }
+        },
+
+        "inertialIntGen1Status" : {
+            "address" : "0x30",
+            "values" : {
+                "xLow" : {},
+                "xHigh" : {},
+                "yLow" : {},
+                "yHigh" : {},
+                "zLow" : {},
+                "zHigh" : {},
+                "intStatus" : {}
+            }
+        },
+
+        "inertialIntGen1Threshold" : {
+            "address" : "0x32",
+            "width" : 7
+        },
+
+        "inertialIntGen1Duration" : {
+            "address" : "0x33",
+            "width" : 7
+        },
+
+        "inertialIntGen2Config" : {
+            "address" : "0x34",
+            "values" : {
+                "xLowInterruptEnable" : {},
+                "xHighInterruptEnable" : {},
+                "yLowInterruptEnable" : {},
+                "yHighInterruptEnable" : {},
+                "zLowInterruptEvent" : {},
+                "zHighInterruptEnable" : {},
+                "detect6D" : {},
+                "andOrInterruptEvents" : {}
+            }
+        },
+
+        "inertialIntGen2Status" : {
+            "address" : "0x35",
+            "values" : {
+                "xLow" : {},
+                "xHigh" : {},
+                "yLow" : {},
+                "yHigh" : {},
+                "zLow" : {},
+                "zHigh" : {},
+                "intStatus" : {}
+            }
+        },
+
+        "inertialIntGen2Threshold" : {
+            "address" : "0x36",
+            "width" : 7
+        },
+
+        "inertialIntGen2Duration" : {
+            "address" : "0x37",
+            "width" : 7
+        },
+
+        "clickConfig" : {
+            "address" : "0x38",
+            "values" : {
+                "xSingleClick" : {},
+                "xDoubleClick" : {},
+                "ySingleClick" : {},
+                "yDoubleClick" : {},
+                "zSingleClick" : {},
+                "zDoubleClick" : {}
+            }
+        },
+
+        "clickSource" : {
+            "address" : "0x39",
+            "values" : {
+                "x" : {},
+                "y" : {},
+                "z" : {},
+                "sign" : {},
+                "singleClickEn" : {},
+                "doubleClickEn" : {},
+                "interruptActive" : {}
+            }
+        },
+
+        "clickThreshold" : {
+            "address" : "0x3A",
+            "width" : "7"
+        },
+
+        "timeLimit" : {
+            "address" : "0x3b",
+            "width" : 7
+        },
+
+        "timeLatency" : {
+            "address" : "0x3c",
+            "width" : 8
+        },
+
+        "timeWindow" : {
+            "address" : "0x3d",
+            "width" : 8
+        },
+
+        "activationThreshold" : {
+            "address" : "0x3e",
+            "width" : 8
+        },
+
+        "activationDuration" : {
+            "address" : "0x3f",
+            "width" : 8
+        }
+    }
+}

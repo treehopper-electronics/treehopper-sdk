@@ -130,7 +130,7 @@ namespace Treehopper
         /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <returns>An awaitable byte array with the received data.</returns>
         public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null,
-            ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 1,
+            ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 6,
             SpiBurstMode burstMode = SpiBurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
         {
             var transactionLength = dataToWrite.Length;

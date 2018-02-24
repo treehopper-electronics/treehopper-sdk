@@ -225,8 +225,8 @@ namespace Treehopper.Libraries.ArduinoShim
             }
             else
             {
-                Board.Pins[pin].SoftPwm.Enabled = true;
-                Board.Pins[pin].SoftPwm.DutyCycle = value / Math.Pow(2, pwmResolution);
+                Board.Pins[pin].Mode = PinMode.SoftPwm;
+                Board.Pins[pin].DutyCycle = value / Math.Pow(2, pwmResolution);
             }
         }
 

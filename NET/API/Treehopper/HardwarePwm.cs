@@ -1,4 +1,5 @@
-﻿using Treehopper.Utilities;
+﻿using System.Threading.Tasks;
+using Treehopper.Utilities;
 
 namespace Treehopper
 {
@@ -39,12 +40,20 @@ namespace Treehopper
                     _isEnabled = value;
                     if (_isEnabled)
                     {
-                        _board.HardwarePwmManager.StartPin(_pin);
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            _board.HardwarePwmManager.StartPin(_pin).Forget();
+                        else
+                            Task.Run(() => _board.HardwarePwmManager.StartPin(_pin)).Wait();
+
                         _pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
-                        _board.HardwarePwmManager.StopPin(_pin);
+                        if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                            _board.HardwarePwmManager.StopPin(_pin).Forget();
+                        else
+                            Task.Run(() => _board.HardwarePwmManager.StopPin(_pin)).Wait();
+
                         _pin.Mode = PinMode.Unassigned;
                     }
                 }
@@ -64,12 +73,16 @@ namespace Treehopper
                 if (value > 1.0 || value < 0.0)
                 {
                     Utility.Error("DutyCycle must be between 0.0 and 1.0");
-                    _dutyCycle = value.Constrain();
                 }
+                _dutyCycle = value.Constrain();
 
                 // update the pulseWidth just in case the user wants to read from the value
                 _pulseWidth = _dutyCycle * _board.HardwarePwmManager.PeriodMicroseconds;
-                _board.HardwarePwmManager.SetDutyCycle(_pin, _dutyCycle);
+
+                if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                    _board.HardwarePwmManager.SetDutyCycle(_pin, _dutyCycle).Forget();
+                else
+                    Task.Run(() => _board.HardwarePwmManager.SetDutyCycle(_pin, _dutyCycle)).Wait();
             }
         }
 
@@ -91,6 +104,12 @@ namespace Treehopper
 
                 DutyCycle = _pulseWidth / _board.HardwarePwmManager.PeriodMicroseconds;
             }
+        }
+
+        public Task EnablePwm()
+        {
+            _isEnabled = true;
+            return _board.HardwarePwmManager.StartPin(_pin);
         }
 
         /// <summary>

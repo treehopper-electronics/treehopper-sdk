@@ -2,6 +2,7 @@
 #include "Treehopper.h"
 #include <stdint.h>
 #include <cstddef>
+#include <vector>
 
 namespace Treehopper
 {
@@ -30,7 +31,7 @@ namespace Treehopper
 		@param[out] readBuffer a pointer to the buffer to use for reading data into
 		@param[in] numBytesToRead the number of bytes to read from the board
 		*/
-		virtual void sendReceive(uint8_t address, uint8_t* writeBuffer, size_t numBytesToWrite,
-			uint8_t* readBuffer = NULL, size_t numBytesToRead = 0) = 0;
+		virtual std::vector<uint8_t> sendReceive(uint8_t address, std::vector<uint8_t> data,
+			size_t numBytesToRead = 0) = 0;
 	};
 }

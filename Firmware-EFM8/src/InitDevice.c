@@ -246,15 +246,27 @@ extern void TIMER01_0_enter_DefaultMode_from_RESET(void) {
 	// [Timer Initialization]$
 
 	// $[TH0 - Timer 0 High Byte]
+	/***********************************************************************
+	 - Timer 0 High Byte = 0xF3
+	 ***********************************************************************/
+	TH0 = (0xF3 << TH0_TH0__SHIFT);
 	// [TH0 - Timer 0 High Byte]$
 
 	// $[TL0 - Timer 0 Low Byte]
 	// [TL0 - Timer 0 Low Byte]$
 
 	// $[TH1 - Timer 1 High Byte]
+	/***********************************************************************
+	 - Timer 1 High Byte = 0x30
+	 ***********************************************************************/
+	TH1 = (0x30 << TH1_TH1__SHIFT);
 	// [TH1 - Timer 1 High Byte]$
 
 	// $[TL1 - Timer 1 Low Byte]
+	/***********************************************************************
+	 - Timer 1 Low Byte = 0x34
+	 ***********************************************************************/
+	TL1 = (0x34 << TL1_TL1__SHIFT);
 	// [TL1 - Timer 1 Low Byte]$
 
 	// $[Timer Restoration]

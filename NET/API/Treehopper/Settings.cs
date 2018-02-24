@@ -44,6 +44,6 @@ namespace Treehopper
         ///         setting this property to false will synchronously wait for the message to be sent to the board.
         ///     </para>
         /// </remarks>
-        public bool PropertyWritesReturnImmediately { get; set; } = true;
+        public bool PropertyWritesReturnImmediately { get; set; } = false;
     }
 }

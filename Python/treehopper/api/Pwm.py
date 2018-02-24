@@ -19,17 +19,11 @@ class Pwm(ABC):
 
     @pulse_width.setter
     @abstractmethod
-    def duty_cycle(self, value):
+    def pulse_width(self, value):
         pass
 
-    @property
     @abstractmethod
-    def enabled(self):
-        pass
-
-    @enabled.setter
-    @abstractmethod
-    def enabled(self, value):
+    def enable_pwm(self):
         pass
 
 

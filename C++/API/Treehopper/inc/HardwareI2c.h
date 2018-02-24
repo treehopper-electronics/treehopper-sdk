@@ -15,8 +15,7 @@ namespace Treehopper
 		virtual double speed();
 		virtual void enabled(bool value);
 		virtual bool enabled();
-		virtual void sendReceive(uint8_t address, uint8_t* writeBuffer, size_t numBytesToWrite,
-			uint8_t* readBuffer = NULL, size_t numBytesToRead = 0);
+		virtual std::vector<uint8_t> sendReceive(uint8_t address, std::vector<uint8_t> data, size_t numBytesToRead = 0);
 
 	private:
 		TreehopperUsb& board;

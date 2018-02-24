@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.Input
     /// <summary>
     ///     Nintendo Entertainment System (NES) Controller
     /// </summary>
+    [Supports("Nintendo", "NES Controller")]
     public class NesController : IPollable
     {
         protected SpiDevice dev;

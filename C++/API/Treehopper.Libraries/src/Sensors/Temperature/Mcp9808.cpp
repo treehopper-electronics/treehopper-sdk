@@ -24,7 +24,7 @@ namespace Treehopper
 					temp /= 16.0;
 					if ((data & 0x1000) > 0) 
 						temp -= 256;
-					celsius = temp;
+					_celsius = temp;
 				}
 			}
 		}

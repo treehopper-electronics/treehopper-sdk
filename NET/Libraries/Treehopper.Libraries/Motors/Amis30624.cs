@@ -24,6 +24,7 @@ namespace Treehopper.Libraries.Motors
     /// <summary>
     ///     Allegro AMIS30624 I2c stepper motor driver
     /// </summary>
+    [Supports("Allegro", "AMIS30624")]
     public class Amis30624
     {
         /// <summary>

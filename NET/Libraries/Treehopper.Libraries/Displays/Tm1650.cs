@@ -13,6 +13,7 @@ namespace Treehopper.Libraries.Displays
     ///         0x24, 0x25, 0x26, 0x27 (for control), and 0x34, 0x35, 0x36, and 0x37 (for display).
     ///     </para>
     /// </remarks>
+    [Supports("Titan Micro", "TMC1650")]
     public class Tm1650 : LedDriver
     {
         private static readonly byte ControlBase = 0x24;

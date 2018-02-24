@@ -1,0 +1,76 @@
+{
+    "registers" : {
+        "wia" : {
+            "address" : "0x00",
+            "width" : 8
+        },
+
+        "info" : {
+            "address" : "0x01",
+            "width" : 8
+        },
+
+        "status1" : {
+            "address" : "0x02",
+            "values" : {
+                "drdy" : {}
+            }
+        },
+
+        "hx" : {
+            "address" : "0x03",
+            "width" : 16,
+            "isBigEndian" : "false",
+            "isSigned" : "true"
+        },
+
+        "hy" : {
+            "address" : "0x05",
+            "width" : 16,
+            "isBigEndian" : "false",
+            "isSigned" : "true"
+        },
+
+        "hz" : {
+            "address" : "0x07",
+            "width" : 16,
+            "isBigEndian" : "false",
+            "isSigned" : "true"
+        },
+
+        "status2" : {
+            "address" : "0x09",
+            "values" : {
+                "derr" : {
+                    "offset" : 2,
+                    "width" : 1
+                },
+                "hofl" : {}
+            }
+        },
+
+        "control" : {
+            "address" : "0x0a",
+            "values" : {
+                "mode" : {
+                    "width" : 4
+                }
+            }
+        },
+
+        "sensitivityX" : {
+            "address" : "0x10",
+            "width" : 8
+        },
+
+        "sensitivityY" : {
+            "address" : "0x11",
+            "width" : 8
+        },
+
+        "sensitivityZ" : {
+            "address" : "0x12",
+            "width" : 8
+        }
+    }
+}

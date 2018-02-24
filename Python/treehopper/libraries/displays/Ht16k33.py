@@ -25,6 +25,7 @@ class Ht16k33(LedDriver):
         self._dev.write_byte(0x21)
         self._package = package
         self._data = [False] * 128
+        self._set_global_brightness(1.0)
 
     def _set_global_brightness(self, value: float):
         if self.brightness > 0.0:

@@ -3,7 +3,7 @@ package io.treehopper.libraries.displays;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.treehopper.libraries.io.IFlushable;
+import io.treehopper.libraries.IFlushable;
 
 /**
  * LED driver interface

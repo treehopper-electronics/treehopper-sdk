@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import io.treehopper.TreehopperUsb;
 import io.treehopper.android.TreehopperActivity;
-import io.treehopper.libraries.sensors.inertial.Mpu6050;
+import io.treehopper.libraries.sensors.inertial.mpu6050.Mpu6050;
 
 public class MainActivity extends TreehopperActivity {
 

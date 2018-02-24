@@ -16,5 +16,6 @@ namespace Treehopper
             error(err, fatal);
 		}
 		static bool closeTo(double a, double b, double error = 0.001);
+		static bool isBigEndian();
 	};
 }

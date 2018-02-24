@@ -3,6 +3,8 @@
 #include "Utility.h"
 #include "I2cTransferException.h"
 #include <math.h>
+#include <algorithm>
+
 
 using namespace std;
 
@@ -51,19 +53,19 @@ namespace Treehopper {
 		return false;
 	}
 
-	void HardwareI2c::sendReceive(uint8_t address, uint8_t * writeBuffer, size_t numBytesToWrite,
-		uint8_t * readBuffer, size_t numBytesToRead)
+	std::vector<uint8_t> HardwareI2c::sendReceive(uint8_t address, std::vector<uint8_t> data, size_t numBytesToRead)
 	{
-		uint8_t* receivedData = new uint8_t[numBytesToRead+1];
+		int numBytesToWrite = data.size();
+		std::vector<uint8_t> receivedData(numBytesToRead+1);
 
-		uint8_t* dataToSend = new uint8_t[4 + numBytesToWrite];
+		std::vector<uint8_t> dataToSend(4);
+		dataToSend.reserve(4 + numBytesToWrite);
 		dataToSend[0] = (uint8_t)TreehopperUsb::DeviceCommands::I2cTransaction;
 		dataToSend[1] = address;
 		dataToSend[2] = (uint8_t)numBytesToWrite; // total length (0-255)
 		dataToSend[3] = (uint8_t)numBytesToRead;
 
-		if (numBytesToWrite > 0)
-			copy(writeBuffer, writeBuffer + numBytesToWrite, dataToSend + 4);
+		dataToSend.insert(dataToSend.end(), data.begin(), data.end());
 
 		int offset = 0;
 		size_t bytesRemaining = 4 + numBytesToWrite;
@@ -106,12 +108,11 @@ namespace Treehopper {
 			}
 			else
 			{
-				copy(receivedData + 1, receivedData + numBytesToRead + 1, readBuffer);
+				receivedData.erase(receivedData.begin()); // remove the response code
 			}
 		}
 
-		delete[] receivedData;
-		delete[] dataToSend;
+		return receivedData;
 	}
 
 	void HardwareI2c::sendConfig()

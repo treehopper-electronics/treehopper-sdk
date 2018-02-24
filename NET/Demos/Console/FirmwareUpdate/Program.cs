@@ -22,10 +22,11 @@ namespace FirmwareUpdate
 
                 if (response.ToLower() == "t")
                 {
-                    await SelfTest().ConfigureAwait(false);
+                    var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+                    await SelfTest(board).ConfigureAwait(false);
                 } else
                 {
-                    while (FirmwareUpdater.Boards.Count == 0)
+                    while (FirmwareConnectionService.Instance.Boards.Count == 0)
                     {
                         Console.WriteLine("Couldn't find a Treehopper board in bootloader mode. Searching for Treehoppers to reboot...");
                         var board = await ConnectionService.Instance.GetFirstDeviceAsync();
@@ -41,7 +42,7 @@ namespace FirmwareUpdate
                         await Task.Delay(5000);
                     }
 
-                    var dfu = FirmwareUpdater.Boards[0];
+                    var dfu = FirmwareConnectionService.Instance.Boards[0];
                     dfu.ProgressChanged += Dfu_ProgressChanged;
 
                     Console.WriteLine("Ready to load firmware. Would you like to load with the built-in default? (Y/n)");
@@ -66,45 +67,48 @@ namespace FirmwareUpdate
             }
         }
 
-        private static async Task<bool> SelfTest()
+        private static async Task<bool> SelfTest(TreehopperUsb board)
         {
-            Console.WriteLine("Beginning self test...");
-            var board = await ConnectionService.Instance.GetFirstDeviceAsync().ConfigureAwait(false);
-            await board.ConnectAsync().ConfigureAwait(false);
+            Console.WriteLine($"Beginning self-test of {board}");
             bool retVal = true;
-
+            await board.ConnectAsync().ConfigureAwait(false);
             // make each pin an input
-            foreach(var pin in board.Pins)
+            foreach (var pin in board.Pins)
             {
-                await pin.MakeDigitalIn().ConfigureAwait(false);
-                await Task.Delay(100).ConfigureAwait(false);
+                await pin.MakeAnalogIn().ConfigureAwait(false);
+                await board.AwaitPinUpdate().ConfigureAwait(false);
+                await Task.Delay(10).ConfigureAwait(false);
 
-                if(pin.DigitalValue == false)
+                if (pin.AnalogValue < 0.1)
                 {
                     retVal = false;
                     Console.WriteLine($"{pin.Name} shorted to ground.");
                 }
             }
 
-            
-            for (int i = 0;i<board.Pins.Count-1;i++)
+
+            for (int i = 0; i < board.Pins.Count - 1; i++)
             {
                 board.Pins[i].Mode = PinMode.PushPullOutput;
                 await board.Pins[i].WriteDigitalValueAsync(false).ConfigureAwait(false);
+                await Task.Delay(10).ConfigureAwait(false);
                 await board.AwaitPinUpdate().ConfigureAwait(false);
-                if(board.Pins[i+1].DigitalValue == false)
+                if (board.Pins[i + 1].AnalogValue < 0.1)
                 {
-                    Console.WriteLine($"Short detected on pins {i} and {i+1}.");
+                    Console.WriteLine($"Short detected on pins {i} and {i + 1}.");
                     retVal = false;
                 }
+                await board.Pins[i].WriteDigitalValueAsync(true).ConfigureAwait(false);
             }
-            if(retVal == false)
+            if (retVal == false)
             {
                 Console.WriteLine("Errors found during self-test!");
-            } else
+            }
+            else
             {
                 Console.WriteLine("Self-test passed!");
             }
+
             return retVal;
         }
 

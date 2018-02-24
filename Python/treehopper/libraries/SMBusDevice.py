@@ -2,7 +2,7 @@ from treehopper.api import I2c
 
 
 class SMBusDevice:
-    def __init__(self, address: int, i2c_module: I2c, rate_khz = 100.0):
+    def __init__(self, address: int, i2c_module: I2c, rate_khz=100.0):
         if address > 0x7f:
             raise ValueError("The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F")
         self._address = address

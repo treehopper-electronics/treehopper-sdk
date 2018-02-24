@@ -14,9 +14,9 @@ class HardwarePwmFrequency:
 class HardwarePwmManager:
     def __init__(self, board):
         self._board = board
-        self._duty_cycle_pin7 = []
-        self._duty_cycle_pin8 = []
-        self._duty_cycle_pin9 = []
+        self._duty_cycle_pin7 = [0, 0]
+        self._duty_cycle_pin8 = [0, 0]
+        self._duty_cycle_pin9 = [0, 0]
         self._frequency = HardwarePwmFrequency.Freq_732Hz
         self._mode = PwmPinEnableMode.NoPin
         self.logger = logging.getLogger(__name__)

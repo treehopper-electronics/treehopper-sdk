@@ -1,0 +1,149 @@
+{
+    "multiRegisterAccess": "true",
+    "registers" : {
+        "enable" : {
+            "address" : "0xA0",
+            "access" : "write",
+            "values" : {
+                "powerOn" : {},
+                "alsEnable" : {},
+                "alsInterruptEnable" : {
+                    "offset" : 4
+                },
+                "sleepAfterInterrupt" : {
+                    "offset" : 6
+                },
+                "noPersistInterruptEnable" : {}
+            }
+        },
+
+        "config" : {
+            "address" : "0xA1",
+            "access" : "write",
+            "values" : {
+                "alsTime" : {
+                  "width": "3",
+                  "enum": {
+                    "isPublic": "true",
+                    "values": {
+                      "Time_100ms": null,
+                      "Time_200ms": null,
+                      "Time_300ms": null,
+                      "Time_400ms": null,
+                      "Time_500ms": null,
+                      "Time_600ms": null
+                    }
+                  }
+                },
+
+                "alsGain" : {
+                    "width" : 2,
+                  "enum": {
+                    "isPublic" : "true",
+                    "values": {
+                      "Low": null,
+                      "Medium": null,
+                      "High": null,
+                      "Max": null
+                    }
+                  }
+                }, 
+
+                "systemReset" : {
+                    "offset" : 7
+                }
+            }
+        },
+
+        "interruptLowThreshold" : {
+            "address" : "0xA4",
+            "access" : "write",
+            "width" : 16
+        },
+
+        "interruptHighThreshold" : {
+            "address" : "0xA6",
+            "access" : "write",
+            "width" : 16
+        },
+
+        "noPersistLowThreshold" : {
+            "address" : "0xA8",
+            "access" : "write",
+            "width" : 16
+        },
+
+        "noPersistHighThreshold" : {
+            "address" : "0xAa",
+            "access" : "write",
+            "width" : 16
+        },
+
+        "persist" : {
+            "address" : "0xAc",
+            "access" : "write",
+            "values" : {
+                "interruptPersistanceFilter" : {
+                    "width" : 4,
+                  "enum": {
+                    "isPublic": "true",
+                    "values": {
+                      "EveryAlsCycle": null,
+                      "AnyValueOutsideThreshold": null,
+                      "Consecutive_2": null,
+                      "Consecutive_3": null,
+                      "Consecutive_5": null,
+                      "Consecutive_10": null,
+                      "Consecutive_15": null,
+                      "Consecutive_20": null,
+                      "Consecutive_25": null,
+                      "Consecutive_30": null,
+                      "Consecutive_35": null,
+                      "Consecutive_40": null,
+                      "Consecutive_45": null,
+                      "Consecutive_50": null,
+                      "Consecutive_55": null,
+                      "Consecutive_60": null
+                    }
+                  }
+                }
+            }
+        },
+
+        "packageId" : {
+            "address" : "0xB1",
+            "access" : "read",
+            "width" : 8
+        },
+
+        "deviceId" : {
+            "address" : "0xB2",
+            "access" : "read",
+            "width" : 8
+        },
+
+        "status" : {
+            "address" : "0xB3",
+            "access" : "read",
+            "values" : {
+                "alsValud" : {},
+                "alsInterrupt" : {
+                    "offset" : 4
+                },
+                "noPersistInterrupt" : {}
+            }
+        },
+
+        "ch0" : {
+            "address" : "0xB4",
+            "access" : "read",
+            "width" : 16
+        },
+
+        "ch1" : {
+            "address" : "0xB6",
+            "access" : "read",
+            "width" : 16
+        }
+    }
+}

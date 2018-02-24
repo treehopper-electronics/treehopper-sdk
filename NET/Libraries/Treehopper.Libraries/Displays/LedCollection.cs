@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Displays
                 driver.AutoFlush = false;
 
             foreach (var driver in ledDrivers)
-                if (driver.Parent == null) // stand-alone or head of chain
+                if (driver.Parent == null && !Drivers.Contains(driver)) // stand-alone or head of chain
                     Drivers.Add(driver);
                 else if (!Drivers.Contains(driver.Parent))
                     Drivers.Add(driver.Parent);

@@ -15,7 +15,7 @@ namespace Treehopper.Libraries.{{Namespace}}
         {{#RegisterList}}
         {{#Values.Values}}
         {{#Enum}}
-        {{#IsPublic}}public{{/IsPublic}}{{^IsPublic}}internal{{/IsPublic}} enum {{Name}}
+        {{#IsPublic}}public{{/IsPublic}}{{^IsPublic}}internal{{/IsPublic}} enum {{PluralizedName}}
         {
         {{#ValuesList}}
             {{Key}} = {{#Value}}{{Value}}{{^Last}},{{/Last}}{{/Value}}
@@ -25,18 +25,18 @@ namespace Treehopper.Libraries.{{Namespace}}
         {{/Enum}}
         {{/Values.Values}}
         {{/RegisterList}}
-        internal class {{Name}}Registers : RegisterManager
+        protected class {{Name}}Registers : RegisterManager
         {
             internal {{Name}}Registers(SMBusDevice dev = null) : base(dev, {{MultiRegisterAccess}})
             {
                 {{#RegisterList}}
-                {{CapitalizedName}} = new {{CapitalizedName}}Register(this);
-                _registers.Add({{CapitalizedName}});
+                {{Name}} = new {{CapitalizedName}}Register(this);
+                _registers.Add({{Name}});
                 {{/RegisterList}}
             }
 
         {{#RegisterList}}
-            internal {{CapitalizedName}}Register {{CapitalizedName}};
+            internal {{CapitalizedName}}Register {{Name}};
         {{/RegisterList}}
 
         {{#RegisterList}}
@@ -45,29 +45,29 @@ namespace Treehopper.Libraries.{{Namespace}}
                 internal {{CapitalizedName}}Register(RegisterManager regManager) : base(regManager, {{Address}}, {{NumBytes}}, {{IsBigEndian}}) { }
 
             {{#Values.Values}}
-                public int {{CapitalizedName}} { get; set; }
+                public int {{Name}} { get; set; }
             {{/Values.Values}}
 {{#Values.Values}}
         {{#Enum}}
-                public {{Name}} Get{{CapitalizedName}}() { return ({{Name}}){{CapitalizedName}}; }
-                public void Set{{CapitalizedName}}({{Name}} enumVal) { {{CapitalizedName}} = (int)enumVal; }
+                public {{PluralizedName}} get{{CapitalizedName}}() { return ({{PluralizedName}}){{Name}}; }
+                public void set{{CapitalizedName}}({{PluralizedName}} enumVal) { {{Name}} = (int)enumVal; }
         {{/Enum}}
         {{/Values.Values}}
 
-                public async Task<{{CapitalizedName}}Register> Read()
+                public async Task<{{CapitalizedName}}Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return {{#Values.Values}}(({{CapitalizedName}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}; }
-                internal override void SetValue(long value)
+                internal override long getValue() { return {{#Values.Values}}(({{Name}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}; }
+                internal override void setValue(long _value)
                 {
                     {{#Values.Values}}
                     {{#IsSigned}}
-                    {{CapitalizedName}} = (int)(((value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
+                    {{Name}} = (int)(((_value >> {{Offset}}) & {{Bitmask}}) << (32 - {{Width}})) >> (32 - {{Width}});
                     {{/IsSigned}}
                     {{^IsSigned}}
-                    {{CapitalizedName}} = (int)((value >> {{Offset}}) & {{Bitmask}});
+                    {{Name}} = (int)((_value >> {{Offset}}) & {{Bitmask}});
                     {{/IsSigned}}
                     {{/Values.Values}}
                 }
@@ -76,7 +76,7 @@ namespace Treehopper.Libraries.{{Namespace}}
                 {
                     string retVal = "";
                     {{#Values.Values}}
-                    retVal += $"{{CapitalizedName}}: { {{CapitalizedName}} } (offset: {{Offset}}, width: {{Width}})\r\n";
+                    retVal += $"{{CapitalizedName}}: { {{Name}} } (offset: {{Offset}}, width: {{Width}})\r\n";
                     {{/Values.Values}}
                     return retVal;
                 }

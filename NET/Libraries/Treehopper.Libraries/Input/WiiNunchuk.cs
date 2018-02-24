@@ -32,6 +32,7 @@ namespace Treehopper.Libraries.Input
     ///         wrap this class inside a <see cref="Poller{TPollable}" /> to automatically run the polling loop for you.
     ///     </para>
     /// </remarks>
+    [Supports("Nintendo", "Wii Nunchuk")]
     public class WiiNunchuk : IAccelerometer
     {
         public delegate void JoystickChangedDelegate(object sender, JoystickEventArgs e);

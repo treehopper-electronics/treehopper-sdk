@@ -1,4 +1,6 @@
 #pragma once
+
+#include <vector>
 #include "I2c.h"
 namespace Treehopper 
 {
@@ -10,8 +12,8 @@ namespace Treehopper
 
 		uint8_t readByte();
 		void writeByte(uint8_t data);
-		void writeData(uint8_t* outBuffer, size_t count);
-		void readData(uint8_t* inBuffer, size_t count);
+		void writeData(std::vector<uint8_t> data);
+		std::vector<uint8_t> readData(size_t count);
 		uint8_t readByteData(uint8_t reg);
 		uint16_t readWordData(uint8_t reg);
 		uint16_t readWordDataBE(uint8_t reg);
@@ -20,8 +22,8 @@ namespace Treehopper
 		void writeByteData(uint8_t reg, uint8_t data);
 		void writeWordData(uint8_t reg, uint16_t data);
 		void writeWordDataBE(uint8_t reg, uint16_t data);
-		void readBufferData(uint8_t reg, uint8_t* inBuffer, size_t count);
-		void writeBufferData(uint8_t reg, uint8_t* outBuffer, size_t count);
+		std::vector<uint8_t> readBufferData(uint8_t reg, size_t count);
+		void writeBufferData(uint8_t reg, std::vector<uint8_t> data);
 
 
 	private:

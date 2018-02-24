@@ -6,7 +6,8 @@ namespace Treehopper.Libraries.IO.Adc
     /// <summary>
     ///     Texas Instruments ADS1115 16-bit 4-channel ADC
     /// </summary>
-    public class Ads1115 : IAdcPeripheral
+    [Supports("Texas Instruments", "ADS1115")]
+    public partial class Ads1115 : IAdcPeripheral
     {
         /// <summary>
         ///     The channel modes of the ADS1115

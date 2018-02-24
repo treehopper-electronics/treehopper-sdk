@@ -92,6 +92,16 @@ namespace Treehopper.Libraries.Displays
     ///         </list>
     ///     </para>
     /// </remarks>
+    [Supports("Texas Instruments", "TLC5916")]
+    [Supports("SiTI", "ST2221C")]
+    [Supports("Macroblock", "MBI5026")]
+    [Supports("Macroblock", "MBI5027")]
+    [Supports("Macroblock", "MBI5028")]
+    [Supports("Macroblock", "MBI5029")]
+    [Supports("ON Semiconductor", "CAT4016")]
+    [Supports("STMicroelectronics", "STP16C595")]
+    [Supports("ISSI", "IS31FL3726")]
+    [Supports("Texas Instruments", "TLC59284")]
     public class LedShiftRegister : ChainableShiftRegisterOutput, ILedDriver
     {
         /// <summary>
@@ -254,7 +264,7 @@ namespace Treehopper.Libraries.Displays
             }
             else if (oePwm != null)
             {
-                oePwm.Enabled = true;
+                oePwm.EnablePwm();
                 oePwm.PulseWidth = 0;
                 HasGlobalBrightnessControl = true;
             }

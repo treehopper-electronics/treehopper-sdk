@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// <summary>
     /// Vishay VCNL4010  proximity and ambient light sensor
     /// </summary>
+    [Supports("Vishay", "VCNL4010")]
     public partial class Vcnl4010 : Proximity, IAmbientLight
     {
         Vcnl4010Registers registers;
@@ -25,13 +26,13 @@ namespace Treehopper.Libraries.Sensors.Optical
         public Vcnl4010(I2C i2c)
         {
             registers = new Vcnl4010Registers(new SMBusDevice(0x13, i2c));
-            Task.Run(() => registers.ReadRange(registers.Command, registers.AmbientLightParameters)).Wait();
-            registers.ProximityRate.SetRate(Rates.Hz_7_8125);
-            registers.LedCurrent.IrLedCurrentValue = 20;
-            registers.AmbientLightParameters.SetAlsRate(AlsRates.Hz_10);
-            registers.AmbientLightParameters.AutoOffsetCompensation = 1;
-            registers.AmbientLightParameters.AveragingSamples = 5;
-            Task.Run(() => registers.WriteRange(registers.Command, registers.AmbientLightParameters)).Wait();
+            Task.Run(() => registers.readRange(registers.command, registers.ambientLightParameters)).Wait();
+            registers.proximityRate.setRate(Rates.Hz_7_8125);
+            registers.ledCurrent.irLedCurrentValue = 20;
+            registers.ambientLightParameters.setAlsRate(AlsRates.Hz_10);
+            registers.ambientLightParameters.autoOffsetCompensation = 1;
+            registers.ambientLightParameters.averagingSamples = 5;
+            Task.Run(() => registers.writeRange(registers.command, registers.ambientLightParameters)).Wait();
         }
 
         /// <summary>
@@ -44,13 +45,13 @@ namespace Treehopper.Libraries.Sensors.Optical
         {
             get
             {
-                return registers.LedCurrent.IrLedCurrentValue * 10;
+                return registers.ledCurrent.irLedCurrentValue * 10;
             }
 
             set
             {
-                registers.LedCurrent.IrLedCurrentValue = (int)Math.Round(value / 10d);
-                Task.Run(registers.LedCurrent.Write).Wait();
+                registers.ledCurrent.irLedCurrentValue = (int)Math.Round(value / 10d);
+                Task.Run(registers.ledCurrent.write).Wait();
             }
         }
 
@@ -97,31 +98,31 @@ namespace Treehopper.Libraries.Sensors.Optical
         public override async Task Update()
         {
             // start ambient and prox conversion
-            registers.Command.AlsOnDemandStart = 1;
-            registers.Command.ProxOnDemandStart = 1;
-            await registers.Command.Write().ConfigureAwait(false);
+            registers.command.alsOnDemandStart = 1;
+            registers.command.proxOnDemandStart = 1;
+            await registers.command.write().ConfigureAwait(false);
 
 
             while(true)
             {
-                await registers.Command.Read().ConfigureAwait(false);
-                if (registers.Command.ProxDataReady == 1 && registers.Command.AlsDataReady == 1)
+                await registers.command.read().ConfigureAwait(false);
+                if (registers.command.proxDataReady == 1 && registers.command.alsDataReady == 1)
                     break;
             }
 
-            await registers.AmbientLightResult.Read().ConfigureAwait(false);
-            await registers.ProximityResult.Read().ConfigureAwait(false);
+            await registers.ambientLightResult.read().ConfigureAwait(false);
+            await registers.proximityResult.read().ConfigureAwait(false);
             
             // from datasheet
-            lux = registers.AmbientLightResult.Value * 0.25;
+            lux = registers.ambientLightResult.value * 0.25;
 
-            rawProximity = registers.ProximityResult.Value;
+            rawProximity = registers.proximityResult.value;
 
             // derived empirically
-            if (registers.ProximityResult.Value < 2298)
+            if (registers.proximityResult.value < 2298)
                 meters = double.PositiveInfinity;
             else
-                meters = 81.0 * Math.Pow(registers.ProximityResult.Value - 2298, -0.475) / 100;
+                meters = 81.0 * Math.Pow(registers.proximityResult.value - 2298, -0.475) / 100;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// <summary>
     /// Vishay VEML6070 UVA Light Sensor with I2C Interface
     /// </summary>
+    [Supports("Vishay", "VEML6070")]
     public class Veml6070 : IPollable
     {
         private I2C i2c;

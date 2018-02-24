@@ -20,7 +20,7 @@ namespace Treehopper
 				void Lm75::update()
 				{
 					auto data = dev.readWordDataBE(0x00);
-					celsius = ((int16_t)data / 32.0) / 8.0;
+					_celsius = ((int16_t)data / 32.0) / 8.0;
 				}
 			}
 		}

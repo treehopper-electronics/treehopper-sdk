@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Numerics;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Temperature;
@@ -10,72 +12,43 @@ namespace Treehopper.Libraries.Sensors.Inertial
     ///     InvenSense MPU6050 6-DoF IMU
     /// </summary>
     [Supports("InvenSense", "MPU-6050")]
-    public class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
+    public partial class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
     {
-        /// <summary>
-        ///     Accelerometer scales
-        /// </summary>
-        public enum AccelScale
-        {
-            /// <summary>
-            ///     2G scale
-            /// </summary>
-            AFS_2G = 0,
-
-            /// <summary>
-            ///     4G scale
-            /// </summary>
-            AFS_4G,
-
-            /// <summary>
-            ///     8G scale
-            /// </summary>
-            AFS_8G,
-
-            /// <summary>
-            ///     16G scale
-            /// </summary>
-            AFS_16G
-        }
-
-        /// <summary>
-        ///     The gyroscope scale
-        /// </summary>
-        public enum GyroScale
-        {
-            /// <summary>
-            ///     250 degrees per second
-            /// </summary>
-            GFS_250DPS = 0,
-
-            /// <summary>
-            ///     500 degrees per second
-            /// </summary>
-            GFS_500DPS,
-
-            /// <summary>
-            ///     1000 degrees per second
-            /// </summary>
-            GFS_1000DPS,
-
-            /// <summary>
-            ///     2000 degrees per second
-            /// </summary>
-            GFS_2000DPS
-        }
+        internal SMBusDevice dev;
 
         internal Vector3 accelerometer;
         private Vector3 accelerometerOffset;
 
-        private AccelScale ascale;
-
-        internal SMBusDevice dev;
-
-        private GyroScale gscale;
         internal Vector3 gyroscope;
         private Vector3 gyroscopeOffset;
 
+        protected Mpu6050Registers _registers;
+
         public override event PropertyChangedEventHandler PropertyChanged;
+
+        public static async Task<IList<Mpu6050>> Probe(I2C i2c, bool includeMpu9250 = false)
+        {
+            var deviceList = new List<Mpu6050>();
+            try
+            {
+                var dev = new SMBusDevice(0x68, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
+                if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
+                    deviceList.Add(new Mpu6050(i2c, false));
+            }
+            catch (Exception ex) { }
+
+            try
+            {
+                var dev = new SMBusDevice(0x69, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
+                if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
+                    deviceList.Add(new Mpu6050(i2c, true));
+            }
+            catch (Exception ex) { }
+
+            return deviceList;
+        }
 
         /// <summary>
         ///     Construct an MPU9150 9-Dof IMU
@@ -85,79 +58,63 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="ratekHz">The rate, in kHz, to use with this IC</param>
         public Mpu6050(I2C i2c, bool addressPin = false, int ratekHz = 400)
         {
-            ascale = AccelScale.AFS_2G;
-            gscale = GyroScale.GFS_250DPS;
-
             this.dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
-
+            this._registers = new Mpu6050Registers(dev);
             Task.Run(async () =>
             {
-                var result = await dev.ReadByteData((byte)Registers.WHO_AM_I).ConfigureAwait(false);
-
-                //if (result != 0x71)
-                //    throw new Exception("Incorrect part number attached to bus");
-
-                await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x00).ConfigureAwait(false); // wake up
-                await Task.Delay(100).ConfigureAwait(false);
-                await dev.WriteByteData((byte)Registers.PWR_MGMT_1, 0x01).ConfigureAwait(false); // Auto select clock source to be PLL gyroscope reference if ready else
-                await Task.Delay(200).ConfigureAwait(false);
-                await dev.WriteByteData((byte)Registers.CONFIG, 0x03).ConfigureAwait(false);
-                await dev.WriteByteData((byte)Registers.SMPLRT_DIV, 0x04).ConfigureAwait(false);
-
-                var c = await dev.ReadByteData((byte)Registers.ACCEL_CONFIG2).ConfigureAwait(false);
-                c &= ~0x0f & 0xff;
-                c |= 0x03;
-                await dev.WriteByteData((byte)Registers.ACCEL_CONFIG2, c).ConfigureAwait(false);
-
-                await SetAccelerometerScale(AccelScale.AFS_2G).ConfigureAwait(false);
-                await SetGyroScale(GyroScale.GFS_250DPS).ConfigureAwait(false);
-            });
+                await _registers.powerMgmt1.read().ConfigureAwait(false);
+                _registers.powerMgmt1.reset = 1;
+                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                _registers.powerMgmt1.reset = 0;
+                _registers.powerMgmt1.sleep = 0;
+                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                _registers.powerMgmt1.clockSel = 1;
+                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                _registers.configuration.dlpf = 3;
+                await _registers.configuration.write().ConfigureAwait(false);
+                _registers.sampleRateDivider.value = 4;
+                await _registers.sampleRateDivider.write().ConfigureAwait(false);
+                await _registers.accelConfig2.read().ConfigureAwait(false);
+                _registers.accelConfig2.accelFchoice = 0;
+                _registers.accelConfig2.dlpfCfg = 3;
+                await _registers.accelConfig2.write().ConfigureAwait(false);
+                await _registers.powerMgmt1.read().ConfigureAwait(false);
+            }).Wait();
+            AccelerometerScale = AccelScales.Fs_2g;
+            GyroscopeScale = GyroScales.Dps_250;
         }
 
         /// <summary>
         ///     Gets or sets the accelerometer scale
         /// </summary>
-        public AccelScale AccelerometerScale
+        public AccelScales AccelerometerScale
         {
-            get { return ascale; }
+            get
+            {
+                return _registers.accelConfig.getAccelScale();
+            }
 
             set
             {
-                ascale = value;
-                SetAccelerometerScale(ascale).Forget();
+                _registers.accelConfig.setAccelScale(value);
+                Task.Run(_registers.accelConfig.write).Wait();
             }
-        }
-
-        private async Task SetAccelerometerScale(AccelScale ascale)
-        {
-            var c = await dev.ReadByteData((byte)Registers.ACCEL_CONFIG).ConfigureAwait(false);
-            c &= ~0x18 & 0xff;
-            c |= (byte)((byte)ascale << 3);
-            await dev.WriteByteData((byte)Registers.ACCEL_CONFIG, c).ConfigureAwait(false);
         }
 
         /// <summary>
         ///     Gets or sets the gyroscope scale
         /// </summary>
-        public GyroScale GyroscopeScale
+        public GyroScales GyroscopeScale
         {
-            get { return gscale; }
+            get {
+                return _registers.gyroConfig.getGyroScale();
+            }
 
             set
             {
-                gscale = value;
-
-                SetGyroScale(gscale);
+                _registers.gyroConfig.setGyroScale(value);
+                Task.Run(_registers.gyroConfig.write).Wait();
             }
-        }
-
-        private async Task SetGyroScale(GyroScale gscale)
-        {
-            var c = await dev.ReadByteData((byte)Registers.GYRO_CONFIG).ConfigureAwait(false);
-            c &= ~0x02 & 0xff;
-            c &= ~0x18 & 0xff;
-            c |= (byte)((byte)gscale << 3);
-            await dev.WriteByteData((byte)Registers.GYRO_CONFIG, c).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -168,7 +125,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead) Update().Wait();
-
                 return accelerometer;
             }
         }
@@ -179,18 +135,18 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <returns></returns>
         public override async Task Update()
         {
-            var data = await dev.ReadBufferData((byte) Registers.ACCEL_XOUT_H, 14).ConfigureAwait(false);
+            await _registers.readRange(_registers.accel_x, _registers.gyro_z).ConfigureAwait(false);
             var accelScale = getAccelScale();
             var gyroScale = getGyroScale();
-            accelerometer.X = (float) ((short) ((data[0] << 8) | data[1]) * accelScale - accelerometerOffset.X);
-            accelerometer.Y = (float) ((short) ((data[2] << 8) | data[3]) * accelScale - accelerometerOffset.Y);
-            accelerometer.Z = (float) ((short) ((data[4] << 8) | data[5]) * accelScale - accelerometerOffset.Z);
+            accelerometer.X = (float)(_registers.accel_x.value * accelScale - accelerometerOffset.X);
+            accelerometer.Y = (float)(_registers.accel_y.value * accelScale - accelerometerOffset.Y);
+            accelerometer.Z = (float)(_registers.accel_z.value * accelScale - accelerometerOffset.Z);
 
-            Celsius = ((data[6] << 8) | data[7]) / 333.87 + 21.0;
+            Celsius = _registers.temp.value / 333.87 + 21.0;
 
-            gyroscope.X = (float) ((short) ((data[8] << 8) | data[9]) * gyroScale - gyroscopeOffset.X);
-            gyroscope.Y = (float) ((short) ((data[10] << 8) | data[11]) * gyroScale - gyroscopeOffset.Y);
-            gyroscope.Z = (float) ((short) ((data[12] << 8) | data[13]) * gyroScale - gyroscopeOffset.Z);
+            gyroscope.X = (float) (_registers.gyro_x.value * gyroScale - gyroscopeOffset.X);
+            gyroscope.Y = (float) (_registers.gyro_y.value * gyroScale - gyroscopeOffset.Y);
+            gyroscope.Z = (float) (_registers.gyro_z.value * gyroScale - gyroscopeOffset.Z);
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
@@ -261,13 +217,13 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             switch (AccelerometerScale)
             {
-                case AccelScale.AFS_2G:
+                case AccelScales.Fs_2g:
                     return 2.0 / 32768.0;
-                case AccelScale.AFS_4G:
+                case AccelScales.Fs_4g:
                     return 4.0 / 32768.0;
-                case AccelScale.AFS_8G:
+                case AccelScales.Fs_8g:
                     return 8.0 / 32768.0;
-                case AccelScale.AFS_16G:
+                case AccelScales.Fs_16g:
                     return 16.0 / 32768.0;
                 default:
                     return 0;
@@ -278,116 +234,17 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             switch (GyroscopeScale)
             {
-                case GyroScale.GFS_250DPS:
+                case GyroScales.Dps_250:
                     return 250.0 / 32768.0;
-                case GyroScale.GFS_500DPS:
+                case GyroScales.Dps_500:
                     return 500.0 / 32768.0;
-                case GyroScale.GFS_1000DPS:
+                case GyroScales.Dps_1000:
                     return 1000.0 / 32768.0;
-                case GyroScale.GFS_2000DPS:
+                case GyroScales.Dps_2000:
                     return 2000.0 / 32768.0;
                 default:
                     return 0;
             }
-        }
-
-        internal enum Registers
-        {
-            // Gyroscope and accelerometer
-            SELF_TEST_X = 0x0D,
-            SELF_TEST_Y = 0x0E,
-            SELF_TEST_Z = 0x0F,
-            SELF_TEST_A = 0x10,
-            SMPLRT_DIV = 0x19,
-            CONFIG = 0x1A,
-            GYRO_CONFIG = 0x1B,
-            ACCEL_CONFIG = 0x1C,
-            ACCEL_CONFIG2 = 0x1D,
-            FIFO_EN = 0x23,
-            I2C_MST_CTRL = 0x24,
-
-            I2C_SLV0_ADDR = 0x25,
-            I2C_SLV0_REG = 0x26,
-            I2C_SLV0_CTRL = 0x27,
-
-            I2C_SLV1_ADDR = 0x28,
-            I2C_SLV1_REG = 0x29,
-            I2C_SLV1_CTRL = 0x2A,
-
-            I2C_SLV2_ADDR = 0x2B,
-            I2C_SLV2_REG = 0x2C,
-            I2C_SLV2_CTRL = 0x2D,
-
-            I2C_SLV3_ADDR = 0x2E,
-            I2C_SLV3_REG = 0x2F,
-            I2C_SLV3_CTRL = 0x30,
-
-            I2C_SLV4_ADDR = 0x31,
-            I2C_SLV4_REG = 0x32,
-            I2C_SLV4_DO = 0x33,
-            I2C_SLV4_CTRL = 0x34,
-            I2C_SLV4_DI = 0x35,
-
-            I2C_MST_STATUS = 0x36,
-            INT_PIN_CFG = 0x37,
-            INT_ENABLE = 0x38,
-            INT_STATUS = 0x3A,
-
-            ACCEL_XOUT_H = 0x3B,
-            ACCEL_XOUT_L = 0x3C,
-            ACCEL_YOUT_H = 0x3D,
-            ACCEL_YOUT_L = 0x3E,
-            ACCEL_ZOUT_H = 0x3F,
-            ACCEL_ZOUT_L = 0x40,
-
-            TEMP_OUT_H = 0x41,
-            TEMP_OUT_L = 0x42,
-
-            GYRO_XOUT_H = 0x43,
-            GYRO_XOUT_L = 0x44,
-            GYRO_YOUT_H = 0x45,
-            GYRO_YOUT_L = 0x46,
-            GYRO_ZOUT_H = 0x47,
-            GYRO_ZOUT_L = 0x48,
-
-            EXT_SENS_DATA_00 = 0x49,
-            EXT_SENS_DATA_01 = 0x4A,
-            EXT_SENS_DATA_02 = 0x4B,
-            EXT_SENS_DATA_03 = 0x4C,
-            EXT_SENS_DATA_04 = 0x4D,
-            EXT_SENS_DATA_05 = 0x4E,
-            EXT_SENS_DATA_06 = 0x4F,
-            EXT_SENS_DATA_07 = 0x50,
-            EXT_SENS_DATA_08 = 0x51,
-            EXT_SENS_DATA_09 = 0x52,
-            EXT_SENS_DATA_10 = 0x53,
-            EXT_SENS_DATA_11 = 0x54,
-            EXT_SENS_DATA_12 = 0x55,
-            EXT_SENS_DATA_13 = 0x56,
-            EXT_SENS_DATA_14 = 0x57,
-            EXT_SENS_DATA_15 = 0x58,
-            EXT_SENS_DATA_16 = 0x59,
-            EXT_SENS_DATA_17 = 0x5A,
-            EXT_SENS_DATA_18 = 0x5B,
-            EXT_SENS_DATA_19 = 0x5C,
-            EXT_SENS_DATA_20 = 0x5D,
-            EXT_SENS_DATA_21 = 0x5E,
-            EXT_SENS_DATA_22 = 0x5F,
-            EXT_SENS_DATA_23 = 0x60,
-
-            I2C_SLV0_D0 = 0x63,
-            I2C_SLV1_DO = 0x64,
-            I2C_SLV2_DO = 0x65,
-            I2C_SLV3_D0 = 0x66,
-            I2C_MST_DELAY_CTRL = 0x67,
-            SIGNAL_PATH_RESET = 0x68,
-            USER_CTRL = 0x6A,
-            PWR_MGMT_1 = 0x6B,
-            PWR_MGMT_2 = 0x6C,
-            FIFO_COUNTH = 0x72,
-            FIFO_COUNTL = 0x73,
-            FIFO_R_W = 0x74,
-            WHO_AM_I = 0x75
         }
     }
 }

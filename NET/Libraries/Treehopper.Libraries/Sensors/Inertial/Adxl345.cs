@@ -17,11 +17,11 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             _dev = new SMBusDevice((byte)(!altAddress ? 0x53 : 0x1D), i2c, rate);
             registers = new Adxl345Registers(_dev);
-            registers.PowerCtl.Sleep = 0;
-            registers.PowerCtl.Measure = 1;
-            registers.DataFormat.Range = 0x03;
-            registers.DataFormat.FullRes = 1;
-            registers.WriteRange(registers.PowerCtl, registers.DataFormat);
+            registers.powerCtl.sleep = 0;
+            registers.powerCtl.measure = 1;
+            registers.dataFormat.range = 0x03;
+            registers.dataFormat.fullRes = 1;
+            Task.Run(() => registers.writeRange(registers.powerCtl, registers.dataFormat)).Wait();
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
@@ -29,10 +29,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public async Task Update()
         {
-            await registers.ReadRange(registers.DataX, registers.DataZ).ConfigureAwait(false);
-            _accelerometer.X = registers.DataX.Value / 255f;
-            _accelerometer.Y = registers.DataY.Value / 255f;
-            _accelerometer.Z = registers.DataZ.Value / 255f;
+            await registers.readRange(registers.dataX, registers.dataZ).ConfigureAwait(false);
+            _accelerometer.X = registers.dataX.value / 255f;
+            _accelerometer.Y = registers.dataY.value / 255f;
+            _accelerometer.Z = registers.dataZ.value / 255f;
         }
 
         public Vector3 Accelerometer

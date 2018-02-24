@@ -10,6 +10,7 @@ namespace Treehopper.Libraries.Input
     /// <summary>
     ///     Nintendo Wii Classic Controller
     /// </summary>
+    [Supports("Nintendo", "Wii Classic Controller")]
     public class WiiClassicController : IPollable
     {
         private readonly SMBusDevice dev;

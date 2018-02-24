@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.Motors
         public HobbyServo(Pwm pwm, double minPulseWidth = 500, double maxPulseWidth = 2500)
         {
             Pwm = pwm;
-            pwm.Enabled = true;
+            pwm.EnablePwm();
 
             MinPulseWidth = minPulseWidth;
             MaxPulseWidth = maxPulseWidth;

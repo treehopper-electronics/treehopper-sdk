@@ -1,18 +1,24 @@
 import math
 import logging
 from treehopper.api.Pwm import Pwm
-from treehopper.api.Pin import PinMode
+from treehopper.api.Pin import Pin, PinMode
 from treehopper.utils import utils
 
 
 class HardwarePwm(Pwm):
-    def __init__(self, pin):
+    """
+    Hardware PWM module
+    """
+    def __init__(self, pin: 'Pin'):
         self._pin = pin
         self._board = pin._board
         self._duty_cycle = 0
         self._pulse_width = 0
         self._enabled = False
         self._logger = logging.getLogger(__name__)
+
+    def enable_pwm(self):
+        self.enabled = True
 
     @property
     def enabled(self):

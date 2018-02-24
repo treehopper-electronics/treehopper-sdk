@@ -25,23 +25,26 @@ namespace Ds18b20Test
             var group = new Ds18b20.Group(board.Uart);
             Console.WriteLine("Found temperature sensors at addresses:");
             var sensors = await group.FindAll();
-            foreach (var addr in sensors)
+            foreach (var sensor in sensors)
             {
-                Console.WriteLine(addr.Address);
+                Console.WriteLine(sensor.Address);
+
+                // disable auto-update so we can access multiple temperature properties without doing re-reads.
+                // Consequently, we must explicitly call Update() to read the result
+                sensor.AutoUpdateWhenPropertyRead = false; 
             }
             Console.WriteLine("\n");
             while (board.IsConnected)
             {
-                Console.WriteLine("Collecting readings... (press any key to exit)");
-                using (await group.StartConversionAsync())
+                Console.WriteLine("Starting sampling... (press any key to exit)");
+                using (await group.StartConversionAsync()) // this triggers simultaneous conversion on all sensors
                 {
                     foreach (var temp in sensors)
                     {
-                        temp.AutoUpdateWhenPropertyRead = false;
-                        await temp.Update();
+                        await temp.Update(); // retrieve the conversion
                         Console.WriteLine(
                             $"Sensor {temp.Address} reports a temperature of {temp.Celsius} °C ({temp.Fahrenheit} °F)");
-                    }
+                    } 
                 }
 
                 Console.WriteLine("\n");

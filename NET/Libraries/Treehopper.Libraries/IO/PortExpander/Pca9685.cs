@@ -26,6 +26,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     ///         collection of <see cref="Treehopper.Libraries.Displays.Led" />s with the
     ///     </para>
     /// </remarks>
+    [Supports("NXP", "PCA9685")]
     public class Pca9685 : IFlushable
     {
         /// <summary>
@@ -319,6 +320,11 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             get { return DutyCycle * 1000000 / driver.Frequency; }
             set { DutyCycle = value * driver.Frequency / 1000000.0; }
+        }
+
+        public Task EnablePwm()
+        {
+            return Task.CompletedTask;
         }
     }
 }

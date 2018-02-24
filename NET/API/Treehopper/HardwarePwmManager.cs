@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Treehopper.Utilities;
 
 namespace Treehopper
 {
@@ -32,7 +34,11 @@ namespace Treehopper
                 if (_frequency != value)
                 {
                     _frequency = value;
-                    SendConfig();
+
+                    if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
+                        SendConfig().Forget();
+                    else
+                        Task.Run(SendConfig).Wait();
                 }
             }
         }
@@ -87,7 +93,7 @@ namespace Treehopper
             }
         }
 
-        internal void StartPin(Pin pin)
+        internal Task StartPin(Pin pin)
         {
             // first check to make sure the previous PWM pins have been enabled first.
             if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7)
@@ -110,10 +116,10 @@ namespace Treehopper
                     break;
             }
 
-            SendConfig();
+            return SendConfig();
         }
 
-        internal void StopPin(Pin pin)
+        internal Task StopPin(Pin pin)
         {
             // first check to make sure the higher PWM pins have been disabled first
             if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7Pin8)
@@ -136,10 +142,10 @@ namespace Treehopper
                     break;
             }
 
-            SendConfig();
+            return SendConfig();
         }
 
-        internal void SetDutyCycle(Pin pin, double value)
+        internal Task SetDutyCycle(Pin pin, double value)
         {
             var registerValue = (ushort) Math.Round(value * ushort.MaxValue);
             var newValue = BitConverter.GetBytes(registerValue); // TODO: is this endian-safe?
@@ -156,10 +162,10 @@ namespace Treehopper
                     break;
             }
 
-            SendConfig();
+            return SendConfig();
         }
 
-        internal void SendConfig()
+        internal Task SendConfig()
         {
             var configuration = new byte[9];
 
@@ -177,7 +183,7 @@ namespace Treehopper
             configuration[7] = _dutyCyclePin9[0];
             configuration[8] = _dutyCyclePin9[1];
 
-            _board.SendPeripheralConfigPacket(configuration);
+            return _board.SendPeripheralConfigPacket(configuration);
         }
 
         private enum PwmPinEnableMode

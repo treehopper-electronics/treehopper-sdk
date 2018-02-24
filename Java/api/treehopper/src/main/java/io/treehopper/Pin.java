@@ -32,6 +32,7 @@ enum PinConfigCommands {
  * A GPIO/Analog pin on the board
  */
 public class Pin implements DigitalIO, SpiChipSelectPin {
+    public final SoftPwm softPwm;
     // analog members
     int adcValueChangedThreshold = 2;
     double analogVoltageChangedThreshold = 0.1;
@@ -56,6 +57,7 @@ public class Pin implements DigitalIO, SpiChipSelectPin {
     Pin(TreehopperUsb board, int pinNumber) {
         this.board = board;
         this.pinNumber = pinNumber;
+        this.softPwm = new SoftPwm(board, this);
     }
 
     //// DIGITAL

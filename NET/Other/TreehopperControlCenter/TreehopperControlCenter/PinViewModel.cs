@@ -31,7 +31,6 @@ namespace TreehopperControlCenter
                     case "Digital Input":
                         if (pin != null)
                         {
-                            pin.SoftPwm.Enabled = false;
                             pin.Mode = PinMode.DigitalInput;
                         }
                         SwitchVisible = false;
@@ -44,7 +43,6 @@ namespace TreehopperControlCenter
                     case "Analog Input":
                         if (pin != null)
                         {
-                            pin.SoftPwm.Enabled = false;
                             pin.Mode = PinMode.AnalogInput;
                         }
                         SwitchVisible = false;
@@ -58,7 +56,6 @@ namespace TreehopperControlCenter
 
                         if (pin != null)
                         {
-                            pin.SoftPwm.Enabled = false;
                             pin.Mode = PinMode.PushPullOutput; 
                         }
                         SwitchVisible = true;
@@ -69,7 +66,7 @@ namespace TreehopperControlCenter
                         break;
 
                     case "SoftPWM":
-                        if (pin != null) pin.SoftPwm.Enabled = true;
+                        if (pin != null) pin.Mode = PinMode.SoftPwm;
                         SwitchVisible = false;
                         DigitalInputVisible = false;
                         SliderVisible = true;
@@ -95,8 +92,8 @@ namespace TreehopperControlCenter
             get { return sliderValue; }
             set {
                 sliderValue = value;
-                if (pin.SoftPwm.Enabled)
-                    pin.SoftPwm.DutyCycle = sliderValue;
+                if (pin.Mode == PinMode.SoftPwm)
+                    pin.DutyCycle = sliderValue;
             }
         }
 

@@ -8,6 +8,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// <summary>
     ///     NXP PCA9632 4 channel, 8-bit PWM driver
     /// </summary>
+    [Supports("NXP", "PCA9632")]
     public class Pca9632
     {
         /// <summary>
@@ -209,6 +210,11 @@ namespace Treehopper.Libraries.IO.PortExpander
             {
                 get { return DutyCycle * 1000000 / 15625; }
                 set { DutyCycle = value * 15625 / 1000000.0; }
+            }
+
+            public Task EnablePwm()
+            {
+                return Task.CompletedTask;
             }
         }
     }

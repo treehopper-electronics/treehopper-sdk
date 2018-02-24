@@ -26,12 +26,12 @@ namespace Treehopper.Libraries.Sensors.Inertial
             AutoresetOnInterrupt = 3
         }
 
-        internal enum Scale
+        internal enum FullScaleSelections
         {
-            scale_2G = 0,
-            scale_4G = 1,
-            scale_8G = 2,
-            scale_16G = 3
+            Scale_2G = 0,
+            Scale_4G = 1,
+            Scale_8G = 2,
+            Scale_16G = 3
         }
 
         internal enum FifoModes
@@ -56,157 +56,157 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Hz_1344_5376 = 9
         }
 
-        internal class Lis3dhRegisters : RegisterManager
+        protected class Lis3dhRegisters : RegisterManager
         {
             internal Lis3dhRegisters(SMBusDevice dev = null) : base(dev, true)
             {
-                StatusRegAux = new StatusRegAuxRegister(this);
-                _registers.Add(StatusRegAux);
-                OutAdc1 = new OutAdc1Register(this);
-                _registers.Add(OutAdc1);
-                OutAdc2 = new OutAdc2Register(this);
-                _registers.Add(OutAdc2);
-                OutAdc3 = new OutAdc3Register(this);
-                _registers.Add(OutAdc3);
-                WhoAmI = new WhoAmIRegister(this);
-                _registers.Add(WhoAmI);
-                Ctrl0 = new Ctrl0Register(this);
-                _registers.Add(Ctrl0);
-                TempCfgReg = new TempCfgRegRegister(this);
-                _registers.Add(TempCfgReg);
-                Ctrl2 = new Ctrl2Register(this);
-                _registers.Add(Ctrl2);
-                Ctrl3 = new Ctrl3Register(this);
-                _registers.Add(Ctrl3);
-                Ctrl4 = new Ctrl4Register(this);
-                _registers.Add(Ctrl4);
-                Ctrl5 = new Ctrl5Register(this);
-                _registers.Add(Ctrl5);
-                Ctrl6 = new Ctrl6Register(this);
-                _registers.Add(Ctrl6);
-                Reference = new ReferenceRegister(this);
-                _registers.Add(Reference);
-                Status = new StatusRegister(this);
-                _registers.Add(Status);
-                FifoCtrl = new FifoCtrlRegister(this);
-                _registers.Add(FifoCtrl);
-                FifoSrc = new FifoSrcRegister(this);
-                _registers.Add(FifoSrc);
-                Int1Cfg = new Int1CfgRegister(this);
-                _registers.Add(Int1Cfg);
-                Int1Src = new Int1SrcRegister(this);
-                _registers.Add(Int1Src);
-                Int1Threshold = new Int1ThresholdRegister(this);
-                _registers.Add(Int1Threshold);
-                Int1Duration = new Int1DurationRegister(this);
-                _registers.Add(Int1Duration);
-                Int2Cfg = new Int2CfgRegister(this);
-                _registers.Add(Int2Cfg);
-                Int2Src = new Int2SrcRegister(this);
-                _registers.Add(Int2Src);
-                Int2Threshold = new Int2ThresholdRegister(this);
-                _registers.Add(Int2Threshold);
-                Int2Duration = new Int2DurationRegister(this);
-                _registers.Add(Int2Duration);
-                ClickSource = new ClickSourceRegister(this);
-                _registers.Add(ClickSource);
-                ClickThreshold = new ClickThresholdRegister(this);
-                _registers.Add(ClickThreshold);
-                TimeLimit = new TimeLimitRegister(this);
-                _registers.Add(TimeLimit);
-                TimeLatency = new TimeLatencyRegister(this);
-                _registers.Add(TimeLatency);
-                TimeWindow = new TimeWindowRegister(this);
-                _registers.Add(TimeWindow);
-                ActivationThreshold = new ActivationThresholdRegister(this);
-                _registers.Add(ActivationThreshold);
-                ActivationDuration = new ActivationDurationRegister(this);
-                _registers.Add(ActivationDuration);
-                Ctrl1 = new Ctrl1Register(this);
-                _registers.Add(Ctrl1);
-                OutX = new OutXRegister(this);
-                _registers.Add(OutX);
-                OutY = new OutYRegister(this);
-                _registers.Add(OutY);
-                OutZ = new OutZRegister(this);
-                _registers.Add(OutZ);
+                statusRegAux = new StatusRegAuxRegister(this);
+                _registers.Add(statusRegAux);
+                outAdc1 = new OutAdc1Register(this);
+                _registers.Add(outAdc1);
+                outAdc2 = new OutAdc2Register(this);
+                _registers.Add(outAdc2);
+                outAdc3 = new OutAdc3Register(this);
+                _registers.Add(outAdc3);
+                whoAmI = new WhoAmIRegister(this);
+                _registers.Add(whoAmI);
+                ctrl0 = new Ctrl0Register(this);
+                _registers.Add(ctrl0);
+                tempCfgReg = new TempCfgRegRegister(this);
+                _registers.Add(tempCfgReg);
+                ctrl2 = new Ctrl2Register(this);
+                _registers.Add(ctrl2);
+                ctrl3 = new Ctrl3Register(this);
+                _registers.Add(ctrl3);
+                ctrl4 = new Ctrl4Register(this);
+                _registers.Add(ctrl4);
+                ctrl5 = new Ctrl5Register(this);
+                _registers.Add(ctrl5);
+                ctrl6 = new Ctrl6Register(this);
+                _registers.Add(ctrl6);
+                reference = new ReferenceRegister(this);
+                _registers.Add(reference);
+                status = new StatusRegister(this);
+                _registers.Add(status);
+                fifoCtrl = new FifoCtrlRegister(this);
+                _registers.Add(fifoCtrl);
+                fifoSrc = new FifoSrcRegister(this);
+                _registers.Add(fifoSrc);
+                int1Cfg = new Int1CfgRegister(this);
+                _registers.Add(int1Cfg);
+                int1Src = new Int1SrcRegister(this);
+                _registers.Add(int1Src);
+                int1Threshold = new Int1ThresholdRegister(this);
+                _registers.Add(int1Threshold);
+                int1Duration = new Int1DurationRegister(this);
+                _registers.Add(int1Duration);
+                int2Cfg = new Int2CfgRegister(this);
+                _registers.Add(int2Cfg);
+                int2Src = new Int2SrcRegister(this);
+                _registers.Add(int2Src);
+                int2Threshold = new Int2ThresholdRegister(this);
+                _registers.Add(int2Threshold);
+                int2Duration = new Int2DurationRegister(this);
+                _registers.Add(int2Duration);
+                clickSource = new ClickSourceRegister(this);
+                _registers.Add(clickSource);
+                clickThreshold = new ClickThresholdRegister(this);
+                _registers.Add(clickThreshold);
+                timeLimit = new TimeLimitRegister(this);
+                _registers.Add(timeLimit);
+                timeLatency = new TimeLatencyRegister(this);
+                _registers.Add(timeLatency);
+                timeWindow = new TimeWindowRegister(this);
+                _registers.Add(timeWindow);
+                activationThreshold = new ActivationThresholdRegister(this);
+                _registers.Add(activationThreshold);
+                activationDuration = new ActivationDurationRegister(this);
+                _registers.Add(activationDuration);
+                ctrl1 = new Ctrl1Register(this);
+                _registers.Add(ctrl1);
+                outX = new OutXRegister(this);
+                _registers.Add(outX);
+                outY = new OutYRegister(this);
+                _registers.Add(outY);
+                outZ = new OutZRegister(this);
+                _registers.Add(outZ);
             }
 
-            internal StatusRegAuxRegister StatusRegAux;
-            internal OutAdc1Register OutAdc1;
-            internal OutAdc2Register OutAdc2;
-            internal OutAdc3Register OutAdc3;
-            internal WhoAmIRegister WhoAmI;
-            internal Ctrl0Register Ctrl0;
-            internal TempCfgRegRegister TempCfgReg;
-            internal Ctrl2Register Ctrl2;
-            internal Ctrl3Register Ctrl3;
-            internal Ctrl4Register Ctrl4;
-            internal Ctrl5Register Ctrl5;
-            internal Ctrl6Register Ctrl6;
-            internal ReferenceRegister Reference;
-            internal StatusRegister Status;
-            internal FifoCtrlRegister FifoCtrl;
-            internal FifoSrcRegister FifoSrc;
-            internal Int1CfgRegister Int1Cfg;
-            internal Int1SrcRegister Int1Src;
-            internal Int1ThresholdRegister Int1Threshold;
-            internal Int1DurationRegister Int1Duration;
-            internal Int2CfgRegister Int2Cfg;
-            internal Int2SrcRegister Int2Src;
-            internal Int2ThresholdRegister Int2Threshold;
-            internal Int2DurationRegister Int2Duration;
-            internal ClickSourceRegister ClickSource;
-            internal ClickThresholdRegister ClickThreshold;
-            internal TimeLimitRegister TimeLimit;
-            internal TimeLatencyRegister TimeLatency;
-            internal TimeWindowRegister TimeWindow;
-            internal ActivationThresholdRegister ActivationThreshold;
-            internal ActivationDurationRegister ActivationDuration;
-            internal Ctrl1Register Ctrl1;
-            internal OutXRegister OutX;
-            internal OutYRegister OutY;
-            internal OutZRegister OutZ;
+            internal StatusRegAuxRegister statusRegAux;
+            internal OutAdc1Register outAdc1;
+            internal OutAdc2Register outAdc2;
+            internal OutAdc3Register outAdc3;
+            internal WhoAmIRegister whoAmI;
+            internal Ctrl0Register ctrl0;
+            internal TempCfgRegRegister tempCfgReg;
+            internal Ctrl2Register ctrl2;
+            internal Ctrl3Register ctrl3;
+            internal Ctrl4Register ctrl4;
+            internal Ctrl5Register ctrl5;
+            internal Ctrl6Register ctrl6;
+            internal ReferenceRegister reference;
+            internal StatusRegister status;
+            internal FifoCtrlRegister fifoCtrl;
+            internal FifoSrcRegister fifoSrc;
+            internal Int1CfgRegister int1Cfg;
+            internal Int1SrcRegister int1Src;
+            internal Int1ThresholdRegister int1Threshold;
+            internal Int1DurationRegister int1Duration;
+            internal Int2CfgRegister int2Cfg;
+            internal Int2SrcRegister int2Src;
+            internal Int2ThresholdRegister int2Threshold;
+            internal Int2DurationRegister int2Duration;
+            internal ClickSourceRegister clickSource;
+            internal ClickThresholdRegister clickThreshold;
+            internal TimeLimitRegister timeLimit;
+            internal TimeLatencyRegister timeLatency;
+            internal TimeWindowRegister timeWindow;
+            internal ActivationThresholdRegister activationThreshold;
+            internal ActivationDurationRegister activationDuration;
+            internal Ctrl1Register ctrl1;
+            internal OutXRegister outX;
+            internal OutYRegister outY;
+            internal OutZRegister outZ;
 
             internal class StatusRegAuxRegister : Register
             {
                 internal StatusRegAuxRegister(RegisterManager regManager) : base(regManager, 0x07, 1, false) { }
 
-                public int OneAxisDataAvailable { get; set; }
-                public int TwoAxisDataAvailable { get; set; }
-                public int ThreeAxisDataAvailable { get; set; }
-                public int DataAvailable { get; set; }
-                public int OneAxisDataOverrun { get; set; }
-                public int TwoAxisDataOverrun { get; set; }
-                public int DataOverrun { get; set; }
+                public int oneAxisDataAvailable { get; set; }
+                public int twoAxisDataAvailable { get; set; }
+                public int threeAxisDataAvailable { get; set; }
+                public int dataAvailable { get; set; }
+                public int oneAxisDataOverrun { get; set; }
+                public int twoAxisDataOverrun { get; set; }
+                public int dataOverrun { get; set; }
 
-                public async Task<StatusRegAuxRegister> Read()
+                public async Task<StatusRegAuxRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((OneAxisDataAvailable & 0x1) << 0) | ((TwoAxisDataAvailable & 0x1) << 1) | ((ThreeAxisDataAvailable & 0x1) << 2) | ((DataAvailable & 0x1) << 3) | ((OneAxisDataOverrun & 0x1) << 4) | ((TwoAxisDataOverrun & 0x1) << 5) | ((DataOverrun & 0x1) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((oneAxisDataAvailable & 0x1) << 0) | ((twoAxisDataAvailable & 0x1) << 1) | ((threeAxisDataAvailable & 0x1) << 2) | ((dataAvailable & 0x1) << 3) | ((oneAxisDataOverrun & 0x1) << 4) | ((twoAxisDataOverrun & 0x1) << 5) | ((dataOverrun & 0x1) << 6); }
+                internal override void setValue(long _value)
                 {
-                    OneAxisDataAvailable = (int)((value >> 0) & 0x1);
-                    TwoAxisDataAvailable = (int)((value >> 1) & 0x1);
-                    ThreeAxisDataAvailable = (int)((value >> 2) & 0x1);
-                    DataAvailable = (int)((value >> 3) & 0x1);
-                    OneAxisDataOverrun = (int)((value >> 4) & 0x1);
-                    TwoAxisDataOverrun = (int)((value >> 5) & 0x1);
-                    DataOverrun = (int)((value >> 6) & 0x1);
+                    oneAxisDataAvailable = (int)((_value >> 0) & 0x1);
+                    twoAxisDataAvailable = (int)((_value >> 1) & 0x1);
+                    threeAxisDataAvailable = (int)((_value >> 2) & 0x1);
+                    dataAvailable = (int)((_value >> 3) & 0x1);
+                    oneAxisDataOverrun = (int)((_value >> 4) & 0x1);
+                    twoAxisDataOverrun = (int)((_value >> 5) & 0x1);
+                    dataOverrun = (int)((_value >> 6) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"OneAxisDataAvailable: { OneAxisDataAvailable } (offset: 0, width: 1)\r\n";
-                    retVal += $"TwoAxisDataAvailable: { TwoAxisDataAvailable } (offset: 1, width: 1)\r\n";
-                    retVal += $"ThreeAxisDataAvailable: { ThreeAxisDataAvailable } (offset: 2, width: 1)\r\n";
-                    retVal += $"DataAvailable: { DataAvailable } (offset: 3, width: 1)\r\n";
-                    retVal += $"OneAxisDataOverrun: { OneAxisDataOverrun } (offset: 4, width: 1)\r\n";
-                    retVal += $"TwoAxisDataOverrun: { TwoAxisDataOverrun } (offset: 5, width: 1)\r\n";
-                    retVal += $"DataOverrun: { DataOverrun } (offset: 6, width: 1)\r\n";
+                    retVal += $"OneAxisDataAvailable: { oneAxisDataAvailable } (offset: 0, width: 1)\r\n";
+                    retVal += $"TwoAxisDataAvailable: { twoAxisDataAvailable } (offset: 1, width: 1)\r\n";
+                    retVal += $"ThreeAxisDataAvailable: { threeAxisDataAvailable } (offset: 2, width: 1)\r\n";
+                    retVal += $"DataAvailable: { dataAvailable } (offset: 3, width: 1)\r\n";
+                    retVal += $"OneAxisDataOverrun: { oneAxisDataOverrun } (offset: 4, width: 1)\r\n";
+                    retVal += $"TwoAxisDataOverrun: { twoAxisDataOverrun } (offset: 5, width: 1)\r\n";
+                    retVal += $"DataOverrun: { dataOverrun } (offset: 6, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -214,23 +214,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal OutAdc1Register(RegisterManager regManager) : base(regManager, 0x08, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<OutAdc1Register> Read()
+                public async Task<OutAdc1Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x3FF) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x3FF) << 6); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 6) & 0x3FF);
+                    value = (int)((_value >> 6) & 0x3FF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 6, width: 10)\r\n";
+                    retVal += $"Value: { value } (offset: 6, width: 10)\r\n";
                     return retVal;
                 }
             }
@@ -238,23 +238,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal OutAdc2Register(RegisterManager regManager) : base(regManager, 0x0A, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<OutAdc2Register> Read()
+                public async Task<OutAdc2Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x3FF) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x3FF) << 6); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 6) & 0x3FF);
+                    value = (int)((_value >> 6) & 0x3FF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 6, width: 10)\r\n";
+                    retVal += $"Value: { value } (offset: 6, width: 10)\r\n";
                     return retVal;
                 }
             }
@@ -262,23 +262,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal OutAdc3Register(RegisterManager regManager) : base(regManager, 0x0C, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<OutAdc3Register> Read()
+                public async Task<OutAdc3Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x3FF) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x3FF) << 6); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 6) & 0x3FF);
+                    value = (int)((_value >> 6) & 0x3FF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 6, width: 10)\r\n";
+                    retVal += $"Value: { value } (offset: 6, width: 10)\r\n";
                     return retVal;
                 }
             }
@@ -286,23 +286,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal WhoAmIRegister(RegisterManager regManager) : base(regManager, 0x0f, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<WhoAmIRegister> Read()
+                public async Task<WhoAmIRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -310,25 +310,25 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl0Register(RegisterManager regManager) : base(regManager, 0x1E, 1, false) { }
 
-                public int SdoPuDisc { get; set; }
-                public SdoPuDiscs GetSdoPuDisc() { return (SdoPuDiscs)SdoPuDisc; }
-                public void SetSdoPuDisc(SdoPuDiscs enumVal) { SdoPuDisc = (int)enumVal; }
+                public int sdoPuDisc { get; set; }
+                public SdoPuDiscs getSdoPuDisc() { return (SdoPuDiscs)sdoPuDisc; }
+                public void setSdoPuDisc(SdoPuDiscs enumVal) { sdoPuDisc = (int)enumVal; }
 
-                public async Task<Ctrl0Register> Read()
+                public async Task<Ctrl0Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((SdoPuDisc & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((sdoPuDisc & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    SdoPuDisc = (int)((value >> 0) & 0xFF);
+                    sdoPuDisc = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"SdoPuDisc: { SdoPuDisc } (offset: 0, width: 8)\r\n";
+                    retVal += $"SdoPuDisc: { sdoPuDisc } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -336,26 +336,26 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal TempCfgRegRegister(RegisterManager regManager) : base(regManager, 0x1F, 1, false) { }
 
-                public int AdcEn { get; set; }
-                public int TempEn { get; set; }
+                public int adcEn { get; set; }
+                public int tempEn { get; set; }
 
-                public async Task<TempCfgRegRegister> Read()
+                public async Task<TempCfgRegRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((AdcEn & 0x1) << 7) | ((TempEn & 0x1) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((adcEn & 0x1) << 7) | ((tempEn & 0x1) << 6); }
+                internal override void setValue(long _value)
                 {
-                    AdcEn = (int)((value >> 7) & 0x1);
-                    TempEn = (int)((value >> 6) & 0x1);
+                    adcEn = (int)((_value >> 7) & 0x1);
+                    tempEn = (int)((_value >> 6) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"AdcEn: { AdcEn } (offset: 7, width: 1)\r\n";
-                    retVal += $"TempEn: { TempEn } (offset: 6, width: 1)\r\n";
+                    retVal += $"AdcEn: { adcEn } (offset: 7, width: 1)\r\n";
+                    retVal += $"TempEn: { tempEn } (offset: 6, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -363,40 +363,40 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl2Register(RegisterManager regManager) : base(regManager, 0x21, 1, false) { }
 
-                public int HighPassAoiInt1Enable { get; set; }
-                public int HighPassAoiInt2Enable { get; set; }
-                public int HighPassClickEnable { get; set; }
-                public int FilterDataPassThru { get; set; }
-                public int HighPassFilterCutoffFrequency { get; set; }
-                public int HighPassFilterModeSelection { get; set; }
-                public HighPassFilterModeSelections GetHighPassFilterModeSelection() { return (HighPassFilterModeSelections)HighPassFilterModeSelection; }
-                public void SetHighPassFilterModeSelection(HighPassFilterModeSelections enumVal) { HighPassFilterModeSelection = (int)enumVal; }
+                public int highPassAoiInt1Enable { get; set; }
+                public int highPassAoiInt2Enable { get; set; }
+                public int highPassClickEnable { get; set; }
+                public int filterDataPassThru { get; set; }
+                public int highPassFilterCutoffFrequency { get; set; }
+                public int highPassFilterModeSelection { get; set; }
+                public HighPassFilterModeSelections getHighPassFilterModeSelection() { return (HighPassFilterModeSelections)highPassFilterModeSelection; }
+                public void setHighPassFilterModeSelection(HighPassFilterModeSelections enumVal) { highPassFilterModeSelection = (int)enumVal; }
 
-                public async Task<Ctrl2Register> Read()
+                public async Task<Ctrl2Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((HighPassAoiInt1Enable & 0x1) << 0) | ((HighPassAoiInt2Enable & 0x1) << 1) | ((HighPassClickEnable & 0x1) << 2) | ((FilterDataPassThru & 0x1) << 3) | ((HighPassFilterCutoffFrequency & 0x3) << 4) | ((HighPassFilterModeSelection & 0x3) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((highPassAoiInt1Enable & 0x1) << 0) | ((highPassAoiInt2Enable & 0x1) << 1) | ((highPassClickEnable & 0x1) << 2) | ((filterDataPassThru & 0x1) << 3) | ((highPassFilterCutoffFrequency & 0x3) << 4) | ((highPassFilterModeSelection & 0x3) << 6); }
+                internal override void setValue(long _value)
                 {
-                    HighPassAoiInt1Enable = (int)((value >> 0) & 0x1);
-                    HighPassAoiInt2Enable = (int)((value >> 1) & 0x1);
-                    HighPassClickEnable = (int)((value >> 2) & 0x1);
-                    FilterDataPassThru = (int)((value >> 3) & 0x1);
-                    HighPassFilterCutoffFrequency = (int)((value >> 4) & 0x3);
-                    HighPassFilterModeSelection = (int)((value >> 6) & 0x3);
+                    highPassAoiInt1Enable = (int)((_value >> 0) & 0x1);
+                    highPassAoiInt2Enable = (int)((_value >> 1) & 0x1);
+                    highPassClickEnable = (int)((_value >> 2) & 0x1);
+                    filterDataPassThru = (int)((_value >> 3) & 0x1);
+                    highPassFilterCutoffFrequency = (int)((_value >> 4) & 0x3);
+                    highPassFilterModeSelection = (int)((_value >> 6) & 0x3);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"HighPassAoiInt1Enable: { HighPassAoiInt1Enable } (offset: 0, width: 1)\r\n";
-                    retVal += $"HighPassAoiInt2Enable: { HighPassAoiInt2Enable } (offset: 1, width: 1)\r\n";
-                    retVal += $"HighPassClickEnable: { HighPassClickEnable } (offset: 2, width: 1)\r\n";
-                    retVal += $"FilterDataPassThru: { FilterDataPassThru } (offset: 3, width: 1)\r\n";
-                    retVal += $"HighPassFilterCutoffFrequency: { HighPassFilterCutoffFrequency } (offset: 4, width: 2)\r\n";
-                    retVal += $"HighPassFilterModeSelection: { HighPassFilterModeSelection } (offset: 6, width: 2)\r\n";
+                    retVal += $"HighPassAoiInt1Enable: { highPassAoiInt1Enable } (offset: 0, width: 1)\r\n";
+                    retVal += $"HighPassAoiInt2Enable: { highPassAoiInt2Enable } (offset: 1, width: 1)\r\n";
+                    retVal += $"HighPassClickEnable: { highPassClickEnable } (offset: 2, width: 1)\r\n";
+                    retVal += $"FilterDataPassThru: { filterDataPassThru } (offset: 3, width: 1)\r\n";
+                    retVal += $"HighPassFilterCutoffFrequency: { highPassFilterCutoffFrequency } (offset: 4, width: 2)\r\n";
+                    retVal += $"HighPassFilterModeSelection: { highPassFilterModeSelection } (offset: 6, width: 2)\r\n";
                     return retVal;
                 }
             }
@@ -404,41 +404,41 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl3Register(RegisterManager regManager) : base(regManager, 0x22, 1, false) { }
 
-                public int Overrun { get; set; }
-                public int FifoWatermark { get; set; }
-                public int Da321 { get; set; }
-                public int Zyxda { get; set; }
-                public int Ia2 { get; set; }
-                public int Ia1 { get; set; }
-                public int Click { get; set; }
+                public int overrun { get; set; }
+                public int fifoWatermark { get; set; }
+                public int da321 { get; set; }
+                public int zyxda { get; set; }
+                public int ia2 { get; set; }
+                public int ia1 { get; set; }
+                public int click { get; set; }
 
-                public async Task<Ctrl3Register> Read()
+                public async Task<Ctrl3Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Overrun & 0x1) << 1) | ((FifoWatermark & 0x1) << 2) | ((Da321 & 0x1) << 3) | ((Zyxda & 0x1) << 4) | ((Ia2 & 0x1) << 5) | ((Ia1 & 0x1) << 6) | ((Click & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((overrun & 0x1) << 1) | ((fifoWatermark & 0x1) << 2) | ((da321 & 0x1) << 3) | ((zyxda & 0x1) << 4) | ((ia2 & 0x1) << 5) | ((ia1 & 0x1) << 6) | ((click & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    Overrun = (int)((value >> 1) & 0x1);
-                    FifoWatermark = (int)((value >> 2) & 0x1);
-                    Da321 = (int)((value >> 3) & 0x1);
-                    Zyxda = (int)((value >> 4) & 0x1);
-                    Ia2 = (int)((value >> 5) & 0x1);
-                    Ia1 = (int)((value >> 6) & 0x1);
-                    Click = (int)((value >> 7) & 0x1);
+                    overrun = (int)((_value >> 1) & 0x1);
+                    fifoWatermark = (int)((_value >> 2) & 0x1);
+                    da321 = (int)((_value >> 3) & 0x1);
+                    zyxda = (int)((_value >> 4) & 0x1);
+                    ia2 = (int)((_value >> 5) & 0x1);
+                    ia1 = (int)((_value >> 6) & 0x1);
+                    click = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Overrun: { Overrun } (offset: 1, width: 1)\r\n";
-                    retVal += $"FifoWatermark: { FifoWatermark } (offset: 2, width: 1)\r\n";
-                    retVal += $"Da321: { Da321 } (offset: 3, width: 1)\r\n";
-                    retVal += $"Zyxda: { Zyxda } (offset: 4, width: 1)\r\n";
-                    retVal += $"Ia2: { Ia2 } (offset: 5, width: 1)\r\n";
-                    retVal += $"Ia1: { Ia1 } (offset: 6, width: 1)\r\n";
-                    retVal += $"Click: { Click } (offset: 7, width: 1)\r\n";
+                    retVal += $"Overrun: { overrun } (offset: 1, width: 1)\r\n";
+                    retVal += $"FifoWatermark: { fifoWatermark } (offset: 2, width: 1)\r\n";
+                    retVal += $"Da321: { da321 } (offset: 3, width: 1)\r\n";
+                    retVal += $"Zyxda: { zyxda } (offset: 4, width: 1)\r\n";
+                    retVal += $"Ia2: { ia2 } (offset: 5, width: 1)\r\n";
+                    retVal += $"Ia1: { ia1 } (offset: 6, width: 1)\r\n";
+                    retVal += $"Click: { click } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -446,40 +446,40 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl4Register(RegisterManager regManager) : base(regManager, 0x23, 1, false) { }
 
-                public int SpiInterfaceMode { get; set; }
-                public int SelfTestEnable { get; set; }
-                public int HighResolutionOutput { get; set; }
-                public int FullScaleSelection { get; set; }
-                public int BigEndian { get; set; }
-                public int BlockDataUpdate { get; set; }
-                public Scale GetFullScaleSelection() { return (Scale)FullScaleSelection; }
-                public void SetFullScaleSelection(Scale enumVal) { FullScaleSelection = (int)enumVal; }
+                public int spiInterfaceMode { get; set; }
+                public int selfTestEnable { get; set; }
+                public int highResolutionOutput { get; set; }
+                public int fullScaleSelection { get; set; }
+                public int bigEndian { get; set; }
+                public int blockDataUpdate { get; set; }
+                public FullScaleSelections getFullScaleSelection() { return (FullScaleSelections)fullScaleSelection; }
+                public void setFullScaleSelection(FullScaleSelections enumVal) { fullScaleSelection = (int)enumVal; }
 
-                public async Task<Ctrl4Register> Read()
+                public async Task<Ctrl4Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((SpiInterfaceMode & 0x1) << 0) | ((SelfTestEnable & 0x3) << 1) | ((HighResolutionOutput & 0x1) << 3) | ((FullScaleSelection & 0x3) << 4) | ((BigEndian & 0x1) << 6) | ((BlockDataUpdate & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((spiInterfaceMode & 0x1) << 0) | ((selfTestEnable & 0x3) << 1) | ((highResolutionOutput & 0x1) << 3) | ((fullScaleSelection & 0x3) << 4) | ((bigEndian & 0x1) << 6) | ((blockDataUpdate & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    SpiInterfaceMode = (int)((value >> 0) & 0x1);
-                    SelfTestEnable = (int)((value >> 1) & 0x3);
-                    HighResolutionOutput = (int)((value >> 3) & 0x1);
-                    FullScaleSelection = (int)((value >> 4) & 0x3);
-                    BigEndian = (int)((value >> 6) & 0x1);
-                    BlockDataUpdate = (int)((value >> 7) & 0x1);
+                    spiInterfaceMode = (int)((_value >> 0) & 0x1);
+                    selfTestEnable = (int)((_value >> 1) & 0x3);
+                    highResolutionOutput = (int)((_value >> 3) & 0x1);
+                    fullScaleSelection = (int)((_value >> 4) & 0x3);
+                    bigEndian = (int)((_value >> 6) & 0x1);
+                    blockDataUpdate = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"SpiInterfaceMode: { SpiInterfaceMode } (offset: 0, width: 1)\r\n";
-                    retVal += $"SelfTestEnable: { SelfTestEnable } (offset: 1, width: 2)\r\n";
-                    retVal += $"HighResolutionOutput: { HighResolutionOutput } (offset: 3, width: 1)\r\n";
-                    retVal += $"FullScaleSelection: { FullScaleSelection } (offset: 4, width: 2)\r\n";
-                    retVal += $"BigEndian: { BigEndian } (offset: 6, width: 1)\r\n";
-                    retVal += $"BlockDataUpdate: { BlockDataUpdate } (offset: 7, width: 1)\r\n";
+                    retVal += $"SpiInterfaceMode: { spiInterfaceMode } (offset: 0, width: 1)\r\n";
+                    retVal += $"SelfTestEnable: { selfTestEnable } (offset: 1, width: 2)\r\n";
+                    retVal += $"HighResolutionOutput: { highResolutionOutput } (offset: 3, width: 1)\r\n";
+                    retVal += $"FullScaleSelection: { fullScaleSelection } (offset: 4, width: 2)\r\n";
+                    retVal += $"BigEndian: { bigEndian } (offset: 6, width: 1)\r\n";
+                    retVal += $"BlockDataUpdate: { blockDataUpdate } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -487,38 +487,38 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl5Register(RegisterManager regManager) : base(regManager, 0x24, 1, false) { }
 
-                public int Enable4DInt2 { get; set; }
-                public int LatchInt2 { get; set; }
-                public int Enable4DInt1 { get; set; }
-                public int LatchInt1 { get; set; }
-                public int FifoEnable { get; set; }
-                public int RebootMemoryContent { get; set; }
+                public int enable4DInt2 { get; set; }
+                public int latchInt2 { get; set; }
+                public int enable4DInt1 { get; set; }
+                public int latchInt1 { get; set; }
+                public int fifoEnable { get; set; }
+                public int rebootMemoryContent { get; set; }
 
-                public async Task<Ctrl5Register> Read()
+                public async Task<Ctrl5Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Enable4DInt2 & 0x1) << 0) | ((LatchInt2 & 0x1) << 1) | ((Enable4DInt1 & 0x1) << 2) | ((LatchInt1 & 0x1) << 3) | ((FifoEnable & 0x1) << 4) | ((RebootMemoryContent & 0x1) << 5); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((enable4DInt2 & 0x1) << 0) | ((latchInt2 & 0x1) << 1) | ((enable4DInt1 & 0x1) << 2) | ((latchInt1 & 0x1) << 3) | ((fifoEnable & 0x1) << 4) | ((rebootMemoryContent & 0x1) << 5); }
+                internal override void setValue(long _value)
                 {
-                    Enable4DInt2 = (int)((value >> 0) & 0x1);
-                    LatchInt2 = (int)((value >> 1) & 0x1);
-                    Enable4DInt1 = (int)((value >> 2) & 0x1);
-                    LatchInt1 = (int)((value >> 3) & 0x1);
-                    FifoEnable = (int)((value >> 4) & 0x1);
-                    RebootMemoryContent = (int)((value >> 5) & 0x1);
+                    enable4DInt2 = (int)((_value >> 0) & 0x1);
+                    latchInt2 = (int)((_value >> 1) & 0x1);
+                    enable4DInt1 = (int)((_value >> 2) & 0x1);
+                    latchInt1 = (int)((_value >> 3) & 0x1);
+                    fifoEnable = (int)((_value >> 4) & 0x1);
+                    rebootMemoryContent = (int)((_value >> 5) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Enable4DInt2: { Enable4DInt2 } (offset: 0, width: 1)\r\n";
-                    retVal += $"LatchInt2: { LatchInt2 } (offset: 1, width: 1)\r\n";
-                    retVal += $"Enable4DInt1: { Enable4DInt1 } (offset: 2, width: 1)\r\n";
-                    retVal += $"LatchInt1: { LatchInt1 } (offset: 3, width: 1)\r\n";
-                    retVal += $"FifoEnable: { FifoEnable } (offset: 4, width: 1)\r\n";
-                    retVal += $"RebootMemoryContent: { RebootMemoryContent } (offset: 5, width: 1)\r\n";
+                    retVal += $"Enable4DInt2: { enable4DInt2 } (offset: 0, width: 1)\r\n";
+                    retVal += $"LatchInt2: { latchInt2 } (offset: 1, width: 1)\r\n";
+                    retVal += $"Enable4DInt1: { enable4DInt1 } (offset: 2, width: 1)\r\n";
+                    retVal += $"LatchInt1: { latchInt1 } (offset: 3, width: 1)\r\n";
+                    retVal += $"FifoEnable: { fifoEnable } (offset: 4, width: 1)\r\n";
+                    retVal += $"RebootMemoryContent: { rebootMemoryContent } (offset: 5, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -526,38 +526,38 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl6Register(RegisterManager regManager) : base(regManager, 0x25, 1, false) { }
 
-                public int IntPolarity { get; set; }
-                public int Act { get; set; }
-                public int Boot { get; set; }
-                public int Ia2 { get; set; }
-                public int Ia1 { get; set; }
-                public int Click { get; set; }
+                public int intPolarity { get; set; }
+                public int act { get; set; }
+                public int boot { get; set; }
+                public int ia2 { get; set; }
+                public int ia1 { get; set; }
+                public int click { get; set; }
 
-                public async Task<Ctrl6Register> Read()
+                public async Task<Ctrl6Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((IntPolarity & 0x1) << 1) | ((Act & 0x1) << 3) | ((Boot & 0x1) << 4) | ((Ia2 & 0x1) << 5) | ((Ia1 & 0x1) << 6) | ((Click & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((intPolarity & 0x1) << 1) | ((act & 0x1) << 3) | ((boot & 0x1) << 4) | ((ia2 & 0x1) << 5) | ((ia1 & 0x1) << 6) | ((click & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    IntPolarity = (int)((value >> 1) & 0x1);
-                    Act = (int)((value >> 3) & 0x1);
-                    Boot = (int)((value >> 4) & 0x1);
-                    Ia2 = (int)((value >> 5) & 0x1);
-                    Ia1 = (int)((value >> 6) & 0x1);
-                    Click = (int)((value >> 7) & 0x1);
+                    intPolarity = (int)((_value >> 1) & 0x1);
+                    act = (int)((_value >> 3) & 0x1);
+                    boot = (int)((_value >> 4) & 0x1);
+                    ia2 = (int)((_value >> 5) & 0x1);
+                    ia1 = (int)((_value >> 6) & 0x1);
+                    click = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"IntPolarity: { IntPolarity } (offset: 1, width: 1)\r\n";
-                    retVal += $"Act: { Act } (offset: 3, width: 1)\r\n";
-                    retVal += $"Boot: { Boot } (offset: 4, width: 1)\r\n";
-                    retVal += $"Ia2: { Ia2 } (offset: 5, width: 1)\r\n";
-                    retVal += $"Ia1: { Ia1 } (offset: 6, width: 1)\r\n";
-                    retVal += $"Click: { Click } (offset: 7, width: 1)\r\n";
+                    retVal += $"IntPolarity: { intPolarity } (offset: 1, width: 1)\r\n";
+                    retVal += $"Act: { act } (offset: 3, width: 1)\r\n";
+                    retVal += $"Boot: { boot } (offset: 4, width: 1)\r\n";
+                    retVal += $"Ia2: { ia2 } (offset: 5, width: 1)\r\n";
+                    retVal += $"Ia1: { ia1 } (offset: 6, width: 1)\r\n";
+                    retVal += $"Click: { click } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -565,23 +565,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal ReferenceRegister(RegisterManager regManager) : base(regManager, 0x26, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<ReferenceRegister> Read()
+                public async Task<ReferenceRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -589,44 +589,44 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal StatusRegister(RegisterManager regManager) : base(regManager, 0x27, 1, false) { }
 
-                public int Xda { get; set; }
-                public int Yda { get; set; }
-                public int Zda { get; set; }
-                public int Zyxda { get; set; }
-                public int Xor { get; set; }
-                public int Yor { get; set; }
-                public int Zor { get; set; }
-                public int Zyxor { get; set; }
+                public int xda { get; set; }
+                public int yda { get; set; }
+                public int zda { get; set; }
+                public int zyxda { get; set; }
+                public int xor { get; set; }
+                public int yor { get; set; }
+                public int zor { get; set; }
+                public int zyxor { get; set; }
 
-                public async Task<StatusRegister> Read()
+                public async Task<StatusRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Xda & 0x1) << 0) | ((Yda & 0x1) << 1) | ((Zda & 0x1) << 2) | ((Zyxda & 0x1) << 3) | ((Xor & 0x1) << 4) | ((Yor & 0x1) << 5) | ((Zor & 0x1) << 6) | ((Zyxor & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((xor & 0x1) << 4) | ((yor & 0x1) << 5) | ((zor & 0x1) << 6) | ((zyxor & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    Xda = (int)((value >> 0) & 0x1);
-                    Yda = (int)((value >> 1) & 0x1);
-                    Zda = (int)((value >> 2) & 0x1);
-                    Zyxda = (int)((value >> 3) & 0x1);
-                    Xor = (int)((value >> 4) & 0x1);
-                    Yor = (int)((value >> 5) & 0x1);
-                    Zor = (int)((value >> 6) & 0x1);
-                    Zyxor = (int)((value >> 7) & 0x1);
+                    xda = (int)((_value >> 0) & 0x1);
+                    yda = (int)((_value >> 1) & 0x1);
+                    zda = (int)((_value >> 2) & 0x1);
+                    zyxda = (int)((_value >> 3) & 0x1);
+                    xor = (int)((_value >> 4) & 0x1);
+                    yor = (int)((_value >> 5) & 0x1);
+                    zor = (int)((_value >> 6) & 0x1);
+                    zyxor = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Xda: { Xda } (offset: 0, width: 1)\r\n";
-                    retVal += $"Yda: { Yda } (offset: 1, width: 1)\r\n";
-                    retVal += $"Zda: { Zda } (offset: 2, width: 1)\r\n";
-                    retVal += $"Zyxda: { Zyxda } (offset: 3, width: 1)\r\n";
-                    retVal += $"Xor: { Xor } (offset: 4, width: 1)\r\n";
-                    retVal += $"Yor: { Yor } (offset: 5, width: 1)\r\n";
-                    retVal += $"Zor: { Zor } (offset: 6, width: 1)\r\n";
-                    retVal += $"Zyxor: { Zyxor } (offset: 7, width: 1)\r\n";
+                    retVal += $"Xda: { xda } (offset: 0, width: 1)\r\n";
+                    retVal += $"Yda: { yda } (offset: 1, width: 1)\r\n";
+                    retVal += $"Zda: { zda } (offset: 2, width: 1)\r\n";
+                    retVal += $"Zyxda: { zyxda } (offset: 3, width: 1)\r\n";
+                    retVal += $"Xor: { xor } (offset: 4, width: 1)\r\n";
+                    retVal += $"Yor: { yor } (offset: 5, width: 1)\r\n";
+                    retVal += $"Zor: { zor } (offset: 6, width: 1)\r\n";
+                    retVal += $"Zyxor: { zyxor } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -634,31 +634,31 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal FifoCtrlRegister(RegisterManager regManager) : base(regManager, 0x2E, 1, false) { }
 
-                public int FifoThreshold { get; set; }
-                public int TriggerSelection { get; set; }
-                public int FifoMode { get; set; }
-                public FifoModes GetFifoMode() { return (FifoModes)FifoMode; }
-                public void SetFifoMode(FifoModes enumVal) { FifoMode = (int)enumVal; }
+                public int fifoThreshold { get; set; }
+                public int triggerSelection { get; set; }
+                public int fifoMode { get; set; }
+                public FifoModes getFifoMode() { return (FifoModes)fifoMode; }
+                public void setFifoMode(FifoModes enumVal) { fifoMode = (int)enumVal; }
 
-                public async Task<FifoCtrlRegister> Read()
+                public async Task<FifoCtrlRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((FifoThreshold & 0x1F) << 0) | ((TriggerSelection & 0x1) << 5) | ((FifoMode & 0x3) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((fifoThreshold & 0x1F) << 0) | ((triggerSelection & 0x1) << 5) | ((fifoMode & 0x3) << 6); }
+                internal override void setValue(long _value)
                 {
-                    FifoThreshold = (int)((value >> 0) & 0x1F);
-                    TriggerSelection = (int)((value >> 5) & 0x1);
-                    FifoMode = (int)((value >> 6) & 0x3);
+                    fifoThreshold = (int)((_value >> 0) & 0x1F);
+                    triggerSelection = (int)((_value >> 5) & 0x1);
+                    fifoMode = (int)((_value >> 6) & 0x3);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"FifoThreshold: { FifoThreshold } (offset: 0, width: 5)\r\n";
-                    retVal += $"TriggerSelection: { TriggerSelection } (offset: 5, width: 1)\r\n";
-                    retVal += $"FifoMode: { FifoMode } (offset: 6, width: 2)\r\n";
+                    retVal += $"FifoThreshold: { fifoThreshold } (offset: 0, width: 5)\r\n";
+                    retVal += $"TriggerSelection: { triggerSelection } (offset: 5, width: 1)\r\n";
+                    retVal += $"FifoMode: { fifoMode } (offset: 6, width: 2)\r\n";
                     return retVal;
                 }
             }
@@ -666,32 +666,32 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal FifoSrcRegister(RegisterManager regManager) : base(regManager, 0x2F, 1, false) { }
 
-                public int Fss { get; set; }
-                public int Emtpy { get; set; }
-                public int OverrunFifo { get; set; }
-                public int Watermark { get; set; }
+                public int fss { get; set; }
+                public int emtpy { get; set; }
+                public int overrunFifo { get; set; }
+                public int watermark { get; set; }
 
-                public async Task<FifoSrcRegister> Read()
+                public async Task<FifoSrcRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Fss & 0x1F) << 0) | ((Emtpy & 0x1) << 5) | ((OverrunFifo & 0x1) << 6) | ((Watermark & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((fss & 0x1F) << 0) | ((emtpy & 0x1) << 5) | ((overrunFifo & 0x1) << 6) | ((watermark & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    Fss = (int)((value >> 0) & 0x1F);
-                    Emtpy = (int)((value >> 5) & 0x1);
-                    OverrunFifo = (int)((value >> 6) & 0x1);
-                    Watermark = (int)((value >> 7) & 0x1);
+                    fss = (int)((_value >> 0) & 0x1F);
+                    emtpy = (int)((_value >> 5) & 0x1);
+                    overrunFifo = (int)((_value >> 6) & 0x1);
+                    watermark = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Fss: { Fss } (offset: 0, width: 5)\r\n";
-                    retVal += $"Emtpy: { Emtpy } (offset: 5, width: 1)\r\n";
-                    retVal += $"OverrunFifo: { OverrunFifo } (offset: 6, width: 1)\r\n";
-                    retVal += $"Watermark: { Watermark } (offset: 7, width: 1)\r\n";
+                    retVal += $"Fss: { fss } (offset: 0, width: 5)\r\n";
+                    retVal += $"Emtpy: { emtpy } (offset: 5, width: 1)\r\n";
+                    retVal += $"OverrunFifo: { overrunFifo } (offset: 6, width: 1)\r\n";
+                    retVal += $"Watermark: { watermark } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -699,44 +699,44 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int1CfgRegister(RegisterManager regManager) : base(regManager, 0x30, 1, false) { }
 
-                public int EnableXLowEvent { get; set; }
-                public int EnableXHighEvent { get; set; }
-                public int EnableYLowEvent { get; set; }
-                public int EnableYHighEvent { get; set; }
-                public int EnableZLowEvent { get; set; }
-                public int EnableZHighEvent { get; set; }
-                public int Enable6D { get; set; }
-                public int AndOrInterruptEvents { get; set; }
+                public int enableXLowEvent { get; set; }
+                public int enableXHighEvent { get; set; }
+                public int enableYLowEvent { get; set; }
+                public int enableYHighEvent { get; set; }
+                public int enableZLowEvent { get; set; }
+                public int enableZHighEvent { get; set; }
+                public int enable6D { get; set; }
+                public int andOrInterruptEvents { get; set; }
 
-                public async Task<Int1CfgRegister> Read()
+                public async Task<Int1CfgRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((EnableXLowEvent & 0x1) << 0) | ((EnableXHighEvent & 0x1) << 1) | ((EnableYLowEvent & 0x1) << 2) | ((EnableYHighEvent & 0x1) << 3) | ((EnableZLowEvent & 0x1) << 4) | ((EnableZHighEvent & 0x1) << 5) | ((Enable6D & 0x1) << 6) | ((AndOrInterruptEvents & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((enableXLowEvent & 0x1) << 0) | ((enableXHighEvent & 0x1) << 1) | ((enableYLowEvent & 0x1) << 2) | ((enableYHighEvent & 0x1) << 3) | ((enableZLowEvent & 0x1) << 4) | ((enableZHighEvent & 0x1) << 5) | ((enable6D & 0x1) << 6) | ((andOrInterruptEvents & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    EnableXLowEvent = (int)((value >> 0) & 0x1);
-                    EnableXHighEvent = (int)((value >> 1) & 0x1);
-                    EnableYLowEvent = (int)((value >> 2) & 0x1);
-                    EnableYHighEvent = (int)((value >> 3) & 0x1);
-                    EnableZLowEvent = (int)((value >> 4) & 0x1);
-                    EnableZHighEvent = (int)((value >> 5) & 0x1);
-                    Enable6D = (int)((value >> 6) & 0x1);
-                    AndOrInterruptEvents = (int)((value >> 7) & 0x1);
+                    enableXLowEvent = (int)((_value >> 0) & 0x1);
+                    enableXHighEvent = (int)((_value >> 1) & 0x1);
+                    enableYLowEvent = (int)((_value >> 2) & 0x1);
+                    enableYHighEvent = (int)((_value >> 3) & 0x1);
+                    enableZLowEvent = (int)((_value >> 4) & 0x1);
+                    enableZHighEvent = (int)((_value >> 5) & 0x1);
+                    enable6D = (int)((_value >> 6) & 0x1);
+                    andOrInterruptEvents = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"EnableXLowEvent: { EnableXLowEvent } (offset: 0, width: 1)\r\n";
-                    retVal += $"EnableXHighEvent: { EnableXHighEvent } (offset: 1, width: 1)\r\n";
-                    retVal += $"EnableYLowEvent: { EnableYLowEvent } (offset: 2, width: 1)\r\n";
-                    retVal += $"EnableYHighEvent: { EnableYHighEvent } (offset: 3, width: 1)\r\n";
-                    retVal += $"EnableZLowEvent: { EnableZLowEvent } (offset: 4, width: 1)\r\n";
-                    retVal += $"EnableZHighEvent: { EnableZHighEvent } (offset: 5, width: 1)\r\n";
-                    retVal += $"Enable6D: { Enable6D } (offset: 6, width: 1)\r\n";
-                    retVal += $"AndOrInterruptEvents: { AndOrInterruptEvents } (offset: 7, width: 1)\r\n";
+                    retVal += $"EnableXLowEvent: { enableXLowEvent } (offset: 0, width: 1)\r\n";
+                    retVal += $"EnableXHighEvent: { enableXHighEvent } (offset: 1, width: 1)\r\n";
+                    retVal += $"EnableYLowEvent: { enableYLowEvent } (offset: 2, width: 1)\r\n";
+                    retVal += $"EnableYHighEvent: { enableYHighEvent } (offset: 3, width: 1)\r\n";
+                    retVal += $"EnableZLowEvent: { enableZLowEvent } (offset: 4, width: 1)\r\n";
+                    retVal += $"EnableZHighEvent: { enableZHighEvent } (offset: 5, width: 1)\r\n";
+                    retVal += $"Enable6D: { enable6D } (offset: 6, width: 1)\r\n";
+                    retVal += $"AndOrInterruptEvents: { andOrInterruptEvents } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -744,41 +744,41 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int1SrcRegister(RegisterManager regManager) : base(regManager, 0x31, 1, false) { }
 
-                public int XLow { get; set; }
-                public int XHigh { get; set; }
-                public int YLow { get; set; }
-                public int YHigh { get; set; }
-                public int ZLow { get; set; }
-                public int ZHigh { get; set; }
-                public int InterruptActive { get; set; }
+                public int xLow { get; set; }
+                public int xHigh { get; set; }
+                public int yLow { get; set; }
+                public int yHigh { get; set; }
+                public int zLow { get; set; }
+                public int zHigh { get; set; }
+                public int interruptActive { get; set; }
 
-                public async Task<Int1SrcRegister> Read()
+                public async Task<Int1SrcRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((XLow & 0x1) << 0) | ((XHigh & 0x1) << 1) | ((YLow & 0x1) << 2) | ((YHigh & 0x1) << 3) | ((ZLow & 0x1) << 4) | ((ZHigh & 0x1) << 5) | ((InterruptActive & 0x1) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((xLow & 0x1) << 0) | ((xHigh & 0x1) << 1) | ((yLow & 0x1) << 2) | ((yHigh & 0x1) << 3) | ((zLow & 0x1) << 4) | ((zHigh & 0x1) << 5) | ((interruptActive & 0x1) << 6); }
+                internal override void setValue(long _value)
                 {
-                    XLow = (int)((value >> 0) & 0x1);
-                    XHigh = (int)((value >> 1) & 0x1);
-                    YLow = (int)((value >> 2) & 0x1);
-                    YHigh = (int)((value >> 3) & 0x1);
-                    ZLow = (int)((value >> 4) & 0x1);
-                    ZHigh = (int)((value >> 5) & 0x1);
-                    InterruptActive = (int)((value >> 6) & 0x1);
+                    xLow = (int)((_value >> 0) & 0x1);
+                    xHigh = (int)((_value >> 1) & 0x1);
+                    yLow = (int)((_value >> 2) & 0x1);
+                    yHigh = (int)((_value >> 3) & 0x1);
+                    zLow = (int)((_value >> 4) & 0x1);
+                    zHigh = (int)((_value >> 5) & 0x1);
+                    interruptActive = (int)((_value >> 6) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"XLow: { XLow } (offset: 0, width: 1)\r\n";
-                    retVal += $"XHigh: { XHigh } (offset: 1, width: 1)\r\n";
-                    retVal += $"YLow: { YLow } (offset: 2, width: 1)\r\n";
-                    retVal += $"YHigh: { YHigh } (offset: 3, width: 1)\r\n";
-                    retVal += $"ZLow: { ZLow } (offset: 4, width: 1)\r\n";
-                    retVal += $"ZHigh: { ZHigh } (offset: 5, width: 1)\r\n";
-                    retVal += $"InterruptActive: { InterruptActive } (offset: 6, width: 1)\r\n";
+                    retVal += $"XLow: { xLow } (offset: 0, width: 1)\r\n";
+                    retVal += $"XHigh: { xHigh } (offset: 1, width: 1)\r\n";
+                    retVal += $"YLow: { yLow } (offset: 2, width: 1)\r\n";
+                    retVal += $"YHigh: { yHigh } (offset: 3, width: 1)\r\n";
+                    retVal += $"ZLow: { zLow } (offset: 4, width: 1)\r\n";
+                    retVal += $"ZHigh: { zHigh } (offset: 5, width: 1)\r\n";
+                    retVal += $"InterruptActive: { interruptActive } (offset: 6, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -786,23 +786,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int1ThresholdRegister(RegisterManager regManager) : base(regManager, 0x32, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<Int1ThresholdRegister> Read()
+                public async Task<Int1ThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7F) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7F) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7F);
+                    value = (int)((_value >> 0) & 0x7F);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 7)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 7)\r\n";
                     return retVal;
                 }
             }
@@ -810,23 +810,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int1DurationRegister(RegisterManager regManager) : base(regManager, 0x33, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<Int1DurationRegister> Read()
+                public async Task<Int1DurationRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7F) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7F) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7F);
+                    value = (int)((_value >> 0) & 0x7F);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 7)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 7)\r\n";
                     return retVal;
                 }
             }
@@ -834,44 +834,44 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int2CfgRegister(RegisterManager regManager) : base(regManager, 0x34, 1, false) { }
 
-                public int EnableXLowEvent { get; set; }
-                public int EnableXHighEvent { get; set; }
-                public int EnableYLowEvent { get; set; }
-                public int EnableYHighEvent { get; set; }
-                public int EnableZLowEvent { get; set; }
-                public int EnableZHighEvent { get; set; }
-                public int Enable6D { get; set; }
-                public int AndOrInterruptEvents { get; set; }
+                public int enableXLowEvent { get; set; }
+                public int enableXHighEvent { get; set; }
+                public int enableYLowEvent { get; set; }
+                public int enableYHighEvent { get; set; }
+                public int enableZLowEvent { get; set; }
+                public int enableZHighEvent { get; set; }
+                public int enable6D { get; set; }
+                public int andOrInterruptEvents { get; set; }
 
-                public async Task<Int2CfgRegister> Read()
+                public async Task<Int2CfgRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((EnableXLowEvent & 0x1) << 0) | ((EnableXHighEvent & 0x1) << 1) | ((EnableYLowEvent & 0x1) << 2) | ((EnableYHighEvent & 0x1) << 3) | ((EnableZLowEvent & 0x1) << 4) | ((EnableZHighEvent & 0x1) << 5) | ((Enable6D & 0x1) << 6) | ((AndOrInterruptEvents & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((enableXLowEvent & 0x1) << 0) | ((enableXHighEvent & 0x1) << 1) | ((enableYLowEvent & 0x1) << 2) | ((enableYHighEvent & 0x1) << 3) | ((enableZLowEvent & 0x1) << 4) | ((enableZHighEvent & 0x1) << 5) | ((enable6D & 0x1) << 6) | ((andOrInterruptEvents & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    EnableXLowEvent = (int)((value >> 0) & 0x1);
-                    EnableXHighEvent = (int)((value >> 1) & 0x1);
-                    EnableYLowEvent = (int)((value >> 2) & 0x1);
-                    EnableYHighEvent = (int)((value >> 3) & 0x1);
-                    EnableZLowEvent = (int)((value >> 4) & 0x1);
-                    EnableZHighEvent = (int)((value >> 5) & 0x1);
-                    Enable6D = (int)((value >> 6) & 0x1);
-                    AndOrInterruptEvents = (int)((value >> 7) & 0x1);
+                    enableXLowEvent = (int)((_value >> 0) & 0x1);
+                    enableXHighEvent = (int)((_value >> 1) & 0x1);
+                    enableYLowEvent = (int)((_value >> 2) & 0x1);
+                    enableYHighEvent = (int)((_value >> 3) & 0x1);
+                    enableZLowEvent = (int)((_value >> 4) & 0x1);
+                    enableZHighEvent = (int)((_value >> 5) & 0x1);
+                    enable6D = (int)((_value >> 6) & 0x1);
+                    andOrInterruptEvents = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"EnableXLowEvent: { EnableXLowEvent } (offset: 0, width: 1)\r\n";
-                    retVal += $"EnableXHighEvent: { EnableXHighEvent } (offset: 1, width: 1)\r\n";
-                    retVal += $"EnableYLowEvent: { EnableYLowEvent } (offset: 2, width: 1)\r\n";
-                    retVal += $"EnableYHighEvent: { EnableYHighEvent } (offset: 3, width: 1)\r\n";
-                    retVal += $"EnableZLowEvent: { EnableZLowEvent } (offset: 4, width: 1)\r\n";
-                    retVal += $"EnableZHighEvent: { EnableZHighEvent } (offset: 5, width: 1)\r\n";
-                    retVal += $"Enable6D: { Enable6D } (offset: 6, width: 1)\r\n";
-                    retVal += $"AndOrInterruptEvents: { AndOrInterruptEvents } (offset: 7, width: 1)\r\n";
+                    retVal += $"EnableXLowEvent: { enableXLowEvent } (offset: 0, width: 1)\r\n";
+                    retVal += $"EnableXHighEvent: { enableXHighEvent } (offset: 1, width: 1)\r\n";
+                    retVal += $"EnableYLowEvent: { enableYLowEvent } (offset: 2, width: 1)\r\n";
+                    retVal += $"EnableYHighEvent: { enableYHighEvent } (offset: 3, width: 1)\r\n";
+                    retVal += $"EnableZLowEvent: { enableZLowEvent } (offset: 4, width: 1)\r\n";
+                    retVal += $"EnableZHighEvent: { enableZHighEvent } (offset: 5, width: 1)\r\n";
+                    retVal += $"Enable6D: { enable6D } (offset: 6, width: 1)\r\n";
+                    retVal += $"AndOrInterruptEvents: { andOrInterruptEvents } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -879,41 +879,41 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int2SrcRegister(RegisterManager regManager) : base(regManager, 0x35, 1, false) { }
 
-                public int XLow { get; set; }
-                public int XHigh { get; set; }
-                public int YLow { get; set; }
-                public int YHigh { get; set; }
-                public int ZLow { get; set; }
-                public int ZHigh { get; set; }
-                public int InterruptActive { get; set; }
+                public int xLow { get; set; }
+                public int xHigh { get; set; }
+                public int yLow { get; set; }
+                public int yHigh { get; set; }
+                public int zLow { get; set; }
+                public int zHigh { get; set; }
+                public int interruptActive { get; set; }
 
-                public async Task<Int2SrcRegister> Read()
+                public async Task<Int2SrcRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((XLow & 0x1) << 0) | ((XHigh & 0x1) << 1) | ((YLow & 0x1) << 2) | ((YHigh & 0x1) << 3) | ((ZLow & 0x1) << 4) | ((ZHigh & 0x1) << 5) | ((InterruptActive & 0x1) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((xLow & 0x1) << 0) | ((xHigh & 0x1) << 1) | ((yLow & 0x1) << 2) | ((yHigh & 0x1) << 3) | ((zLow & 0x1) << 4) | ((zHigh & 0x1) << 5) | ((interruptActive & 0x1) << 6); }
+                internal override void setValue(long _value)
                 {
-                    XLow = (int)((value >> 0) & 0x1);
-                    XHigh = (int)((value >> 1) & 0x1);
-                    YLow = (int)((value >> 2) & 0x1);
-                    YHigh = (int)((value >> 3) & 0x1);
-                    ZLow = (int)((value >> 4) & 0x1);
-                    ZHigh = (int)((value >> 5) & 0x1);
-                    InterruptActive = (int)((value >> 6) & 0x1);
+                    xLow = (int)((_value >> 0) & 0x1);
+                    xHigh = (int)((_value >> 1) & 0x1);
+                    yLow = (int)((_value >> 2) & 0x1);
+                    yHigh = (int)((_value >> 3) & 0x1);
+                    zLow = (int)((_value >> 4) & 0x1);
+                    zHigh = (int)((_value >> 5) & 0x1);
+                    interruptActive = (int)((_value >> 6) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"XLow: { XLow } (offset: 0, width: 1)\r\n";
-                    retVal += $"XHigh: { XHigh } (offset: 1, width: 1)\r\n";
-                    retVal += $"YLow: { YLow } (offset: 2, width: 1)\r\n";
-                    retVal += $"YHigh: { YHigh } (offset: 3, width: 1)\r\n";
-                    retVal += $"ZLow: { ZLow } (offset: 4, width: 1)\r\n";
-                    retVal += $"ZHigh: { ZHigh } (offset: 5, width: 1)\r\n";
-                    retVal += $"InterruptActive: { InterruptActive } (offset: 6, width: 1)\r\n";
+                    retVal += $"XLow: { xLow } (offset: 0, width: 1)\r\n";
+                    retVal += $"XHigh: { xHigh } (offset: 1, width: 1)\r\n";
+                    retVal += $"YLow: { yLow } (offset: 2, width: 1)\r\n";
+                    retVal += $"YHigh: { yHigh } (offset: 3, width: 1)\r\n";
+                    retVal += $"ZLow: { zLow } (offset: 4, width: 1)\r\n";
+                    retVal += $"ZHigh: { zHigh } (offset: 5, width: 1)\r\n";
+                    retVal += $"InterruptActive: { interruptActive } (offset: 6, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -921,23 +921,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int2ThresholdRegister(RegisterManager regManager) : base(regManager, 0x36, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<Int2ThresholdRegister> Read()
+                public async Task<Int2ThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7F) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7F) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7F);
+                    value = (int)((_value >> 0) & 0x7F);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 7)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 7)\r\n";
                     return retVal;
                 }
             }
@@ -945,23 +945,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Int2DurationRegister(RegisterManager regManager) : base(regManager, 0x37, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<Int2DurationRegister> Read()
+                public async Task<Int2DurationRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7F) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7F) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7F);
+                    value = (int)((_value >> 0) & 0x7F);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 7)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 7)\r\n";
                     return retVal;
                 }
             }
@@ -969,41 +969,41 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal ClickSourceRegister(RegisterManager regManager) : base(regManager, 0x39, 1, false) { }
 
-                public int X { get; set; }
-                public int Y { get; set; }
-                public int Z { get; set; }
-                public int Sign { get; set; }
-                public int SingleClickEnable { get; set; }
-                public int DoubleClickEnable { get; set; }
-                public int InterruptActive { get; set; }
+                public int x { get; set; }
+                public int y { get; set; }
+                public int z { get; set; }
+                public int sign { get; set; }
+                public int singleClickEnable { get; set; }
+                public int doubleClickEnable { get; set; }
+                public int interruptActive { get; set; }
 
-                public async Task<ClickSourceRegister> Read()
+                public async Task<ClickSourceRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((X & 0x1) << 0) | ((Y & 0x1) << 1) | ((Z & 0x1) << 2) | ((Sign & 0x1) << 3) | ((SingleClickEnable & 0x1) << 4) | ((DoubleClickEnable & 0x1) << 5) | ((InterruptActive & 0x1) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((x & 0x1) << 0) | ((y & 0x1) << 1) | ((z & 0x1) << 2) | ((sign & 0x1) << 3) | ((singleClickEnable & 0x1) << 4) | ((doubleClickEnable & 0x1) << 5) | ((interruptActive & 0x1) << 6); }
+                internal override void setValue(long _value)
                 {
-                    X = (int)((value >> 0) & 0x1);
-                    Y = (int)((value >> 1) & 0x1);
-                    Z = (int)((value >> 2) & 0x1);
-                    Sign = (int)((value >> 3) & 0x1);
-                    SingleClickEnable = (int)((value >> 4) & 0x1);
-                    DoubleClickEnable = (int)((value >> 5) & 0x1);
-                    InterruptActive = (int)((value >> 6) & 0x1);
+                    x = (int)((_value >> 0) & 0x1);
+                    y = (int)((_value >> 1) & 0x1);
+                    z = (int)((_value >> 2) & 0x1);
+                    sign = (int)((_value >> 3) & 0x1);
+                    singleClickEnable = (int)((_value >> 4) & 0x1);
+                    doubleClickEnable = (int)((_value >> 5) & 0x1);
+                    interruptActive = (int)((_value >> 6) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"X: { X } (offset: 0, width: 1)\r\n";
-                    retVal += $"Y: { Y } (offset: 1, width: 1)\r\n";
-                    retVal += $"Z: { Z } (offset: 2, width: 1)\r\n";
-                    retVal += $"Sign: { Sign } (offset: 3, width: 1)\r\n";
-                    retVal += $"SingleClickEnable: { SingleClickEnable } (offset: 4, width: 1)\r\n";
-                    retVal += $"DoubleClickEnable: { DoubleClickEnable } (offset: 5, width: 1)\r\n";
-                    retVal += $"InterruptActive: { InterruptActive } (offset: 6, width: 1)\r\n";
+                    retVal += $"X: { x } (offset: 0, width: 1)\r\n";
+                    retVal += $"Y: { y } (offset: 1, width: 1)\r\n";
+                    retVal += $"Z: { z } (offset: 2, width: 1)\r\n";
+                    retVal += $"Sign: { sign } (offset: 3, width: 1)\r\n";
+                    retVal += $"SingleClickEnable: { singleClickEnable } (offset: 4, width: 1)\r\n";
+                    retVal += $"DoubleClickEnable: { doubleClickEnable } (offset: 5, width: 1)\r\n";
+                    retVal += $"InterruptActive: { interruptActive } (offset: 6, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -1011,26 +1011,26 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal ClickThresholdRegister(RegisterManager regManager) : base(regManager, 0x3A, 1, false) { }
 
-                public int Threshold { get; set; }
-                public int LirClick { get; set; }
+                public int threshold { get; set; }
+                public int lirClick { get; set; }
 
-                public async Task<ClickThresholdRegister> Read()
+                public async Task<ClickThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Threshold & 0x7F) << 0) | ((LirClick & 0x1) << 7); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((threshold & 0x7F) << 0) | ((lirClick & 0x1) << 7); }
+                internal override void setValue(long _value)
                 {
-                    Threshold = (int)((value >> 0) & 0x7F);
-                    LirClick = (int)((value >> 7) & 0x1);
+                    threshold = (int)((_value >> 0) & 0x7F);
+                    lirClick = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Threshold: { Threshold } (offset: 0, width: 7)\r\n";
-                    retVal += $"LirClick: { LirClick } (offset: 7, width: 1)\r\n";
+                    retVal += $"Threshold: { threshold } (offset: 0, width: 7)\r\n";
+                    retVal += $"LirClick: { lirClick } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }
@@ -1038,23 +1038,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal TimeLimitRegister(RegisterManager regManager) : base(regManager, 0x3B, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<TimeLimitRegister> Read()
+                public async Task<TimeLimitRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7F) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7F) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7F);
+                    value = (int)((_value >> 0) & 0x7F);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 7)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 7)\r\n";
                     return retVal;
                 }
             }
@@ -1062,23 +1062,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal TimeLatencyRegister(RegisterManager regManager) : base(regManager, 0x3C, 10, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<TimeLatencyRegister> Read()
+                public async Task<TimeLatencyRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7FFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7FFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7FFF);
+                    value = (int)((_value >> 0) & 0x7FFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 79)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 79)\r\n";
                     return retVal;
                 }
             }
@@ -1086,23 +1086,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal TimeWindowRegister(RegisterManager regManager) : base(regManager, 0x3D, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<TimeWindowRegister> Read()
+                public async Task<TimeWindowRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -1110,23 +1110,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal ActivationThresholdRegister(RegisterManager regManager) : base(regManager, 0x3E, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<ActivationThresholdRegister> Read()
+                public async Task<ActivationThresholdRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x7F) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x7F) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0x7F);
+                    value = (int)((_value >> 0) & 0x7F);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 7)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 7)\r\n";
                     return retVal;
                 }
             }
@@ -1134,23 +1134,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal ActivationDurationRegister(RegisterManager regManager) : base(regManager, 0x3F, 1, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<ActivationDurationRegister> Read()
+                public async Task<ActivationDurationRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0xFF) << 0); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0xFF) << 0); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)((value >> 0) & 0xFF);
+                    value = (int)((_value >> 0) & 0xFF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 0, width: 8)\r\n";
+                    retVal += $"Value: { value } (offset: 0, width: 8)\r\n";
                     return retVal;
                 }
             }
@@ -1158,37 +1158,37 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal Ctrl1Register(RegisterManager regManager) : base(regManager, 0xA0, 1, false) { }
 
-                public int XAxisEnable { get; set; }
-                public int YAxisEnable { get; set; }
-                public int ZAxisEnable { get; set; }
-                public int LowPowerEnable { get; set; }
-                public int OutputDataRate { get; set; }
-                public OutputDataRates GetOutputDataRate() { return (OutputDataRates)OutputDataRate; }
-                public void SetOutputDataRate(OutputDataRates enumVal) { OutputDataRate = (int)enumVal; }
+                public int xAxisEnable { get; set; }
+                public int yAxisEnable { get; set; }
+                public int zAxisEnable { get; set; }
+                public int lowPowerEnable { get; set; }
+                public int outputDataRate { get; set; }
+                public OutputDataRates getOutputDataRate() { return (OutputDataRates)outputDataRate; }
+                public void setOutputDataRate(OutputDataRates enumVal) { outputDataRate = (int)enumVal; }
 
-                public async Task<Ctrl1Register> Read()
+                public async Task<Ctrl1Register> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((XAxisEnable & 0x1) << 0) | ((YAxisEnable & 0x1) << 1) | ((ZAxisEnable & 0x1) << 2) | ((LowPowerEnable & 0x1) << 3) | ((OutputDataRate & 0xF) << 4); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((xAxisEnable & 0x1) << 0) | ((yAxisEnable & 0x1) << 1) | ((zAxisEnable & 0x1) << 2) | ((lowPowerEnable & 0x1) << 3) | ((outputDataRate & 0xF) << 4); }
+                internal override void setValue(long _value)
                 {
-                    XAxisEnable = (int)((value >> 0) & 0x1);
-                    YAxisEnable = (int)((value >> 1) & 0x1);
-                    ZAxisEnable = (int)((value >> 2) & 0x1);
-                    LowPowerEnable = (int)((value >> 3) & 0x1);
-                    OutputDataRate = (int)((value >> 4) & 0xF);
+                    xAxisEnable = (int)((_value >> 0) & 0x1);
+                    yAxisEnable = (int)((_value >> 1) & 0x1);
+                    zAxisEnable = (int)((_value >> 2) & 0x1);
+                    lowPowerEnable = (int)((_value >> 3) & 0x1);
+                    outputDataRate = (int)((_value >> 4) & 0xF);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"XAxisEnable: { XAxisEnable } (offset: 0, width: 1)\r\n";
-                    retVal += $"YAxisEnable: { YAxisEnable } (offset: 1, width: 1)\r\n";
-                    retVal += $"ZAxisEnable: { ZAxisEnable } (offset: 2, width: 1)\r\n";
-                    retVal += $"LowPowerEnable: { LowPowerEnable } (offset: 3, width: 1)\r\n";
-                    retVal += $"OutputDataRate: { OutputDataRate } (offset: 4, width: 4)\r\n";
+                    retVal += $"XAxisEnable: { xAxisEnable } (offset: 0, width: 1)\r\n";
+                    retVal += $"YAxisEnable: { yAxisEnable } (offset: 1, width: 1)\r\n";
+                    retVal += $"ZAxisEnable: { zAxisEnable } (offset: 2, width: 1)\r\n";
+                    retVal += $"LowPowerEnable: { lowPowerEnable } (offset: 3, width: 1)\r\n";
+                    retVal += $"OutputDataRate: { outputDataRate } (offset: 4, width: 4)\r\n";
                     return retVal;
                 }
             }
@@ -1196,23 +1196,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal OutXRegister(RegisterManager regManager) : base(regManager, 0xA8, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<OutXRegister> Read()
+                public async Task<OutXRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x3FF) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x3FF) << 6); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
+                    value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 6, width: 10)\r\n";
+                    retVal += $"Value: { value } (offset: 6, width: 10)\r\n";
                     return retVal;
                 }
             }
@@ -1220,23 +1220,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal OutYRegister(RegisterManager regManager) : base(regManager, 0xAA, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<OutYRegister> Read()
+                public async Task<OutYRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x3FF) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x3FF) << 6); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
+                    value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 6, width: 10)\r\n";
+                    retVal += $"Value: { value } (offset: 6, width: 10)\r\n";
                     return retVal;
                 }
             }
@@ -1244,23 +1244,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 internal OutZRegister(RegisterManager regManager) : base(regManager, 0xAC, 2, false) { }
 
-                public int Value { get; set; }
+                public int value { get; set; }
 
-                public async Task<OutZRegister> Read()
+                public async Task<OutZRegister> read()
                 {
-                    await manager.Read(this).ConfigureAwait(false);
+                    await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long GetValue() { return ((Value & 0x3FF) << 6); }
-                internal override void SetValue(long value)
+                internal override long getValue() { return ((value & 0x3FF) << 6); }
+                internal override void setValue(long _value)
                 {
-                    Value = (int)(((value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
+                    value = (int)(((_value >> 6) & 0x3FF) << (32 - 10)) >> (32 - 10);
                 }
 
                 public override string ToString()
                 {
                     string retVal = "";
-                    retVal += $"Value: { Value } (offset: 6, width: 10)\r\n";
+                    retVal += $"Value: { value } (offset: 6, width: 10)\r\n";
                     return retVal;
                 }
             }

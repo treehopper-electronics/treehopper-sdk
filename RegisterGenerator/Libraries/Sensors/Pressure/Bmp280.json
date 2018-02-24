@@ -1,0 +1,255 @@
+{
+  "multiRegisterAccess": "true",
+  "registers": {
+    "t1": {
+      "address": "0x88",
+      "width": 16
+    },
+
+    "t2": {
+      "address": "0x8a",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "t3": {
+      "address": "0x8c",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p1": {
+      "address": "0x8e",
+      "width": 16
+    },
+
+    "p2": {
+      "address": "0x90",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p3": {
+      "address": "0x92",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p4": {
+      "address": "0x94",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p5": {
+      "address": "0x96",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p6": {
+      "address": "0x98",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p7": {
+      "address": "0x9a",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p8": {
+      "address": "0x9c",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "p9": {
+      "address": "0x9e",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "h1": {
+      "address": "0xa1",
+      "width": 8
+    },
+
+    "id": {
+      "address": "0xd0",
+      "width": 8
+    },
+
+    "reset": {
+      "address": "0xe0",
+      "width": 8
+    },
+
+    "h2": {
+      "address": "0xe1",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "h3": {
+      "address": "0xe3",
+      "width": 8
+    },
+
+    "h4": {
+      "address": "0xe4",
+      "width": 8
+    },
+
+    "h4h5": {
+      "address": "0xe5",
+      "values": {
+        "h4Low": {
+          "width": 4
+        },
+        "h5Low": {
+          "width": 4
+        }
+      }
+    },
+
+    "h5": {
+      "address": "0xe6",
+      "width": 8
+    },
+
+    "h6": {
+      "address": "0xe7",
+      "width": 8,
+      "isSigned": "true"
+    },
+
+
+    "ctrlHumidity": {
+      "address": "0xf2",
+      "values": {
+        "oversampling": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "Skipped": null,
+              "Oversampling_x1": null,
+              "Oversampling_x2": null,
+              "Oversampling_x4": null,
+              "Oversampling_x8": null,
+              "Oversampling_x16": null
+            }
+          }
+        }
+      }
+    },
+
+    "status": {
+      "address": "0xf3",
+      "values": {
+        "imUpdate": {},
+        "measuring": {
+          "offset": 3
+        }
+      }
+    },
+
+    "ctrlMeasure": {
+      "address": "0xf4",
+      "values": {
+        "mode": {
+          "width": 2,
+          "enum": {
+            "values": {
+              "Sleep": 0,
+              "Forced": 1,
+              "Normal": 3
+            }
+          }
+        },
+        "oversamplingPressure": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "Skipped": null,
+              "Oversampling_x1": null,
+              "Oversampling_x2": null,
+              "Oversampling_x4": null,
+              "Oversampling_x8": null,
+              "Oversampling_x16": null
+            }
+          }
+        },
+        "oversamplingTemperature": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "Skipped": null,
+              "Oversampling_x1": null,
+              "Oversampling_x2": null,
+              "Oversampling_x4": null,
+              "Oversampling_x8": null,
+              "Oversampling_x16": null
+            }
+          }
+        }
+      }
+    },
+
+    "config": {
+      "address": "0xf5",
+      "values": {
+        "enable3Wire": {},
+        "filter": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "FilterOff": null,
+              "Filter2": null,
+              "Filter4": null,
+              "Filter8": null,
+              "Filter16": null
+            }
+          }
+        },
+        "tStandby": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "Ms_0_5": null,
+              "Ms_62_5": null,
+              "Ms_125": null,
+              "Ms_250": null,
+              "Ms_500": null,
+              "Ms_1000": null,
+              "Ms_10": null,
+              "Ms_20": null
+            }
+          }
+        }
+      }
+    },
+
+    "pressure": {
+      "address": "0xf7",
+      "width": 20,
+      "offset": 4,
+      "isBigEndian": "true"
+    },
+
+    "temperature": {
+      "address": "0xfa",
+      "width": 20,
+      "offset": 4,
+      "isBigEndian": "true"
+    },
+
+    "humidity": {
+      "address": "0xfd",
+      "width": 16,
+      "isBigEndian": "true"
+    }
+
+  }
+}

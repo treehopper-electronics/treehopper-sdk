@@ -4,6 +4,7 @@ from treehopper.libraries.sensors import Pollable
 
 class AmbientLight(Pollable):
     def __init__(self):
+        super().__init__()
         self._lux = 0
 
     @property
