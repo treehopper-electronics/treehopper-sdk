@@ -1,0 +1,94 @@
+{
+    "multiRegisterAccess": "true",
+    "registers" : {
+        "whoAmI" : {
+            "address" : "0x00",
+            "width" : 8
+        },
+
+        "smplrtDiv" : {
+            "address" : "0x15",
+            "width" : 8
+        },
+
+        "dlpfFs" : {
+            "address" : "0x16",
+            "values" : {
+                "dlpfCfg" : {
+                    "width" : 3
+                },
+                "fsSel" : {
+                    "width" : 2
+                }
+            }
+        }, 
+
+        "intCfg" : {
+            "address" : "0x17",
+            "values" : {
+                "rawRdyEn" : {},
+                "itgRdyEn" : {
+                    "offset" : 2
+                },
+                "intAnyrd2Clear" : {
+                    "offset" : 4
+                },
+                "latchIntEn" : {},
+                "open" : {},
+                "actl" : {}
+            }
+        },
+
+        "intStatus" : {
+            "address" : "0x1a",
+            "values" : {
+                "rawDataReady" : {},
+                "itgReady" : {
+                    "offset" : 2
+                }
+            }
+        },
+
+        "temp" : {
+            "address" : "0x1b",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "gyroX" : {
+            "address" : "0x1d",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "gyroY" : {
+            "address" : "0x1f",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "gyroZ" : {
+            "address" : "0x21",
+            "width" : 16,
+            "isSigned" : "true",
+            "isBigEndian" : "true"
+        },
+
+        "pwrMgm" : {
+            "address" : "0x3e",
+            "values" : {
+                "clkSel" : {
+                    "width" : 3
+                },
+                "stbyZg" : {},
+                "stbyYg" : {},
+                "stbyXg" : {},
+                "sleep" : {},
+                "hReset" : {}
+            }
+        }
+    }
+}
