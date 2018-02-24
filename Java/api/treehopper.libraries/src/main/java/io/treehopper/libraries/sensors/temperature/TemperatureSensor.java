@@ -8,9 +8,17 @@ public abstract class TemperatureSensor implements Temperature {
     protected double celsius = 0;
     protected boolean autoUpdateWhenPropertyRead = true;
 
+    public static double toKelvin(double celsius) {
+        return celsius + 273.15;
+    }
+
+    public static double toFahrenheit(double celsius) {
+        return celsius * 9.0 / 5.0 + 32.0;
+    }
+
     @Override
     public double getCelsius() {
-        if(autoUpdateWhenPropertyRead)
+        if (autoUpdateWhenPropertyRead)
             update();
 
         return celsius;
@@ -28,11 +36,11 @@ public abstract class TemperatureSensor implements Temperature {
 
     @Override
     public double getFahrenheit() {
-        return getCelsius() * 9.0 / 5.0 + 32.0;
+        return TemperatureSensor.toFahrenheit(getCelsius());
     }
 
     @Override
     public double getKelvin() {
-        return getCelsius() + 273.15;
+        return TemperatureSensor.toKelvin(getCelsius());
     }
 }

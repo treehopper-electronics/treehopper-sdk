@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Treehopper.Libraries.Sensors.Humidity;
 
 namespace Treehopper.Libraries.Sensors.Pressure
@@ -9,14 +11,31 @@ namespace Treehopper.Libraries.Sensors.Pressure
     [Supports("Bosch", "BME280")]
     public class Bme280 : Bmp280, IHumiditySensor
     {
-        private byte H1;
-        private short H2;
-        private byte H3;
-        private short H4;
-        private short H5;
-        private byte H6;
-        private double humidity;
+        public static async Task<IList<Bme280>> Probe(I2C i2c)
+        {
+            var deviceList = new List<Bme280>();
+            try
+            {
+                var dev = new SMBusDevice(0x76, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                if (whoAmI == 0x60)
+                    deviceList.Add(new Bme280(i2c, false));
+            }
+            catch (Exception ex) { }
 
+            try
+            {
+                var dev = new SMBusDevice(0x77, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                if (whoAmI == 0x60)
+                    deviceList.Add(new Bme280(i2c, true));
+            }
+            catch (Exception ex) { }
+            return deviceList;
+        }
+
+        private double humidity;
+        private short h4, h5;
         /// <summary>
         ///     Construct a BMP280 hooked up to the i2C bus
         /// </summary>
@@ -24,18 +43,15 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// <param name="sdo">the state of the SDO pin, which sets the address</param>
         public Bme280(I2C i2c, bool sdo = false) : base(i2c, sdo)
         {
-            Start();
-        }
+            Task.Run(() => registers.readRange(registers.h2, registers.h6)).Wait();
 
-        /// <summary>
-        ///     Construct a BMP280 hooked up to the SPI bus
-        /// </summary>
-        /// <param name="spi">the SPI bus to use</param>
-        /// <param name="csPin">the chip select pin to use</param>
-        /// <param name="speedMhz">the speed to operate at</param>
-        public Bme280(Spi spi, SpiChipSelectPin csPin, double speedMhz) : base(spi, csPin, speedMhz)
-        {
-            Start();
+            // RegisterGenerator doesn't get the endianness right on the h4/h5 12-bit values, so manually create them:
+            h4 = (short)((short)((registers.h4.value << 4 | registers.h4h5.h4Low) << 4) >> 4);
+            h5 = (short)((short)((registers.h5.value << 4 | registers.h4h5.h5Low) << 4) >> 4);
+
+            registers.ctrlHumidity.setOversampling(Oversamplings.Oversampling_x16);
+            Task.Run(registers.ctrlHumidity.write).Wait();
+            Task.Run(registers.ctrlMeasure.write).Wait();
         }
 
         /// <summary>
@@ -60,37 +76,22 @@ namespace Treehopper.Libraries.Sensors.Pressure
             await base.Update();
 
             // now the BME stuff
-            var adc_H = (LastReceivedData[6] << 8) | LastReceivedData[7];
-            int v_x1_u32r;
+            double var_H;
 
-            v_x1_u32r = tFine - 76800;
+            var_H = tFine - 76800.0;
+            var_H = (registers.humidity.value - (h4 * 64.0 + h5 / 16384.0 * var_H)) *
+                registers.h2.value / 65536.0 * 
+                (1.0 + registers.h6.value / 67108864.0 * var_H *
+                (1.0 + registers.h3.value / 67108864.0 * var_H));
 
-            v_x1_u32r = (((adc_H << 14) - (H4 << 20) -
-                          H5 * v_x1_u32r + 16384) >> 15) *
-                        (((((((v_x1_u32r * H6) >> 10) *
-                             (((v_x1_u32r * H3) >> 11) + 32768)) >> 10) +
-                           2097152) * H2 + 8192) >> 14);
+            var_H = var_H * (1.0 - registers.h1.value * var_H / 524288.0);
 
-            v_x1_u32r = v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *
-                                      H1) >> 4);
+            if (var_H > 100.0)
+                var_H = 100.0;
+            else if (var_H < 0.0)
+                var_H = 0.0;
 
-            v_x1_u32r = v_x1_u32r < 0 ? 0 : v_x1_u32r;
-            v_x1_u32r = v_x1_u32r > 419430400 ? 419430400 : v_x1_u32r;
-            humidity = (v_x1_u32r >> 12) / 1024.0;
-        }
-
-        private void Start()
-        {
-            PayloadSize = 8; // BME280 is 8-byte payload
-
-            // read humidity calibration parameters
-            H1 = Read(0xA1, 1).Result[0];
-            var data = Read(0xE1, 7).Result;
-            H2 = (short) (data[0] | (data[1] << 8));
-            H3 = data[2];
-            H4 = (short) ((data[3] << 4) | (data[4] & 0x0F));
-            H5 = (short) ((data[5] << 4) | (data[4] >> 4));
-            H6 = data[6];
+            humidity = var_H;
         }
     }
 }

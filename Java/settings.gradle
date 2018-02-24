@@ -8,3 +8,6 @@ include ':api:treehopper.desktop',
         ':demos:desktop:libraries:mpu9250',
         ':demos:android:blink',
         ':demos:android:sandbox'
+include 'demos:desktop:libraries:bmp280'
+findProject(':demos:desktop:libraries:bmp280')?.name = 'bmp280'
+
