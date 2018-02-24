@@ -8,12 +8,12 @@
     #ifdef _WIN32
         #define LIBRARIES_API __declspec(dllexport)
     #else
-		#define TREEHOPPER_API __attribute__ ((dllexport))
+		#define LIBRARIES_API __attribute__ ((dllexport))
     #endif
 #else
     #ifdef _WIN32
         #define LIBRARIES_API __declspec(dllimport)
     #else
-		#define TREEHOPPER_API __attribute__ ((dllimport))
+		#define LIBRARIES_API __attribute__ ((dllimport))
     #endif
 #endif
