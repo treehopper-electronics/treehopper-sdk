@@ -24,4 +24,9 @@ namespace Treehopper
 
 		return false;
 	}
+
+	bool Utility::isBigEndian() {
+		static const uint16_t m_endianCheck(0x00ff);
+		return ( *((uint8_t*)&m_endianCheck) == 0x0);
+	}
 }
