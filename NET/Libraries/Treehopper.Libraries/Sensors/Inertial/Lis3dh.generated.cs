@@ -28,10 +28,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         internal enum FullScaleSelections
         {
-            scale_2G = 0,
-            scale_4G = 1,
-            scale_8G = 2,
-            scale_16G = 3
+            Scale_2G = 0,
+            Scale_4G = 1,
+            Scale_8G = 2,
+            Scale_16G = 3
         }
 
         internal enum FifoModes

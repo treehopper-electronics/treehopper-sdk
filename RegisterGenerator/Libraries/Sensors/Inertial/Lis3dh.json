@@ -147,10 +147,10 @@
                     "enum": {
                         "name": "Scale",
                         "values": {
-                            "scale_2G" : null,
-                            "scale_4G" : null,
-                            "scale_8G" : null,
-                            "scale_16G" : null
+                            "Scale_2G" : null,
+                            "Scale_4G" : null,
+                            "Scale_8G" : null,
+                            "Scale_16G" : null
                         }
                     }
                 },
