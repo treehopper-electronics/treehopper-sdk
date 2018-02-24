@@ -16,20 +16,28 @@ namespace Treehopper
 				{
 				}
 
-				double TemperatureSensor::getCelsius()
+				double TemperatureSensor::toFahrenheit(double celsius) {
+					return ((celsius * 9.0) / 5.0) + 32.0;
+				}
+
+				double TemperatureSensor::toKelvin(double celsius) {
+					return celsius + 273.15;
+				}
+
+				double TemperatureSensor::celsius()
 				{
 					if (autoUpdateWhenPropertyRead) update();
-					return celsius;
+					return _celsius;
 				}
 
-				double TemperatureSensor::getFahrenheit()
+				double TemperatureSensor::fahrenheit()
 				{
-					return ((getCelsius() * 9.0) / 5.0) + 32.0;
+					return toFahrenheit(celsius());
 				}
 
-				double TemperatureSensor::getKelvin()
+				double TemperatureSensor::kelvin()
 				{
-					return getCelsius() + 273.15;
+					return toKelvin(celsius());
 				}
 			}
 		}

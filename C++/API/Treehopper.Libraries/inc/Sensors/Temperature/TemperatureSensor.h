@@ -11,17 +11,19 @@ namespace Treehopper
 		{
 			namespace Temperature
 			{
-				class LIBRARIES_API TemperatureSensor : Pollable
+				class LIBRARIES_API TemperatureSensor : virtual public Pollable
 				{
 				public:
 					TemperatureSensor();
 					~TemperatureSensor();
-					double getCelsius();
-					double getFahrenheit();
-					double getKelvin();
+					static double toFahrenheit(double celsius);
+					static double toKelvin(double celsius);
 
+					double celsius();
+					double fahrenheit();
+					double kelvin();
 				protected:
-					double celsius;
+					double _celsius;
 
 				};
 			}
