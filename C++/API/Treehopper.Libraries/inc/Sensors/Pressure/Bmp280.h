@@ -31,7 +31,7 @@ namespace Treehopper
 				private:
 					SMBusDevice dev;
 					Bmp280Registers registers;
-					double Bmp280::altitudeFromPressure(double temperature, double pressure);
+					double altitudeFromPressure(double temperature, double pressure);
 					double _altitude;
 				};
 			}

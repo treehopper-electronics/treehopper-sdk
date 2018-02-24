@@ -15,7 +15,7 @@ int main()
 	auto sensor = Bmp280(board.i2c, false);
 	while (true) {
 		cout << sensor.altitude() << "\r\n";
-		std::this_thread::sleep_for(0.5s);
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 	
 	board.disconnect();
