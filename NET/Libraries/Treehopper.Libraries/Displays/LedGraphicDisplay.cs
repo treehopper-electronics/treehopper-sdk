@@ -45,6 +45,7 @@ namespace Treehopper.Libraries.Displays
         /// <returns>An awaitable task</returns>
         protected override Task flush()
         {
+            WriteLeds();
             return Leds.Flush();
         }
 
