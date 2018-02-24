@@ -21,7 +21,8 @@ namespace Treehopper.Desktop.WinUsb
         public WinUsbConnectionService()
         {
             // WMI queries take forever, so spin up a task to handle this so we don't block the app
-            Task.Run(() => initialAdd());
+            //Task.Run(() => initialAdd());
+            initialAdd();
 
             // We can only hear WM_DEVICECHANGE messages if we're an STA thread that's properly pumping windows messages.
             // There's no easy way to tell if the calling thread is pumping messages, so just check the apartment state, and assume people

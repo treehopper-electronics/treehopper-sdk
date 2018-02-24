@@ -19,27 +19,27 @@ namespace Treehopper.Libraries.Sensors.Inertial
         protected Vector3 magnetometer;
         Ak8975 mag;
 
-        public static IList<Mpu9250> Probe(I2C i2c)
+        public static async Task<IList<Mpu9250>> Probe(I2C i2c)
         {
-            var retVal = new List<Mpu9250>();
+            var deviceList = new List<Mpu9250>();
             try
             {
                 var dev = new SMBusDevice(0x68, i2c, 100);
-                var whoAmI = Task.Run(() => dev.ReadByteData(0x75)).Result;
+                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x71)
-                    retVal.Add(new Mpu9250(i2c, false));
+                    deviceList.Add(new Mpu9250(i2c, false));
             } catch(Exception ex) { }
 
             try
             {
                 var dev = new SMBusDevice(0x69, i2c, 100);
-                var whoAmI = Task.Run(() => dev.ReadByteData(0x75)).Result;
+                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x71)
-                    retVal.Add(new Mpu9250(i2c, true));
+                    deviceList.Add(new Mpu9250(i2c, true));
             }
             catch (Exception ex) { }
 
-            return retVal;
+            return deviceList;
         }
 
         public Mpu9250(I2C i2c, bool addressPin = false, int rate = 400) : base(i2c)

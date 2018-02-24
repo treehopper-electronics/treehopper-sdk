@@ -11,6 +11,7 @@ namespace Treehopper.Libraries
         protected RegisterManager manager;
         public bool IsLittleEndian { get; }
         public int Address { get;  }
+        public int Width { get; }
 
         public Register(RegisterManager regManager, int address, int width, bool isBigEndian)
         {
@@ -25,7 +26,6 @@ namespace Treehopper.Libraries
             return manager.write(this);
         }
 
-        public int Width { get; }
         internal abstract long getValue();
         internal abstract void setValue(long value);
 

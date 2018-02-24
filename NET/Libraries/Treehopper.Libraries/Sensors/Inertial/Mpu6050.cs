@@ -26,28 +26,28 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
-        public static IList<Mpu6050> Probe(I2C i2c, bool includeMpu9250 = false)
+        public static async Task<IList<Mpu6050>> Probe(I2C i2c, bool includeMpu9250 = false)
         {
-            var retVal = new List<Mpu6050>();
+            var deviceList = new List<Mpu6050>();
             try
             {
                 var dev = new SMBusDevice(0x68, i2c, 100);
-                var whoAmI = Task.Run(() => dev.ReadByteData(0x75)).Result;
+                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
-                    retVal.Add(new Mpu6050(i2c, false));
+                    deviceList.Add(new Mpu6050(i2c, false));
             }
             catch (Exception ex) { }
 
             try
             {
                 var dev = new SMBusDevice(0x69, i2c, 100);
-                var whoAmI = Task.Run(() => dev.ReadByteData(0x75)).Result;
+                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
-                    retVal.Add(new Mpu6050(i2c, true));
+                    deviceList.Add(new Mpu6050(i2c, true));
             }
             catch (Exception ex) { }
 
-            return retVal;
+            return deviceList;
         }
 
         /// <summary>
