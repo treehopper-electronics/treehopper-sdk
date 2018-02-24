@@ -1,0 +1,1 @@
+from treehopper.libraries.sensors.humidity.HumiditySensor import HumiditySensor

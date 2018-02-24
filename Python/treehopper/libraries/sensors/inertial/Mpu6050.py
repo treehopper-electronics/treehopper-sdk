@@ -10,12 +10,12 @@ from treehopper.libraries.sensors.temperature.Temperature import Temperature
 
 class Mpu6050(Accelerometer, Gyroscope, Temperature):
     @staticmethod
-    def probe(i2c: I2c, includeMpu9250: bool) -> List['Mpu6050']:
+    def probe(i2c: I2c, include_mpu9250: bool) -> List['Mpu6050']:
         devs = []  # type: List['Mpu6050']
         try:
             dev = SMBusDevice(0x68, i2c, 100)
             who_am_i = dev.read_byte_data(0x75)
-            if who_am_i == 0x68 or (who_am_i == 0x71 and includeMpu9250):
+            if who_am_i == 0x68 or (who_am_i == 0x71 and include_mpu9250):
                 devs.append(Mpu6050(i2c, False))
         except RuntimeError:
             pass
@@ -23,7 +23,7 @@ class Mpu6050(Accelerometer, Gyroscope, Temperature):
         try:
             dev = SMBusDevice(0x69, i2c, 100)
             who_am_i = dev.read_byte_data(0x75)
-            if who_am_i == 0x68 or (who_am_i == 0x71 and includeMpu9250):
+            if who_am_i == 0x68 or (who_am_i == 0x71 and include_mpu9250):
                 devs.append(Mpu6050(i2c, False))
         except RuntimeError:
             pass
