@@ -35,9 +35,10 @@ class Flushable(abc.ABC):
 
     @abc.abstractmethod
     def flush(self, force=False):
-        """Flush the current property values to the physical hardware.
+        """
+        Flush the current property values to the physical hardware.
 
-        :param force whether to force an update, even if the library thinks the hardware's current state matches the
+        :param force: whether to force an update, even if the library thinks the hardware's current state matches the
         state defined by the properties in the class.
 
         This method only needs to be called when auto_flush is False (the default value is True). When auto_flush is
@@ -46,5 +47,8 @@ class Flushable(abc.ABC):
 
         Some libraries keep track of the state of the physical hardware, and will only update properties that do not
         appear to have changed. However, if the device is externally reset (or on initial power-up), the user should set
-        force=True in the flush() command, to force-write all changes to the device."""
+        force=True in the flush() command, to force-write all changes to the device.
+
+        :return: None
+        """
         pass

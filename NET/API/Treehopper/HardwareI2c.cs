@@ -63,10 +63,27 @@ namespace Treehopper
         /// <summary>
         ///     Sends and Receives data. This is a blocking call that won't return until I2C communication is complete.
         /// </summary>
-        /// <param name="address">The address of the device. This address should not include the read/write bit.</param>
+        /// <param name="address">The 7-bit address of the device. This address should not include the read/write bit.</param>
         /// <param name="dataToWrite">Array of one or more bytes to write to the device.</param>
         /// <param name="numBytesToRead">Number of bytes to receive from the device.</param>
         /// <returns>Data read from the device.</returns>
+        ///
+        /// To reduce USB communication chattiness, Treehopper has no API for primitive I2C operations (start condition,
+        /// ACK, etc). Rather, Treehopper supports a single send_receive() function that sends a "start" condition, followed
+        /// by the 7-bit slave address. Reading and writing data occurs according to write_data and num_bytes_to_read.
+        ///
+        /// If write_data is set, the "read" bit is cleared, and Treehopper will write write_data
+        /// to the board. Then, if num_bytes_to_read is not 0, a restart condition will be sent, followed by the device
+        /// address and "read" bit. Treehopper will then read num_bytes_to_read bytes from the device.
+        ///
+        /// If write_data is None, the "read" bit is set, and Treehopper will simply read
+        /// num_bytes_to_read bytes.
+        ///
+        /// By supporting both None write_data and num_bytes_to_read=0 conditions, this function can be used for all
+        /// standard I2C/SMBus transactions.
+        ///
+        /// Most I2C devices use a register-based scheme for exchanging data; consider using SMBusDevice for interacting
+        /// with these devices.
         public async Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
             if (!Enabled)
