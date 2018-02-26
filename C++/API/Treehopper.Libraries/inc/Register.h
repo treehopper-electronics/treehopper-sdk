@@ -8,7 +8,7 @@
 
 namespace Treehopper {
 	namespace Libraries {
-		class LIBRARIES_API Register
+		class Register
 		{
 		public:
 			Register(RegisterManager& regManager, int address, int width, bool isBigEndian);
