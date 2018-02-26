@@ -8,18 +8,10 @@ namespace Treehopper
 		{
 			namespace Inertial
 			{
-				Accelerometer::Accelerometer()
-				{
-				}
-
-				Accelerometer::~Accelerometer()
-				{
-				}
-
-				std::tuple<double, double, double> Accelerometer::getAcceleration()
+				vector3_t& Accelerometer::accelerometer()
 				{
 					if (autoUpdateWhenPropertyRead) update();
-					return acceleration;
+					return _accelerometer;
 				}
 			}
 		}

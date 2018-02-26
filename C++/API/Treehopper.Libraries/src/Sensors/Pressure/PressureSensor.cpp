@@ -8,14 +8,6 @@ namespace Treehopper
 		{
 			namespace Pressure
 			{
-				PressureSensor::PressureSensor()
-				{
-				}
-
-				PressureSensor::~PressureSensor()
-				{
-				}
-
 				double PressureSensor::pascal()
 				{
 					if (autoUpdateWhenPropertyRead) update();

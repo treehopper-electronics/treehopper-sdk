@@ -15,8 +15,6 @@ namespace Treehopper
 				class LIBRARIES_API PressureSensor : virtual public Pollable
 				{
 				public:
-					PressureSensor();
-					~PressureSensor();
 					double bar();
 					double atm();
 					double psi();

@@ -2,6 +2,7 @@
 #include "Treehopper.Libraries.h"
 #include "Pollable.h"
 #include <tuple>
+#include <Types.h>
 
 using namespace Treehopper::Libraries;
 
@@ -13,15 +14,13 @@ namespace Treehopper
 		{
 			namespace Inertial
 			{
-				class LIBRARIES_API Accelerometer : Pollable
+				class LIBRARIES_API Accelerometer : virtual Pollable
 				{
 				public:
-					Accelerometer();
-					~Accelerometer();
-					std::tuple<double, double, double> getAcceleration();
+					vector3_t& accelerometer();
 
 				protected:
-					std::tuple<double, double, double>  acceleration;
+                    vector3_t _accelerometer;
 
 				};
 			}

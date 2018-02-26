@@ -9,9 +9,7 @@ namespace Treehopper
 		class LIBRARIES_API Pollable
 		{
 		public:
-			Pollable();
-			~Pollable();
-			bool autoUpdateWhenPropertyRead;
+			bool autoUpdateWhenPropertyRead = true;
 			virtual void update() = 0;
 		};
 	}
