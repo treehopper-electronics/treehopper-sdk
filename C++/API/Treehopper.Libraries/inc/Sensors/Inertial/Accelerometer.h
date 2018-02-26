@@ -14,7 +14,7 @@ namespace Treehopper
 		{
 			namespace Inertial
 			{
-				class LIBRARIES_API Accelerometer : virtual Pollable
+				class LIBRARIES_API Accelerometer : virtual public Pollable
 				{
 				public:
 					vector3_t& accelerometer();
