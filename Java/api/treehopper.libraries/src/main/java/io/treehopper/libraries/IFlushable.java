@@ -5,6 +5,8 @@ package io.treehopper.libraries;
  */
 public interface IFlushable {
     boolean isAutoFlushEnabled();
+
     void setAutoFlushEnabled(boolean value);
+
     void flush(boolean force);
 }

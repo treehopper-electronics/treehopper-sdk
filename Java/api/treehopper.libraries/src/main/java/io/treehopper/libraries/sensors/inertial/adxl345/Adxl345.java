@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Vector3;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
 import io.treehopper.libraries.sensors.inertial.Accelerometer;
-import io.treehopper.libraries.sensors.inertial.adxl345.Adxl345Registers;
-import io.treehopper.libraries.sensors.inertial.IAccelerometer;
 
 /**
  * Created by JayLocal on 4/29/2017.
@@ -13,8 +11,7 @@ import io.treehopper.libraries.sensors.inertial.IAccelerometer;
 public class Adxl345 extends Accelerometer {
     private Adxl345Registers registers;
 
-    public Adxl345(I2c i2c, boolean altAddress, int rate)
-    {
+    public Adxl345(I2c i2c, boolean altAddress, int rate) {
         SMBusDevice dev = new SMBusDevice((byte) (!altAddress ? 0x53 : 0x1D), i2c, rate);
         registers = new Adxl345Registers(dev);
         registers.powerCtl.sleep = 0;

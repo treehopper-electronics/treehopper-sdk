@@ -8,7 +8,7 @@ public abstract class Accelerometer implements IAccelerometer {
 
     @Override
     public Vector3 getAccelerometer() {
-        if(autoUpdateWhenPropertyRead)
+        if (autoUpdateWhenPropertyRead)
             update();
 
         return accelerometer;

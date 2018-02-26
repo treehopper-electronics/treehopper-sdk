@@ -1,7 +1,6 @@
 package io.treehopper.libraries.io.adc.nau7802;
 
 import io.treehopper.SMBusDevice;
-import io.treehopper.interfaces.DigitalIn;
 import io.treehopper.interfaces.I2c;
 
 /**
@@ -11,8 +10,9 @@ public class Nau7802 {
     double referenceVoltage;
     SMBusDevice dev;
     Nau7802Registers registers;
+
     public Nau7802(I2c i2c) {
-        dev = new SMBusDevice((byte)0x2A, i2c);
+        dev = new SMBusDevice((byte) 0x2A, i2c);
         registers = new Nau7802Registers(dev);
 
         registers.puCtrl.registerReset = 1;  // reset all registers
@@ -70,41 +70,36 @@ public class Nau7802 {
         registers.ctrl1.setGain(gain);
     }
 
-    private int PerformConversion()
-    {
-        while(!ConversionDone());
+    private int PerformConversion() {
+        while (!ConversionDone()) ;
 
         registers.adcResult.read();
         return registers.adcResult.value;
     }
 
-    private boolean ConversionDone()
-    {
+    private boolean ConversionDone() {
         registers.read(registers.puCtrl);
         return registers.puCtrl.cycleReady == 1;
     }
 
-    private void updateReferenceVoltage()
-    {
+    private void updateReferenceVoltage() {
         double ldoVoltage = 4.5 - registers.ctrl1.vldo * 0.3;
         double gain = 1 << registers.ctrl1.gain;
 
         referenceVoltage = ldoVoltage / gain;
     }
 
-    public boolean calibrate()
-    {
+    public boolean calibrate() {
         registers.ctrl2.calStart = 1;
         registers.ctrl2.write();
         registers.ctrl2.calStart = 1;
 
-        while (registers.ctrl2.read().calStart == 1);
+        while (registers.ctrl2.read().calStart == 1) ;
 
         return (registers.ctrl2.calError == 0);
     }
 
-    public void SetChannel(int channel)
-    {
+    public void SetChannel(int channel) {
         registers.ctrl2.channelSelect = channel;
         registers.ctrl2.write();
         calibrate();
