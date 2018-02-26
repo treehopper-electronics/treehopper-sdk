@@ -5,7 +5,6 @@
 
 namespace Treehopper {
 	namespace Libraries {
-		/*class SMBusDevice;*/
 		class Register;
 
 		class RegisterManager

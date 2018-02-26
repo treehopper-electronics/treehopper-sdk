@@ -1,5 +1,4 @@
 #include <thread>
-#include <chrono>
 #include "Sensors/Inertial/Bno055.h"
 
 namespace Treehopper {
@@ -7,9 +6,8 @@ namespace Treehopper {
         namespace Sensors {
             namespace Inertial {
                 Bno055::Bno055(I2c &i2c, bool altAddress, int rate)
-                    : _dev((uint8_t)(altAddress ? 0x28 : 0x29), i2c, rate),
-                      registers(_dev)
-                {
+                        : _dev((uint8_t) (altAddress ? 0x28 : 0x29), i2c, rate),
+                          registers(_dev) {
                     registers.operatingMode.setOperatingMode(OperatingModes::ConfigMode);
                     registers.operatingMode.write();
                     registers.unitSel.accel = 1;
@@ -19,12 +17,10 @@ namespace Treehopper {
                     registers.sysTrigger.write();
                     registers.sysTrigger.resetSys = 0;
                     int id = 0;
-                    do
-                    {
+                    do {
                         registers.chipId.read();
                         id = registers.chipId.value;
-                    }
-                    while (id != 0xA0);
+                    } while (id != 0xA0);
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     registers.powerMode.setPowerMode(PowerModes::Normal);
                     registers.powerMode.write();
@@ -69,29 +65,29 @@ namespace Treehopper {
                     _quaternion.y = registers.quaY.value / 16384.0f;
                     _quaternion.z = registers.quaZ.value / 16384.0f;
 
-                    _celsius = (char)(registers.temp.value);
+                    _celsius = (char) (registers.temp.value);
                 }
 
                 vector3_t Bno055::linearAcceleration() {
-                    if(autoUpdateWhenPropertyRead) update();
+                    if (autoUpdateWhenPropertyRead) update();
 
                     return _linearAcceleration;
                 }
 
                 vector3_t Bno055::gravity() {
-                    if(autoUpdateWhenPropertyRead) update();
+                    if (autoUpdateWhenPropertyRead) update();
 
                     return _gravity;
                 }
 
                 quaternion_t Bno055::quaternion() {
-                    if(autoUpdateWhenPropertyRead) update();
+                    if (autoUpdateWhenPropertyRead) update();
 
                     return _quaternion;
                 }
 
                 eularAngles_t Bno055::eularAngles() {
-                    if(autoUpdateWhenPropertyRead) update();
+                    if (autoUpdateWhenPropertyRead) update();
 
                     return _eularAngles;
                 }

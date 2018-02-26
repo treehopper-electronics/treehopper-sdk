@@ -1,4 +1,5 @@
 #pragma once
+
 #include <Treehopper.Libraries.h>
 #include <Pollable.h>
 
@@ -9,10 +10,10 @@ namespace Treehopper {
                 class LIBRARIES_API HumiditySensor : virtual public Pollable {
                 public:
                     double relativeHumidity();
+
                 protected:
                     double _relativeHumidity;
                 };
-
             }
         }
     }

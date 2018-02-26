@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Treehopper.Libraries.h"
 #include "Pollable.h"
 #include <tuple>
@@ -6,26 +7,18 @@
 
 using namespace Treehopper::Libraries;
 
-namespace Treehopper
-{
-	namespace Libraries
-	{
-		namespace Sensors
-		{
-			namespace Inertial
-			{
-				class LIBRARIES_API Accelerometer : virtual public Pollable
-				{
-				public:
-					vector3_t& accelerometer();
+namespace Treehopper {
+    namespace Libraries {
+        namespace Sensors {
+            namespace Inertial {
+                class LIBRARIES_API Accelerometer : virtual public Pollable {
+                public:
+                    vector3_t &accelerometer();
 
-				protected:
+                protected:
                     vector3_t _accelerometer;
-
-				};
-			}
-		}
-	}
+                };
+            }
+        }
+    }
 }
-
-

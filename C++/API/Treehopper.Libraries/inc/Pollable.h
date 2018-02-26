@@ -4,8 +4,7 @@
 
 namespace Treehopper
 {
-	namespace Libraries
-	{
+    namespace Libraries {
 		class LIBRARIES_API Pollable
 		{
 		public:

@@ -11,11 +11,12 @@ namespace Treehopper {
     namespace Libraries {
         namespace Sensors {
             namespace Pressure {
-
                 class LIBRARIES_API Bme280 : public Bmp280, public HumiditySensor {
                 public:
-                    Bme280(I2c& i2c, bool sdoPin, int rate=100);
+                    Bme280(I2c &i2c, bool sdoPin, int rate = 100);
+
                     void update();
+
                 private:
                     short h4;
                     short h5;

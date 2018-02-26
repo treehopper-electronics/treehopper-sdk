@@ -12,6 +12,7 @@ namespace Treehopper {
                 class LIBRARIES_API Gyroscope : virtual public Pollable {
                 public:
                     vector3_t gyroscope();
+
                 protected:
                     vector3_t _gyroscope;
                 };

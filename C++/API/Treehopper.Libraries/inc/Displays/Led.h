@@ -1,88 +1,89 @@
 #pragma once
+
 #include "Treehopper.Libraries.h"
 #include <ostream>
+
 namespace Treehopper {
-	namespace Libraries {
-		namespace Displays {
+    namespace Libraries {
+        namespace Displays {
 
-			using namespace std;
+            using namespace std;
 
-			class LedDriver;
+            class LedDriver;
 
-			/// <summary>
-			/// Represents a single LED that may or may not have _brightness control
-			/// </summary>
-			/// <remarks>
-			/// <para>The default <see cref="state"/> of a newly-constructed LED is "false" (off) with a <see cref="brightness"/> of 1.0 (even if this LED does not support _brightness control). This allows LEDs to be used with many non-dimmable display classes (such as <see cref="SevenSegmentDigit"/>, or <see cref="BarGraph"/>) that only control the LED _state. Note that for an LED to be on, its _state must be "true" and its _brightness must be non-zero. </para>
-			/// <para>Do not confuse the <see cref="state"/>'s value with the electrical value on the pin; most LED drivers are open-drain, thus a "true" _state  i.e., when the LED is on  actually corresponds to the pin being driven to 0 (logic false); this is handled by the individual LED drivers to remove ambiguity. If your driver supports driving LEDs in either common-anode (open-drain) or common-cathode configurations, ensure the driver itself is configured to match your circuit.</para>
-			/// <para>You can also attach LEDs to pins that don't belong to LED drivers; see <see cref="GpioLedDriver{TDigitalOutPin}"/> and <see cref="PwmLedDriver{TPwm}"/>, which perform the necessary conversions.</para>
-			/// </remarks>
-			class LIBRARIES_API Led
-			{
-			public:
-				/// <summary>
-				/// Construct a new LED
-				/// </summary>
-				/// <param name="driver">The driver this LED is attached to</param>
-				/// <param name="channel">The channel to use</param>
-				/// <param name="hasBrightnessControl">Whether the LED has _brightness control</param>
-				Led(LedDriver& driver, int channel = 0, bool hasBrightnessControl = false);
+            /// <summary>
+            /// Represents a single LED that may or may not have _brightness control
+            /// </summary>
+            /// <remarks>
+            /// <para>The default <see cref="state"/> of a newly-constructed LED is "false" (off) with a <see cref="brightness"/> of 1.0 (even if this LED does not support _brightness control). This allows LEDs to be used with many non-dimmable display classes (such as <see cref="SevenSegmentDigit"/>, or <see cref="BarGraph"/>) that only control the LED _state. Note that for an LED to be on, its _state must be "true" and its _brightness must be non-zero. </para>
+            /// <para>Do not confuse the <see cref="state"/>'s value with the electrical value on the pin; most LED drivers are open-drain, thus a "true" _state  i.e., when the LED is on  actually corresponds to the pin being driven to 0 (logic false); this is handled by the individual LED drivers to remove ambiguity. If your driver supports driving LEDs in either common-anode (open-drain) or common-cathode configurations, ensure the driver itself is configured to match your circuit.</para>
+            /// <para>You can also attach LEDs to pins that don't belong to LED drivers; see <see cref="GpioLedDriver{TDigitalOutPin}"/> and <see cref="PwmLedDriver{TPwm}"/>, which perform the necessary conversions.</para>
+            /// </remarks>
+            class LIBRARIES_API Led {
+            public:
+                /// <summary>
+                /// Construct a new LED
+                /// </summary>
+                /// <param name="driver">The driver this LED is attached to</param>
+                /// <param name="channel">The channel to use</param>
+                /// <param name="hasBrightnessControl">Whether the LED has _brightness control</param>
+                Led(LedDriver &driver, int channel = 0, bool hasBrightnessControl = false);
 
-				Led& operator=(const Led& rhs)
-				{
-					Led& led = *new Led(rhs.driver, rhs.channel, rhs.hasBrightnessControl);
-					led._brightness = rhs._brightness;
-					led._state = rhs._state;
-					return led;
-				}
+                Led &operator=(const Led &rhs) {
+                    Led &led = *new Led(rhs.driver, rhs.channel, rhs.hasBrightnessControl);
+                    led._brightness = rhs._brightness;
+                    led._state = rhs._state;
+                    return led;
+                }
 
-				/// <summary>
-				/// Gets or sets the channel this LED belongs to
-				/// </summary>
-				const int channel;
+                /// <summary>
+                /// Gets or sets the channel this LED belongs to
+                /// </summary>
+                const int channel;
 
-				/// <summary>
-				/// Gets or sets the _brightness (0.0 - 1.0) of the LED (if it has _brightness control)
-				/// </summary>
-				/// <remarks>
-				/// <para>The _brightness is perceptual on a linear scale; i.e., a _brightness of 0.5 will be perceived as half as bright as a _brightness of 1.0.</para>
-				/// <para>Note that the LED will only illuminate if the <see cref="state"/> is true, regardless of the value of this property.</para>
-				/// </remarks>
-				void brightness(double value);
+                /// <summary>
+                /// Gets or sets the _brightness (0.0 - 1.0) of the LED (if it has _brightness control)
+                /// </summary>
+                /// <remarks>
+                /// <para>The _brightness is perceptual on a linear scale; i.e., a _brightness of 0.5 will be perceived as half as bright as a _brightness of 1.0.</para>
+                /// <para>Note that the LED will only illuminate if the <see cref="state"/> is true, regardless of the value of this property.</para>
+                /// </remarks>
+                void brightness(double value);
 
-				double brightness();
+                double brightness();
 
-				/// <summary>
-				/// Gets whether the LED has _brightness control
-				/// </summary>
-				const bool hasBrightnessControl;
+                /// <summary>
+                /// Gets whether the LED has _brightness control
+                /// </summary>
+                const bool hasBrightnessControl;
 
-				/// <summary>
-				/// Gets or sets the _state of the LED
-				/// </summary>
-				/// <remarks>
-				/// <para>Note that if the LED has _brightness control, it will only illuminate if the <see cref="brightness"/> of the LED is also non-zero.</para>
-				/// </remarks>
-				bool state();
+                /// <summary>
+                /// Gets or sets the _state of the LED
+                /// </summary>
+                /// <remarks>
+                /// <para>Note that if the LED has _brightness control, it will only illuminate if the <see cref="brightness"/> of the LED is also non-zero.</para>
+                /// </remarks>
+                bool state();
 
-				void state(bool value);
+                void state(bool value);
 
-				/// <summary>
-				/// Gets a string representation of the LED's current _state
-				/// </summary>
-				/// <returns>A string representing the _state and _brightness of the LED</returns>
-				friend std::ostream& operator<< (std::ostream& stream, const Led& led) {
-					stream << (led._state ? "true" : "false") << " (" << led._brightness << ")" << endl;
-				}
-			private:
+                /// <summary>
+                /// Gets a string representation of the LED's current _state
+                /// </summary>
+                /// <returns>A string representing the _state and _brightness of the LED</returns>
+                friend std::ostream &operator<<(std::ostream &stream, const Led &led) {
+                    stream << (led._state ? "true" : "false") << " (" << led._brightness << ")" << endl;
+                }
 
-				/// <summary>
-				/// The driver this LED is attached to
-				/// </summary>
-				LedDriver& driver;
-				double _brightness = 1.0;
-				bool _state = false;
-			};
-		}
-	}
+            private:
+
+                /// <summary>
+                /// The driver this LED is attached to
+                /// </summary>
+                LedDriver &driver;
+                double _brightness = 1.0;
+                bool _state = false;
+            };
+        }
+    }
 }

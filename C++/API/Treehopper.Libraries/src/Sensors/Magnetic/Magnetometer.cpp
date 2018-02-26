@@ -5,7 +5,7 @@ namespace Treehopper {
         namespace Sensors {
             namespace Magnetic {
                 vector3_t Magnetometer::magnetometer() {
-                    if(autoUpdateWhenPropertyRead) update();
+                    if (autoUpdateWhenPropertyRead) update();
 
                     return _magnetometer;
                 }

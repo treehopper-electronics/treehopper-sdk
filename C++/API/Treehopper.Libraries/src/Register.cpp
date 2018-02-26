@@ -6,7 +6,7 @@
 namespace Treehopper {
     namespace Libraries {
         Register::Register(RegisterManager &regManager, int address, int width, bool isBigEndian)
-                : regManager(regManager), isBigEndian(isBigEndian), address(address), width(width) { }
+                : regManager(regManager), isBigEndian(isBigEndian), address(address), width(width) {}
 
         void Register::write() {
             regManager.write(*this);
@@ -20,16 +20,16 @@ namespace Treehopper {
             std::vector<uint8_t> bytes(width);
 
             for (auto i = 0; i < width; i++)
-                bytes[i] = (uint8_t)((getValue() >> (8 * i)) & 0xFF);
+                bytes[i] = (uint8_t) ((getValue() >> (8 * i)) & 0xFF);
 
-            if(Utility::isBigEndian() ^ isBigEndian)
+            if (Utility::isBigEndian() ^ isBigEndian)
                 std::reverse(std::begin(bytes), std::end(bytes));
 
             return bytes;
         }
 
         void Register::setBytes(std::vector<uint8_t> bytes) {
-            if(Utility::isBigEndian() ^ isBigEndian)
+            if (Utility::isBigEndian() ^ isBigEndian)
                 std::reverse(std::begin(bytes), std::end(bytes));
 
             long regVal = 0;

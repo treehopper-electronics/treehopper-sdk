@@ -5,7 +5,7 @@ namespace Treehopper {
         namespace Sensors {
             namespace Inertial {
                 vector3_t Gyroscope::gyroscope() {
-                    if(autoUpdateWhenPropertyRead) update();
+                    if (autoUpdateWhenPropertyRead) update();
 
                     return _gyroscope;
                 }

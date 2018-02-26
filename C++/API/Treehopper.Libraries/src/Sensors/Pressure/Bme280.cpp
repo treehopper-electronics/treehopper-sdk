@@ -4,14 +4,13 @@ namespace Treehopper {
     namespace Libraries {
         namespace Sensors {
             namespace Pressure {
-                Bme280::Bme280(I2c& i2c, bool sdoPin, int rate) :
-                Bmp280(i2c, sdoPin, rate)
-                {
+                Bme280::Bme280(I2c &i2c, bool sdoPin, int rate) :
+                        Bmp280(i2c, sdoPin, rate) {
                     registers.readRange(registers.h2, registers.h6);
 
                     // RegisterGenerator doesn't get the endianness right on the h4/h5 12-bit values, so manually create them:
-                    h4 = (short)((short)((registers.h4.value << 4 | registers.h4h5.h4Low) << 4) >> 4);
-                    h5 = (short)((short)((registers.h5.value << 4 | registers.h4h5.h5Low) << 4) >> 4);
+                    h4 = (short) ((short) ((registers.h4.value << 4 | registers.h4h5.h4Low) << 4) >> 4);
+                    h5 = (short) ((short) ((registers.h5.value << 4 | registers.h4h5.h5Low) << 4) >> 4);
 
                     registers.ctrlHumidity.setOversampling(Oversamplings::Oversampling_x16);
                     registers.ctrlHumidity.write();

@@ -14,15 +14,24 @@ namespace Treehopper {
     namespace Libraries {
         namespace Sensors {
             namespace Inertial {
-                class Bno055 : public virtual Accelerometer, public virtual Gyroscope, public virtual Magnetometer, public TemperatureSensor
-                {
+                class Bno055
+                        : public virtual Accelerometer,
+                          public virtual Gyroscope,
+                          public virtual Magnetometer,
+                          public TemperatureSensor {
                 public:
                     Bno055(I2c &i2c, bool altAddress = false, int rate = 100);
+
                     void update();
+
                     vector3_t linearAcceleration();
+
                     vector3_t gravity();
+
                     quaternion_t quaternion();
+
                     eularAngles_t eularAngles();
+
                 private:
                     Bno055Registers registers;
                     SMBusDevice _dev;
