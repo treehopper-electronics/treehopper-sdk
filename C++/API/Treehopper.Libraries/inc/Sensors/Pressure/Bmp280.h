@@ -8,6 +8,7 @@
 
 using namespace Treehopper::Libraries;
 using namespace Treehopper::Libraries::Sensors::Temperature;
+using namespace Treehopper::Libraries::Sensors::Pressure;
 
 namespace Treehopper
 {
@@ -28,9 +29,9 @@ namespace Treehopper
 					double referencePressure;
 				protected:
 					double tFine;
+                    Bmp280Registers registers;
 				private:
 					SMBusDevice dev;
-					Bmp280Registers registers;
 					double altitudeFromPressure(double temperature, double pressure);
 					double _altitude;
 				};
