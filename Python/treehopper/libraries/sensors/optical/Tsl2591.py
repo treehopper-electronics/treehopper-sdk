@@ -1,10 +1,10 @@
 from treehopper.api import I2c
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.sensors.optical import AmbientLight
+from treehopper.libraries.sensors.optical import AmbientLightSensor
 from treehopper.libraries.sensors.optical.Tsl2591Registers import Tsl2591Registers, AlsGains, AlsTimes
 
 
-class Tsl2591(AmbientLight):
+class Tsl2591(AmbientLightSensor):
     @staticmethod
     def probe(i2c: I2c):
         dev = SMBusDevice(0x29, i2c, 100)

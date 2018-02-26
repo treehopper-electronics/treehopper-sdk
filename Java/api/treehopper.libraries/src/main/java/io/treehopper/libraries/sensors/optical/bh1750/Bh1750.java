@@ -2,9 +2,9 @@ package io.treehopper.libraries.sensors.optical.bh1750;
 
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
-import io.treehopper.libraries.sensors.optical.AmbientLight;
+import io.treehopper.libraries.sensors.optical.AmbientLightSensor;
 
-public class Bh1750 extends AmbientLight {
+public class Bh1750 extends AmbientLightSensor {
 
     private SMBusDevice dev;
     private Resolution resolution;

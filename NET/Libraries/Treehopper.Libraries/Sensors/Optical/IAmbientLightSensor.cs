@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
-    interface IAmbientLight : IPollable
+    interface IAmbientLightSensor : IPollable
     {
         double Lux { get; }
     }

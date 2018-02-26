@@ -2,7 +2,7 @@ from abc import abstractmethod
 from treehopper.libraries.sensors import Pollable
 
 
-class AmbientLight(Pollable):
+class AmbientLightSensor(Pollable):
     def __init__(self):
         super().__init__()
         self._lux = 0

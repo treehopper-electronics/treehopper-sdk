@@ -1,6 +1,6 @@
 package io.treehopper.libraries.sensors.optical;
 
-public abstract class AmbientLight implements IAmbientLight {
+public abstract class AmbientLightSensor implements IAmbientLightSensor {
     protected double lux;
     private boolean autoUpdateWhenPropertyRead = true;
 
