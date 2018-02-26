@@ -491,10 +491,10 @@ class Lis3dhRegisters(RegisterManager):
             self.yda = 0
             self.zda = 0
             self.zyxda = 0
-            self.xor = 0
-            self.yor = 0
-            self.zor = 0
-            self.zyxor = 0
+            self.x_or = 0
+            self.y_or = 0
+            self.z_or = 0
+            self.zyx_or = 0
 
 
         def read(self):
@@ -502,17 +502,17 @@ class Lis3dhRegisters(RegisterManager):
             return self
             
         def getValue(self):
-            return ((self.xda & 0x1) << 0) | ((self.yda & 0x1) << 1) | ((self.zda & 0x1) << 2) | ((self.zyxda & 0x1) << 3) | ((self.xor & 0x1) << 4) | ((self.yor & 0x1) << 5) | ((self.zor & 0x1) << 6) | ((self.zyxor & 0x1) << 7)
+            return ((self.xda & 0x1) << 0) | ((self.yda & 0x1) << 1) | ((self.zda & 0x1) << 2) | ((self.zyxda & 0x1) << 3) | ((self.x_or & 0x1) << 4) | ((self.y_or & 0x1) << 5) | ((self.z_or & 0x1) << 6) | ((self.zyx_or & 0x1) << 7)
 
         def setValue(self, value: int):
             self.xda = ((value >> 0) & 0x1)
             self.yda = ((value >> 1) & 0x1)
             self.zda = ((value >> 2) & 0x1)
             self.zyxda = ((value >> 3) & 0x1)
-            self.xor = ((value >> 4) & 0x1)
-            self.yor = ((value >> 5) & 0x1)
-            self.zor = ((value >> 6) & 0x1)
-            self.zyxor = ((value >> 7) & 0x1)
+            self.x_or = ((value >> 4) & 0x1)
+            self.y_or = ((value >> 5) & 0x1)
+            self.z_or = ((value >> 6) & 0x1)
+            self.zyx_or = ((value >> 7) & 0x1)
 
         def __str__(self):
             retVal = ""
@@ -520,10 +520,10 @@ class Lis3dhRegisters(RegisterManager):
             retVal += "Yda: {} (offset: 1, width: 1)\r\n".format(self.yda)
             retVal += "Zda: {} (offset: 2, width: 1)\r\n".format(self.zda)
             retVal += "Zyxda: {} (offset: 3, width: 1)\r\n".format(self.zyxda)
-            retVal += "Xor: {} (offset: 4, width: 1)\r\n".format(self.xor)
-            retVal += "Yor: {} (offset: 5, width: 1)\r\n".format(self.yor)
-            retVal += "Zor: {} (offset: 6, width: 1)\r\n".format(self.zor)
-            retVal += "Zyxor: {} (offset: 7, width: 1)\r\n".format(self.zyxor)
+            retVal += "X_or: {} (offset: 4, width: 1)\r\n".format(self.x_or)
+            retVal += "Y_or: {} (offset: 5, width: 1)\r\n".format(self.y_or)
+            retVal += "Z_or: {} (offset: 6, width: 1)\r\n".format(self.z_or)
+            retVal += "Zyx_or: {} (offset: 7, width: 1)\r\n".format(self.zyx_or)
             return retVal
 
     class FifoCtrlRegister(Register):

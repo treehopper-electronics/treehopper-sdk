@@ -306,22 +306,22 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             int yda;
             int zda;
             int zyxda;
-            int xor;
-            int yor;
-            int zor;
-            int zyxor;
+            int x_or;
+            int y_or;
+            int z_or;
+            int zyx_or;
 
-            long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((xor & 0x1) << 4) | ((yor & 0x1) << 5) | ((zor & 0x1) << 6) | ((zyxor & 0x1) << 7); }
+            long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((x_or & 0x1) << 4) | ((y_or & 0x1) << 5) | ((z_or & 0x1) << 6) | ((zyx_or & 0x1) << 7); }
             void setValue(long val)
             {
                 xda = (int)((val >> 0) & 0x1);
                 yda = (int)((val >> 1) & 0x1);
                 zda = (int)((val >> 2) & 0x1);
                 zyxda = (int)((val >> 3) & 0x1);
-                xor = (int)((val >> 4) & 0x1);
-                yor = (int)((val >> 5) & 0x1);
-                zor = (int)((val >> 6) & 0x1);
-                zyxor = (int)((val >> 7) & 0x1);
+                x_or = (int)((val >> 4) & 0x1);
+                y_or = (int)((val >> 5) & 0x1);
+                z_or = (int)((val >> 6) & 0x1);
+                zyx_or = (int)((val >> 7) & 0x1);
             }
         };
 

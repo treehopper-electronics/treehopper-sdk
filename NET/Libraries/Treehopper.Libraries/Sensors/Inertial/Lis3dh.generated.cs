@@ -593,27 +593,27 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int yda { get; set; }
                 public int zda { get; set; }
                 public int zyxda { get; set; }
-                public int xor { get; set; }
-                public int yor { get; set; }
-                public int zor { get; set; }
-                public int zyxor { get; set; }
+                public int x_or { get; set; }
+                public int y_or { get; set; }
+                public int z_or { get; set; }
+                public int zyx_or { get; set; }
 
                 public async Task<StatusRegister> read()
                 {
                     await manager.read(this).ConfigureAwait(false);
                     return this;
                 }
-                internal override long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((xor & 0x1) << 4) | ((yor & 0x1) << 5) | ((zor & 0x1) << 6) | ((zyxor & 0x1) << 7); }
+                internal override long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((x_or & 0x1) << 4) | ((y_or & 0x1) << 5) | ((z_or & 0x1) << 6) | ((zyx_or & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
                     xda = (int)((_value >> 0) & 0x1);
                     yda = (int)((_value >> 1) & 0x1);
                     zda = (int)((_value >> 2) & 0x1);
                     zyxda = (int)((_value >> 3) & 0x1);
-                    xor = (int)((_value >> 4) & 0x1);
-                    yor = (int)((_value >> 5) & 0x1);
-                    zor = (int)((_value >> 6) & 0x1);
-                    zyxor = (int)((_value >> 7) & 0x1);
+                    x_or = (int)((_value >> 4) & 0x1);
+                    y_or = (int)((_value >> 5) & 0x1);
+                    z_or = (int)((_value >> 6) & 0x1);
+                    zyx_or = (int)((_value >> 7) & 0x1);
                 }
 
                 public override string ToString()
@@ -623,10 +623,10 @@ namespace Treehopper.Libraries.Sensors.Inertial
                     retVal += $"Yda: { yda } (offset: 1, width: 1)\r\n";
                     retVal += $"Zda: { zda } (offset: 2, width: 1)\r\n";
                     retVal += $"Zyxda: { zyxda } (offset: 3, width: 1)\r\n";
-                    retVal += $"Xor: { xor } (offset: 4, width: 1)\r\n";
-                    retVal += $"Yor: { yor } (offset: 5, width: 1)\r\n";
-                    retVal += $"Zor: { zor } (offset: 6, width: 1)\r\n";
-                    retVal += $"Zyxor: { zyxor } (offset: 7, width: 1)\r\n";
+                    retVal += $"X_or: { x_or } (offset: 4, width: 1)\r\n";
+                    retVal += $"Y_or: { y_or } (offset: 5, width: 1)\r\n";
+                    retVal += $"Z_or: { z_or } (offset: 6, width: 1)\r\n";
+                    retVal += $"Zyx_or: { zyx_or } (offset: 7, width: 1)\r\n";
                     return retVal;
                 }
             }

@@ -447,10 +447,10 @@ class Lis3dhRegisters extends RegisterManager
         int yda;
         int zda;
         int zyxda;
-        int xor;
-        int yor;
-        int zor;
-        int zyxor;
+        int x_or;
+        int y_or;
+        int z_or;
+        int zyx_or;
 
 
         public StatusRegister read()
@@ -459,17 +459,17 @@ class Lis3dhRegisters extends RegisterManager
             return this;
         }
 
-        public long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((xor & 0x1) << 4) | ((yor & 0x1) << 5) | ((zor & 0x1) << 6) | ((zyxor & 0x1) << 7); }
+        public long getValue() { return ((xda & 0x1) << 0) | ((yda & 0x1) << 1) | ((zda & 0x1) << 2) | ((zyxda & 0x1) << 3) | ((x_or & 0x1) << 4) | ((y_or & 0x1) << 5) | ((z_or & 0x1) << 6) | ((zyx_or & 0x1) << 7); }
         public void setValue(long _value)
         {
             xda = (int)((_value >> 0) & 0x1);
             yda = (int)((_value >> 1) & 0x1);
             zda = (int)((_value >> 2) & 0x1);
             zyxda = (int)((_value >> 3) & 0x1);
-            xor = (int)((_value >> 4) & 0x1);
-            yor = (int)((_value >> 5) & 0x1);
-            zor = (int)((_value >> 6) & 0x1);
-            zyxor = (int)((_value >> 7) & 0x1);
+            x_or = (int)((_value >> 4) & 0x1);
+            y_or = (int)((_value >> 5) & 0x1);
+            z_or = (int)((_value >> 6) & 0x1);
+            zyx_or = (int)((_value >> 7) & 0x1);
         }
     }
     class FifoCtrlRegister extends Register
