@@ -4,12 +4,6 @@ namespace Treehopper {
     namespace Libraries {
         namespace Sensors {
             namespace Temperature {
-                TemperatureSensor::TemperatureSensor() {
-                }
-
-                TemperatureSensor::~TemperatureSensor() {
-                }
-
                 double TemperatureSensor::toFahrenheit(double celsius) {
                     return ((celsius * 9.0) / 5.0) + 32.0;
                 }
