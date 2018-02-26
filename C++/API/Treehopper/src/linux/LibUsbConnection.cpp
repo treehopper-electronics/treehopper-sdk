@@ -8,21 +8,21 @@ namespace Treehopper {
     LibUsbConnection::LibUsbConnection(libusb_device *device) {
         this->deviceProfile = device;
 
-        open();
+        if(open())
+        {
+            unsigned char buffer[128];
 
-        unsigned char buffer[128];
+            libusb_get_string_descriptor_ascii(deviceHandle, 2, &buffer[0], 128);
+            auto tmp = string((char*)buffer);
+            _name = wstring(tmp.begin(), tmp.end());
 
-        libusb_get_string_descriptor_ascii(deviceHandle, 2, &buffer[0], 128);
-        auto tmp = string((char*)buffer);
-        _name = wstring(tmp.begin(), tmp.end());
-
-        libusb_get_string_descriptor_ascii(deviceHandle, 3, &buffer[0], 128);
-        tmp = string((char*)buffer);
-        _serialNumber = wstring(tmp.begin(), tmp.end());
+            libusb_get_string_descriptor_ascii(deviceHandle, 3, &buffer[0], 128);
+            tmp = string((char*)buffer);
+            _serialNumber = wstring(tmp.begin(), tmp.end());
 
 
-        close();
-
+            close();
+        }
     }
 
     bool LibUsbConnection::open() {
