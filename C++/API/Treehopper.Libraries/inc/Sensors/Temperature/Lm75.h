@@ -10,7 +10,7 @@ namespace Treehopper {
     namespace Libraries {
         namespace Sensors {
             namespace Temperature {
-                class LIBRARIES_API Lm75 : public TemperatureSensor {
+                class LIBRARIES_API Lm75 : public virtual TemperatureSensor {
                 public:
                     Lm75(I2c &i2c, bool a0 = false, bool a1 = false, bool a2 = false);
 

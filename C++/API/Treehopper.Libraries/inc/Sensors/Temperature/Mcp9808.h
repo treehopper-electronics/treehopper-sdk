@@ -9,7 +9,7 @@ namespace Treehopper {
     namespace Libraries {
         namespace Sensors {
             namespace Temperature {
-                class LIBRARIES_API Mcp9808 : public TemperatureSensor {
+                class LIBRARIES_API Mcp9808 : public virtual TemperatureSensor {
                 public:
                     Mcp9808(I2c &i2c, uint8_t address);
 
