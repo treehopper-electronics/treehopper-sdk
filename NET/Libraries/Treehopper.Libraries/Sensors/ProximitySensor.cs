@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors
 {
-    public abstract class Proximity : IProximity
+    public abstract class ProximitySensor : IProximity
     {
+        public double Millimeters => Meters * 1000;
         public double Centimeters => Meters * 100;
         public double Inches => Meters * 39.3701;
         public double Feet => Meters * 3.28085;
