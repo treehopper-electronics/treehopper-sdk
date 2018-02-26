@@ -13,6 +13,7 @@ namespace Treehopper {
 		public:
 			Register(RegisterManager& regManager, int address, int width, bool isBigEndian);
             void write();
+			void read();
             virtual long getValue() = 0;
             virtual void setValue(long value) =0;
             std::vector<uint8_t> getBytes();

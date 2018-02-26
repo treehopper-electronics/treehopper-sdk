@@ -12,6 +12,10 @@ namespace Treehopper {
             regManager.write(*this);
         }
 
+        void Register::read() {
+            regManager.read(*this);
+        }
+
         std::vector<uint8_t> Register::getBytes() {
             std::vector<uint8_t> bytes(width);
 
