@@ -1,8 +1,8 @@
 package io.treehopper.libraries.sensors.pressure;
 
-import io.treehopper.libraries.sensors.Pollable;
+import io.treehopper.libraries.sensors.IPollable;
 
-public abstract class PressureSensor implements Pollable {
+public abstract class PressureSensor implements IPollable {
 
     protected boolean autoUpdateWhenPropertyRead;
     protected double pascal = 0;
@@ -19,7 +19,7 @@ public abstract class PressureSensor implements Pollable {
     }
 
     public double getPascal() {
-        if(isAutoUpdateWhenPropertyRead())
+        if (isAutoUpdateWhenPropertyRead())
             update();
 
         return pascal;

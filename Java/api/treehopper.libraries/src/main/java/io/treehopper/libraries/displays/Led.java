@@ -6,9 +6,9 @@ package io.treehopper.libraries.displays;
 
 public class Led {
 
+    int channel;
     private ILedDriver driver;
     private boolean brightnessControl;
-    int channel;
     private boolean state = false;
     private double brightness = 0.0;
 
@@ -33,7 +33,7 @@ public class Led {
     public double getBrightness() {
         return brightness;
     }
-    
+
 
     public void setBrightness(double value) {
         if (brightness == value) return;

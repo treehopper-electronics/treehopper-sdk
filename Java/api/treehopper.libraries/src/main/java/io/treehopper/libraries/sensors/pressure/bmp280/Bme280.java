@@ -10,6 +10,21 @@ import java.util.List;
 public class Bme280 extends Bmp280 implements IHumiditySensor {
     private final short h4;
     private final short h5;
+    private double relativeHumidity = 0;
+
+    public Bme280(I2c i2c, boolean sdoPin, int rate) {
+        super(i2c, sdoPin, rate);
+
+        registers.readRange(registers.h2, registers.h6);
+
+        // RegisterGenerator doesn't get the endianness right on the h4/h5 12-bit values, so manually create them:
+        h4 = (short) ((short) ((registers.h4.value << 4 | registers.h4h5.h4Low) << 4) >> 4);
+        h5 = (short) ((short) ((registers.h5.value << 4 | registers.h4h5.h5Low) << 4) >> 4);
+
+        registers.ctrlHumidity.setOversampling(Oversamplings.Oversampling_x16);
+        registers.ctrlHumidity.write();
+        registers.ctrlMeasure.write();
+    }
 
     public static List<Bme280> Probe(I2c i2c) {
         List<Bme280> devs = new ArrayList<>();
@@ -33,22 +48,6 @@ public class Bme280 extends Bmp280 implements IHumiditySensor {
         }
 
         return devs;
-    }
-
-    private double relativeHumidity = 0;
-
-    public Bme280(I2c i2c, boolean sdoPin, int rate) {
-        super(i2c, sdoPin, rate);
-
-        registers.readRange(registers.h2, registers.h6);
-
-        // RegisterGenerator doesn't get the endianness right on the h4/h5 12-bit values, so manually create them:
-        h4 = (short)((short)((registers.h4.value << 4 | registers.h4h5.h4Low) << 4) >> 4);
-        h5 = (short)((short)((registers.h5.value << 4 | registers.h4h5.h5Low) << 4) >> 4);
-
-        registers.ctrlHumidity.setOversampling(Oversamplings.Oversampling_x16);
-        registers.ctrlHumidity.write();
-        registers.ctrlMeasure.write();
     }
 
     @Override
@@ -76,7 +75,7 @@ public class Bme280 extends Bmp280 implements IHumiditySensor {
 
     @Override
     public double getRelativeHumidity() {
-        if(isAutoUpdateWhenPropertyRead())
+        if (isAutoUpdateWhenPropertyRead())
             update();
 
         return relativeHumidity;

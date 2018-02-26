@@ -1,9 +1,9 @@
 from treehopper.api import I2c
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.sensors.optical import AmbientLight
+from treehopper.libraries.sensors.optical import AmbientLightSensor
 
 
-class Bh1750(AmbientLight):
+class Bh1750(AmbientLightSensor):
     class Resolution:
         Medium, High, Low = range(3)
 

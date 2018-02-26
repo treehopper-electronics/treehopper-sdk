@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
-    public abstract class AmbientLight : IAmbientLight
+    public abstract class AmbientLightSensor : IAmbientLightSensor
     {
         protected double lux;
         public double Lux

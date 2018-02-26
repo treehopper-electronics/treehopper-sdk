@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Bmp280 extends PressureSensor implements Temperature {
     protected Bmp280Registers registers;
-    private double celsius;
     protected double tFine;
+    private double celsius;
     private double referencePressure = 101325;
     private double altitude;
 

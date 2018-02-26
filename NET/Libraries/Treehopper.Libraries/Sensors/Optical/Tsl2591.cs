@@ -7,7 +7,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     ///     ams TSL2591 High-dynamic range digital light sensor
     /// </summary>
     [Supports("ams (Avago)", "TSL2591")]
-    public partial class Tsl2591 : AmbientLight
+    public partial class Tsl2591 : AmbientLightSensor
     {
 
         public static async Task<Tsl2591> Probe(I2C i2c)

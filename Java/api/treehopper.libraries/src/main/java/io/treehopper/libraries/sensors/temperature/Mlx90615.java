@@ -8,18 +8,18 @@ import io.treehopper.interfaces.I2c;
  */
 public class Mlx90615 extends Mlx90614 {
 
-    SMBusDevice dev;
     public Temperature ambient;
     public Temperature object;
+    SMBusDevice dev;
 
     public Mlx90615(I2c module) {
         super(module);
 
-        ambient = new TempRegister(this.dev, (byte)0x26);
-        object = new TempRegister(this.dev, (byte)0x27);
+        ambient = new TempRegister(this.dev, (byte) 0x26);
+        object = new TempRegister(this.dev, (byte) 0x27);
     }
 
     public double getRawIrData() {
-        return dev.readWordData((byte)0x25);
+        return dev.readWordData((byte) 0x25);
     }
 }

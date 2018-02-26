@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// Vishay VCNL4010  proximity and ambient light sensor
     /// </summary>
     [Supports("Vishay", "VCNL4010")]
-    public partial class Vcnl4010 : Proximity, IAmbientLight
+    public partial class Vcnl4010 : Proximity, IAmbientLightSensor
     {
         Vcnl4010Registers registers;
         double lux;
