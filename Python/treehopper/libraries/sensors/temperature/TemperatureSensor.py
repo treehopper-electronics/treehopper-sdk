@@ -1,7 +1,8 @@
 from abc import abstractmethod
 from treehopper.libraries.sensors.Pollable import Pollable
 
-class Temperature(Pollable):
+
+class TemperatureSensor(Pollable):
     def __init__(self):
         super().__init__()
         self._celsius = 0

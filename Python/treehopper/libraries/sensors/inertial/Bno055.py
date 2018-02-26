@@ -6,10 +6,10 @@ from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial.Bno055Registers import Bno055Registers, OperatingModes, PowerModes
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
 from treehopper.libraries.sensors.magnetic.Magnetometer import Magnetometer
-from treehopper.libraries.sensors.temperature import Temperature
+from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 
-class Bno055(Accelerometer, Gyroscope, Magnetometer, Temperature):
+class Bno055(Accelerometer, Gyroscope, Magnetometer, TemperatureSensor):
     @staticmethod
     def probe(i2c: I2c, rate=100) -> List['Bno055']:
         devs = []  # type: List['Bno055']

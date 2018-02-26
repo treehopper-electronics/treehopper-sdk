@@ -5,10 +5,10 @@ from treehopper.api import I2c
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial.Mpu6050Registers import Mpu6050Registers
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
-from treehopper.libraries.sensors.temperature.Temperature import Temperature
+from treehopper.libraries.sensors.temperature.TemperatureSensor import TemperatureSensor
 
 
-class Mpu6050(Accelerometer, Gyroscope, Temperature):
+class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):
     @staticmethod
     def probe(i2c: I2c, include_mpu9250: bool) -> List['Mpu6050']:
         devs = []  # type: List['Mpu6050']

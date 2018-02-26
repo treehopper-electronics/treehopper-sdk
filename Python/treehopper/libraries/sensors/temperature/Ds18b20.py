@@ -1,9 +1,9 @@
 from time import sleep
 
-from treehopper.libraries.sensors.temperature.Temperature import Temperature
+from treehopper.libraries.sensors.temperature.TemperatureSensor import TemperatureSensor
 from treehopper.api.IOneWire import IOneWire
 
-class Ds18b20(Temperature):
+class Ds18b20(TemperatureSensor):
     def __init__(self, one_wire: IOneWire, address=0):
         super().__init__()
         self.bus = one_wire

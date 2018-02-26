@@ -6,10 +6,10 @@ from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.pressure.Pressure import Pressure
 from treehopper.libraries.sensors.pressure.Bmp280Registers import Bmp280Registers, Modes, OversamplingPressures, \
     OversamplingTemperatures
-from treehopper.libraries.sensors.temperature import Temperature
+from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 
-class Bmp280(Pressure, Temperature):
+class Bmp280(Pressure, TemperatureSensor):
     @staticmethod
     def probe(i2c: I2c, include_bme280=True, rate=100.0) -> List['Bmp280']:
         devs = []  # type: List['Bmp280']
