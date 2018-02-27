@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Common Sensor classes
+/// Sensors for measuring physical phenomena
 /// </summary>
 
 namespace Treehopper.Libraries.Sensors

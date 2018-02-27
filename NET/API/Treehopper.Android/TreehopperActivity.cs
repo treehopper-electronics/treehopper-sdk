@@ -14,12 +14,13 @@ using Android.Widget;
 
 namespace Treehopper.Android
 {
+    /// <summary>
+    /// An activity that automatically manages TreehopperUsb connections.
+    /// </summary>
     [Activity(Label = "TreehopperActivity")]
     public class TreehopperActivity : Activity
     {
-        private ConnectionService connectionService = ConnectionService.Instance;
-
-        public ObservableCollection<TreehopperUsb> Boards => connectionService.Boards;
+        public ObservableCollection<TreehopperUsb> Boards => ConnectionService.Instance.Boards;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -29,13 +30,13 @@ namespace Treehopper.Android
         protected override void OnStart()
         {
             base.OnStart();
-            connectionService.ActivityOnStart(this);
+            ConnectionService.Instance.ActivityOnStart(this);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            connectionService.ActivityOnResume();
+            ConnectionService.Instance.ActivityOnResume();
         }
     }
 }

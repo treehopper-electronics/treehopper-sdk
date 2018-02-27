@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Multiplexer support for I2c, digital, and analog applications
+/// Standard analog multiplexer support for I2c, digital, and analog muxing
 /// </summary>
 namespace Treehopper.Libraries.IO.Mux
 {

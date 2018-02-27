@@ -7,10 +7,13 @@ using Android.Hardware.Usb;
 using Java.Lang;
 
 /// <summary>
-/// Android-based Treehopper library
+/// Xamarin-based implementation for running Treehopper on Android
 /// </summary>
 namespace Treehopper.Android
 {
+    /// <summary>
+    /// UsbConnection implementation for Xamarin.Android
+    /// </summary>
     public class UsbConnection : IConnection
     {
         UsbDeviceConnection connection;

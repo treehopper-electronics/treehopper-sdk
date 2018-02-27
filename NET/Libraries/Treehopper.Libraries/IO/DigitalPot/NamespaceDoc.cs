@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Digital potentiometer I2c and SPI peripherals
+/// Digital potentiometers
 /// </summary>
 namespace Treehopper.Libraries.IO.DigitalPot
 {

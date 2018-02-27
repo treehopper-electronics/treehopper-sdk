@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// DAC (digital-to-analog converter) I2c and SPI peripherals
+/// Digital to analog converters (DACs)
 /// </summary>
 namespace Treehopper.Libraries.IO.Dac
 {

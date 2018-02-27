@@ -11,12 +11,13 @@ using Windows.Devices.Usb;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Treehopper.Uwp;
+using System.Collections.Specialized;
 
 namespace Treehopper
 {
-    public sealed class ConnectionService : IConnectionService, INotifyPropertyChanged
+    public sealed class ConnectionService : IConnectionService
     {
-        private readonly SemaphoreSlim boardAddedSignal = new SemaphoreSlim(0, 1);
+        private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 
         private DeviceWatcher deviceWatcher;
         private TypedEventHandler<DeviceWatcher, DeviceInformation> handlerAdded;
@@ -24,33 +25,63 @@ namespace Treehopper
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> handlerRemoved;
         private TypedEventHandler<DeviceWatcher, object> handlerStopped;
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> handlerUpdated;
+        private static readonly ConnectionService instance = new ConnectionService();
 
         public ConnectionService()
         {
             Boards = new ObservableCollection<TreehopperUsb>();
-
+            Boards.CollectionChanged += Boards_CollectionChanged;
             StartWatcher();
         }
 
-        public static IConnectionService Instance { get; } = new ConnectionService();
+        private void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (Boards.Count == 0)
+                waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 
+            else if ((e.OldItems?.Count ?? 0) == 0 && e.NewItems.Count > 0)
+                waitForFirstBoard.TrySetResult(Boards[0]);
+        }
+
+        /// <summary>
+        ///     The singleton instance through which to access ConnectionService.
+        /// </summary>
+        /// <remarks>
+        ///     This instance is created and started upon the first reference to a property or method
+        ///     on this object. This typically only becomes an issue if you expect to have debug messages
+        ///     from ConnectionService printing even if you haven't actually accessed the object yet.
+        /// </remarks>
+        public static ConnectionService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        /// <summary>
+        /// The Treehopper boards attached to the computer.
+        /// </summary>
         public ObservableCollection<TreehopperUsb> Boards { get; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public async Task<TreehopperUsb> GetFirstDeviceAsync()
+        /// <summary>
+        ///     Get a reference to the first device discovered.
+        /// </summary>
+        /// <returns>The first board found.</returns>
+        /// <remarks>
+        ///     <para>
+        ///         If no devices have been plugged into the computer,
+        ///         this call will await indefinitely until a board is plugged in.
+        ///     </para>
+        /// </remarks>
+        public Task<TreehopperUsb> GetFirstDeviceAsync()
         {
-            await boardAddedSignal.WaitAsync();
-            return Boards[0];
+            return waitForFirstBoard.Task;
         }
 
         public void Dispose()
         {
             // TODO: Clean stuff up
-        }
-
-        public void AddBoard()
-        {
         }
 
         private void StartWatcher()
@@ -69,14 +100,6 @@ namespace Treehopper
                 var newBoard = new TreehopperUsb(newConnection);
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () => { Boards.Add(newBoard); });
-                try
-                {
-                    if (boardAddedSignal.CurrentCount == 0)
-                        boardAddedSignal.Release();
-                }
-                catch
-                {
-                }
             };
             deviceWatcher.Added += handlerAdded;
 

@@ -18,9 +18,6 @@ namespace Treehopper
         /// Dummy namespace just for nicer documentation
     }
 
-    /// <summary>
-    ///     This class is used for discovering <see cref="TreehopperUsb" /> devices attached to this computer.
-    /// </summary>
     public abstract class ConnectionService : IConnectionService, IDisposable
     {
         private static readonly Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
@@ -35,27 +32,18 @@ namespace Treehopper
 
         private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 
-        /// <summary>
-        ///     Manages Treehopper boards connected to the computer. If optional filter parameters are provided, only boards
-        ///     matching the filter will be available.
-        /// </summary>
-        /// <param name="nameFilter">Name filter</param>
-        /// <param name="serialFilter">Serial filter</param>
-        public ConnectionService(string nameFilter = "", string serialFilter = "")
+        public ConnectionService()
         {
             Boards.CollectionChanged += Boards_CollectionChanged;
         }
 
         /// <summary>
-        ///     Retrieve a reference to the static instance of the <see cref="ConnectionService" /> that should be used for
-        ///     discovering boards.
+        ///     The singleton instance through which to access ConnectionService.
         /// </summary>
         /// <remarks>
-        ///     A single instance of <see cref="ConnectionService" /> is created and started upon the first reference to
-        ///     <see cref="Instance" />.
-        ///     In general, there is no need to construct your own <see cref="ConnectionService" />; just access
-        ///     <see cref="Instance" /> for any
-        ///     board discovery functionalities you need.
+        ///     This instance is created and started upon the first reference to a property or method
+        ///     on this object. This typically only becomes an issue if you expect to have debug messages
+        ///     from ConnectionService printing even if you haven't actually accessed the object yet.
         /// </remarks>
         public static ConnectionService Instance
         {
@@ -75,7 +63,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
+        /// [Treehopper.Desktop.dll] Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
         /// </summary>
         public static bool IsWindows
         {
@@ -91,7 +79,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
+        /// [Treehopper.Desktop.dll] Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
         /// </summary>
         public static bool IsLinux
         {
@@ -107,7 +95,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Determines if we're running under macOS (OS X)
+        /// [Treehopper.Desktop.dll] Determines if we're running under macOS (OS X)
         /// </summary>
         public static bool IsMac
         {
@@ -145,13 +133,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Occurs when a <see cref="TreehopperBoard" /> is removed from the system.
-        /// </summary>
-        //public event BoardEventHandler BoardRemoved;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        ///     Collection of <see cref="TreehopperUsb" /> devices attached to this computer
+        /// The Treehopper boards attached to the computer.
         /// </summary>
         public ObservableCollection<TreehopperUsb> Boards { get; } = new ObservableCollection<TreehopperUsb>();
 
@@ -164,9 +146,6 @@ namespace Treehopper
         ///     <para>
         ///         If no devices have been plugged into the computer,
         ///         this call will await indefinitely until a board is plugged in.
-        ///     </para>
-        ///     <para>
-        ///         Remember to call <see cref="TreehopperUsb.ConnectAsync()" /> before starting communication.
         ///     </para>
         /// </remarks>
         public Task<TreehopperUsb> GetFirstDeviceAsync()

@@ -11,16 +11,13 @@ using Treehopper.Utilities;
 namespace Treehopper
 {
     /// <summary>
-    ///     TreehopperBoard is the main class for interacting with Treehopper. Once constructed, it contains instances of all
-    ///     pins and peripherals.
-    ///     <seealso cref="IConnectionService" />
+    ///     The core class for communicating with Treehopper USB boards.
     /// </summary>
     /// <remarks>
-    ///     The lifecycle of a TreehopperBoard instance begins when a board is connected. Usually, TreehopperManager is used to
-    ///     automatically instantiate a TreehopperBoard, and return the reference to the user's application.
-    ///     All pins and modules are automatically constructed by this class, so you can use all functions without worrying
-    ///     about calling constructors.
+    ///     This class represents a Treehopper board. You'll access all the pins, peripherals, and board functions through
+    ///     this object, which will automatically create all peripheral instances for you.
     /// </remarks>
+    /// \warning Do not attempt to create a TreehopperUsb instance manually; always obtain references to boards from ConnectionService.
     public class TreehopperUsb : INotifyPropertyChanged, IDisposable, IComparable, IEquatable<TreehopperUsb>,
         IEqualityComparer<TreehopperUsb>
     {
@@ -374,14 +371,14 @@ namespace Treehopper
         /// </summary>
         /// <param name="serialNumber">A 60-character (or fewer) string containing the new serial number</param>
         /// <remarks>
-        ///     While the name is immediately written to the device and the Name property is updated immediately, the changes
-        ///     will not take effect to other applications until the device is reset. This can be done by calling
+        ///     While the new serial number is immediately available from the SerialNumber property, the changes
+        ///     will not take effect in other applications until the device is reset. This can be done by calling
         ///     <see cref="Reboot()" />
         /// </remarks>
         public Task UpdateSerialNumber(string serialNumber)
         {
             if (serialNumber.Length > 60)
-                throw new Exception("String must be 15 characters or less");
+                throw new Exception("String must be 60 characters or less");
 
             var bytes = Encoding.UTF8.GetBytes(serialNumber);
             var dataToSend = new byte[bytes.Length + 2];

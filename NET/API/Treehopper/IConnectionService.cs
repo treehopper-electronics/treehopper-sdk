@@ -8,7 +8,7 @@ namespace Treehopper
     /// <summary>
     ///     An interface representing connection services
     /// </summary>
-    public interface IConnectionService : INotifyPropertyChanged, IDisposable
+    public interface IConnectionService : IDisposable
     {
         /// <summary>
         ///     A collection of boards connected to this host

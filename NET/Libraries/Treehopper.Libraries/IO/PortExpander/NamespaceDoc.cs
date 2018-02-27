@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// GPIO port expanders and shift registers
+/// GPIO port expanders, shift registers, and PWM expanders
 /// </summary>
 
 namespace Treehopper.Libraries.IO.PortExpander
