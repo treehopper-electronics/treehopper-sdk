@@ -179,7 +179,13 @@ namespace Treehopper
         ///         If you accidentally erase this number, you must reprogram it using the Factory Programmer software.
         ///     </para>
         /// </remarks>
-        public string SerialNumber => Connection.Serial;
+        public string SerialNumber
+        {
+            get
+            {
+                return Connection.Serial;
+            }
+        }
 
         /// <summary>
         ///     The name of the board
@@ -200,12 +206,24 @@ namespace Treehopper
         ///         want a program communicating with the incorrect board.
         ///     </para>
         /// </remarks>
-        public string Name => Connection.Name;
+        public string Name
+        {
+            get
+            {
+                return Connection.Name;
+            }
+        }
 
         /// <summary>
         ///     Get a string representation of the firmware version number
         /// </summary>
-        public string VersionString => $"{Connection.Version / 100d:0.00}";
+        public string VersionString
+        {
+            get
+            {
+                return $"{Connection.Version / 100d:0.00}";
+            }
+        }       
 
         /// <summary>
         ///     Get the firmware version number
@@ -227,7 +245,13 @@ namespace Treehopper
         /// </summary>
         /// <param name="index">The pin index to access</param>
         /// <returns></returns>
-        public Pin this[int index] => Pins[index];
+        public Pin this[int index]
+        {
+            get
+            {
+                return Pins[index];
+            }
+        }
 
         /// <summary>
         ///     Compares another Treehopper to this one.
