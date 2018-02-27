@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET", "NET", "{DC6AA69C-A27C-4FE5-96E7-5D9B1575F52D}"
 EndProject
@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{E06F3F12
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Displays", "Displays", "{A83E2E2B-A019-4435-B1A2-1E3BDAB3B119}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interface", "Interface", "{115CA3F3-252B-4E44-9709-36ABDA3D719A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IO", "IO", "{115CA3F3-252B-4E44-9709-36ABDA3D719A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArduinoShim", "ArduinoShim", "{6C83FDBC-9FA6-47F9-8371-5A98B79D20EF}"
 EndProject
