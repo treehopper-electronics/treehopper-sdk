@@ -66,7 +66,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
 
 
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             lux = await dev.ReadWordBE() / 1.2;
         }

@@ -18,6 +18,6 @@ namespace Treehopper.Libraries.Sensors
         ///     Forces the input or sensor to update the data
         /// </summary>
         /// <returns>An awaitable task</returns>
-        Task Update();
+        Task UpdateAsync();
     }
 }

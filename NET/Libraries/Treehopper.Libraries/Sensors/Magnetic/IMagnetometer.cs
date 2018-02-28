@@ -8,7 +8,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
     public interface IMagnetometer : IPollable
     {
         /// <summary>
-        ///     Gets the three-axis magnetometer value
+        ///     Gets the three-axis magnetometer value, in uT (micro-Tesla)
         /// </summary>
         Vector3 Magnetometer { get; }
     }

@@ -74,7 +74,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             get
             {
                 if (mode == PortExpanderPinMode.DigitalInput && portExpander.AutoUpdateWhenPropertyRead)
-                    Task.Run(portExpander.Update).Wait();
+                    Task.Run(portExpander.UpdateAsync).Wait();
                 return digitalValue;
             }
 
@@ -112,7 +112,7 @@ namespace Treehopper.Libraries.IO.PortExpander
                     // poll the device
                     while (DigitalValue == oldValue)
                     {
-                        await portExpander.Update().ConfigureAwait(false);
+                        await portExpander.UpdateAsync().ConfigureAwait(false);
                         await Task.Delay(portExpander.AwaitPollingInterval);
                     }
 

@@ -61,7 +61,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return humidity;
             }
         }
@@ -70,10 +70,10 @@ namespace Treehopper.Libraries.Sensors.Pressure
         ///     Reads current data from the BME280
         /// </summary>
         /// <returns></returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             // first the BMP280 stuff
-            await base.Update();
+            await base.UpdateAsync();
 
             // now the BME stuff
             double var_H;

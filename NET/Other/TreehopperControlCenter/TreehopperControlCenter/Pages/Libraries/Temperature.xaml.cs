@@ -66,7 +66,7 @@ namespace TreehopperControlCenter.Pages.Libraries
         public override async Task Update()
         {
             if (Sensor == null) return;
-            await Sensor.Update().ConfigureAwait(false);
+            await Sensor.UpdateAsync().ConfigureAwait(false);
         }
     }
 }

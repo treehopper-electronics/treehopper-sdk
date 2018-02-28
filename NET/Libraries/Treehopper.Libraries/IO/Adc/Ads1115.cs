@@ -68,7 +68,7 @@ namespace Treehopper.Libraries.IO.Adc
         ///     Read all channels of the ADC and update the values of the pins
         /// </summary>
         /// <returns></returns>
-        public async Task Update()
+        public async Task UpdateAsync()
         {
             for (var i = 0; i < 4; i++)
             {

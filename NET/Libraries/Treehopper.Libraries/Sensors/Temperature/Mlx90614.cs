@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
             ///     Update the temperature register
             /// </summary>
             /// <returns>An awaitable task</returns>
-            public override async Task Update()
+            public override async Task UpdateAsync()
             {
                 var data = await dev.ReadWordData(register).ConfigureAwait(false);
 

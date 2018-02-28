@@ -35,7 +35,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return dpad;
             }
         }
@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.Input
 
         public int AwaitPollingInterval { get; set; } = 20;
 
-        public virtual async Task Update()
+        public virtual async Task UpdateAsync()
         {
             var result = await dev.SendReceive(new byte[] {0x00});
             var values = new BitArray(result);

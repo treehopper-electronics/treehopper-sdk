@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return magnetometer;
             }
         }
@@ -72,12 +72,12 @@ namespace Treehopper.Libraries.Sensors.Inertial
         ///     Retrieve the latest sample data from the MPU9250
         /// </summary>
         /// <returns></returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
-            await base.Update().ConfigureAwait(false);
+            await base.UpdateAsync().ConfigureAwait(false);
 
             if (!EnableMagnetometer) return;
-            await mag.Update().ConfigureAwait(false);
+            await mag.UpdateAsync().ConfigureAwait(false);
             magnetometer = mag.Magnetometer;
         }
     }

@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
 
                 return magneticFlux;
             }
@@ -58,7 +58,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         /// Update the temperature and MagneticFlux properties with the latest values from the sensor
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             var value = await i2c.SendReceive(address, null, 7);
 

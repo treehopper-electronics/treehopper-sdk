@@ -88,7 +88,7 @@ namespace Treehopper.Libraries.IO.Adc
 
         public int AwaitPollingInterval { get; set; }
 
-        public async Task Update()
+        public async Task UpdateAsync()
         {
             AdcValue = await PerformConversion();
         }

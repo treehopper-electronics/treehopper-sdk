@@ -98,7 +98,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             await registers.readRange(registers.ch0, registers.ch1);
             double cpl = (IntegrationTimeValue * GainSettingValue) / 408.0;

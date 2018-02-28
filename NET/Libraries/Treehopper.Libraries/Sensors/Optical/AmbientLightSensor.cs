@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return lux;
             }
@@ -22,6 +22,6 @@ namespace Treehopper.Libraries.Sensors.Optical
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
         public int AwaitPollingInterval { get; set; }
 
-        public abstract Task Update();
+        public abstract Task UpdateAsync();
     }
 }

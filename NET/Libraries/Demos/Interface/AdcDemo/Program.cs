@@ -22,7 +22,7 @@
 
             while(!Console.KeyAvailable)
             {
-                await adc.Update();
+                await adc.UpdateAsync();
                 Console.WriteLine("Data:");
                 for(int i=0;i<adc.Pins.Count;i++)
                     Console.WriteLine($"{adc.Pins[i].AnalogVoltage:0.00}");

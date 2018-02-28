@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         ///     Read the port's value
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public Task Update()
+        public Task UpdateAsync()
         {
             return readPort();
         }

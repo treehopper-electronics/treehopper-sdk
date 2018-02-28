@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Update().Wait();
+                    UpdateAsync().Wait();
 
                 return temperatureCelsius;
             }
@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Update the temperature from the current value reported by the sensor
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public abstract Task Update();
+        public abstract Task UpdateAsync();
 
         /// <summary>
         ///     Utility method to convert any Celsius temperature to Kelvin

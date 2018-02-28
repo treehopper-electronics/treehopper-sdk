@@ -77,7 +77,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return altitude;
             }
 
@@ -106,7 +106,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         ///     Update the sensor's value
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             await registers.readRange(registers.pressure, registers.humidity).ConfigureAwait(false); // even though this the BMP280, assume it's a BME280 so the bus is less chatty.
 

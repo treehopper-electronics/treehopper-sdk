@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return dPad;
             }
         }
@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return leftStick;
             }
         }
@@ -75,7 +75,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return rightStick;
             }
         }
@@ -84,7 +84,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return leftTriggerForce;
             }
         }
@@ -93,7 +93,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return rightTriggerForce;
             }
         }
@@ -102,7 +102,7 @@ namespace Treehopper.Libraries.Input
 
         public int AwaitPollingInterval { get; set; } = 20;
 
-        public async Task Update()
+        public async Task UpdateAsync()
         {
             await dev.WriteByte(0x00).ConfigureAwait(false);
             var response = await dev.ReadData(6).ConfigureAwait(false);

@@ -15,6 +15,6 @@ namespace Treehopper.Libraries.Sensors
         public bool AutoUpdateWhenPropertyRead { get; set; }
         public int AwaitPollingInterval { get; set; }
 
-        public abstract Task Update();
+        public abstract Task UpdateAsync();
     }
 }

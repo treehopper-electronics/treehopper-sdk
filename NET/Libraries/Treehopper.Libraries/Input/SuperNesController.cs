@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Input
         public Button L { get; }
         public Button R { get; }
 
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             var result = await dev.SendReceive(new byte[] {0x00, 0x00});
             var values = new BitArray(result);

@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return eularAngles;
             }
@@ -67,7 +67,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return quaternion;
             }
@@ -78,7 +78,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return linearAcceleration;
             }
@@ -89,7 +89,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return gravity;
             }
@@ -100,7 +100,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return accelerometer;
             }
@@ -111,7 +111,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return gyro;
             }
@@ -122,7 +122,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return magnetometer;
             }
@@ -161,7 +161,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Task.Delay(20);
         }
 
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             await registers.readRange(registers.accelX, registers.temp).ConfigureAwait(false);
 

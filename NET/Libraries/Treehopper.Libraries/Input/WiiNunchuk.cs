@@ -28,7 +28,7 @@ namespace Treehopper.Libraries.Input
     ///         this is a great method when you only need to grab the state of the device infrequently, as it doesn't tie up
     ///         the <see cref="I2C" /> bus constantly. If your application is going to constantly read the input (say, in a
     ///         game), you should change <see cref="AutoUpdateWhenPropertyRead" /> to false, and poll the sensor manually (with
-    ///         <see cref="Update()" />) whenever you want an update. Or, if you're hooking into events for the device, you can
+    ///         <see cref="UpdateAsync()" />) whenever you want an update. Or, if you're hooking into events for the device, you can
     ///         wrap this class inside a <see cref="Poller{TPollable}" /> to automatically run the polling loop for you.
     ///     </para>
     /// </remarks>
@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return joystick;
             }
         }
@@ -85,14 +85,14 @@ namespace Treehopper.Libraries.Input
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return accelerometer;
             }
         }
 
         /// <summary>
-        ///     Whether reading from one of the data properties should trigger a call to <see cref="Update()" /> to fetch the
-        ///     latest state from the device. If false, the user should periodically call <see cref="Update()" /> to poll the
+        ///     Whether reading from one of the data properties should trigger a call to <see cref="UpdateAsync()" /> to fetch the
+        ///     latest state from the device. If false, the user should periodically call <see cref="UpdateAsync()" /> to poll the
         ///     device.
         /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
@@ -107,7 +107,7 @@ namespace Treehopper.Libraries.Input
         ///     Fetch an update from the Nunchuk and push it to all the properties.
         /// </summary>
         /// <returns>An awaitable task that completes upon success.</returns>
-        public async Task Update()
+        public async Task UpdateAsync()
         {
             // the nunchuk does not respond to standard SMBus-compliant register reads, so we have to write a register, then do a new transaction to read out the data
             await dev.WriteByte(0x00).ConfigureAwait(false);

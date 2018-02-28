@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return lux;
             }
@@ -71,7 +71,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return meters;
             }
@@ -85,7 +85,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return rawProximity;
             }
@@ -95,7 +95,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// Request an update of the lux and proximity data from the sensor.
         /// </summary>
         /// <returns>An awaitable Task that completes upon an update.</returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             // start ambient and prox conversion
             registers.command.alsOnDemandStart = 1;

@@ -41,7 +41,7 @@ namespace Ds18b20Test
                 {
                     foreach (var temp in sensors)
                     {
-                        await temp.Update(); // retrieve the conversion
+                        await temp.UpdateAsync(); // retrieve the conversion
                         Console.WriteLine(
                             $"Sensor {temp.Address} reports a temperature of {temp.Celsius} °C ({temp.Fahrenheit} °F)");
                     } 

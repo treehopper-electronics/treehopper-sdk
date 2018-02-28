@@ -28,7 +28,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Force an update of the MCP9808 temperature sensor
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             var data = await dev.ReadWordDataBE(0x05);
             double temp = data & 0x0FFF;

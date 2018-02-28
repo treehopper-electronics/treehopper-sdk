@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             get
             {
-                if (parent.AutoUpdateWhenPropertyRead) parent.Update().Wait();
+                if (parent.AutoUpdateWhenPropertyRead) parent.UpdateAsync().Wait();
                 return digitalValue;
             }
 
@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.IO.PortExpander
                     // poll the device
                     while (digitalValue == oldValue)
                     {
-                        await parent.Update().ConfigureAwait(false);
+                        await parent.UpdateAsync().ConfigureAwait(false);
                         await Task.Delay(parent.AwaitPollingInterval);
                     }
 

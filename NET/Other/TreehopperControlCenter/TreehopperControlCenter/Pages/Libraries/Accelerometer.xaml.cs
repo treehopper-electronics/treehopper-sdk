@@ -76,7 +76,7 @@ namespace TreehopperControlCenter.Pages.Libraries
         {
             if(Sensor != null)
             {
-                await Sensor.Update().ConfigureAwait(false);
+                await Sensor.UpdateAsync().ConfigureAwait(false);
 
                 //AccelerometerX = Sensor.Accelerometer.X;
 

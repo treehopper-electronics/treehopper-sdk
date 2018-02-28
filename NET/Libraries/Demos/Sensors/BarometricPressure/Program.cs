@@ -26,7 +26,7 @@ namespace BarometricPressure
 
             while(!Console.KeyAvailable)
             {
-                await sensor.Update();
+                await sensor.UpdateAsync();
                 Console.WriteLine($"Pressure:    {sensor.Atm:0.00} Atm");
                 Console.WriteLine($"Altitude:    {sensor.Altitude:0.00} m");
                 Console.WriteLine($"Temperature: {sensor.Celsius:0.00} Celsius");

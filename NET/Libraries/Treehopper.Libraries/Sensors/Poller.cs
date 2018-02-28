@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Sensors
             {
                 while (isRunning)
                 {
-                    await sensor.Update().ConfigureAwait(false);
+                    await sensor.UpdateAsync().ConfigureAwait(false);
                     OnNewSensorValue?.Invoke(this, new EventArgs());
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Sensor"));
                     if (usePrecisionTimer)

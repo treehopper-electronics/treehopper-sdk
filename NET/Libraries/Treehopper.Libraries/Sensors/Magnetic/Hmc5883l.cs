@@ -157,7 +157,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return mag;
             }
         }
@@ -169,7 +169,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         ///     <see cref="AutoUpdateWhenPropertyRead" /> is true.
         /// </summary>
         /// <returns></returns>
-        public async Task Update()
+        public async Task UpdateAsync()
         {
             var bytes = await dev.ReadBufferData((byte) Registers.XOutHi, 6);
             var report = bytes.BytesToStruct<DataReport>(Endianness.BigEndian);

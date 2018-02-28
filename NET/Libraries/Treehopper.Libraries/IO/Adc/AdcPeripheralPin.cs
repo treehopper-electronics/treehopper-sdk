@@ -55,7 +55,7 @@ namespace Treehopper.Libraries.IO.Adc
             get
             {
                 if (parent.AutoUpdateWhenPropertyRead)
-                    parent.Update().Wait();
+                    parent.UpdateAsync().Wait();
 
                 return adcValue;
             }

@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             get
             {
                 if (AutoUpdateWhenPropertyRead)
-                    Task.Run(Update).Wait();
+                    Task.Run(UpdateAsync).Wait();
 
                 return _magnetometer;
             }
@@ -33,7 +33,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         public bool AutoUpdateWhenPropertyRead { get; set; }
         public int AwaitPollingInterval { get; set; }
 
-        public async Task Update()
+        public async Task UpdateAsync()
         {
             _registers.control.mode = 1;
             Task.Run(_registers.control.write).Wait();

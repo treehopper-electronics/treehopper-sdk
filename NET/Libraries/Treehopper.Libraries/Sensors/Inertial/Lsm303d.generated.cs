@@ -1193,7 +1193,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             }
             internal class InertialIntGen1StatusRegister : Register
             {
-                internal InertialIntGen1StatusRegister(RegisterManager regManager) : base(regManager, 0x30, 1, false) { }
+                internal InertialIntGen1StatusRegister(RegisterManager regManager) : base(regManager, 0x31, 1, false) { }
 
                 public int xLow { get; set; }
                 public int xHigh { get; set; }

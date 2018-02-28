@@ -124,7 +124,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
                 return accelerometer;
             }
         }
@@ -133,7 +133,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         ///     Read the current sensor data
         /// </summary>
         /// <returns></returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             await _registers.readRange(_registers.accel_x, _registers.gyro_z).ConfigureAwait(false);
             var accelScale = getAccelScale();
@@ -160,7 +160,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) Update().Wait();
+                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
 
                 return gyroscope;
             }
@@ -185,7 +185,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             for (var i = 0; i < 80; i++)
             {
-                await Update(); // get dater
+                await UpdateAsync(); // get dater
                 accelOffset.X += Accelerometer.X;
                 accelOffset.Y += Accelerometer.Y;
                 accelOffset.Z += Accelerometer.Z;

@@ -39,7 +39,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Force an update of the LM75 temperature sensor
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             var data = (short) await dev.ReadWordDataBE(0x00);
             Celsius = data / 32.0 / 8.0;

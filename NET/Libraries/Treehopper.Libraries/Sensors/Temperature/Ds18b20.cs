@@ -64,7 +64,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Whether group conversion mode is enabled or not
         /// </summary>
         /// <remarks>
-        ///     When false (default), this temperature sensor operates independently. When true, <see cref="Update" /> will not
+        ///     When false (default), this temperature sensor operates independently. When true, <see cref="UpdateAsync" /> will not
         ///     initiate a conversion; just read the result. This means you must call <see cref="Group.StartConversionAsync" /> to
         ///     request a temperature conversion when this property is true.
         /// </remarks>
@@ -72,7 +72,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             if (!EnableGroupConversion)
             {

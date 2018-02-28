@@ -101,7 +101,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         ///     Update the inputs from the port
         /// </summary>
         /// <returns></returns>
-        public Task Update()
+        public Task UpdateAsync()
         {
             return readPort();
         }

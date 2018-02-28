@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     Read the current AnalogVoltage and update the temperature data
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public override async Task Update()
+        public override async Task UpdateAsync()
         {
             var voltage = pin.AnalogVoltage;
             var v0 = type == Type.Mcp9700 ? 0.5 : 0.4;
@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
         private async void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)
         {
-            await Update();
+            await UpdateAsync();
         }
     }
 }
