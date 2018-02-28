@@ -1,0 +1,334 @@
+{
+    "multiRegisterAccess": "true",
+  "registers": {
+    "ctrl1": {
+      "address": "0x20",
+      "values": {
+        "xEnable": {},
+        "yEnable": {},
+        "zEnable": {},
+        "lowPowerEnable": {},
+        "outputDataRate": {
+          "width": 4,
+          "enum": {
+            "values": {
+              "powerDown": null,
+              "Hz_1": null,
+              "Hz_10": null,
+              "Hz_25": null,
+              "Hz_50": null,
+              "Hz_100": null,
+              "Hz_200": null,
+              "Hz_400": null,
+              "Lp_1620Hz": null,
+              "Hz_1344_LP_5376Hz": null
+            }
+          }
+        }
+      }
+    },
+
+    "ctrl2": {
+      "address": "0x21",
+      "values": {
+        "hpis": {
+          "width": 2
+          },
+          "hpClick": {},
+          "filterDataSelection": {},
+          "hpcf": {
+            "width": 2
+          },
+          "accelhighPassMode": {
+            "width": 2,
+            "enum": {
+              "values": {
+                "Reset": null,
+                "ReferenceSignal": null,
+                "Normal": null,
+                "AutoResetOnInterrupt": null
+              }
+            }
+          }
+        }
+      },
+
+      "ctrl3": {
+        "address": "0x22",
+        "values": {
+          "fifoOverrunOnInt1": {
+            "offset": 1
+          },
+          "fifoWatermarkOnInt1": {},
+          "drdy2OnInt1": {},
+          "drdy1OnInt1": {},
+          "aoi2OnInt1": {},
+          "aoi1OnInt1": {},
+          "clickOnInt2": {}
+        }
+      },
+
+      "ctrl4": {
+        "address": "0x23",
+        "values": {
+          "spiModeSelection": {},
+          "highResolution": {
+            "offset": 3
+          },
+          "fullScaleSelection": {
+            "width": 3,
+            "offset": 3,
+            "enum": {
+              "values": {
+                "Fs_2g": null,
+                "Fs_4g": null,
+                "Fs_6g": null,
+                "Fs_8g": null,
+                "Fs_16g": null
+              }
+            }
+          },
+
+          "ble": {},
+          "bdu": {}
+        }
+      },
+
+      "ctrl5": {
+        "address": "0x24",
+        "values": {
+          "d4dInt2": {},
+          "lirInt2": {},
+          "d4dInt1": {},
+          "lirInt1": {},
+          "fifoEnable": {
+            "offset": 6
+          },
+          "boot": {}
+        }
+      },
+
+      "ctrl6": {
+        "address": "0x25",
+        "values": {
+          "interruptActiveHigh": {
+            "offset": 1
+          },
+          "p2Act": {
+            "offset": 3
+          },
+          "bootI1": {},
+          "i2Int2": {},
+          "i2Int1": {},
+          "i2ClickEnable": {}
+        }
+      },
+
+      "ctrl6": {
+        "address": "0x25",
+        "values": {
+          "interruptActiveHigh": {
+            "offset": 1
+          },
+          "p2Act": {
+            "offset": 3
+          },
+          "bootI1": {},
+          "i2Int2": {},
+          "i2Int1": {},
+          "i2ClickEnable": {}
+        }
+      },
+
+      "reference": {
+        "address": "0x26",
+        "width": 8
+      },
+
+      "status": {
+        "address": "0x27",
+        "values": {
+          "xDataAvailable": {},
+          "yDataAvailable": {},
+          "zDataAvailable": {},
+          "zyxDataAvailable": {},
+          "xDataOverrun": {},
+          "yDataOverrun": {},
+          "zDataOverrun": {},
+          "zyxDataOverrun": {}
+        }
+      },
+
+      "outAccelX": {
+        "address": "0xa8",
+        "width": 16,
+        "isSigned": "true",
+        "isBigEndian":  "false"
+      },
+
+    "outAccelY": {
+      "address": "0xaA",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "outAccelZ": {
+      "address": "0xaC",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+      "fifoControl": {
+        "address": "0x2E",
+        "values": {
+          "fifoThreshold": {
+            "width": 5
+          },
+          "fifoMode": {
+            "width": 3,
+            "enum": {
+              "values": {
+                "Bypass": null,
+                "Fifo": null,
+                "Stream": null,
+                "StreamToFifo": null,
+                "BypassToStream": null
+              }
+            }
+          }
+        }
+      },
+
+      "fifoSource": {
+        "address": "0x2f",
+        "values": {
+          "fifoStoredLevel": {
+            "width": 5
+          },
+          "empty": {},
+          "overrun": {},
+          "fifoThreshold": {}
+        }
+      },
+
+      "inertialIntGen1Config": {
+        "address": "0x30",
+        "values": {
+          "xLowInterruptEnable": {},
+          "xHighInterruptEnable": {},
+          "yLowInterruptEnable": {},
+          "yHighInterruptEnable": {},
+          "zLowInterruptEvent": {},
+          "zHighInterruptEnable": {},
+          "detect6D": {},
+          "andOrInterruptEvents": {}
+        }
+      },
+
+      "inertialIntGen1Status": {
+        "address": "0x31",
+        "values": {
+          "xLow": {},
+          "xHigh": {},
+          "yLow": {},
+          "yHigh": {},
+          "zLow": {},
+          "zHigh": {},
+          "intStatus": {}
+        }
+      },
+
+      "inertialIntGen1Threshold": {
+        "address": "0x32",
+        "width": 7
+      },
+
+      "inertialIntGen1Duration": {
+        "address": "0x33",
+        "width": 7
+      },
+
+      "inertialIntGen2Config": {
+        "address": "0x34",
+        "values": {
+          "xLowInterruptEnable": {},
+          "xHighInterruptEnable": {},
+          "yLowInterruptEnable": {},
+          "yHighInterruptEnable": {},
+          "zLowInterruptEvent": {},
+          "zHighInterruptEnable": {},
+          "detect6D": {},
+          "andOrInterruptEvents": {}
+        }
+      },
+
+      "inertialIntGen2Status": {
+        "address": "0x35",
+        "values": {
+          "xLow": {},
+          "xHigh": {},
+          "yLow": {},
+          "yHigh": {},
+          "zLow": {},
+          "zHigh": {},
+          "intStatus": {}
+        }
+      },
+
+      "inertialIntGen2Threshold": {
+        "address": "0x36",
+        "width": 7
+      },
+
+      "inertialIntGen2Duration": {
+        "address": "0x37",
+        "width": 7
+      },
+
+      "clickConfig": {
+        "address": "0x38",
+        "values": {
+          "xSingleClick": {},
+          "xDoubleClick": {},
+          "ySingleClick": {},
+          "yDoubleClick": {},
+          "zSingleClick": {},
+          "zDoubleClick": {}
+        }
+      },
+
+      "clickSource": {
+        "address": "0x39",
+        "values": {
+          "x": {},
+          "y": {},
+          "z": {},
+          "sign": {},
+          "singleClickEn": {},
+          "doubleClickEn": {},
+          "interruptActive": {}
+        }
+      },
+
+      "clickThreshold": {
+        "address": "0x3A",
+        "width": "7"
+      },
+
+      "timeLimit": {
+        "address": "0x3b",
+        "width": 7
+      },
+
+      "timeLatency": {
+        "address": "0x3c",
+        "width": 8
+      },
+
+      "timeWindow": {
+        "address": "0x3d",
+        "width": 8
+      }
+    
+  }
+}

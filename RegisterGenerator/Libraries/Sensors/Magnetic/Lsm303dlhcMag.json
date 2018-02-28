@@ -1,0 +1,100 @@
+{
+    "multiRegisterAccess": "true",
+  "registers": {
+    "cra": {
+      "address": "0x80",
+      "values": {
+        "magDataRate": {
+          "offset": 2,
+          "width": 3,
+          "enum": {
+            "values": {
+              "Hz_0_75": null,
+              "Hz_1_5": null,
+              "Hz_3_0": null,
+              "Hz_7_5": null,
+              "Hz_15": null,
+              "Hz_30": null,
+              "Hz_75": null,
+              "Hz_100": null
+            }
+          }
+        },
+
+        "tempEnable": {
+          "offset": 7
+        }
+      }
+    },
+
+    "crb": {
+      "address": "0x81",
+      "values": {
+        "gainConfiguration": {
+          "width": 3,
+          "offset": 5,
+          "enum": {
+            "values": {
+              "gauss_1_3": 1,
+              "gauss_1_9": 2,
+              "gauss_2_5": 3,
+              "gauss_4_0": 4,
+              "gauss_4_7": 5,
+              "gauss_5_6": 6,
+              "gauss_8_1": 7
+            }
+          }
+        }
+      }
+    },
+
+    "mr": {
+      "address": "0x82",
+      "values": {
+        "magSensorMode": {
+          "width": 2,
+          "enum": {
+            "values": {
+              "ContinuousConversion": null,
+              "SingleConversion": null,
+              "PowerDown": null
+            }
+          }
+        }
+      }
+    },
+
+    "outX": {
+      "address": "0x83",
+      "width": 16,
+      "isSigned" :  "true"
+    },
+
+    "outY": {
+      "address": "0x85",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "outZ": {
+      "address": "0x87",
+      "width": 16,
+      "isSigned": "true"
+    },
+
+    "sr": {
+      "address": "0x09",
+      "values": {
+        "drdy": {},
+        "registerLock": {}
+      }
+    },
+
+    "tempOut": {
+      "address": "0x05",
+      "width": 12,
+      "offset" :  4,
+      "isSigned": "true"
+    }
+  }
+}

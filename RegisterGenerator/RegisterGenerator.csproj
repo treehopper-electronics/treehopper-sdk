@@ -94,6 +94,12 @@
     <None Include="Libraries\Sensors\Inertial\L3gd20.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Libraries\Sensors\Magnetic\Lsm303dlhcMag.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\Sensors\Inertial\Lsm303dlhcAccel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Libraries\Sensors\Inertial\Lsm303d.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

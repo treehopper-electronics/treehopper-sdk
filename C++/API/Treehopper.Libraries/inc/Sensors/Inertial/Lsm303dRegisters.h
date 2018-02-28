@@ -650,7 +650,7 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
         class InertialIntGen1StatusRegister : public Register
         {
         public:
-			InertialIntGen1StatusRegister(RegisterManager& regManager) : Register(regManager,0x30, 1, false) { }
+			InertialIntGen1StatusRegister(RegisterManager& regManager) : Register(regManager,0x31, 1, false) { }
             int xLow;
             int xHigh;
             int yLow;

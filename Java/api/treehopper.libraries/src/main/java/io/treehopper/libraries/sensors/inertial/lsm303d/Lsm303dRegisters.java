@@ -886,7 +886,7 @@ class Lsm303dRegisters extends RegisterManager
     }
     class InertialIntGen1StatusRegister extends Register
     {
-        InertialIntGen1StatusRegister(RegisterManager regManager) { super(regManager, 0x30, 1, false); }
+        InertialIntGen1StatusRegister(RegisterManager regManager) { super(regManager, 0x31, 1, false); }
 
         int xLow;
         int xHigh;

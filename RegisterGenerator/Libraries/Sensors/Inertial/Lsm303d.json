@@ -370,7 +370,7 @@
         },
 
         "inertialIntGen1Status" : {
-            "address" : "0x30",
+            "address" : "0x31",
             "values" : {
                 "xLow" : {},
                 "xHigh" : {},

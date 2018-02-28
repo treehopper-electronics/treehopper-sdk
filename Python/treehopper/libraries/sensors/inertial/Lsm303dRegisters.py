@@ -1011,7 +1011,7 @@ class Lsm303dRegisters(RegisterManager):
 
     class InertialIntGen1StatusRegister(Register):
         def __init__(self, reg_manager: RegisterManager):
-            Register.__init__(self, reg_manager, 0x30, 1, False)
+            Register.__init__(self, reg_manager, 0x31, 1, False)
             self.xLow = 0
             self.xHigh = 0
             self.yLow = 0
