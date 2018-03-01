@@ -6,6 +6,10 @@ using Treehopper.Libraries.Sensors.Magnetic;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
+    /// <summary>
+    /// ST LSM303DLHC 6-DoF IMU
+    /// </summary>
+    [Supports("ST", "LSM303DLHC")]
     public class Lsm303dlhc : IPollable
     {
         public Lsm303dlhcAccel Accel { get; set; }
@@ -25,7 +29,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 Mag.AutoUpdateWhenPropertyRead = value;
             }
         }
-        public int AwaitPollingInterval { get; set; }
 
         public Lsm303dlhc(I2C i2c, int rate=100)
         {

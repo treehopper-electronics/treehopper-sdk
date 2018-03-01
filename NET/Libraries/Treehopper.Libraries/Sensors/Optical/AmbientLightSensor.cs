@@ -20,7 +20,6 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-        public int AwaitPollingInterval { get; set; }
 
         public abstract Task UpdateAsync();
     }

@@ -43,7 +43,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-        public int AwaitPollingInterval { get; set; } = 10;
         public async Task UpdateAsync()
         {
             await registers.readRange(registers.outX, registers.outZ).ConfigureAwait(false);

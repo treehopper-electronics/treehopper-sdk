@@ -86,8 +86,6 @@ namespace Treehopper.Libraries.IO.Adc
             } // if the user constructed us with a DRDY pin, we should *never* update when property read.
         }
 
-        public int AwaitPollingInterval { get; set; }
-
         public async Task UpdateAsync()
         {
             AdcValue = await PerformConversion();

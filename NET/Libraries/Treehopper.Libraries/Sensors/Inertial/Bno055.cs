@@ -36,6 +36,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
             return deviceList;
         }
 
+        public override event PropertyChangedEventHandler PropertyChanged;
+
         SMBusDevice dev;
         Bno055Registers registers;
         Vector3 accelerometer;
@@ -45,11 +47,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
         Vector3 gravity;
         Quaternion quaternion;
         EularAngles eularAngles;
-
-        public override event PropertyChangedEventHandler PropertyChanged;
-
-        public bool AutoUpdateWhenPropertyRead { get; set; }
-        public int AwaitPollingInterval { get; set; }
 
         public EularAngles EularAngles
         {

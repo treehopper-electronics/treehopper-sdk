@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
+    /// <summary>
+    /// Accelerometer portion of the LSM303DLHC IMU
+    /// </summary>
     public partial class Lsm303dlhcAccel : IAccelerometer
     {
         Lsm303dlhcAccelRegisters registers;
@@ -20,6 +23,12 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Task.Run(registers.ctrl1.write).Wait();
         }
 
+        /// <summary>
+        /// Gets a vector with the acceleration data, in g.
+        /// </summary>
+        /// <remarks>
+        /// \f$1\, \text{g} = 9.8\, \text{m}/\text{s}^2\f$
+        /// </remarks>
         public Vector3 Accelerometer
         {
             get
@@ -32,7 +41,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-        public int AwaitPollingInterval { get; set; }
 
         public async Task UpdateAsync()
         {

@@ -8,11 +8,11 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// </summary>
     public class DigitalInPeripheralPin : DigitalIn
     {
-        private readonly IPollable parent;
+        private readonly IPolledEvents parent;
         private TaskCompletionSource<bool> digitalSignal = new TaskCompletionSource<bool>();
         private bool digitalValue;
 
-        internal DigitalInPeripheralPin(IPollable parent)
+        internal DigitalInPeripheralPin(IPolledEvents parent)
         {
             this.parent = parent;
         }

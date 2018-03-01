@@ -30,8 +30,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 return _magnetometer;
             }
         }
-        public bool AutoUpdateWhenPropertyRead { get; set; }
-        public int AwaitPollingInterval { get; set; }
+        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         public async Task UpdateAsync()
         {

@@ -43,8 +43,6 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </summary>
         public double Kelvin => ToKelvin(Celsius);
 
-        public int AwaitPollingInterval { get; set; }
-
         /// <summary>
         ///     Update the temperature from the current value reported by the sensor
         /// </summary>

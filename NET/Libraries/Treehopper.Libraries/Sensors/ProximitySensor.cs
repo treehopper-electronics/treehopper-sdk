@@ -12,8 +12,7 @@ namespace Treehopper.Libraries.Sensors
         public double Inches => Meters * 39.3701;
         public double Feet => Meters * 3.28085;
         public abstract double Meters { get; }
-        public bool AutoUpdateWhenPropertyRead { get; set; }
-        public int AwaitPollingInterval { get; set; }
+        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         public abstract Task UpdateAsync();
     }

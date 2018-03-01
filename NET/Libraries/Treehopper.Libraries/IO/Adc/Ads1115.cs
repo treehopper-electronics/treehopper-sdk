@@ -62,7 +62,7 @@ namespace Treehopper.Libraries.IO.Adc
         /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        public int AwaitPollingInterval { get; set; }
+        public int AwaitPollingInterval { get; set; } = 25;
 
         /// <summary>
         ///     Read all channels of the ADC and update the values of the pins

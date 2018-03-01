@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Input
     ///     Nintendo Entertainment System (NES) Controller
     /// </summary>
     [Supports("Nintendo", "NES Controller")]
-    public class NesController : IPollable
+    public class NesController : IPollable, IPolledEvents
     {
         protected SpiDevice dev;
 
@@ -42,7 +42,7 @@ namespace Treehopper.Libraries.Input
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        public int AwaitPollingInterval { get; set; } = 20;
+        public int AwaitPollingInterval { get; set; } = 25;
 
         public virtual async Task UpdateAsync()
         {

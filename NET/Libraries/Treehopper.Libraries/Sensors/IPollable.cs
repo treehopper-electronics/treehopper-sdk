@@ -12,8 +12,6 @@ namespace Treehopper.Libraries.Sensors
         /// </summary>
         bool AutoUpdateWhenPropertyRead { get; set; }
 
-        int AwaitPollingInterval { get; set; }
-
         /// <summary>
         ///     Forces the input or sensor to update the data
         /// </summary>

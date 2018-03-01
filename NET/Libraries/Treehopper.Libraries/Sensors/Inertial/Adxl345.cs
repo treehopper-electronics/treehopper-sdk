@@ -25,7 +25,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-        public int AwaitPollingInterval { get; set; }
 
         public async Task UpdateAsync()
         {

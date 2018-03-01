@@ -15,7 +15,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     /// <summary>
     ///     Parent port expander type. Separated from IPortExpander to eliminate circular references
     /// </summary>
-    public interface IPortExpanderParent : IPollable
+    public interface IPortExpanderParent : IPollable, IPolledEvents
     {
         /// <summary>
         ///     Called by a port expander pin when its value needs to be updated

@@ -11,7 +11,7 @@ namespace Treehopper.Libraries.Input
     ///     Nintendo Wii Classic Controller
     /// </summary>
     [Supports("Nintendo", "Wii Classic Controller")]
-    public class WiiClassicController : IPollable
+    public class WiiClassicController : IPollable, IPolledEvents
     {
         private readonly SMBusDevice dev;
         private DPadState dPad;
@@ -100,7 +100,7 @@ namespace Treehopper.Libraries.Input
 
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        public int AwaitPollingInterval { get; set; } = 20;
+        public int AwaitPollingInterval { get; set; } = 25;
 
         public async Task UpdateAsync()
         {

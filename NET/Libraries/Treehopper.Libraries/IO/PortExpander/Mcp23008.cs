@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.IO.PortExpander
     ///     Microchip MCP23008 8-bit I/O expander with I2c interface
     /// </summary>
     [Supports("Microchip", "MCP23008")]
-    public class Mcp23008 : IPortExpander<Mcp23008.Pin>, IPortExpanderParent
+    public class Mcp23008 : IPortExpander<Mcp23008.Pin>, IPortExpanderParent, IPolledEvents
     {
         private readonly SMBusDevice dev;
         private readonly BitArray gppu = new BitArray(8);
@@ -77,7 +77,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <summary>
         ///     Gets or sets the value used during pin's AwaitDigitalValueChanged method if AutoUpdateWhenPropertyRead is true
         /// </summary>
-        public int AwaitPollingInterval { get; set; } = 10;
+        public int AwaitPollingInterval { get; set; } = 25;
 
         async Task IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
         {

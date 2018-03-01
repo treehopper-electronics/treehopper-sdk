@@ -33,7 +33,7 @@ namespace Treehopper.Libraries.Input
     ///     </para>
     /// </remarks>
     [Supports("Nintendo", "Wii Nunchuk")]
-    public class WiiNunchuk : IAccelerometer
+    public class WiiNunchuk : IAccelerometer, IPolledEvents
     {
         public delegate void JoystickChangedDelegate(object sender, JoystickEventArgs e);
 
@@ -101,7 +101,7 @@ namespace Treehopper.Libraries.Input
         ///     The interval, in milliseconds, that "AwaitValueChanged"-type functions should use when polling this Nunchuk for
         ///     updates.
         /// </summary>
-        public int AwaitPollingInterval { get; set; } = 20;
+        public int AwaitPollingInterval { get; set; } = 25;
 
         /// <summary>
         ///     Fetch an update from the Nunchuk and push it to all the properties.

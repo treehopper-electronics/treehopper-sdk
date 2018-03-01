@@ -8,6 +8,9 @@ using Treehopper.Libraries.Sensors.Temperature;
 
 namespace Treehopper.Libraries.Sensors.Magnetic
 {
+    /// <summary>
+    /// Magnetic portion of the LSM303DLHC IMU
+    /// </summary>
     public partial class Lsm303dlhcMag : TemperatureSensor, IMagnetometer
     {
         Lsm303dlhcMagRegisters registers;

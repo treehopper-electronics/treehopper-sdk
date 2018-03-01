@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <summary>
         ///     The polling interval to use for AwaitDigitalValueChanged() calls
         /// </summary>
-        public int AwaitPollingInterval { get; set; }
+        public int AwaitPollingInterval { get; set; } = 25;
 
         Task IPortExpanderParent.OutputValueChanged(IPortExpanderPin portExpanderPin)
         {

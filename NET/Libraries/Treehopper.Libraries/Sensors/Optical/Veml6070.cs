@@ -49,10 +49,6 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </summary>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        /// <summary>
-        /// The interval to poll the sensor at. Unused.
-        /// </summary>
-        public int AwaitPollingInterval { get; set; } = 10;
         public async Task UpdateAsync()
         {
             var lsb = await i2c.SendReceive(0x38, null, 1).ConfigureAwait(false);
