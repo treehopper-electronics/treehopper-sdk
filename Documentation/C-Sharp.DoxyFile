@@ -916,7 +916,9 @@ EXCLUDE_SYMBOLS        = treehopper \
                          NamespaceDoc \
                          IOKit \
                          ThirdParty \
-                         *Registers
+                         *Registers \
+                         Register \
+                         RegisterManager
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include
@@ -1568,7 +1570,7 @@ FORMULA_TRANSPARENT    = YES
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-USE_MATHJAX            = NO
+USE_MATHJAX            = YES
 
 # When MathJax is enabled you can set the default output format to be used for
 # the MathJax output. See the MathJax site (see:
