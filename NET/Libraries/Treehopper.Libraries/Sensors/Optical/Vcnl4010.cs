@@ -13,16 +13,12 @@ namespace Treehopper.Libraries.Sensors.Optical
     {
         Vcnl4010Registers registers;
         double lux;
-        double meters;
         int rawProximity;
 
         /// <summary>
         /// Construct a VCNL4010
         /// </summary>
         /// <param name="i2c">The bus the device is attached to.</param>
-        /// <remarks>
-        /// The device is configured inside the constructor, so make sure the device is attached to the bus when you're initializing the object.
-        /// </remarks>
         public Vcnl4010(I2C i2c)
         {
             registers = new Vcnl4010Registers(new SMBusDevice(0x13, i2c));
@@ -66,17 +62,6 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
-        public override double Meters
-        {
-            get
-            {
-                if (AutoUpdateWhenPropertyRead)
-                    Task.Run(UpdateAsync).Wait();
-
-                return meters;
-            }
-        }
-
         /// <summary>
         /// Gets the raw proximity data reported by the sensor
         /// </summary>
@@ -92,26 +77,34 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
 
         /// <summary>
-        /// Request an update of the lux and proximity data from the sensor.
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns>An awaitable Task that completes upon an update.</returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             // start ambient and prox conversion
             registers.command.alsOnDemandStart = 1;
             registers.command.proxOnDemandStart = 1;
-            await registers.command.write().ConfigureAwait(false);
+            await registers.command.write();
 
 
             while(true)
             {
-                await registers.command.read().ConfigureAwait(false);
+                await registers.command.read();
                 if (registers.command.proxDataReady == 1 && registers.command.alsDataReady == 1)
                     break;
             }
 
-            await registers.ambientLightResult.read().ConfigureAwait(false);
-            await registers.proximityResult.read().ConfigureAwait(false);
+            await registers.ambientLightResult.read();
+            await registers.proximityResult.read();
             
             // from datasheet
             lux = registers.ambientLightResult.value * 0.25;
@@ -123,6 +116,10 @@ namespace Treehopper.Libraries.Sensors.Optical
                 meters = double.PositiveInfinity;
             else
                 meters = 81.0 * Math.Pow(registers.proximityResult.value - 2298, -0.475) / 100;
+
+            RaisePropertyChanged(this);
+            RaisePropertyChanged(this, "Lux");
+            RaisePropertyChanged(this, "RawProximitiy");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Treehopper.Libraries.IO.PortExpander;
 using Treehopper.Libraries.Sensors;
@@ -44,6 +45,18 @@ namespace Treehopper.Libraries.Input
 
         public int AwaitPollingInterval { get; set; } = 25;
 
+        /// <summary>
+        /// Requests a reading from the controller and updates its data properties with the gathered values.
+        /// </summary>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public virtual async Task UpdateAsync()
         {
             var result = await dev.SendReceive(new byte[] {0x00});
@@ -67,10 +80,15 @@ namespace Treehopper.Libraries.Input
                 dpad = DPadState.None;
 
             if (oldState != dpad)
+            {
                 RaiseDPadChanged();
+            }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DPad)));
         }
 
         public event DPadStateEventHandler DPadStateChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaiseDPadChanged()
         {

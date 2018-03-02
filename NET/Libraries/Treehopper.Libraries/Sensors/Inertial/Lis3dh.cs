@@ -9,10 +9,9 @@ using Treehopper.Utilities;
 namespace Treehopper.Libraries.Sensors.Inertial
 {
     [Supports("STMicroelectronics", "LIS3DH")]
-    public partial class Lis3dh : IAccelerometer
+    public partial class Lis3dh : AccelerometerBase
     {
         private SMBusDevice dev;
-        private Vector3 accel;
         private Lis3dhRegisters registers;
 
         public Lis3dh(I2C i2c, bool sdo = true)
@@ -31,33 +30,26 @@ namespace Treehopper.Libraries.Sensors.Inertial
             registers.ctrl1.setOutputDataRate(OutputDataRates.Hz_1);
             registers.ctrl1.lowPowerEnable = 0;
             Task.Run(registers.ctrl1.write).Wait();
-
-            //reg.TempCfgReg.AdcEn = 1;
-            //reg.TempCfgReg.TempEn = 1;
-            //reg.TempCfgReg.Write().Wait();
-
-
-
-            //reg.WriteRange(reg.Ctrl0, reg.ActivationDuration).Wait();
-
         }
 
-        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-        public async Task UpdateAsync()
+        /// <summary>
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
+        /// </summary>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
+        public override async Task UpdateAsync()
         {
             await registers.readRange(registers.outX, registers.outZ).ConfigureAwait(false);
-            accel.X = (float) registers.outX.value;
-            accel.Y = (float)registers.outY.value;
-            accel.Z = (float)registers.outZ.value;
-        }
-
-        public Vector3 Accelerometer
-        {
-            get
-            {
-                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
-                return accel;
-            }
+            _accelerometer.X = (float) registers.outX.value;
+            _accelerometer.Y = (float)registers.outY.value;
+            _accelerometer.Z = (float)registers.outZ.value;
         }
     }
 }

@@ -9,8 +9,18 @@ using Treehopper.Libraries.Sensors.Temperature;
 
 namespace Treehopper.Libraries.Sensors.Inertial
 {
-    public partial class Bno055 : TemperatureSensor, IAccelerometer, IGyroscope, IMagnetometer
+    /// <summary>
+    /// Bosch BNO055 9-DoF IMU with absolute orientation output
+    /// </summary>
+    [Supports("Bosch", "BNO055")]
+    public partial class Bno055 : TemperatureSensorBase, IAccelerometer, IGyroscope, IMagnetometer
     {
+        /// <summary>
+        /// Probes the specified I2C bus to discover any BNO055 sensors attached.
+        /// </summary>
+        /// <param name="i2c">The I2C bus to probe</param>
+        /// <param name="rateKhz">The rate, in kHz, to use</param>
+        /// <returns>An awaitable task that completes with a list of BNO055 sensors.</returns>
         public static async Task<List<Bno055>> Probe(I2C i2c, int rateKhz = 100)
         {
             var deviceList = new List<Bno055>();
@@ -35,8 +45,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             return deviceList;
         }
-
-        public override event PropertyChangedEventHandler PropertyChanged;
 
         SMBusDevice dev;
         Bno055Registers registers;
@@ -158,9 +166,21 @@ namespace Treehopper.Libraries.Sensors.Inertial
             Task.Delay(20);
         }
 
+        /// <summary>
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
+        /// </summary>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
-            await registers.readRange(registers.accelX, registers.temp).ConfigureAwait(false);
+            await registers.readRange(registers.accelX, registers.temp);
 
             accelerometer.X = registers.accelX.value / 16f;
             accelerometer.Y = registers.accelY.value / 16f;
@@ -191,7 +211,16 @@ namespace Treehopper.Libraries.Sensors.Inertial
             quaternion.Y = registers.quaY.value / 16384f;
             quaternion.Z = registers.quaZ.value / 16384f;
 
-            Celsius = (char)(registers.temp.value);
+            celsius = (char)(registers.temp.value);
+
+            RaisePropertyChanged(this);
+            RaisePropertyChanged(this, "EularAngles");
+            RaisePropertyChanged(this, "Quaternion");
+            RaisePropertyChanged(this, "LinearAcceleration");
+            RaisePropertyChanged(this, "Gravity");
+            RaisePropertyChanged(this, "Accelerometer");
+            RaisePropertyChanged(this, "Magnetometer");
+            RaisePropertyChanged(this, "Gyroscope");
         }
     }
 }

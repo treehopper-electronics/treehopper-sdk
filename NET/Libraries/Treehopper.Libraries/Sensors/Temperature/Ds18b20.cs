@@ -22,7 +22,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     ///     attached to the bus.
     /// </remarks>
     [Supports("Maxim", "DS18B20")]
-    public class Ds18b20 : TemperatureSensor
+    public class Ds18b20 : TemperatureSensorBase
     {
         private readonly IOneWire oneWire;
 
@@ -70,44 +70,52 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </remarks>
         public bool EnableGroupConversion { get; set; }
 
-        public override event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary>
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
+        /// </summary>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             if (!EnableGroupConversion)
             {
                 if (Address == 0)
                 {
-                    await oneWire.OneWireReset().ConfigureAwait(false);
-                    await oneWire.Send(new byte[] { 0xCC, 0x44 }).ConfigureAwait(false);
+                    await oneWire.OneWireReset();
+                    await oneWire.Send(new byte[] { 0xCC, 0x44 });
                 }
                 else
                 {
-                    await oneWire.OneWireResetAndMatchAddress(Address).ConfigureAwait(false);
-                    await oneWire.Send(0x44).ConfigureAwait(false);
+                    await oneWire.OneWireResetAndMatchAddress(Address);
+                    await oneWire.Send(0x44);
                 }
 
-                await Task.Delay(750).ConfigureAwait(false);
+                await Task.Delay(750);
             }
 
             if (Address == 0)
             {
-                await oneWire.OneWireReset().ConfigureAwait(false);
-                await oneWire.Send(new byte[] {0xCC, 0xBE}).ConfigureAwait(false);
+                await oneWire.OneWireReset();
+                await oneWire.Send(new byte[] {0xCC, 0xBE});
             }
             else
             {
-                await oneWire.OneWireResetAndMatchAddress(Address).ConfigureAwait(false);
-                await oneWire.Send(0xBE).ConfigureAwait(false);
+                await oneWire.OneWireResetAndMatchAddress(Address);
+                await oneWire.Send(0xBE);
             }
 
-            var data = await oneWire.Receive(2).ConfigureAwait(false);
+            var data = await oneWire.Receive(2);
 
-            Celsius = (short) (data[0] | (data[1] << 8)) / 16d;
+            celsius = (short) (data[0] | (data[1] << 8)) / 16d;
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+            RaisePropertyChanged(this);
         }
 
         /// <summary>

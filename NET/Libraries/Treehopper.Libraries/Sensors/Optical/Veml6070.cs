@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace Treehopper.Libraries.Sensors.Optical
         private I2C i2c;
         private double _uv;
         private IntegrationTime time;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Integration time
@@ -45,16 +48,34 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
 
         /// <summary>
-        /// Whether data will be collected from the sensor when the Uv property is read
+        /// Gets or sets whether reading from the sensor's properties should request updates from the sensor automatically (defaults to true).
         /// </summary>
+        /// <remarks>
+        /// By default, whenever you access one of the properties of this sensor, a new reading will be fetched. If this property
+        /// is set to false, you must manually call the UpdateAsync() method to retrieve a new sensor reading.
+        /// </remarks>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
+        /// <summary>
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
+        /// </summary>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public async Task UpdateAsync()
         {
             var lsb = await i2c.SendReceive(0x38, null, 1).ConfigureAwait(false);
             var msb = await i2c.SendReceive(0x39, null, 1).ConfigureAwait(false);
             int val = msb[0] << 8 | lsb[0];
             _uv = 5.0 * val / Math.Pow(2, (int)time - 1); // take into account the integration time
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Uv)));
         }
 
         /// <summary>
@@ -64,7 +85,8 @@ namespace Treehopper.Libraries.Sensors.Optical
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
+                if (AutoUpdateWhenPropertyRead)
+                    Task.Run(UpdateAsync).Wait();
                 return _uv;
             }
         }

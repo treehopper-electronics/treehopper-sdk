@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Input
@@ -6,7 +7,7 @@ namespace Treehopper.Libraries.Input
     /// <summary>
     ///     Pushbutton attached to DigitalIn
     /// </summary>
-    public class Button
+    public class Button : INotifyPropertyChanged
     {
         public delegate void ButtonPressedEventHandler(object sender, ButtonPressedEventArgs e);
 
@@ -45,9 +46,11 @@ namespace Treehopper.Libraries.Input
         ///     Fired whenever the button is released
         /// </summary>
         public event ButtonReleasedEventHandler OnReleased;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void Input_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
         {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Pressed"));
             if (e.NewValue ^ activeLow)
                 OnPressed?.Invoke(this, new ButtonPressedEventArgs {ButtonPressed = true});
             else

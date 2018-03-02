@@ -12,7 +12,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
     ///     InvenSense MPU6050 6-DoF IMU
     /// </summary>
     [Supports("InvenSense", "MPU-6050")]
-    public partial class Mpu6050 : TemperatureSensor, IAccelerometer, IGyroscope
+    public partial class Mpu6050 : TemperatureSensorBase, IAccelerometer, IGyroscope
     {
         internal SMBusDevice dev;
 
@@ -24,14 +24,19 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected Mpu6050Registers _registers;
 
-        public override event PropertyChangedEventHandler PropertyChanged;
-
-        public static async Task<IList<Mpu6050>> Probe(I2C i2c, bool includeMpu9250 = false)
+        /// <summary>
+        /// Discover any MPU6050 IMUs (or optionally MPU9250s) attached to the specified bus.
+        /// </summary>
+        /// <param name="i2c">The bus to probe.</param>
+        /// <param name="includeMpu9250">Whether to include MPU-9250 IMUs.</param>
+        /// <param name="rate">The rate, in kHz, to use.</param>
+        /// <returns>An awaitable task that completes with a list of of discovered sensors</returns>
+        public static async Task<IList<Mpu6050>> Probe(I2C i2c, bool includeMpu9250 = false, int rate=100)
         {
             var deviceList = new List<Mpu6050>();
             try
             {
-                var dev = new SMBusDevice(0x68, i2c, 100);
+                var dev = new SMBusDevice(0x68, i2c, rate);
                 var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
                     deviceList.Add(new Mpu6050(i2c, false));
@@ -40,7 +45,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             try
             {
-                var dev = new SMBusDevice(0x69, i2c, 100);
+                var dev = new SMBusDevice(0x69, i2c, rate);
                 var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x68 || (whoAmI == 0x71 & includeMpu9250))
                     deviceList.Add(new Mpu6050(i2c, true));
@@ -130,9 +135,17 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         /// <summary>
-        ///     Read the current sensor data
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             await _registers.readRange(_registers.accel_x, _registers.gyro_z).ConfigureAwait(false);
@@ -142,15 +155,16 @@ namespace Treehopper.Libraries.Sensors.Inertial
             accelerometer.Y = (float)(_registers.accel_y.value * accelScale - accelerometerOffset.Y);
             accelerometer.Z = (float)(_registers.accel_z.value * accelScale - accelerometerOffset.Z);
 
-            Celsius = _registers.temp.value / 333.87 + 21.0;
+            celsius = _registers.temp.value / 333.87 + 21.0;
 
             gyroscope.X = (float) (_registers.gyro_x.value * gyroScale - gyroscopeOffset.X);
             gyroscope.Y = (float) (_registers.gyro_y.value * gyroScale - gyroscopeOffset.Y);
             gyroscope.Z = (float) (_registers.gyro_z.value * gyroScale - gyroscopeOffset.Z);
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+            RaisePropertyChanged(this);
+            RaisePropertyChanged(this, nameof(Celsius));
+            RaisePropertyChanged(this, nameof(Fahrenheit));
+            RaisePropertyChanged(this, nameof(Kelvin));
         }
 
         /// <summary>

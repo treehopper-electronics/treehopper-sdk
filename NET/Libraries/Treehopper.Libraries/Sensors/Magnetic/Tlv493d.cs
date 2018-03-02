@@ -9,11 +9,11 @@ namespace Treehopper.Libraries.Sensors.Magnetic
     /// TLV493D-A1B6 3D magnetic / temperature sensor
     /// </summary>
     [Supports("Infineon", "TLV493D-A1B6")]
-    public class Tlv493d : TemperatureSensor
+    public class Tlv493d : TemperatureSensorBase, IMagnetometer
     {
         private readonly byte address;
         private readonly I2C i2c;
-        private Vector3 magneticFlux;
+        private Vector3 _magnetometer;
 
         /// <summary>
         /// Construct a TLV493D-A1B6 3D magnetic / temperature sensor
@@ -36,44 +36,50 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             dataToWrite[2] = result[8];
             dataToWrite[3] = (byte) ((result[9] & 0x1F) | 0x40); // LP = 1 -> 12 ms period
 
-            i2c.SendReceive(address, dataToWrite, 0).Wait();
+            Task.Run(() => i2c.SendReceive(address, dataToWrite, 0)).Wait();
         }
 
         /// <summary>
         /// Magnetic flux in each axis, measured in mT
         /// </summary>
-        public Vector3 MagneticFlux
+        public Vector3 Magnetometer
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
+                if (AutoUpdateWhenPropertyRead)
+                    Task.Run(UpdateAsync).Wait();
 
-                return magneticFlux;
+                return _magnetometer;
             }
         }
 
-        public override event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
-        /// Update the temperature and MagneticFlux properties with the latest values from the sensor
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns>An awaitable task</returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             var value = await i2c.SendReceive(address, null, 7);
 
             // the datasheet lists a digital value of 340 @ 25C, and a resolution of 1.1C per LSB
-            Celsius = (((short) ((((value[3] & 0xf0) << 4) | value[6]) << 4) >> 4) - 340) * 1.1 + 25.0;
+            celsius = (((short) ((((value[3] & 0xf0) << 4) | value[6]) << 4) >> 4) - 340) * 1.1 + 25.0;
 
             // These are signed 12-bit values -- shift them up by 4 to pick up the sign, then shift them back down by 4
             // ...then convert to mT
-            magneticFlux.X = ((short) (((value[0] << 4) | (value[4] >> 4)) << 4) >> 4) * 0.098f;
-            magneticFlux.Y = ((short) (((value[1] << 4) | value[4]) << 4) >> 4) * 0.098f;
-            magneticFlux.Z = ((short) (((value[2] << 4) | value[5]) << 4) >> 4) * 0.098f;
+            _magnetometer.X = ((short) (((value[0] << 4) | (value[4] >> 4)) << 4) >> 4) * 0.098f;
+            _magnetometer.Y = ((short) (((value[1] << 4) | value[4]) << 4) >> 4) * 0.098f;
+            _magnetometer.Z = ((short) (((value[2] << 4) | value[5]) << 4) >> 4) * 0.098f;
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+            RaisePropertyChanged(this);
+            RaisePropertyChanged(this, nameof(Magnetometer));
         }
     }
 }

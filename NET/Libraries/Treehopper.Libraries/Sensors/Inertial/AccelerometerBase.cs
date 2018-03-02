@@ -1,29 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Sensors.Optical
+namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
-    /// Ambient light sensor base class
+    /// Base accelerometer class
     /// </summary>
-    public abstract class AmbientLightSensor : IAmbientLightSensor
+    public abstract class AccelerometerBase : IAccelerometer
     {
-        protected double _lux;
+        protected Vector3 _accelerometer;
 
         /// <summary>
-        /// Gets the ambient light sensor reading, in lux
+        /// Gets a vector with the three-dimensional acceleration data, in g.
         /// </summary>
-        public double Lux
+        /// <remarks>
+        /// \f$1\, \text{g} = 9.8\, \text{m}/\text{s}^2\f$
+        /// </remarks>
+        public Vector3 Accelerometer
         {
             get
             {
                 if (AutoUpdateWhenPropertyRead)
                     Task.Run(UpdateAsync).Wait();
 
-                return _lux;
+                return _accelerometer;
             }
         }
 
@@ -36,9 +40,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        /// <summary>
-        /// Fires whenever the data properties are updated
-        /// </summary>
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -55,12 +57,12 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public abstract Task UpdateAsync();
 
-        public void RaisePropertyChanged(object sender)
+        protected void RaisePropertyChanged(object sender)
         {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(Lux)));
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(Accelerometer)));
         }
 
-        public void RaisePropertyChanged(object sender, string property)
+        protected void RaisePropertyChanged(object sender, string property)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(property));
         }

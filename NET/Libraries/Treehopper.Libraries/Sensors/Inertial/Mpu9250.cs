@@ -19,12 +19,18 @@ namespace Treehopper.Libraries.Sensors.Inertial
         protected Vector3 magnetometer;
         Ak8975 mag;
 
-        public static async Task<IList<Mpu9250>> Probe(I2C i2c)
+        /// <summary>
+        /// Discover any MPU9250 IMUs attached to the specified bus.
+        /// </summary>
+        /// <param name="i2c">The bus to probe.</param>
+        /// <param name="rate">The rate, in kHz, to use.</param>
+        /// <returns>An awaitable task that completes with a list of of discovered sensors</returns>
+        public static async Task<IList<Mpu9250>> Probe(I2C i2c, int rate=100)
         {
             var deviceList = new List<Mpu9250>();
             try
             {
-                var dev = new SMBusDevice(0x68, i2c, 100);
+                var dev = new SMBusDevice(0x68, i2c, rate);
                 var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x71)
                     deviceList.Add(new Mpu9250(i2c, false));
@@ -32,7 +38,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             try
             {
-                var dev = new SMBusDevice(0x69, i2c, 100);
+                var dev = new SMBusDevice(0x69, i2c, rate);
                 var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x71)
                     deviceList.Add(new Mpu9250(i2c, true));
@@ -69,9 +75,17 @@ namespace Treehopper.Libraries.Sensors.Inertial
         }
 
         /// <summary>
-        ///     Retrieve the latest sample data from the MPU9250
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync().ConfigureAwait(false);

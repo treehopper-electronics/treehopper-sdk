@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.IO.Adc
@@ -26,6 +27,8 @@ namespace Treehopper.Libraries.IO.Adc
         }
 
         private readonly SMBusDevice dev;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Construct a new ADS1115
@@ -85,7 +88,7 @@ namespace Treehopper.Libraries.IO.Adc
                 await dev.WriteBufferData(0x01, new byte[] {(byte) config, 0xE3});
                 await Task.Delay(1);
                 // data is stored in big-endian format
-                Pins[i].AdcValue = await dev.ReadWordDataBE(0x00);
+                Pins[i].AdcValue = await dev.ReadWordDataBE(0x00);               
             }
         }
 

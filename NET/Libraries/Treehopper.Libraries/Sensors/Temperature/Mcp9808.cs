@@ -6,7 +6,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// <summary>
     ///     Microchip MCP9808 I2c temperature sensor
     /// </summary>
-    public class Mcp9808 : TemperatureSensor
+    public class Mcp9808 : TemperatureSensorBase
     {
         private readonly SMBusDevice dev;
 
@@ -22,12 +22,18 @@ namespace Treehopper.Libraries.Sensors.Temperature
             dev = new SMBusDevice((byte) (0x18 | (a0 ? 1 : 0) | ((a1 ? 1 : 0) << 1) | ((a2 ? 1 : 0) << 2)), i2c);
         }
 
-        public override event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
-        ///     Force an update of the MCP9808 temperature sensor
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns>An awaitable task</returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             var data = await dev.ReadWordDataBE(0x05);
@@ -35,11 +41,9 @@ namespace Treehopper.Libraries.Sensors.Temperature
             temp /= 16.0;
             if ((data & 0x1000) > 0)
                 temp -= 256;
-            Celsius = temp;
+            celsius = temp;
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+            RaisePropertyChanged(this);
         }
     }
 }

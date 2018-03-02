@@ -1,29 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Sensors.Optical
+namespace Treehopper.Libraries.Sensors.Inertial
 {
     /// <summary>
-    /// Ambient light sensor base class
+    /// Base three-axis gyroscope class
     /// </summary>
-    public abstract class AmbientLightSensor : IAmbientLightSensor
+    public abstract class GyroscopeBase : IGyroscope
     {
-        protected double _lux;
+        protected Vector3 gyroscope;
 
         /// <summary>
-        /// Gets the ambient light sensor reading, in lux
+        /// Gets the gyroscope data, in DPS (degrees per second).
         /// </summary>
-        public double Lux
+        /// <remarks>
+        /// If AutoUpdateWhenPropertyRead is true, this call with query the gyroscope for new data. Otherwise,
+        /// this call will return to the existing gyroscope data immediately.
+        /// </remarks>
+        public Vector3 Gyroscope
         {
             get
             {
                 if (AutoUpdateWhenPropertyRead)
                     Task.Run(UpdateAsync).Wait();
 
-                return _lux;
+                return gyroscope;
             }
         }
 
@@ -36,9 +41,6 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        /// <summary>
-        /// Fires whenever the data properties are updated
-        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -55,12 +57,12 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public abstract Task UpdateAsync();
 
-        public void RaisePropertyChanged(object sender)
+        protected void RaisePropertyChanged(object sender)
         {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(Lux)));
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(Gyroscope)));
         }
 
-        public void RaisePropertyChanged(object sender, string property)
+        protected void RaisePropertyChanged(object sender, string property)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(property));
         }

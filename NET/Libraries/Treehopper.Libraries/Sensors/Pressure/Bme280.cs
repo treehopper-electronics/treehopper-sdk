@@ -11,7 +11,13 @@ namespace Treehopper.Libraries.Sensors.Pressure
     [Supports("Bosch", "BME280")]
     public class Bme280 : Bmp280, IHumiditySensor
     {
-        public static async Task<IList<Bme280>> Probe(I2C i2c)
+        /// <summary>
+        /// Probes the specified I2C bus to discover any BME280 sensors attached.
+        /// </summary>
+        /// <param name="i2c">The bus to probe.</param>
+        /// <param name="rate">The rate, in kHz, to use.</param>
+        /// <returns>An awaitable task that completes with a list of BME280 sensors found.</returns>
+        public static async Task<IList<Bme280>> ProbeAsync(I2C i2c, int rate=100)
         {
             var deviceList = new List<Bme280>();
             try
@@ -67,9 +73,17 @@ namespace Treehopper.Libraries.Sensors.Pressure
         }
 
         /// <summary>
-        ///     Reads current data from the BME280
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             // first the BMP280 stuff

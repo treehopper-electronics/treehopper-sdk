@@ -8,7 +8,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
     public interface IGyroscope : IPollable
     {
         /// <summary>
-        ///     The three-axis gyroscope data
+        ///     The three-axis gyroscope data, in DPS (degrees per second)
         /// </summary>
         Vector3 Gyroscope { get; }
     }

@@ -27,19 +27,19 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// <summary>
         ///     The ambient temperature sensor
         /// </summary>
-        public TemperatureSensor Ambient { get; protected set; }
+        public TemperatureSensorBase Ambient { get; protected set; }
 
         /// <summary>
         ///     The non-contact thermopile temperature sensor
         /// </summary>
-        public TemperatureSensor Object { get; protected set; }
+        public TemperatureSensorBase Object { get; protected set; }
 
         /// <summary>
         ///     Raw (uncorrected) IR data from the thermopile array
         /// </summary>
         public int RawIrData => dev.ReadWordData(0x25).Result;
 
-        internal class TempRegister : TemperatureSensor
+        internal class TempRegister : TemperatureSensorBase
         {
             private readonly SMBusDevice dev;
             private readonly byte register;
@@ -50,22 +50,26 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 this.dev = dev;
             }
 
-            public override event PropertyChangedEventHandler PropertyChanged;
-
             /// <summary>
-            ///     Update the temperature register
+            /// Requests a reading from the sensor and updates its data properties with the gathered values.
             /// </summary>
-            /// <returns>An awaitable task</returns>
+            /// <returns>An awaitable Task</returns>
+            /// <remarks>
+            /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+            /// called when any sensor data property is read from --- there's no need to call this method unless you set
+            /// AutoUpdateWhenPropertyRead to `false`.
+            /// 
+            /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+            /// bus usage (as well as reducing USB chattiness).
+            /// </remarks>
             public override async Task UpdateAsync()
             {
-                var data = await dev.ReadWordData(register).ConfigureAwait(false);
+                var data = await dev.ReadWordData(register);
 
                 data &= 0x7FFF; // chop off the error bit of the high byte
-                Celsius = data * 0.02 - 273.15;
+                celsius = data * 0.02 - 273.15;
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+                RaisePropertyChanged(this);
             }
         }
     }

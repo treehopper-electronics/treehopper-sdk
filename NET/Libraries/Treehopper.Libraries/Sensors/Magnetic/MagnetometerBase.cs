@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treehopper.Libraries.Sensors.Optical
+namespace Treehopper.Libraries.Sensors.Magnetic
 {
-    /// <summary>
-    /// Ambient light sensor base class
-    /// </summary>
-    public abstract class AmbientLightSensor : IAmbientLightSensor
+    public abstract class MagnetometerBase : IMagnetometer
     {
-        protected double _lux;
+        protected Vector3 _magnetometer;
 
         /// <summary>
-        /// Gets the ambient light sensor reading, in lux
+        /// Gets the three-axis magnetometer value, in uT (micro-Tesla)
         /// </summary>
-        public double Lux
+        public Vector3 Magnetometer
         {
             get
             {
                 if (AutoUpdateWhenPropertyRead)
                     Task.Run(UpdateAsync).Wait();
 
-                return _lux;
+                return _magnetometer;
             }
         }
 
@@ -36,9 +34,6 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
-        /// <summary>
-        /// Fires whenever the data properties are updated
-        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -55,12 +50,12 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public abstract Task UpdateAsync();
 
-        public void RaisePropertyChanged(object sender)
+        protected void RaisePropertyChanged(object sender)
         {
-            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(Lux)));
+            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(nameof(Magnetometer)));
         }
 
-        public void RaisePropertyChanged(object sender, string property)
+        protected void RaisePropertyChanged(object sender, string property)
         {
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(property));
         }

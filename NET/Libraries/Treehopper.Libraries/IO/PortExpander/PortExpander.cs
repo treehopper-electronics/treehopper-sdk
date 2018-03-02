@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.IO.PortExpander
@@ -33,6 +34,8 @@ namespace Treehopper.Libraries.IO.PortExpander
         ///     Whether this port expander should auto-flush
         /// </summary>
         public bool AutoFlush { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Flush output data to the port

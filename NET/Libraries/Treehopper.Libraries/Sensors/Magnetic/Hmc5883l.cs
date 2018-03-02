@@ -9,7 +9,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
     ///     Honeywell HMC5883L 3-axis digital compass
     /// </summary>
     [Supports("Honewell", "HMC5883L")]
-    public class Hmc5883l : IMagnetometer
+    public class Hmc5883l : MagnetometerBase
     {
         /// <summary>
         ///     Range (gain) settings
@@ -146,34 +146,26 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         }
 
         /// <summary>
-        ///     Whether the sensor should request an update whenever the <see cref="Magnetometer" /> property is read.
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        public bool AutoUpdateWhenPropertyRead { get; set; } = true;
-
-        /// <summary>
-        ///     The magnetic field strength, in Gauss, from the sensor.
-        /// </summary>
-        public Vector3 Magnetometer
-        {
-            get
-            {
-                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
-                return mag;
-            }
-        }
-
-        /// <summary>
-        ///     Force an update of <see cref="Magnetometer" />. This method is called automatically when
-        ///     <see cref="AutoUpdateWhenPropertyRead" /> is true.
-        /// </summary>
-        /// <returns></returns>
-        public async Task UpdateAsync()
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
+        public override async Task UpdateAsync()
         {
             var bytes = await dev.ReadBufferData((byte) Registers.XOutHi, 6);
             var report = bytes.BytesToStruct<DataReport>(Endianness.BigEndian);
-            mag.X = report.x / Gauss_XY;
-            mag.Y = report.y / Gauss_XY;
-            mag.Z = report.z / Gauss_Z;
+            mag.X = report.x / Gauss_XY * 100;
+            mag.Y = report.y / Gauss_XY * 100;
+            mag.Z = report.z / Gauss_Z * 100;
+
+            RaisePropertyChanged(this);
         }
 
         private enum Registers
@@ -195,15 +187,11 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             TEMP_OUT_L_M = 0x32
         }
 
-#pragma warning disable 649
-
         private struct DataReport
         {
             public short x;
             public short z;
             public short y;
         }
-
-#pragma warning restore 649
     }
 }

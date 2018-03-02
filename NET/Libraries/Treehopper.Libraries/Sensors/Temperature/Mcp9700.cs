@@ -6,7 +6,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// <summary>
     ///     Microchip MCP9700 and MCP9701 analog temperature sensor
     /// </summary>
-    public class Mcp9700 : TemperatureSensor
+    public class Mcp9700 : TemperatureSensorBase
     {
         /// <summary>
         ///     An enumeration representing which sensor to use
@@ -27,8 +27,6 @@ namespace Treehopper.Libraries.Sensors.Temperature
         private readonly AdcPin pin;
         private readonly Type type;
 
-        public override event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
         ///     Construct a new Microchip MCP9700 or MCP9701
         /// </summary>
@@ -39,23 +37,28 @@ namespace Treehopper.Libraries.Sensors.Temperature
             pin.MakeAnalogIn();
             pin.AnalogVoltageChangedThreshold = 0.01;
             pin.AnalogVoltageChanged += Pin_AnalogVoltageChanged;
-            ;
         }
 
         /// <summary>
-        ///     Read the current AnalogVoltage and update the temperature data
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns>An awaitable task</returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             var voltage = pin.AnalogVoltage;
             var v0 = type == Type.Mcp9700 ? 0.5 : 0.4;
             var tc = type == Type.Mcp9700 ? 0.01 : 0.0195;
-            Celsius = (voltage - v0) / tc;
+            celsius = (voltage - v0) / tc;
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
+            RaisePropertyChanged(this);
         }
 
         private async void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)

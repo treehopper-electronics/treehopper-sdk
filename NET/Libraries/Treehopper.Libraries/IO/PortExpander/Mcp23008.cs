@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Treehopper.Libraries.Utilities;
 
@@ -16,6 +17,8 @@ namespace Treehopper.Libraries.IO.PortExpander
         private readonly BitArray iodir = new BitArray(8);
         private readonly BitArray olat = new BitArray(8);
         private BitArray gpio = new BitArray(8);
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Construct a new MCP23008
@@ -98,9 +101,17 @@ namespace Treehopper.Libraries.IO.PortExpander
         }
 
         /// <summary>
-        ///     Update the inputs from the port
+        /// Requests an update from the port and update its data properties with the gathered values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public Task UpdateAsync()
         {
             return readPort();

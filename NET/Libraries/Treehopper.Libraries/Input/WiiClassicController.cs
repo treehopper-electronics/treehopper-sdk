@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -98,6 +99,13 @@ namespace Treehopper.Libraries.Input
             }
         }
 
+        /// <summary>
+        /// Gets or sets whether reading from the sensor's properties should request updates from the sensor automatically (defaults to true).
+        /// </summary>
+        /// <remarks>
+        /// By default, whenever you access one of the properties of this sensor, a new reading will be fetched. If this property
+        /// is set to false, you must manually call the UpdateAsync() method to retrieve a new sensor reading.
+        /// </remarks>
         public bool AutoUpdateWhenPropertyRead { get; set; } = true;
 
         public int AwaitPollingInterval { get; set; } = 25;
@@ -144,7 +152,11 @@ namespace Treehopper.Libraries.Input
                 dPad = DPadState.None;
 
             if (temp != dPad)
-                DPadStateChanged?.Invoke(this, new DPadStateEventArgs {NewValue = dPad});
+            {
+                DPadStateChanged?.Invoke(this, new DPadStateEventArgs { NewValue = dPad });
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DPad)));
+            }
+                
 
             ((DigitalInPeripheralPin) ZR.Input).DigitalValue = !array[10];
             ((DigitalInPeripheralPin) X.Input).DigitalValue = !array[11];
@@ -155,5 +167,6 @@ namespace Treehopper.Libraries.Input
         }
 
         public event DPadStateEventHandler DPadStateChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

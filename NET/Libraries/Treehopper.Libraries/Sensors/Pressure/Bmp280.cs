@@ -48,8 +48,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
         private double altitude;
         private readonly SMBusDevice i2cDev;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
         ///     Construct a BMP280 hooked up to the i2C bus
         /// </summary>
@@ -95,17 +93,37 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// <summary>
         ///     Temperature, in degrees Fahrenheit
         /// </summary>
-        public double Fahrenheit => TemperatureSensor.ToFahrenheit(Celsius);
+        public double Fahrenheit
+        {
+            get
+            {
+                return TemperatureSensorBase.ToFahrenheit(Celsius);
+            }
+        }
 
         /// <summary>
         ///     Temperature, in Kelvin
         /// </summary>
-        public double Kelvin => TemperatureSensor.ToKelvin(Celsius);
+        public double Kelvin
+        {
+            get
+            {
+                return TemperatureSensorBase.ToKelvin(Celsius);
+            }
+        }
 
         /// <summary>
-        ///     Update the sensor's value
+        /// Requests a reading from the sensor and updates its data properties with the gathered values.
         /// </summary>
-        /// <returns>An awaitable task</returns>
+        /// <returns>An awaitable Task</returns>
+        /// <remarks>
+        /// Note that when #AutoUpdateWhenPropertyRead is `true` (which it is, by default), this method is implicitly 
+        /// called when any sensor data property is read from --- there's no need to call this method unless you set
+        /// AutoUpdateWhenPropertyRead to `false`.
+        /// 
+        /// Unless otherwise noted, this method updates all sensor data simultaneously, which can often lead to more efficient
+        /// bus usage (as well as reducing USB chattiness).
+        /// </remarks>
         public override async Task UpdateAsync()
         {
             await registers.readRange(registers.pressure, registers.humidity).ConfigureAwait(false); // even though this the BMP280, assume it's a BME280 so the bus is less chatty.
@@ -134,19 +152,16 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 var1 = registers.p9.value * p * p / 2147483648.0;
                 var2 = p * registers.p8.value / 32768.0;
                 p = p + (var1 + var2 + registers.p7.value) / 16.0;
-                Pascal = p;
-                var kelvin = TemperatureSensor.ToKelvin(Celsius);
+                pascal = p;
+                var kelvin = TemperatureSensorBase.ToKelvin(Celsius);
                 altitude = AltitudeFromPressure(kelvin, Pascal);
             }
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Celsius)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Fahrenheit)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Kelvin)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Altitude)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Bar)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Psi)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Pascal)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Atm)));
+            RaisePropertyChanged(this, nameof(Celsius));
+            RaisePropertyChanged(this, nameof(Fahrenheit));
+            RaisePropertyChanged(this, nameof(Kelvin));
+            RaisePropertyChanged(this, nameof(Altitude));
+            RaisePropertyChanged(this);
         }
 
         private double AltitudeFromPressure(double temperature, double pressure)
