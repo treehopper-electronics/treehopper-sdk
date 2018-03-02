@@ -12,6 +12,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
 {
     public partial class L3gd20
     {
+        public enum DataRates
+        {
+            Hz_95 = 0,
+            Hz_190 = 1,
+            Hz_380 = 2,
+            Hz_760 = 3
+        }
+
         internal enum FifoModes
         {
             Bypass = 0,
@@ -43,12 +51,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 _registers.Add(outTemp);
                 status = new StatusRegister(this);
                 _registers.Add(status);
-                outX = new OutXRegister(this);
-                _registers.Add(outX);
-                outY = new OutYRegister(this);
-                _registers.Add(outY);
-                outZ = new OutZRegister(this);
-                _registers.Add(outZ);
                 fifoCtrl = new FifoCtrlRegister(this);
                 _registers.Add(fifoCtrl);
                 fifoSrc = new FifoSrcRegister(this);
@@ -65,6 +67,12 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 _registers.Add(int1ThresholdZ);
                 int1Duration = new Int1DurationRegister(this);
                 _registers.Add(int1Duration);
+                outX = new OutXRegister(this);
+                _registers.Add(outX);
+                outY = new OutYRegister(this);
+                _registers.Add(outY);
+                outZ = new OutZRegister(this);
+                _registers.Add(outZ);
             }
 
             internal WhoAmIRegister whoAmI;
@@ -76,9 +84,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
             internal ReferenceDataCaptureRegister referenceDataCapture;
             internal OutTempRegister outTemp;
             internal StatusRegister status;
-            internal OutXRegister outX;
-            internal OutYRegister outY;
-            internal OutZRegister outZ;
             internal FifoCtrlRegister fifoCtrl;
             internal FifoSrcRegister fifoSrc;
             internal IntConfigRegister intConfig;
@@ -87,6 +92,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
             internal Int1ThresholdYRegister int1ThresholdY;
             internal Int1ThresholdZRegister int1ThresholdZ;
             internal Int1DurationRegister int1Duration;
+            internal OutXRegister outX;
+            internal OutYRegister outY;
+            internal OutZRegister outZ;
 
             internal class WhoAmIRegister : Register
             {
@@ -122,6 +130,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int pd { get; set; }
                 public int bandwidth { get; set; }
                 public int dataRate { get; set; }
+                public DataRates getDataRate() { return (DataRates)dataRate; }
+                public void setDataRate(DataRates enumVal) { dataRate = (int)enumVal; }
 
                 public async Task<CtrlReg1Register> read()
                 {
@@ -385,78 +395,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                     return retVal;
                 }
             }
-            internal class OutXRegister : Register
-            {
-                internal OutXRegister(RegisterManager regManager) : base(regManager, 0x28, 2, false) { }
-
-                public int value { get; set; }
-
-                public async Task<OutXRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
-                internal override long getValue() { return ((value & 0xFFFF) << 0); }
-                internal override void setValue(long _value)
-                {
-                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-                }
-
-                public override string ToString()
-                {
-                    string retVal = "";
-                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
-                    return retVal;
-                }
-            }
-            internal class OutYRegister : Register
-            {
-                internal OutYRegister(RegisterManager regManager) : base(regManager, 0x2A, 2, false) { }
-
-                public int value { get; set; }
-
-                public async Task<OutYRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
-                internal override long getValue() { return ((value & 0xFFFF) << 0); }
-                internal override void setValue(long _value)
-                {
-                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-                }
-
-                public override string ToString()
-                {
-                    string retVal = "";
-                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
-                    return retVal;
-                }
-            }
-            internal class OutZRegister : Register
-            {
-                internal OutZRegister(RegisterManager regManager) : base(regManager, 0x2C, 2, false) { }
-
-                public int value { get; set; }
-
-                public async Task<OutZRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
-                internal override long getValue() { return ((value & 0xFFFF) << 0); }
-                internal override void setValue(long _value)
-                {
-                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-                }
-
-                public override string ToString()
-                {
-                    string retVal = "";
-                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
-                    return retVal;
-                }
-            }
             internal class FifoCtrlRegister : Register
             {
                 internal FifoCtrlRegister(RegisterManager regManager) : base(regManager, 0x2e, 1, false) { }
@@ -702,6 +640,78 @@ namespace Treehopper.Libraries.Sensors.Inertial
                     string retVal = "";
                     retVal += $"Duration: { duration } (offset: 0, width: 7)\r\n";
                     retVal += $"Wait: { wait } (offset: 7, width: 1)\r\n";
+                    return retVal;
+                }
+            }
+            internal class OutXRegister : Register
+            {
+                internal OutXRegister(RegisterManager regManager) : base(regManager, 0xA8, 2, false) { }
+
+                public int value { get; set; }
+
+                public async Task<OutXRegister> read()
+                {
+                    await manager.read(this).ConfigureAwait(false);
+                    return this;
+                }
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
+                {
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                }
+
+                public override string ToString()
+                {
+                    string retVal = "";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
+                    return retVal;
+                }
+            }
+            internal class OutYRegister : Register
+            {
+                internal OutYRegister(RegisterManager regManager) : base(regManager, 0xAA, 2, false) { }
+
+                public int value { get; set; }
+
+                public async Task<OutYRegister> read()
+                {
+                    await manager.read(this).ConfigureAwait(false);
+                    return this;
+                }
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
+                {
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                }
+
+                public override string ToString()
+                {
+                    string retVal = "";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
+                    return retVal;
+                }
+            }
+            internal class OutZRegister : Register
+            {
+                internal OutZRegister(RegisterManager regManager) : base(regManager, 0xAC, 2, false) { }
+
+                public int value { get; set; }
+
+                public async Task<OutZRegister> read()
+                {
+                    await manager.read(this).ConfigureAwait(false);
+                    return this;
+                }
+                internal override long getValue() { return ((value & 0xFFFF) << 0); }
+                internal override void setValue(long _value)
+                {
+                    value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+                }
+
+                public override string ToString()
+                {
+                    string retVal = "";
+                    retVal += $"Value: { value } (offset: 0, width: 16)\r\n";
                     return retVal;
                 }
             }

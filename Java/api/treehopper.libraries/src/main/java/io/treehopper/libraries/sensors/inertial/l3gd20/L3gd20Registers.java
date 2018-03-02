@@ -30,12 +30,6 @@ class L3gd20Registers extends RegisterManager
         _registers.add(outTemp);
         status = new StatusRegister(this);
         _registers.add(status);
-        outX = new OutXRegister(this);
-        _registers.add(outX);
-        outY = new OutYRegister(this);
-        _registers.add(outY);
-        outZ = new OutZRegister(this);
-        _registers.add(outZ);
         fifoCtrl = new FifoCtrlRegister(this);
         _registers.add(fifoCtrl);
         fifoSrc = new FifoSrcRegister(this);
@@ -52,6 +46,12 @@ class L3gd20Registers extends RegisterManager
         _registers.add(int1ThresholdZ);
         int1Duration = new Int1DurationRegister(this);
         _registers.add(int1Duration);
+        outX = new OutXRegister(this);
+        _registers.add(outX);
+        outY = new OutYRegister(this);
+        _registers.add(outY);
+        outZ = new OutZRegister(this);
+        _registers.add(outZ);
     }
 
     WhoAmIRegister whoAmI;
@@ -63,9 +63,6 @@ class L3gd20Registers extends RegisterManager
     ReferenceDataCaptureRegister referenceDataCapture;
     OutTempRegister outTemp;
     StatusRegister status;
-    OutXRegister outX;
-    OutYRegister outY;
-    OutZRegister outZ;
     FifoCtrlRegister fifoCtrl;
     FifoSrcRegister fifoSrc;
     IntConfigRegister intConfig;
@@ -74,6 +71,9 @@ class L3gd20Registers extends RegisterManager
     Int1ThresholdYRegister int1ThresholdY;
     Int1ThresholdZRegister int1ThresholdZ;
     Int1DurationRegister int1Duration;
+    OutXRegister outX;
+    OutYRegister outY;
+    OutZRegister outZ;
 
     class WhoAmIRegister extends Register
     {
@@ -105,6 +105,8 @@ class L3gd20Registers extends RegisterManager
         int bandwidth;
         int dataRate;
 
+                public DataRates getDataRate() { for (DataRates b : DataRates.values()) { if(b.getVal() == dataRate) return b; } return DataRates.values()[0]; }
+                public void setDataRate(DataRates enumVal) { dataRate = enumVal.getVal(); }
 
         public CtrlReg1Register read()
         {
@@ -300,63 +302,6 @@ class L3gd20Registers extends RegisterManager
             zyxDataOverrun = (int)((_value >> 7) & 0x1);
         }
     }
-    class OutXRegister extends Register
-    {
-        OutXRegister(RegisterManager regManager) { super(regManager, 0x28, 2, false); }
-
-        int value;
-
-
-        public OutXRegister read()
-        {
-            manager.read(this);
-            return this;
-        }
-
-        public long getValue() { return ((value & 0xFFFF) << 0); }
-        public void setValue(long _value)
-        {
-            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-        }
-    }
-    class OutYRegister extends Register
-    {
-        OutYRegister(RegisterManager regManager) { super(regManager, 0x2A, 2, false); }
-
-        int value;
-
-
-        public OutYRegister read()
-        {
-            manager.read(this);
-            return this;
-        }
-
-        public long getValue() { return ((value & 0xFFFF) << 0); }
-        public void setValue(long _value)
-        {
-            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-        }
-    }
-    class OutZRegister extends Register
-    {
-        OutZRegister(RegisterManager regManager) { super(regManager, 0x2C, 2, false); }
-
-        int value;
-
-
-        public OutZRegister read()
-        {
-            manager.read(this);
-            return this;
-        }
-
-        public long getValue() { return ((value & 0xFFFF) << 0); }
-        public void setValue(long _value)
-        {
-            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-        }
-    }
     class FifoCtrlRegister extends Register
     {
         FifoCtrlRegister(RegisterManager regManager) { super(regManager, 0x2e, 1, false); }
@@ -545,6 +490,63 @@ class L3gd20Registers extends RegisterManager
         {
             duration = (int)((_value >> 0) & 0x7F);
             wait = (int)((_value >> 7) & 0x1);
+        }
+    }
+    class OutXRegister extends Register
+    {
+        OutXRegister(RegisterManager regManager) { super(regManager, 0xA8, 2, false); }
+
+        int value;
+
+
+        public OutXRegister read()
+        {
+            manager.read(this);
+            return this;
+        }
+
+        public long getValue() { return ((value & 0xFFFF) << 0); }
+        public void setValue(long _value)
+        {
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+        }
+    }
+    class OutYRegister extends Register
+    {
+        OutYRegister(RegisterManager regManager) { super(regManager, 0xAA, 2, false); }
+
+        int value;
+
+
+        public OutYRegister read()
+        {
+            manager.read(this);
+            return this;
+        }
+
+        public long getValue() { return ((value & 0xFFFF) << 0); }
+        public void setValue(long _value)
+        {
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+        }
+    }
+    class OutZRegister extends Register
+    {
+        OutZRegister(RegisterManager regManager) { super(regManager, 0xAC, 2, false); }
+
+        int value;
+
+
+        public OutZRegister read()
+        {
+            manager.read(this);
+            return this;
+        }
+
+        public long getValue() { return ((value & 0xFFFF) << 0); }
+        public void setValue(long _value)
+        {
+            value = (int)(((_value >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
         }
     }
 }

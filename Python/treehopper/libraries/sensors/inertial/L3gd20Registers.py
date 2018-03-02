@@ -4,6 +4,12 @@ from treehopper.utils import *
 from treehopper.libraries import RegisterManager, Register, SMBusDevice
 from treehopper.libraries.Register import sign_extend
 
+class DataRates:
+    Hz_95 = 0
+    Hz_190 = 1
+    Hz_380 = 2
+    Hz_760 = 3
+    
 class FifoModes:
     Bypass = 0
     Fifo = 1
@@ -32,12 +38,6 @@ class L3gd20Registers(RegisterManager):
         self.registers.append(self.outTemp)
         self.status = self.StatusRegister(self)
         self.registers.append(self.status)
-        self.outX = self.OutXRegister(self)
-        self.registers.append(self.outX)
-        self.outY = self.OutYRegister(self)
-        self.registers.append(self.outY)
-        self.outZ = self.OutZRegister(self)
-        self.registers.append(self.outZ)
         self.fifoCtrl = self.FifoCtrlRegister(self)
         self.registers.append(self.fifoCtrl)
         self.fifoSrc = self.FifoSrcRegister(self)
@@ -54,6 +54,12 @@ class L3gd20Registers(RegisterManager):
         self.registers.append(self.int1ThresholdZ)
         self.int1Duration = self.Int1DurationRegister(self)
         self.registers.append(self.int1Duration)
+        self.outX = self.OutXRegister(self)
+        self.registers.append(self.outX)
+        self.outY = self.OutYRegister(self)
+        self.registers.append(self.outY)
+        self.outZ = self.OutZRegister(self)
+        self.registers.append(self.outZ)
 
     class WhoAmIRegister(Register):
         def __init__(self, reg_manager: RegisterManager):
@@ -325,69 +331,6 @@ class L3gd20Registers(RegisterManager):
             retVal += "ZyxDataOverrun: {} (offset: 7, width: 1)\r\n".format(self.zyxDataOverrun)
             return retVal
 
-    class OutXRegister(Register):
-        def __init__(self, reg_manager: RegisterManager):
-            Register.__init__(self, reg_manager, 0x28, 2, False)
-            self.value = 0
-
-
-        def read(self):
-            self._manager.read(self)
-            return self
-            
-        def getValue(self):
-            return ((self.value & 0xFFFF) << 0)
-
-        def setValue(self, value: int):
-            self.value = sign_extend((value >> 0) & 0xFFFF, 16)
-
-        def __str__(self):
-            retVal = ""
-            retVal += "Value: {} (offset: 0, width: 16)\r\n".format(self.value)
-            return retVal
-
-    class OutYRegister(Register):
-        def __init__(self, reg_manager: RegisterManager):
-            Register.__init__(self, reg_manager, 0x2A, 2, False)
-            self.value = 0
-
-
-        def read(self):
-            self._manager.read(self)
-            return self
-            
-        def getValue(self):
-            return ((self.value & 0xFFFF) << 0)
-
-        def setValue(self, value: int):
-            self.value = sign_extend((value >> 0) & 0xFFFF, 16)
-
-        def __str__(self):
-            retVal = ""
-            retVal += "Value: {} (offset: 0, width: 16)\r\n".format(self.value)
-            return retVal
-
-    class OutZRegister(Register):
-        def __init__(self, reg_manager: RegisterManager):
-            Register.__init__(self, reg_manager, 0x2C, 2, False)
-            self.value = 0
-
-
-        def read(self):
-            self._manager.read(self)
-            return self
-            
-        def getValue(self):
-            return ((self.value & 0xFFFF) << 0)
-
-        def setValue(self, value: int):
-            self.value = sign_extend((value >> 0) & 0xFFFF, 16)
-
-        def __str__(self):
-            retVal = ""
-            retVal += "Value: {} (offset: 0, width: 16)\r\n".format(self.value)
-            return retVal
-
     class FifoCtrlRegister(Register):
         def __init__(self, reg_manager: RegisterManager):
             Register.__init__(self, reg_manager, 0x2e, 1, False)
@@ -608,5 +551,68 @@ class L3gd20Registers(RegisterManager):
             retVal = ""
             retVal += "Duration: {} (offset: 0, width: 7)\r\n".format(self.duration)
             retVal += "Wait: {} (offset: 7, width: 1)\r\n".format(self.wait)
+            return retVal
+
+    class OutXRegister(Register):
+        def __init__(self, reg_manager: RegisterManager):
+            Register.__init__(self, reg_manager, 0xA8, 2, False)
+            self.value = 0
+
+
+        def read(self):
+            self._manager.read(self)
+            return self
+            
+        def getValue(self):
+            return ((self.value & 0xFFFF) << 0)
+
+        def setValue(self, value: int):
+            self.value = sign_extend((value >> 0) & 0xFFFF, 16)
+
+        def __str__(self):
+            retVal = ""
+            retVal += "Value: {} (offset: 0, width: 16)\r\n".format(self.value)
+            return retVal
+
+    class OutYRegister(Register):
+        def __init__(self, reg_manager: RegisterManager):
+            Register.__init__(self, reg_manager, 0xAA, 2, False)
+            self.value = 0
+
+
+        def read(self):
+            self._manager.read(self)
+            return self
+            
+        def getValue(self):
+            return ((self.value & 0xFFFF) << 0)
+
+        def setValue(self, value: int):
+            self.value = sign_extend((value >> 0) & 0xFFFF, 16)
+
+        def __str__(self):
+            retVal = ""
+            retVal += "Value: {} (offset: 0, width: 16)\r\n".format(self.value)
+            return retVal
+
+    class OutZRegister(Register):
+        def __init__(self, reg_manager: RegisterManager):
+            Register.__init__(self, reg_manager, 0xAC, 2, False)
+            self.value = 0
+
+
+        def read(self):
+            self._manager.read(self)
+            return self
+            
+        def getValue(self):
+            return ((self.value & 0xFFFF) << 0)
+
+        def setValue(self, value: int):
+            self.value = sign_extend((value >> 0) & 0xFFFF, 16)
+
+        def __str__(self):
+            retVal = ""
+            retVal += "Value: {} (offset: 0, width: 16)\r\n".format(self.value)
             return retVal
 

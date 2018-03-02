@@ -9,6 +9,14 @@ using namespace Treehopper::Libraries;
 
 namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inertial { 
 
+    enum class DataRates
+    {
+        Hz_95 = 0,
+        Hz_190 = 1,
+        Hz_380 = 2,
+        Hz_760 = 3
+	};
+
     enum class FifoModes
     {
         Bypass = 0,
@@ -45,6 +53,8 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             int pd;
             int bandwidth;
             int dataRate;
+            DataRates getDataRate() { return (DataRates)dataRate; }
+            void setDataRate(DataRates enumVal) { dataRate = (int)enumVal; }
 
             long getValue() { return ((yEn & 0x1) << 0) | ((xEn & 0x1) << 1) | ((zEn & 0x1) << 2) | ((pd & 0x1) << 3) | ((bandwidth & 0x3) << 4) | ((dataRate & 0x3) << 6); }
             void setValue(long val)
@@ -193,45 +203,6 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             }
         };
 
-        class OutXRegister : public Register
-        {
-        public:
-			OutXRegister(RegisterManager& regManager) : Register(regManager,0x28, 2, false) { }
-            int value;
-
-            long getValue() { return ((value & 0xFFFF) << 0); }
-            void setValue(long val)
-            {
-                value = (int)(((val >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-            }
-        };
-
-        class OutYRegister : public Register
-        {
-        public:
-			OutYRegister(RegisterManager& regManager) : Register(regManager,0x2A, 2, false) { }
-            int value;
-
-            long getValue() { return ((value & 0xFFFF) << 0); }
-            void setValue(long val)
-            {
-                value = (int)(((val >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-            }
-        };
-
-        class OutZRegister : public Register
-        {
-        public:
-			OutZRegister(RegisterManager& regManager) : Register(regManager,0x2C, 2, false) { }
-            int value;
-
-            long getValue() { return ((value & 0xFFFF) << 0); }
-            void setValue(long val)
-            {
-                value = (int)(((val >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
-            }
-        };
-
         class FifoCtrlRegister : public Register
         {
         public:
@@ -374,6 +345,45 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             }
         };
 
+        class OutXRegister : public Register
+        {
+        public:
+			OutXRegister(RegisterManager& regManager) : Register(regManager,0xA8, 2, false) { }
+            int value;
+
+            long getValue() { return ((value & 0xFFFF) << 0); }
+            void setValue(long val)
+            {
+                value = (int)(((val >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            }
+        };
+
+        class OutYRegister : public Register
+        {
+        public:
+			OutYRegister(RegisterManager& regManager) : Register(regManager,0xAA, 2, false) { }
+            int value;
+
+            long getValue() { return ((value & 0xFFFF) << 0); }
+            void setValue(long val)
+            {
+                value = (int)(((val >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            }
+        };
+
+        class OutZRegister : public Register
+        {
+        public:
+			OutZRegister(RegisterManager& regManager) : Register(regManager,0xAC, 2, false) { }
+            int value;
+
+            long getValue() { return ((value & 0xFFFF) << 0); }
+            void setValue(long val)
+            {
+                value = (int)(((val >> 0) & 0xFFFF) << (32 - 16)) >> (32 - 16);
+            }
+        };
+
             WhoAmIRegister whoAmI;
             CtrlReg1Register ctrlReg1;
             CtrlReg2Register ctrlReg2;
@@ -383,9 +393,6 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             ReferenceDataCaptureRegister referenceDataCapture;
             OutTempRegister outTemp;
             StatusRegister status;
-            OutXRegister outX;
-            OutYRegister outY;
-            OutZRegister outZ;
             FifoCtrlRegister fifoCtrl;
             FifoSrcRegister fifoSrc;
             IntConfigRegister intConfig;
@@ -394,8 +401,11 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
             Int1ThresholdYRegister int1ThresholdY;
             Int1ThresholdZRegister int1ThresholdZ;
             Int1DurationRegister int1Duration;
+            OutXRegister outX;
+            OutYRegister outY;
+            OutZRegister outZ;
 
-		L3gd20Registers(SMBusDevice& device) : RegisterManager(device, true), whoAmI(*this), ctrlReg1(*this), ctrlReg2(*this), ctrlReg3(*this), ctrlReg4(*this), ctrlReg5(*this), referenceDataCapture(*this), outTemp(*this), status(*this), outX(*this), outY(*this), outZ(*this), fifoCtrl(*this), fifoSrc(*this), intConfig(*this), int1Src(*this), int1ThresholdX(*this), int1ThresholdY(*this), int1ThresholdZ(*this), int1Duration(*this)
+		L3gd20Registers(SMBusDevice& device) : RegisterManager(device, true), whoAmI(*this), ctrlReg1(*this), ctrlReg2(*this), ctrlReg3(*this), ctrlReg4(*this), ctrlReg5(*this), referenceDataCapture(*this), outTemp(*this), status(*this), fifoCtrl(*this), fifoSrc(*this), intConfig(*this), int1Src(*this), int1ThresholdX(*this), int1ThresholdY(*this), int1ThresholdZ(*this), int1Duration(*this), outX(*this), outY(*this), outZ(*this)
 		{ 
 			registers.push_back(&whoAmI);
 			registers.push_back(&ctrlReg1);
@@ -406,9 +416,6 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
 			registers.push_back(&referenceDataCapture);
 			registers.push_back(&outTemp);
 			registers.push_back(&status);
-			registers.push_back(&outX);
-			registers.push_back(&outY);
-			registers.push_back(&outZ);
 			registers.push_back(&fifoCtrl);
 			registers.push_back(&fifoSrc);
 			registers.push_back(&intConfig);
@@ -417,6 +424,9 @@ namespace Treehopper { namespace Libraries { namespace Sensors { namespace Inert
 			registers.push_back(&int1ThresholdY);
 			registers.push_back(&int1ThresholdZ);
 			registers.push_back(&int1Duration);
+			registers.push_back(&outX);
+			registers.push_back(&outY);
+			registers.push_back(&outZ);
 		}
     };
  }  }  } }
