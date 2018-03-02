@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.IO.Mux
@@ -138,6 +139,7 @@ namespace Treehopper.Libraries.IO.Mux
             ///     Occurs when the analog voltage change exceeds AnalogVoltageChangedThreshold
             /// </summary>
             public event OnAnalogVoltageChanged AnalogVoltageChanged;
+            public event PropertyChangedEventHandler PropertyChanged;
 
             /// <summary>
             ///     Make the pin an input (unused)

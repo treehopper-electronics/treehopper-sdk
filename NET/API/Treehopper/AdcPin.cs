@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Treehopper
 {
     /// <summary>
     ///     Base interface representing pins capable of reading analog values
     /// </summary>
-    public interface AdcPin
+    public interface AdcPin : INotifyPropertyChanged
     {
         /// <summary>
         ///     Retrieve the last value obtained from the ADC.

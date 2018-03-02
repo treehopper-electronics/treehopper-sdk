@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.IO.Adc
@@ -47,8 +48,10 @@ namespace Treehopper.Libraries.IO.Adc
                 if (analogValueFromAdc(value).CloseTo(analogValueFromAdc(adcValue), AnalogValueChangedThreshold))
                     AnalogValueChanged?.Invoke(this, new AnalogValueChangedEventArgs(analogValueFromAdc(adcValue)));
                 if (analogVoltageFromAdc(value).CloseTo(analogVoltageFromAdc(adcValue), AnalogVoltageChangedThreshold))
-                    AnalogVoltageChanged?.Invoke(this,
-                        new AnalogVoltageChangedEventArgs(analogVoltageFromAdc(adcValue)));
+                    AnalogVoltageChanged?.Invoke(this, new AnalogVoltageChangedEventArgs(analogVoltageFromAdc(adcValue)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AdcValue"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AnalogValue"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AnalogVoltage"));
                 adcValue = value;
             }
 
@@ -95,6 +98,7 @@ namespace Treehopper.Libraries.IO.Adc
         ///     Fires whenever the analog voltage changes by the specified threshold
         /// </summary>
         public event OnAnalogVoltageChanged AnalogVoltageChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         ///     Make the pin an analog input. This is unused in most implementations
