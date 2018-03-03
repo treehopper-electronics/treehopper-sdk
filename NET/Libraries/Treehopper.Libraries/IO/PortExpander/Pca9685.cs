@@ -326,5 +326,10 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             return Task.CompletedTask;
         }
+
+        public Task DisablePwm()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

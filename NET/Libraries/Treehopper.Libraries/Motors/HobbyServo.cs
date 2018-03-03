@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Treehopper.Utilities;
 
 namespace Treehopper.Libraries.Motors
@@ -6,7 +7,7 @@ namespace Treehopper.Libraries.Motors
     /// <summary>
     ///     The HobbyServo library is used to control small DC servos that use pulse-width control.
     /// </summary>
-    public class HobbyServo
+    public class HobbyServo : IDisposable
     {
         private readonly Pwm Pwm;
 
@@ -25,7 +26,7 @@ namespace Treehopper.Libraries.Motors
         public HobbyServo(Pwm pwm, double minPulseWidth = 500, double maxPulseWidth = 2500)
         {
             Pwm = pwm;
-            pwm.EnablePwm();
+            Task.Run(pwm.EnablePwm).Wait();
 
             MinPulseWidth = minPulseWidth;
             MaxPulseWidth = maxPulseWidth;
@@ -76,6 +77,11 @@ namespace Treehopper.Libraries.Motors
 
                 Pwm.PulseWidth = Numbers.Map(angle, 0, 180, MinPulseWidth, MaxPulseWidth);
             }
+        }
+
+        public void Dispose()
+        {
+            Pwm.DisablePwm();
         }
     }
 }

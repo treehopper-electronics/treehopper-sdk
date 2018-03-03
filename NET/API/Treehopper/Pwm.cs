@@ -37,6 +37,13 @@ namespace Treehopper
         /// <summary>
         ///     Enable the PWM functionality
         /// </summary>
+        /// /// <returns>An awaitable task that completes when the PWM functionality is enabled</returns>
         Task EnablePwm();
+
+        /// <summary>
+        ///     Disables the PWM functionality
+        /// </summary>
+        /// <returns>An awaitable task that completes when the PWM functionality is disabled</returns>
+        Task DisablePwm();
     }
 }

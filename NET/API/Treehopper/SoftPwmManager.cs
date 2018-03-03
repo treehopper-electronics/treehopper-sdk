@@ -65,7 +65,7 @@ namespace Treehopper
             return UpdateConfig();
         }
 
-        internal async void SetDutyCycle(Pin pin, double dutyCycle)
+        internal async Task SetDutyCycle(Pin pin, double dutyCycle)
         {
             if (dutyCycle > 1.0 || dutyCycle < 0.0)
                 Utility.Error("DutyCycle must be between 0.0 and 1.0");
@@ -78,7 +78,7 @@ namespace Treehopper
             }
         }
 
-        internal async void SetPulseWidth(Pin pin, double pulseWidth)
+        internal async Task SetPulseWidth(Pin pin, double pulseWidth)
         {
             if (pulseWidth > 16409 || pulseWidth < 0.0)
                 Utility.Error("PulseWidth must be between 0 and 16409");

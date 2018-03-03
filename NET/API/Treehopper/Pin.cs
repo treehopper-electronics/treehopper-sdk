@@ -343,13 +343,13 @@ namespace Treehopper
         public double DutyCycle
         {
             get => Board.SoftPwmMgr.GetDutyCycle(this);
-            set => Board.SoftPwmMgr.SetDutyCycle(this, value);
+            set => Task.Run(() => Board.SoftPwmMgr.SetDutyCycle(this, value)).Wait();
         }
 
         public double PulseWidth
         {
             get => Board.SoftPwmMgr.GetPulseWidth(this);
-            set => Board.SoftPwmMgr.SetPulseWidth(this, value);
+            set => Task.Run(() => Board.SoftPwmMgr.SetPulseWidth(this, value)).Wait();
         }
 
         /// <summary>
@@ -519,6 +519,13 @@ namespace Treehopper
             _mode = PinMode.SoftPwm;
             await SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0 }).ConfigureAwait(false);
             await Board.SoftPwmMgr.StartPin(this).ConfigureAwait(false);
+        }
+
+        public async Task DisablePwm()
+        {
+            _mode = PinMode.DigitalInput;
+            await Board.SoftPwmMgr.StopPin(this).ConfigureAwait(false);
+            await SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, 0 }).ConfigureAwait(false);
         }
 
         internal enum PinConfigCommands

@@ -106,6 +106,12 @@ namespace Treehopper
             }
         }
 
+        public Task DisablePwm()
+        {
+            _isEnabled = false;
+            return _board.HardwarePwmManager.StopPin(_pin);
+        }
+
         public Task EnablePwm()
         {
             _isEnabled = true;
