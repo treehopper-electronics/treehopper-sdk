@@ -182,9 +182,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             await registers.readRange(registers.accelX, registers.temp);
 
-            accelerometer.X = registers.accelX.value / 16f;
-            accelerometer.Y = registers.accelY.value / 16f;
-            accelerometer.Z = registers.accelZ.value / 16f;
+            accelerometer.X = registers.accelX.value / 1000f;
+            accelerometer.Y = registers.accelY.value / 1000f;
+            accelerometer.Z = registers.accelZ.value / 1000f;
 
             magnetometer.X = registers.magnetometerX.value / 16f;
             magnetometer.Y = registers.magnetometerY.value / 16f;
