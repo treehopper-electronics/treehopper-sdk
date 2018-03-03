@@ -1,13 +1,17 @@
-﻿using System;
+﻿// Portions of this file inspired by https://github.com/jcoenraadts/hid-sharp
+// MIT license
+
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32.SafeHandles;
+using Treehopper.Desktop.WinUsb;
 
 /// <summary>
 /// Win32-based Treehopper library for Windows desktop support
@@ -20,9 +24,7 @@ namespace Treehopper.Desktop.WinUsb
 
         public WinUsbConnectionService()
         {
-            // WMI queries take forever, so spin up a task to handle this so we don't block the app
-            //Task.Run(() => initialAdd());
-            initialAdd();
+            add($"vid_{TreehopperUsb.Settings.Vid:x}&pid_{TreehopperUsb.Settings.Pid:x}");
 
             // We can only hear WM_DEVICECHANGE messages if we're an STA thread that's properly pumping windows messages.
             // There's no easy way to tell if the calling thread is pumping messages, so just check the apartment state, and assume people
@@ -47,64 +49,55 @@ namespace Treehopper.Desktop.WinUsb
             }
         }
 
-        private void initialAdd()
+        private void add(string matchDevicePath)
         {
-            var query =
-                $@"Select DeviceID, HardwareID, Name From Win32_PnPEntity WHERE DeviceID LIKE '%VID_{
-                        TreehopperUsb.Settings.Vid
-                    :X}&PID_{TreehopperUsb.Settings.Pid:X}%'";
+            //Create structs to hold interface information
+            SP_DEVINFO_DATA devInfoData = new SP_DEVINFO_DATA();
+            SP_DEVICE_INTERFACE_DATA devInterfaceData = new SP_DEVICE_INTERFACE_DATA();
+            devInfoData.cbSize = (uint)Marshal.SizeOf(devInfoData);
+            devInterfaceData.cbSize = (uint)(Marshal.SizeOf(devInterfaceData));
 
-            using (var searcher = new ManagementObjectSearcher(query))
-            using (var collection = searcher.Get())
+            Guid G = new Guid("{a5dcbf10-6530-11d2-901f-00c04fb951ed}");
+            IntPtr devInfo = SetupApi.SetupDiGetClassDevs(ref G, IntPtr.Zero, IntPtr.Zero, SetupApi.DIGCF_DEVICEINTERFACE | SetupApi.DIGCF_PRESENT);
+
+            //Loop through all available entries in the device list, until false
+            SP_DEVICE_INTERFACE_DETAIL_DATA deviceInterfaceDetailData = new SP_DEVICE_INTERFACE_DETAIL_DATA();
+            if (IntPtr.Size == 8) // for 64 bit operating systems
+                deviceInterfaceDetailData.cbSize = 8;
+            else
+                deviceInterfaceDetailData.cbSize = 4 + Marshal.SystemDefaultCharSize; // for 32 bit systems
+
+            int j = -1;
+            bool b = true;
+            int error;
+            SafeFileHandle tempHandle;
+
+            while (b)
             {
-                foreach (var device in collection)
+                j++;
+                b = SetupApi.SetupDiEnumDeviceInterfaces(devInfo, IntPtr.Zero, ref G, (uint)j, ref devInterfaceData);
+                error = Marshal.GetLastWin32Error();
+                if (b == false)
+                    break;
+
+                uint size = 0;
+                SetupApi.SetupDiGetDeviceInterfaceDetail(devInfo, ref devInterfaceData, ref deviceInterfaceDetailData, 255, out size, ref devInfoData);
+                if(deviceInterfaceDetailData.DevicePath.ToLower().Contains(matchDevicePath.ToLower()))
                 {
-                    var deviceID = (string) device.GetPropertyValue("DeviceID");
-                    var elements = deviceID.Split('\\');
-
-                    var serial = elements[2].ToLower();
-
-                    var hardwareIds = ((string[]) device.GetPropertyValue("HardwareID"))[0].Split('&');
-                    var version = hardwareIds[2].Substring(4);
-
-                    var name = (string) device.GetPropertyValue("Name");
-                    var path =
-                        $@"\\.\usb#vid_{TreehopperUsb.Settings.Vid:x}&pid_{TreehopperUsb.Settings.Pid:x}#{
-                                serial
-                            }#{{a5dcbf10-6530-11d2-901f-00c04fb951ed}}";
-
-                    Boards.Add(new TreehopperUsb(new WinUsbConnection(path, name, serial, short.Parse(version))));
+                    ulong devPropType = 0;
+                    StringBuilder sb = new StringBuilder(256);
+                    int actualSize = 0;
+                    SetupApi.SetupDiGetDevicePropertyW(devInfo, ref devInfoData, ref SetupApi.FriendlyName, ref devPropType, sb, 256, out actualSize, 0);
+                    string name = sb.ToString();
+                    SetupApi.SetupDiGetDevicePropertyW(devInfo, ref devInfoData, ref SetupApi.HardwareIds, ref devPropType, sb, 256, out actualSize, 0);
+                    string hardware = sb.ToString();
+                    var refStart = hardware.IndexOf("REV_");
+                    var revisionString = hardware.Substring(refStart+4, 4);
+                    var serial = deviceInterfaceDetailData.DevicePath.Split('#')[2];
+                    Boards.Add(new TreehopperUsb(new WinUsbConnection(deviceInterfaceDetailData.DevicePath, name, serial, short.Parse(revisionString))));
                 }
             }
-        }
-
-        private void addBoardFromPath(string path)
-        {
-            var items = path.ToLower().Split('#');
-            var serial = items[2];
-            var name = "";
-            var version = "";
-
-            var query =
-                $@"SELECT Name, DeviceID, HardwareID FROM Win32_PnPEntity WHERE PNPClass = 'USBDevice' AND DeviceID LIKE '%{
-                        serial.ToUpper()
-                    }%'";
-
-            using (var searcher = new ManagementObjectSearcher(query))
-            using (var collection = searcher.Get())
-            {
-                foreach (var device in collection)
-                {
-                    name = (string) device.GetPropertyValue("Name");
-                    var hardwareIds = ((string[]) device.GetPropertyValue("HardwareID"))[0].Split('&');
-                    version = hardwareIds[2].Substring(4);
-
-                    var newBoard = new TreehopperUsb(
-                        new WinUsbConnection(path.ToLower(), name, serial, short.Parse(version)));
-                    Debug.WriteLine("Adding: " + newBoard);
-                    Boards.Add(newBoard);
-                }
-            }
+            SetupApi.SetupDiDestroyDeviceInfoList(devInfo);
         }
 
         public override void Dispose()
@@ -170,7 +163,7 @@ namespace Treehopper.Desktop.WinUsb
                             return;
                         if (theEvent == DBT_DEVICEARRIVAL)
                         {
-                            Task.Run(() => { service.addBoardFromPath(msg.DevicePath); });
+                            Task.Run(() => { service.add(msg.DevicePath); });
                         }
                         else
                         {
@@ -211,7 +204,7 @@ namespace Treehopper.Desktop.WinUsb
                 public int Size;
                 public int DeviceType = DBT_DEVTYP_DEVICEINTERFACE;
                 public int Reserved;
-                public Guid ClassGuid = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED");
+                public Guid UsbDevice = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED");
                 private char mNameHolder;
 
                 internal DevBroadcastHdr()
