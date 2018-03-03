@@ -88,10 +88,7 @@ namespace Treehopper.Uwp
             Version = (short) usbDevice.DeviceDescriptor.BcdDeviceRevision;
 
             pinConfigPipe = usbDevice.DefaultInterface.BulkOutPipes[0];
-            pinConfigPipe.WriteOptions |= UsbWriteOptions.ShortPacketTerminate;
-
             peripheralOutPipe = usbDevice.DefaultInterface.BulkOutPipes[1];
-            peripheralOutPipe.WriteOptions |= UsbWriteOptions.ShortPacketTerminate;
 
             pinConfigWriter = new DataWriter(pinConfigPipe.OutputStream);
             peripheralWriter = new DataWriter(peripheralOutPipe.OutputStream);
