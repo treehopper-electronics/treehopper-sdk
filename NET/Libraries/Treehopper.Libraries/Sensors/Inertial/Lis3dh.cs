@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -14,9 +15,34 @@ namespace Treehopper.Libraries.Sensors.Inertial
         private SMBusDevice dev;
         private Lis3dhRegisters registers;
 
-        public Lis3dh(I2C i2c, bool sdo = true)
+        public static async Task<IList<Lis3dh>> Probe(I2C i2c, int rate=100)
         {
-            dev = new SMBusDevice((byte)(sdo ? 0x19 : 0x18), i2c);
+            var deviceList = new List<Lis3dh>();
+
+            try
+            {
+                var dev = new SMBusDevice(0x18, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0x0F).ConfigureAwait(false);
+                if (whoAmI == 0x33)
+                    deviceList.Add(new Lis3dh(i2c, false, rate));
+            }
+            catch (Exception ex) { }
+
+            try
+            {
+                var dev = new SMBusDevice(0x19, i2c, 100);
+                var whoAmI = await dev.ReadByteData(0x0F).ConfigureAwait(false);
+                if (whoAmI == 0x33)
+                    deviceList.Add(new Lis3dh(i2c, true, rate));
+            }
+            catch (Exception ex) { }
+
+            return deviceList;
+        }
+
+        public Lis3dh(I2C i2c, bool sdo = true, int rate=100)
+        {
+            dev = new SMBusDevice((byte)(sdo ? 0x19 : 0x18), i2c, rate);
             registers = new Lis3dhRegisters(dev);
 
             if (Task.Run(registers.whoAmI.read).Result.value != 0x33)
