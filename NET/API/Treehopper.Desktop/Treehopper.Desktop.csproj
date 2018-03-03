@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinUsb\PipePolicy.cs" />
     <Compile Include="WinUsb\SafeWinUsbHandle.cs" />
+    <Compile Include="WinUsb\SetupApi.cs" />
     <Compile Include="WinUsb\UsbAsyncResult.cs" />
     <Compile Include="WinUsb\WinUsb.cs" />
     <Compile Include="WinUsb\WinUsbConnection.cs" />
