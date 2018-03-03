@@ -27,6 +27,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\AmbientLight.xaml.cs">
       <DependentUpon>AmbientLight.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\APA102.xaml.cs">
+      <DependentUpon>APA102.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\Servo.xaml.cs">
       <DependentUpon>Servo.xaml</DependentUpon>
     </Compile>
@@ -63,6 +66,10 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Libraries\APA102.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TreehopperControlCenter.Pages.Libraries"
                     xmlns:jpc="clr-namespace:JPC.BindablePicker"
-             x:Class="TreehopperControlCenter.Pages.Libraries.Servo">
+             x:Class="TreehopperControlCenter.Pages.Libraries.Apa102">
     <d:LibraryComponent.Configuration>
         <StackLayout>
-            <jpc:BindablePicker ItemsSource="{Binding Board.Pins}" SelectedItem="{Binding SelectedPin}" Title="Pins" />
+            <Label VerticalTextAlignment="Center" Text="Number of LEDs"/>
+            <Entry Keyboard="Numeric" Text="{Binding NumLeds}" />
         </StackLayout>
     </d:LibraryComponent.Configuration>
     <StackLayout>
-        <Slider Maximum="180" Minimum="0" Value="{Binding HobbyServo.Angle, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
+        <Slider Maximum="100" Minimum="0" Value="{Binding Speed, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
     </StackLayout>
 </d:LibraryComponent>

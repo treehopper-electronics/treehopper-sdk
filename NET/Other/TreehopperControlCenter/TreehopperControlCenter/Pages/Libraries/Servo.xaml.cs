@@ -38,10 +38,13 @@ namespace TreehopperControlCenter.Pages.Libraries
         protected override async Task Start()
         {
             HobbyServo = new HobbyServo(SelectedPin);
+            HobbyServo.Angle = 90;
+            OnPropertyChanged("HobbyServo");
         }
 
         protected override async Task Stop()
         {
+            HobbyServo.Dispose();
             HobbyServo = null;
         }
 
