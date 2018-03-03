@@ -7,7 +7,7 @@ namespace Treehopper.Libraries.Sensors.Optical
     /// <summary>
     /// Ambient light sensor interface
     /// </summary>
-    interface IAmbientLightSensor : IPollable
+    public interface IAmbientLightSensor : IPollable
     {
         /// <summary>
         /// Gets the ambient light sensor reading, in lux
