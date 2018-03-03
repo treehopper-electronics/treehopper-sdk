@@ -17,7 +17,7 @@ namespace TreehopperControlCenter.Pages.Libraries
         public string SelectedAccelerometer { get; set; }
         public bool AddressBitSet { get; set; }
 
-        public string[] Accelerometers { get; set; } = new string[] { "MPU-9250", "ADXL-345", "LIS3DH" };
+        public string[] Accelerometers { get; set; } = new string[] { "MPU-9250", "ADXL-345", "LIS3DH", "BNO055", "LSM303DLHC" };
 
         public TreehopperUsb Board { get; }
 
@@ -46,15 +46,24 @@ namespace TreehopperControlCenter.Pages.Libraries
             switch(SelectedAccelerometer)
             {
                 case "MPU-9250":
-                    Sensor = new Mpu9250(Board.I2c, AddressBitSet);
+                    Sensor = (await Mpu6050.Probe(Board.I2c, true))[0];
                     break;
 
                 case "ADXL-345":
-                    Sensor = new Adxl345(Board.I2c, AddressBitSet);
+                    Sensor = (await Adxl345.Probe(Board.I2c))[0];
                     break;
 
                 case "LIS3DH":
-                    Sensor = new Lis3dh(Board.I2c, AddressBitSet);
+                    Sensor = (await Lis3dh.Probe(Board.I2c))[0];
+                    break;
+
+                case "BNO055":
+                    Sensor = (await Bno055.Probe(Board.I2c))[0];
+                    break;
+
+                case "LSM303DLHC":
+                    var lsm303dlhc = new Lsm303dlhc(Board.I2c);
+                    Sensor = lsm303dlhc.Accel;
                     break;
             }
 

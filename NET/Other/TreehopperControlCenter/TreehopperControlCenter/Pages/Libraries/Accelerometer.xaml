@@ -7,8 +7,6 @@
     <d:LibraryComponent.Configuration>
         <StackLayout>
             <jpc:BindablePicker Title="Select" ItemsSource="{Binding Accelerometers}" SelectedItem="{Binding SelectedAccelerometer}"/>
-            <Label Text="Some accelerometers have an address pin that can be tied low or high."/>
-            <Switch IsToggled="{Binding AddressBitSet}" />
         </StackLayout>
     </d:LibraryComponent.Configuration>
     <StackLayout>

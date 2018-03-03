@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:LibraryComponent xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="clr-namespace:TreehopperControlCenter.Pages.Libraries"
+                    xmlns:jpc="clr-namespace:JPC.BindablePicker"
+             x:Class="TreehopperControlCenter.Pages.Libraries.Altitude">
+    <d:LibraryComponent.Configuration>
+        <StackLayout>
+            <jpc:BindablePicker ItemsSource="{Binding Sensors}" SelectedItem="{Binding SelectedSensor}" Title="Proximity Sensor" />
+        </StackLayout>
+    </d:LibraryComponent.Configuration>
+    <StackLayout>
+        <Label FontSize="Large" Text="{Binding Sensor.Altitude, StringFormat='{0:0.00} meters'}"/>
+    </StackLayout>
+</d:LibraryComponent>

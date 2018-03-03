@@ -8,26 +8,28 @@ using Treehopper.Libraries;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Treehopper.Libraries.Sensors.Temperature;
+using Treehopper.Libraries.Sensors.Optical;
+using Treehopper.Libraries.Sensors;
 
 namespace TreehopperControlCenter.Pages.Libraries
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Temperature : LibraryComponent
+    public partial class AmbientLight : LibraryComponent
     {
-        public string[] Sensors { get; set; } = new string[] { "DS18B20", "LM75", "MCP9808", "MLX90614", "MLX90615" };
+        public string[] Sensors { get; set; } = new string[] { "BH1750", "TSL2591", "VCNL4010" };
         public string SelectedSensor { get; set; }
         public TreehopperUsb Board { get; }
 
-        public ITemperatureSensor Sensor { get; set; }
+        public IAmbientLightSensor Sensor { get; set; }
 
-        public Temperature(LibrariesPage page, TreehopperUsb Board = null) : base("Temperature", page)
+        public AmbientLight(LibrariesPage page, TreehopperUsb Board = null) : base("Ambient Light Sensor", page)
         {
             this.Board = Board;
             InitializeComponent();
             BindingContext = this;
         }
 
-        public Temperature() : base("Temperature", new LibrariesPage())
+        public AmbientLight() : base("Ambient Light Sensor", new LibrariesPage())
         {
             InitializeComponent();
         }
@@ -36,26 +38,16 @@ namespace TreehopperControlCenter.Pages.Libraries
         {
             switch (SelectedSensor)
             {
-                case "LM75":
-                    Sensor = new Lm75(Board.I2c);
+                case "BH1750":
+                    Sensor = (await Bh1750.Probe(Board.I2c))[0];
                     break;
 
-                case "DS18B20":
-                    Sensor = new Ds18b20(Board.Uart);
+                case "TSL2591":
+                    Sensor = await Tsl2591.Probe(Board.I2c);
                     break;
 
-                case "MCP9808":
-                    Sensor = new Mcp9808(Board.I2c);
-                    break;
-
-                case "MLX90614":
-                    var mlx90614 = new Mlx90614(Board.I2c);
-                    Sensor = mlx90614.Object;
-                    break;
-
-                case "MLX90615":
-                    var mlx90615 = new Mlx90615(Board.I2c);
-                    Sensor = mlx90615.Object;
+                case "VCNL4010":
+                    Sensor = new Vcnl4010(Board.I2c);
                     break;
             }
 
