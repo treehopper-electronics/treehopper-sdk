@@ -68,12 +68,12 @@ namespace Treehopper.Libraries.IO
 
                     // make sure pins are outputs
                     foreach (var pin in DataBus)
-                        pin.MakeDigitalPushPullOut();
+                        Task.Run(pin.MakeDigitalPushPullOut).Wait();
 
-                    RegisterSelectPin.MakeDigitalPushPullOut();
+                    Task.Run(RegisterSelectPin.MakeDigitalPushPullOut);
                     if (ReadWritePin != null) // R/W is optional, and is often tied to "write"
-                        ReadWritePin.MakeDigitalPushPullOut();
-                    EnablePin.MakeDigitalPushPullOut();
+                        Task.Run(ReadWritePin.MakeDigitalPushPullOut);
+                    Task.Run(EnablePin.MakeDigitalPushPullOut);
 
                     Task.Run(() => port.Flush()).Wait(); // write out port settings
                     port.AutoFlush = oldAutoflushSettings; // restore old autoflush settings

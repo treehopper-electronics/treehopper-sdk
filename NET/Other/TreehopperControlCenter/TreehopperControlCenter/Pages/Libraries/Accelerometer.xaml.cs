@@ -15,7 +15,6 @@ namespace TreehopperControlCenter.Pages.Libraries
     public partial class Accelerometer : LibraryComponent
     {
         public string SelectedAccelerometer { get; set; }
-        public bool AddressBitSet { get; set; }
 
         public string[] Accelerometers { get; set; } = new string[] { "MPU-9250", "ADXL-345", "LIS3DH", "BNO055", "LSM303DLHC" };
 

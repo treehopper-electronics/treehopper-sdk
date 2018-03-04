@@ -7,7 +7,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     Represents displays that can print strings of alphanumeric characters on one or more lines
     /// </summary>
-    public abstract class CharacterDisplay
+    public abstract class CharacterDisplay : ICharacterDisplay
     {
         private int cursorLeft;
 
@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     Cursor left position
         /// </summary>
-        public int CusorLeft
+        public int CursorLeft
         {
             get { return cursorLeft; }
             set
@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Displays
         /// <summary>
         ///     Cursor top position
         /// </summary>
-        public int CusorTop
+        public int CursorTop
         {
             get { return cursorTop; }
             set
@@ -79,7 +79,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="left">The left position</param>
         /// <param name="top">The top position</param>
-        /// <returns></returns>
+        /// <returns>An awaitable task that completes once the cursor is updated</returns>
         public Task SetCursorPosition(int left, int top)
         {
             cursorLeft = left;
@@ -141,7 +141,7 @@ namespace Treehopper.Libraries.Displays
         }
 
         /// <summary>
-        ///     Clear the display
+        ///     Clear the display and reset the cursor to (0,0)
         /// </summary>
         /// <returns>An awaitable task that completes when finished</returns>
         public Task Clear()

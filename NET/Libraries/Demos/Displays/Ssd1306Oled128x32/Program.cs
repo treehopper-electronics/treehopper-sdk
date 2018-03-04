@@ -22,7 +22,7 @@ namespace Ssd1306Oled128x32
 
             while (!Console.KeyAvailable)
             {
-                await display.Print(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
+                await display.Write(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
                 await Task.Delay(250);
             }
 

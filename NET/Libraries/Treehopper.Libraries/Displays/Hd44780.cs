@@ -204,15 +204,15 @@ namespace Treehopper.Libraries.Displays
 
 
             cmd = (byte) ((byte) Command.FunctionSet | (byte) bits | (byte) lines | (byte) font);
-            writeCommand(cmd).Wait();
+            Task.Run(() => writeCommand(cmd)).Wait();
 
             Display = true;
-            Clear().Wait();
+            Task.Run(Clear).Wait();
 
             if (Backlight != null)
             {
                 backlight = Backlight;
-                backlight.MakeDigitalPushPullOut();
+                Task.Run(backlight.MakeDigitalPushPullOut).Wait();
             }
 
 
@@ -301,7 +301,7 @@ namespace Treehopper.Libraries.Displays
         protected override Task updateCursorPosition()
         {
             byte[] row_offsets = {0x00, 0x40, (byte) Columns, (byte) (0x40 + Columns)};
-            var data = (byte) (CusorLeft + row_offsets[CusorTop]);
+            var data = (byte) (CursorLeft + row_offsets[CursorTop]);
 
             var cmd = (byte) ((byte) Command.SetDdramAddr | data);
             return writeCommand(cmd);

@@ -5,7 +5,7 @@ namespace Treehopper.Libraries.Displays
     /// <summary>
     ///     A class representing pixel-addressed displays that can control the pixel's on/off state only.
     /// </summary>
-    public abstract class MonoGraphicDisplay : GraphicDisplay
+    public abstract class MonoGraphicDisplay : GraphicDisplay, ICharacterDisplay
     {
         private static readonly byte[] Font5x7 =
         {
@@ -124,6 +124,32 @@ namespace Treehopper.Libraries.Displays
         /// </remarks>
         public bool[,] PixelBuffer { get; set; }
 
+        public int Columns
+        {
+            get
+            {
+                return Width / 6;
+            }
+        }
+
+        public int Rows
+        {
+            get
+            {
+                return Height / 8;
+            }
+        }
+
+        public int CursorLeft { get; set; }
+
+        public int CursorTop { get; set; }
+
+        public async Task SetCursorPosition(int left, int top)
+        {
+            CursorLeft = left;
+            CursorTop = top;
+        }
+
         /// <summary>
         ///     Set a pixel's state. You must explicitly flush to the display to write out the changes.
         /// </summary>
@@ -142,8 +168,6 @@ namespace Treehopper.Libraries.Displays
         ///     Display an alphanumeric value using a 5x7 font at the given character column and row
         /// </summary>
         /// <param name="value">The alphanumeric value to use</param>
-        /// <param name="column">The character column to start printing at</param>
-        /// <param name="row">The character row to start printing at</param>
         /// <returns>An awaitable task that will finish upon completion</returns>
         /// <remarks>
         ///     <para>
@@ -156,21 +180,22 @@ namespace Treehopper.Libraries.Displays
         ///         If you want control over
         ///     </para>
         /// </remarks>
-        public async Task Print(dynamic value, int column = 0, int row = 0)
+        public async Task Write(dynamic value)
         {
             var characterWidth = 6; // include the one-column space
-
-            // where to start printing
-            var charPointer = Width * row + column * characterWidth;
             string strValue = value.ToString();
 
             // don't try to print too many characters
-            var maxChars = (RawBuffer.Length - charPointer) / characterWidth;
+            var curBufferSize = CursorLeft + CursorTop * Columns;
+            var maxChars = Columns * Rows - curBufferSize;
             if (strValue.Length > maxChars)
                 strValue = strValue.Substring(0, maxChars);
 
             foreach (var c in strValue)
             {
+                // where to start printing
+                var charPointer = Width * CursorTop + CursorLeft * characterWidth;
+
                 int fontIndex = c;
                 if (fontIndex > 32)
                     fontIndex -= 32;
@@ -180,9 +205,35 @@ namespace Treehopper.Libraries.Displays
                 for (var i = 0; i < 5; i++)
                     RawBuffer[charPointer++] = Font5x7[5 * fontIndex + i];
                 RawBuffer[charPointer++] = 0x00;
+
+                CursorLeft++;
+                if (CursorLeft >= Columns)
+                {
+                    CursorLeft = 0;
+                    CursorTop++;
+                }
+                if (CursorTop >= Rows)
+                {
+                    CursorTop = 0;
+                }
             }
             if (AutoFlush)
                 await Flush().ConfigureAwait(false);
+
+
+        }
+
+        public async Task WriteLine(dynamic value)
+        {
+            await Write(value).ConfigureAwait(false);
+            CursorTop++;
+        }
+
+        public override Task Clear()
+        {
+            CursorLeft = 0;
+            CursorTop = 0;
+            return base.Clear();
         }
     }
 }

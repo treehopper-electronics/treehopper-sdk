@@ -113,7 +113,7 @@ namespace Treehopper.Libraries.IO.PortExpander
                     while (DigitalValue == oldValue)
                     {
                         await portExpander.UpdateAsync().ConfigureAwait(false);
-                        await Task.Delay(portExpander.AwaitPollingInterval);
+                        await Task.Delay(portExpander.AwaitPollingInterval).ConfigureAwait(false);
                     }
 
                     return DigitalValue;

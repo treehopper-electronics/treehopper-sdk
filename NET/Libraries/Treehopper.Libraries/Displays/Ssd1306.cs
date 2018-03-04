@@ -58,19 +58,19 @@ namespace Treehopper.Libraries.Displays
         /// <param name="height">The number of pixels tall</param>
         /// <param name="address">The address</param>
         /// <param name="mode">The VCC mode of the display</param>
-        public Ssd1306(I2C I2c, int width = 128, int height = 32, byte address = 0x3C,
+        public Ssd1306(I2C I2c, int width = 128, int height = 32, byte address = 0x3C, int rate=400,
             VccMode mode = VccMode.SwitchCap) : base(width, height)
         {
             if (!(Width == 128 && Height == 32 || Width == 128 && Height == 64 || Width == 96 && Height == 16))
                 throw new ArgumentException("The only supported display sizes are 128x32, 128x64, and 96x16");
 
-            dev = new SMBusDevice(address, I2c, 400);
+            dev = new SMBusDevice(address, I2c, rate);
 
             RawBuffer = new byte[Width * Height / 8 + Width];
             BoolBuffer = new bool[Width, Height];
 
             this.mode = mode;
-            InitAsync().Wait();
+            Task.Run(InitAsync).Wait();
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Treehopper.Libraries.Displays
             await sendCommand(Command.DeactivateScroll).ConfigureAwait(false);
             await sendCommand(Command.DisplayOn).ConfigureAwait(false);
 
-            await Clear();
+            await Clear().ConfigureAwait(false);
             await flush().ConfigureAwait(false);
         }
 

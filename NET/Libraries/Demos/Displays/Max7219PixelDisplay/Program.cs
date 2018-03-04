@@ -26,7 +26,7 @@ namespace Max7219PixelDisplay
 
             while (!Console.KeyAvailable)
             {
-                await display.Print(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
+                await display.Write(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
                 await Task.Delay(250);
             }
 

@@ -72,7 +72,7 @@ namespace Treehopper.Libraries.Displays
         ///     Clear the display
         /// </summary>
         /// <returns>An awaitable task</returns>
-        public Task Clear()
+        public virtual Task Clear()
         {
             for (var i = 0; i < RawBuffer.Length; i++)
                 RawBuffer[i] = 0;

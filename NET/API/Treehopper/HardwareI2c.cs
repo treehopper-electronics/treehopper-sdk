@@ -93,7 +93,7 @@ namespace Treehopper
             var receivedData = new byte[numBytesToRead];
             var txLen = dataToWrite?.Length ?? 0;
 
-            using (await _device.ComsLock.LockAsync())
+            using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 var dataToSend = new byte[4 + txLen]; // 2 bytes for the header
                 dataToSend[0] = (byte) DeviceCommands.I2cTransaction;
