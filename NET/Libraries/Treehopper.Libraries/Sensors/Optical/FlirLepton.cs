@@ -37,7 +37,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         ///     Get the raw frame from the sensor
         /// </summary>
         /// <returns>An awaitable 2D-array of values</returns>
-        public async Task<ushort[,]> GetRawFrame()
+        public async Task<ushort[,]> GetRawFrameAsync()
         {
             //spi.ChipSelect.DigitalValue = false;
             await Task.Delay(185);
@@ -52,7 +52,7 @@ namespace Treehopper.Libraries.Sensors.Optical
                 var packet = new VoSPI();
                 while (!syncAcquired)
                 {
-                    packet = await GetPacket();
+                    packet = await GetPacketAsync();
                     if ((packet.Id & 0x000f) != 0x000f)
                         syncAcquired = true;
                 }
@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.Sensors.Optical
                         frame[i, j] = packet.Payload[j];
                     if (i == height - 1)
                         frameAcquired = true;
-                    packet = await GetPacket();
+                    packet = await GetPacketAsync();
                 }
             }
 
@@ -102,9 +102,9 @@ namespace Treehopper.Libraries.Sensors.Optical
         ///     Get the corrected raster frame
         /// </summary>
         /// <returns>A byte[] raster</returns>
-        public async Task<byte[]> GetCorrectedRasterFrameArray()
+        public async Task<byte[]> GetCorrectedRasterFrameArrayAsync()
         {
-            var rawFrame = await GetRawFrame();
+            var rawFrame = await GetRawFrameAsync();
             ushort maxVal = 0;
             var minVal = ushort.MaxValue;
             for (var i = 0; i < height; i++)
@@ -132,7 +132,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             return correctedFrame;
         }
 
-        private async Task<VoSPI> GetPacket()
+        private async Task<VoSPI> GetPacketAsync()
         {
             //int rawsize = Marshal.SizeOf<VoSPI>();
             //byte[] data = await spi.SendReceive(new byte[164]);

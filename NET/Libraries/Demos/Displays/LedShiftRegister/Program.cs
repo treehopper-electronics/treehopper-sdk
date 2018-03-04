@@ -36,7 +36,7 @@ namespace LedShiftRegisterDemo
                 {
                     bar1.Value = i / 16.0;
                     bar2.Value = i / 16.0;
-                    await collection.Flush();
+                    await collection.FlushAsync();
                     await Task.Delay(10);
                 }
                 await Task.Delay(100);
@@ -44,7 +44,7 @@ namespace LedShiftRegisterDemo
                 {
                     bar1.Value = i / 16.0;
                     bar2.Value = i / 16.0;
-                    await collection.Flush();
+                    await collection.FlushAsync();
                     await Task.Delay(10);
                 }
                 await Task.Delay(100);

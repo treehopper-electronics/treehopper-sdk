@@ -63,8 +63,8 @@ namespace Treehopper.Libraries.Input
             this.a = a;
             this.b = b;
 
-            a.MakeDigitalIn();
-            b.MakeDigitalIn();
+            a.MakeDigitalInAsync();
+            b.MakeDigitalInAsync();
 
             Position = 0;
 

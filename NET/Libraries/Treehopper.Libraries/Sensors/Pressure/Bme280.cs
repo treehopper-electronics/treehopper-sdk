@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
             try
             {
                 var dev = new SMBusDevice(0x76, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0xD0).ConfigureAwait(false);
                 if (whoAmI == 0x60)
                     deviceList.Add(new Bme280(i2c, false));
             }
@@ -32,7 +32,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
             try
             {
                 var dev = new SMBusDevice(0x77, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0xD0).ConfigureAwait(false);
                 if (whoAmI == 0x60)
                     deviceList.Add(new Bme280(i2c, true));
             }

@@ -48,22 +48,22 @@ namespace Remote.Client
 
         public Spi SpiModule => Board.Spi;
 
-        public Task<bool> AwaitDigitalValueChange()
+        public Task<bool> AwaitDigitalValueChangeAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task MakeDigitalIn()
+        public async Task MakeDigitalInAsync()
         {
             Mode = PinMode.DigitalInput;
         }
 
-        public async Task ToggleOutputAsync()
+        public async Task ToggleOutputAsyncAsync()
         {
             DigitalValue = !DigitalValue;
         }
 
-        public async Task MakeDigitalPushPullOut()
+        public async Task MakeDigitalPushPullOutAsync()
         {
             Mode = PinMode.PushPullOutput;
         }

@@ -48,7 +48,7 @@ namespace Treehopper.Libraries.Displays
         public double Brightness { get; set; } = 1.0;
 
         /// <summary>
-        ///     Whether this strip of LEDs should be updated immediately, or only when <see cref="Flush(bool)" /> is called.
+        ///     Whether this strip of LEDs should be updated immediately, or only when <see cref="FlushAsync(bool)" /> is called.
         /// </summary>
         public bool AutoFlush { get; set; } = true;
 
@@ -62,7 +62,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Unused for this method</param>
         /// <returns>An awaitable task</returns>
-        public async Task Flush(bool force = false)
+        public async Task FlushAsync(bool force = false)
         {
             var header = new byte[] {0x00, 0x00, 0x00, 0x00};
             var bytes = new List<byte>();
@@ -91,7 +91,7 @@ namespace Treehopper.Libraries.Displays
                 if (chunk.Length == 0)
                     break;
 
-                await spi.SendReceive(chunk, null, ChipSelectMode.SpiActiveLow, freq, SpiBurstMode.BurstTx,
+                await spi.SendReceiveAsync(chunk, null, ChipSelectMode.SpiActiveLow, freq, SpiBurstMode.BurstTx,
                     SpiMode.Mode11);
                 chunkCount++;
             }
@@ -106,7 +106,7 @@ namespace Treehopper.Libraries.Displays
             var oldAutoFlush = AutoFlush;
             AutoFlush = false;
             Leds.ForEach(led => led.SetRgb(0, 0, 0));
-            await Flush().ConfigureAwait(false);
+            await FlushAsync().ConfigureAwait(false);
             AutoFlush = oldAutoFlush;
         }
 
@@ -151,7 +151,7 @@ namespace Treehopper.Libraries.Displays
                 this.blue = blue;
 
                 if (driver.AutoFlush)
-                    driver.Flush().Wait();
+                    driver.FlushAsync().Wait();
             }
 
             /// <summary>

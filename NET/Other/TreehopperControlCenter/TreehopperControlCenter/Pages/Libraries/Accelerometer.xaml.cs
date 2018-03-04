@@ -45,19 +45,19 @@ namespace TreehopperControlCenter.Pages.Libraries
             switch(SelectedAccelerometer)
             {
                 case "MPU-9250":
-                    Sensor = (await Mpu6050.Probe(Board.I2c, true))[0];
+                    Sensor = (await Mpu6050.ProbeAsync(Board.I2c, true))[0];
                     break;
 
                 case "ADXL-345":
-                    Sensor = (await Adxl345.Probe(Board.I2c))[0];
+                    Sensor = (await Adxl345.ProbeAsync(Board.I2c))[0];
                     break;
 
                 case "LIS3DH":
-                    Sensor = (await Lis3dh.Probe(Board.I2c))[0];
+                    Sensor = (await Lis3dh.ProbeAsync(Board.I2c))[0];
                     break;
 
                 case "BNO055":
-                    Sensor = (await Bno055.Probe(Board.I2c))[0];
+                    Sensor = (await Bno055.ProbeAsync(Board.I2c))[0];
                     break;
 
                 case "LSM303DLHC":

@@ -34,7 +34,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         {
             this.type = type;
             this.pin = pin;
-            pin.MakeAnalogIn();
+            pin.MakeAnalogInAsync();
             pin.AnalogVoltageChangedThreshold = 0.01;
             pin.AnalogVoltageChanged += Pin_AnalogVoltageChanged;
         }

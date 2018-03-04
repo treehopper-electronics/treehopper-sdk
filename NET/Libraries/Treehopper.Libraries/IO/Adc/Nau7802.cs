@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.IO.Adc
             if (drdy != null)
             {
                 this.drdy = drdy;
-                drdy.MakeDigitalIn();
+                drdy.MakeDigitalInAsync();
                 drdy.DigitalValueChanged += Drdy_DigitalValueChanged;
             }
 
@@ -88,19 +88,19 @@ namespace Treehopper.Libraries.IO.Adc
 
         public async Task UpdateAsync()
         {
-            AdcValue = await PerformConversion();
+            AdcValue = await PerformConversionAsync();
         }
 
-        private async Task<int> PerformConversion()
+        private async Task<int> PerformConversionAsync()
         {
             if (drdy == null)
-                while (!await ConversionDone()) ;
+                while (!await ConversionDoneAsync()) ;
 
             await registers.adcResult.read();
             return registers.adcResult.value;
         }
 
-        private async Task<bool> ConversionDone()
+        private async Task<bool> ConversionDoneAsync()
         {
             await registers.read(registers.puCtrl);
             return registers.puCtrl.cycleReady == 1;
@@ -114,7 +114,7 @@ namespace Treehopper.Libraries.IO.Adc
             ReferenceVoltage = ldoVoltage / gain;
         }
 
-        public async Task<bool> Calibrate()
+        public async Task<bool> CalibrateAsync()
         {
             registers.ctrl2.calStart = 1;
             await registers.ctrl2.write().ConfigureAwait(false);
@@ -156,14 +156,14 @@ namespace Treehopper.Libraries.IO.Adc
         private async void Drdy_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
         {
             if (e.NewValue) // only convert on rising edge, plz
-                AdcValue = await PerformConversion();
+                AdcValue = await PerformConversionAsync();
         }
 
-        public async Task SetChannel(int channel)
+        public async Task SetChannelAsync(int channel)
         {
             registers.ctrl2.channelSelect = channel;
             await registers.ctrl2.write();
-            await Calibrate();
+            await CalibrateAsync();
         }
     }
 }

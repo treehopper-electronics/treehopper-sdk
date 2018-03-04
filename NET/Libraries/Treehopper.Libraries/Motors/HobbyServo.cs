@@ -26,7 +26,7 @@ namespace Treehopper.Libraries.Motors
         public HobbyServo(Pwm pwm, double minPulseWidth = 500, double maxPulseWidth = 2500)
         {
             Pwm = pwm;
-            Task.Run(pwm.EnablePwm).Wait();
+            Task.Run(pwm.EnablePwmAsync).Wait();
 
             MinPulseWidth = minPulseWidth;
             MaxPulseWidth = maxPulseWidth;
@@ -81,7 +81,7 @@ namespace Treehopper.Libraries.Motors
 
         public void Dispose()
         {
-            Pwm.DisablePwm();
+            Pwm.DisablePwmAsync();
         }
     }
 }

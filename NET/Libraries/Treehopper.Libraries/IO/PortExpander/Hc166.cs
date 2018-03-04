@@ -15,7 +15,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <param name="loadPin">latch pin</param>
         public Hc166(Spi spiModule, DigitalOut loadPin)
         {
-            loadPin.MakeDigitalPushPullOut();
+            loadPin.MakeDigitalPushPullOutAsync();
             spiModule.Enabled = true;
         }
 

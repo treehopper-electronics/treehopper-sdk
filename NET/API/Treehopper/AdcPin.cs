@@ -72,6 +72,6 @@ namespace Treehopper
         /// <summary>
         ///     Make this pin an ADC pin
         /// </summary>
-        Task MakeAnalogIn();
+        Task MakeAnalogInAsync();
     }
 }

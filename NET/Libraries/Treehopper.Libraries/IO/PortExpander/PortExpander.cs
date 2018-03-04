@@ -42,7 +42,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         /// <param name="force"></param>
         /// <returns>An awaitable task that completes when the flush finishes.</returns>
-        public abstract Task Flush(bool force = false);
+        public abstract Task FlushAsync(bool force = false);
 
         /// <summary>
         ///     Whether to read the port expander when a pin is read from

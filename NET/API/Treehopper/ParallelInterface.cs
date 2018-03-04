@@ -67,7 +67,7 @@ namespace Treehopper
         ///     Write one or more words of data to the bus with the command flag asserted (RS=0);
         /// </summary>
         /// <param name="command"></param>
-        public async Task WriteCommand(uint[] command)
+        public async Task WriteCommandAsync(uint[] command)
         {
             var cmdLen = command.Length;
             byte[] cmd;
@@ -96,14 +96,14 @@ namespace Treehopper
             cmd[0] = (byte) DeviceCommands.ParallelTransaction;
             cmd[1] = (byte) ParallelCmd.WriteCommand;
             cmd[2] = (byte) cmdLen;
-            await _board.SendPeripheralConfigPacket(cmd);
+            await _board.SendPeripheralConfigPacketAsync(cmd);
         }
 
         /// <summary>
         ///     Write one or more words of data to the bus with the data flag asserted (RS=1);
         /// </summary>
         /// <param name="data"></param>
-        public async Task WriteData(uint[] data)
+        public async Task WriteDataAsync(uint[] data)
         {
             var dataLen = data.Length;
             byte[] cmd;
@@ -130,7 +130,7 @@ namespace Treehopper
             cmd[0] = (byte) DeviceCommands.ParallelTransaction;
             cmd[1] = (byte) ParallelCmd.WriteData;
             cmd[2] = (byte) dataLen;
-            await _board.SendPeripheralConfigPacket(cmd);
+            await _board.SendPeripheralConfigPacketAsync(cmd);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Treehopper
         /// <param name="command">The command word to write</param>
         /// <param name="length">The number of words to read</param>
         /// <returns>An awaitable array of words read</returns>
-        public async Task<ushort[]> ReadCommand(uint command, int length)
+        public async Task<ushort[]> ReadCommandAsync(uint command, int length)
         {
             throw new NotImplementedException();
         }
@@ -149,7 +149,7 @@ namespace Treehopper
         /// </summary>
         /// <param name="length">The number of words to read</param>
         /// <returns>An awaitable array of words read</returns>
-        public async Task<ushort[]> ReadData(int length)
+        public async Task<ushort[]> ReadDataAsync(int length)
         {
             throw new NotImplementedException();
         }
@@ -184,7 +184,7 @@ namespace Treehopper
                 DataBus[i].Mode = PinMode.Reserved;
             }
 
-            _board.SendPeripheralConfigPacket(cmd);
+            _board.SendPeripheralConfigPacketAsync(cmd);
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Local")]

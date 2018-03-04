@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            var data = (short) await dev.ReadWordDataBE(0x00);
+            var data = (short) await dev.ReadWordDataBEAsync(0x00);
             celsius = data / 32.0 / 8.0;
             RaisePropertyChanged(this);
         }

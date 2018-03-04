@@ -68,14 +68,14 @@ namespace Treehopper.Libraries.IO
 
                     // make sure pins are outputs
                     foreach (var pin in DataBus)
-                        Task.Run(pin.MakeDigitalPushPullOut).Wait();
+                        Task.Run(pin.MakeDigitalPushPullOutAsync).Wait();
 
-                    Task.Run(RegisterSelectPin.MakeDigitalPushPullOut);
+                    Task.Run(RegisterSelectPin.MakeDigitalPushPullOutAsync);
                     if (ReadWritePin != null) // R/W is optional, and is often tied to "write"
-                        Task.Run(ReadWritePin.MakeDigitalPushPullOut);
-                    Task.Run(EnablePin.MakeDigitalPushPullOut);
+                        Task.Run(ReadWritePin.MakeDigitalPushPullOutAsync);
+                    Task.Run(EnablePin.MakeDigitalPushPullOutAsync);
 
-                    Task.Run(() => port.Flush()).Wait(); // write out port settings
+                    Task.Run(() => port.FlushAsync()).Wait(); // write out port settings
                     port.AutoFlush = oldAutoflushSettings; // restore old autoflush settings
                 }
                 else
@@ -95,7 +95,7 @@ namespace Treehopper.Libraries.IO
         /// </summary>
         /// <param name="command">The command data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
-        public Task WriteCommand(uint[] command)
+        public Task WriteCommandAsync(uint[] command)
         {
             return WriteDataOrCommand(command, false);
         }
@@ -105,7 +105,7 @@ namespace Treehopper.Libraries.IO
         /// </summary>
         /// <param name="data">The data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
-        public Task WriteData(uint[] data)
+        public Task WriteDataAsync(uint[] data)
         {
             return WriteDataOrCommand(data, true);
         }
@@ -113,11 +113,11 @@ namespace Treehopper.Libraries.IO
         private async Task Pulse()
         {
             EnablePin.DigitalValue = false;
-            await port.Flush().ConfigureAwait(false);
+            await port.FlushAsync().ConfigureAwait(false);
             EnablePin.DigitalValue = true;
-            await port.Flush().ConfigureAwait(false);
+            await port.FlushAsync().ConfigureAwait(false);
             EnablePin.DigitalValue = false;
-            await port.Flush().ConfigureAwait(false);
+            await port.FlushAsync().ConfigureAwait(false);
         }
 
         private void SetDataBus(uint value)
@@ -138,7 +138,7 @@ namespace Treehopper.Libraries.IO
             foreach (var val in busValues)
             {
                 SetDataBus(val);
-                await port.Flush().ConfigureAwait(false);
+                await port.FlushAsync().ConfigureAwait(false);
                 await Pulse().ConfigureAwait(false);
             }
         }

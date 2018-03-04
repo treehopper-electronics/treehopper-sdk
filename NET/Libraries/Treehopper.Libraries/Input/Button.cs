@@ -61,9 +61,9 @@ namespace Treehopper.Libraries.Input
         ///     Wait for the button to change state
         /// </summary>
         /// <returns>An awaitable Task that returns a bool indicating if the button is pressed</returns>
-        public async Task<bool> AwaitButtonChanged()
+        public async Task<bool> AwaitButtonChangedAsync()
         {
-            var newVal = await Input.AwaitDigitalValueChange().ConfigureAwait(false);
+            var newVal = await Input.AwaitDigitalValueChangeAsync().ConfigureAwait(false);
             return newVal ^ activeLow;
         }
 

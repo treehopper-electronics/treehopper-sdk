@@ -36,7 +36,7 @@ namespace I2cDeviceScanner
                     {
                         try
                         {
-                            var result = await board.I2c.SendReceive(i, new byte[1] { 0x00 }, 0);
+                            var result = await board.I2c.SendReceiveAsync(i, new byte[1] { 0x00 }, 0);
                             Console.Write("Device Found!");
                             break;
                         }

@@ -59,7 +59,7 @@ namespace Treehopper.Libraries.Displays
                 var savedAutoflushState = AutoFlush;
                 AutoFlush = false;
                 Leds.ForEach(led => update(led));
-                Flush().Wait();
+                FlushAsync().Wait();
                 AutoFlush = savedAutoflushState;
             }
         }

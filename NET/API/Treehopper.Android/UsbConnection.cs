@@ -117,14 +117,14 @@ namespace Treehopper.Android
             return false;
         }
 
-        public async Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead)
+        public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint bytesToRead)
         {
             byte[] data = new byte[bytesToRead];
             int res = connection.BulkTransfer(peripheralResponseEndpoint, data, (int)bytesToRead, 1000);
             return data;
         }
 
-        public async Task SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannelAsync(byte[] data)
         {
             if (connection == null)
             {
@@ -135,7 +135,7 @@ namespace Treehopper.Android
             connection.BulkTransfer(peripheralConfigEndpoint, data, data.Length, 1000);
         }
 
-        public async Task SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannelAsync(byte[] data)
         {
             if (connection == null)
             {

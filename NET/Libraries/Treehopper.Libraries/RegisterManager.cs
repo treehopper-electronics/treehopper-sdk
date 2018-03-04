@@ -20,7 +20,7 @@ namespace Treehopper.Libraries
 
         public async Task read(Register register)
         {
-            var data = await _dev.ReadBufferData((byte) register.Address, register.Width).ConfigureAwait(false);
+            var data = await _dev.ReadBufferDataAsync((byte) register.Address, register.Width).ConfigureAwait(false);
             register.setBytes(data);
         }
 
@@ -29,7 +29,7 @@ namespace Treehopper.Libraries
             if (multiRegisterAccess)
             {
                 var count = (end.Address + end.Width) - start.Address;
-                var bytes = await _dev.ReadBufferData((byte)start.Address, count).ConfigureAwait(false);
+                var bytes = await _dev.ReadBufferDataAsync((byte)start.Address, count).ConfigureAwait(false);
                 int i = 0;
                 foreach (var reg in _registers.Where(reg => reg.Address >= start.Address && reg.Address <= end.Address))
                 {
@@ -49,7 +49,7 @@ namespace Treehopper.Libraries
 
         public Task write(Register register)
         {
-            return _dev.WriteBufferData((byte) register.Address, register.getBytes());
+            return _dev.WriteBufferDataAsync((byte) register.Address, register.getBytes());
         }
 
         public async Task writeRange(Register start, Register end)
@@ -61,7 +61,7 @@ namespace Treehopper.Libraries
                 {
                     bytes.AddRange(reg.getBytes());
                 }
-                await _dev.WriteBufferData((byte) start.Address, bytes.ToArray()).ConfigureAwait(false);
+                await _dev.WriteBufferDataAsync((byte) start.Address, bytes.ToArray()).ConfigureAwait(false);
             }
             else
             {

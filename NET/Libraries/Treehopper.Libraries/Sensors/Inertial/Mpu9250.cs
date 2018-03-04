@@ -25,13 +25,13 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The bus to probe.</param>
         /// <param name="rate">The rate, in kHz, to use.</param>
         /// <returns>An awaitable task that completes with a list of of discovered sensors</returns>
-        public static async Task<IList<Mpu9250>> Probe(I2C i2c, int rate=100)
+        public static async Task<IList<Mpu9250>> ProbeAsync(I2C i2c, int rate=100)
         {
             var deviceList = new List<Mpu9250>();
             try
             {
                 var dev = new SMBusDevice(0x68, i2c, rate);
-                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x71)
                     deviceList.Add(new Mpu9250(i2c, false));
             } catch(Exception ex) { }
@@ -39,7 +39,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             try
             {
                 var dev = new SMBusDevice(0x69, i2c, rate);
-                var whoAmI = await dev.ReadByteData(0x75).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x75).ConfigureAwait(false);
                 if (whoAmI == 0x71)
                     deviceList.Add(new Mpu9250(i2c, true));
             }

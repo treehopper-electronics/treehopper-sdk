@@ -29,7 +29,7 @@ namespace OneWireScan
             Board.Uart.Mode = UartMode.OneWire;
             Board.Uart.Enabled = true;
 
-            List<UInt64> addresses = await Board.Uart.OneWireSearch();
+            List<UInt64> addresses = await Board.Uart.OneWireSearchAsync();
 
             Console.WriteLine("Found addresses: ");
             foreach (var address in addresses)

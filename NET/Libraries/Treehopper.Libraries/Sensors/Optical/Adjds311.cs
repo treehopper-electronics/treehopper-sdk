@@ -48,21 +48,21 @@ namespace Treehopper.Libraries.Sensors.Optical
             _I2C.Enabled = true;
 
             led = LedPin;
-            led.MakeDigitalPushPullOut();
+            led.MakeDigitalPushPullOutAsync();
 
-            WriteByteData(CAP_RED, 15);
-            WriteByteData(CAP_GREEN, 15);
-            WriteByteData(CAP_BLUE, 15);
-            WriteByteData(CAP_CLEAR, 15);
+            WriteByteDataAsync(CAP_RED, 15);
+            WriteByteDataAsync(CAP_GREEN, 15);
+            WriteByteDataAsync(CAP_BLUE, 15);
+            WriteByteDataAsync(CAP_CLEAR, 15);
 
-            WriteByteData(INT_RED_LO, 0x00);
-            WriteByteData(INT_RED_HI, 0x4);
-            WriteByteData(INT_GREEN_LO, 0x00);
-            WriteByteData(INT_GREEN_HI, 0x5);
-            WriteByteData(INT_BLUE_LO, 0x00);
-            WriteByteData(INT_BLUE_HI, 0x9);
-            WriteByteData(INT_CLEAR_LO, 0x00);
-            WriteByteData(INT_CLEAR_HI, 0x2);
+            WriteByteDataAsync(INT_RED_LO, 0x00);
+            WriteByteDataAsync(INT_RED_HI, 0x4);
+            WriteByteDataAsync(INT_GREEN_LO, 0x00);
+            WriteByteDataAsync(INT_GREEN_HI, 0x5);
+            WriteByteDataAsync(INT_BLUE_LO, 0x00);
+            WriteByteDataAsync(INT_BLUE_HI, 0x9);
+            WriteByteDataAsync(INT_CLEAR_LO, 0x00);
+            WriteByteDataAsync(INT_CLEAR_HI, 0x2);
         }
 
         /// <summary>
@@ -91,18 +91,18 @@ namespace Treehopper.Libraries.Sensors.Optical
         public async void UpdateColor()
         {
             led.DigitalValue = true;
-            await WriteByteData(0, 1);
-            while ((await ReadByteData(0) & 0x01) != 0) ;
+            await WriteByteDataAsync(0, 1);
+            while ((await ReadByteDataAsync(0) & 0x01) != 0) ;
             led.DigitalValue = false;
 
-            var red = BitConverter.ToUInt16(new[] {await ReadByteData(DATA_RED_LO), await ReadByteData(DATA_RED_HI)},
+            var red = BitConverter.ToUInt16(new[] {await ReadByteDataAsync(DATA_RED_LO), await ReadByteDataAsync(DATA_RED_HI)},
                 0);
             var green = BitConverter.ToUInt16(
-                new[] {await ReadByteData(DATA_GREEN_LO), await ReadByteData(DATA_GREEN_HI)}, 0);
-            var blue = BitConverter.ToUInt16(new[] {await ReadByteData(DATA_BLUE_LO), await ReadByteData(DATA_BLUE_HI)},
+                new[] {await ReadByteDataAsync(DATA_GREEN_LO), await ReadByteDataAsync(DATA_GREEN_HI)}, 0);
+            var blue = BitConverter.ToUInt16(new[] {await ReadByteDataAsync(DATA_BLUE_LO), await ReadByteDataAsync(DATA_BLUE_HI)},
                 0);
             var clear = BitConverter.ToUInt16(
-                new[] {await ReadByteData(DATA_CLEAR_LO), await ReadByteData(DATA_CLEAR_HI)}, 0);
+                new[] {await ReadByteDataAsync(DATA_CLEAR_LO), await ReadByteDataAsync(DATA_CLEAR_HI)}, 0);
 
             Red = (byte) (red / 4);
             Green = (byte) (green / 4);

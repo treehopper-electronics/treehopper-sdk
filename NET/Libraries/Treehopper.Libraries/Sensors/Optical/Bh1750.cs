@@ -16,7 +16,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </summary>
         /// <param name="i2c">The bus to probe</param>
         /// <returns></returns>
-        public static async Task<IList<Bh1750>> Probe(I2C i2c, int rate=100)
+        public static async Task<IList<Bh1750>> ProbeAsync(I2C i2c, int rate=100)
         {
             List<Bh1750> devs = new List<Bh1750>();
 
@@ -27,14 +27,14 @@ namespace Treehopper.Libraries.Sensors.Optical
 
             try
             {
-                var response = await i2c.SendReceive(0x23, null, 1);
+                var response = await i2c.SendReceiveAsync(0x23, null, 1);
                 devs.Add(new Bh1750(i2c, false, rate));
             }
             catch (Exception) { }
 
             try
             {
-                var response = await i2c.SendReceive(0x5C, null, 1);
+                var response = await i2c.SendReceiveAsync(0x5C, null, 1);
                 devs.Add(new Bh1750(i2c, true, rate));
             }
             catch (Exception) { }
@@ -61,7 +61,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             set {
                 if (resolution == value) return;
                 resolution = value;
-                Task.Run(() => dev.WriteByte((byte)(0x10 | (byte)resolution))).Wait();
+                Task.Run(() => dev.WriteByteAsync((byte)(0x10 | (byte)resolution))).Wait();
             }
         }
 
@@ -69,7 +69,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         public Bh1750(I2C i2c, bool addressPin = false, int rate=100)
         {
             this.dev = new SMBusDevice((byte)(addressPin ? 0x5C : 0x23), i2c, rate);
-            Task.Run(() => dev.WriteByte(0x07)).Wait(); // reset
+            Task.Run(() => dev.WriteByteAsync(0x07)).Wait(); // reset
             Resolution = LuxResolution.High;
         }
 
@@ -87,7 +87,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            _lux = await dev.ReadWordBE() / 1.2;
+            _lux = await dev.ReadWordBEAsync() / 1.2;
             RaisePropertyChanged(this);
         }
     }

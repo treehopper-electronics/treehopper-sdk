@@ -44,10 +44,10 @@ namespace Treehopper.Libraries.IO.Adc
         /// </summary>
         /// <param name="channel">The channel to read</param>
         /// <returns>An awaitable double value representing the voltage of the ADC</returns>
-        public async Task<double> Read(Channel channel = Channel.Channel0)
+        public async Task<double> ReadAsync(Channel channel = Channel.Channel0)
         {
             //  SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
-            int data = await dev.ReadWordData((byte) ((byte) channel | (byte) Ltc2305ConfigBits.UnipolarMode));
+            int data = await dev.ReadWordDataAsync((byte) ((byte) channel | (byte) Ltc2305ConfigBits.UnipolarMode));
             var retVal = CodeToVoltage(data, 5.0, Ltc2305ConfigBits.UnipolarMode);
             return retVal;
         }

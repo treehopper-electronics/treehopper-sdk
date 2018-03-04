@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            var data = await dev.ReadWordDataBE(0x05);
+            var data = await dev.ReadWordDataBEAsync(0x05);
             double temp = data & 0x0FFF;
             temp /= 16.0;
             if ((data & 0x1000) > 0)

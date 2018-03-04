@@ -22,7 +22,7 @@ namespace Treehopper.Libraries.IO.DigitalPot
             {
                 wiper2 = value;
                 var data = (int) Math.Round(wiper2 * scale);
-                dev.SendReceive(new byte[] {(byte) (0x10 | (data >> 8)), (byte) (data & 0xff)});
+                dev.SendReceiveAsync(new byte[] {(byte) (0x10 | (data >> 8)), (byte) (data & 0xff)});
             }
         }
     }

@@ -36,9 +36,9 @@ namespace Treehopper
                     _frequency = value;
 
                     if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                        SendConfig().Forget();
+                        SendConfigAsync().Forget();
                     else
-                        Task.Run(SendConfig).Wait();
+                        Task.Run(SendConfigAsync).Wait();
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace Treehopper
             }
         }
 
-        internal Task StartPin(Pin pin)
+        internal Task StartPinAsync(Pin pin)
         {
             // first check to make sure the previous PWM pins have been enabled first.
             if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7)
@@ -116,10 +116,10 @@ namespace Treehopper
                     break;
             }
 
-            return SendConfig();
+            return SendConfigAsync();
         }
 
-        internal Task StopPin(Pin pin)
+        internal Task StopPinAsync(Pin pin)
         {
             // first check to make sure the higher PWM pins have been disabled first
             if (pin.PinNumber == 8 && _mode != PwmPinEnableMode.Pin7Pin8)
@@ -142,10 +142,10 @@ namespace Treehopper
                     break;
             }
 
-            return SendConfig();
+            return SendConfigAsync();
         }
 
-        internal Task SetDutyCycle(Pin pin, double value)
+        internal Task SetDutyCycleAsync(Pin pin, double value)
         {
             var registerValue = (ushort) Math.Round(value * ushort.MaxValue);
             var newValue = BitConverter.GetBytes(registerValue); // TODO: is this endian-safe?
@@ -162,10 +162,10 @@ namespace Treehopper
                     break;
             }
 
-            return SendConfig();
+            return SendConfigAsync();
         }
 
-        internal Task SendConfig()
+        internal Task SendConfigAsync()
         {
             var configuration = new byte[9];
 
@@ -183,7 +183,7 @@ namespace Treehopper
             configuration[7] = _dutyCyclePin9[0];
             configuration[8] = _dutyCyclePin9[1];
 
-            return _board.SendPeripheralConfigPacket(configuration);
+            return _board.SendPeripheralConfigPacketAsync(configuration);
         }
 
         private enum PwmPinEnableMode

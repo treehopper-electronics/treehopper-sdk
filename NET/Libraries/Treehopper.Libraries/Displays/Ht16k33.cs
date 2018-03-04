@@ -45,7 +45,7 @@ namespace Treehopper.Libraries.Displays
         public Ht16k33(I2C i2c, byte address, Package package) : base((int) package, true, false)
         {
             dev = new SMBusDevice(address, i2c);
-            dev.WriteByte(0x21);
+            dev.WriteByteAsync(0x21);
             Brightness = 1.0;
             this.package = package;
         }
@@ -68,9 +68,9 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether to force an update, even if no data appears to have changed</param>
         /// <returns></returns>
-        public override Task Flush(bool force = false)
+        public override Task FlushAsync(bool force = false)
         {
-            return dev.WriteBufferData(0x00, data.GetBytes());
+            return dev.WriteBufferDataAsync(0x00, data.GetBytes());
         }
 
         internal override void LedBrightnessChanged(Led led)
@@ -86,7 +86,7 @@ namespace Treehopper.Libraries.Displays
             {
                 // if we're autoflushing, only send the LED we need to update
                 var address = (byte) (index / 8);
-                dev.WriteByteData(address, data.GetBytes()[address]).Wait();
+                dev.WriteByteDataAsync(address, data.GetBytes()[address]).Wait();
             }
         }
 
@@ -94,12 +94,12 @@ namespace Treehopper.Libraries.Displays
         {
             if (brightness > 0)
             {
-                dev.WriteByte((byte) ((byte) Commands.Brightness | ((int) Math.Round(brightness * 16) - 1))).Wait();
-                dev.WriteByte((byte) Commands.Blink | 0x01).Wait();
+                dev.WriteByteAsync((byte) ((byte) Commands.Brightness | ((int) Math.Round(brightness * 16) - 1))).Wait();
+                dev.WriteByteAsync((byte) Commands.Blink | 0x01).Wait();
             }
             else
             {
-                dev.WriteByte((byte) Commands.Blink | 0x00).Wait();
+                dev.WriteByteAsync((byte) Commands.Blink | 0x00).Wait();
             }
         }
 

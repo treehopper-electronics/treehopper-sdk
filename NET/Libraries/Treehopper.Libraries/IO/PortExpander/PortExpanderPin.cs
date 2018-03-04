@@ -60,9 +60,9 @@ namespace Treehopper.Libraries.IO.PortExpander
                     return;
 
                 if (mode == PortExpanderPinMode.DigitalOutput)
-                    Task.Run(MakeDigitalPushPullOut).Wait();
+                    Task.Run(MakeDigitalPushPullOutAsync).Wait();
                 else
-                    Task.Run(MakeDigitalIn).Wait();
+                    Task.Run(MakeDigitalInAsync).Wait();
             }
         }
 
@@ -80,7 +80,7 @@ namespace Treehopper.Libraries.IO.PortExpander
 
             set
             {
-                Task.Run(MakeDigitalPushPullOut).Wait(); // if we try to write to the pin, set it as an output
+                Task.Run(MakeDigitalPushPullOutAsync).Wait(); // if we try to write to the pin, set it as an output
                 if (digitalValue == value)
                     return;
 
@@ -103,7 +103,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         ///     Wait for the digital input to change
         /// </summary>
         /// <returns>The new digital value (when the wait completes)</returns>
-        public Task<bool> AwaitDigitalValueChange()
+        public Task<bool> AwaitDigitalValueChangeAsync()
         {
             if (portExpander.AutoUpdateWhenPropertyRead)
                 return Task.Run(async () =>
@@ -126,7 +126,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <summary>
         ///     Make the pin a digital input
         /// </summary>
-        public Task MakeDigitalIn()
+        public Task MakeDigitalInAsync()
         {
             return portExpander.OutputModeChanged(this);
         }
@@ -136,14 +136,14 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         public async Task ToggleOutputAsync()
         {
-            await MakeDigitalPushPullOut().ConfigureAwait(false);
+            await MakeDigitalPushPullOutAsync().ConfigureAwait(false);
             DigitalValue = !DigitalValue;
         }
 
         /// <summary>
         ///     Make the pin a digital output
         /// </summary>
-        public Task MakeDigitalPushPullOut()
+        public Task MakeDigitalPushPullOutAsync()
         {
             this.mode = PortExpanderPinMode.DigitalOutput;
             return portExpander.OutputModeChanged(this);

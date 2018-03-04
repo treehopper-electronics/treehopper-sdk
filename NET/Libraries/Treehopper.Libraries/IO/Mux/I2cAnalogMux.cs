@@ -19,7 +19,7 @@ namespace Treehopper.Libraries.IO.Mux
         {
             this.pins = pins;
             foreach (var pin in pins)
-                pin.MakeDigitalPushPullOut();
+                pin.MakeDigitalPushPullOutAsync();
         }
 
         /// <summary>

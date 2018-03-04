@@ -60,12 +60,12 @@ namespace Treehopper.Libraries.Displays
 
         private Task sendControl(byte data, int digit)
         {
-            return i2c.SendReceive((byte) (ControlBase + digit), new[] {data}, 0);
+            return i2c.SendReceiveAsync((byte) (ControlBase + digit), new[] {data}, 0);
         }
 
         private Task sendDisplay(byte data, int digit)
         {
-            return i2c.SendReceive((byte) (DisplayBase + digit), new[] {data}, 0);
+            return i2c.SendReceiveAsync((byte) (DisplayBase + digit), new[] {data}, 0);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether or not to force all data to be flushed, even if it doesn't appear to have changed</param>
         /// <returns>An awaitable task that completes when finished</returns>
-        public override async Task Flush(bool force = false)
+        public override async Task FlushAsync(bool force = false)
         {
             for (var i = 0; i < 4; i++)
                 if (oldValues[i] != newValues[i] || force)
@@ -100,7 +100,7 @@ namespace Treehopper.Libraries.Displays
                 newValues[digit] &= (byte) ~(1 << segment);
 
             if (AutoFlush)
-                Flush().Wait();
+                FlushAsync().Wait();
         }
 
         internal override void SetGlobalBrightness(double brightness)

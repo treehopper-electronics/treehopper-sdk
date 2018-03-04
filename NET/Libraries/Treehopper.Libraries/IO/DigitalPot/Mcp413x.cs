@@ -38,7 +38,7 @@ namespace Treehopper.Libraries.IO.DigitalPot
             {
                 wiper1 = value;
                 int data = (int) Math.Round(wiper1 * scale);
-                dev.SendReceive(new byte[] {(byte) (0x00 | (data >> 8)), (byte) (data & 0xff)}, SpiBurstMode.BurstTx);
+                dev.SendReceiveAsync(new byte[] {(byte) (0x00 | (data >> 8)), (byte) (data & 0xff)}, SpiBurstMode.BurstTx);
             }
         }
     }

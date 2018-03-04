@@ -135,7 +135,7 @@ namespace Treehopper.Desktop.WinUsb
             return true;
         }
 
-        public async Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
+        public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint numBytesToRead)
         {
             var array = new byte[numBytesToRead];
             if (!IsOpen) return new byte[0];
@@ -156,7 +156,7 @@ namespace Treehopper.Desktop.WinUsb
             return array;
         }
 
-        public async Task SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannelAsync(byte[] data)
         {
             if (!IsOpen) return;
             if (UseOverlappedTransfers)
@@ -174,7 +174,7 @@ namespace Treehopper.Desktop.WinUsb
             }
         }
 
-        public async Task SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannelAsync(byte[] data)
         {
             if (!IsOpen) return;
             if (UseOverlappedTransfers)
@@ -225,7 +225,7 @@ namespace Treehopper.Desktop.WinUsb
             }
         }
 
-        public async Task<byte[]> ReadPinReportPacket(uint numBytesToRead)
+        public async Task<byte[]> ReadPinReportPacketAsync(uint numBytesToRead)
         {
             if (!IsOpen) return new byte[0];
             var array = new byte[numBytesToRead];

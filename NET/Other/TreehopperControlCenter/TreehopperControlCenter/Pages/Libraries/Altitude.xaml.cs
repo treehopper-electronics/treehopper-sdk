@@ -40,7 +40,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             switch (SelectedSensor)
             {
                 case "BMP280/BME280":
-                    Sensor = (await Bmp280.Probe(Board.I2c, true))[0];
+                    Sensor = (await Bmp280.ProbeAsync(Board.I2c, true))[0];
                     break;
             }
 

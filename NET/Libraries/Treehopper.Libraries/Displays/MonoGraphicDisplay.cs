@@ -218,7 +218,7 @@ namespace Treehopper.Libraries.Displays
                 }
             }
             if (AutoFlush)
-                await Flush().ConfigureAwait(false);
+                await FlushAsync().ConfigureAwait(false);
 
 
         }

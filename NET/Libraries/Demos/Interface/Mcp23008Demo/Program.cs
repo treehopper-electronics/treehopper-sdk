@@ -23,7 +23,7 @@ namespace Mcp23008Demo
             gpio.Pins[7].PullUpEnabled = true;
             while(!Console.KeyAvailable)
             {
-                Console.WriteLine(await gpio.Pins[7].AwaitDigitalValueChange());
+                Console.WriteLine(await gpio.Pins[7].AwaitDigitalValueChangeAsync());
             }
             
         }

@@ -37,7 +37,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether to force an update, even if the driver doesn't appear to have a different state</param>
         /// <returns></returns>
-        public async Task Flush(bool force = false)
+        public async Task FlushAsync(bool force = false)
         {
             if (autoFlush)
                 return; // if autoflush is on, individual displays manage their LEDs; no need to write out other updates
@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Displays
 
             // Write out the drivers over the bus
             foreach (var driver in Items.SelectMany(x => x.Leds.Drivers).Distinct())
-                await driver.Flush(true);
+                await driver.FlushAsync(true);
         }
 
         /// <summary>

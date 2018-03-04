@@ -124,7 +124,7 @@ namespace Treehopper.Libraries.Displays
             }
 
             foreach (var driver in drivers)
-                await driver.Flush().ConfigureAwait(false);
+                await driver.FlushAsync().ConfigureAwait(false);
         }
 
         /// <summary>

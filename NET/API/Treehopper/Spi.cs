@@ -25,7 +25,7 @@ namespace Treehopper
         /// <param name="burstMode">Whether to use one of the burst modes</param>
         /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <returns>An awaitable byte array with the received data.</returns>
-        Task<byte[]> SendReceive(
+        Task<byte[]> SendReceiveAsync(
             byte[] dataToWrite,
             SpiChipSelectPin chipSelect = null,
             ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow,

@@ -55,7 +55,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         ///     </para>
         /// </remarks>
         /// <returns>The new state of the button</returns>
-        public Task<bool> AwaitDigitalValueChange()
+        public Task<bool> AwaitDigitalValueChangeAsync()
         {
             if (parent.AutoUpdateWhenPropertyRead)
             {
@@ -79,7 +79,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <summary>
         ///     Unused. Stub for DigitalInPin compliance.
         /// </summary>
-        public async Task MakeDigitalIn()
+        public async Task MakeDigitalInAsync()
         {
         }
     }

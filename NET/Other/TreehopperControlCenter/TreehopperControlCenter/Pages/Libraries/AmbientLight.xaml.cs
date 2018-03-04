@@ -39,11 +39,11 @@ namespace TreehopperControlCenter.Pages.Libraries
             switch (SelectedSensor)
             {
                 case "BH1750":
-                    Sensor = (await Bh1750.Probe(Board.I2c))[0];
+                    Sensor = (await Bh1750.ProbeAsync(Board.I2c))[0];
                     break;
 
                 case "TSL2591":
-                    Sensor = await Tsl2591.Probe(Board.I2c);
+                    Sensor = await Tsl2591.ProbeAsync(Board.I2c);
                     break;
 
                 case "VCNL4010":

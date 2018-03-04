@@ -26,7 +26,7 @@ namespace Treehopper.Libraries.IO.Mux
             this.pin = muxedPin;
             this.settlingTime = settlingTime;
             foreach (var pin in pins)
-                pin.MakeDigitalPushPullOut();
+                pin.MakeDigitalPushPullOutAsync();
         }
 
         internal AdcPin pin { get; set; }
@@ -144,7 +144,7 @@ namespace Treehopper.Libraries.IO.Mux
             /// <summary>
             ///     Make the pin an input (unused)
             /// </summary>
-            public Task MakeAnalogIn()
+            public Task MakeAnalogInAsync()
             {
                 return Task.FromResult<object>(null);
             }

@@ -29,7 +29,7 @@ namespace Treehopper.Libraries
 
             _spi.Enabled = true;
 
-            ChipSelect.MakeDigitalPushPullOut();
+            ChipSelect.MakeDigitalPushPullOutAsync();
 
             // Set the initial chip select state
             if (chipSelectMode == ChipSelectMode.PulseLowAtBeginning ||
@@ -83,9 +83,9 @@ namespace Treehopper.Libraries
         /// <param name="dataToSend">The data to send</param>
         /// <param name="burst">The burst mode, if any, to use</param>
         /// <returns>Data received by the peripheral</returns>
-        public Task<byte[]> SendReceive(byte[] dataToSend, SpiBurstMode burst = SpiBurstMode.NoBurst)
+        public Task<byte[]> SendReceiveAsync(byte[] dataToSend, SpiBurstMode burst = SpiBurstMode.NoBurst)
         {
-            return _spi.SendReceive(dataToSend, ChipSelect, ChipSelectMode, Frequency, burst, Mode);
+            return _spi.SendReceiveAsync(dataToSend, ChipSelect, ChipSelectMode, Frequency, burst, Mode);
         }
     }
 }

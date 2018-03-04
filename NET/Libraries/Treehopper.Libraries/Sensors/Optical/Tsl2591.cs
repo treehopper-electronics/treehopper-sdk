@@ -15,10 +15,10 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <param name="i2c">The bus to probe.</param>
         /// <param name="rate">The rate to use.</param>
         /// <returns>A TSL2591 if found, or null if not found.</returns>
-        public static async Task<Tsl2591> Probe(I2C i2c, int rate=100)
+        public static async Task<Tsl2591> ProbeAsync(I2C i2c, int rate=100)
         {
             var dev = new SMBusDevice(0x29, i2c, rate);
-            var result = await dev.ReadByteData(0xB2);
+            var result = await dev.ReadByteDataAsync(0xB2);
             if (result == 0x50)
                 return new Tsl2591(i2c, rate);
 

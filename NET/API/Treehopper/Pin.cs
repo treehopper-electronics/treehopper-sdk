@@ -54,41 +54,41 @@ namespace Treehopper
                 {
                     case PinMode.AnalogInput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            MakeAnalogIn().Forget();
+                            MakeAnalogInAsync().Forget();
                         else
-                            Task.Run(MakeAnalogIn).Wait();
+                            Task.Run(MakeAnalogInAsync).Wait();
                         break;
 
                     case PinMode.DigitalInput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            MakeDigitalIn().Forget();
+                            MakeDigitalInAsync().Forget();
                         else
-                            Task.Run(MakeDigitalIn).Wait();
+                            Task.Run(MakeDigitalInAsync).Wait();
                         break;
 
                     case PinMode.OpenDrainOutput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            MakeDigitalOpenDrainOut().Forget();
+                            MakeDigitalOpenDrainOutAsync().Forget();
                         else
-                            Task.Run(MakeDigitalOpenDrainOut).Wait();
+                            Task.Run(MakeDigitalOpenDrainOutAsync).Wait();
 
                         _digitalValue = false; // set initial state
                         break;
 
                     case PinMode.PushPullOutput:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            MakeDigitalPushPullOut().Forget();
+                            MakeDigitalPushPullOutAsync().Forget();
                         else
-                            Task.Run(MakeDigitalPushPullOut).Wait();
+                            Task.Run(MakeDigitalPushPullOutAsync).Wait();
 
                         _digitalValue = false; // set initial state
                         break;
 
                     case PinMode.SoftPwm:
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            EnablePwm().Forget();
+                            EnablePwmAsync().Forget();
                         else
-                            Task.Run(EnablePwm).Wait();
+                            Task.Run(EnablePwmAsync).Wait();
                         break;
                 }
             }
@@ -138,7 +138,7 @@ namespace Treehopper
 
                 // if we're already an analog input, re-send the command to set the new reference level
                 if (Mode == PinMode.AnalogInput)
-                    SendCommand(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
+                    SendCommandAsync(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
             }
         }
 
@@ -216,10 +216,10 @@ namespace Treehopper
         /// <summary>
         ///     Make the pin an analog input.
         /// </summary>
-        public Task MakeAnalogIn()
+        public Task MakeAnalogInAsync()
         {
             _mode = PinMode.AnalogInput;
-            return SendCommand(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
+            return SendCommandAsync(new[] {(byte) PinConfigCommands.MakeAnalogInput, (byte) ReferenceLevel});
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace Treehopper
         ///     Wait for the digital input value of the pin to change
         /// </summary>
         /// <returns>An awaitable bool, indicating the pin's state</returns>
-        public Task<bool> AwaitDigitalValueChange()
+        public Task<bool> AwaitDigitalValueChangeAsync()
         {
             _digitalSignal = new TaskCompletionSource<bool>();
             return _digitalSignal.Task;
@@ -277,10 +277,10 @@ namespace Treehopper
         /// <summary>
         ///     Make the pin a digital input.
         /// </summary>
-        public Task MakeDigitalIn()
+        public Task MakeDigitalInAsync()
         {
             _mode = PinMode.DigitalInput;
-            return SendCommand(new byte[] {(byte) PinConfigCommands.MakeDigitalInput, 0});
+            return SendCommandAsync(new byte[] {(byte) PinConfigCommands.MakeDigitalInput, 0});
         }
 
         /// <summary>
@@ -312,10 +312,10 @@ namespace Treehopper
         /// <summary>
         ///     Make the pin a push-pull output.
         /// </summary>
-        public Task MakeDigitalPushPullOut()
+        public Task MakeDigitalPushPullOutAsync()
         {
             _mode = PinMode.PushPullOutput;
-            return SendCommand(new byte[] {(byte) PinConfigCommands.MakePushPullOutput, 0});
+            return SendCommandAsync(new byte[] {(byte) PinConfigCommands.MakePushPullOutput, 0});
         }
 
         /// <summary>
@@ -343,13 +343,13 @@ namespace Treehopper
         public double DutyCycle
         {
             get => Board.SoftPwmMgr.GetDutyCycle(this);
-            set => Task.Run(() => Board.SoftPwmMgr.SetDutyCycle(this, value)).Wait();
+            set => Task.Run(() => Board.SoftPwmMgr.SetDutyCycleAsync(this, value)).Wait();
         }
 
         public double PulseWidth
         {
             get => Board.SoftPwmMgr.GetPulseWidth(this);
-            set => Task.Run(() => Board.SoftPwmMgr.SetPulseWidth(this, value)).Wait();
+            set => Task.Run(() => Board.SoftPwmMgr.SetPulseWidthAsync(this, value)).Wait();
         }
 
         /// <summary>
@@ -368,17 +368,17 @@ namespace Treehopper
         {
             _digitalValue = value;
             if (!(Mode == PinMode.PushPullOutput || Mode == PinMode.OpenDrainOutput))
-                await MakeDigitalPushPullOut().ConfigureAwait(false); // assume they want push-pull
+                await MakeDigitalPushPullOutAsync().ConfigureAwait(false); // assume they want push-pull
 
             var byteVal = (byte) (_digitalValue ? 0x01 : 0x00);
-            await SendCommand(new[] {(byte) PinConfigCommands.SetDigitalValue, byteVal}).ConfigureAwait(false);
+            await SendCommandAsync(new[] {(byte) PinConfigCommands.SetDigitalValue, byteVal}).ConfigureAwait(false);
         }
 
         /// <summary>
         ///     Wait for the pin's ADC value to change.
         /// </summary>
         /// <returns>An awaitable int, in the range of 0-4095, of the pin's ADC value.</returns>
-        public Task<int> AwaitAdcValueChange()
+        public Task<int> AwaitAdcValueChangeAsync()
         {
             _adcValueSignal = new TaskCompletionSource<int>();
             return _adcValueSignal.Task;
@@ -388,7 +388,7 @@ namespace Treehopper
         ///     Wait for the pin's analog voltage to change.
         /// </summary>
         /// <returns>An awaitable double of the pin's analog voltage, measured in volts.</returns>
-        public Task<double> AwaitAnalogVoltageChange()
+        public Task<double> AwaitAnalogVoltageChangeAsync()
         {
             _analogVoltageSignal = new TaskCompletionSource<double>();
             return _analogVoltageSignal.Task;
@@ -398,7 +398,7 @@ namespace Treehopper
         ///     Wait for the pin's analog value to change.
         /// </summary>
         /// <returns>An awaitable double of the analog value, normalized from 0-1.</returns>
-        public Task<double> AwaitAnalogValueChange()
+        public Task<double> AwaitAnalogValueChangeAsync()
         {
             _analogValueSignal = new TaskCompletionSource<double>();
             return _analogValueSignal.Task;
@@ -407,10 +407,10 @@ namespace Treehopper
         /// <summary>
         ///     Make the pin a push-pull output.
         /// </summary>
-        public Task MakeDigitalOpenDrainOut()
+        public Task MakeDigitalOpenDrainOutAsync()
         {
             _mode = PinMode.OpenDrainOutput;
-            return SendCommand(new byte[] {(byte) PinConfigCommands.MakeOpenDrainOutput, 0});
+            return SendCommandAsync(new byte[] {(byte) PinConfigCommands.MakeOpenDrainOutput, 0});
         }
 
         /// <summary>
@@ -506,26 +506,26 @@ namespace Treehopper
             }
         }
 
-        internal Task SendCommand(byte[] cmd)
+        internal Task SendCommandAsync(byte[] cmd)
         {
             var data = new byte[6];
             data[0] = (byte) PinNumber;
             cmd.CopyTo(data, 1);
-            return Board.SendPinConfigPacket(data);
+            return Board.SendPinConfigPacketAsync(data);
         }
 
-        public async Task EnablePwm()
+        public async Task EnablePwmAsync()
         {
             _mode = PinMode.SoftPwm;
-            await SendCommand(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0 }).ConfigureAwait(false);
-            await Board.SoftPwmMgr.StartPin(this).ConfigureAwait(false);
+            await SendCommandAsync(new byte[] { (byte)PinConfigCommands.MakePushPullOutput, 0 }).ConfigureAwait(false);
+            await Board.SoftPwmMgr.StartPinAsync(this).ConfigureAwait(false);
         }
 
-        public async Task DisablePwm()
+        public async Task DisablePwmAsync()
         {
             _mode = PinMode.DigitalInput;
-            await Board.SoftPwmMgr.StopPin(this).ConfigureAwait(false);
-            await SendCommand(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, 0 }).ConfigureAwait(false);
+            await Board.SoftPwmMgr.StopPinAsync(this).ConfigureAwait(false);
+            await SendCommandAsync(new byte[] { (byte)PinConfigCommands.MakeDigitalInput, 0 }).ConfigureAwait(false);
         }
 
         internal enum PinConfigCommands

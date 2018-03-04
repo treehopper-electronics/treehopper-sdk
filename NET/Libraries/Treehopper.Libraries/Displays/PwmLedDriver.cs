@@ -36,10 +36,10 @@ namespace Treehopper.Libraries.Displays
         ///     value
         /// </param>
         /// <returns>An awaitable task that completes upon success</returns>
-        public override async Task Flush(bool force = false)
+        public override async Task FlushAsync(bool force = false)
         {
             if (controller != null)
-                await controller.Flush().ConfigureAwait(false);
+                await controller.FlushAsync().ConfigureAwait(false);
         }
 
         /// <summary>

@@ -79,15 +79,15 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         {
             dev = new SMBusDevice(0x1E, i2c, rateKHz);
 
-            var idA = dev.ReadByteData((byte) Registers.IdA).Result;
-            var idB = dev.ReadByteData((byte) Registers.IdB).Result;
-            var idC = dev.ReadByteData((byte) Registers.IdC).Result;
+            var idA = dev.ReadByteDataAsync((byte) Registers.IdA).Result;
+            var idB = dev.ReadByteDataAsync((byte) Registers.IdB).Result;
+            var idC = dev.ReadByteDataAsync((byte) Registers.IdC).Result;
 
             if (idA != 0x48 || idB != 0x34 || idC != 0x33)
                 Debug.WriteLine("WARNING: this library may not be compatible with the attached chip");
 
-            dev.WriteByteData((byte) Registers.ConfigA, 0x1C).Wait();
-            dev.WriteByteData((byte) Registers.Mode, 0x00).Wait(); // continuous conversion
+            dev.WriteByteDataAsync((byte) Registers.ConfigA, 0x1C).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Mode, 0x00).Wait(); // continuous conversion
             Range = RangeSetting.GAIN_1_3;
         }
 
@@ -105,7 +105,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 if (range == value) return;
                 range = value;
 
-                dev.WriteByteData((byte) Registers.ConfigB, (byte) range);
+                dev.WriteByteDataAsync((byte) Registers.ConfigB, (byte) range);
 
                 switch (range)
                 {
@@ -159,7 +159,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            var bytes = await dev.ReadBufferData((byte) Registers.XOutHi, 6);
+            var bytes = await dev.ReadBufferDataAsync((byte) Registers.XOutHi, 6);
             var report = bytes.BytesToStruct<DataReport>(Endianness.BigEndian);
             mag.X = report.x / Gauss_XY * 100;
             mag.Y = report.y / Gauss_XY * 100;

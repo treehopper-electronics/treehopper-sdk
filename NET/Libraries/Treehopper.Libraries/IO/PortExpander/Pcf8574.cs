@@ -41,7 +41,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             foreach (var pin in Pins)
                 pin.Mode = PortExpanderPinMode.DigitalInput;
             AutoFlush = true;
-            Task.Run(() => Flush(true)).Wait();
+            Task.Run(() => FlushAsync(true)).Wait();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         /// <param name="force">Whether to force a full update, even if data doesn't appear to have changed.</param>
         /// <returns>An awaitable task that completes when finished</returns>
-        public override async Task Flush(bool force = false)
+        public override async Task FlushAsync(bool force = false)
         {
             newValues = new byte[numBytes];
             for (var i = 0; i < Pins.Count; i++)
@@ -71,7 +71,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             {
                 newValues.CopyTo(oldValues, 0);
 
-                await dev.WriteData(newValues);
+                await dev.WriteDataAsync(newValues);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         protected override Task outputValueChanged(IPortExpanderPin portExpanderPin)
         {
             if(AutoFlush)
-                return Flush();
+                return FlushAsync();
             return Task.CompletedTask;
         }
 
@@ -95,7 +95,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             // we set the I/O mode by writing a 1 or 0 to the output port, so just
             // flush out the data
             if (AutoFlush)
-                return Flush();
+                return FlushAsync();
             return Task.CompletedTask;
         }
 
@@ -105,7 +105,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <returns>An awaitable task that completes when finished</returns>
         protected override async Task readPort()
         {
-            var data = await dev.ReadData((byte) numBytes);
+            var data = await dev.ReadDataAsync((byte) numBytes);
             for (var i = 0; i < Pins.Count; i++)
             {
                 var bank = i / 8;

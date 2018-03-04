@@ -37,7 +37,7 @@ namespace Is31Fl3218Demo
                     {
                         Leds[j].SetHsl(i + 30 * j % 360, 100, 50);
                     }
-                    await display.Flush();
+                    await display.FlushAsync();
                     await Task.Delay(25);
                 }
             }

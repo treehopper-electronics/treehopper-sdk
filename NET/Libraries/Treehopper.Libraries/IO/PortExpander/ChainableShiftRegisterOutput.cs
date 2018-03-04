@@ -82,13 +82,13 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         /// <param name="force">Whether to flush all data to the port, even if it doesn't appear to have changed.</param>
         /// <returns>An awaitable task that completes when finished</returns>
-        public async Task Flush(bool force = false)
+        public async Task FlushAsync(bool force = false)
         {
             if (!CurrentValue.SequenceEqual(lastValues) || force)
             {
                 if(Parent != null)
                 {
-                    await Parent.Flush();
+                    await Parent.FlushAsync();
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace Treehopper.Libraries.IO.PortExpander
                             bytes.AddRange(shiftBytes.Reverse());
                         }
 
-                        await spiDevice.SendReceive(bytes.ToArray(), SpiBurstMode.BurstTx);
+                        await spiDevice.SendReceiveAsync(bytes.ToArray(), SpiBurstMode.BurstTx);
                     }
                 }
                 CurrentValue.CopyTo(lastValues, 0);
@@ -125,7 +125,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             CurrentValue = value;
             updateFromCurrentValue(); // tell our parent to update its pins, LEDs, or whatever.
 
-            await Flush(true);
+            await FlushAsync(true);
             AutoFlush = savedAutoFlushValue;
         }
 
@@ -136,7 +136,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         protected async Task FlushIfAutoFlushEnabled()
         {
             if (AutoFlush)
-                await Flush();
+                await FlushAsync();
         }
 
         /// <summary>

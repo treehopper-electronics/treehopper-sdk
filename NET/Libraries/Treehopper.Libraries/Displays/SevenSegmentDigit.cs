@@ -103,7 +103,7 @@ namespace Treehopper.Libraries.Displays
         public async Task Flush(bool force = false)
         {
             foreach (var driver in Drivers)
-                await driver.Flush(force).ConfigureAwait(false);
+                await driver.FlushAsync(force).ConfigureAwait(false);
         }
     }
 }

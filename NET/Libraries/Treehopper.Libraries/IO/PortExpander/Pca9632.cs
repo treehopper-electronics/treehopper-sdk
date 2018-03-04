@@ -38,16 +38,16 @@ namespace Treehopper.Libraries.IO.PortExpander
 
             mode1.Ai = RegisterAutoIncrement.AutoIncrementAllRegisters;
             mode1.Sleep = false;
-            dev.WriteByteData((byte) Registers.Mode1, mode1.ToByte()).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Mode1, mode1.ToByte()).Wait();
 
             // clear PWM values
-            dev.WriteBufferData((byte) Registers.Pwm0 | 0x80, new byte[4] {0x00, 0x00, 0x00, 0x00}).Wait();
+            dev.WriteBufferDataAsync((byte) Registers.Pwm0 | 0x80, new byte[4] {0x00, 0x00, 0x00, 0x00}).Wait();
 
             ledOut.Ldr0 = LedOutputState.LedPwm;
             ledOut.Ldr1 = LedOutputState.LedPwm;
             ledOut.Ldr2 = LedOutputState.LedPwm;
             ledOut.Ldr3 = LedOutputState.LedPwm;
-            dev.WriteByteData((byte) Registers.LedOut, ledOut.ToByte()).Wait();
+            dev.WriteByteDataAsync((byte) Registers.LedOut, ledOut.ToByte()).Wait();
 
             Pins.Add(new Pin(this, 0));
             Pins.Add(new Pin(this, 1));
@@ -87,19 +87,19 @@ namespace Treehopper.Libraries.IO.PortExpander
 
         private async Task updateMode2()
         {
-            await dev.WriteByteData((byte) Registers.Mode2, mode2.ToByte());
+            await dev.WriteByteDataAsync((byte) Registers.Mode2, mode2.ToByte());
         }
 
         public Task SetOutputs(byte[] data)
         {
             if (data.Length != 4)
                 throw new Exception("Data must be 4 bytes");
-            return dev.WriteBufferData((byte) Registers.Pwm0 | 0x80, data);
+            return dev.WriteBufferDataAsync((byte) Registers.Pwm0 | 0x80, data);
         }
 
         private void Update(Pin pin)
         {
-            dev.WriteByteData((byte) ((byte) Registers.Pwm0 + pin.pinNumber), (byte) Math.Round(255.0 * pin.DutyCycle))
+            dev.WriteByteDataAsync((byte) ((byte) Registers.Pwm0 + pin.pinNumber), (byte) Math.Round(255.0 * pin.DutyCycle))
                 .Wait();
         }
 
@@ -212,12 +212,12 @@ namespace Treehopper.Libraries.IO.PortExpander
                 set { DutyCycle = value * 15625 / 1000000.0; }
             }
 
-            public Task EnablePwm()
+            public Task EnablePwmAsync()
             {
                 return Task.CompletedTask;
             }
 
-            public Task DisablePwm()
+            public Task DisablePwmAsync()
             {
                 return Task.CompletedTask;
             }

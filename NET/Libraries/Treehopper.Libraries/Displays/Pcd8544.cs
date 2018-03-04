@@ -18,8 +18,8 @@ namespace Treehopper.Libraries.Displays
             this.dc = dc;
             this.rst = rst;
 
-            this.dc.MakeDigitalPushPullOut();
-            this.rst.MakeDigitalPushPullOut();
+            this.dc.MakeDigitalPushPullOutAsync();
+            this.rst.MakeDigitalPushPullOutAsync();
 
             this.rst.DigitalValue = true;
             this.rst.DigitalValue = false;
@@ -45,10 +45,10 @@ namespace Treehopper.Libraries.Displays
 
             // we have to spit up the display buffer into two chunks so we don't violate the max-size of the SPI transfer
             Array.Copy(RawBuffer, 0, chunk, 0, 252);
-            await spi.SendReceive(chunk, SpiBurstMode.BurstTx);
+            await spi.SendReceiveAsync(chunk, SpiBurstMode.BurstTx);
 
             Array.Copy(RawBuffer, 252, chunk, 0, 252);
-            await spi.SendReceive(chunk, SpiBurstMode.BurstTx);
+            await spi.SendReceiveAsync(chunk, SpiBurstMode.BurstTx);
         }
 
         protected override void setBrightness(double brightness)
@@ -58,7 +58,7 @@ namespace Treehopper.Libraries.Displays
         private Task sendCommand(Command command, byte value = 0)
         {
             dc.DigitalValue = false;
-            return spi.SendReceive(new[] {(byte) ((byte) command | value)});
+            return spi.SendReceiveAsync(new[] {(byte) ((byte) command | value)});
         }
 
         private enum Command

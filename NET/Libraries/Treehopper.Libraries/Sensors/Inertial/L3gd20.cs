@@ -31,7 +31,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The bus to scan.</param>
         /// <param name="rate">The rate, in kHz, to use.</param>
         /// <returns></returns>
-        public static async Task<IList<L3gd20>> Probe(I2C i2c, int rate=100)
+        public static async Task<IList<L3gd20>> ProbeAsync(I2C i2c, int rate=100)
         {
             var devList = new List<L3gd20>();
 
@@ -39,7 +39,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 // L3G4200D - SDO low
                 var dev = new SMBusDevice(0x68, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0f).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0f).ConfigureAwait(false);
                 if (whoAmI == 0xD3)
                     devList.Add(new L3gd20(i2c, 0x68, rate));
             }
@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 // L3G4200D - SDO high
                 var dev = new SMBusDevice(0x69, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0f).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0f).ConfigureAwait(false);
                 if (whoAmI == 0xD3)
                     devList.Add(new L3gd20(i2c, 0x69, rate));
             }
@@ -59,7 +59,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 // L3GD20 - SDO low
                 var dev = new SMBusDevice(0x6A, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0f).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0f).ConfigureAwait(false);
                 if (whoAmI == 0xD4)
                     devList.Add(new L3gd20(i2c, 0x6A, rate));
             }
@@ -69,7 +69,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 // L3GD20 - SDO high
                 var dev = new SMBusDevice(0x6B, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0f).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0f).ConfigureAwait(false);
                 if (whoAmI == 0xD4)
                     devList.Add(new L3gd20(i2c, 0x6B, rate));
             }
@@ -79,7 +79,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 // L3GD20H - SDO low
                 var dev = new SMBusDevice(0x6A, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0f).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0f).ConfigureAwait(false);
                 if (whoAmI == 0xD7)
                     devList.Add(new L3gd20(i2c, 0x6A, rate));
             }
@@ -89,7 +89,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             {
                 // L3GD20H - SDO high
                 var dev = new SMBusDevice(0x6B, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0f).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0f).ConfigureAwait(false);
                 if (whoAmI == 0xD7)
                     devList.Add(new L3gd20(i2c, 0x6B, rate));
             }

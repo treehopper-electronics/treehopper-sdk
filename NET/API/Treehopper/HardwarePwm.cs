@@ -41,18 +41,18 @@ namespace Treehopper
                     if (_isEnabled)
                     {
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            _board.HardwarePwmManager.StartPin(_pin).Forget();
+                            _board.HardwarePwmManager.StartPinAsync(_pin).Forget();
                         else
-                            Task.Run(() => _board.HardwarePwmManager.StartPin(_pin)).Wait();
+                            Task.Run(() => _board.HardwarePwmManager.StartPinAsync(_pin)).Wait();
 
                         _pin.Mode = PinMode.Reserved;
                     }
                     else
                     {
                         if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                            _board.HardwarePwmManager.StopPin(_pin).Forget();
+                            _board.HardwarePwmManager.StopPinAsync(_pin).Forget();
                         else
-                            Task.Run(() => _board.HardwarePwmManager.StopPin(_pin)).Wait();
+                            Task.Run(() => _board.HardwarePwmManager.StopPinAsync(_pin)).Wait();
 
                         _pin.Mode = PinMode.Unassigned;
                     }
@@ -80,9 +80,9 @@ namespace Treehopper
                 _pulseWidth = _dutyCycle * _board.HardwarePwmManager.PeriodMicroseconds;
 
                 if (TreehopperUsb.Settings.PropertyWritesReturnImmediately)
-                    _board.HardwarePwmManager.SetDutyCycle(_pin, _dutyCycle).Forget();
+                    _board.HardwarePwmManager.SetDutyCycleAsync(_pin, _dutyCycle).Forget();
                 else
-                    Task.Run(() => _board.HardwarePwmManager.SetDutyCycle(_pin, _dutyCycle)).Wait();
+                    Task.Run(() => _board.HardwarePwmManager.SetDutyCycleAsync(_pin, _dutyCycle)).Wait();
             }
         }
 
@@ -106,16 +106,16 @@ namespace Treehopper
             }
         }
 
-        public Task DisablePwm()
+        public Task DisablePwmAsync()
         {
             _isEnabled = false;
-            return _board.HardwarePwmManager.StopPin(_pin);
+            return _board.HardwarePwmManager.StopPinAsync(_pin);
         }
 
-        public Task EnablePwm()
+        public Task EnablePwmAsync()
         {
             _isEnabled = true;
-            return _board.HardwarePwmManager.StartPin(_pin);
+            return _board.HardwarePwmManager.StartPinAsync(_pin);
         }
 
         /// <summary>

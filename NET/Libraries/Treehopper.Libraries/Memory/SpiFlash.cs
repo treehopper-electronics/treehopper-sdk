@@ -59,9 +59,9 @@ namespace Treehopper.Libraries.Memory
             this.dev = new SpiDevice(dev, cs, ChipSelectMode.SpiActiveLow, 6);
         }
 
-        public async Task<JedecId> ReadJedecId()
+        public async Task<JedecId> ReadJedecIdAsync()
         {
-            var result = await dev.SendReceive(new byte[4] {(byte) Command.ReadJedecId, 0x00, 0x00, 0x00});
+            var result = await dev.SendReceiveAsync(new byte[4] {(byte) Command.ReadJedecId, 0x00, 0x00, 0x00});
 
             var id = new JedecId();
             id.Manufacturer = (JedecManufacturer) result[1];
@@ -71,17 +71,17 @@ namespace Treehopper.Libraries.Memory
             return id;
         }
 
-        public async Task<Status> ReadStatus()
+        public async Task<Status> ReadStatusAsync()
         {
             var cmd = new byte[2];
             cmd[0] = (byte) Command.ReadStatus1;
-            var status1 = await dev.SendReceive(cmd);
+            var status1 = await dev.SendReceiveAsync(cmd);
 
             cmd[0] = (byte) Command.ReadStatus2;
-            var status2 = await dev.SendReceive(cmd);
+            var status2 = await dev.SendReceiveAsync(cmd);
 
             cmd[0] = (byte) Command.ReadStatus3;
-            var status3 = await dev.SendReceive(cmd);
+            var status3 = await dev.SendReceiveAsync(cmd);
 
             var status = new Status();
 
@@ -95,9 +95,9 @@ namespace Treehopper.Libraries.Memory
             return status;
         }
 
-        public async Task<byte[]> ReadArray(int address, int count)
+        public async Task<byte[]> ReadArrayAsync(int address, int count)
         {
-            while ((await ReadStatus().ConfigureAwait(false)).Busy)
+            while ((await ReadStatusAsync().ConfigureAwait(false)).Busy)
             {
             }
 
@@ -106,26 +106,26 @@ namespace Treehopper.Libraries.Memory
             data[1] = (byte) (address >> 16);
             data[2] = (byte) (address >> 8);
             data[3] = (byte) address;
-            var result = await dev.SendReceive(data);
+            var result = await dev.SendReceiveAsync(data);
             return result.Skip(4).Take(count).ToArray();
         }
 
-        public async Task<byte> ReadByte(int address)
+        public async Task<byte> ReadByteAsync(int address)
         {
-            var res = await ReadArray(address, 1);
+            var res = await ReadArrayAsync(address, 1);
             return res[0];
         }
 
         public async Task Write(byte[] data, int address)
         {
             //var check = await ReadArray(address, data.Length).ConfigureAwait(false);
-            while ((await ReadStatus().ConfigureAwait(false)).Busy)
+            while ((await ReadStatusAsync().ConfigureAwait(false)).Busy)
             {
             }
 
             await WriteEnable().ConfigureAwait(false);
 
-            var status = await ReadStatus().ConfigureAwait(false);
+            var status = await ReadStatusAsync().ConfigureAwait(false);
             if (status.WriteEnableLatch != true)
                 throw new Exception("Write Enable Latch is not set. Check write-protect");
             var header = new byte[4];
@@ -134,51 +134,51 @@ namespace Treehopper.Libraries.Memory
             header[2] = (byte) (address >> 8);
             header[3] = (byte) address;
 
-            await dev.SendReceive(header.Concat(data).ToArray()).ConfigureAwait(false);
+            await dev.SendReceiveAsync(header.Concat(data).ToArray()).ConfigureAwait(false);
         }
 
         public async Task EraseChip()
         {
-            while ((await ReadStatus().ConfigureAwait(false)).Busy)
+            while ((await ReadStatusAsync().ConfigureAwait(false)).Busy)
             {
             }
 
             await WriteEnable().ConfigureAwait(false);
-            var status = await ReadStatus().ConfigureAwait(false);
+            var status = await ReadStatusAsync().ConfigureAwait(false);
             if (status.WriteEnableLatch != true)
                 throw new Exception("Write Enable Latch is not set. Check write-protect");
 
-            await dev.SendReceive(new[] {(byte) Command.ChipErase}).ConfigureAwait(false);
-            while ((await ReadStatus().ConfigureAwait(false)).Busy)
+            await dev.SendReceiveAsync(new[] {(byte) Command.ChipErase}).ConfigureAwait(false);
+            while ((await ReadStatusAsync().ConfigureAwait(false)).Busy)
                 await Task.Delay(100);
         }
 
         public Task WriteEnable()
         {
-            return dev.SendReceive(new[] {(byte) Command.WriteEnable});
+            return dev.SendReceiveAsync(new[] {(byte) Command.WriteEnable});
         }
 
         public Task WriteDisable()
         {
-            return dev.SendReceive(new[] {(byte) Command.WriteDisable});
+            return dev.SendReceiveAsync(new[] {(byte) Command.WriteDisable});
         }
 
         public async Task WriteStatus1(byte val)
         {
             await WriteEnable();
-            await dev.SendReceive(new[] {(byte) Command.WriteStatus1, val});
+            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus1, val});
         }
 
         public async Task WriteStatus2(byte val)
         {
             await WriteEnable();
-            await dev.SendReceive(new[] {(byte) Command.WriteStatus2, val});
+            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus2, val});
         }
 
         public async Task WriteStatus3(byte val)
         {
             await WriteEnable();
-            await dev.SendReceive(new[] {(byte) Command.WriteStatus3, val});
+            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus3, val});
         }
 
         public class JedecId

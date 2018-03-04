@@ -35,7 +35,7 @@ namespace Apa102Demo
                     driver.Leds[i].SetHsl((360f / driver.Leds.Count ) * i + hueOffset, 100, 50);
                 }
 
-                await driver.Flush().ConfigureAwait(false);
+                await driver.FlushAsync().ConfigureAwait(false);
                 //await Task.Delay(10).ConfigureAwait(false);
 
                 hueOffset += 1;

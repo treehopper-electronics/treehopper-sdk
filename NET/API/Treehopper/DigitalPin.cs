@@ -31,7 +31,7 @@ namespace Treehopper
         /// <summary>
         ///     Make the pin a push-pull output
         /// </summary>
-        Task MakeDigitalPushPullOut();
+        Task MakeDigitalPushPullOutAsync();
     }
 
     /// <summary>
@@ -48,12 +48,12 @@ namespace Treehopper
         ///     Awaits until the digital value changes
         /// </summary>
         /// <returns>An awaitable bool of the new value</returns>
-        Task<bool> AwaitDigitalValueChange();
+        Task<bool> AwaitDigitalValueChangeAsync();
 
         /// <summary>
         ///     Make the pin a digital input
         /// </summary>
-        Task MakeDigitalIn();
+        Task MakeDigitalInAsync();
     }
 
     /// <summary>

@@ -88,7 +88,7 @@ namespace Treehopper.Desktop.LibUsb
                     }
 
                     if (1000f / UpdateRate > 1)
-                        await Task.Delay((int) Math.Round(1000f / UpdateRate));
+                        await Task.Delay((int) Math.Round(1000f / UpdateRate)).ConfigureAwait(false);
                 }
             });
 
@@ -97,7 +97,7 @@ namespace Treehopper.Desktop.LibUsb
             return true;
         }
 
-        public async Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
+        public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint numBytesToRead)
         {
             var data = new byte[numBytesToRead];
             var len = 0;
@@ -106,13 +106,13 @@ namespace Treehopper.Desktop.LibUsb
             return data;
         }
 
-        public async Task SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannelAsync(byte[] data)
         {
             var len = 0;
             NativeMethods.BulkTransfer(deviceHandle, peripheralConfigEndpoint, data, data.Length, out len, 1000);
         }
 
-        public async Task SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannelAsync(byte[] data)
         {
             var len = 0;
             NativeMethods.BulkTransfer(deviceHandle, pinConfigEndpoint, data, data.Length, out len, 1000);

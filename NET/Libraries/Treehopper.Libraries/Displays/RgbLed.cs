@@ -78,12 +78,12 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether to force an update</param>
         /// <returns>An awaitable task</returns>
-        public async Task Flush(bool force = false)
+        public async Task FlushAsync(bool force = false)
         {
             foreach (var driver in drivers)
             {
                 if (driver.AutoFlush) break; // already flushed out
-                await driver.Flush();
+                await driver.FlushAsync();
             }
         }
 
@@ -119,7 +119,7 @@ namespace Treehopper.Libraries.Displays
             g.Brightness = Numbers.Constrain(green / 255f * GreenGain);
             b.Brightness = Numbers.Constrain(blue / 255f * BlueGain);
 
-            if (AutoFlush) Flush().Wait();
+            if (AutoFlush) FlushAsync().Wait();
         }
 
         /// <summary>

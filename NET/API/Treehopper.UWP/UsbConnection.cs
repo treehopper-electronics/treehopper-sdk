@@ -148,7 +148,7 @@ namespace Treehopper.Uwp
             }
         }
 
-        public async Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead)
+        public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint bytesToRead)
         {
             if (!IsOpen)
                 return new byte[0];

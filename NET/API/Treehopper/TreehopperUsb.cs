@@ -126,9 +126,9 @@ namespace Treehopper
                 data[0] = (byte) DeviceCommands.LedConfig;
                 data[1] = (byte) (_led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
                 if (Settings.PropertyWritesReturnImmediately)
-                    SendPeripheralConfigPacket(data).Forget();
+                    SendPeripheralConfigPacketAsync(data).Forget();
                 else
-                    SendPeripheralConfigPacket(data).Wait();
+                    SendPeripheralConfigPacketAsync(data).Wait();
             }
         }
 
@@ -273,7 +273,7 @@ namespace Treehopper
             Connection.Dispose();
         }
 
-        public Task AwaitPinUpdate()
+        public Task AwaitPinUpdateAsync()
         {
             _pinUpdateReportReceived = new TaskCompletionSource<bool>();
             return _pinUpdateReportReceived.Task;
@@ -353,7 +353,7 @@ namespace Treehopper
         /// </remarks>
         public void Reboot()
         {
-            SendPeripheralConfigPacket(new[] {(byte) DeviceCommands.Reboot});
+            SendPeripheralConfigPacketAsync(new[] {(byte) DeviceCommands.Reboot});
             Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
         }
 
@@ -362,7 +362,7 @@ namespace Treehopper
         /// </summary>
         public void RebootIntoBootloader()
         {
-            SendPeripheralConfigPacket(new[] {(byte) DeviceCommands.EnterBootloader});
+            SendPeripheralConfigPacketAsync(new[] {(byte) DeviceCommands.EnterBootloader});
             Disconnect(); // This is called by the manager when the board is removed, but call it here just in case the manager isn't running.
         }
 
@@ -375,7 +375,7 @@ namespace Treehopper
         ///     will not take effect in other applications until the device is reset. This can be done by calling
         ///     <see cref="Reboot()" />
         /// </remarks>
-        public Task UpdateSerialNumber(string serialNumber)
+        public Task UpdateSerialNumberAsync(string serialNumber)
         {
             if (serialNumber.Length > 60)
                 throw new Exception("String must be 60 characters or less");
@@ -385,7 +385,7 @@ namespace Treehopper
             dataToSend[0] = (byte) DeviceCommands.FirmwareUpdateSerial;
             dataToSend[1] = (byte) serialNumber.Length;
             bytes.CopyTo(dataToSend, 2);
-            SendPeripheralConfigPacket(dataToSend);
+            SendPeripheralConfigPacketAsync(dataToSend);
             return Task.Delay(100); // wait a bit for the flash operation to finish (global interrupts are disabled during programming)
         }
 
@@ -398,7 +398,7 @@ namespace Treehopper
         ///     will not take effect to other applications until the device is reset. This can be done by calling
         ///     <see cref="Reboot()" />
         /// </remarks>
-        public Task UpdateDeviceName(string deviceName)
+        public Task UpdateDeviceNameAsync(string deviceName)
         {
             if (deviceName.Length > 60)
                 throw new Exception("Device name must be 60 characters or less");
@@ -407,7 +407,7 @@ namespace Treehopper
             dataToSend[1] = (byte) deviceName.Length;
             var stringData = Encoding.UTF8.GetBytes(deviceName);
             stringData.CopyTo(dataToSend, 2);
-            SendPeripheralConfigPacket(dataToSend);
+            SendPeripheralConfigPacketAsync(dataToSend);
             return
                 Task
                     .Delay(
@@ -450,7 +450,7 @@ namespace Treehopper
         {
             var data = new byte[2];
             data[0] = (byte) DeviceCommands.ConfigureDevice;
-            SendPeripheralConfigPacket(data);
+            SendPeripheralConfigPacketAsync(data);
         }
 
         /// <summary>
@@ -506,23 +506,23 @@ namespace Treehopper
             return SerialNumber == y.SerialNumber;
         }
 
-        internal Task SendPinConfigPacket(byte[] data)
+        internal Task SendPinConfigPacketAsync(byte[] data)
         {
             if (IsConnected)
-                return Connection.SendDataPinConfigChannel(data);
+                return Connection.SendDataPinConfigChannelAsync(data);
             return Task.FromResult<object>(null);
         }
 
-        internal Task SendPeripheralConfigPacket(byte[] data)
+        internal Task SendPeripheralConfigPacketAsync(byte[] data)
         {
             if (IsConnected)
-                return Connection.SendDataPeripheralChannel(data);
+                return Connection.SendDataPeripheralChannelAsync(data);
             return Task.FromResult<object>(null);
         }
 
-        internal Task<byte[]> ReceiveCommsResponsePacket(uint bytesToRead)
+        internal Task<byte[]> ReceiveCommsResponsePacketAsync(uint bytesToRead)
         {
-            return Connection.ReadPeripheralResponsePacket(bytesToRead);
+            return Connection.ReadPeripheralResponsePacketAsync(bytesToRead);
         }
 
         private void RaisePropertyChanged(string property)

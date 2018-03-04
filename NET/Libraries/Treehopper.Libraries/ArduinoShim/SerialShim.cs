@@ -61,7 +61,7 @@ namespace Treehopper.Libraries.ArduinoShim
             }
             else
             {
-                board.Uart.Send(value);
+                board.Uart.SendAsync(value);
             }
         }
     }

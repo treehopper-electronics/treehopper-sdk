@@ -19,7 +19,7 @@ namespace DemoSn74hc166
             var shiftRegister = new Hc166(board.Spi, board.Pins[10]);
             while(true)
             {
-                var value = shiftRegister.Pins[0].AwaitDigitalValueChange();
+                var value = shiftRegister.Pins[0].AwaitDigitalValueChangeAsync();
                 Debug.WriteLine(value);
             }
         }

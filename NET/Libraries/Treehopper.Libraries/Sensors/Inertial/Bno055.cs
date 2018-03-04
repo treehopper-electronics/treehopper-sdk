@@ -21,14 +21,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="i2c">The I2C bus to probe</param>
         /// <param name="rateKhz">The rate, in kHz, to use</param>
         /// <returns>An awaitable task that completes with a list of BNO055 sensors.</returns>
-        public static async Task<List<Bno055>> Probe(I2C i2c, int rateKhz = 100)
+        public static async Task<List<Bno055>> ProbeAsync(I2C i2c, int rateKhz = 100)
         {
             var deviceList = new List<Bno055>();
 
             try
             {
                 var dev = new SMBusDevice(0x28, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x00).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x00).ConfigureAwait(false);
                 if (whoAmI == 0xA0)
                     deviceList.Add(new Bno055(i2c, false, rateKhz));
             }
@@ -37,7 +37,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             try
             {
                 var dev = new SMBusDevice(0x29, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x00).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x00).ConfigureAwait(false);
                 if (whoAmI == 0xA0)
                     deviceList.Add(new Bno055(i2c, true, rateKhz));
             }

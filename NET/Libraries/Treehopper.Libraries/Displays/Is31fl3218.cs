@@ -25,7 +25,7 @@ namespace Treehopper.Libraries.Displays
         public Is31fl3218(I2C i2c, int rateKhz = 100) : base(18, false, true)
         {
             dev = new SMBusDevice(0x54, i2c, rateKhz);
-            dev.WriteByteData((byte) Registers.Shutdown, 0x01).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Shutdown, 0x01).Wait();
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace Treehopper.Libraries.Displays
                 shutdown = value;
 
                 if (shutdown)
-                    dev.WriteByteData((byte) Registers.Shutdown, 0x00).Wait();
+                    dev.WriteByteDataAsync((byte) Registers.Shutdown, 0x00).Wait();
                 else
-                    dev.WriteByteData((byte) Registers.Shutdown, 0x01).Wait();
+                    dev.WriteByteDataAsync((byte) Registers.Shutdown, 0x01).Wait();
             }
         }
 
@@ -51,7 +51,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether the data should be sent even if the data does not appear to have changed</param>
         /// <returns>An awaitable task</returns>
-        public override Task Flush(bool force = false)
+        public override Task FlushAsync(bool force = false)
         {
             var states = new byte[3];
             for (var i = 0; i < currentStates.Length; i++)
@@ -65,19 +65,19 @@ namespace Treehopper.Libraries.Displays
             }
 
             var dataToWrite = currentValues.Concat(states).Concat(new byte[1] {0x00}).ToArray();
-            return dev.WriteBufferData((byte) Registers.PwmBase, dataToWrite);
+            return dev.WriteBufferDataAsync((byte) Registers.PwmBase, dataToWrite);
         }
 
         internal override void LedBrightnessChanged(Led led)
         {
             currentValues[led.Channel] = (byte) Math.Round(led.Brightness * 255);
-            if (AutoFlush) Flush().Wait();
+            if (AutoFlush) FlushAsync().Wait();
         }
 
         internal override void LedStateChanged(Led led)
         {
             currentStates[led.Channel] = led.State;
-            if (AutoFlush) Flush().Wait();
+            if (AutoFlush) FlushAsync().Wait();
         }
 
         internal override void SetGlobalBrightness(double brightness)

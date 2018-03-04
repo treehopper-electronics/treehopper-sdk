@@ -33,11 +33,11 @@ namespace Treehopper.Libraries.IO.Mux
         /// <param name="dataToWrite">The data to write</param>
         /// <param name="numBytesToRead">Number of bytes to read</param>
         /// <returns></returns>
-        public Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
+        public Task<byte[]> SendReceiveAsync(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
             i2cMux.SetMux(index);
             i2cMux.UpstreamPort.Speed = Speed;
-            return i2cMux.UpstreamPort.SendReceive(address, dataToWrite, numBytesToRead);
+            return i2cMux.UpstreamPort.SendReceiveAsync(address, dataToWrite, numBytesToRead);
         }
     }
 }

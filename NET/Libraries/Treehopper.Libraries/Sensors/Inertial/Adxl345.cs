@@ -16,14 +16,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
         private readonly SMBusDevice _dev;
         private readonly Adxl345Registers registers;
 
-        public static async Task<IList<Adxl345>> Probe(I2C i2c, int rate=100)
+        public static async Task<IList<Adxl345>> ProbeAsync(I2C i2c, int rate=100)
         {
             List<Adxl345> deviceList = new List<Adxl345>();
 
             try
             {
                 var dev = new SMBusDevice(0x53, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x00).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x00).ConfigureAwait(false);
                 if (whoAmI == 0xE5)
                     deviceList.Add(new Adxl345(i2c, true, rate));
             }
@@ -32,7 +32,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             try
             {
                 var dev = new SMBusDevice(0x1D, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x00).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x00).ConfigureAwait(false);
                 if (whoAmI == 0xE5)
                     deviceList.Add(new Adxl345(i2c, false, rate));
             }

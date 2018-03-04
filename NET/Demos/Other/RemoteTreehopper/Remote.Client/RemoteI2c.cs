@@ -55,7 +55,7 @@ namespace Remote.Client
             }
         }
 
-        public Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
+        public Task<byte[]> SendReceiveAsync(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
             dataReceived = new TaskCompletionSource<byte[]>();
             var data = new byte[] { address, numBytesToRead }.Concat(dataToWrite).ToArray();

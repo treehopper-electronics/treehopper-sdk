@@ -20,13 +20,13 @@ namespace Treehopper.Libraries.Sensors.Pressure
     [Supports("Bosch", "BMP280")]
     public partial class Bmp280 : PressureSensor, ITemperatureSensor
     {
-        public static async Task<IList<Bmp280>> Probe(I2C i2c, bool includeBme280 = true)
+        public static async Task<IList<Bmp280>> ProbeAsync(I2C i2c, bool includeBme280 = true)
         {
             var deviceList = new List<Bmp280>();
             try
             {
                 var dev = new SMBusDevice(0x76, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0xD0).ConfigureAwait(false);
                 if (whoAmI == 0x58 || (whoAmI == 0x60 & includeBme280))
                     deviceList.Add(new Bmp280(i2c, false));
             }
@@ -35,7 +35,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
             try
             {
                 var dev = new SMBusDevice(0x77, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0xD0).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0xD0).ConfigureAwait(false);
                 if (whoAmI == 0x58 || (whoAmI == 0x60 & includeBme280))
                     deviceList.Add(new Bmp280(i2c, true));
             }

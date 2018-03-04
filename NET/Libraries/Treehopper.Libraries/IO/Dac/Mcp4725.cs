@@ -100,7 +100,7 @@ namespace Treehopper.Libraries.IO.Dac
                 normalizedValue = dacValue / 4095.0;
                 voltage = normalizedValue * ReferenceVoltage;
 
-                dev.WriteData(new[] {(byte) (dacValue >> 8), (byte) (dacValue & 0xff)}).Wait();
+                dev.WriteDataAsync(new[] {(byte) (dacValue >> 8), (byte) (dacValue & 0xff)}).Wait();
             }
         }
     }

@@ -97,9 +97,9 @@ namespace Treehopper
         /// </summary>
         /// <param name="data">The byte to send</param>
         /// <returns>An awaitable task that completes upon transmission of the byte</returns>
-        public Task Send(byte data)
+        public Task SendAsync(byte data)
         {
-            return Send(new[] {data});
+            return SendAsync(new[] {data});
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Treehopper
         /// </summary>
         /// <param name="dataToSend">The data to send</param>
         /// <returns>An awaitable task that completes upon transmission of the data</returns>
-        public async Task Send(byte[] dataToSend)
+        public async Task SendAsync(byte[] dataToSend)
         {
             if (dataToSend.Length > 63)
                 throw new Exception("The maximum UART length for one transaction is 63 bytes");
@@ -119,8 +119,8 @@ namespace Treehopper
             dataToSend.CopyTo(data, 3);
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await _device.SendPeripheralConfigPacket(data);
-                await _device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                await _device.SendPeripheralConfigPacketAsync(data);
+                await _device.ReceiveCommsResponsePacketAsync(1).ConfigureAwait(false);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Treehopper
         /// Owing to how it is implemented, you can clear the buffer at any point by calling Receive(). It's common to empty the buffer before 
         /// requesting data from the device attached to the UART; this way, you do not have to worry about existing gibberish data that
         /// might have been inadvertently received.
-        public async Task<byte[]> Receive(int oneWireNumBytes = 0)
+        public async Task<byte[]> ReceiveAsync(int oneWireNumBytes = 0)
         {
             byte[] retVal;
             if (_mode == UartMode.Uart)
@@ -151,8 +151,8 @@ namespace Treehopper
 
                 using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    await _device.SendPeripheralConfigPacket(data);
-                    var receivedData = await _device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
+                    await _device.SendPeripheralConfigPacketAsync(data);
+                    var receivedData = await _device.ReceiveCommsResponsePacketAsync(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -169,8 +169,8 @@ namespace Treehopper
 
                 using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    await _device.SendPeripheralConfigPacket(data);
-                    var receivedData = await _device.ReceiveCommsResponsePacket(33).ConfigureAwait(false);
+                    await _device.SendPeripheralConfigPacketAsync(data);
+                    var receivedData = await _device.ReceiveCommsResponsePacketAsync(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
                     Array.Copy(receivedData, retVal, len);
@@ -184,7 +184,7 @@ namespace Treehopper
         ///     Reset the One Wire bus
         /// </summary>
         /// <returns>True if at least one device was found. False otherwise.</returns>
-        public async Task<bool> OneWireReset()
+        public async Task<bool> OneWireResetAsync()
         {
             Mode = UartMode.OneWire;
             Enabled = true;
@@ -194,8 +194,8 @@ namespace Treehopper
             data[1] = (byte) UartCommand.OneWireReset;
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await _device.SendPeripheralConfigPacket(data);
-                var receivedData = await _device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                await _device.SendPeripheralConfigPacketAsync(data);
+                var receivedData = await _device.ReceiveCommsResponsePacketAsync(1).ConfigureAwait(false);
                 retVal = receivedData[0] > 0;
             }
 
@@ -206,7 +206,7 @@ namespace Treehopper
         ///     Search for One Wire devices on the bus
         /// </summary>
         /// <returns>A list of addresses found</returns>
-        public async Task<List<ulong>> OneWireSearch()
+        public async Task<List<ulong>> OneWireSearchAsync()
         {
             Mode = UartMode.OneWire;
             Enabled = true;
@@ -217,10 +217,10 @@ namespace Treehopper
             data[1] = (byte) UartCommand.OneWireScan;
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await _device.SendPeripheralConfigPacket(data);
+                await _device.SendPeripheralConfigPacketAsync(data);
                 while (true)
                 {
-                    var receivedData = await _device.ReceiveCommsResponsePacket(9).ConfigureAwait(false);
+                    var receivedData = await _device.ReceiveCommsResponsePacketAsync(9).ConfigureAwait(false);
                     if (receivedData[0] == 0xff)
                         break;
 
@@ -237,16 +237,16 @@ namespace Treehopper
         /// </summary>
         /// <param name="address">The address to reset and match</param>
         /// <returns></returns>
-        public async Task OneWireResetAndMatchAddress(ulong address)
+        public async Task OneWireResetAndMatchAddressAsync(ulong address)
         {
             Mode = UartMode.OneWire;
             Enabled = true;
-            await OneWireReset().ConfigureAwait(false);
+            await OneWireResetAsync().ConfigureAwait(false);
             var addr = BitConverter.GetBytes(address);
             var data = new byte[9];
             data[0] = 0x55; // MATCH ROM
             Array.Copy(addr, 0, data, 1, 8);
-            await Send(data).ConfigureAwait(false);
+            await SendAsync(data).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Treehopper
         {
             if (!_isEnabled)
             {
-                _device.SendPeripheralConfigPacket(new[] {(byte) DeviceCommands.UartConfig, (byte) UartConfig.Disabled});
+                _device.SendPeripheralConfigPacketAsync(new[] {(byte) DeviceCommands.UartConfig, (byte) UartConfig.Disabled});
             }
             else if (_mode == UartMode.Uart)
             {
@@ -320,14 +320,14 @@ namespace Treehopper
                 data[2] = timerVal;
                 data[3] = (byte) (usePrescaler ? 0x01 : 0x00);
                 data[4] = (byte) (_useOpenDrainTx ? 0x01 : 0x00);
-                _device.SendPeripheralConfigPacket(data);
+                _device.SendPeripheralConfigPacketAsync(data);
             }
             else
             {
                 var data = new byte[2];
                 data[0] = (byte) DeviceCommands.UartConfig;
                 data[1] = (byte) UartConfig.OneWire;
-                _device.SendPeripheralConfigPacket(data);
+                _device.SendPeripheralConfigPacketAsync(data);
             }
         }
 

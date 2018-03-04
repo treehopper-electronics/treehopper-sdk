@@ -72,19 +72,19 @@ namespace Treehopper
         ///     Send pin configuration data
         /// </summary>
         /// <param name="data">The data to send</param>
-        Task SendDataPinConfigChannel(byte[] data);
+        Task SendDataPinConfigChannelAsync(byte[] data);
 
         /// <summary>
         ///     Send peripheral configuration data
         /// </summary>
         /// <param name="data">The data to send</param>
-        Task SendDataPeripheralChannel(byte[] data);
+        Task SendDataPeripheralChannelAsync(byte[] data);
 
         /// <summary>
         ///     Read peripheral data from the board
         /// </summary>
         /// <param name="numBytesToRead">The number of bytes to read</param>
         /// <returns>The bytes read</returns>
-        Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead);
+        Task<byte[]> ReadPeripheralResponsePacketAsync(uint numBytesToRead);
     }
 }

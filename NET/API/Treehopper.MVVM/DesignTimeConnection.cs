@@ -77,7 +77,7 @@ namespace Treehopper.Mvvm
         ///     Send peripheral data over the DesignTime connection. Note that this function has no effect.
         /// </summary>
         /// <param name="data">The data to send</param>
-        public async Task SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannelAsync(byte[] data)
         {
         }
 
@@ -85,7 +85,7 @@ namespace Treehopper.Mvvm
         ///     Send pin config data over the DesignTime connection. Note that this function has no effect.
         /// </summary>
         /// <param name="data"></param>
-        public async Task SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannelAsync(byte[] data)
         {
         }
 
@@ -94,7 +94,7 @@ namespace Treehopper.Mvvm
         /// </summary>
         /// <param name="bytesToRead"></param>
         /// <returns></returns>
-        public async Task<byte[]> ReadPeripheralResponsePacket(uint bytesToRead)
+        public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint bytesToRead)
         {
             return new byte[0];
         }

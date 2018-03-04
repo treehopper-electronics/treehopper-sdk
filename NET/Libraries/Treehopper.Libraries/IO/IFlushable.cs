@@ -31,6 +31,6 @@ namespace Treehopper.Libraries.IO
         ///     Flush changed data to the port expander
         /// </summary>
         /// <param name="force">whether to flush *all* data to the port expander, even if it doesn't appear to have been changed</param>
-        Task Flush(bool force = false);
+        Task FlushAsync(bool force = false);
     }
 }

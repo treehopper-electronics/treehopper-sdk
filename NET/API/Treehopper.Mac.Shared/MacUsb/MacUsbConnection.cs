@@ -243,7 +243,7 @@ namespace Treehopper.Desktop.MacUsb
 			return true;
 		}
 
-		public async Task<byte[]> ReadPeripheralResponsePacket(uint numBytesToRead)
+		public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint numBytesToRead)
 		{
 			byte[] dataToRead = new byte[numBytesToRead];
 
@@ -256,7 +256,7 @@ namespace Treehopper.Desktop.MacUsb
 			return dataToRead;
 		}
 
-		public async Task SendDataPeripheralChannel(byte[] data)
+		public async Task SendDataPeripheralChannelAsync(byte[] data)
 		{
 			var status = interfaceInterface.WritePipeTO(interfaceInterface.Handle, 4, data, (uint)data.Length, 1000, 1000);
 			if (status != IOKitError.Success)
@@ -266,7 +266,7 @@ namespace Treehopper.Desktop.MacUsb
 			}
 		}
 
-		public async Task SendDataPinConfigChannel(byte[] data)
+		public async Task SendDataPinConfigChannelAsync(byte[] data)
 		{
 			var status = interfaceInterface.WritePipeTO(interfaceInterface.Handle, 3, data, (uint)data.Length, 1000, 1000);
 			if (status != IOKitError.Success)

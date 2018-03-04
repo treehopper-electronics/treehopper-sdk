@@ -10,7 +10,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// </summary>
     /// <remarks>
     ///     The DS18B20 uses the IOneWire interface found on Treehopper.Uart for communication. You can use the
-    ///     <see cref="IOneWire.OneWireSearch()" /> method to discover the device address to pass to the
+    ///     <see cref="IOneWire.OneWireSearchAsync()" /> method to discover the device address to pass to the
     ///     <see cref="Ds18b20.Ds18b20(IOneWire, ulong)" /> constructor; setting this parameter to "0" will switch to all-call
     ///     addressing, allowing the class to work with a single sensor attached to the bus without having to know its address.
     ///     Don't use the all-call mode if there are multiple devices on the <see cref="IOneWire" /> bus, as this will cause
@@ -88,13 +88,13 @@ namespace Treehopper.Libraries.Sensors.Temperature
             {
                 if (Address == 0)
                 {
-                    await oneWire.OneWireReset();
-                    await oneWire.Send(new byte[] { 0xCC, 0x44 });
+                    await oneWire.OneWireResetAsync();
+                    await oneWire.SendAsync(new byte[] { 0xCC, 0x44 });
                 }
                 else
                 {
-                    await oneWire.OneWireResetAndMatchAddress(Address);
-                    await oneWire.Send(0x44);
+                    await oneWire.OneWireResetAndMatchAddressAsync(Address);
+                    await oneWire.SendAsync(0x44);
                 }
 
                 await Task.Delay(750);
@@ -102,16 +102,16 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
             if (Address == 0)
             {
-                await oneWire.OneWireReset();
-                await oneWire.Send(new byte[] {0xCC, 0xBE});
+                await oneWire.OneWireResetAsync();
+                await oneWire.SendAsync(new byte[] {0xCC, 0xBE});
             }
             else
             {
-                await oneWire.OneWireResetAndMatchAddress(Address);
-                await oneWire.Send(0xBE);
+                await oneWire.OneWireResetAndMatchAddressAsync(Address);
+                await oneWire.SendAsync(0xBE);
             }
 
-            var data = await oneWire.Receive(2);
+            var data = await oneWire.ReceiveAsync(2);
 
             celsius = (short) (data[0] | (data[1] << 8)) / 16d;
 
@@ -176,11 +176,11 @@ namespace Treehopper.Libraries.Sensors.Temperature
             ///     Findl all sensors on the bus
             /// </summary>
             /// <returns>A list of Ds18b20 sensors</returns>
-            public async Task<IList<Ds18b20>> FindAll()
+            public async Task<IList<Ds18b20>> FindAllAsync()
             {
                 SensorList = new List<Ds18b20>();
                 oneWire.StartOneWire();
-                var addresses = await oneWire.OneWireSearch();
+                var addresses = await oneWire.OneWireSearchAsync();
                 foreach (var address in addresses)
                     if ((address & 0xff) == 0x28)
                         SensorList.Add(new Ds18b20(oneWire, address));
@@ -199,8 +199,8 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 foreach (var sensor in SensorList)
                     sensor.EnableGroupConversion = true;
 
-                await oneWire.OneWireReset();
-                await oneWire.Send(new byte[] {0xCC, 0x44});
+                await oneWire.OneWireResetAsync();
+                await oneWire.SendAsync(new byte[] {0xCC, 0x44});
                 await Task.Delay(750);
                 return new ConversionCycle(this);
             }

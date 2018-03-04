@@ -616,7 +616,7 @@ namespace Treehopper.Libraries.Motors
         /// <returns>An awaitable task that completes when finished</returns>
         public Task ResetToDefault()
         {
-            return dev.WriteByte((byte) Command.ResetToDefault);
+            return dev.WriteByteAsync((byte) Command.ResetToDefault);
         }
 
         /// <summary>
@@ -625,7 +625,7 @@ namespace Treehopper.Libraries.Motors
         /// <returns>An awaitable task that completes when finished</returns>
         public Task SoftStop()
         {
-            return dev.WriteByte((byte) Command.SoftStop);
+            return dev.WriteByteAsync((byte) Command.SoftStop);
         }
 
         /// <summary>
@@ -634,7 +634,7 @@ namespace Treehopper.Libraries.Motors
         /// <returns>An awaitable task that completes when finished</returns>
         public Task HardStop()
         {
-            return dev.WriteByte((byte) Command.HardStop);
+            return dev.WriteByteAsync((byte) Command.HardStop);
         }
 
         /// <summary>
@@ -643,12 +643,12 @@ namespace Treehopper.Libraries.Motors
         /// <returns>An awaitable task that completes when finished</returns>
         public Task RunVelocity()
         {
-            return dev.WriteByte((byte) Command.RunVelocity);
+            return dev.WriteByteAsync((byte) Command.RunVelocity);
         }
 
         private async Task GetFullStatus()
         {
-            var data = await dev.ReadBufferData((byte) Command.GetFullStatus1, 9);
+            var data = await dev.ReadBufferDataAsync((byte) Command.GetFullStatus1, 9);
             var irun = (data[1] >> 4) & 0x0f;
             runningCurrent = (RunningCurrent) irun;
 
@@ -676,7 +676,7 @@ namespace Treehopper.Libraries.Motors
 
         private async Task GetPositionStatus()
         {
-            var data = await dev.ReadBufferData((byte) Command.GetFullStatus2, 8);
+            var data = await dev.ReadBufferDataAsync((byte) Command.GetFullStatus2, 8);
             ActualPosition = (short) ((data[1] << 8) | data[2]);
             targetPosition = (short) ((data[3] << 8) | data[4]);
             securePosition = data[5];
@@ -705,7 +705,7 @@ namespace Treehopper.Libraries.Motors
             data[1] = 0xff;
             data[2] = (byte) (position >> 8);
             data[3] = (byte) (position & 0xff);
-            return dev.WriteBufferData((byte) Command.SetPosition, data);
+            return dev.WriteBufferDataAsync((byte) Command.SetPosition, data);
         }
 
         private void SetMotorParams()
@@ -727,7 +727,7 @@ namespace Treehopper.Libraries.Motors
                 (1 << 1) |
                 (pwmjen ? 1 : 0)
             );
-            dev.WriteBufferData((byte) Command.SetMotorParam, data).Wait();
+            dev.WriteBufferDataAsync((byte) Command.SetMotorParam, data).Wait();
         }
 
         internal enum Command

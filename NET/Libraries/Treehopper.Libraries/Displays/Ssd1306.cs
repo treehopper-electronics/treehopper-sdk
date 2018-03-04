@@ -150,7 +150,7 @@ namespace Treehopper.Libraries.Displays
         private Task sendCommand(byte cmd)
         {
             var dat = new byte[] {0x00, cmd};
-            return dev.WriteData(dat);
+            return dev.WriteDataAsync(dat);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Treehopper.Libraries.Displays
                     i++;
                 }
                 i--;
-                await dev.WriteData(dat).ConfigureAwait(false);
+                await dev.WriteDataAsync(dat).ConfigureAwait(false);
             }
         }
 

@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Motors
             set
             {
                 frequency = value;
-                dev.WriteBufferData((byte) Registers.PwmFrequencySet, new byte[] {(byte) frequency, 0x01}).Wait();
+                dev.WriteBufferDataAsync((byte) Registers.PwmFrequencySet, new byte[] {(byte) frequency, 0x01}).Wait();
             }
         }
 
@@ -104,24 +104,24 @@ namespace Treehopper.Libraries.Motors
         {
             var m1speed = (byte) Math.Round(Math.Abs(m1_speed) * 255);
             var m2speed = (byte) Math.Round(Math.Abs(m2_speed) * 255);
-            await dev.WriteBufferData((byte) Registers.MotorSpeedSet, new[] {m1speed, m2speed}).ConfigureAwait(false);
+            await dev.WriteBufferDataAsync((byte) Registers.MotorSpeedSet, new[] {m1speed, m2speed}).ConfigureAwait(false);
 
             await Task.Delay(10);
 
             if (m1_speed >= 0 && m2_speed >= 0)
-                await dev.WriteBufferData((byte) Registers.DirectionSet,
+                await dev.WriteBufferDataAsync((byte) Registers.DirectionSet,
                         new byte[] {(byte) MotorSetDirection.BothClockwise, 0x01})
                     .ConfigureAwait(false);
             else if (m1_speed >= 0 && m2_speed < 0)
-                await dev.WriteBufferData((byte) Registers.DirectionSet,
+                await dev.WriteBufferDataAsync((byte) Registers.DirectionSet,
                         new byte[] {(byte) MotorSetDirection.Motor1ClockwiseMotor2CounterClockwise, 0x01})
                     .ConfigureAwait(false);
             else if (m1_speed < 0 && m2_speed < 0)
-                await dev.WriteBufferData((byte) Registers.DirectionSet,
+                await dev.WriteBufferDataAsync((byte) Registers.DirectionSet,
                         new byte[] {(byte) MotorSetDirection.BothCounterClockwise, 0x01})
                     .ConfigureAwait(false);
             else if (m1_speed < 0 && m2_speed >= 0)
-                await dev.WriteBufferData((byte) Registers.DirectionSet,
+                await dev.WriteBufferDataAsync((byte) Registers.DirectionSet,
                         new byte[] {(byte) MotorSetDirection.Motor1CounterClockwiseMotor2Clockwise, 0x01})
                     .ConfigureAwait(false);
         }

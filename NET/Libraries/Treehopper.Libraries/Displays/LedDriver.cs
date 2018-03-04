@@ -73,7 +73,7 @@ namespace Treehopper.Libraries.Displays
                     AutoFlush = false;
                     foreach (var led in Leds)
                         led.Brightness = brightness;
-                    Flush().Wait();
+                    FlushAsync().Wait();
                     AutoFlush = savedAutoflushState;
                 }
             }
@@ -109,7 +109,7 @@ namespace Treehopper.Libraries.Displays
             AutoFlush = false;
             foreach (var led in Leds)
                 led.State = false;
-            await Flush(true);
+            await FlushAsync(true);
             AutoFlush = autoflushSave;
         }
 
@@ -118,7 +118,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether to write out all values, even if they appear unchanged.</param>
         /// <returns>An awaitable <see cref="Task" /></returns>
-        public abstract Task Flush(bool force = false);
+        public abstract Task FlushAsync(bool force = false);
 
         internal abstract void SetGlobalBrightness(double brightness);
 

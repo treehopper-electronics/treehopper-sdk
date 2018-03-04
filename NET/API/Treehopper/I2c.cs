@@ -30,6 +30,6 @@ namespace Treehopper
         /// <param name="dataToWrite">A byte array of the data to write to the device.</param>
         /// <param name="numBytesToRead">The number of bytes to read and return.</param>
         /// <returns>The bytes read from the device.</returns>
-        Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead);
+        Task<byte[]> SendReceiveAsync(byte address, byte[] dataToWrite, byte numBytesToRead);
     }
 }

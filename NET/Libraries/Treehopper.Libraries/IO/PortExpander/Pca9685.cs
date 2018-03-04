@@ -166,25 +166,25 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         /// <param name="force">Whether to force the update</param>
         /// <returns>An awaitable task</returns>
-        public async Task Flush(bool force = false)
+        public async Task FlushAsync(bool force = false)
         {
             foreach (var pin in Pins)
                 setPinValue(pin);
 
             // send all the registers
-            dev.WriteBufferData((byte) Registers.LedOnLowBase, pinRegisters).Wait();
+            dev.WriteBufferDataAsync((byte) Registers.LedOnLowBase, pinRegisters).Wait();
         }
 
         private void updateConfig()
         {
             // sleep the chip
-            dev.WriteByteData((byte) Registers.Mode1, 0x10).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Mode1, 0x10).Wait();
             // do the updates
             var mode1 = (byte) (0x30 | ((UseExternalClock ? 1 : 0) << 6));
-            dev.WriteByteData((byte) Registers.Mode1, mode1).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Mode1, mode1).Wait();
 
             var mode2 = (byte) (((int) OutputDrive << 2) | ((InvertOutput ? 1 : 0) << 4));
-            dev.WriteByteData((byte) Registers.Mode2, mode2).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Mode2, mode2).Wait();
 
             //int prescaler = (int)Math.Round((25000000 / (4096 * frequency * 0.8963)) - 1);
             var prescaler = (int) Math.Round(6809.68 / frequency - 1.1157); // weird overshoot issue
@@ -194,12 +194,12 @@ namespace Treehopper.Libraries.IO.PortExpander
                 prescaler = 255;
             }
 
-            dev.WriteByteData((byte) Registers.Prescale, (byte) prescaler).Wait();
+            dev.WriteByteDataAsync((byte) Registers.Prescale, (byte) prescaler).Wait();
 
             // wake up
             mode1 &= 0xEF; // clear the sleep flag
-            dev.WriteByteData((byte) Registers.Mode1, mode1).Wait();
-            Flush(true).Wait(); // we have to rewrite the PWM values (why?)
+            dev.WriteByteDataAsync((byte) Registers.Mode1, mode1).Wait();
+            FlushAsync(true).Wait(); // we have to rewrite the PWM values (why?)
         }
 
         private void setPinValue(Pin pin)
@@ -242,7 +242,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             if (!AutoFlush) return;
 
             setPinValue(pin);
-            dev.WriteBufferData((byte) ((byte) Registers.LedOnLowBase + 4 * pin.pinNumber),
+            dev.WriteBufferDataAsync((byte) ((byte) Registers.LedOnLowBase + 4 * pin.pinNumber),
                     pinRegisters.Skip(4 * pin.pinNumber).Take(4).ToArray())
                 .Wait();
         }
@@ -322,12 +322,12 @@ namespace Treehopper.Libraries.IO.PortExpander
             set { DutyCycle = value * driver.Frequency / 1000000.0; }
         }
 
-        public Task EnablePwm()
+        public Task EnablePwmAsync()
         {
             return Task.CompletedTask;
         }
 
-        public Task DisablePwm()
+        public Task DisablePwmAsync()
         {
             return Task.CompletedTask;
         }

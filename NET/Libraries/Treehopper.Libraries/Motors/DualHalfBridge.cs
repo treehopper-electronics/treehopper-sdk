@@ -23,11 +23,11 @@ namespace Treehopper.Libraries.Motors
         /// <param name="Enable">The PWM input used to control the output enable</param>
         public DualHalfBridge(DigitalOut A, DigitalOut B, Pwm Enable)
         {
-            Enable.EnablePwm();
+            Enable.EnablePwmAsync();
             Enable.DutyCycle = 0;
-            Enable.EnablePwm();
-            A.MakeDigitalPushPullOut();
-            B.MakeDigitalPushPullOut();
+            Enable.EnablePwmAsync();
+            A.MakeDigitalPushPullOutAsync();
+            B.MakeDigitalPushPullOutAsync();
 
             enablePwm = Enable;
             this.A = A;
@@ -45,12 +45,12 @@ namespace Treehopper.Libraries.Motors
             if (Enable != null)
             {
                 Enable.DigitalValue = false;
-                Enable.MakeDigitalPushPullOut();
+                Enable.MakeDigitalPushPullOutAsync();
                 enable = Enable;
             }
 
-            A.MakeDigitalPushPullOut();
-            B.MakeDigitalPushPullOut();
+            A.MakeDigitalPushPullOutAsync();
+            B.MakeDigitalPushPullOutAsync();
 
 
             this.A = A;

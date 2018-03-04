@@ -26,7 +26,7 @@ namespace Treehopper.Demos.AnalogRead
             AdcPin.Mode = PinMode.AnalogInput;
             while (!Console.KeyAvailable)
             {
-                double voltage = await AdcPin.AwaitAnalogVoltageChange();
+                double voltage = await AdcPin.AwaitAnalogVoltageChangeAsync();
                 Console.WriteLine($"New analog voltage: {voltage}V");
             }
         }

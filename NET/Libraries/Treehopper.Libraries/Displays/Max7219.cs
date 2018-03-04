@@ -152,7 +152,7 @@ namespace Treehopper.Libraries.Displays
 
             Array.Reverse(spiData);
 
-            await dev.SendReceive(spiData, SpiBurstMode.BurstTx);
+            await dev.SendReceiveAsync(spiData, SpiBurstMode.BurstTx);
         }
 
         internal override void LedStateChanged(Led led)
@@ -182,7 +182,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether to force all data to be sent, even if it appears unchanged</param>
         /// <returns>An awaitable task that completes when finished</returns>
-        public override async Task Flush(bool force = false)
+        public override async Task FlushAsync(bool force = false)
         {
             if (AutoFlush && !force) return;
 

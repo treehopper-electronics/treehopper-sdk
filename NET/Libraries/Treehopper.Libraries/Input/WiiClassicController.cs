@@ -24,8 +24,8 @@ namespace Treehopper.Libraries.Input
         public WiiClassicController(I2C i2c)
         {
             dev = new SMBusDevice(0x52, i2c);
-            dev.WriteData(new byte[] {0xF0, 0x55}).Wait();
-            dev.WriteData(new byte[] {0xFB, 0x00}).Wait();
+            dev.WriteDataAsync(new byte[] {0xF0, 0x55}).Wait();
+            dev.WriteDataAsync(new byte[] {0xFB, 0x00}).Wait();
 
             L = new Button(new DigitalInPeripheralPin(this), false);
             R = new Button(new DigitalInPeripheralPin(this), false);
@@ -112,8 +112,8 @@ namespace Treehopper.Libraries.Input
 
         public async Task UpdateAsync()
         {
-            await dev.WriteByte(0x00).ConfigureAwait(false);
-            var response = await dev.ReadData(6).ConfigureAwait(false);
+            await dev.WriteByteAsync(0x00).ConfigureAwait(false);
+            var response = await dev.ReadDataAsync(6).ConfigureAwait(false);
             var lx = (response[0] & 0x3F) - 32;
             var ly = (response[1] & 0x3F) - 32;
             var rx = (response[2] >> 7) | ((response[1] & 0xC0) >> 5) | (((response[0] & 0xC0) >> 3) - 16);

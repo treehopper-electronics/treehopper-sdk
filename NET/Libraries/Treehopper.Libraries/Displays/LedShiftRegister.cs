@@ -258,13 +258,13 @@ namespace Treehopper.Libraries.Displays
 
             if (oe != null)
             {
-                oe.MakeDigitalPushPullOut();
+                oe.MakeDigitalPushPullOutAsync();
                 oe.DigitalValue = false;
                 HasGlobalBrightnessControl = false;
             }
             else if (oePwm != null)
             {
-                oePwm.EnablePwm();
+                oePwm.EnablePwmAsync();
                 oePwm.PulseWidth = 0;
                 HasGlobalBrightnessControl = true;
             }

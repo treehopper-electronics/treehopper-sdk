@@ -45,7 +45,7 @@ namespace Treehopper.Libraries.Displays
 
                 val = value;
                 if (AutoFlush)
-                    Flush().Wait();
+                    FlushAsync().Wait();
             }
         }
 
@@ -62,7 +62,7 @@ namespace Treehopper.Libraries.Displays
                 fill = value;
 
                 if (AutoFlush)
-                    Flush().Wait();
+                    FlushAsync().Wait();
             }
         }
 
@@ -89,7 +89,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="force">Whether to force all data to flush, even if it appears to be unchanged</param>
         /// <returns>An awaitable task</returns>
-        public Task Flush(bool force = false)
+        public Task FlushAsync(bool force = false)
         {
             WriteLeds();
             return Leds.Flush(force);

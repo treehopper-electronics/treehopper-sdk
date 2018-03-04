@@ -84,7 +84,7 @@ namespace Treehopper
         ///
         /// Most I2C devices use a register-based scheme for exchanging data; consider using SMBusDevice for interacting
         /// with these devices.
-        public async Task<byte[]> SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
+        public async Task<byte[]> SendReceiveAsync(byte address, byte[] dataToWrite, byte numBytesToRead)
         {
             if (!Enabled)
                 Debug.WriteLine(
@@ -112,14 +112,14 @@ namespace Treehopper
                 {
                     var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                     var tmp = dataToSend.Skip(offset).Take(transferLength);
-                    await _device.SendPeripheralConfigPacket(tmp.ToArray()).ConfigureAwait(false);
+                    await _device.SendPeripheralConfigPacketAsync(tmp.ToArray()).ConfigureAwait(false);
                     offset += transferLength;
                     bytesRemaining -= transferLength;
                 }
 
                 if (numBytesToRead == 0)
                 {
-                    var result = await _device.ReceiveCommsResponsePacket(1).ConfigureAwait(false);
+                    var result = await _device.ReceiveCommsResponsePacketAsync(1).ConfigureAwait(false);
                     if (result[0] != 255)
                     {
                         var error = (I2CTransferError) result[0];
@@ -136,7 +136,7 @@ namespace Treehopper
                     while (bytesRemaining > 0)
                     {
                         var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        var chunk = await _device.ReceiveCommsResponsePacket((uint) numBytesToTransfer).ConfigureAwait(false);
+                        var chunk = await _device.ReceiveCommsResponsePacketAsync((uint) numBytesToTransfer).ConfigureAwait(false);
                         Array.Copy(chunk, 0, result, srcIndex,
                             chunk.Length); // just in case we don't get what we're expecting
                         srcIndex += numBytesToTransfer;
@@ -177,7 +177,7 @@ namespace Treehopper
             dataToSend[0] = (byte) DeviceCommands.I2cConfig;
             dataToSend[1] = (byte) (_enabled ? 0x01 : 0x00);
             dataToSend[2] = (byte) Math.Round(th0);
-            _device.SendPeripheralConfigPacket(dataToSend);
+            _device.SendPeripheralConfigPacketAsync(dataToSend);
         }
     }
 }

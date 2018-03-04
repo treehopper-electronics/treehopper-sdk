@@ -66,9 +66,9 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// </summary>
         /// <param name="force">Whether the data should be flushed, even if it appears to be unchanged</param>
         /// <returns>An awaitable task</returns>
-        public Task Flush(bool force = false)
+        public Task FlushAsync(bool force = false)
         {
-            return dev.WriteByteData((byte) Registers.OutputLatch, olat.GetBytes()[0]);
+            return dev.WriteByteDataAsync((byte) Registers.OutputLatch, olat.GetBytes()[0]);
         }
 
         /// <summary>
@@ -86,18 +86,18 @@ namespace Treehopper.Libraries.IO.PortExpander
         {
             olat.Set(portExpanderPin.PinNumber, portExpanderPin.DigitalValue);
             if (AutoFlush)
-                await Flush().ConfigureAwait(false);
+                await FlushAsync().ConfigureAwait(false);
         }
 
         async Task IPortExpanderParent.OutputModeChanged(IPortExpanderPin portExpanderPin)
         {
             var pinNumber = portExpanderPin.PinNumber;
             iodir.Set(pinNumber, portExpanderPin.Mode == PortExpanderPinMode.DigitalInput);
-            await dev.WriteByteData((byte) Registers.IoDirection, iodir.GetBytes()[0]).ConfigureAwait(false);
+            await dev.WriteByteDataAsync((byte) Registers.IoDirection, iodir.GetBytes()[0]).ConfigureAwait(false);
 
             var pin = Pins[pinNumber];
             gppu.Set(pinNumber, pin.PullUpEnabled);
-            await dev.WriteByteData((byte) Registers.GpPullUp, gppu.GetBytes()[0]).ConfigureAwait(false);
+            await dev.WriteByteDataAsync((byte) Registers.GpPullUp, gppu.GetBytes()[0]).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <returns></returns>
         protected async Task readPort()
         {
-            var data = await dev.ReadByteData((byte) Registers.Gpio);
+            var data = await dev.ReadByteDataAsync((byte) Registers.Gpio);
             gpio = new BitArray(new[] {data});
             for (var i = 0; i < gpio.Length; i++)
                 Pins[i].UpdateInputValue(gpio.Get(i));

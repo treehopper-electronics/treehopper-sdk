@@ -57,7 +57,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             for (var i = 0; i < numPins; i++)
                 Pins.Add(new ShiftOutPin(this, i));
 
-            Task.Run(() => Flush()).Wait();
+            Task.Run(() => FlushAsync()).Wait();
         }
 
         internal void UpdateOutput(ShiftOutPin shiftOutPin)

@@ -51,7 +51,7 @@ namespace Treehopper
     ///     </para>
     ///     <para>
     ///         The clock rate to operate the SPI bus at is specified by the
-    ///         <see cref="SendReceive(byte[], SpiChipSelectPin, ChipSelectMode, double, SpiBurstMode, SpiMode)" /> function.
+    ///         <see cref="SendReceiveAsync(byte[], SpiChipSelectPin, ChipSelectMode, double, SpiBurstMode, SpiMode)" /> function.
     ///         The minimum clock rate is 93.75 kHz (0.093.75 MHz), while the maximum clock rate is 24 MHz, but there are no
     ///         performance gains above 6 MHz. Since Treehopper's MCU has no internal DMA, bytes are placed into the SPI buffer
     ///         one by one by the processor; it takes 8 cycles to perform this operation, and since the processor runs at 48
@@ -129,7 +129,7 @@ namespace Treehopper
         /// <param name="burstMode">Whether to use one of the burst modes</param>
         /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <returns>An awaitable byte array with the received data.</returns>
-        public async Task<byte[]> SendReceive(byte[] dataToWrite, SpiChipSelectPin chipSelect = null,
+        public async Task<byte[]> SendReceiveAsync(byte[] dataToWrite, SpiChipSelectPin chipSelect = null,
             ChipSelectMode chipSelectMode = ChipSelectMode.SpiActiveLow, double speedMhz = 6,
             SpiBurstMode burstMode = SpiBurstMode.NoBurst, SpiMode spiMode = SpiMode.Mode00)
         {
@@ -182,7 +182,7 @@ namespace Treehopper
                 // just send the header
                 if (burstMode == SpiBurstMode.BurstRx)
                 {
-                    await _device.SendPeripheralConfigPacket(header);
+                    await _device.SendPeripheralConfigPacketAsync(header);
                 }
                 else
                 {
@@ -196,7 +196,7 @@ namespace Treehopper
                     {
                         var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var tmp = dataToSend.Skip(offset).Take(transferLength);
-                        await _device.SendPeripheralConfigPacket(tmp.ToArray());
+                        await _device.SendPeripheralConfigPacketAsync(tmp.ToArray());
                         offset += transferLength;
                         bytesRemaining -= transferLength;
                     }
@@ -210,7 +210,7 @@ namespace Treehopper
                     while (bytesRemaining > 0)
                     {
                         var numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                        var receivedData = await _device.ReceiveCommsResponsePacket((uint) numBytesToTransfer)
+                        var receivedData = await _device.ReceiveCommsResponsePacketAsync((uint) numBytesToTransfer)
                             .ConfigureAwait(false);
                         Array.Copy(receivedData, 0, returnedData, srcIndex,
                             receivedData.Length); // just in case we don't get what we're expecting
@@ -239,7 +239,7 @@ namespace Treehopper
             var dataToSend = new byte[2];
             dataToSend[0] = (byte) DeviceCommands.SpiConfig;
             dataToSend[1] = (byte) (_enabled ? 0x01 : 0x00);
-            _device.SendPeripheralConfigPacket(dataToSend);
+            _device.SendPeripheralConfigPacketAsync(dataToSend);
         }
     }
 }

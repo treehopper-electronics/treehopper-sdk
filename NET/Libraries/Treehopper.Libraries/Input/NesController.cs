@@ -59,7 +59,7 @@ namespace Treehopper.Libraries.Input
         /// </remarks>
         public virtual async Task UpdateAsync()
         {
-            var result = await dev.SendReceive(new byte[] {0x00});
+            var result = await dev.SendReceiveAsync(new byte[] {0x00});
             var values = new BitArray(result);
             ((DigitalInPeripheralPin) A.Input).DigitalValue = values[7];
             ((DigitalInPeripheralPin) B.Input).DigitalValue = values[6];

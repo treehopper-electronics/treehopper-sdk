@@ -103,7 +103,7 @@ namespace Treehopper.Libraries.IO.Adc
         /// <summary>
         ///     Make the pin an analog input. This is unused in most implementations
         /// </summary>
-        public Task MakeAnalogIn()
+        public Task MakeAnalogInAsync()
         {
             return Task.FromResult<object>(null);
         }

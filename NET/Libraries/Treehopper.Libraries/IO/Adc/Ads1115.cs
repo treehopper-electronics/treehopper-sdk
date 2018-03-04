@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.IO.Adc
             dev = new SMBusDevice((byte) (0x48 | (addr ? 1 : 0)), i2c, speed);
             Mode = channelMode;
 
-            dev.WriteBufferData(0x01, new byte[] {0x01, 0x83}).Wait();
+            dev.WriteBufferDataAsync(0x01, new byte[] {0x01, 0x83}).Wait();
 
             for (var i = 0; i < (channelMode == ChannelMode.SingleEnded ? 4 : 2); i++)
                 Pins.Add(new AdsPin(this));
@@ -85,10 +85,10 @@ namespace Treehopper.Libraries.IO.Adc
                     if (i == 1)
                         config |= 3 << 4;
                 }
-                await dev.WriteBufferData(0x01, new byte[] {(byte) config, 0xE3});
+                await dev.WriteBufferDataAsync(0x01, new byte[] {(byte) config, 0xE3});
                 await Task.Delay(1);
                 // data is stored in big-endian format
-                Pins[i].AdcValue = await dev.ReadWordDataBE(0x00);               
+                Pins[i].AdcValue = await dev.ReadWordDataBEAsync(0x00);               
             }
         }
 

@@ -24,7 +24,7 @@ namespace Ds18b20Test
             await board.ConnectAsync();
             var group = new Ds18b20.Group(board.Uart);
             Console.WriteLine("Found temperature sensors at addresses:");
-            var sensors = await group.FindAll();
+            var sensors = await group.FindAllAsync();
             foreach (var sensor in sensors)
             {
                 Console.WriteLine(sensor.Address);

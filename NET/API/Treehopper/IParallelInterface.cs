@@ -27,14 +27,14 @@ namespace Treehopper
         /// </summary>
         /// <param name="command">The command data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
-        Task WriteCommand(uint[] command);
+        Task WriteCommandAsync(uint[] command);
 
         /// <summary>
         ///     Write one or more bytes to the data register
         /// </summary>
         /// <param name="data">The data to write</param>
         /// <returns>An awaitable task that completes when the write operation finishes</returns>
-        Task WriteData(uint[] data);
+        Task WriteDataAsync(uint[] data);
     }
 
     /// <summary>
@@ -48,13 +48,13 @@ namespace Treehopper
         /// <param name="command">The command to write before reading</param>
         /// <param name="length">The number of words to read</param>
         /// <returns>The words read</returns>
-        Task<ushort[]> ReadCommand(uint command, int length);
+        Task<ushort[]> ReadCommandAsync(uint command, int length);
 
         /// <summary>
         ///     Read one or more words from the data register
         /// </summary>
         /// <param name="length">The number of words to read</param>
         /// <returns>The words read</returns>
-        Task<ushort[]> ReadData(int length);
+        Task<ushort[]> ReadDataAsync(int length);
     }
 }

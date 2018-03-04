@@ -193,13 +193,13 @@ namespace Treehopper.Libraries.Displays
 
             if (bits == BitMode.FourBit)
             {
-                Task.Run(() => iface.WriteCommand(new uint[] {0x03})).Wait();
+                Task.Run(() => iface.WriteCommandAsync(new uint[] {0x03})).Wait();
                 Thread.Sleep(10);
-                Task.Run(() => iface.WriteCommand(new uint[] {0x03})).Wait();
+                Task.Run(() => iface.WriteCommandAsync(new uint[] {0x03})).Wait();
                 Thread.Sleep(10);
-                Task.Run(() => iface.WriteCommand(new uint[] {0x03})).Wait();
+                Task.Run(() => iface.WriteCommandAsync(new uint[] {0x03})).Wait();
                 Thread.Sleep(10);
-                Task.Run(() => iface.WriteCommand(new uint[] {0x02})).Wait();
+                Task.Run(() => iface.WriteCommandAsync(new uint[] {0x02})).Wait();
             }
 
 
@@ -212,7 +212,7 @@ namespace Treehopper.Libraries.Displays
             if (Backlight != null)
             {
                 backlight = Backlight;
-                Task.Run(backlight.MakeDigitalPushPullOut).Wait();
+                Task.Run(backlight.MakeDigitalPushPullOutAsync).Wait();
             }
 
 
@@ -329,8 +329,8 @@ namespace Treehopper.Libraries.Displays
         private Task writeCommand(byte cmd)
         {
             if (bits == BitMode.EightBit)
-                return iface.WriteCommand(new uint[] {cmd});
-            return iface.WriteCommand(new[] {(uint) (cmd >> 4), (uint) (cmd & 0x0f)}); // send high nib, then low nib
+                return iface.WriteCommandAsync(new uint[] {cmd});
+            return iface.WriteCommandAsync(new[] {(uint) (cmd >> 4), (uint) (cmd & 0x0f)}); // send high nib, then low nib
         }
 
         private Task writeData(byte[] data)
@@ -354,7 +354,7 @@ namespace Treehopper.Libraries.Displays
                 }
             }
 
-            return iface.WriteData(dataToSend);
+            return iface.WriteDataAsync(dataToSend);
         }
     }
 }

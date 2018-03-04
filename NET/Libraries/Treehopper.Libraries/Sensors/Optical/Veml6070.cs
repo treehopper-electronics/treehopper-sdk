@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             this.i2c = i2c;
             this.i2c.Enabled = true;
             this.time = time;
-            this.i2c.SendReceive(0x38, new byte[] {(byte) ((byte) time << 2 | 0x02)}, 0);
+            this.i2c.SendReceiveAsync(0x38, new byte[] {(byte) ((byte) time << 2 | 0x02)}, 0);
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public async Task UpdateAsync()
         {
-            var lsb = await i2c.SendReceive(0x38, null, 1).ConfigureAwait(false);
-            var msb = await i2c.SendReceive(0x39, null, 1).ConfigureAwait(false);
+            var lsb = await i2c.SendReceiveAsync(0x38, null, 1).ConfigureAwait(false);
+            var msb = await i2c.SendReceiveAsync(0x39, null, 1).ConfigureAwait(false);
             int val = msb[0] << 8 | lsb[0];
             _uv = 5.0 * val / Math.Pow(2, (int)time - 1); // take into account the integration time
 

@@ -49,8 +49,8 @@ namespace Treehopper.Libraries.Input
         public WiiNunchuk(I2C i2c)
         {
             dev = new SMBusDevice(0x52, i2c);
-            dev.WriteData(new byte[] {0xF0, 0x55}).Wait();
-            dev.WriteData(new byte[] {0xFB, 0x00}).Wait();
+            dev.WriteDataAsync(new byte[] {0xF0, 0x55}).Wait();
+            dev.WriteDataAsync(new byte[] {0xFB, 0x00}).Wait();
 
             C = new Button(new DigitalInPeripheralPin(this), false);
             Z = new Button(new DigitalInPeripheralPin(this), false);
@@ -110,8 +110,8 @@ namespace Treehopper.Libraries.Input
         public async Task UpdateAsync()
         {
             // the nunchuk does not respond to standard SMBus-compliant register reads, so we have to write a register, then do a new transaction to read out the data
-            await dev.WriteByte(0x00).ConfigureAwait(false);
-            var response = await dev.ReadData(6).ConfigureAwait(false);
+            await dev.WriteByteAsync(0x00).ConfigureAwait(false);
+            var response = await dev.ReadDataAsync(6).ConfigureAwait(false);
 
             joystick.X = response[0] / 127.5f - 1f; // normalize joystick data to [-1, 1]
             joystick.Y = response[1] / 127.5f - 1f;

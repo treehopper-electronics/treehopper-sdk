@@ -27,7 +27,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             this.address = address;
 
             // get the current data from the device
-            var result = i2c.SendReceive(address, null, 10).Result;
+            var result = i2c.SendReceiveAsync(address, null, 10).Result;
 
             // set the config to Master-Controlled mode
             var dataToWrite = new byte[4];
@@ -36,7 +36,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
             dataToWrite[2] = result[8];
             dataToWrite[3] = (byte) ((result[9] & 0x1F) | 0x40); // LP = 1 -> 12 ms period
 
-            Task.Run(() => i2c.SendReceive(address, dataToWrite, 0)).Wait();
+            Task.Run(() => i2c.SendReceiveAsync(address, dataToWrite, 0)).Wait();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            var value = await i2c.SendReceive(address, null, 7);
+            var value = await i2c.SendReceiveAsync(address, null, 7);
 
             // the datasheet lists a digital value of 340 @ 25C, and a resolution of 1.1C per LSB
             celsius = (((short) ((((value[3] & 0xf0) << 4) | value[6]) << 4) >> 4) - 340) * 1.1 + 25.0;

@@ -15,14 +15,14 @@ namespace Treehopper.Libraries.Sensors.Inertial
         private SMBusDevice dev;
         private Lis3dhRegisters registers;
 
-        public static async Task<IList<Lis3dh>> Probe(I2C i2c, int rate=100)
+        public static async Task<IList<Lis3dh>> ProbeAsync(I2C i2c, int rate=100)
         {
             var deviceList = new List<Lis3dh>();
 
             try
             {
                 var dev = new SMBusDevice(0x18, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0F).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0F).ConfigureAwait(false);
                 if (whoAmI == 0x33)
                     deviceList.Add(new Lis3dh(i2c, false, rate));
             }
@@ -31,7 +31,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             try
             {
                 var dev = new SMBusDevice(0x19, i2c, 100);
-                var whoAmI = await dev.ReadByteData(0x0F).ConfigureAwait(false);
+                var whoAmI = await dev.ReadByteDataAsync(0x0F).ConfigureAwait(false);
                 if (whoAmI == 0x33)
                     deviceList.Add(new Lis3dh(i2c, true, rate));
             }

@@ -23,13 +23,13 @@ namespace Treehopper
         /// </summary>
         /// <param name="data">A byte array of the data to write</param>
         /// <returns>An awaitable bool indicating whether the write operation was successful</returns>
-        Task<bool> Write(byte[] data);
+        Task<bool> WriteAsync(byte[] data);
 
         /// <summary>
         ///     Read data from the bootloader device
         /// </summary>
         /// <param name="numBytes">The number of bytes to read</param>
         /// <returns>True if the read was successful; false otherwise.</returns>
-        Task<byte[]> Read(int numBytes);
+        Task<byte[]> ReadAsync(int numBytes);
     }
 }

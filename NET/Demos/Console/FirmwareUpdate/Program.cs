@@ -23,7 +23,7 @@ namespace FirmwareUpdate
                 if (response.ToLower() == "t")
                 {
                     var board = await ConnectionService.Instance.GetFirstDeviceAsync();
-                    await SelfTest(board).ConfigureAwait(false);
+                    await SelfTestAsync(board).ConfigureAwait(false);
                 } else
                 {
                     while (FirmwareConnectionService.Instance.Boards.Count == 0)
@@ -67,7 +67,7 @@ namespace FirmwareUpdate
             }
         }
 
-        private static async Task<bool> SelfTest(TreehopperUsb board)
+        private static async Task<bool> SelfTestAsync(TreehopperUsb board)
         {
             Console.WriteLine($"Beginning self-test of {board}");
             bool retVal = true;
@@ -75,8 +75,8 @@ namespace FirmwareUpdate
             // make each pin an input
             foreach (var pin in board.Pins)
             {
-                await pin.MakeAnalogIn().ConfigureAwait(false);
-                await board.AwaitPinUpdate().ConfigureAwait(false);
+                await pin.MakeAnalogInAsync().ConfigureAwait(false);
+                await board.AwaitPinUpdateAsync().ConfigureAwait(false);
                 await Task.Delay(10).ConfigureAwait(false);
 
                 if (pin.AnalogValue < 0.1)
@@ -92,7 +92,7 @@ namespace FirmwareUpdate
                 board.Pins[i].Mode = PinMode.PushPullOutput;
                 await board.Pins[i].WriteDigitalValueAsync(false).ConfigureAwait(false);
                 await Task.Delay(10).ConfigureAwait(false);
-                await board.AwaitPinUpdate().ConfigureAwait(false);
+                await board.AwaitPinUpdateAsync().ConfigureAwait(false);
                 if (board.Pins[i + 1].AnalogValue < 0.1)
                 {
                     Console.WriteLine($"Short detected on pins {i} and {i + 1}.");

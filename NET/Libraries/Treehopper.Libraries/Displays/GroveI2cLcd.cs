@@ -46,24 +46,24 @@ namespace Treehopper.Libraries.Displays
 
             public int Width => 8;
 
-            public Task WriteCommand(uint[] command)
+            public Task WriteCommandAsync(uint[] command)
             {
                 var bytes = new byte[command.Length];
 
                 for (var i = 0; i < command.Length; i++)
                     bytes[i] = (byte) command[i];
 
-                return dev.WriteBufferData(0x80, bytes);
+                return dev.WriteBufferDataAsync(0x80, bytes);
             }
 
-            public Task WriteData(uint[] data)
+            public Task WriteDataAsync(uint[] data)
             {
                 var bytes = new byte[data.Length];
 
                 for (var i = 0; i < data.Length; i++)
                     bytes[i] = (byte) data[i];
 
-                return dev.WriteBufferData(0x40, bytes);
+                return dev.WriteBufferDataAsync(0x40, bytes);
             }
         }
     }

@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Displays
 
         public IFlushable Parent { get; }
 
-        public Task Flush(bool force = false)
+        public Task FlushAsync(bool force = false)
         {
             return flush();
         }
@@ -77,7 +77,7 @@ namespace Treehopper.Libraries.Displays
             for (var i = 0; i < RawBuffer.Length; i++)
                 RawBuffer[i] = 0;
 
-            return Flush();
+            return FlushAsync();
         }
 
         /// <summary>
