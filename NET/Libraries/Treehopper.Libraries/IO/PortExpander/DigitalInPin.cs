@@ -66,7 +66,7 @@ namespace Treehopper.Libraries.IO.PortExpander
                     while (digitalValue == oldValue)
                     {
                         await parent.UpdateAsync().ConfigureAwait(false);
-                        await Task.Delay(parent.AwaitPollingInterval);
+                        await Task.Delay(parent.AwaitPollingInterval).ConfigureAwait(false);
                     }
 
                     return digitalValue;

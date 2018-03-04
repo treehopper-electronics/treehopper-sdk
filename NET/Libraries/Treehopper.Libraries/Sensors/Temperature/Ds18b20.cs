@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     \code
         ///     sensor.AutoUpdateWhenPropertyRead = false // set this once to disable updates when invoking property reads
         ///     ...
-        ///     await sensor.Update(); // request an update -- will take ~750 ms.
+        ///     await sensor.UpdateAsync(); // request an update -- will take ~750 ms.
         ///     this.SensorValue = sensor.Celsius; // copy the updated sensor data to our data-binding property
         ///     RaisePropertyChanged("SensorValue"); // inform the UWP/WPF GUI that we have new sensor data
         ///     \endcode
@@ -88,30 +88,30 @@ namespace Treehopper.Libraries.Sensors.Temperature
             {
                 if (Address == 0)
                 {
-                    await oneWire.OneWireResetAsync();
-                    await oneWire.SendAsync(new byte[] { 0xCC, 0x44 });
+                    await oneWire.OneWireResetAsync().ConfigureAwait(false);
+                    await oneWire.SendAsync(new byte[] { 0xCC, 0x44 }).ConfigureAwait(false);
                 }
                 else
                 {
-                    await oneWire.OneWireResetAndMatchAddressAsync(Address);
-                    await oneWire.SendAsync(0x44);
+                    await oneWire.OneWireResetAndMatchAddressAsync(Address).ConfigureAwait(false);
+                    await oneWire.SendAsync(0x44).ConfigureAwait(false);
                 }
 
-                await Task.Delay(750);
+                await Task.Delay(750).ConfigureAwait(false);
             }
 
             if (Address == 0)
             {
-                await oneWire.OneWireResetAsync();
-                await oneWire.SendAsync(new byte[] {0xCC, 0xBE});
+                await oneWire.OneWireResetAsync().ConfigureAwait(false);
+                await oneWire.SendAsync(new byte[] {0xCC, 0xBE}).ConfigureAwait(false);
             }
             else
             {
-                await oneWire.OneWireResetAndMatchAddressAsync(Address);
-                await oneWire.SendAsync(0xBE);
+                await oneWire.OneWireResetAndMatchAddressAsync(Address).ConfigureAwait(false);
+                await oneWire.SendAsync(0xBE).ConfigureAwait(false);
             }
 
-            var data = await oneWire.ReceiveAsync(2);
+            var data = await oneWire.ReceiveAsync(2).ConfigureAwait(false);
 
             celsius = (short) (data[0] | (data[1] << 8)) / 16d;
 
@@ -180,7 +180,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
             {
                 SensorList = new List<Ds18b20>();
                 oneWire.StartOneWire();
-                var addresses = await oneWire.OneWireSearchAsync();
+                var addresses = await oneWire.OneWireSearchAsync().ConfigureAwait(false);
                 foreach (var address in addresses)
                     if ((address & 0xff) == 0x28)
                         SensorList.Add(new Ds18b20(oneWire, address));
@@ -199,9 +199,9 @@ namespace Treehopper.Libraries.Sensors.Temperature
                 foreach (var sensor in SensorList)
                     sensor.EnableGroupConversion = true;
 
-                await oneWire.OneWireResetAsync();
-                await oneWire.SendAsync(new byte[] {0xCC, 0x44});
-                await Task.Delay(750);
+                await oneWire.OneWireResetAsync().ConfigureAwait(false);
+                await oneWire.SendAsync(new byte[] {0xCC, 0x44}).ConfigureAwait(false);
+                await Task.Delay(750).ConfigureAwait(false);
                 return new ConversionCycle(this);
             }
 

@@ -142,7 +142,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            await registers.readRange(registers.outX, registers.outZ);
+            await registers.readRange(registers.outX, registers.outZ).ConfigureAwait(false);
             gyroscope.X = registers.outX.value * 0.00875f;
             gyroscope.Y = registers.outY.value * 0.00875f;
             gyroscope.Z = registers.outZ.value * 0.00875f;

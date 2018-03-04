@@ -37,18 +37,18 @@ namespace Treehopper.Libraries.Displays
         protected override async Task flush()
         {
             // reset the pointer to (0, 0);
-            await sendCommand(Command.SetX);
-            await sendCommand(Command.SetY);
+            await sendCommand(Command.SetX).ConfigureAwait(false);
+            await sendCommand(Command.SetY).ConfigureAwait(false);
 
             dc.DigitalValue = true;
             var chunk = new byte[252];
 
             // we have to spit up the display buffer into two chunks so we don't violate the max-size of the SPI transfer
             Array.Copy(RawBuffer, 0, chunk, 0, 252);
-            await spi.SendReceiveAsync(chunk, SpiBurstMode.BurstTx);
+            await spi.SendReceiveAsync(chunk, SpiBurstMode.BurstTx).ConfigureAwait(false);
 
             Array.Copy(RawBuffer, 252, chunk, 0, 252);
-            await spi.SendReceiveAsync(chunk, SpiBurstMode.BurstTx);
+            await spi.SendReceiveAsync(chunk, SpiBurstMode.BurstTx).ConfigureAwait(false);
         }
 
         protected override void setBrightness(double brightness)

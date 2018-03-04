@@ -142,7 +142,7 @@ namespace Treehopper
             if (chipSelect != null && chipSelect.SpiModule != this)
                 Utility.Error("Chip select pin must belong to this SPI module", true);
 
-            using (await _device.ComsLock.LockAsync())
+            using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 var spi0Ckr = (int) Math.Round(24.0 / speedMhz - 1);
                 if (spi0Ckr > 255.0)
@@ -182,7 +182,7 @@ namespace Treehopper
                 // just send the header
                 if (burstMode == SpiBurstMode.BurstRx)
                 {
-                    await _device.SendPeripheralConfigPacketAsync(header);
+                    await _device.SendPeripheralConfigPacketAsync(header).ConfigureAwait(false);
                 }
                 else
                 {
@@ -196,7 +196,7 @@ namespace Treehopper
                     {
                         var transferLength = bytesRemaining > 64 ? 64 : bytesRemaining;
                         var tmp = dataToSend.Skip(offset).Take(transferLength);
-                        await _device.SendPeripheralConfigPacketAsync(tmp.ToArray());
+                        await _device.SendPeripheralConfigPacketAsync(tmp.ToArray()).ConfigureAwait(false);
                         offset += transferLength;
                         bytesRemaining -= transferLength;
                     }

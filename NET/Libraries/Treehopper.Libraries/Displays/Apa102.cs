@@ -92,7 +92,7 @@ namespace Treehopper.Libraries.Displays
                     break;
 
                 await spi.SendReceiveAsync(chunk, null, ChipSelectMode.SpiActiveLow, freq, SpiBurstMode.BurstTx,
-                    SpiMode.Mode11);
+                    SpiMode.Mode11).ConfigureAwait(false);
                 chunkCount++;
             }
         }

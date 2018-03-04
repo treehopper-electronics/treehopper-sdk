@@ -180,7 +180,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            await registers.readRange(registers.accelX, registers.temp);
+            await registers.readRange(registers.accelX, registers.temp).ConfigureAwait(false);
 
             accelerometer.X = registers.accelX.value / 1000f;
             accelerometer.Y = registers.accelY.value / 1000f;

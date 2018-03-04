@@ -648,7 +648,7 @@ namespace Treehopper.Libraries.Motors
 
         private async Task GetFullStatus()
         {
-            var data = await dev.ReadBufferDataAsync((byte) Command.GetFullStatus1, 9);
+            var data = await dev.ReadBufferDataAsync((byte) Command.GetFullStatus1, 9).ConfigureAwait(false);
             var irun = (data[1] >> 4) & 0x0f;
             runningCurrent = (RunningCurrent) irun;
 
@@ -671,12 +671,12 @@ namespace Treehopper.Libraries.Motors
 
             shaftDirection = (data[3] & 0x10) > 0;
 
-            await GetPositionStatus();
+            await GetPositionStatus().ConfigureAwait(false);
         }
 
         private async Task GetPositionStatus()
         {
-            var data = await dev.ReadBufferDataAsync((byte) Command.GetFullStatus2, 8);
+            var data = await dev.ReadBufferDataAsync((byte) Command.GetFullStatus2, 8).ConfigureAwait(false);
             ActualPosition = (short) ((data[1] << 8) | data[2]);
             targetPosition = (short) ((data[3] << 8) | data[4]);
             securePosition = data[5];
@@ -689,10 +689,10 @@ namespace Treehopper.Libraries.Motors
         /// <returns>An awaitable task that completes when the motor reaches the target position</returns>
         public async Task MoveAsync(short position)
         {
-            await SetPosition(position);
+            await SetPosition(position).ConfigureAwait(false);
             while (true)
             {
-                await GetPositionStatus();
+                await GetPositionStatus().ConfigureAwait(false);
                 if (ActualPosition == TargetPosition)
                     return;
             }

@@ -87,7 +87,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         public override async Task UpdateAsync()
         {
             // first the BMP280 stuff
-            await base.UpdateAsync();
+            await base.UpdateAsync().ConfigureAwait(false);
 
             // now the BME stuff
             double var_H;

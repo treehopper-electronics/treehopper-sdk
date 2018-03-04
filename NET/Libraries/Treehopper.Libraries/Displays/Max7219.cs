@@ -152,7 +152,7 @@ namespace Treehopper.Libraries.Displays
 
             Array.Reverse(spiData);
 
-            await dev.SendReceiveAsync(spiData, SpiBurstMode.BurstTx);
+            await dev.SendReceiveAsync(spiData, SpiBurstMode.BurstTx).ConfigureAwait(false);
         }
 
         internal override void LedStateChanged(Led led)

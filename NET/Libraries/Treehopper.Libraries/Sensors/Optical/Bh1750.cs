@@ -27,14 +27,14 @@ namespace Treehopper.Libraries.Sensors.Optical
 
             try
             {
-                var response = await i2c.SendReceiveAsync(0x23, null, 1);
+                var response = await i2c.SendReceiveAsync(0x23, null, 1).ConfigureAwait(false);
                 devs.Add(new Bh1750(i2c, false, rate));
             }
             catch (Exception) { }
 
             try
             {
-                var response = await i2c.SendReceiveAsync(0x5C, null, 1);
+                var response = await i2c.SendReceiveAsync(0x5C, null, 1).ConfigureAwait(false);
                 devs.Add(new Bh1750(i2c, true, rate));
             }
             catch (Exception) { }
@@ -87,7 +87,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            _lux = await dev.ReadWordBEAsync() / 1.2;
+            _lux = await dev.ReadWordBEAsync().ConfigureAwait(false) / 1.2;
             RaisePropertyChanged(this);
         }
     }

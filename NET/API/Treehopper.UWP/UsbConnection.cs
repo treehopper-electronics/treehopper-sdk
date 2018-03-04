@@ -118,7 +118,7 @@ namespace Treehopper.Uwp
             IsOpen = false;
         }
 
-        public async Task SendDataPinConfigChannel(byte[] data)
+        public async Task SendDataPinConfigChannelAsync(byte[] data)
         {
             if (!IsOpen)
                 return;
@@ -133,7 +133,7 @@ namespace Treehopper.Uwp
             }
         }
 
-        public async Task SendDataPeripheralChannel(byte[] data)
+        public async Task SendDataPeripheralChannelAsync(byte[] data)
         {
             if (!IsOpen)
                 return;

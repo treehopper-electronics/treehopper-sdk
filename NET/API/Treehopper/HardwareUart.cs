@@ -119,7 +119,7 @@ namespace Treehopper
             dataToSend.CopyTo(data, 3);
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await _device.SendPeripheralConfigPacketAsync(data);
+                await _device.SendPeripheralConfigPacketAsync(data).ConfigureAwait(false);
                 await _device.ReceiveCommsResponsePacketAsync(1).ConfigureAwait(false);
             }
         }
@@ -151,7 +151,7 @@ namespace Treehopper
 
                 using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    await _device.SendPeripheralConfigPacketAsync(data);
+                    await _device.SendPeripheralConfigPacketAsync(data).ConfigureAwait(false);
                     var receivedData = await _device.ReceiveCommsResponsePacketAsync(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
@@ -169,7 +169,7 @@ namespace Treehopper
 
                 using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
                 {
-                    await _device.SendPeripheralConfigPacketAsync(data);
+                    await _device.SendPeripheralConfigPacketAsync(data).ConfigureAwait(false);
                     var receivedData = await _device.ReceiveCommsResponsePacketAsync(33).ConfigureAwait(false);
                     int len = receivedData[32];
                     retVal = new byte[len];
@@ -194,7 +194,7 @@ namespace Treehopper
             data[1] = (byte) UartCommand.OneWireReset;
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await _device.SendPeripheralConfigPacketAsync(data);
+                await _device.SendPeripheralConfigPacketAsync(data).ConfigureAwait(false);
                 var receivedData = await _device.ReceiveCommsResponsePacketAsync(1).ConfigureAwait(false);
                 retVal = receivedData[0] > 0;
             }
@@ -217,7 +217,7 @@ namespace Treehopper
             data[1] = (byte) UartCommand.OneWireScan;
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
-                await _device.SendPeripheralConfigPacketAsync(data);
+                await _device.SendPeripheralConfigPacketAsync(data).ConfigureAwait(false);
                 while (true)
                 {
                     var receivedData = await _device.ReceiveCommsResponsePacketAsync(9).ConfigureAwait(false);

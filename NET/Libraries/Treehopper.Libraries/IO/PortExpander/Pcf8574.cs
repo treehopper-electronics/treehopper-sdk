@@ -71,7 +71,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             {
                 newValues.CopyTo(oldValues, 0);
 
-                await dev.WriteDataAsync(newValues);
+                await dev.WriteDataAsync(newValues).ConfigureAwait(false);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <returns>An awaitable task that completes when finished</returns>
         protected override async Task readPort()
         {
-            var data = await dev.ReadDataAsync((byte) numBytes);
+            var data = await dev.ReadDataAsync((byte) numBytes).ConfigureAwait(false);
             for (var i = 0; i < Pins.Count; i++)
             {
                 var bank = i / 8;

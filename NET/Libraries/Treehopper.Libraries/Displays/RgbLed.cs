@@ -83,7 +83,7 @@ namespace Treehopper.Libraries.Displays
             foreach (var driver in drivers)
             {
                 if (driver.AutoFlush) break; // already flushed out
-                await driver.FlushAsync();
+                await driver.FlushAsync().ConfigureAwait(false);
             }
         }
 

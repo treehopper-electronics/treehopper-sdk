@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.IO.Adc
         public async Task<double> ReadAsync(Channel channel = Channel.Channel0)
         {
             //  SendReceive(byte address, byte[] dataToWrite, byte numBytesToRead)
-            int data = await dev.ReadWordDataAsync((byte) ((byte) channel | (byte) Ltc2305ConfigBits.UnipolarMode));
+            int data = await dev.ReadWordDataAsync((byte) ((byte) channel | (byte) Ltc2305ConfigBits.UnipolarMode)).ConfigureAwait(false);
             var retVal = CodeToVoltage(data, 5.0, Ltc2305ConfigBits.UnipolarMode);
             return retVal;
         }

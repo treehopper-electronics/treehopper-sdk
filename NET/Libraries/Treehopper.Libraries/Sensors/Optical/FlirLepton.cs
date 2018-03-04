@@ -40,7 +40,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         public async Task<ushort[,]> GetRawFrameAsync()
         {
             //spi.ChipSelect.DigitalValue = false;
-            await Task.Delay(185);
+            await Task.Delay(185).ConfigureAwait(false);
             //spi.ChipSelect.DigitalValue = true;
 
             var frame = new ushort[height, width];
@@ -52,7 +52,7 @@ namespace Treehopper.Libraries.Sensors.Optical
                 var packet = new VoSPI();
                 while (!syncAcquired)
                 {
-                    packet = await GetPacketAsync();
+                    packet = await GetPacketAsync().ConfigureAwait(false);
                     if ((packet.Id & 0x000f) != 0x000f)
                         syncAcquired = true;
                 }
@@ -65,7 +65,7 @@ namespace Treehopper.Libraries.Sensors.Optical
                         frame[i, j] = packet.Payload[j];
                     if (i == height - 1)
                         frameAcquired = true;
-                    packet = await GetPacketAsync();
+                    packet = await GetPacketAsync().ConfigureAwait(false);
                 }
             }
 

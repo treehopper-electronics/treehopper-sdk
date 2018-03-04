@@ -55,7 +55,7 @@ namespace Treehopper.Libraries.Displays
             var bright = (int) (Brightness < 1.0 ? Math.Ceiling(Brightness * 7.0) : 0);
             var controlByte = (byte) ((bright << 4) | (enable && Brightness > 0 ? 0x01 : 0x00));
             for (var i = 0; i < 4; i++)
-                await sendControl(controlByte, i);
+                await sendControl(controlByte, i).ConfigureAwait(false);
         }
 
         private Task sendControl(byte data, int digit)
@@ -78,7 +78,7 @@ namespace Treehopper.Libraries.Displays
             for (var i = 0; i < 4; i++)
                 if (oldValues[i] != newValues[i] || force)
                 {
-                    await sendDisplay(newValues[i], i);
+                    await sendDisplay(newValues[i], i).ConfigureAwait(false);
                     oldValues[i] = newValues[i];
                 }
         }

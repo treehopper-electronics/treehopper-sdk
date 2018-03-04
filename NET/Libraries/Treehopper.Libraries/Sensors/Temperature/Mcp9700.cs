@@ -63,7 +63,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
 
         private async void Pin_AnalogVoltageChanged(object sender, AnalogVoltageChangedEventArgs e)
         {
-            await UpdateAsync();
+            await UpdateAsync().ConfigureAwait(false);
         }
     }
 }

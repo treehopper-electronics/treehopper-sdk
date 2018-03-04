@@ -41,7 +41,7 @@ namespace Treehopper.Libraries.Displays
         {
             // eventually, we should only write out LEDs that changed value, but for now, just write out all the LEDs
             foreach (var driver in Drivers)
-                await driver.FlushAsync(true); // we have to force because shift registers will otherwise ignore our writes
+                await driver.FlushAsync(true).ConfigureAwait(false); // we have to force because shift registers will otherwise ignore our writes
         }
     }
 }

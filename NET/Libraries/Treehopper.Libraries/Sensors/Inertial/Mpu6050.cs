@@ -199,7 +199,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
             for (var i = 0; i < 80; i++)
             {
-                await UpdateAsync(); // get dater
+                await UpdateAsync().ConfigureAwait(false); // get dater
                 accelOffset.X += Accelerometer.X;
                 accelOffset.Y += Accelerometer.Y;
                 accelOffset.Z += Accelerometer.Z;
@@ -207,7 +207,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 gyroOffset.X += Gyroscope.X;
                 gyroOffset.Y += Gyroscope.Y;
                 gyroOffset.Z += Gyroscope.Z;
-                await Task.Delay(10);
+                await Task.Delay(10).ConfigureAwait(false);
             }
 
             accelOffset.X /= 80.0f;

@@ -93,18 +93,18 @@ namespace Treehopper.Libraries.Sensors.Optical
             // start ambient and prox conversion
             registers.command.alsOnDemandStart = 1;
             registers.command.proxOnDemandStart = 1;
-            await registers.command.write();
+            await registers.command.write().ConfigureAwait(false);
 
 
             while(true)
             {
-                await registers.command.read();
+                await registers.command.read().ConfigureAwait(false);
                 if (registers.command.proxDataReady == 1 && registers.command.alsDataReady == 1)
                     break;
             }
 
-            await registers.ambientLightResult.read();
-            await registers.proximityResult.read();
+            await registers.ambientLightResult.read().ConfigureAwait(false);
+            await registers.proximityResult.read().ConfigureAwait(false);
             
             // from datasheet
             lux = registers.ambientLightResult.value * 0.25;

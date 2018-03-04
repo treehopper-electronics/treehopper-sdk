@@ -67,7 +67,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            var value = await i2c.SendReceiveAsync(address, null, 7);
+            var value = await i2c.SendReceiveAsync(address, null, 7).ConfigureAwait(false);
 
             // the datasheet lists a digital value of 340 @ 25C, and a resolution of 1.1C per LSB
             celsius = (((short) ((((value[3] & 0xf0) << 4) | value[6]) << 4) >> 4) - 340) * 1.1 + 25.0;

@@ -32,7 +32,7 @@ namespace Treehopper.Desktop.LibUsb
                 while (true)
                 {
                     NativeMethods.HandleEvents(context, IntPtr.Zero);
-                    await Task.Delay(100);
+                    await Task.Delay(100).ConfigureAwait(false);
                 }
             });
         }

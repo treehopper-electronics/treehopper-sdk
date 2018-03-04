@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Displays
 
             // Write out the drivers over the bus
             foreach (var driver in Items.SelectMany(x => x.Leds.Drivers).Distinct())
-                await driver.FlushAsync(true);
+                await driver.FlushAsync(true).ConfigureAwait(false);
         }
 
         /// <summary>

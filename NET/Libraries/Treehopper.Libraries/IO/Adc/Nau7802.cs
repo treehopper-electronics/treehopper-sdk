@@ -88,21 +88,21 @@ namespace Treehopper.Libraries.IO.Adc
 
         public async Task UpdateAsync()
         {
-            AdcValue = await PerformConversionAsync();
+            AdcValue = await PerformConversionAsync().ConfigureAwait(false);
         }
 
         private async Task<int> PerformConversionAsync()
         {
             if (drdy == null)
-                while (!await ConversionDoneAsync()) ;
+                while (!await ConversionDoneAsync().ConfigureAwait(false)) ;
 
-            await registers.adcResult.read();
+            await registers.adcResult.read().ConfigureAwait(false);
             return registers.adcResult.value;
         }
 
         private async Task<bool> ConversionDoneAsync()
         {
-            await registers.read(registers.puCtrl);
+            await registers.read(registers.puCtrl).ConfigureAwait(false);
             return registers.puCtrl.cycleReady == 1;
         }
 
@@ -120,7 +120,7 @@ namespace Treehopper.Libraries.IO.Adc
             await registers.ctrl2.write().ConfigureAwait(false);
             registers.ctrl2.calStart = 1;
 
-            while ((await registers.ctrl2.read()).calStart == 1) ;
+            while ((await registers.ctrl2.read().ConfigureAwait(false)).calStart == 1) ;
 
             return (registers.ctrl2.calError == 0);
         }
@@ -130,7 +130,7 @@ namespace Treehopper.Libraries.IO.Adc
             get { return registers.ctrl1.getGain(); }
             set {
                 registers.ctrl1.setGain(value);
-                registers.ctrl1.write().Wait();
+                Task.Run(registers.ctrl1.write).Wait();
             }
         }
 
@@ -139,7 +139,7 @@ namespace Treehopper.Libraries.IO.Adc
             get { return registers.powerCtrl.pgaCapEn > 0; }
             set {
                 registers.powerCtrl.pgaCapEn = value ? 1 : 0;
-                registers.powerCtrl.write().Wait();
+                Task.Run(registers.powerCtrl.write).Wait();
             }
         }
 
@@ -149,21 +149,21 @@ namespace Treehopper.Libraries.IO.Adc
             set
             {
                 registers.ctrl2.setConversionRate(value);
-                registers.ctrl2.write().Wait();
+                Task.Run(registers.ctrl2.write).Wait();
             }
         }
 
         private async void Drdy_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
         {
             if (e.NewValue) // only convert on rising edge, plz
-                AdcValue = await PerformConversionAsync();
+                AdcValue = await PerformConversionAsync().ConfigureAwait(false);
         }
 
         public async Task SetChannelAsync(int channel)
         {
             registers.ctrl2.channelSelect = channel;
-            await registers.ctrl2.write();
-            await CalibrateAsync();
+            await registers.ctrl2.write().ConfigureAwait(false);
+            await CalibrateAsync().ConfigureAwait(false);
         }
     }
 }

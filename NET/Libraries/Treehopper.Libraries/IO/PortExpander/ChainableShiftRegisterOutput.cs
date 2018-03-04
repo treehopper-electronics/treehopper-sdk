@@ -88,11 +88,11 @@ namespace Treehopper.Libraries.IO.PortExpander
             {
                 if(Parent != null)
                 {
-                    await Parent.FlushAsync();
+                    await Parent.FlushAsync().ConfigureAwait(false);
                 }
                 else
                 {
-                    using (await lockObject.LockAsync())
+                    using (await lockObject.LockAsync().ConfigureAwait(false))
                     {
                         // build the byte array to flush out of the port
                         var bytes = new List<byte>();
@@ -106,7 +106,7 @@ namespace Treehopper.Libraries.IO.PortExpander
                             bytes.AddRange(shiftBytes.Reverse());
                         }
 
-                        await spiDevice.SendReceiveAsync(bytes.ToArray(), SpiBurstMode.BurstTx);
+                        await spiDevice.SendReceiveAsync(bytes.ToArray(), SpiBurstMode.BurstTx).ConfigureAwait(false);
                     }
                 }
                 CurrentValue.CopyTo(lastValues, 0);
@@ -125,7 +125,7 @@ namespace Treehopper.Libraries.IO.PortExpander
             CurrentValue = value;
             updateFromCurrentValue(); // tell our parent to update its pins, LEDs, or whatever.
 
-            await FlushAsync(true);
+            await FlushAsync(true).ConfigureAwait(false);
             AutoFlush = savedAutoFlushValue;
         }
 
@@ -136,7 +136,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         protected async Task FlushIfAutoFlushEnabled()
         {
             if (AutoFlush)
-                await FlushAsync();
+                await FlushAsync().ConfigureAwait(false);
         }
 
         /// <summary>

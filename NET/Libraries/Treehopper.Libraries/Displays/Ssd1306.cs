@@ -132,7 +132,7 @@ namespace Treehopper.Libraries.Displays
                 await sendCommand(0xF1).ConfigureAwait(false);
 
             await sendCommand(Command.SetVcomDetect).ConfigureAwait(false);
-            await sendCommand(0x40);
+            await sendCommand(0x40).ConfigureAwait(false);
             await sendCommand(Command.DisplayAllOn_Resume).ConfigureAwait(false);
             await sendCommand(Command.NormalDisplay).ConfigureAwait(false);
             await sendCommand(Command.DeactivateScroll).ConfigureAwait(false);

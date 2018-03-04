@@ -61,7 +61,7 @@ namespace Treehopper.Libraries.Memory
 
         public async Task<JedecId> ReadJedecIdAsync()
         {
-            var result = await dev.SendReceiveAsync(new byte[4] {(byte) Command.ReadJedecId, 0x00, 0x00, 0x00});
+            var result = await dev.SendReceiveAsync(new byte[4] {(byte) Command.ReadJedecId, 0x00, 0x00, 0x00}).ConfigureAwait(false);
 
             var id = new JedecId();
             id.Manufacturer = (JedecManufacturer) result[1];
@@ -106,13 +106,13 @@ namespace Treehopper.Libraries.Memory
             data[1] = (byte) (address >> 16);
             data[2] = (byte) (address >> 8);
             data[3] = (byte) address;
-            var result = await dev.SendReceiveAsync(data);
+            var result = await dev.SendReceiveAsync(data).ConfigureAwait(false);
             return result.Skip(4).Take(count).ToArray();
         }
 
         public async Task<byte> ReadByteAsync(int address)
         {
-            var res = await ReadArrayAsync(address, 1);
+            var res = await ReadArrayAsync(address, 1).ConfigureAwait(false);
             return res[0];
         }
 
@@ -150,7 +150,7 @@ namespace Treehopper.Libraries.Memory
 
             await dev.SendReceiveAsync(new[] {(byte) Command.ChipErase}).ConfigureAwait(false);
             while ((await ReadStatusAsync().ConfigureAwait(false)).Busy)
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
         }
 
         public Task WriteEnable()
@@ -165,20 +165,20 @@ namespace Treehopper.Libraries.Memory
 
         public async Task WriteStatus1(byte val)
         {
-            await WriteEnable();
-            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus1, val});
+            await WriteEnable().ConfigureAwait(false);
+            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus1, val}).ConfigureAwait(false);
         }
 
         public async Task WriteStatus2(byte val)
         {
-            await WriteEnable();
-            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus2, val});
+            await WriteEnable().ConfigureAwait(false);
+            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus2, val}).ConfigureAwait(false);
         }
 
         public async Task WriteStatus3(byte val)
         {
-            await WriteEnable();
-            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus3, val});
+            await WriteEnable().ConfigureAwait(false);
+            await dev.SendReceiveAsync(new[] {(byte) Command.WriteStatus3, val}).ConfigureAwait(false);
         }
 
         public class JedecId

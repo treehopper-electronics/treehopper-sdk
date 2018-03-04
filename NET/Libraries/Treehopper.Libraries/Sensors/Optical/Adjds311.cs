@@ -91,18 +91,18 @@ namespace Treehopper.Libraries.Sensors.Optical
         public async void UpdateColor()
         {
             led.DigitalValue = true;
-            await WriteByteDataAsync(0, 1);
+            await WriteByteDataAsync(0, 1).ConfigureAwait(false);
             while ((await ReadByteDataAsync(0) & 0x01) != 0) ;
             led.DigitalValue = false;
 
-            var red = BitConverter.ToUInt16(new[] {await ReadByteDataAsync(DATA_RED_LO), await ReadByteDataAsync(DATA_RED_HI)},
+            var red = BitConverter.ToUInt16(new[] {await ReadByteDataAsync(DATA_RED_LO).ConfigureAwait(false), await ReadByteDataAsync(DATA_RED_HI).ConfigureAwait(false) },
                 0);
             var green = BitConverter.ToUInt16(
                 new[] {await ReadByteDataAsync(DATA_GREEN_LO), await ReadByteDataAsync(DATA_GREEN_HI)}, 0);
-            var blue = BitConverter.ToUInt16(new[] {await ReadByteDataAsync(DATA_BLUE_LO), await ReadByteDataAsync(DATA_BLUE_HI)},
+            var blue = BitConverter.ToUInt16(new[] {await ReadByteDataAsync(DATA_BLUE_LO).ConfigureAwait(false), await ReadByteDataAsync(DATA_BLUE_HI).ConfigureAwait(false) },
                 0);
             var clear = BitConverter.ToUInt16(
-                new[] {await ReadByteDataAsync(DATA_CLEAR_LO), await ReadByteDataAsync(DATA_CLEAR_HI)}, 0);
+                new[] {await ReadByteDataAsync(DATA_CLEAR_LO).ConfigureAwait(false), await ReadByteDataAsync(DATA_CLEAR_HI).ConfigureAwait(false) }, 0);
 
             Red = (byte) (red / 4);
             Green = (byte) (green / 4);

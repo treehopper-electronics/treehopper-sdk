@@ -87,7 +87,7 @@ namespace Treehopper.Libraries.IO.PortExpander
 
         private async Task updateMode2()
         {
-            await dev.WriteByteDataAsync((byte) Registers.Mode2, mode2.ToByte());
+            await dev.WriteByteDataAsync((byte) Registers.Mode2, mode2.ToByte()).ConfigureAwait(false);
         }
 
         public Task SetOutputs(byte[] data)

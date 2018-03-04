@@ -159,7 +159,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            var bytes = await dev.ReadBufferDataAsync((byte) Registers.XOutHi, 6);
+            var bytes = await dev.ReadBufferDataAsync((byte) Registers.XOutHi, 6).ConfigureAwait(false);
             var report = bytes.BytesToStruct<DataReport>(Endianness.BigEndian);
             mag.X = report.x / Gauss_XY * 100;
             mag.Y = report.y / Gauss_XY * 100;

@@ -106,7 +106,7 @@ namespace Treehopper.Libraries.Motors
             var m2speed = (byte) Math.Round(Math.Abs(m2_speed) * 255);
             await dev.WriteBufferDataAsync((byte) Registers.MotorSpeedSet, new[] {m1speed, m2speed}).ConfigureAwait(false);
 
-            await Task.Delay(10);
+            await Task.Delay(10).ConfigureAwait(false);
 
             if (m1_speed >= 0 && m2_speed >= 0)
                 await dev.WriteBufferDataAsync((byte) Registers.DirectionSet,

@@ -96,7 +96,7 @@ namespace Treehopper
             cmd[0] = (byte) DeviceCommands.ParallelTransaction;
             cmd[1] = (byte) ParallelCmd.WriteCommand;
             cmd[2] = (byte) cmdLen;
-            await _board.SendPeripheralConfigPacketAsync(cmd);
+            await _board.SendPeripheralConfigPacketAsync(cmd).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Treehopper
             cmd[0] = (byte) DeviceCommands.ParallelTransaction;
             cmd[1] = (byte) ParallelCmd.WriteData;
             cmd[2] = (byte) dataLen;
-            await _board.SendPeripheralConfigPacketAsync(cmd);
+            await _board.SendPeripheralConfigPacketAsync(cmd).ConfigureAwait(false);
         }
 
         /// <summary>

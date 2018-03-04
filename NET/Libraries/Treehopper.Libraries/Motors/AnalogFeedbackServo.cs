@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Motors
                         controller.Speed = (K * error).Constrain(-1.0, 1.0);
                     else
                         controller.Speed = 0;
-                    await Task.Delay(10);
+                    await Task.Delay(10).ConfigureAwait(false);
                 }
             });
             controlLoopTask.Start();

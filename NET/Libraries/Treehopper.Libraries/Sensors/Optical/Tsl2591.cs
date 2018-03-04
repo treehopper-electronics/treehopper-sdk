@@ -118,7 +118,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// </remarks>
         public override async Task UpdateAsync()
         {
-            await registers.readRange(registers.ch0, registers.ch1);
+            await registers.readRange(registers.ch0, registers.ch1).ConfigureAwait(false);
             double cpl = (IntegrationTimeValue * GainSettingValue) / 408.0;
             this._lux = (registers.ch0.value - registers.ch1.value) * (1.0 - ((double)registers.ch1.value / registers.ch0.value)) / cpl;
         }

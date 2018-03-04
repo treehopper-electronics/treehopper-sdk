@@ -85,10 +85,10 @@ namespace Treehopper.Libraries.IO.Adc
                     if (i == 1)
                         config |= 3 << 4;
                 }
-                await dev.WriteBufferDataAsync(0x01, new byte[] {(byte) config, 0xE3});
-                await Task.Delay(1);
+                await dev.WriteBufferDataAsync(0x01, new byte[] {(byte) config, 0xE3}).ConfigureAwait(false);
+                await Task.Delay(1).ConfigureAwait(false);
                 // data is stored in big-endian format
-                Pins[i].AdcValue = await dev.ReadWordDataBEAsync(0x00);               
+                Pins[i].AdcValue = await dev.ReadWordDataBEAsync(0x00).ConfigureAwait(false);
             }
         }
 

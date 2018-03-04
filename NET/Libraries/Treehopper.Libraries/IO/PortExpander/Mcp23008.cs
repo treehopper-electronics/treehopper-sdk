@@ -123,7 +123,7 @@ namespace Treehopper.Libraries.IO.PortExpander
         /// <returns></returns>
         protected async Task readPort()
         {
-            var data = await dev.ReadByteDataAsync((byte) Registers.Gpio);
+            var data = await dev.ReadByteDataAsync((byte) Registers.Gpio).ConfigureAwait(false);
             gpio = new BitArray(new[] {data});
             for (var i = 0; i < gpio.Length; i++)
                 Pins[i].UpdateInputValue(gpio.Get(i));
