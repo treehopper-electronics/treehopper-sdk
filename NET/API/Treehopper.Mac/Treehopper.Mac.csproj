@@ -8,9 +8,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Treehopper.Mac</RootNamespace>
     <AssemblyName>Treehopper.Mac</AssemblyName>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
-    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,6 +60,9 @@
       <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
       <Name>Treehopper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\Treehopper.Mac.Shared\Treehopper.Mac.Shared.projitems" Label="Shared" Condition="Exists('..\Treehopper.Mac.Shared\Treehopper.Mac.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
