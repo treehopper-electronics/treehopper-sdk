@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\API\Treehopper.Desktop\Treehopper.Desktop.csproj" />
     <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Treehopper.Libraries\Treehopper.Libraries.csproj" />
@@ -13,21 +17,6 @@
   <ItemGroup>
     <Reference Include="Xamarin.CustomControls.RepeaterView">
       <HintPath>..\..\..\..\Binaries\Xamarin.CustomControls.RepeaterView.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\..\..\Binaries\Xamarin.Forms.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Core.Design">
-      <HintPath>..\..\..\..\Binaries\Xamarin.Forms.Core.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\..\..\Binaries\Xamarin.Forms.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\..\..\Binaries\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Xaml.Design">
-      <HintPath>..\..\..\..\Binaries\Xamarin.Forms.Xaml.Design.dll</HintPath>
     </Reference>
   </ItemGroup>
 
