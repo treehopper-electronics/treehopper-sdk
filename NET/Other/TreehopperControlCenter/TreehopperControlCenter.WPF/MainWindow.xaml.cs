@@ -12,17 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xamarin.Forms;
 
 namespace TreehopperControlCenter.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
+            Forms.Init();
+            var app = new TreehopperControlCenter.App();
             InitializeComponent();
+            LoadApplication(app);
         }
     }
 }

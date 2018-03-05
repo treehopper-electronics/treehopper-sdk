@@ -26,6 +26,11 @@ namespace TreehopperControlCenter
             Device.BeginInvokeOnMainThread(() =>
             {
                 ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
+                if(ConnectionService.Instance.Boards.Count > 0)
+                {
+                    Board = ConnectionService.Instance.Boards[0];
+                    Start();
+                }
             });
         }
 
