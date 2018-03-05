@@ -86,14 +86,14 @@ namespace TreehopperControlCenter.Pages.Libraries
             OnPropertyChanged("Text");
         }
 
-        protected override async Task Stop()
+        protected override Task Stop()
         {
-            Task.Run(display.Clear);
+            return display.Clear();
         }
 
         public override void Dispose()
         {
-            Task.Run(display.Clear);
+            Task.Run(display.Clear).Wait();
         }
 
         public override async Task Update()
