@@ -153,14 +153,14 @@ namespace Treehopper.Libraries.Sensors.Optical
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
-        private unsafe struct VoSPI
+        private struct VoSPI
         {
             public readonly ushort Id;
 
             public readonly ushort Crc;
 
             //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
-            public fixed ushort Payload[164];
+            public ushort[] Payload;
         }
     }
 
