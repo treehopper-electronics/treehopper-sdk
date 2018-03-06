@@ -22,7 +22,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <param name="spi">The Spi module to use</param>
         public FlirLepton(Spi spi, SpiChipSelectPin cs)
         {
-            this.dev = new SpiDevice(spi, cs, ChipSelectMode.SpiActiveLow, 20, SpiMode.Mode11);
+            this.dev = new SpiDevice(spi, cs, ChipSelectMode.SpiActiveLow, 6, SpiMode.Mode11);
             this.cs = cs;
 
             blackFrame = new ushort[height, width];
@@ -37,9 +37,9 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <returns>An awaitable 2D-array of values</returns>
         public async Task<ushort[,]> GetRawFrameAsync()
         {
-            cs.DigitalValue = false;
-            await Task.Delay(185).ConfigureAwait(false);
-            cs.DigitalValue = true;
+            //cs.DigitalValue = false;
+            //await Task.Delay(185).ConfigureAwait(false);
+            //cs.DigitalValue = true;
             var frame = new ushort[height, width];
             var frameAcquired = false;
             var syncAcquired = false;
@@ -141,7 +141,7 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         private async Task<ushort[]> GetPacketAsync()
         {
-            var data = await dev.SendReceiveAsync(new byte[164], SpiBurstMode.NoBurst).ConfigureAwait(false);
+            var data = await dev.SendReceiveAsync(new byte[164], SpiBurstMode.BurstRx).ConfigureAwait(false);
             ushort[] packet = new ushort[82];
             
             Buffer.BlockCopy(data, 0, packet, 0, 164);
