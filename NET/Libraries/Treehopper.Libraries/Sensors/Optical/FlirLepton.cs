@@ -12,21 +12,19 @@ namespace Treehopper.Libraries.Sensors.Optical
     {
         private readonly ushort[,] blackFrame;
 
-        private readonly int height = 40;
+        private readonly int height = 60;
         private readonly int width = 80;
-        private Spi spi;
-
+        private SpiDevice dev;
+        SpiChipSelectPin cs;
         /// <summary>
         ///     Construct a FLIR Lepton
         /// </summary>
         /// <param name="spi">The Spi module to use</param>
-        public FlirLepton(Spi spi)
+        public FlirLepton(Spi spi, SpiChipSelectPin cs)
         {
-            this.spi = spi;
-            //spi.Mode = SPIMode.Mode11;
-            //spi.Frequency = 12;
-            //spi.ChipSelect.DigitalValue = true;
-            spi.Enabled = true;
+            this.dev = new SpiDevice(spi, cs, ChipSelectMode.SpiActiveLow, 20, SpiMode.Mode11);
+            this.cs = cs;
+
             blackFrame = new ushort[height, width];
             for (var i = 0; i < height; i++)
             for (var j = 0; j < width; j++)
@@ -39,32 +37,41 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <returns>An awaitable 2D-array of values</returns>
         public async Task<ushort[,]> GetRawFrameAsync()
         {
-            //spi.ChipSelect.DigitalValue = false;
+            cs.DigitalValue = false;
             await Task.Delay(185).ConfigureAwait(false);
-            //spi.ChipSelect.DigitalValue = true;
-
+            cs.DigitalValue = true;
             var frame = new ushort[height, width];
             var frameAcquired = false;
             var syncAcquired = false;
             while (!frameAcquired)
             {
                 syncAcquired = false;
-                var packet = new VoSPI();
+                ushort[] packet = new ushort[1];
                 while (!syncAcquired)
                 {
                     packet = await GetPacketAsync().ConfigureAwait(false);
-                    if ((packet.Id & 0x000f) != 0x000f)
+                    if ((packet[0] & 0x000f) != 0x000f) // check ID
+                    {
                         syncAcquired = true;
+                    }
+                        
                 }
                 for (var i = 0; i < height; i++)
                 {
-                    if ((packet.Id & 0x000f) == 0x000f)
+                    if ((packet[0] & 0x000f) == 0x000f)
+                    {
+                        // lost sync
+                        frameAcquired = true;
                         break;
+                    }
 
                     for (var j = 0; j < width; j++)
-                        frame[i, j] = packet.Payload[j];
+                        frame[i, j] = packet[j+2];
                     if (i == height - 1)
+                    {
                         frameAcquired = true;
+                    }
+                        
                     packet = await GetPacketAsync().ConfigureAwait(false);
                 }
             }
@@ -132,25 +139,28 @@ namespace Treehopper.Libraries.Sensors.Optical
             return correctedFrame;
         }
 
-        private async Task<VoSPI> GetPacketAsync()
+        private async Task<ushort[]> GetPacketAsync()
         {
-            //int rawsize = Marshal.SizeOf<VoSPI>();
+            var data = await dev.SendReceiveAsync(new byte[164], SpiBurstMode.NoBurst).ConfigureAwait(false);
+            ushort[] packet = new ushort[82];
+            
+            Buffer.BlockCopy(data, 0, packet, 0, 164);
             //byte[] data = await spi.SendReceive(new byte[164]);
             //IntPtr buffer = Marshal.AllocHGlobal(rawsize);
             //Marshal.Copy(data, 0, buffer, rawsize);
             //return Marshal.PtrToStructure<VoSPI>(buffer);
-            throw new NotImplementedException();
+            return packet;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 164)]
-        private struct VoSPI
+        private unsafe struct VoSPI
         {
             public readonly ushort Id;
 
             public readonly ushort Crc;
 
             //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 80)]
-            public readonly ushort[] Payload;
+            public fixed ushort Payload[164];
         }
     }
 

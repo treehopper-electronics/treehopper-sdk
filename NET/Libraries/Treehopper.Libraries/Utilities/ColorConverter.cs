@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Treehopper.Libraries.Utilities
 {
-    static class ColorConverter
+    public static class ColorConverter
     {
         /// <summary> 
         ///     Construct a color from HSL values 

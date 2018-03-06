@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="1.60.0" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
   </ItemGroup>
 
@@ -26,6 +27,9 @@
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Libraries\Flir.xaml.cs">
+      <DependentUpon>Flir.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

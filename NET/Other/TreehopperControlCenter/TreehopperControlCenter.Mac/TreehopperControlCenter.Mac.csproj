@@ -53,6 +53,15 @@
     <XamMacArch></XamMacArch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SkiaSharp, Version=1.60.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\SkiaSharp.1.60.0\lib\XamarinMac\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Forms, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\SkiaSharp.Views.Forms.1.60.0\lib\XamarinMac\SkiaSharp.Views.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Mac, Version=1.60.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\SkiaSharp.Views.1.60.0\lib\XamarinMac\SkiaSharp.Views.Mac.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />

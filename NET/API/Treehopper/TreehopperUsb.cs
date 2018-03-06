@@ -72,12 +72,12 @@ namespace Treehopper
         ///     I2C module
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public I2C I2c { get; }
+        public HardwareI2C I2c { get; }
 
         /// <summary>
         ///     SPI module
         /// </summary>
-        public Spi Spi { get; }
+        public HardwareSpi Spi { get; }
 
         /// <summary>
         ///     Hardware UART supporting RS-232 and OneWire-style communication.

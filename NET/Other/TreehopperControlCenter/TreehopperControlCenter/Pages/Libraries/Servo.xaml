@@ -6,7 +6,11 @@
              x:Class="TreehopperControlCenter.Pages.Libraries.Servo">
     <d:LibraryComponent.Configuration>
         <StackLayout>
-            <jpc:BindablePicker ItemsSource="{Binding Board.Pins}" SelectedItem="{Binding SelectedPin}" Title="Pins" />
+            <jpc:BindablePicker 
+                ItemsSource="{Binding Board.Pins}" 
+                SelectedItem="{Binding SelectedPin}" 
+                DisplayMemberPath="Name" 
+                Title="Pins" />
         </StackLayout>
     </d:LibraryComponent.Configuration>
     <StackLayout>

@@ -33,6 +33,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\Display.xaml.cs">
       <DependentUpon>Display.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\Flir.xaml.cs">
+      <DependentUpon>Flir.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Libraries\Servo.xaml.cs">
       <DependentUpon>Servo.xaml</DependentUpon>
     </Compile>
@@ -129,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Libraries\Temperature.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\Libraries\Flir.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
