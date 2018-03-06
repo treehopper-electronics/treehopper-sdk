@@ -183,7 +183,7 @@ void ProcessPeripheralConfigPacket() {
 		totalTransactionBytes = Treehopper_PeripheralConfig[6];
 
 		// check to see if we need to fetch more bytes for large transactions
-		if(totalTransactionBytes > 64-7)
+		if(burst != Burst_Rx && totalTransactionBytes > 64-7 )
 		{
 			timeout = 0;
 			// we can request all the remaining bytes at once; just hang in while() until they all come in.
