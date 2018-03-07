@@ -93,9 +93,9 @@ namespace TreehopperControlCenter.Pages.Libraries
                 timer = new Timer(timerCallback, null, 100, Timeout.Infinite);
         }
 
-        protected abstract Task Start();
+        public abstract Task Start();
 
-        protected abstract Task Stop();
+        public abstract Task Stop();
 
         public abstract void Dispose();
 

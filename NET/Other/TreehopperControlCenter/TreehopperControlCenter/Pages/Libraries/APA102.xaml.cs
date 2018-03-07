@@ -37,7 +37,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             BindingContext = this;
         }
 
-        protected override async Task Start()
+        public override async Task Start()
         {
             driver = new Treehopper.Libraries.Displays.Apa102(Board.Spi, NumLeds);
             driver.Brightness = 1;
@@ -60,7 +60,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             }
         }
 
-        protected override async Task Stop()
+        public override async Task Stop()
         {
 
         }

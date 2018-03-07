@@ -40,20 +40,20 @@ namespace TreehopperControlCenter.Pages.Libraries
             BindingContext = this;
         }
 
-        protected override async Task Start()
+        public override async Task Start()
         {
             Sensor = new FlirLepton(Board.Spi, CsPin);
-            run();
+            Task.Run(run);
         }
 
         async Task run()
         {
-            while(true)
+            while(IsRunning)
             {
                 var data = await Sensor.GetRawFrameAsync();
-                for (int i = 0; i < 80; i++)
+                for (int i = 0; i < bitmap.Width; i++)
                 {
-                    for (int j = 0; j < 40; j++)
+                    for (int j = 0; j < bitmap.Height; j++)
                     {
                         bitmap.SetPixel(i, j, valueToHeat(data[j, i]));
                     }
@@ -63,19 +63,19 @@ namespace TreehopperControlCenter.Pages.Libraries
             }
         }
 
-        protected override async Task Stop()
+        public override async Task Stop()
         {
-            
+            IsRunning = false;
         }
 
         public override void Dispose()
         {
-            
+            IsRunning = false;
         }
 
         private SKColor valueToHeat(ushort val)
         {
-            var color = Treehopper.Libraries.Utilities.ColorConverter.FromHsl(val / (float)UInt16.MaxValue * 360f, 100, 50);
+            var color = Treehopper.Libraries.Utilities.ColorConverter.FromHsl((1-(val / (float)(UInt16.MaxValue))) * 360f, 100, 50);
             return new SKColor(color.R, color.G, color.B);
         }
 
@@ -86,7 +86,9 @@ namespace TreehopperControlCenter.Pages.Libraries
 
         private void SKCanvasView_PaintSurface(object sender, SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs e)
         {
-            e.Surface.Canvas.Scale(5, 5);
+            canvasView.HeightRequest = canvasView.Width * 50 / 80;
+            var scale = e.Info.Width / 80;
+            e.Surface.Canvas.Scale(scale);
             e.Surface.Canvas.DrawBitmap(bitmap, new SKPoint(0, 0));
         }
     }

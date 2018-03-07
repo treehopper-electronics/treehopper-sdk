@@ -33,13 +33,13 @@ namespace TreehopperControlCenter.Pages.Libraries
             InitializeComponent();
         }
 
-        protected override async Task Start()
+        public override async Task Start()
         {
             Encoder = new Treehopper.Libraries.Input.RotaryEncoder(A, B, Increment);
             OnPropertyChanged(nameof(Encoder));
         }
 
-        protected override async Task Stop()
+        public override async Task Stop()
         {
             Encoder.Dispose();
             Encoder = null;

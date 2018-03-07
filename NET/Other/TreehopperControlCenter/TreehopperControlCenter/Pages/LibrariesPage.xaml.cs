@@ -57,6 +57,16 @@ namespace TreehopperControlCenter.Pages
                 Components.Add((LibraryComponent)Activator.CreateInstance(ComponentList[action], new object[] { this, Board }));
             }
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            foreach(var component in Components)
+            {
+                component.Stop();
+                component.Dispose();
+            }
+        }
     }
 
     public static class ReflectiveEnumerator

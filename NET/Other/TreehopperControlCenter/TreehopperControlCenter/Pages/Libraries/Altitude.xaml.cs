@@ -35,7 +35,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             InitializeComponent();
         }
 
-        protected override async Task Start()
+        public override async Task Start()
         {
             switch (SelectedSensor)
             {
@@ -48,7 +48,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             OnPropertyChanged(nameof(Sensor));
         }
 
-        protected override async Task Stop()
+        public override async Task Stop()
         {
             Sensor = null;
         }

@@ -70,7 +70,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             InitializeComponent();
         }
 
-        protected override async Task Start()
+        public override async Task Start()
         {
             switch (SelectedDisplay)
             {
@@ -86,7 +86,7 @@ namespace TreehopperControlCenter.Pages.Libraries
             OnPropertyChanged("Text");
         }
 
-        protected override Task Stop()
+        public override Task Stop()
         {
             return display.Clear();
         }
