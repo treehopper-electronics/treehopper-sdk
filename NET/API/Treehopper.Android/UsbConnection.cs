@@ -119,7 +119,11 @@ namespace Treehopper.Android
 
         public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint bytesToRead)
         {
+            if (!connected)
+                return new byte[bytesToRead];
+
             byte[] data = new byte[bytesToRead];
+
             int res = connection.BulkTransfer(peripheralResponseEndpoint, data, (int)bytesToRead, 1000);
             return data;
         }
@@ -129,8 +133,10 @@ namespace Treehopper.Android
             if (connection == null)
             {
                 connected = false;
-                return;
             }
+
+            if (!connected)
+                return;
 
             connection.BulkTransfer(peripheralConfigEndpoint, data, data.Length, 1000);
         }
@@ -140,8 +146,10 @@ namespace Treehopper.Android
             if (connection == null)
             {
                 connected = false;
-                return;
             }
+
+            if (!connected)
+                return;
 
             connection.BulkTransfer(pinConfigEndpoint, data, data.Length, 1000);
         }
