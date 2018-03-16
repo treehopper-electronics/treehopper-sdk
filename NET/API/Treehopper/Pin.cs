@@ -246,9 +246,9 @@ namespace Treehopper
         {
             get
             {
-                if (Mode == PinMode.Reserved || Mode == PinMode.AnalogInput)
+                if (Mode == PinMode.Reserved || Mode == PinMode.AnalogInput || Mode == PinMode.Unassigned)
                     Debug.WriteLine(
-                        $"NOTICE: Pin {PinNumber} must be in digital I/O mode to read from. This call will return 0 always.");
+                        $"NOTICE: Pin {PinNumber} must be in digital I/O mode to read from. This call will always return 0.");
 
                 return _digitalValue;
             }
