@@ -10,7 +10,7 @@ namespace Treehopper.Desktop.LibUsb
     internal static class NativeMethods
     {
         internal const CallingConvention CC = 0;
-        internal const string LIBUSB_DLL = "libusb-1.0.dll";
+        internal const string LIBUSB_DLL = "libusb-1.0.so";
 
         internal const int HotplugMatchAny = -1;
 
