@@ -277,7 +277,7 @@ namespace Treehopper.Desktop.WinUsb
             {
                 if (result != null)
                     result.Dispose();
-                throw new Exception("Failed to write to pipe.", e);
+                Close(); // Transfer exceptions are fatal; close the connection.
             }
 
             return result;
@@ -299,7 +299,7 @@ namespace Treehopper.Desktop.WinUsb
                     result.AsyncWaitHandle.WaitOne();
 
                 if (result.Error != null)
-                    throw new Exception("Asynchronous write to pipe has failed.", result.Error);
+                    Close(); // Transfer exceptions are fatal; close the connection.
             }
             finally
             {

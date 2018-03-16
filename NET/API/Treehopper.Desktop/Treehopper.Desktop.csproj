@@ -1,97 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\Treehopper.Mac.Shared\Treehopper.Mac.Shared.projitems" Label="Shared" Condition="Exists('..\Treehopper.Mac.Shared\Treehopper.Mac.Shared.projitems')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8C1A6BB5-A978-4582-834C-16A37A3B5484}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Treehopper.Desktop</RootNamespace>
-    <AssemblyName>Treehopper.Desktop</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Output\NET\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Output\NET\Release\Treehopper.Desktop.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\Output\NET\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>0</WarningLevel>
-    <Optimize>false</Optimize>
-    <DocumentationFile>..\..\..\Output\NET\Debug\Treehopper.Desktop.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\DeviceWatcher.cs" Link="MacUsb\DeviceWatcher.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\CFNumberType.cs" Link="MacUsb\IOKit\CFNumberType.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\CFObject.cs" Link="MacUsb\IOKit\CFObject.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\CFStringEncoding.cs" Link="MacUsb\IOKit\CFStringEncoding.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOCFPlugInInterface.cs" Link="MacUsb\IOKit\IOCFPlugInInterface.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOIterator.cs" Link="MacUsb\IOKit\IOIterator.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOKitError.cs" Link="MacUsb\IOKit\IOKitError.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOKitFramework.cs" Link="MacUsb\IOKit\IOKitFramework.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOObject.cs" Link="MacUsb\IOKit\IOObject.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" Link="MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBDeviceInterface320.cs" Link="MacUsb\IOKit\IOUSBDeviceInterface320.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" Link="MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBInterfaceInterface197.cs" Link="MacUsb\IOKit\IOUSBInterfaceInterface197.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IUnknownCGuts.cs" Link="MacUsb\IOKit\IUnknownCGuts.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\NativeMethods.cs" Link="MacUsb\IOKit\NativeMethods.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\MacConnectionService.cs" Link="MacUsb\MacConnectionService.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\MacUsbConnection.cs" Link="MacUsb\MacUsbConnection.cs" />
+    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\TreehopperData.cs" Link="MacUsb\TreehopperData.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="WinUsb\Kernel32.cs" />
-    <Compile Include="ConnectionService.cs" />
-    <Compile Include="LibUsb\LibUsbConnectionService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinUsb\PipePolicy.cs" />
-    <Compile Include="WinUsb\SafeWinUsbHandle.cs" />
-    <Compile Include="WinUsb\SetupApi.cs" />
-    <Compile Include="WinUsb\UsbAsyncResult.cs" />
-    <Compile Include="WinUsb\WinUsb.cs" />
-    <Compile Include="WinUsb\WinUsbConnection.cs" />
-    <Compile Include="WinUsb\WinUsbConnectionService.cs" />
-    <Compile Include="LibUsb\LibUsbConnection.cs" />
-    <Compile Include="LibUsb\NativeMethods.cs" />
-    <Compile Include="LibUsb\LibUsbDeviceHandle.cs" />
-    <Compile Include="LibUsb\LibUsbDeviceDescriptor.cs" />
-    <Compile Include="LibUsb\HotplugEvent.cs" />
-    <Compile Include="LibUsb\LibUsbError.cs" />
+    <ProjectReference Include="..\..\..\..\WinApi\WinApi.Windows.Controls\WinApi.Windows.Controls.csproj" />
+    <ProjectReference Include="..\..\..\..\WinApi\WinApi\WinApi.csproj" />
+    <ProjectReference Include="..\Treehopper\Treehopper.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Treehopper\Treehopper.csproj">
-      <Project>{BFE6AF54-94ED-4808-827D-64A54612D8AD}</Project>
-      <Name>Treehopper</Name>
-    </ProjectReference>
+    <Folder Include="MacUsb\IOKit\" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties>
-        <Policies>
-          <DotNetNamingPolicy DirectoryNamespaceAssociation="Hierarchical" ResourceNamePolicy="MSBuild" />
-        </Policies>
-      </Properties>
-    </MonoDevelop>
-  </ProjectExtensions>
+
 </Project>
