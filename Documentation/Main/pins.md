@@ -8,8 +8,8 @@ You can choose whether a pin should be a digital input, output, or analog input 
 # Digital outputs
 All pins on Treehopper support both push-pull and open-drain outputs. Writing a true or false to the pin's digital value will flush that value to the pin.
 
- - **Push-Pull**: Push-pull is the commonly used output mode; when a pin is set to true, Treehopper will attempt to drive the pin to logic HIGH (3.3V) — when a pin is set to false, Treehopper will attempt to drive the pin to logic LOW (0V — also referred to as ground).
- - **Open-Drain**: Open-drain outputs can only drive a strong logic LOW (0V); in the other state, the pin is allowed to float.
+ - **Push-Pull**: Push-pull is the most commonly used output mode; when a pin is set to true, Treehopper will attempt to drive the pin to logic HIGH (3.3V) — when a pin is set to false, Treehopper will attempt to drive the pin to logic LOW (0V — ground).
+ - **Open-Drain**: Open-drain outputs can only drive a strong logic LOW (0V); in the HIGH state, the pin is weakly pulled high. We use this mode to share a bus with other devices that may be trying to 
 
 ## Output Current Limitations
 Treehopper can source approximately 20 mA of current out of each pin when short-circuited. 

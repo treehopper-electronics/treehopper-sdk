@@ -23,6 +23,12 @@ Because so many different execution contexts are supported, Treehopper's C# code
 # Concepts
 Before you dive into the C# API, you should familiarize yourself with some core concepts found in the API, along with the overall API philosophy. This will help you anticipate how to interact with the API so that you don't have to constantly consult the docs directly.
 
+## Property Oriented
+C# has native support for properties, thus Treehopper property names directly translate. Most classes implement INotifyPropertyChanged; this allows XAML-based GUIs targetting WPF, UWP, or Xamarin.Forms to directly bind to properties.
+
+## Async/Await
+To keep GUI applications running smoothly without the developer having to worry about explicitly creating background threads, the Treehopper C# API provides asynchronous APIs for many tasks.
+
 ## Name and Serial Number
 Each Treehopper board has a serial number and a name. Both of these properties can be set by the user. Note that these properties correspond to the ProductName and SerialNumber that are part of the USB specification, which means they'll be visible across your operating system. Note that Windows does not refresh the name of the device in Device Manager.
 
@@ -33,3 +39,6 @@ Most Treehopper language APIs provide a static instance of the ConnectionService
 Only one connection can be made to a Treehopper board, and the library supports connecting to as many Treehopper boards as you want. This has some important repercussions:
  - <b>Avoid creating instances of ConnectionService; use the static instance property it provides for all access</b>. If you want to share a board between different areas of your code (for example, between decoupled ViewModels in a MVVM-style application), you must share the board object (or the ConnectionService instance that can be used to retrieve the board object). Do not create instances of ConnectionService in each module and attempt to access the boards concurrently; this will fail.
  - <b>When possible, ConnectionService will query the OS --- not the device directly --- about its name and serial number</b>. This allows an applications to scan all the boards attached to a computer; even if the boards are connected to other applications.
+
+ # Xamarin.Forms Support
+ Treehopper's user-facing platform-specific calls reside in Treehopper.ConnectionService. To make Xamarin.Forms and other code-sharing projects effortless, all ConnectionService classes live in the same Treehopper namespace, so they overlay effortlessly.

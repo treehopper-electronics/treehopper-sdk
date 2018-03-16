@@ -1,3 +1,7 @@
+"""
+Accelerometers, gyroscopes, and magnetometers
+"""
+## @namespace treehopper.libraries.sensors.inertial
 from treehopper.libraries.sensors.inertial.Accelerometer import Accelerometer
 from treehopper.libraries.sensors.inertial.Gyroscope import Gyroscope
 from treehopper.libraries.sensors.inertial.Adxl345 import Adxl345
