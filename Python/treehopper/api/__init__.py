@@ -2,6 +2,7 @@
 
 This module provides digital and analog I/O, hardware and software PWM, I2C, SPI, and UART support.
 """
+## @namespace treehopper.api
 
 from treehopper.api.Pin import Pin, PinMode, AdcPin, DigitalIn, DigitalOut, ReferenceLevel
 from treehopper.api.DeviceCommands import DeviceCommands

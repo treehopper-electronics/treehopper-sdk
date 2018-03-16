@@ -25,7 +25,6 @@ namespace TreehopperControlCenter.Droid
 			ToolbarResource = Resource.Layout.Toolbar; 
 
 			base.OnCreate (bundle);
-
             global::Xamarin.Forms.Forms.Init (this, bundle);
 			LoadApplication (new TreehopperControlCenter.App ());
 		}
@@ -33,14 +32,12 @@ namespace TreehopperControlCenter.Droid
 	    protected override void OnStart()
 	    {
 	        base.OnStart();
-
             ConnectionService.Instance.ActivityOnStart(this);
         }
 
         protected override void OnResume()
 	    {
 	        base.OnResume();
-
             ConnectionService.Instance.ActivityOnResume();
         }
     }
