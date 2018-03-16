@@ -125,10 +125,7 @@ namespace Treehopper
                 var data = new byte[2];
                 data[0] = (byte) DeviceCommands.LedConfig;
                 data[1] = (byte) (_led ? 0x01 : 0x00); // Unicode 16-bit strings are 2 bytes per character
-                if (Settings.PropertyWritesReturnImmediately)
-                    SendPeripheralConfigPacketAsync(data).Forget();
-                else
-                    SendPeripheralConfigPacketAsync(data).Wait();
+                SendPeripheralConfigPacketAsync(data).Forget();
             }
         }
 
