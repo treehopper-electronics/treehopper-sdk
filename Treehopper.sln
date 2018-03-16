@@ -61,8 +61,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Treehopper", "NET\API\Treeh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Treehopper.Uwp", "NET\API\Treehopper.UWP\Treehopper.Uwp.csproj", "{F85FFD61-CEC5-420E-A521-31C475580CAD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F57EABBE-9AC4-4029-A839-BBA15B53BB79}"
-EndProject
 Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "Treehopper.UWP", "NET\NuGet\Treehopper.UWP\Treehopper.UWP.nuproj", "{BF47946E-5F0C-4B62-B9A7-F6F984570E33}"
 EndProject
 Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "Treehopper", "NET\NuGet\Treehopper\Treehopper.nuproj", "{F89549A7-34E9-4B53-8446-B8BA48A8C1E2}"
