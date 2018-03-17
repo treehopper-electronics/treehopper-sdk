@@ -40,7 +40,7 @@ namespace Treehopper
         /// <summary>
         ///     Get the version number of the device
         /// </summary>
-        short Version { get; }
+        ushort Version { get; }
 
         /// <summary>
         ///     Get the system path of the device

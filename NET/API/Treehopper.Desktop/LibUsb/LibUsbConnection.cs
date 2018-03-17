@@ -42,7 +42,7 @@ namespace Treehopper.Desktop.LibUsb
 
         public int UpdateRate { get; set; } = 1000;
 
-        public short Version { get; private set; }
+        public ushort Version { get; private set; }
 
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;

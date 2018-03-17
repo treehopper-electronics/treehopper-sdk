@@ -117,7 +117,7 @@ namespace DeviceManager.ViewModels
                         await Task.Delay(1000);
                         Progress = 50;
 
-                        var updater = FirmwareUpdater.Boards[0];
+                        var updater = FirmwareConnectionService.Instance.Boards[0];
                         updater.ProgressChanged += (sender, args) => { Progress = args.ProgressPercentage / 2.0 + 50.0; };
 
                         await updater.LoadAsync();

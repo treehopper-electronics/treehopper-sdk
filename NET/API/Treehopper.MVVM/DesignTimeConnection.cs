@@ -45,7 +45,7 @@ namespace Treehopper.Mvvm
         /// <summary>
         ///     The version of the board.
         /// </summary>
-        public short Version { get; set; }
+        public ushort Version { get; set; }
 
         /// <summary>
         ///     An event that fires when pin data is received. This event never fires.

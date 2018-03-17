@@ -74,7 +74,7 @@ namespace Treehopper.Desktop.MacUsb
 
         public int UpdateRate { get; set; } = 10;
 
-		public short Version { get; set; }
+		public ushort Version { get; set; }
 
 		private Thread pinReportThread;
 		private bool isConnected = false;

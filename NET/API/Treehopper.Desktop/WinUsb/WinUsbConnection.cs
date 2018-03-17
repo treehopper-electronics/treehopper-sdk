@@ -31,7 +31,7 @@ namespace Treehopper.Desktop.WinUsb
         private string serial;
         private SafeWinUsbHandle winUsbHandle;
 
-        public WinUsbConnection(string path, string name, string serial, short version)
+        public WinUsbConnection(string path, string name, string serial, ushort version)
         {
             DevicePath = path;
             Name = name;
@@ -51,7 +51,7 @@ namespace Treehopper.Desktop.WinUsb
 
         public int UpdateRate { get; set; }
 
-        public short Version { get; }
+        public ushort Version { get; }
 
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -277,7 +277,7 @@ namespace Treehopper.Desktop.WinUsb
             {
                 if (result != null)
                     result.Dispose();
-                throw new Exception("Failed to write to pipe.", e);
+                Close(); // Transfer exceptions are fatal; close the connection.
             }
 
             return result;
@@ -299,7 +299,7 @@ namespace Treehopper.Desktop.WinUsb
                     result.AsyncWaitHandle.WaitOne();
 
                 if (result.Error != null)
-                    throw new Exception("Asynchronous write to pipe has failed.", result.Error);
+                    Close(); // Transfer exceptions are fatal; close the connection.
             }
             finally
             {

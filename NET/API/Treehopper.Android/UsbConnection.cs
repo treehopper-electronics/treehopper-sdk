@@ -55,7 +55,7 @@ namespace Treehopper.Android
             }
         }
 
-        public short Version { get; private set; }
+        public ushort Version { get; private set; }
 
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;
