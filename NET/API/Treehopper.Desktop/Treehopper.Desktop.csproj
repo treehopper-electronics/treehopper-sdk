@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\WinApi\WinApi.Windows.Controls\WinApi.Windows.Controls.csproj" />
     <ProjectReference Include="..\..\..\..\WinApi\WinApi\WinApi.csproj" />
     <ProjectReference Include="..\Treehopper\Treehopper.csproj" />
   </ItemGroup>

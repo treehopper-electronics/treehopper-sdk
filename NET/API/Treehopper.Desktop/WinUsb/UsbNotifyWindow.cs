@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WinApi.Core;
 using WinApi.Windows;
-using WinApi.Windows.Controls;
 using WinApi.User32;
+using System.Threading;
 
 namespace Treehopper.Desktop.WinUsb
 {
@@ -28,9 +28,11 @@ namespace Treehopper.Desktop.WinUsb
         public WinUsbConnectionService Service { get; set; }
         private DevNotifySafeHandle mDevInterfaceHandle;
 
+        private SynchronizationContext currentContext;
+
         public UsbNotifyWindow()
         {
-
+            currentContext = SynchronizationContext.Current;
         }
 
         internal UsbNotifyWindow(WinUsbConnectionService winUsbConnectionService)
@@ -60,7 +62,17 @@ namespace Treehopper.Desktop.WinUsb
                         return base.WindowProc(hwnd, msg, wParam, lParam);
                     if (theEvent == DBT_DEVICEARRIVAL)
                     {
-                        Task.Run(() => { Service.add(devBroadcastMsg.DevicePath); });
+                        Task.Run(() =>
+                        {
+                            if (currentContext == null)
+                            {
+                                Service.add(devBroadcastMsg.DevicePath);
+                            }
+                            else
+                            {
+                                currentContext.Post(delegate { Service.add(devBroadcastMsg.DevicePath); }, null);
+                            }
+                        });
                     }
                     else
                     {
@@ -73,7 +85,14 @@ namespace Treehopper.Desktop.WinUsb
                             Debug.WriteLine("Removing: " + board);
                             board.Connection.Dispose(); // kill the connection first
                             board.Dispose();
-                            Service.Boards.Remove(board);
+                            if (currentContext == null)
+                            {
+                                Service.Boards.Remove(board);
+                            }
+                            else
+                            {
+                                currentContext.Post(delegate { Service.Boards.Remove(board); }, null);
+                            }
                         }
                     }
                 }

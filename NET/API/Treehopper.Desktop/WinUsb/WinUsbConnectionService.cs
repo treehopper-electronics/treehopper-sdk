@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using Treehopper.Desktop.WinUsb;
 using WinApi.Windows;
-using WinApi.Windows.Controls;
 using WinApi.User32;
 
 /// <summary>
@@ -23,36 +22,27 @@ namespace Treehopper.Desktop.WinUsb
     public class WinUsbConnectionService : ConnectionService
     {
         private UsbNotifyWindow mNotifyWindow;
+        private SynchronizationContext currentContext;
 
         public WinUsbConnectionService()
         {
+            currentContext = SynchronizationContext.Current;
             add($"vid_{TreehopperUsb.Settings.Vid:x}&pid_{TreehopperUsb.Settings.Pid:x}");
             var wf = WindowFactory.Create();
             // We can only hear WM_DEVICECHANGE messages if we're an STA thread that's properly pumping windows messages.
             // There's no easy way to tell if the calling thread is pumping messages, so just check the apartment state, and assume people
             // aren't creating STA threads without a message pump.
-            if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
+            var mNotifyWindow = wf.CreateWindowEx(() => new UsbNotifyWindow(this), null);
+            var staThread = new Thread(() =>
             {
-                
-            }
-            else
+                mNotifyWindow.Show();
+                new EventLoop().Run(mNotifyWindow);
+            })
             {
-                // We're definitely not in an STA Thread (we're probably running in a console), so start a new STA Thread, and call
-                // Application.Run() to start pumping windows messages.
-                var staThread = new Thread(() =>
-                {
-
-                    var mNotifyWindow = wf.CreateWindowEx(() => new UsbNotifyWindow(this), null);
-                    mNotifyWindow.Show();
-                    new EventLoop().Run(mNotifyWindow);
-                })
-                {
-
-                    //staThread.SetApartmentState(ApartmentState.STA);
-                    Name = "DevNotifyNativeWindow STA Thread"
-                };
-                staThread.Start();
-            }
+                //staThread.SetApartmentState(ApartmentState.STA);
+                Name = "DevNotifyNativeWindow STA Thread"
+            };
+            staThread.Start();
         }
 
         internal void add(string matchDevicePath)
@@ -100,7 +90,20 @@ namespace Treehopper.Desktop.WinUsb
                     var refStart = hardware.IndexOf("REV_");
                     var revisionString = hardware.Substring(refStart+4, 4);
                     var serial = deviceInterfaceDetailData.DevicePath.Split('#')[2];
-                    Boards.Add(new TreehopperUsb(new WinUsbConnection(deviceInterfaceDetailData.DevicePath, name, serial, ushort.Parse(revisionString))));
+                    var path = deviceInterfaceDetailData.DevicePath;
+
+                    var newBoard = new TreehopperUsb(new WinUsbConnection(path, name, serial, ushort.Parse(revisionString)));
+
+                    Debug.WriteLine("Adding: " + newBoard);
+
+                    if (currentContext == null)
+                        Boards.Add(newBoard);
+                    else
+                        currentContext.Post(
+                            delegate {
+                                Boards.Add(newBoard);
+                            }, null);
+                    
                 }
             }
             SetupApi.SetupDiDestroyDeviceInfoList(devInfo);
