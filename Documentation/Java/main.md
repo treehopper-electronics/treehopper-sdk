@@ -1,4 +1,3 @@
-/** 
 \mainpage Welcome
 
 \section intro_sec Introduction
@@ -18,4 +17,3 @@ Treehopper's Java API is split across the following packages:
     - io.treehopper.desktop: provides platform-agnostic connectivity for traditional console or desktop applications running on Windows, macOS, or Linux.
     - io.treehopper.android: provides connectivity for Android projects.
 - io.treehopper.libraries: provides support for more than 100 commonly-used ICs and peripherals.
-*/

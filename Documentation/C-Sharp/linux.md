@@ -5,7 +5,23 @@ You can build C# Linux apps that connect to %Treehopper using both the classic <
 
 We have tested several software packages and can recommend a 7.x-series version of MonoDevelop as a free option, or IntelliJ Rider IDE if you can justify the expense.
 
-Most Linux distributions have ancient 5.x-series versions of MonoDevelop; these cannot be used to build .NET Standard projects, however, you might be able to create traditional .NET library projects and import code into them (.NET Standard 2.0 is compatible with .NET Framework 4.6.1).
+## MonoDevelop Flatpak headaches
+For a brief period, MonoDevelop was packaged as a FlatPak image. When MonoDevelop is running in a Flatpak-based environment, debugging an app that uses Treehopper.Desktop will fail, as libusb is unavailable in this execution context.
 
-## Flatpak headaches
-Unfortunately, MonoDevelop is no longer packaged for individual Linux distributions, but rather, as a FlatPak image. While this works well for web development, the Treehopper.Desktop API can't perform the LibUSB calls necessary to operate the board, which causes debugging to fail (as the app is launched from the context of the FlatPak).
+The MonoDevelop maintainers must have read our minds, because MonoDevelop has returned to standard package repos for most major Linux distributions. If you have an old Flatpak-based MonoDevelop installation, please uninstall it and install a repo-based version, as documented <a href="http://www.monodevelop.com/download/#fndtn-download-lin">here</a>.
+
+# Adding udev rules
+By default, most Linux-based operating systems restrict normal users from interacting with USB devices. To enable non-root users to interact with %Treehopper boards, you must a udev rule. 
+
+Paste and run this quick snippet into a terminal window:
+\code
+> sudo echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"8a7e\", MODE:=\"666\", GROUP=\"users\"" > /etc/udev/rules.d/999-treehopper.rules
+\endcode
+
+
+Verify the rule was created:
+\code
+> cat /etc/udev/rules.d/999-treehopper.rules 
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8a7e", MODE:="666", GROUP="users"
+\endcode
