@@ -6,33 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\DeviceWatcher.cs" Link="MacUsb\DeviceWatcher.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\CFNumberType.cs" Link="MacUsb\IOKit\CFNumberType.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\CFObject.cs" Link="MacUsb\IOKit\CFObject.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\CFStringEncoding.cs" Link="MacUsb\IOKit\CFStringEncoding.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOCFPlugInInterface.cs" Link="MacUsb\IOKit\IOCFPlugInInterface.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOIterator.cs" Link="MacUsb\IOKit\IOIterator.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOKitError.cs" Link="MacUsb\IOKit\IOKitError.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOKitFramework.cs" Link="MacUsb\IOKit\IOKitFramework.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOObject.cs" Link="MacUsb\IOKit\IOObject.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" Link="MacUsb\IOKit\IOUSBConfigurationDescriptor.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBDeviceInterface320.cs" Link="MacUsb\IOKit\IOUSBDeviceInterface320.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" Link="MacUsb\IOKit\IOUSBFindInterfaceRequest.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IOUSBInterfaceInterface197.cs" Link="MacUsb\IOKit\IOUSBInterfaceInterface197.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\IUnknownCGuts.cs" Link="MacUsb\IOKit\IUnknownCGuts.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\IOKit\NativeMethods.cs" Link="MacUsb\IOKit\NativeMethods.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\MacConnectionService.cs" Link="MacUsb\MacConnectionService.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\MacUsbConnection.cs" Link="MacUsb\MacUsbConnection.cs" />
-    <Compile Include="..\Treehopper.Mac.Shared\MacUsb\TreehopperData.cs" Link="MacUsb\TreehopperData.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\WinApi\WinApi\WinApi.csproj" />
     <ProjectReference Include="..\Treehopper\Treehopper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MacUsb\IOKit\" />
+    <Folder Include="MacUsb\" />
   </ItemGroup>
-
 </Project>
