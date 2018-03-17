@@ -31,7 +31,7 @@ namespace Treehopper.Desktop.WinUsb
         private string serial;
         private SafeWinUsbHandle winUsbHandle;
 
-        public WinUsbConnection(string path, string name, string serial, short version)
+        public WinUsbConnection(string path, string name, string serial, ushort version)
         {
             DevicePath = path;
             Name = name;
@@ -51,7 +51,7 @@ namespace Treehopper.Desktop.WinUsb
 
         public int UpdateRate { get; set; }
 
-        public short Version { get; }
+        public ushort Version { get; }
 
         public event PinEventData PinEventDataReceived;
         public event PropertyChangedEventHandler PropertyChanged;

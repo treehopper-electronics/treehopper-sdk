@@ -100,7 +100,7 @@ namespace Treehopper.Desktop.WinUsb
                     var refStart = hardware.IndexOf("REV_");
                     var revisionString = hardware.Substring(refStart+4, 4);
                     var serial = deviceInterfaceDetailData.DevicePath.Split('#')[2];
-                    Boards.Add(new TreehopperUsb(new WinUsbConnection(deviceInterfaceDetailData.DevicePath, name, serial, short.Parse(revisionString))));
+                    Boards.Add(new TreehopperUsb(new WinUsbConnection(deviceInterfaceDetailData.DevicePath, name, serial, ushort.Parse(revisionString))));
                 }
             }
             SetupApi.SetupDiDestroyDeviceInfoList(devInfo);
