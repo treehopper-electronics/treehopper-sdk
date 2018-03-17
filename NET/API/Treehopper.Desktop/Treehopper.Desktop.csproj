@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\WinApi\WinApi\WinApi.csproj" />
     <ProjectReference Include="..\Treehopper\Treehopper.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MacUsb\" />
   </ItemGroup>
 </Project>

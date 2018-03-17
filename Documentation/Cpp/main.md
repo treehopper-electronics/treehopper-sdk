@@ -1,4 +1,3 @@
-/** 
 \mainpage Welcome
 
 \section intro_sec Introduction
@@ -16,4 +15,3 @@ In addition to the main API that allows you to manipulate and sample pins on the
 There are two modules in the C++ source tree:
 - Treehopper: the base library. Provides GPIO, PWM, I2C, SPI, and base interface support. Exposes the Treehopper namespace. If compiled under Windows, Treehopper will call directly into native WinUSB functions, so there are no external dependencies. If compiled under macOS, Linux, or other UNIX-like operating system, Treehopper will call into LibUSB. You'll need to make sure you have both the LibUSB runtime library and LibUSB development headers/libs installed. This is not an issue on Linux, but macOS users will need to fetch this from brew, or whatever package manager they use. 
 - Treehopper.Libraries: provides support for more than 100 commonly-used ICs and peripherals.
-*/
