@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
-using WinApi.Core;
 using WinApi.Windows;
 using WinApi.User32;
 using System.Threading;
@@ -49,7 +48,7 @@ namespace Treehopper.Desktop.WinUsb
             base.OnMessage(ref msg);
         }
 
-        protected override IntPtr WindowProc(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+        internal override IntPtr WindowProc(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             if (msg == WM_DEVICECHANGE)
             {
