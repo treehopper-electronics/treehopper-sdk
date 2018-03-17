@@ -22,15 +22,19 @@ namespace Treehopper.Desktop.LibUsb
 
         public LibUsbConnection(IntPtr deviceProfile)
         {
+            var desc = new LibUsbDeviceDescriptor();
+            NativeMethods.GetDeviceDescriptor(deviceProfile, desc);
             this.deviceProfile = deviceProfile;
 
-            OpenAsync().Wait();
+            Task.Run(OpenAsync).Wait();
             var sb = new StringBuilder();
             NativeMethods.GetStringDescriptor(deviceHandle, 2, sb, sb.Capacity + 1);
             Name = sb.ToString();
             NativeMethods.GetStringDescriptor(deviceHandle, 3, sb, sb.Capacity + 1);
             Serial = sb.ToString();
             Close();
+            var hex = desc.bcdDevice; // 0x0111 = 1.11
+            Version = (ushort)((hex & 0x0f) + (10 * ((hex >> 4) & 0x0f)) + (100 * ((hex >> 8) & 0x0f)) + (1000 * ((hex >> 12) & 0x0f))); // convert 0x1234 to 1234
             DevicePath = deviceProfile.ToString();
         }
 
