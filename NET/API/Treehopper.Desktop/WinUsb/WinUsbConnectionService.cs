@@ -66,7 +66,6 @@ namespace Treehopper.Desktop.WinUsb
             int j = -1;
             bool b = true;
             int error;
-            SafeFileHandle tempHandle;
 
             while (b)
             {
