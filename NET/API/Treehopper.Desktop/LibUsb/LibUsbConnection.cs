@@ -91,8 +91,10 @@ namespace Treehopper.Desktop.LibUsb
                         Debug.WriteLine("Exception: " + ex.Message);
                     }
 
-                    if (1000f / UpdateRate > 1)
-                        await Task.Delay((int) Math.Round(1000f / UpdateRate)).ConfigureAwait(false);
+                    int rate = (int)Math.Round(1000.0 / UpdateRate);
+
+                    if (rate > 1)
+                        await Task.Delay(rate).ConfigureAwait(false);
                 }
             });
 

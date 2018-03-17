@@ -7,6 +7,8 @@
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="1.60.0" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.60.0" />
+    <PackageReference Include="Xamarin.CustomControls.RepeaterView" Version="1.2.2" />
   </ItemGroup>
 
   <ItemGroup>
