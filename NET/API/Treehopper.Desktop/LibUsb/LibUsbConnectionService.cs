@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -16,9 +17,10 @@ namespace Treehopper.Desktop.LibUsb
     {
         private readonly IntPtr context;
         private IntPtr callbackHandle;
-
+        private SynchronizationContext currentContext;
         public LibUsbConnectionService()
         {
+            currentContext = SynchronizationContext.Current;
             NativeMethods.Init(out context);
 
             HotplugCallbackFunction cb = Callback;
@@ -26,48 +28,68 @@ namespace Treehopper.Desktop.LibUsb
             NativeMethods.HotplugRegisterCallback(context, HotplugEvent.DeviceArrived | HotplugEvent.DeviceLeft, 0,
                 (int) TreehopperUsb.Settings.Vid, (int) TreehopperUsb.Settings.Pid, NativeMethods.HotplugMatchAny, cb,
                 IntPtr.Zero, callbackHandle);
-            Refresh();
+            InitialAdd();
             Task.Run(async () =>
             {
                 while (true)
                 {
                     NativeMethods.HandleEvents(context, IntPtr.Zero);
+                    Debug.WriteLine("HandleEvents completed");
                     await Task.Delay(100).ConfigureAwait(false);
                 }
             });
         }
 
-
         private int Callback(IntPtr context, IntPtr deviceProfile, HotplugEvent e, IntPtr userData)
         {
-            Debug.WriteLine(e);
-            Task.Run(() =>
-            {
+            //Task.Run(() =>
+            //{
                 if (e == HotplugEvent.DeviceArrived)
                 {
-                    var board = new TreehopperUsb(new LibUsbConnection(deviceProfile));
-                    Debug.WriteLine("Adding " + board);
-                    Boards.Add(board);
+                    var newBoard = new TreehopperUsb(new LibUsbConnection(deviceProfile));
+                    Debug.WriteLine("Adding " + newBoard);
+                    if (currentContext == null)
+                        Boards.Add(newBoard);
+                    else
+                        currentContext.Post(
+                            delegate
+                            {
+                                Boards.Add(newBoard);
+                            }, null);
                 }
                 else if (e == HotplugEvent.DeviceLeft)
                 {
                     var devicePath = deviceProfile.ToString();
-                    var boardToRemove = Boards.FirstOrDefault(b => b.Connection.DevicePath == devicePath);
-                    if (boardToRemove != null)
-                    {
-                        boardToRemove.Dispose();
-                        Boards.Remove(boardToRemove);
-                    }
+                Debug.WriteLine("Removing devicePath " + devicePath);
+                    RemoveDevice(devicePath);
                 }
-            });
+            //});
             return 0;
         }
 
-        private void Refresh()
+        internal void RemoveDevice(string matchPath)
+        {
+            var boardToRemove = Boards.FirstOrDefault(b => b.Connection.DevicePath == matchPath);
+            if (boardToRemove != null)
+            {
+                boardToRemove.Dispose();
+                Debug.WriteLine("Removing " + boardToRemove);
+                if (currentContext == null)
+                    Boards.Remove(boardToRemove);
+                else
+                    currentContext.Post(
+                        delegate {
+                            Boards.Remove(boardToRemove);
+                        }, null);
+            }
+        }
+
+        private void InitialAdd()
         {
             IntPtr deviceProfilePtrPtr;
             var ret = NativeMethods.GetDeviceList(context, out deviceProfilePtrPtr);
             if (ret > 0 || deviceProfilePtrPtr == IntPtr.Zero)
+            {
                 for (var i = 0; i < ret; i++)
                 {
                     // calculate the offset pointer
@@ -84,6 +106,7 @@ namespace Treehopper.Desktop.LibUsb
                         Boards.Add(board);
                     }
                 }
+            }
         }
 
         public override void Dispose()

@@ -30,7 +30,7 @@ namespace Treehopper.Desktop.LibUsb
             IntPtr HandleRef);
 
         // libusb_handle_events
-        [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_handle_events")]
+        [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_handle_events_completed")]
         internal static extern int HandleEvents(IntPtr pContext, IntPtr completed);
 
         // libusb_get_device_list
