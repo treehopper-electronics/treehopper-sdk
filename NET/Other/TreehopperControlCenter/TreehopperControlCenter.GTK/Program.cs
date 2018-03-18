@@ -19,7 +19,7 @@ namespace TreehopperControlCenter.GTK
             var app = new App();
             var window = new FormsWindow();
             window.LoadApplication(app);
-            window.SetApplicationTitle("BoxViewClock");
+            window.SetApplicationTitle("Treehopper");
             window.Show();
             Gtk.Application.Run();
         }

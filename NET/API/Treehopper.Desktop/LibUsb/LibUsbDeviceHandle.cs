@@ -5,59 +5,9 @@ namespace Treehopper.Desktop.LibUsb
 {
     public class LibUsbDeviceHandle : SafeHandle
     {
-        //public LibUsbDeviceHandle(LibUsbProfileHandle profileHandle)
-        //{
-        //	IntPtr pDeviceHandle = IntPtr.Zero;
-        //	int ret = LibUsbApi.Open(profileHandle, ref pDeviceHandle);
-        //	if (ret < 0 || pDeviceHandle == IntPtr.Zero)
-        //	{
-        //		lock (handleLOCK)
-        //		{
-        //			mLastReturnCode = (LibUsbError)ret;
-        //			mLastReturnString = LibUsbApi.StrError(mLastReturnCode);
-        //		}
-        //		SetHandleAsInvalid();
-        //	}
-        //	else
-        //	{
-        //		SetHandle(pDeviceHandle);
-        //	}
-
-        //}
-
         internal LibUsbDeviceHandle(IntPtr pDeviceHandle) : base(pDeviceHandle, true)
         {
         }
-        //private static Object handleLOCK = new object();
-        //private static LibUsbError mLastReturnCode;
-        //private static String mLastReturnString = String.Empty;
-
-
-        ///// If the device handle is <see cref="SafeContextHandle.IsInvalid"/>, gets a descriptive string for the <see cref="LastErrorCode"/>.
-        ///// </summary>
-        //public static string LastErrorString
-        //{
-        //	get
-        //	{
-        //		lock (handleLOCK)
-        //		{
-        //			return mLastReturnString;
-        //		}
-        //	}
-        //}
-        ///// <summary>
-        ///// If the device handle is <see cref="SafeContextHandle.IsInvalid"/>, gets the <see cref="LibUsbError"/> status code indicating the reason.
-        ///// </summary>
-        //public static LibUsbError LastErrorCode
-        //{
-        //	get
-        //	{
-        //		lock (handleLOCK)
-        //		{
-        //			return mLastReturnCode;
-        //		}
-        //	}
-        //}
 
         public override bool IsInvalid
         {

@@ -53,7 +53,10 @@ namespace Treehopper.Desktop.LibUsb
 
         public void Close()
         {
+            if (!isOpen) return; // already closed
+            
             deviceHandle.Dispose();
+            isOpen = false;
         }
 
         public void Dispose()
@@ -81,18 +84,39 @@ namespace Treehopper.Desktop.LibUsb
                         var res = NativeMethods.BulkTransfer(deviceHandle, pinReportEndpoint, buffer, buffer.Length,
                             out len, 1000);
 
-                        if (res == LibUsbError.Success)
-                            PinEventDataReceived?.Invoke(buffer);
-                        else if (res != LibUsbError.ErrorTimeout)
-                            Debug.WriteLine("Pin Data Read Failure: " + res);
+                        switch(res)
+                        {
+                            case LibUsbError.Success:
+                                PinEventDataReceived?.Invoke(buffer);
+                                break;
+
+                            case LibUsbError.ErrorNoDevice:
+                            case LibUsbError.ErrorPipe:
+                            case LibUsbError.ErrorOverflow:
+                                this.Close();
+                                // HACK ALERT: device removal notifications don't seem to work right, so if we get ErrorNoDevice,
+                                // request that ConnectionService remove the board that matches our device path.
+                                ((LibUsbConnectionService)ConnectionService.Instance).RemoveDevice(this.DevicePath);
+                                break;
+
+                            case LibUsbError.ErrorTimeout:
+                            case LibUsbError.ErrorIO:
+                                break; // normal behavior
+
+                            default:
+                                Debug.WriteLine("Pin Data Read Failure: " + res);
+                                break;
+                        }
                     }
                     catch (Exception ex)
                     {
                         Debug.WriteLine("Exception: " + ex.Message);
                     }
 
-                    if (1000f / UpdateRate > 1)
-                        await Task.Delay((int) Math.Round(1000f / UpdateRate)).ConfigureAwait(false);
+                    int rate = (int)Math.Round(1000.0 / UpdateRate);
+
+                    if (rate > 1)
+                        await Task.Delay(rate).ConfigureAwait(false);
                 }
             });
 
@@ -103,6 +127,9 @@ namespace Treehopper.Desktop.LibUsb
 
         public async Task<byte[]> ReadPeripheralResponsePacketAsync(uint numBytesToRead)
         {
+            if (!isOpen)
+                return new byte[numBytesToRead];
+            
             var data = new byte[numBytesToRead];
             var len = 0;
             NativeMethods.BulkTransfer(deviceHandle, peripheralResponseEndpoint, data, (int) numBytesToRead, out len,
@@ -112,12 +139,18 @@ namespace Treehopper.Desktop.LibUsb
 
         public async Task SendDataPeripheralChannelAsync(byte[] data)
         {
+            if (!isOpen)
+                return;
+            
             var len = 0;
             NativeMethods.BulkTransfer(deviceHandle, peripheralConfigEndpoint, data, data.Length, out len, 1000);
         }
 
         public async Task SendDataPinConfigChannelAsync(byte[] data)
         {
+            if (!isOpen)
+                return;
+            
             var len = 0;
             NativeMethods.BulkTransfer(deviceHandle, pinConfigEndpoint, data, data.Length, out len, 1000);
         }

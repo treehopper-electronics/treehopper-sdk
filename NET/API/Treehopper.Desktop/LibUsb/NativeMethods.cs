@@ -10,7 +10,7 @@ namespace Treehopper.Desktop.LibUsb
     internal static class NativeMethods
     {
         internal const CallingConvention CC = 0;
-        internal const string LIBUSB_DLL = "libusb-1.0.so";
+        internal const string LIBUSB_DLL = "libusb-1.0.so.0";
 
         internal const int HotplugMatchAny = -1;
 
@@ -30,7 +30,7 @@ namespace Treehopper.Desktop.LibUsb
             IntPtr HandleRef);
 
         // libusb_handle_events
-        [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_handle_events")]
+        [DllImport(LIBUSB_DLL, CallingConvention = CC, SetLastError = false, EntryPoint = "libusb_handle_events_completed")]
         internal static extern int HandleEvents(IntPtr pContext, IntPtr completed);
 
         // libusb_get_device_list
