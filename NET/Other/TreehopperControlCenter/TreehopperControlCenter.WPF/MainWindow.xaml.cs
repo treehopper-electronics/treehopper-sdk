@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Treehopper;
 using Xamarin.Forms;
 
 namespace TreehopperControlCenter.WPF
@@ -27,6 +28,12 @@ namespace TreehopperControlCenter.WPF
             var app = new TreehopperControlCenter.App();
             InitializeComponent();
             LoadApplication(app);
+            this.Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ConnectionService.Instance.Dispose();
         }
     }
 }

@@ -2,23 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace TreehopperControlCenter
 {
 	public partial class App : Application
 	{
-		public App ()
+        MainPage mainPage = new MainPage();
+
+        public App ()
 		{
 			InitializeComponent();
-
-            MainPage = new NavigationPage(new MainPage());
+            
+            MainPage = new NavigationPage(mainPage);
 		}
 
-		protected override void OnStart ()
+		protected override async void OnStart ()
 		{
-			// Handle when your app starts
-		}
+            await Task.Delay(500);
+            await mainPage.StartApp();
+            // Handle when your app starts
+        }
 
 		protected override void OnSleep ()
 		{
