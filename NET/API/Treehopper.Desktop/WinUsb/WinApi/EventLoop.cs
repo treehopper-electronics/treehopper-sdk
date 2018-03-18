@@ -18,6 +18,8 @@ namespace WinApi.Windows
             this.State = state;
         }
 
+        public bool Abort = false;
+
         public int Run(WindowCore mainWindow = null)
         {
             Action destroyHandler = () => { MessageHelpers.PostQuitMessage(); };
@@ -41,8 +43,8 @@ namespace WinApi.Windows
         public override int RunCore()
         {
             Message msg;
-            int res;
-            while ((res = User32Methods.GetMessage(out msg, IntPtr.Zero, 0, 0)) > 0)
+            int res = 0;
+            while (!Abort && (res = User32Methods.GetMessage(out msg, IntPtr.Zero, 0, 0)) > 0)
             {
                 User32Methods.TranslateMessage(ref msg);
                 User32Methods.DispatchMessage(ref msg);
@@ -66,7 +68,7 @@ namespace WinApi.Windows
                     User32Methods.TranslateMessage(ref msg);
                     User32Methods.DispatchMessage(ref msg);
                 }
-            } while (msg.Value != quitMsgId);
+            } while (msg.Value != quitMsgId && !Abort);
             return 0;
         }
     }

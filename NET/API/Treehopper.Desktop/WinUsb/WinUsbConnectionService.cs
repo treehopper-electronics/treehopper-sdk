@@ -23,6 +23,8 @@ namespace Treehopper.Desktop.WinUsb
     {
         private UsbNotifyWindow mNotifyWindow;
         private SynchronizationContext currentContext;
+        private EventLoop loop;
+        private Thread devNotifyThread;
 
         public WinUsbConnectionService()
         {
@@ -32,17 +34,18 @@ namespace Treehopper.Desktop.WinUsb
             // We can only hear WM_DEVICECHANGE messages if we're an STA thread that's properly pumping windows messages.
             // There's no easy way to tell if the calling thread is pumping messages, so just check the apartment state, and assume people
             // aren't creating STA threads without a message pump.
-            var mNotifyWindow = wf.CreateWindowEx(() => new UsbNotifyWindow(this), null);
-            var staThread = new Thread(() =>
+            
+            devNotifyThread = new Thread(() =>
             {
+                mNotifyWindow = wf.CreateWindowEx(() => new UsbNotifyWindow(this), null);
                 mNotifyWindow.Show();
-                new EventLoop().Run(mNotifyWindow);
+                loop = new EventLoop();
+                loop.Run(mNotifyWindow);
             })
             {
-                //staThread.SetApartmentState(ApartmentState.STA);
-                Name = "DevNotifyNativeWindow STA Thread"
+                Name = "DevNotifyNativeWindow Thread"
             };
-            staThread.Start();
+            devNotifyThread.Start();
         }
 
         internal void add(string matchDevicePath)
@@ -110,7 +113,8 @@ namespace Treehopper.Desktop.WinUsb
 
         public override void Dispose()
         {
-            throw new NotImplementedException();
+            mNotifyWindow.Dispose();
+            loop.Abort = true;
         }
     }
 }
