@@ -21,9 +21,8 @@ namespace TreehopperApp
 		public MainPage()
 		{
 			InitializeComponent();
-
             Debug.WriteLine("Waiting for board...");
-}
+        }
 
         public async Task StartApp()
         {

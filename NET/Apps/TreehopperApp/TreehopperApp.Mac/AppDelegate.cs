@@ -38,7 +38,12 @@ namespace TreehopperApp.Mac
 
         public override void WillTerminate(NSNotification notification)
         {
-            // Insert code here to tear down your application
+            ConnectionService.Instance.Dispose();
         }
-    }
+
+		public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
+		{
+            return true;
+		}
+	}
 }
