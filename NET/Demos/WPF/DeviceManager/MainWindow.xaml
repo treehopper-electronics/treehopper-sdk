@@ -4,7 +4,7 @@
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
                   Title="Treehopper Device Manager" 
                   xmlns:vm="clr-namespace:DeviceManager.ViewModels"
-                  xmlns:treehopper="clr-namespace:Treehopper.Mvvm.Views;assembly=Treehopper.WPF"
+                  xmlns:treehopper="clr-namespace:Treehopper.Mvvm.Views"
                   Style="{StaticResource BlankWindow}" Height="300" Width="600"
                   ResizeMode="NoResize">
     <mui:ModernWindow.DataContext>

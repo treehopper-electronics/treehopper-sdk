@@ -5,7 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Version>1.11.0</Version>
     <Company>Treehopper Electronics, LLC</Company>
-    <Product>Treehopper</Product>
+    <Product>Treehopper.Desktop</Product>
     <Authors>Jay Carlson</Authors>
     <RepositoryUrl>https://github.com/treehopper-electronics/treehopper-sdk</RepositoryUrl>
     <PackageProjectUrl>https://treehopper.io</PackageProjectUrl>

@@ -23,7 +23,7 @@ namespace Treehopper.Desktop.WinUsb
     {
         private UsbNotifyWindow mNotifyWindow;
         private SynchronizationContext currentContext;
-        private EventLoop loop;
+        private RealtimeEventLoop loop;
         private Thread devNotifyThread;
 
         public WinUsbConnectionService()
@@ -39,7 +39,7 @@ namespace Treehopper.Desktop.WinUsb
             {
                 mNotifyWindow = wf.CreateWindowEx(() => new UsbNotifyWindow(this), null);
                 mNotifyWindow.Show();
-                loop = new EventLoop();
+                loop = new RealtimeEventLoop();
                 loop.Run(mNotifyWindow);
             })
             {
@@ -115,6 +115,20 @@ namespace Treehopper.Desktop.WinUsb
         {
             mNotifyWindow.Dispose();
             loop.Abort = true;
+        }
+
+        ~WinUsbConnectionService()
+        {
+            Dispose();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                GC.SuppressFinalize(this);
+            }
+            this.Dispose();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using WinApi.User32;
 using WinApi.Windows.Helpers;
 
@@ -49,6 +51,7 @@ namespace WinApi.Windows
                 User32Methods.TranslateMessage(ref msg);
                 User32Methods.DispatchMessage(ref msg);
             }
+            Thread.Sleep(10);
             return res;
         }
     }
@@ -68,6 +71,7 @@ namespace WinApi.Windows
                     User32Methods.TranslateMessage(ref msg);
                     User32Methods.DispatchMessage(ref msg);
                 }
+                Thread.Sleep(10);
             } while (msg.Value != quitMsgId && !Abort);
             return 0;
         }

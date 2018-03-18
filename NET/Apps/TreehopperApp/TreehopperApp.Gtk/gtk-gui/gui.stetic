@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+  </configuration>
+  <import>
+    <widget-library name="../../../../../packages/Xamarin.Forms.Platform.GTK.3.1.0.292472-nightly/lib/net45/webkit-sharp.dll" />
+    <widget-library name="../bin/Debug/TreehopperApp.GTK.exe" internal="true" />
+  </import>
+</stetic-interface>
