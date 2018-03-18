@@ -14,8 +14,12 @@ namespace TreehopperApp
         public App ()
 		{
 			InitializeComponent();
-            
-            MainPage = new NavigationPage(mainPage);
+
+            MainPage = new NavigationPage(mainPage)
+            {
+                BarBackgroundColor = Color.FromRgb(0x8b, 0xc3, 0x4a),
+                BarTextColor = Color.White
+            };
 		}
 
 		protected override async void OnStart ()

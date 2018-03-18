@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI;
 
 namespace TreehopperApp.UWP
 {
@@ -39,7 +41,10 @@ namespace TreehopperApp.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = Color.FromArgb(0xff, 0x8b, 0xc3, 0x4a);
+            titleBar.ButtonBackgroundColor = Color.FromArgb(0xff, 0x8b, 0xc3, 0x4a);
+            titleBar.ForegroundColor = Colors.White;
 #if DEBUG
             //if (System.Diagnostics.Debugger.IsAttached)
             //{

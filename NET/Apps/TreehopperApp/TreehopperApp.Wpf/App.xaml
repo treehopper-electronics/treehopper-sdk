@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:TreehopperApp.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFLightToolkit;component/Assets/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="CommandBarBackgroundColor" Color="#8bc34a" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

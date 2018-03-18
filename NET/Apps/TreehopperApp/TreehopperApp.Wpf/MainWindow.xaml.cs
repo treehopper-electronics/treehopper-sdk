@@ -24,11 +24,13 @@ namespace TreehopperApp.WPF
     {
         public MainWindow()
         {
+            //this.TitleBarBackgroundColor = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0x8b, 0xc3, 0x4a));
             Forms.Init();
             var app = new TreehopperApp.App();
             InitializeComponent();
             LoadApplication(app);
             this.Closing += MainWindow_Closing;
+            
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
