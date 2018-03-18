@@ -68,7 +68,7 @@ namespace Treehopper.Uwp
             }
         }
 
-        public short Version { get; private set; }
+        public ushort Version { get; private set; }
 
         public async Task<bool> OpenAsync()
         {
@@ -85,7 +85,7 @@ namespace Treehopper.Uwp
 
             // https://msdn.microsoft.com/en-us/library/windows/hardware/dn303346(v=vs.85).aspx
 
-            Version = (short) usbDevice.DeviceDescriptor.BcdDeviceRevision;
+            Version = (ushort)usbDevice.DeviceDescriptor.BcdDeviceRevision;
 
             pinConfigPipe = usbDevice.DefaultInterface.BulkOutPipes[0];
             peripheralOutPipe = usbDevice.DefaultInterface.BulkOutPipes[1];

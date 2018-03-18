@@ -185,6 +185,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DesignTimeConnection.cs" />
+    <Compile Include="DesignTimeConnectionService.cs" />
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="Messages\BoardConnectedMessage.cs" />
+    <Compile Include="Messages\BoardDisconnectedMessage.cs" />
+    <Compile Include="Messages\NamespaceDoc.cs" />
+    <Compile Include="SelectorView.xaml.cs">
+      <DependentUpon>SelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\SelectorViewModel.cs" />
+    <Compile Include="ViewModels\ISelectorViewModel.cs" />
+    <Compile Include="ViewModels\NamespaceDoc.cs" />
+    <Compile Include="ViewModels\SelectorDesignTimeViewModel.cs" />
+    <Compile Include="ViewModels\SelectorViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -195,6 +209,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="SelectorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -204,14 +222,6 @@
     <ProjectReference Include="..\..\..\API\Treehopper.Desktop\Treehopper.Desktop.csproj">
       <Project>{8c1a6bb5-a978-4582-834c-16a37a3b5484}</Project>
       <Name>Treehopper.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\API\Treehopper.MVVM\Treehopper.Mvvm.csproj">
-      <Project>{41e80dee-6fca-4eda-b7c4-40ea5f829dad}</Project>
-      <Name>Treehopper.Mvvm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\API\Treehopper.WPF\Treehopper.Wpf.csproj">
-      <Project>{b9fa9617-ffaf-45e0-95ff-96ff5cdafbfa}</Project>
-      <Name>Treehopper.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj">
       <Project>{bfe6af54-94ed-4808-827d-64a54612d8ad}</Project>

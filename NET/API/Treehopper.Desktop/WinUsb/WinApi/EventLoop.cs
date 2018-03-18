@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using WinApi.User32;
 using WinApi.Windows.Helpers;
 
@@ -17,6 +19,8 @@ namespace WinApi.Windows
         {
             this.State = state;
         }
+
+        public bool Abort = false;
 
         public int Run(WindowCore mainWindow = null)
         {
@@ -41,12 +45,13 @@ namespace WinApi.Windows
         public override int RunCore()
         {
             Message msg;
-            int res;
-            while ((res = User32Methods.GetMessage(out msg, IntPtr.Zero, 0, 0)) > 0)
+            int res = 0;
+            while (!Abort && (res = User32Methods.GetMessage(out msg, IntPtr.Zero, 0, 0)) > 0)
             {
                 User32Methods.TranslateMessage(ref msg);
                 User32Methods.DispatchMessage(ref msg);
             }
+            Thread.Sleep(10);
             return res;
         }
     }
@@ -66,7 +71,8 @@ namespace WinApi.Windows
                     User32Methods.TranslateMessage(ref msg);
                     User32Methods.DispatchMessage(ref msg);
                 }
-            } while (msg.Value != quitMsgId);
+                Thread.Sleep(10);
+            } while (msg.Value != quitMsgId && !Abort);
             return 0;
         }
     }
