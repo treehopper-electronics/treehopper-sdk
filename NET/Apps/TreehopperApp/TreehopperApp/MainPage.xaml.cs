@@ -23,29 +23,18 @@ namespace TreehopperApp
 			InitializeComponent();
 
             Debug.WriteLine("Waiting for board...");
-            Device.BeginInvokeOnMainThread(async() =>
-            {
-
-                //if(ConnectionService.Instance.Boards.Count > 0)
-                //{
-                //    Board = ConnectionService.Instance.Boards[0];
-                //    Start();
-                //}
-            });
-        }
+}
 
         public async Task StartApp()
         {
-            ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
             Board = await ConnectionService.Instance.GetFirstDeviceAsync();
-            //await Start();
+            await Start();
+            ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-
-            //ConnectionService.Instance.Dispose();
         }
 
         private void Pins_ItemSelected(object sender, SelectedItemChangedEventArgs e)
