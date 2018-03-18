@@ -20,6 +20,7 @@ namespace TreehopperApp.GTK
             var window = new FormsWindow();
             window.LoadApplication(app);
             window.SetApplicationTitle("Treehopper");
+            window.SetDefaultSize(300, 750);
             window.Show();
             Gtk.Application.Run();
         }
