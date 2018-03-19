@@ -145,10 +145,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mpu9250", "Demos\Libraries\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temperature", "Demos\Libraries\Sensors\Temperature\Temperature.csproj", "{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FirmwareUpdater", "FirmwareUpdater", "{FDE7B38D-0336-4868-9DBA-06E267E0F703}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FirmwareUpdater", "Apps\FirmwareUpdater\FirmwareUpdater\FirmwareUpdater.shproj", "{5D6E649A-65D5-4C74-B808-1873136C48A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirmwareUpdater.Wpf", "Apps\FirmwareUpdater\FirmwareUpdater.Wpf\FirmwareUpdater.Wpf.csproj", "{6D0F850E-6586-4D7F-9DAE-CE205C27F256}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{0c457ad6-8ee0-4e4b-8e38-e47d1db69c28}*SharedItemsImports = 4
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{0ffbcae9-86d0-4f5c-9249-01fe391ba1d8}*SharedItemsImports = 4
+		Apps\FirmwareUpdater\FirmwareUpdater\FirmwareUpdater.projitems*{5d6e649a-65d5-4c74-b808-1873136c48a8}*SharedItemsImports = 13
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{6ca094ff-f8dc-4afa-827b-1319c3053d96}*SharedItemsImports = 13
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{7a589e90-71e6-4b62-aba0-d40eb57cf213}*SharedItemsImports = 4
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{823c3249-3ba0-457c-9a88-a6ed9891e9d3}*SharedItemsImports = 4
@@ -1065,6 +1072,22 @@ Global
 		{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2}.Release|x64.Build.0 = Release|Any CPU
 		{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2}.Release|x86.ActiveCfg = Release|Any CPU
 		{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2}.Release|x86.Build.0 = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|x64.Build.0 = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Debug|x86.Build.0 = Debug|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|ARM.Build.0 = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x64.ActiveCfg = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x64.Build.0 = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x86.ActiveCfg = Release|Any CPU
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1138,6 +1161,9 @@ Global
 		{1EB2BFC4-A438-43BD-AC7D-674836DAF41D} = {EA3C9176-FDAC-445F-ABE8-D2648A007DEF}
 		{284216E1-A28E-4A95-B649-F82D9E6511B4} = {EA3C9176-FDAC-445F-ABE8-D2648A007DEF}
 		{8A2085F5-6F95-4666-81E8-E4DBFF02EFB2} = {EA3C9176-FDAC-445F-ABE8-D2648A007DEF}
+		{FDE7B38D-0336-4868-9DBA-06E267E0F703} = {0732EAC4-CE73-4E08-8D99-81C4701F111E}
+		{5D6E649A-65D5-4C74-B808-1873136C48A8} = {FDE7B38D-0336-4868-9DBA-06E267E0F703}
+		{6D0F850E-6586-4D7F-9DAE-CE205C27F256} = {FDE7B38D-0336-4868-9DBA-06E267E0F703}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5057C2CE-5C8D-414F-9703-0699AAFFD2C1}

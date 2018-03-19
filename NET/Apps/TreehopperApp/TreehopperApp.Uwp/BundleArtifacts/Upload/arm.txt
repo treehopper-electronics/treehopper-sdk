@@ -1,0 +1,6 @@
+MainPackage=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\ARM\Release\Upload\TreehopperApp.Uwp_1.11.2.0_ARM.appx
+SymbolPackage=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\ARM\Release\Upload\TreehopperApp.Uwp_1.11.2.0\TreehopperApp.Uwp_1.11.2.0_ARM.appxsym
+ResourcePack=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\ARM\Release\TreehopperApp.Uwp_1.11.2.0_scale-100.appx
+ResourcePack=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\ARM\Release\TreehopperApp.Uwp_1.11.2.0_scale-125.appx
+ResourcePack=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\ARM\Release\TreehopperApp.Uwp_1.11.2.0_scale-150.appx
+ResourcePack=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\ARM\Release\TreehopperApp.Uwp_1.11.2.0_scale-400.appx

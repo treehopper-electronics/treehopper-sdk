@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="1bcc3ce9-feb4-447e-9575-52ca7ff8ef38" Publisher="CN=jay" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="1bcc3ce9-feb4-447e-9575-52ca7ff8ef38" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="25006CarlsonStrategies.TreehopperApp" Publisher="CN=7494AA59-770D-41F0-9A10-07E05F99728B" Version="1.11.2.0" />
+  <mp:PhoneIdentity PhoneProductId="fcefc1de-06fe-4ae3-b3e5-9e5a126afbbf" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>TreehopperApp.Uwp</DisplayName>
-    <PublisherDisplayName>jay</PublisherDisplayName>
+    <DisplayName>Treehopper App</DisplayName>
+    <PublisherDisplayName>Carlson Strategies</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
