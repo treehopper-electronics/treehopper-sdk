@@ -1,3 +1,10 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+apply plugin: 'maven'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 apply plugin: 'java'
 
 dependencies {
@@ -8,3 +15,51 @@ dependencies {
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+
+group = 'io.treehopper.libraries'
+version = '1.11.1'
+
+publishing {
+    publications {
+        Production(MavenPublication) {
+            groupId 'io.treehopper.libraries'
+            artifactId 'treehopper.libraries'
+            version '1.11.1'
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_API_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'Treehopper'
+        name = 'treehopper.libraries'
+        userOrg = 'treehopper-electronics'
+        licenses = ['MIT']
+        websiteUrl = "https://treehopper.io"
+        publish = true
+        vcsUrl = 'https://github.com/treehopper-electronics/treehopper-sdk.git'
+        version {
+            name = '1.11.1'
+            desc = 'Treehopper libraries for Java'
+            released  = new Date()
+            vcsTag = '1.11'
+        }
+    }
+
+    publications = ['Production']
+
+}
