@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.11.0</Version>
-    <Authors>Jay Carlson</Authors>
-    <Company>Treehopper Electronics, LLC</Company>
+    <Version>1.11.3</Version>
+    <Authors>Treehopper Electronics</Authors>
+    <Company>Treehopper Electronics</Company>
     <Product>Treehopper</Product>
     <RepositoryUrl>https://github.com/treehopper-electronics/treehopper-sdk</RepositoryUrl>
     <PackageProjectUrl>https://treehopper.io</PackageProjectUrl>
@@ -14,6 +14,17 @@
 
   <PropertyGroup>
     <OutputPath>..\..\..\Output\NET\$(Configuration)\</OutputPath>
+    <PackageIconUrl>https://treehopper.io/files/assets/icon-64.png</PackageIconUrl>
+    <AssemblyVersion>1.11.3.0</AssemblyVersion>
+    <FileVersion>1.11.3.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>..\..\..\Output\NET\Release\netstandard2.0\Treehopper.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\..\..\Output\NET\Debug\netstandard2.0\Treehopper.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

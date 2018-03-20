@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.11.0</Version>
-    <Authors>Jay Carlson</Authors>
+    <Version>1.11.2</Version>
+    <Authors>Treehopper Electronics</Authors>
     <Company>Treehopper Electronics</Company>
     <Product>Treehopper.Libraries</Product>
     <PackageProjectUrl>https://treehopper.io</PackageProjectUrl>
@@ -24,6 +24,15 @@
 
   <PropertyGroup>
     <OutputPath>..\..\..\Output\NET\$(Configuration)\</OutputPath>
+    <PackageIconUrl>https://treehopper.io/files/assets/icon-64.png</PackageIconUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>..\..\..\Output\NET\Release\netstandard2.0\Treehopper.Libraries.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\..\..\Output\NET\Debug\netstandard2.0\Treehopper.Libraries.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Treehopper.Uwp</id>
+    <version>1.11.1</version>
+    <title>Treehopper.Uwp</title>
+    <authors>Jay Carlson</authors>
+    <owners>Treehopper Electronics</owners>
+    <projectUrl>https://treehopper.io</projectUrl>
+    <iconUrl>https://treehopper.io/files/assets/icon-64.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides Treehopper connectivity for Windows 10 UWP apps.</description>
+    <releaseNotes>Initial release!</releaseNotes>
+    <copyright>Copyright 2018 Treehopper Electronics</copyright>
+    <tags>Treehopper USB</tags>
+  </metadata>
+
+  <files>
+    <!-- WinMd and IntelliSense files -->
+    <file src="..\..\..\Output\NET\Release\Treehopper.Uwp.XML" target="lib\uap10.0"/>
+    <file src="..\..\..\Output\NET\Release\Treehopper.Uwp.dll" target="lib\uap10.0"/>
+    <file src="..\..\..\Output\NET\Release\Treehopper.Uwp.pri" target="lib\uap10.0"/>
+  </files>
+</package>
