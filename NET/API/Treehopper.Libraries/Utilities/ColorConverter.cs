@@ -16,6 +16,9 @@ namespace Treehopper.Libraries.Utilities
         /// <returns></returns> 
         public static Color FromHsl(float hue, float saturation, float luminance)
         {
+            while (hue < 0)
+                hue += 360;
+
             var h = Math.Max((hue % 360) / 360.0f, 0);
             var s = saturation / 100.0f;
             var l = luminance / 100.0f;
