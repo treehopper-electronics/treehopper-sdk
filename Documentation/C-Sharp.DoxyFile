@@ -531,7 +531,7 @@ CASE_SENSE_NAMES       = NO
 # scope will be hidden.
 # The default value is: NO.
 
-HIDE_SCOPE_NAMES       = NO
+HIDE_SCOPE_NAMES       = YES
 
 # If the HIDE_COMPOUND_REFERENCE tag is set to NO (default) then doxygen will
 # append additional text to a page's title, such as Class Reference. If set to
@@ -791,16 +791,11 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = ../NET/API/Treehopper \
-                         ../NET/Libraries/Treehopper.Libraries \
+                         ../NET/API/Treehopper.Libraries \
                          ../NET/API/Treehopper.Android \
                          ../NET/API/Treehopper.Desktop \
-                         ../NET/API/Treehopper.MVVM \
-                         ../NET/API/Treehopper.UWP \
-                         ../NET/API/Treehopper.WPF \
-                         ../NET/API/Treehopper.WPF \
-                         C-Sharp \
-                         ../NET/API/Treehopper.Mac \
-                         ../NET/API/Treehopper.Mac.Shared
+                         ../NET/API/Treehopper.Uwp \
+                         C-Sharp
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -900,7 +895,8 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = *XamlTypeInfo*
+EXCLUDE_PATTERNS       = *XamlTypeInfo* \
+                         */obj/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -918,7 +914,8 @@ EXCLUDE_SYMBOLS        = treehopper \
                          ThirdParty \
                          *Registers \
                          Register \
-                         RegisterManager
+                         RegisterManager \
+                         NetCoreEx
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include
@@ -944,7 +941,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = 
+IMAGE_PATH             = C-Sharp/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program

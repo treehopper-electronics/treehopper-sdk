@@ -20,7 +20,7 @@ While this is plenty of current for peripheral ICs and small indicator LEDs, do 
 
 \warning **To avoid damaging the device permanently, do not source or sink more than 400 mA of combined current out of the pins on the board!** Note that these limits have nothing to do with the supply pins found on Treehopper; you can comfortably source 500 mA out of either the 5V or 3.3V supply pins on the board.
 
-# Digital input {#pins_digitalin}
+# Digital input
 Treehopper's digital inputs are used to sample digital signals — i.e., signals that have either a <i>LOW</i> or <i>HIGH</i> state. A <i>LOW</i> is considered a voltage less than or equal to 0.6V. Logic <b>HIGH</b> is considered a voltage greater than or equal to 2.7V.
 
 Treehopper pins are 5V-tolerant; note that this means there is a 5V-capable protection diode shunting to VDD (3.3V) -- it does not mean you can drive a low-impedance (strong) 5V signal into a pin; if you have 5V outputs from peripherals or other devices that you wish to use, please place a resistor in series with the signal to limit current:

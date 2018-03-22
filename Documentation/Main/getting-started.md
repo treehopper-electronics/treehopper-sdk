@@ -7,16 +7,8 @@ To interact with Treehopper, you write software that runs on your computer, lapt
 
 To learn more about supported hosts, visit the \ref hosts page.
 
-# Verify
-The first step is to verify your board works by running a pre-built demo. Please visit [Getting Started](https://treehopper.io/get-started) for links to download ready-to-run demos for your device.
 
-# Core Hardware
-![Treehopper pinout](images/treehopper-hardware.svg)
 
-Treehopper is a USB 2.0 Full Speed device with up to 20 pins — each of which can be used as an analog input, digital input, or digital output. Many of these pins also have dedicated peripheral functions for SPI, I2C, UART, and PWM.
-
-# Language support
-Treehopper's SDK has native APIs for C#, Python, Java, and C++. Other languages, platforms, and environments that can call into libraries built in these languages also work with Treehopper; MATLAB is an example of such an environment.
 
 ## Treehopper is just a library
 This may not be obvious to beginners (especially coming from platforms like Arduino), but the Treehopper SDK isn't an environment, framework, or language --- it's just a library.
