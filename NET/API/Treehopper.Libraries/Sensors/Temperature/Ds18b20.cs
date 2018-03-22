@@ -10,10 +10,10 @@ namespace Treehopper.Libraries.Sensors.Temperature
     /// </summary>
     /// <remarks>
     ///     The DS18B20 uses the IOneWire interface found on Treehopper.Uart for communication. You can use the
-    ///     <see cref="IOneWire.OneWireSearchAsync()" /> method to discover the device address to pass to the
-    ///     <see cref="Ds18b20.Ds18b20(IOneWire, ulong)" /> constructor; setting this parameter to "0" will switch to all-call
+    ///     <see cref="OneWire.OneWireSearchAsync()" /> method to discover the device address to pass to the
+    ///     <see cref="Ds18b20.Ds18b20(OneWire, ulong)" /> constructor; setting this parameter to "0" will switch to all-call
     ///     addressing, allowing the class to work with a single sensor attached to the bus without having to know its address.
-    ///     Don't use the all-call mode if there are multiple devices on the <see cref="IOneWire" /> bus, as this will cause
+    ///     Don't use the all-call mode if there are multiple devices on the <see cref="OneWire" /> bus, as this will cause
     ///     interference.
     ///     If you're using multiple devices, consider using the <see cref="Ds18b20.Group" /> class, which efficiently manages
     ///     collections of sensors.
@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
     [Supports("Maxim", "DS18B20")]
     public class Ds18b20 : TemperatureSensorBase
     {
-        private readonly IOneWire oneWire;
+        private readonly OneWire oneWire;
 
         /// <summary>
         ///     Construct a DS18B20
@@ -51,11 +51,11 @@ namespace Treehopper.Libraries.Sensors.Temperature
         ///     RaisePropertyChanged("SensorValue"); // inform the UWP/WPF GUI that we have new sensor data
         ///     \endcode
         /// </remarks>
-        public Ds18b20(IOneWire oneWire, ulong address = 0)
+        public Ds18b20(OneWire oneWire, ulong address = 0)
         {
             this.oneWire = oneWire;
             Address = address;
-            oneWire.StartOneWire();
+            Task.Run(oneWire.StartOneWireAsync).Wait();
         }
 
         public ulong Address { get; }
@@ -160,14 +160,14 @@ namespace Treehopper.Libraries.Sensors.Temperature
         /// </remarks>
         public class Group
         {
-            private readonly IOneWire oneWire;
+            private readonly OneWire oneWire;
             private List<Ds18b20> SensorList = new List<Ds18b20>();
 
             /// <summary>
             ///     Construct a Group of Ds18b20 sensors
             /// </summary>
             /// <param name="oneWire">The OneWire interface (UART) this group is attached to</param>
-            public Group(IOneWire oneWire)
+            public Group(OneWire oneWire)
             {
                 this.oneWire = oneWire;
             }
@@ -179,7 +179,7 @@ namespace Treehopper.Libraries.Sensors.Temperature
             public async Task<IList<Ds18b20>> FindAllAsync()
             {
                 SensorList = new List<Ds18b20>();
-                oneWire.StartOneWire();
+                oneWire.StartOneWireAsync();
                 var addresses = await oneWire.OneWireSearchAsync().ConfigureAwait(false);
                 foreach (var address in addresses)
                     if ((address & 0xff) == 0x28)

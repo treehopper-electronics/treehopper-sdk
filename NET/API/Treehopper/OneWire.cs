@@ -6,12 +6,12 @@ namespace Treehopper
     /// <summary>
     ///     Represents a OneWire-capable host.
     /// </summary>
-    public interface IOneWire
+    public interface OneWire
     {
         /// <summary>
         ///     Start OneWire mode on this host
         /// </summary>
-        void StartOneWire();
+        Task StartOneWireAsync();
 
         /// <summary>
         ///     Reset all devices on the OneWire bus and send the supplied address
