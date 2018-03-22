@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>1.11.2</Version>
+    <Version>1.11.3</Version>
     <Company>Treehopper Electronics</Company>
     <Product>Treehopper.Desktop</Product>
     <Authors>Treehopper Electronics</Authors>

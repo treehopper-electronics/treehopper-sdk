@@ -13,6 +13,9 @@
     <releaseNotes>Initial release!</releaseNotes>
     <copyright>Copyright 2018 Treehopper Electronics</copyright>
     <tags>Treehopper USB</tags>
+    <dependencies>
+      <dependency id="Treehopper" version="1.11.3" />
+    </dependencies>
   </metadata>
 
   <files>

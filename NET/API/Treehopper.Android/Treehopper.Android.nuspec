@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Treehopper.Android</id>
+    <version>1.11.1</version>
+    <title>Treehopper.Android</title>
+    <authors>Treehopper Electronics</authors>
+    <owners>Treehopper Electronics</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://treehopper.io/</projectUrl>
+    <iconUrl>https://treehopper.io/files/assets/icon-64.png</iconUrl>
+    <description>Provides Treehopper connectivity for Xamarin.Android apps</description>
+    <releaseNotes>Initial release!</releaseNotes>
+    <copyright>Copyright 2018 Treehopper Electronics</copyright>
+    <tags>Treehopper USB</tags>
+    <dependencies>
+      <dependency id="Treehopper" version="1.11.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="lib\MonoAndroid50\Treehopper.Android.dll" target="lib\MonoAndroid50\Treehopper.Android.dll" />
+    <file src="lib\MonoAndroid50\Treehopper.Android.xml" target="lib\MonoAndroid50\Treehopper.Android.xml" />
+  </files>
+</package>
