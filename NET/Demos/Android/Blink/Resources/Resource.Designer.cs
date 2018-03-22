@@ -26,6 +26,7 @@ namespace Blink
 		
 		public static void UpdateIdValues()
 		{
+			global::Treehopper.Resource.String.library_name = global::Blink.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
@@ -92,11 +93,14 @@ namespace Blink
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f050002
+			public const int ApplicationName = 2131034114;
+			
 			// aapt resource value: 0x7f050001
-			public const int ApplicationName = 2131034113;
+			public const int Hello = 2131034113;
 			
 			// aapt resource value: 0x7f050000
-			public const int Hello = 2131034112;
+			public const int library_name = 2131034112;
 			
 			static String()
 			{

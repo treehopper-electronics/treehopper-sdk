@@ -358,14 +358,15 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>25006CarlsonStrategies.TreehopperApp</MainPackageIdentityName>
+    <MainPackageIdentityName>25006CarlsonStrategies.Treehopper</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>Treehopper App</ReservedName>
+      <ReservedName>Treehopper</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
     <MainPackageIdentityName>25006CarlsonStrategies.Belial</MainPackageIdentityName>
     <MainPackageIdentityName>25006CarlsonStrategies.River</MainPackageIdentityName>
+    <MainPackageIdentityName>25006CarlsonStrategies.TreehopperApp</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9P9WN67X1GKF" />
+  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NXNJB5Q3C4Z" />
 </StoreAssociation>
