@@ -75,7 +75,7 @@ namespace TreehopperApp.Pages.Libraries
 
         private SKColor valueToHeat(ushort val)
         {
-            var color = Treehopper.Libraries.Utilities.ColorConverter.FromHsl((1-(val / (float)(UInt16.MaxValue))) * 360f, 100, 50);
+            var color = Treehopper.Libraries.Utilities.Color.FromHsl((1-(val / (float)(UInt16.MaxValue))) * 360f, 100, 50);
             return new SKColor(color.R, color.G, color.B);
         }
 

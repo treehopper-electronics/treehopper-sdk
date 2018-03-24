@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="25006CarlsonStrategies.Treehopper" Publisher="CN=7494AA59-770D-41F0-9A10-07E05F99728B" Version="1.11.2.0" />
+  <Identity Name="25006CarlsonStrategies.Treehopper" Publisher="CN=7494AA59-770D-41F0-9A10-07E05F99728B" Version="1.11.1.0" />
   <mp:PhoneIdentity PhoneProductId="8bf1049a-c64e-49ec-830d-30377b722284" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Treehopper</DisplayName>
