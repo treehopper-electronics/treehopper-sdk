@@ -43,8 +43,8 @@ class HardwareSpi(Spi):
 
         self._send_config()
 
-    def send_receive(self, data_to_write: List[int], chip_select=None, chip_select_mode=ChipSelectMode.SpiActiveLow, speed_mhz=1,
-                     burst_mode=SpiBurstMode.NoBurst, spi_mode=SpiMode.Mode00) -> List[int]:
+    def send_receive(self, data_to_write: List[int], chip_select=None, chip_select_mode=ChipSelectMode.SpiActiveLow,
+                     speed_mhz=6, burst_mode=SpiBurstMode.NoBurst, spi_mode=SpiMode.Mode00) -> List[int]:
         if not self._enabled:
             self._logger.error("spi.send_receive() called before enabling the peripheral. This call will be ignored.")
             return
@@ -82,12 +82,14 @@ class HardwareSpi(Spi):
         actual_frequency = 48.0 / (2.0 * (spi0_ckr + 1.0))
 
         if math.isclose(actual_frequency, speed_mhz, abs_tol=1):
-            self._logger.info("NOTICE: SPI module actual frequency of {} MHz is more than 1 MHz away from the requested frequency of {} MHz".format(actual_frequency, speed_mhz))
+            self._logger.info("NOTICE: SPI module actual frequency of {} MHz is more than 1 MHz away from the "
+                              "requested frequency of {} MHz".format(actual_frequency, speed_mhz))
 
         if tx_size > 255:
             self._logger.error("Maximum packet length is 255 bytes")
 
-        header = [DeviceCommands.SpiTransaction, chip_select_pin_number, chip_select_mode, spi0_ckr, spi_mode, burst_mode, tx_size]
+        header = [DeviceCommands.SpiTransaction, chip_select_pin_number, chip_select_mode, spi0_ckr, spi_mode,
+                  burst_mode, tx_size]
 
         with self._board._comms_lock:
             if burst_mode == SpiBurstMode.BurstRx:
