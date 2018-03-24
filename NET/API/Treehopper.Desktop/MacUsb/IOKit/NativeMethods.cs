@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Treehopper.Desktop.MacUsb.IOKit
 {
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public unsafe static class NativeMethods
+    internal unsafe static class NativeMethods
 	{
 		/// <summary>
 		/// IOKit Framework Path

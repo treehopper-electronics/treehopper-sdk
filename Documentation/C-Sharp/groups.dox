@@ -1,0 +1,155 @@
+/** \defgroup core-classes Core classes
+These classes are the foundation of %Treehopper.
+
+Many of these classes contain useful code examples and tips on usage.
+
+# Important concepts
+## Assemblies
+Except for ConnectionService, all these classes live in the %Treehopper.dll assembly (which resides in the Treehopper NuGet package).
+
+## Object Construction
+In almost all cases, the entire object tree is built for you. For example, you'll never call
+
+```
+Pin pin = new Pin(5); // this makes no sense
+```
+
+Instead, you'll access these objects through the TreehopperUsb object, which you'll obtain from the ConnectionService.Instance. Like so:
+
+```
+TreehopperUsb board = await ConnectionService.Instance.GetFirstDeviceAsync(); // get the first device found
+await board.ConnectAsync(); // connect to the board
+board.I2c.Enabled = true; // enable the I2C peripheral
+```
+
+
+@{
+    \class Treehopper.ConnectionService
+    \class Treehopper.TreehopperUsb
+    \class Treehopper.Pin
+    \class Treehopper.HardwareSpi
+    \class Treehopper.HardwareI2C
+    \class Treehopper.HardwareUart
+    \class Treehopper.HardwarePwm
+@}
+
+\defgroup libraries Libraries
+Provides a rich collection of peripheral drivers for various sensors, actuators, and other IO.
+
+
+\defgroup displays Displays
+LED drivers, LCDs, and other displays
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Displays.Apa102
+    \class Treehopper.Libraries.Displays.Dm632
+    \class Treehopper.Libraries.Displays.Hd44780
+    \class Treehopper.Libraries.Displays.HobbyDisplayFactories
+    \class Treehopper.Libraries.Displays.Is31fl3218
+    \class Treehopper.Libraries.Displays.Ht16k33
+    \class Treehopper.Libraries.Displays.Max7219
+    \class Treehopper.Libraries.Displays.Pcd8544
+    \class Treehopper.Libraries.Displays.Ssd1306
+    \class Treehopper.Libraries.Displays.Tm1650
+    \class Treehopper.Libraries.Displays.LedShiftRegister
+    \class Treehopper.Libraries.Displays.GroveI2cLcd
+@}
+
+\defgroup display-utilities Display Utilities
+Display collections and other classes for working with displays
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Displays.SevenSegmentDisplay
+    \class Treehopper.Libraries.Displays.BarGraph
+    \class Treehopper.Libraries.Displays.LedGraphicDisplay
+    \class Treehopper.Libraries.Displays.LedCollection
+    \class Treehopper.Libraries.Displays.LedDisplay
+    \class Treehopper.Libraries.Displays.LedFadeAnimation
+    \class Treehopper.Libraries.Displays.GpioLedDriver
+@}
+
+\defgroup Inertial Inertial Sensors
+Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Sensors.Inertial.Adxl345
+    \class Treehopper.Libraries.Sensors.Inertial.Bno055
+    \class Treehopper.Libraries.Sensors.Inertial.Itg3205
+    \class Treehopper.Libraries.Sensors.Inertial.Lis3dh
+    \class Treehopper.Libraries.Sensors.Inertial.Lsm303d
+    \class Treehopper.Libraries.Sensors.Inertial.Lsm303dlhc
+    \class Treehopper.Libraries.Sensors.Inertial.Mpu6050
+    \class Treehopper.Libraries.Sensors.Inertial.Mpu9250
+    \class Treehopper.Libraries.Sensors.Magnetic.Hmc5883l
+    \class Treehopper.Libraries.Sensors.Magnetic.Ak8975
+    \class Treehopper.Libraries.Sensors.Magnetic.Tlv493d
+    \class Treehopper.Libraries.Sensors.Pressure.Bmp280
+    \class Treehopper.Libraries.Sensors.Pressure.Bme280
+@}
+
+\defgroup environmental Environmental Sensors
+Temperature, humidity, and pressure sensors
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Sensors.Temperature.Ds18b20
+    \class Treehopper.Libraries.Sensors.Temperature.Lm75
+    \class Treehopper.Libraries.Sensors.Temperature.Mcp9700
+    \class Treehopper.Libraries.Sensors.Temperature.Mcp9808
+    \class Treehopper.Libraries.Sensors.Temperature.Mlx90614
+    \class Treehopper.Libraries.Sensors.Temperature.Mlx90615
+    \class Treehopper.Libraries.Sensors.Pressure.Bmp280
+    \class Treehopper.Libraries.Sensors.Pressure.Bme280
+@}
+
+\defgroup optical Optical Sensors
+Optical sensors and camera modules
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Sensors.Optical.FlirLepton
+    \class Treehopper.Libraries.Sensors.Optical.Vcnl4010
+    \class Treehopper.Libraries.Sensors.Optical.Tsl2591
+    \class Treehopper.Libraries.Sensors.Optical.Bh1750
+    \class Treehopper.Libraries.Sensors.Optical.Veml6070
+@}
+
+\defgroup interface Interface
+ADCs, DACs, shift registers, muxes, and digital pots
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.IO.PortExpander.Hc166
+    \class Treehopper.Libraries.IO.PortExpander.Hc595
+    \class Treehopper.Libraries.IO.PortExpander.Mcp23008
+    \class Treehopper.Libraries.IO.PortExpander.Pca9632
+    \class Treehopper.Libraries.IO.PortExpander.Pca9685
+    \class Treehopper.Libraries.IO.Mux.I2cAnalogMux
+    \class Treehopper.Libraries.IO.Adc.Ads1115
+    \class Treehopper.Libraries.IO.Adc.Nau7802
+    \class Treehopper.Libraries.IO.Adc.Ltc2305
+    \class Treehopper.Libraries.IO.Dac.Mcp4725
+    \class Treehopper.Libraries.IO.DigitalPot.Mcp413x
+    \class Treehopper.Libraries.IO.DigitalPot.Mcp415x
+    \class Treehopper.Libraries.IO.DigitalPot.Mcp423x
+    \class Treehopper.Libraries.IO.DigitalPot.Mcp425x
+@}
+
+\defgroup motors Motors
+Motors and motor drivers
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Motors.HobbyServo
+    \class Treehopper.Libraries.Motors.L293d
+    \class Treehopper.Libraries.Motors.Amis30624
+    \class Treehopper.Libraries.Motors.SeeedGroveI2cMotorDriver
+@}
+
+\defgroup other Other Drivers
+Other devices and drivers
+\ingroup libraries
+@{
+    \class Treehopper.Libraries.Memory.SpiFlash
+    \class Treehopper.Libraries.Motors.L293d
+    \class Treehopper.Libraries.Motors.Amis30624
+    \class Treehopper.Libraries.Motors.SeeedGroveI2cMotorDriver
+@}
+
+*/

@@ -13,7 +13,7 @@ namespace Treehopper.Desktop.LibUsb
     /// <summary>
     /// LibUSB-based ConnectionService implementation
     /// </summary>
-    public class LibUsbConnectionService : ConnectionService
+    internal class LibUsbConnectionService : ConnectionService
     {
         private readonly IntPtr context;
         private IntPtr callbackHandle;

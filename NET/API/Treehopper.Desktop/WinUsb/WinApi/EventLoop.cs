@@ -6,12 +6,12 @@ using WinApi.Windows.Helpers;
 
 namespace WinApi.Windows
 {
-    public interface IEventLoop
+    internal interface IEventLoop
     {
         int Run(WindowCore mainWindow = null);
     }
 
-    public abstract class EventLoopCore : IEventLoop
+    internal abstract class EventLoopCore : IEventLoop
     {
         protected object State;
 
@@ -38,7 +38,7 @@ namespace WinApi.Windows
     }
 
 
-    public class EventLoop : EventLoopCore
+    internal class EventLoop : EventLoopCore
     {
         public EventLoop(object state = null) : base(state) {}
 
@@ -56,7 +56,7 @@ namespace WinApi.Windows
         }
     }
 
-    public class RealtimeEventLoop : EventLoopCore
+    internal class RealtimeEventLoop : EventLoopCore
     {
         public RealtimeEventLoop(object state = null) : base(state) {}
 
@@ -77,7 +77,7 @@ namespace WinApi.Windows
         }
     }
 
-    public abstract class InterceptableEventLoopCore : EventLoopCore
+    internal abstract class InterceptableEventLoopCore : EventLoopCore
     {
         protected InterceptableEventLoopCore(object state) : base(state) {}
         protected virtual bool Preprocess(ref Message msg) => true;
@@ -85,7 +85,7 @@ namespace WinApi.Windows
         protected virtual void PostProcess(ref Message msg) {}
     }
 
-    public abstract class InterceptableEventLoopBase : InterceptableEventLoopCore
+    internal abstract class InterceptableEventLoopBase : InterceptableEventLoopCore
     {
         protected InterceptableEventLoopBase(object state) : base(state) {}
 
@@ -106,7 +106,7 @@ namespace WinApi.Windows
         }
     }
 
-    public abstract class InterceptableRealtimeEventLoopBase : InterceptableEventLoopCore
+    internal abstract class InterceptableRealtimeEventLoopBase : InterceptableEventLoopCore
     {
         protected InterceptableRealtimeEventLoopBase(object state) : base(state) {}
 

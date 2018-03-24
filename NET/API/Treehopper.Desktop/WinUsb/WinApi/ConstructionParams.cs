@@ -3,12 +3,12 @@ using WinApi.User32;
 
 namespace WinApi.Windows
 {
-    public interface IConstructionParamsProvider
+    internal interface IConstructionParamsProvider
     {
         IConstructionParams GetConstructionParams();
     }
 
-    public interface IConstructionParams
+    internal interface IConstructionParams
     {
         WindowStyles Styles { get; }
         WindowExStyles ExStyles { get; }
@@ -21,7 +21,7 @@ namespace WinApi.Windows
         IntPtr MenuHandle { get; }
     }
 
-    public class ConstructionParams : IConstructionParams
+    internal class ConstructionParams : IConstructionParams
     {
         public virtual int X => (int) CreateWindowFlags.CW_USEDEFAULT;
         public virtual int Y => (int) CreateWindowFlags.CW_USEDEFAULT;
@@ -34,7 +34,7 @@ namespace WinApi.Windows
         public virtual WindowExStyles ExStyles => 0;
     }
 
-    public class FrameWindowConstructionParams : ConstructionParams
+    internal class FrameWindowConstructionParams : ConstructionParams
     {
         public override WindowStyles Styles
             => WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS;
@@ -43,7 +43,7 @@ namespace WinApi.Windows
             => WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_WINDOWEDGE;
     }
 
-    public class VisibleChildConstructionParams : ConstructionParams
+    internal class VisibleChildConstructionParams : ConstructionParams
     {
         public override WindowStyles Styles
             => WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD;

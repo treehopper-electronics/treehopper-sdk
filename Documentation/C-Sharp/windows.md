@@ -80,7 +80,7 @@ _(If you ever want to explicitly `clean` or `build` a project, those are valid c
 You should see the LED start blinking continuously once your program launches. If the LED doesn't work or there are errors, check that you copied the code properly.
 
 # Blinky in classic .NET Framework {#windows-win32}
-We can build a console application that targets .NET 4.6.1+ using Mono. Console .NET Framework apps are the easiest way to produce a cross-platform binary that can be run on macOS, Linux, and Windows.
+We can build a console application that targets .NET Framework 4.6.1+. Console .NET Framework apps are the easiest way to produce a cross-platform binary that can be run on macOS, Linux, and Windows without recompiling.
 
 We'll create a classic .NET Console application in Visual Studio, but if you're using Rider, it will be a similar process.
 

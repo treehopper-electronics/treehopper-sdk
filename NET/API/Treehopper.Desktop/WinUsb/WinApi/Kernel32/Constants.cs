@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WinApi.Kernel32
 {
-    public enum Month
+    internal enum Month
     {
         January = 1,
         February = 2,
@@ -24,7 +24,7 @@ namespace WinApi.Kernel32
         December = 12
     }
 
-    public enum DayOfWeek
+    internal enum DayOfWeek
     {
         Sunday = 0,
         Monday = 1,
@@ -35,7 +35,7 @@ namespace WinApi.Kernel32
         Saturday = 6
     }
 
-    public enum SystemInvalidResult
+    internal enum SystemInvalidResult
     {
         INVALID_ATOM = 0,
         INVALID_OS_COUNT = 0xffff,
@@ -45,7 +45,7 @@ namespace WinApi.Kernel32
         INVALID_HANDLE_VALUE = -1
     }
 
-    public enum ProcessArchitecture
+    internal enum ProcessArchitecture
     {
         PROCESSOR_ARCHITECTURE_INTEL = 0,
         PROCESSOR_ARCHITECTURE_MIPS = 1,
@@ -62,7 +62,7 @@ namespace WinApi.Kernel32
         PROCESSOR_ARCHITECTURE_UNKNOWN = 0xFFFF
     }
 
-    public enum StdHandle
+    internal enum StdHandle
     {
         /// <summary>
         ///     The standard input device. Initially, this is the console input buffer, CONIN$.
@@ -80,7 +80,7 @@ namespace WinApi.Kernel32
         STD_ERROR_HANDLE = unchecked((int) (uint) -12)
     }
 
-    public enum SecurityImpersonationLevel
+    internal enum SecurityImpersonationLevel
     {
         /// <summary>
         ///     The server process cannot obtain identification information about the client, and it cannot impersonate the client.
@@ -108,7 +108,7 @@ namespace WinApi.Kernel32
         SecurityDelegation
     }
 
-    public enum FileCreationDisposition
+    internal enum FileCreationDisposition
     {
         /// <summary>
         ///     Creates a new file, always.
@@ -155,14 +155,14 @@ namespace WinApi.Kernel32
         TRUNCATE_EXISTING = 5
     }
 
-    public enum FileAttributeInfoLevel
+    internal enum FileAttributeInfoLevel
     {
         GetFileExInfoStandard,
         GetFileExMaxInfoLevel
     }
 
     [Flags]
-    public enum LoadLibraryFlags
+    internal enum LoadLibraryFlags
     {
         /// <summary>
         ///     If this value is used, and the executable module is a DLL, the system does not call
@@ -311,7 +311,7 @@ namespace WinApi.Kernel32
     }
 
     [Flags]
-    public enum LibrarySearchFlags
+    internal enum LibrarySearchFlags
     {
         /// <summary>
         ///     If this value is used, the application's installation directory is searched.
@@ -342,7 +342,7 @@ namespace WinApi.Kernel32
     }
 
     [Flags]
-    public enum DuplicateHandleFlags
+    internal enum DuplicateHandleFlags
     {
         /// <summary>
         ///     Closes the source handle. This occurs regardless of any error status returned.
@@ -356,7 +356,7 @@ namespace WinApi.Kernel32
     }
 
     [Flags]
-    public enum HandleInfoFlags
+    internal enum HandleInfoFlags
     {
         /// <summary>
         ///     If this flag is set, a child process created with the bInheritHandles parameter of
@@ -372,7 +372,7 @@ namespace WinApi.Kernel32
     }
 
     [Flags]
-    public enum GetModuleHandleFlags
+    internal enum GetModuleHandleFlags
     {
         /// <summary>
         ///     The lpModuleName parameter is an address in the module.
@@ -395,7 +395,7 @@ namespace WinApi.Kernel32
     }
 
     [Flags]
-    public enum FileShareMode
+    internal enum FileShareMode
     {
         /// <summary>
         ///     Prevents other processes from opening a file or device if they request delete, read, or write access.
@@ -429,7 +429,7 @@ namespace WinApi.Kernel32
     }
 
     [Flags]
-    public enum FileAttributes
+    internal enum FileAttributes
     {
         /// <summary>
         ///     A file or directory that is an archive file or directory. Applications typically use this attribute to mark

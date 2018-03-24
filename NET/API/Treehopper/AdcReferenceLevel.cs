@@ -16,9 +16,9 @@
         Vref_1V65,
 
         /// <summary>
-        ///     1.8V reference. Accuracy TBD.
+        ///     1.85V reference. Accuracy TBD.
         /// </summary>
-        Vref_1V8,
+        Vref_1V85,
 
         /// <summary>
         ///     2.4V reference rated at 2.1% accuracy.
@@ -31,8 +31,8 @@
         Vref_3V3Derived,
 
         /// <summary>
-        ///     3.6V reference derived from the 1.8V LDO. Accuracy TBD.
+        ///     3.7V reference derived from the 1.85V LDO. Accuracy TBD.
         /// </summary>
-        Vref_3V6
+        Vref_3V7
     }
 }

@@ -1,6 +1,5 @@
-﻿/// <summary>
-/// Base Treehopper namespace
-/// </summary>
+﻿/** Base %Treehopper namespace
+ */
 namespace Treehopper
 {
 }

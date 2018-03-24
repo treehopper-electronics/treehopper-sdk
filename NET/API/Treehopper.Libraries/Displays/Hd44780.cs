@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Displays
@@ -194,11 +193,11 @@ namespace Treehopper.Libraries.Displays
             if (bits == BitMode.FourBit)
             {
                 Task.Run(() => iface.WriteCommandAsync(new uint[] {0x03})).Wait();
-                Thread.Sleep(10);
+                Task.Run(() => Task.Delay(10)).Wait();
                 Task.Run(() => iface.WriteCommandAsync(new uint[] {0x03})).Wait();
-                Thread.Sleep(10);
+                Task.Run(() => Task.Delay(10)).Wait();
                 Task.Run(() => iface.WriteCommandAsync(new uint[] {0x03})).Wait();
-                Thread.Sleep(10);
+                Task.Run(() => Task.Delay(10)).Wait();
                 Task.Run(() => iface.WriteCommandAsync(new uint[] {0x02})).Wait();
             }
 

@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="ConnectionService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="TreehopperActivity.cs" />
     <Compile Include="UsbConnection.cs" />
   </ItemGroup>
   <ItemGroup>

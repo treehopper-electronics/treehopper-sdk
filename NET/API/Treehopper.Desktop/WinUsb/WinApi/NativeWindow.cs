@@ -6,7 +6,7 @@ using WinApi.User32;
 
 namespace WinApi.Windows
 {
-    public interface INativeAttachable
+    internal interface INativeAttachable
     {
         void Attach(IntPtr handle);
         IntPtr Detach();
@@ -16,7 +16,7 @@ namespace WinApi.Windows
     ///     A simple wrapper around the Win32 window. It has nothing except
     ///     the handle of the window. All functions here are direct api calls.
     /// </summary>
-    public class NativeWindow : INativeAttachable
+    internal class NativeWindow : INativeAttachable
     {
         IntPtr handle;
 

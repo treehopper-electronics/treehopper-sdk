@@ -291,9 +291,10 @@ div.classindex span.ai {
 }
 
 div.groupHeader {
-	margin-left: 16px;
 	margin-top: 12px;
-	font-weight: bold;
+	margin-bottom:10px;
+	font-family:"Roboto Slab";
+	font-size:20px;
 }
 
 div.groupText {
@@ -935,6 +936,9 @@ table.fieldtable {
 	outline: none;
 	color: #FFF;
 	text-decoration: none;        
+	font-weight:normal;
+	font-family: "Roboto Slab";
+	font-size: 16px;
 }
 
 .navpath li.navelem a:hover

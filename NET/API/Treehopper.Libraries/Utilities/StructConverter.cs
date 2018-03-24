@@ -14,34 +14,18 @@ namespace Treehopper.Libraries.Utilities
     /// <summary>
     ///     Convert structs between byte arrays, with controlled endianness.
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         This class can be used to marshal between byte arrays and structs containing multi-byte numbers. This is
-    ///         somewhat challenging because:
-    ///         <list type="bullet">
-    ///             <item>
-    ///                 <term>.NET preserves the endianness of the processor</term>
-    ///                 <definition>
-    ///                     While most (99%?) of Treehopper .NET code runs on x86 or x64 machines (which are
-    ///                     little-endian), this code base is designed to be cross-platform, and runs well on ARM processors
-    ///                     (which are traditionally big-endian). Little-endian byte arrays must be converted to big-endian
-    ///                     when executing on architectures that are big-endian before being marshaled
-    ///                 </definition>
-    ///             </item>
-    ///             <item>
-    ///                 <term>Different applications expect different endianness</term>
-    ///                 <definition>
-    ///                     If a configuration struct is to be passed to, say, an <see cref="SMBusDevice" />
-    ///                     peripheral, the bytes produced by the conversion must match the endianness the peripheral expects;
-    ///                     this is not standardized for multibyte transactions.
-    ///                 </definition>
-    ///             </item>
-    ///         </list>
-    ///         This class solves both of these issues by allowing the user to select the desired endianness, then converting
-    ///         (if necessary) by using Reflection to inspect the struct's fields.
-    ///     </para>
-    ///     <para>This class is adapted from http://stackoverflow.com/questions/2480116.</para>
-    /// </remarks>
+    /** 
+    This class can be used to marshal between byte arrays and structs containing multi-byte numbers. This is
+    somewhat challenging because:
+
+     - **.NET preserves the endianness of the processor**. While most (99%?) of Treehopper .NET code runs on x86 or x64 machines (which are
+    little-endian), this code base is designed to be cross-platform, and runs well on ARM processors (which are traditionally big-endian). Little-endian byte arrays must be converted to big-endian when executing on architectures that are big-endian before being marshaled
+     - **Different applications expect different endianness**. If a configuration struct is to be passed to, say, an <see cref="SMBusDevice" /> peripheral, the bytes produced by the conversion must match the endianness the peripheral expects; this is not standardized for multibyte transactions.
+
+    This class solves both of these issues by allowing the user to select the desired endianness, then converting (if necessary) by using Reflection to inspect the struct's fields.
+
+    This class is adapted from http://stackoverflow.com/questions/2480116.
+     */
     public static class StructConverter
     {
         private static void MaybeAdjustEndianness(Type type, byte[] data, Endianness endianness, int startOffset = 0)

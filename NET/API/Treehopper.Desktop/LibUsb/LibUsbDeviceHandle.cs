@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Treehopper.Desktop.LibUsb
 {
-    public class LibUsbDeviceHandle : SafeHandle
+    internal class LibUsbDeviceHandle : SafeHandle
     {
         internal LibUsbDeviceHandle(IntPtr pDeviceHandle) : base(pDeviceHandle, true)
         {

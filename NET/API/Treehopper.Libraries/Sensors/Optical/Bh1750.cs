@@ -15,6 +15,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// Probes the specified I2C bus to discover any BH1750s attacked.
         /// </summary>
         /// <param name="i2c">The bus to probe</param>
+        /// <param name="rate">The rate, in kHz</param>
         /// <returns></returns>
         public static async Task<IList<Bh1750>> ProbeAsync(I2C i2c, int rate=100)
         {

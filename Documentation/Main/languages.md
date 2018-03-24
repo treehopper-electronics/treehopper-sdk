@@ -11,17 +11,13 @@ The C# API is the most developed API for Treehopper. Along with Java, it has sup
 
 Its UWP support, in particular, means your Treehopper apps can target Windows desktops, laptops, tablets, smartphones, XBox One, and Windows 10 IoT Core devices.
 
-The C# API is the most comprehensive --- while all languages provide the same core functionality, our developers tend to build out C# peripheral libraries first. The C# API is also the only API to allow board firmware updates.
+The C# API is the most comprehensive --- while all languages provide the same core functionality, we tend to build out C# peripheral libraries first.
 
-The design goal for the C# API is to target modern, GUI-centric application development. While it is perfectly suitable for basic console apps, it's more verbose than some other language APIs (especially the Python one). 
+The design goal for the C# API is to target modern, GUI-centric application development. While it is perfectly suitable for basic console apps, the API is more verbose than, say, the Python one.
 
 For example, there's a ConnectionService manager singleton that you must interact with to obtain board references, and many calls require async/await-style programming. This can be a challenging concept for beginners to master, and depending on the execution environment, deadlocks can occur if the calls aren't implemented properly.
 
-The other main downside to C# development is not an issue with Treehopper, but rather with .NET itself. While we wait for .NET Core to develop more, projects that use .NET code on macOS and Linux will do so through the [Mono Runtime](http://www.mono-project.com/) --- an open-source .NET runtime. 
-
-Treehopper has excellent support for Mono --- the same Treehopper.Desktop.dll library will call into WinUSB functions on Windows, LibUSB functions on *nix, and IOKit functions on macOS. This means you can copy and paste your .NET console applications between these platforms without any hassle. 
-
-The problem, however, is that some .NET libraries do not have good support for Mono. Most seriously, GUI development is challenging on non-Windows platforms.
+Treehopper's C# API has excellent cross-platform support, but until Xamarin.Forms gets better macOS and GTK# backends, writing cross-platform GUIs is most easily done using the Java API.
 
 ## When to use the C# API
  - When you're building Windows GUI applications or Xamarin Android, Mac, or Xamarin.Forms apps.
@@ -30,11 +26,11 @@ The problem, however, is that some .NET libraries do not have good support for M
 # Python
 Python is a high-level dynamically-typed interpreted language with good multi-platform open-source support, and an emphasize on conciseness and readability. Because of its interpreted nature (and the success of IPython and Jupyter Notebook), Python is widely used for general-purpose automation, problem-solving, experimentation, and scientific computing.
 
-Treehopper's Python API may be the newest addition to the support list, but it's being developed so rapidly that it will quickly get caught up to the other language APIs. 
+Treehopper's Python API may be the newest addition to the support list, but it's being developed so rapidly that it will quickly catch up to (and outpace) other Treehopper language APIs.
 
-The design goal of the Python API is to provide an extremely concise, readable interface that reimagines Treehopper in an unabashed Pythonic manner. This comes with a few disadvantages --- the biggest being the lack of hot-plug support while the library is running. This may be integrated later on, but would require substantial work on upstream LibUSB and PyUSB, along with fleshing out several changes in the core API.
+The design goal of the Python API is to provide an extremely concise, readable interface that reimagines Treehopper in an unabashed Pythonic manner. This comes with a few disadvantages --- the biggest being the lack of hot-plug support while the library is running. This may be integrated later on, but would require work on upstream LibUSB and PyUSB, along with fleshing out several changes in the core API.
 
-The biggest advantage of the Python API when compared to other languages is more just the advantages of Python itself. Its dynamic nature (and interactive shell support) makes it easier than ever to quickly start a project. 
+The biggest advantage of the Python API when compared to other languages is more just the advantages of Python itself. Its dynamic nature (and interactive shell support) makes it easier than ever to quickly start a project.
 
 Consequently, the Python API --- combined with an IPython interactive shell --- turns your Treehopper into a useful interactive debugging / diagnostic tool that can be used to probe around I2C devices, SPI memory, and anything else that uses electricity.
 
@@ -49,7 +45,7 @@ Java is a high-level strongly-typed object-oriented language that became a popul
 
 Treehopper's Java API is second only to C# in completeness; it has full support for all core functions, and also has many peripheral drivers in the io.treehopper.libraries package.
 
-The Java API has two connectivity libraries --- one that supports Android (through the UsbHost and UsbDevice APIs), and one that supports "everything else" --- desktop and laptop deployment in Windows, macOS, and Linux. The Android connectivity package is thoroughly tested, and has been deployed in commercial projects. It provides full hotplug support so your activities can detect board connect/disconnect events. 
+The Java API has two connectivity libraries --- one that supports Android (through the UsbHost and UsbDevice APIs), and one that supports "everything else" --- desktop and laptop deployment in Windows, macOS, and Linux. The Android connectivity package is thoroughly tested, and has been deployed in commercial projects. It provides full hotplug support so your activities can detect board connect/disconnect events.
 
 The desktop connectivity package is a late addition to fill a large support gap with minimal work; it is a simpler API that calls into usb4java (which is used as a LibUSB wrapper), instead of implementing native OS calls directly (like the C# API does). Consequently, any sort of compatibility issues with LibUSB or usb4java will propagate to the Java desktop package. The lack of hotplug support on Windows is probably the biggest outstanding issue.
 
@@ -60,11 +56,11 @@ The desktop connectivity package is a late addition to fill a large support gap 
 # C++
 C++ is a compiled, strongly-typed, object-oriented language used in high-performance applications.
 
-Treehopper has a C++ API that covers core functionality, along with some preliminary library support. C++ is an advanced language that has many subtle memory-management differences from the other language APIs on this page. Because of the dynamic nature of plug-n-play USB devices like Treehopper, these can wreak havoc on applications that don't handle memory management properly.
+Treehopper has a C++ API that covers core functionality, along with some preliminary library support. C++ is an advanced language that has many subtle memory-management differences from the other language APIs on this page.
 
-Thus, the C++ API should be considered for advanced users only. We don't provide pre-compiled packages; you'll have to build the library from our version-controlled source. We use [CMake](https://cmake.org/), which allows the source code to be built with native tools on all operating systems. 
+The C++ API should be considered for advanced users only. We don't provide pre-compiled packages; you'll have to build the library from our version-controlled source. We use [CMake](https://cmake.org/), which allows the source code to be built with native tools on all operating systems.
 
-Treehopper has connectivity support for Windows (through WinUSB.dll), Linux (through LibUSB.so), and macOS (through IOKit). We do not currently support Android NDK development (and are unlikely to add it in the future).
+Treehopper has connectivity support for Windows (through WinUSB), Linux (through LibUSB), and macOS (through IOKit). We do not support Android NDK development.
 
 ## When to use the C++ API
  - When you need to integrate Treehopper support into existing C++ applications.
@@ -79,13 +75,11 @@ While we provide support for four popular languages, there are many other enviro
 ## MATLAB
 MATLAB is a popular programming environment used in scientific computing. While Treehopper originally was scheduled to have a native MATLAB API, this effort was abandoned, as MATLAB has excellent support for interfacing with .NET and Java --- and a minimal MEX shim can be created to interface with C++, too.
 
-If you're on Windows, we recommend you simply [load the .NET assemblies into MATLAB](https://www.mathworks.com/help/matlab/ref/net.addassembly.html) and [call into them directly](https://www.mathworks.com/help/matlab/matlab_external/using-a-net-object.html). 
+If you're on Windows, we recommend you simply [load the .NET assemblies into MATLAB](https://www.mathworks.com/help/matlab/ref/net.addassembly.html) and [call into them directly](https://www.mathworks.com/help/matlab/matlab_external/using-a-net-object.html).
 
 Similarly, on Linux or macOS, you can accomplish the same with the Java interop support built into MATLAB by loading the Treehopper JAR files and calling into them directly. You can use the JAR on Windows, too, but the .NET API currently provides more functionality than the Java API, so we recommend this approach on Windows.
 
 We provide MATLAB examples in our GitHub repo to illustrate both .NET and Java API access.
-
-A third method is to build a C++ DLL that exports a MEX function that can be called in MATLAB. This is considerably more work, and provides no clear advantages over the .NET and Java interfacing mentioned above, so this isn't recommended.
 
 ## Porting to a new language
 There are lots of wonderful languages and environments out there that Treehopper doesn't support yet. We'd love to write apps that target Treehopper in JavaScript, Rust, Go, Swift, node.js, Electron, Cordova, and Chrome, and we'd love your help!

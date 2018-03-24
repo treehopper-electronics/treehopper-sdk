@@ -17,7 +17,7 @@ namespace Treehopper
         {
             if (x == null || y == null)
                 return false;
-            return x.ToString() == y.ToString();
+            return x.Connection.DevicePath == y.Connection.DevicePath;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Treehopper
         {
             if (obj != null)
                 if (obj.Name != null)
-                    return obj.ToString().GetHashCode();
+                    return obj.Connection.DevicePath.GetHashCode();
                 else
                     return 0;
             return 0;

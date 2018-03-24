@@ -7,6 +7,11 @@ namespace Treehopper
     /// <summary>
     ///     Hardware PWM manager
     /// </summary>
+    /**
+    This class wouldn't typically be exposed to the user, but it provides one useful property: #HardwarePwmFrequency.
+
+    With it, you can change the frequency that PWM1, PWM2, and PWM3 operate at. By default, the board uses a frequency of 732Hz, which helps avoid any trace of flicker when driving LEDs or other lighting. If you're driving motors or other inductive loads, you may wish to lower the frequency to reduce switching losses, or to lower the tone of the motor.  
+     */
     public class HardwarePwmManager
     {
         private readonly TreehopperUsb _board;
@@ -23,7 +28,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     Gets or sets the PWM frequency of the pin, selected from <see cref="HardwarePwmFrequency" />
+        ///     Gets or sets the PWM frequency of the pin, selected from <see cref="HardwarePwmFrequency" />. Defaults to 732 Hz.
         /// </summary>
         public HardwarePwmFrequency Frequency
         {
@@ -46,12 +51,24 @@ namespace Treehopper
         /// <summary>
         ///     Get the number of microseconds per tick
         /// </summary>
-        public double MicrosecondsPerTick => 1000000d / (FrequencyHz * 65536);
+        public double MicrosecondsPerTick
+        {
+            get
+            {
+                return 1000000d / (FrequencyHz * 65536);
+            }
+        }
 
         /// <summary>
         ///     Get the number of microseconds per period
         /// </summary>
-        public double PeriodMicroseconds => 1000000d / FrequencyHz;
+        public double PeriodMicroseconds
+        {
+            get
+            {
+                return 1000000d / FrequencyHz;
+            }
+        }
 
         /// <summary>
         ///     Get an integer representing the current PWM frequency

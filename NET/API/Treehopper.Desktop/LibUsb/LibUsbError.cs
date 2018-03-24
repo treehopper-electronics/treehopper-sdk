@@ -4,7 +4,7 @@
     ///     Error codes.
     ///     Most libusb functions return 0 on success or one of these codes on failure.
     /// </summary>
-    public enum LibUsbError
+    internal enum LibUsbError
     {
         /// <summary>
         ///     Success (no error)

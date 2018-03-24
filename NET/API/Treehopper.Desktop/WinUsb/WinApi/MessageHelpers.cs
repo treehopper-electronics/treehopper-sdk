@@ -4,7 +4,7 @@ using WinApi.User32;
 
 namespace WinApi.Windows.Helpers
 {
-    public static class MessageHelpers
+    internal static class MessageHelpers
     {
         //public static bool RunDwmDefWindowProc(ref WindowMessage msg)
         //{

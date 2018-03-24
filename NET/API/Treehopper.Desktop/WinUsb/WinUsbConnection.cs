@@ -16,7 +16,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace Treehopper.Desktop.WinUsb
 {
-    public class WinUsbConnection : IConnection
+    internal class WinUsbConnection : IConnection
     {
         private const byte pinReportEndpoint = 0x81;
         private const byte peripheralResponseEndpoint = 0x82;

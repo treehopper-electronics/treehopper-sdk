@@ -2,7 +2,7 @@
 
 namespace NetCoreEx.BinaryExtensions
 {
-    public static class IntPtrExtensions
+    internal static class IntPtrExtensions
     {
         public static int ToSafeInt32(this IntPtr ptr)
         {

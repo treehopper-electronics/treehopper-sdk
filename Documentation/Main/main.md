@@ -19,15 +19,21 @@ Most computers and devices are really good at interfacing with high-speed device
 Treehopper is an interface board that endows your computer, smartphone, tablet, or other devices with the same peripherals that microcontrollers have.
 
 ![Treehopper pinout](images/treehopper-hardware.svg)
-# Core Hardware {#core-hardware}
+# Core Hardware
 Treehopper is a USB 2.0 Full Speed device with 20 pins — each of which can be used as an analog input, digital input, or digital output. Many of these pins also have dedicated peripheral functions for SPI, I2C, UART, and PWM.
+
+# Supported hosts
+Treehopper is a USB accessory, not a microcontroller development board. You must 
 
 # Language support
 Treehopper's SDK has native APIs for C#, Python, Java, and C++. Additionally, many other environments, like MATLAB, can call into Treehopper DLLs and managed assemblies.
 
 Treehopper's SDK and firmware are open source. Visit our [GitHub repo](https://github.com/treehopper-electronics/treehopper-sdk) for more information about contributing.
 
-# Getting Started {#getting-started}
+## Choosing a language
+For large projects where Treehopper plays a minor role, you've probably got the language and environment already selected; however, if the focal point of the app is the Treehopper board, you may want to consult our \ref languages page to determine which platform is best for your needs.
+
+# Getting Started
 You can get up and running quickly without having to write any software. 
 
 Just grab the Treehopper App from the [Downloads page](https://treehopper.io/downloads) and install it on your device.

@@ -3,14 +3,13 @@
 namespace Treehopper
 {
     /// <summary>
-    ///     Describes an I2c master device.
+    /// I2c master device
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         To support the widest variety of hardware configurations, peripheral libraries should always use this class
-    ///         instead of <see cref="HardwareI2C" />.
-    ///     </para>
-    /// </remarks>
+/**
+This interface is used as a contract for I2C devices. 
+        
+For documentation on %Treehopper's %I2C peripheral, consult HardwareI2C
+*/
     public interface I2C
     {
         /// <summary>

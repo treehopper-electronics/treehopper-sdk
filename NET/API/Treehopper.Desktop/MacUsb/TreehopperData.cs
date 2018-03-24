@@ -3,7 +3,7 @@
 namespace Treehopper.Desktop.MacUsb
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public class TreehopperData
+    internal class TreehopperData
 	{
 		public string SerialNumber;
 	}

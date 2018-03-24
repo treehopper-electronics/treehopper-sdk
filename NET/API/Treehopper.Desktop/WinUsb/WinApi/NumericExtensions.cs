@@ -1,6 +1,6 @@
 ﻿namespace NetCoreEx.BinaryExtensions
 {
-    public static class IntExtensions
+    internal static class IntExtensions
     {
         public static short Low(this int dword)
         {

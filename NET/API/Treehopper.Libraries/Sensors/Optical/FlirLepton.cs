@@ -20,6 +20,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         ///     Construct a FLIR Lepton
         /// </summary>
         /// <param name="spi">The Spi module to use</param>
+        /// <param name="cs">The chip-select pin</param>
         public FlirLepton(Spi spi, SpiChipSelectPin cs)
         {
             this.dev = new SpiDevice(spi, cs, ChipSelectMode.SpiActiveLow, 6, SpiMode.Mode11);
@@ -34,6 +35,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <summary>
         ///     Get the raw frame from the sensor
         /// </summary>
+        /// <param name="timeoutFrame">Whether to timeout the device.</param>
         /// <param name="minimumHeight">Only return frames with the minimum-specified height.</param>
         /// <returns>An awaitable 2D-array of values</returns>
         public async Task<ushort[,]> GetRawFrameAsync(bool timeoutFrame = false, int minimumHeight = 20)

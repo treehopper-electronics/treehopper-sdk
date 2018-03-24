@@ -11,73 +11,23 @@ using Treehopper.Android;
 
 namespace Treehopper
 {
-    /// <summary>
-    /// ConnectionService discovers Treehopper boards attached to your device.
-    /// </summary>
-    /// <remarks>
-    /// This documentation set covers the ConnectionService class found in Treehopper.Desktop.dll, Treehopper.Mac.dll, 
-    /// Treehopper.Android.dll, and Treehopper.Uwp.dll. 
-    /// 
-    /// \note ConnectionService should almost always be accessed through its singleton property, ConnectionService.Instance. Do not
-    /// create multiple instances of ConnectionService.
-    /// 
-    /// <example>
-    /// There are two ways to access discovered boards. If you simply want to wait until the first Treehopper board is attached
-    /// to the computer, the GetFirstDeviceAsync() method will return an awaitable task with a result that contains the board:
-    /// <code>
-    /// var board = await ConnectionService.Instance.GetFirstDeviceAsync();
-    /// </code>
-    /// </example>
-    /// 
-    /// <example>
-    /// GUI apps or more advanced console apps can query or bind directly to the Boards property, which is an ObservableCollection
-    /// that can notify when boards are attached or removed:
-    /// <code>
-    /// ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
-    /// ...
-    /// private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    /// {
-    ///     // handle board attach/detached events here by inspecting the e EventArg.
-    /// }
-    /// </code>
-    /// </example>
-    /// 
-    /// 
-    /// 
-    /// To integrate Treehopper into a Xamarin Android-based project, you can either inherit from TreehopperActivity, 
-    /// or integrate ConnectionService calls into your own activity's implementation.
-    /// 
-    /// To do this, call the ActivityOnStart() and ActivityOnResume() methods in their respective overrides, like so:
-    /// <example>
-    /// <code>
-    ///     protected override void OnStart()
-    ///     {
-    ///         base.OnStart();
-    ///         ConnectionService.Instance.ActivityOnStart(this);
-    ///         ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
-    ///     }
-    ///     
-    ///     private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    ///     {
-    ///         // handle board attach/detached events here
-    ///     }
-    ///
-    ///     protected override void OnResume()
-    ///     {
-    ///         base.OnResume();
-    ///         ConnectionService.Instance.ActivityOnResume();
-    ///     }
-    /// </code>
-    /// </example>
-    /// </remarks>
     public class ConnectionService : BroadcastReceiver, IConnectionService
     {
         private static string TAG = "ConnectionService";
 
         static readonly ConnectionService instance = new ConnectionService();
 
+        readonly static string ActionUsbPermission = "io.treehopper.android.USB_PERMISSION";
+
+        private object lockObject = new object();
+
+        private PendingIntent pendingIntent;
+
+        private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
+
+        /// \cond PRIVATE
         /// <summary>
-        ///     The singleton instance through which to access ConnectionService.
+        ///     The singleton instance through which to access %ConnectionService.
         /// </summary>
         /// <remarks>
         ///     This instance is created and started upon the first reference to a property or method
@@ -92,24 +42,34 @@ namespace Treehopper
             }
         }
 
-        public UsbManager Manager
+        /// <summary>
+        /// The %Treehopper boards attached to the computer.
+        /// </summary>
+        public ObservableCollection<TreehopperUsb> Boards { get; set; }
+
+        
+
+        /// <summary>
+        ///     Get a reference to the first device discovered.
+        /// </summary>
+        /// <returns>The first board found.</returns>
+        /// <remarks>
+        ///     <para>
+        ///         If no devices have been plugged into the computer,
+        ///         this call will await indefinitely until a board is plugged in.
+        ///     </para>
+        /// </remarks>
+        
+        public Task<TreehopperUsb> GetFirstDeviceAsync()
         {
-            get
-            {
-                return (UsbManager)context.GetSystemService(Context.UsbService);
-            }
+            return waitForFirstBoard.Task;
         }
-
-        readonly static string ActionUsbPermission = "io.treehopper.android.USB_PERMISSION";
-
-        private object lockObject = new object();
-
-        private PendingIntent pendingIntent;
 
         public ConnectionService() : base()
         {
-            
+            Boards = new ObservableCollection<TreehopperUsb>();
         }
+        /*! \endcond */
 
         private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -120,6 +80,9 @@ namespace Treehopper
                 waitForFirstBoard.TrySetResult(Boards[0]);
         }
 
+        /** @name Xamarin.Android Methods
+         *  @{
+         */
         /// <summary>
         /// Call this method in your main activity's OnStart() override.
         /// </summary>
@@ -138,13 +101,6 @@ namespace Treehopper
             activity.RegisterReceiver(this, filter);
         }
 
-        private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
-
-        /// <summary>
-        /// The Treehopper boards attached to the computer.
-        /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get; set; } = new ObservableCollection<TreehopperUsb>();
-
         /// <summary>
         /// Call this method in your main activity's OnResume() override.
         /// </summary>
@@ -161,19 +117,20 @@ namespace Treehopper
             }
         }
 
-        /// <summary>
-        ///     Get a reference to the first device discovered.
-        /// </summary>
-        /// <returns>The first board found.</returns>
-        /// <remarks>
-        ///     <para>
-        ///         If no devices have been plugged into the computer,
-        ///         this call will await indefinitely until a board is plugged in.
-        ///     </para>
-        /// </remarks>
-        public Task<TreehopperUsb> GetFirstDeviceAsync()
+        public UsbManager Manager
         {
-            return waitForFirstBoard.Task;
+            get
+            {
+                return (UsbManager)context.GetSystemService(Context.UsbService);
+            }
+        }
+
+        ///@}
+
+        /*! \cond PRIVATE */
+        public void Dispose()
+        {
+            
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -283,9 +240,8 @@ namespace Treehopper
             }
         }
 
-        public void Dispose()
-        {
-            
-        }
+        /*! \endcond */
+
+
     }
 }

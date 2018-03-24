@@ -8,65 +8,65 @@ using System.Threading.Tasks;
 namespace WinApi.Kernel32
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct SystemInfo
+    internal struct SystemInfo
     {
-        public ushort ProcessorArchitecture;
+        internal ushort ProcessorArchitecture;
         ushort Reserved;
-        public uint PageSize;
-        public IntPtr MinimumApplicationAddress;
-        public IntPtr MaximumApplicationAddress;
-        public IntPtr ActiveProcessorMask;
-        public uint NumberOfProcessors;
-        public uint ProcessorType;
-        public uint AllocationGranularity;
-        public ushort ProcessorLevel;
-        public ushort ProcessorRevision;
-        public uint OemId => ((uint) this.ProcessorArchitecture << 8) | this.Reserved;
+        internal uint PageSize;
+        internal IntPtr MinimumApplicationAddress;
+        internal IntPtr MaximumApplicationAddress;
+        internal IntPtr ActiveProcessorMask;
+        internal uint NumberOfProcessors;
+        internal uint ProcessorType;
+        internal uint AllocationGranularity;
+        internal ushort ProcessorLevel;
+        internal ushort ProcessorRevision;
+        internal uint OemId => ((uint) this.ProcessorArchitecture << 8) | this.Reserved;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct SecurityAttributes
+    internal struct SecurityAttributes
     {
-        public uint Length;
-        public IntPtr SecurityDescriptor;
-        public uint IsHandleInheritedValue;
+        internal uint Length;
+        internal IntPtr SecurityDescriptor;
+        internal uint IsHandleInheritedValue;
 
-        public bool IsHandleInherited => this.IsHandleInheritedValue > 0;
+        internal bool IsHandleInherited => this.IsHandleInheritedValue > 0;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct FileTime
+    internal struct FileTime
     {
-        public uint Low;
-        public uint High;
+        internal uint Low;
+        internal uint High;
 
-        public ulong Value => ((ulong) this.High << 32) | this.Low;
+        internal ulong Value => ((ulong) this.High << 32) | this.Low;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct SystemTime
+    internal struct SystemTime
     {
-        public ushort Year;
-        public ushort Month;
-        public ushort DayOfWeek;
-        public ushort Day;
-        public ushort Hour;
-        public ushort Minute;
-        public ushort Second;
-        public ushort Milliseconds;
+        internal ushort Year;
+        internal ushort Month;
+        internal ushort DayOfWeek;
+        internal ushort Day;
+        internal ushort Hour;
+        internal ushort Minute;
+        internal ushort Second;
+        internal ushort Milliseconds;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct FileAttributeData
+    internal struct FileAttributeData
     {
-        public FileAttributes Attributes;
-        public FileTime CreationTime;
-        public FileTime LastAccessTime;
-        public FileTime LastWriteTime;
+        internal FileAttributes Attributes;
+        internal FileTime CreationTime;
+        internal FileTime LastAccessTime;
+        internal FileTime LastWriteTime;
 
-        public uint FileSizeHigh;
-        public uint FileSizeLow;
+        internal uint FileSizeHigh;
+        internal uint FileSizeLow;
 
-        public ulong FileSize => ((ulong) this.FileSizeHigh << 32) | this.FileSizeLow;
+        internal ulong FileSize => ((ulong) this.FileSizeHigh << 32) | this.FileSizeLow;
     }
 }

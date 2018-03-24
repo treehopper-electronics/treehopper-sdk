@@ -27,12 +27,14 @@ namespace Treehopper
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> handlerUpdated;
         private static readonly ConnectionService instance = new ConnectionService();
 
+        /// \cond PRIVATE
         public ConnectionService()
         {
             Boards = new ObservableCollection<TreehopperUsb>();
             Boards.CollectionChanged += Boards_CollectionChanged;
             StartWatcher();
         }
+        
 
         private void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -44,7 +46,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        ///     The singleton instance through which to access ConnectionService.
+        ///     The singleton instance through which to access %ConnectionService.
         /// </summary>
         /// <remarks>
         ///     This instance is created and started upon the first reference to a property or method
@@ -60,9 +62,10 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// The Treehopper boards attached to the computer.
+        /// The %Treehopper boards attached to the computer.
         /// </summary>
         public ObservableCollection<TreehopperUsb> Boards { get; }
+
 
         /// <summary>
         ///     Get a reference to the first device discovered.
@@ -74,6 +77,7 @@ namespace Treehopper
         ///         this call will await indefinitely until a board is plugged in.
         ///     </para>
         /// </remarks>
+
         public Task<TreehopperUsb> GetFirstDeviceAsync()
         {
             return waitForFirstBoard.Task;
@@ -83,6 +87,7 @@ namespace Treehopper
         {
             // TODO: Clean stuff up
         }
+        /// \endcond
 
         private void StartWatcher()
         {

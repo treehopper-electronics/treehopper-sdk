@@ -27,18 +27,18 @@ By default, most Linux-based operating systems restrict normal users from intera
 
 Paste and run this quick snippet into a terminal window:
 ```
-> sudo echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"8a7e\", MODE:=\"666\", GROUP=\"users\"" > /etc/udev/rules.d/999-treehopper.rules
+$ sudo echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"8a7e\", MODE:=\"666\", GROUP=\"users\"" > /etc/udev/rules.d/999-treehopper.rules
 ```
 Verify the rule was created:
 ```
-> cat /etc/udev/rules.d/999-treehopper.rules 
+$ cat /etc/udev/rules.d/999-treehopper.rules 
 
 SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8a7e", MODE:="666", GROUP="users"
 ```
 
 Note that, for some distributions, `sudo` may not be configured to allow this. You can launch a root shell and repeat the command.
 ```
-> sudo su
+$ sudo su
 # echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"8a7e\", MODE:=\"666\", GROUP=\"users\"" > /etc/udev/rules.d/999-treehopper.rules
 ```
 
@@ -51,9 +51,9 @@ We'll create the .NET Core project on the command line, but it's just as easy to
 Create a new folder called "blinky" and execute `dotnet new console` from it to create a new .NET Core console application.
 
 ```
-> mkdir blinky
-> cd blinky
-> dotnet new console
+$ mkdir blinky
+$ cd blinky
+$ dotnet new console
 ```
 
 ### Step 2: Add the %Treehopper and %Treehopper.Desktop NuGet packages
@@ -61,8 +61,8 @@ The %Treehopper NuGet package contains all the core %Treehopper functionality. %
 
 Add these packages to your project:
 ```
-> dotnet add package Treehopper
-> dotnet add package Treehopper.Desktop
+$ dotnet add package Treehopper
+$ dotnet add package Treehopper.Desktop
 ```
 Explicitly adding both packages is actually redundant, since if we add the %Treehopper.Desktop NuGet package to the project, it will automatically pull in %Treehopper as a dependency.
 
@@ -103,7 +103,7 @@ namespace blinky
 ### Step 4: Build and run
 You can build and run the app by executing
 ```
-> dotnet run
+$ dotnet run
 ```
 
 By the way, if you ever want to explicitly `clean` or `build` a project, those are valid commands, too.

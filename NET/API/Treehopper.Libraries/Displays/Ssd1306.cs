@@ -57,6 +57,7 @@ namespace Treehopper.Libraries.Displays
         /// <param name="width">The number of pixels wide</param>
         /// <param name="height">The number of pixels tall</param>
         /// <param name="address">The address</param>
+        /// <param name="rate">The rate, in kHz, to use</param>
         /// <param name="mode">The VCC mode of the display</param>
         public Ssd1306(I2C I2c, int width = 128, int height = 32, byte address = 0x3C, int rate=400,
             VccMode mode = VccMode.SwitchCap) : base(width, height)

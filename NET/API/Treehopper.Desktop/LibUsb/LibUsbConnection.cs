@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Desktop.LibUsb
 {
-    public class LibUsbConnection : IConnection
+    internal class LibUsbConnection : IConnection
     {
         private const byte pinReportEndpoint = 0x81;
         private const byte peripheralResponseEndpoint = 0x82;

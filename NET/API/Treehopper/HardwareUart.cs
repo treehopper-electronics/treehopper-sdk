@@ -4,39 +4,38 @@ using System.Threading.Tasks;
 
 namespace Treehopper
 {
-    /**
-        Module that implements hardware UART and IOneWire functionality
+/** Built-in UART peripheral
 
-        The UART peripheral allows you to send and receive standard-format RS-232-style asynchronous serial communications. 
+The UART peripheral allows you to send and receive standard-format RS-232-style asynchronous serial communications. 
 
-        ## Pins
-        When the UART is enabled, the following pins will be unavailable for other use:
-        - <b>TX</b> <i>(Transmit)</i>: This pin carries data from Treehopper to the device you've attached to the UART.
-        - <b>RX</b> <i>(Receive)</i>: This pin carries data from the device to Treehopper.
+## Pins
+When the UART is enabled, the following pins will be unavailable for other use:
+- <b>TX</b> <i>(Transmit)</i>: This pin carries data from Treehopper to the device you've attached to the UART.
+- <b>RX</b> <i>(Receive)</i>: This pin carries data from the device to Treehopper.
 
-        Note that UART cross-over is a common problem when people are attaching devices together; always consult the documentation for the device you're attaching to Treehopper to ensure that the TX signal from Treehopper is flowing into the receive input (RX, DIN, etc) of the device, and vice-versa. Since you are unlikely to damage either device by misconnecting, it is a common troubleshooting practice to simply swap TX and RX if the system doesn't appear to be functioning properly.
+Note that UART cross-over is a common problem when people are attaching devices together; always consult the documentation for the device you're attaching to Treehopper to ensure that the TX signal from Treehopper is flowing into the receive input (RX, DIN, etc) of the device, and vice-versa. Since you are unlikely to damage either device by misconnecting, it is a common troubleshooting practice to simply swap TX and RX if the system doesn't appear to be functioning properly.
 
-        ## One-Wire Mode
-        Treehopper's UART has built-in support for One-Wire mode with few external circuitry requirements. When you use the UART in One-Wire mode, the TX pin will switch to an open-drain mode. You must physically tie the RX and TX pins together --- this is the data pin for the One-Wire bus. Most One-Wire sensors and devices you use will require an external pull-up resistor on the bus.
+## One-Wire Mode
+Treehopper's UART has built-in support for One-Wire mode with few external circuitry requirements. When you use the UART in One-Wire mode, the TX pin will switch to an open-drain mode. You must physically tie the RX and TX pins together --- this is the data pin for the One-Wire bus. Most One-Wire sensors and devices you use will require an external pull-up resistor on the bus.
 
-        While One-Wire mode uses the UART, all its routines --- including searching --- are implemented in firmware on the Treehopper board itself, instead in the host-side software. This should provide good performance without being overly chatty over the USB interface.
+While One-Wire mode uses the UART, all its routines --- including searching --- are implemented in firmware on the Treehopper board itself, instead in the host-side software. This should provide good performance without being overly chatty over the USB interface.
 
-        ## Implementation Details
-        Treehopper's UART is designed for average baud rates; the range of supported rates is 7813 baud to 2.4 Mbaud, though communication will be less reliable above 1-2 Mbaud.
+## Implementation Details
+Treehopper's UART is designed for average baud rates; the range of supported rates is 7813 baud to 2.4 Mbaud, though communication will be less reliable above 1-2 Mbaud.
 
-        Transmitting data is straightforward: simply pass a byte array --- up to 63 characters long --- to the Send() function once the UART is enabled. Consult the appropriate language API for details.
+Transmitting data is straightforward: simply pass a byte array --- up to 63 characters long --- to the Send() function once the UART is enabled. Consult the appropriate language API for details.
 
-        Receiving data is more challenging, since incoming data can appear on the RX pin at any moment when the UART is enabled. Since all actions on Treehopper are initiated on the host, to get around UART's inherent asynchronicity, a 32-byte buffer holds any received data that comes in while the UART is enabled. Then, when the host wants to access this data, it can Receive() it from the board to obtain the buffer (consule your language API for the specifics).
+Receiving data is more challenging, since incoming data can appear on the RX pin at any moment when the UART is enabled. Since all actions on Treehopper are initiated on the host, to get around UART's inherent asynchronicity, a 32-byte buffer holds any received data that comes in while the UART is enabled. Then, when the host wants to access this data, it can Receive() it from the board to obtain the buffer (consule your language API for the specifics).
 
-        Whenever Receive() is called, the entire buffer is sent to the host, and the buffer's pointer is reset to 0 (i.e., the buffer is reset). This can be useful for clearing out any gibberish and returning the UART to a known state before you expect to receive data --- for example, if you're addressing a device that you send commands to, and read responses back from, you may wish to call Receive() before sending the command; that way, parsing the received data will be simpler.
+Whenever Receive() is called, the entire buffer is sent to the host, and the buffer's pointer is reset to 0 (i.e., the buffer is reset). This can be useful for clearing out any gibberish and returning the UART to a known state before you expect to receive data --- for example, if you're addressing a device that you send commands to, and read responses back from, you may wish to call Receive() before sending the command; that way, parsing the received data will be simpler.
 
-        ## Other Considerations
-        This ping-pong short-packet-oriented back-and-forth scenario is what Treehopper's UART is built for, as it's what's most commonly needed when interfacing with embedded devices that use a UART. 
+## Other Considerations
+This ping-pong short-packet-oriented back-and-forth scenario is what Treehopper's UART is built for, as it's what's most commonly needed when interfacing with embedded devices that use a UART. 
 
-        There is a tight window of possible baud rates where it is plausible to receive data continuously without interruption. For example, at 9600 baud, the Receive() function only need to finish execution every 33 milliseconds, which can easily be accomplished in most operating systems. However, because data is not double-buffered on the board, under improbable circumstances, continuously-transmitted data may inadvertently be discarded.
+There is a tight window of possible baud rates where it is plausible to receive data continuously without interruption. For example, at 9600 baud, the Receive() function only need to finish execution every 33 milliseconds, which can easily be accomplished in most operating systems. However, because data is not double-buffered on the board, under improbable circumstances, continuously-transmitted data may inadvertently be discarded.
 
-        Treehopper's UART is not designed to replace a high-quality CDC-class USB-to-serial converter, especially for high data-rate applications. In addition to streaming large volumes of data continuously, USB CDC-class UARTs should also offer lower latency for receiving data. Treehopper also has no way of exposing its UART to the operating system as a COM port, so it's most certainly not a suitable replacement for a USB-to-serial converter in most applications.
-     */
+Treehopper's UART is not designed to replace a high-quality CDC-class USB-to-serial converter, especially for high data-rate applications. In addition to streaming large volumes of data continuously, USB CDC-class UARTs should also offer lower latency for receiving data. Treehopper also has no way of exposing its UART to the operating system as a COM port, so it's most certainly not a suitable replacement for a USB-to-serial converter in most applications.
+*/
 
     public class HardwareUart : Uart, OneWire
     {

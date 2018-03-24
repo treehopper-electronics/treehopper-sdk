@@ -29,7 +29,7 @@ namespace Treehopper
         public uint Pid { get; set; } = 0x8a7e;
 
         /// <summary>
-        ///     The WinUSB GUID used by the librarh
+        ///     The WinUSB GUID used by the library
         /// </summary>
         public Guid Guid { get; set; } = new Guid("{5B34B38B-F4CD-49C3-B2BB-60E47A43E12D}");
 

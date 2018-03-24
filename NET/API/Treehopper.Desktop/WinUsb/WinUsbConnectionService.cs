@@ -19,7 +19,7 @@ using WinApi.User32;
 /// </summary>
 namespace Treehopper.Desktop.WinUsb
 {
-    public class WinUsbConnectionService : ConnectionService
+    internal class WinUsbConnectionService : ConnectionService
     {
         private UsbNotifyWindow mNotifyWindow;
         private SynchronizationContext currentContext;

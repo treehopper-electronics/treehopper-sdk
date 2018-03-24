@@ -3,7 +3,7 @@
 namespace Treehopper.Desktop.LibUsb
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public class LibUsbDeviceDescriptor
+    internal class LibUsbDeviceDescriptor
     {
         /** Size of this descriptor (in bytes) */
         public byte bLength;

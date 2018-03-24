@@ -14,11 +14,11 @@ namespace WinApi.Windows
     ///     the message loop. Any classes that derive from this can
     ///     create life cycle events from handling the message loop.
     /// </summary>
-    public class WindowCore : NativeWindow, INativeConnectable, IDisposable
+    internal class WindowCore : NativeWindow, INativeConnectable, IDisposable
     {
         private IntPtr m_baseWindowProcPtr;
         private WindowProc m_instanceWindowProc;
-        public WindowFactory Factory { get; private set; }
+        internal WindowFactory Factory { get; private set; }
         public bool IsSourceOwner { get; protected set; }
         public bool IsDisposed { get; protected set; }
 
@@ -168,9 +168,9 @@ namespace WinApi.Windows
         }
     }
 
-    public sealed class SealedWindowCore : WindowCore {}
+    internal sealed class SealedWindowCore : WindowCore {}
 
-    public interface INativeConnectable : INativeAttachable
+    internal interface INativeConnectable : INativeAttachable
     {
         void Attach(IntPtr handle, bool takeOwnership);
         void ConnectWindowProc();
@@ -179,7 +179,7 @@ namespace WinApi.Windows
         void SetFactory(WindowFactory factory);
     }
 
-    public struct WindowMessage
+    internal struct WindowMessage
     {
         public IntPtr Hwnd;
         public WM Id;
@@ -207,9 +207,9 @@ namespace WinApi.Windows
         }
     }
 
-    public delegate void WindowExceptionHandler(WindowException windowException);
+    internal delegate void WindowExceptionHandler(WindowException windowException);
 
-    public class WindowException : Exception
+    internal class WindowException : Exception
     {
         public WindowException(Exception ex) : this(ex, null) {}
 

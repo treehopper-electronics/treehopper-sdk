@@ -8,14 +8,14 @@ using System.Runtime.InteropServices;
 namespace Treehopper.Desktop.MacUsb
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public class DeviceWatcherCallbackReference
+    internal class DeviceWatcherCallbackReference
     {
         public IntPtr removedCallback;
         public int deviceIndex;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public class DeviceWatcher
+    internal class DeviceWatcher
     {
         protected DeviceAdded OnDeviceAdded = null;
         protected DeviceRemoved OnDeviceRemoved = null;

@@ -6,7 +6,7 @@ using WinApi.User32;
 
 namespace WinApi.Windows
 {
-    public class WindowFactory
+    internal class WindowFactory
     {
         public static WindowProc DefWindowProc = User32Methods.DefWindowProc;
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable

@@ -5,7 +5,7 @@ using System.Text;
 namespace Treehopper.Desktop.LibUsb
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int HotplugCallbackFunction(IntPtr context, IntPtr device, HotplugEvent e, IntPtr userData);
+    internal delegate int HotplugCallbackFunction(IntPtr context, IntPtr device, HotplugEvent e, IntPtr userData);
 
     internal static class NativeMethods
     {

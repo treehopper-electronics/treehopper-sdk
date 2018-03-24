@@ -791,15 +791,8 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = Main/main.md \
-                         Main/getting-started.md \
-                         Main/pins.md \
-                         Main/pwm.md \
-                         Main/uart.md \
-                         Main/spi.md \
-                         Main/i2c.md \
                          Main/languages.md \
-                         Main/hosts.md \
-                         Main/treehopper-app.md
+                         Main/hosts.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

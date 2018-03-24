@@ -10,13 +10,13 @@ using System.Threading;
 /// </summary>
 namespace Treehopper.Desktop.MacUsb
 {
-    public delegate int DeviceAdded(IOObject usbDevice, string name, string serialNumber);
-    public delegate void DeviceRemoved(int usbDevice);
+    internal delegate int DeviceAdded(IOObject usbDevice, string name, string serialNumber);
+    internal delegate void DeviceRemoved(int usbDevice);
 
     /// <summary>
     /// 
     /// </summary>
-	public class MacUsbConnectionService : ConnectionService
+	internal class MacUsbConnectionService : ConnectionService
 	{
 	    readonly Thread listener;
 

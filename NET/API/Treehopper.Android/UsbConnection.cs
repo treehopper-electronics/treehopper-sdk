@@ -14,7 +14,7 @@ namespace Treehopper.Android
     /// <summary>
     /// UsbConnection implementation for Xamarin.Android
     /// </summary>
-    public class UsbConnection : IConnection
+    internal class UsbConnection : IConnection
     {
         UsbDeviceConnection connection;
         readonly UsbManager usbManager;

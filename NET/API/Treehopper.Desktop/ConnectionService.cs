@@ -18,6 +18,68 @@ namespace Treehopper
         /// Dummy namespace just for nicer documentation
     }
 
+/** Discovers %Treehopper boards attached to your device.
+This documentation set covers the %ConnectionService class found in **Treehopper.Desktop**, **Treehopper.Android**, and **Treehopper.Uwp** packages. 
+
+\note %ConnectionService should always be accessed through its singleton property, ConnectionService.Instance. Do not create instances of %ConnectionService yourself.
+
+## Basic usage
+When running in .NET Core, .NET Framework, Mono, or Windows 10 UWP, no additional configuration is needed.
+
+There are two ways to access discovered boards. If you simply want to wait until the first Treehopper board is attached
+to the computer, the GetFirstDeviceAsync() method will return an awaitable task with a result that contains the board:
+
+```
+var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+```
+
+## Advanced usage
+For simple applications, you can retrieve a board instance with GetFirstDeviceAsync(), however, if you'd like to present the user with a list of devices from which to choose, you can reference the #Boards property.
+
+\warning Even if you already have a board connected, the #Boards collection is not guaranteed to have a board populated on first invocation. Board discovery on many platforms is done asynchronously, so you should always bind to the [CollectionChanged](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1.collectionchanged?view=netframework-4.7.1) event of this collection to get notified when boards are added.
+
+GUI apps or more advanced console apps can query or bind directly to the #Boards property, which is an ObservableCollection that can notify when boards are attached or removed:
+
+```
+ConnectionService.Instance.Boards.CollectionChanged += async(o, e) => {
+        if(e.NewItems.Count > 0) // a new board was added
+            RunApp((TreehopperUsb)e.NewItems[0])
+    };
+
+// if we already have a board in the collection, start the app
+if(ConnectionService.Instance.Boards.Count > 0)
+    RunApp(ConnectionService.Instance.Boards[0]);
+
+```
+
+\warning After subscribing to CollectionChanged, you should always check the collection. A board may have already been added before you subscribed to the CollectionChanged event, and the event will not re-fire for new subscribers.
+
+## Xamarin.Android
+
+To integrate Treehopper into a Xamarin Android-based project, you must integrate %ConnectionService calls into your activity's implementation.
+
+To do this, call the ActivityOnStart() and ActivityOnResume() methods in their respective overrides, like so:
+
+```
+protected override void OnStart()
+{
+    base.OnStart();
+    ConnectionService.Instance.ActivityOnStart(this);
+    ConnectionService.Instance.Boards.CollectionChanged += Boards_CollectionChanged;
+}
+
+private void Boards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+{
+    // handle board attach/detached events here
+}
+
+protected override void OnResume()
+{
+    base.OnResume();
+    ConnectionService.Instance.ActivityOnResume();
+}
+```
+*/
     public abstract class ConnectionService : IConnectionService, IDisposable
     {
         private static readonly Lazy<WinUsbConnectionService> winUsbInstance = new Lazy<WinUsbConnectionService>();
@@ -32,13 +94,22 @@ namespace Treehopper
 
         private TaskCompletionSource<TreehopperUsb> waitForFirstBoard = new TaskCompletionSource<TreehopperUsb>();
 
+        /// \cond PRIVATE
         public ConnectionService()
         {
+            Boards = new ObservableCollection<TreehopperUsb>();
             Boards.CollectionChanged += Boards_CollectionChanged;
         }
+        /// \endcond
+
+
+
+        /** @name Main components
+         *  @{
+         */
 
         /// <summary>
-        ///     The singleton instance through which to access ConnectionService.
+        ///     The singleton instance through which to access %ConnectionService.
         /// </summary>
         /// <remarks>
         ///     This instance is created and started upon the first reference to a property or method
@@ -63,7 +134,53 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// [Treehopper.Desktop.dll] Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
+        /// The %Treehopper boards attached to the computer.
+        /// </summary>
+        /** For simple applications, you can retrieve a board instance with GetFirstDeviceAsync(), however, if you'd like to present the user with a list of devices from which to choose, you can reference this property.
+
+        \warning Even if you already have a board connected to your device when you first invoke this property, this collection is not guaranteed to have a board populated on first invocation. Board discovery on many platforms is done asynchronously, so you should always bind to the [CollectionChanged](https://docs.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1.collectionchanged?view=netframework-4.7.1) event of this collection to get notified when boards are added.
+
+        GUI apps or more advanced console apps can query or bind directly to the #Boards property, which is an ObservableCollection that can notify when boards are attached or removed:
+
+        ```
+        ConnectionService.Instance.Boards.CollectionChanged += async(o, e) => {
+                if(e.NewItems.Count > 0) // a new board was added
+                    RunApp((TreehopperUsb)e.NewItems[0])
+            };
+
+        // if we already have a board in the collection, start the app
+        if(ConnectionService.Instance.Boards.Count > 0)
+            RunApp(ConnectionService.Instance.Boards[0]);
+
+        ```
+
+        \warning After subscribing to CollectionChanged, you should always check the collection. A board may have already been added before you subscribed to the CollectionChanged event, and the event will not re-fire for new subscribers.
+
+        */
+        public ObservableCollection<TreehopperUsb> Boards { get; }
+        
+        /// <summary>
+        ///     Get a reference to the first device discovered.
+        /// </summary>
+        /// <returns>The first board found.</returns>
+        /// <remarks>
+        ///     <para>
+        ///         If no devices have been plugged into the computer,
+        ///         this call will await indefinitely until a board is plugged in.
+        ///     </para>
+        /// </remarks>
+        public Task<TreehopperUsb> GetFirstDeviceAsync()
+        {
+            return waitForFirstBoard.Task;
+        }
+        ///@}
+
+
+        /** @name Treehopper.Desktop-specific properties 
+        @{ */
+
+        /// <summary>
+        /// Determines if executing in Windows
         /// </summary>
         public static bool IsWindows
         {
@@ -79,7 +196,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// [Treehopper.Desktop.dll] Determines if we're running under Linux, FreeBSD, or other UNIX-like OS (except macOS)
+        /// Determines if we're running in Linux
         /// </summary>
         public static bool IsLinux
         {
@@ -95,7 +212,7 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// [Treehopper.Desktop.dll] Determines if we're running under macOS (OS X)
+        /// Determines if we're running in macOS
         /// </summary>
         public static bool IsMac
         {
@@ -133,27 +250,16 @@ namespace Treehopper
         }
 
         /// <summary>
-        /// The Treehopper boards attached to the computer.
+        /// Dispose this %ConnectionService to close device watchers and clean up resources
         /// </summary>
-        public ObservableCollection<TreehopperUsb> Boards { get; } = new ObservableCollection<TreehopperUsb>();
-
-
-        /// <summary>
-        ///     Get a reference to the first device discovered.
-        /// </summary>
-        /// <returns>The first board found.</returns>
-        /// <remarks>
-        ///     <para>
-        ///         If no devices have been plugged into the computer,
-        ///         this call will await indefinitely until a board is plugged in.
-        ///     </para>
-        /// </remarks>
-        public Task<TreehopperUsb> GetFirstDeviceAsync()
-        {
-            return waitForFirstBoard.Task;
-        }
-
         public abstract void Dispose();
+
+        ///@}
+
+
+        
+        
+        
 
         private void Boards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

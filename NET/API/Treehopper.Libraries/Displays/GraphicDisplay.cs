@@ -16,7 +16,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="Width">The width, in pixels, of the display</param>
         /// <param name="Height">The height, in pixels, of the display</param>
-        /// <param name="bytesPerRow">The number of bytes per row (stride) of the display</param>
+        /// <param name="bytesPerPixel">The number of bytes per row (stride) of the display</param>
         public GraphicDisplay(int Width, int Height, double bytesPerPixel)
         {
             this.Width = Width;

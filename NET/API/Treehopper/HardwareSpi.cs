@@ -6,67 +6,54 @@ using Treehopper.Utilities;
 
 namespace Treehopper
 {
-    /// <summary>
-    ///     Provides access to SPI communication.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         Treehopper is capable of communicating with many devices equipped with serial peripheral interface (SPI)
-    ///         communication.
-    ///         SPI is a full-duplex synchronous serial communication standard that uses four pins:
-    ///         <list type="number">
-    ///             <item>
-    ///                 <term>MISO</term>
-    ///                 <description>
-    ///                     Short for "Master In, Slave Out." This pin carries data from the device to the Treehopper.
-    ///                     It is on pin 1
-    ///                 </description>
-    ///             </item>
-    ///             <item>
-    ///                 <term>MOSI</term>
-    ///                 <description>
-    ///                     Short for "Master Out, Slave In." This pin carries data from the Treehopper to the device.
-    ///                     It is on pin 2
-    ///                 </description>
-    ///             </item>
-    ///             <item>
-    ///                 <term>SCK</term>
-    ///                 <description>
-    ///                     Short for "Serial Clock." This pin carries the clock signal from the Treehopper to the
-    ///                     device. It is on pin 0
-    ///                 </description>
-    ///             </item>
-    ///             <item>
-    ///                 <term>CS</term>
-    ///                 <description>
-    ///                     Short for "Chip Select." Treehopper asserts this pin when communication begins, and
-    ///                     de-asserts when communication is done.
-    ///                 </description>
-    ///             </item>
-    ///         </list>
-    ///         The SPI specification allows for many different configuration options, so the datasheet for the device must be
-    ///         consulted to determine the communication rate, the
-    ///         clock phase and polarity, as well as the chip select polarity. Not all devices use all pins, but the SPI
-    ///         peripheral will always allocate the SCK, MISO, and MOSI pin once the peripheral is enabled.
-    ///     </para>
-    ///     <para>
-    ///         The clock rate to operate the SPI bus at is specified by the
-    ///         <see cref="SendReceiveAsync(byte[], SpiChipSelectPin, ChipSelectMode, double, SpiBurstMode, SpiMode)" /> function.
-    ///         The minimum clock rate is 93.75 kHz (0.093.75 MHz), while the maximum clock rate is 24 MHz, but there are no
-    ///         performance gains above 6 MHz. Since Treehopper's MCU has no internal DMA, bytes are placed into the SPI buffer
-    ///         one by one by the processor; it takes 8 cycles to perform this operation, and since the processor runs at 48
-    ///         MHz, the fastest effective data transfer rate is 6 MHz.
-    ///     </para>
-    ///     <para>
-    ///         Many simple devices that contain shift registers may also be interfaced with using the SPI module. The
-    ///         <see cref="ChipSelectMode" /> configuration contains pulse modes compatible with these devices.
-    ///     </para>
-    ///     <para>
-    ///         Before implementing SPI communication for a given device, check the Treehopper.Libraries assembly, which
-    ///         contains support for popular hobbyist devices, as well as generic
-    ///         shift registers and latches.
-    ///     </para>
-    /// </remarks>
+/** Built-in SPI peripheral
+
+SPI is a full-duplex synchronous serial interface useful for interfacing with both complex, high-speed peripherals, as well as simple LED drivers, output ports, and any other general-purpose input or output shift register.
+
+Compared to I<sup>2</sup>, SPI is a simpler protocol, generally much faster, and less popular for modern peripheral ICs.
+
+![Basic SPI interfacing](images/spi-overview.svg)
+
+## Pins
+%Treehopper supports SPI master mode with the following pins:
+ - <b>MISO</b> <i>(Master In, Slave Out)</i>: This pin carries data from the slave to the master.
+ - <b>MOSI</b> <i>(Master Out, Slave In)</i>: This pin carries data from the master to the peripheral
+ - <b>SCK</b> <i>(Serial Clock)</i>: This pin clocks the data into and out of the master and slave device.
+
+Not all devices use all pins, but the SPI peripheral will always reserve the SCK, MISO, and MOSI pin once the peripheral is enabled, so these pins cannot be used for other functions.
+
+## Chip Select
+Almost all SPI peripherals also use some sort of chip select (CS) pin, which indicates a valid transaction. Thus, the easiest way to place multiple peripherals on a bus is by using a separate chip select pin for each peripheral (since a peripheral will ignore SPI traffic without a valid chip select signal). %Treehopper supports two different chip-select styles:
+ - SPI mode: chip-select is asserted at the beginning of a transaction, and de-asserted at the end; and
+ - Shift output mode: chip-select is strobed at the end of a transaction
+ - Shift input mode: chip-select is strobed at the beginning of a transaction
+These styles support both active-low and active-high signal polarities.
+
+## SPI Mode
+SPI does not specify a transaction-level protocol for accessing peripheral functions (unlike, say, SMBus for I2c does); as a result, peripherals that use SPI have wildly different implementations. Even basic aspects -- when data is clocked, and the polarity of the clock signal -- vary by IC. This property is often called the "SPI mode" of the peripheral; %Treehopper supports all four modes:
+ - <b>Mode 0 (00):</b> Clock is idle-low. Data is latched in on the clock's rising edge and data is output on the falling edge.
+ - <b>Mode 1 (01):</b> Clock is idle-low. Data is latched in on the clock's falling edge and data is output on the rising edge.
+ - <b>Mode 2 (10):</b> Clock is idle-high. Data is latched in on the clock's rising edge and data is output on the falling edge.
+ - <b>Mode 3 (11):</b> Clock is idle-high. Data is latched in on the clock's falling edge and data is output on the rising edge.
+
+## Clock Speed
+%Treehopper supports SPI clock rates as low as 93.75 kHz and as high as 24 MHz, but we recommend a clock speed of 6 MHz for most cases. You will not notice performance gains above 6 MHz, since this is the fastest rate that %Treehopper's MCU can place bytes into the SPI buffer; any faster and the SPI peripheral will have to wait for the CPU before transmitting the next byte.
+
+\note In the current firmware release, clock rates between 800 kHz and 6 MHz are disallowed. There appears to be a silicon bug in the SPI FIFO that can cause lock-ups with heavy USB traffic. We hope to create a workaround for this issue in future firmware updates.
+
+## Chaining Devices & Shift Registers
+%Treehopper's SPI module works well for interfacing with many types of shift registers, which typically have a single output state "register" that is updated whenever new SPI data comes in. Because of the nature of SPI, any existing data in this register is sent to the MISO pin (sometimes labeled "DO" --- digital output --- or, confusingly, "SO" --- serial output). Thus, many shift registers (even of different types) can be chained together by connecting the DO pin of each register to the DI pin of the next:
+
+![Many shift registers can share the SPI bus and CS line](images/spi-shift-register.svg)
+Please note that most shift registers refer to their "CS" pin as a "latch enable" (LE) signal.
+
+In the example above, if both of these shift registers were 8-bit, sending the byte array {0xff, 0x03} would send "0xff" to the right register, and "0x03" to the left one. 
+
+%Treehopper.Libraries has support for many different peripherals you can use with the %SPI peripheral, including shift registers. See the \ref libraries documentation for more details on all the library components. Examples of shift register library components include Treehopper.Libraries.Displays.LedShiftRegister, Treehopper.Libraries.Interface.Hc166, Treehopper.Libraries.Interface.Hc595.
+
+ ## Further Reading
+ Wikipedia has an excellent SPI article: [Serial Peripheral Interface Bus](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus)
+ */
     public class HardwareSpi : Spi
     {
         private readonly TreehopperUsb _device;
@@ -77,12 +64,9 @@ namespace Treehopper
             _device = device;
         }
 
-        private Pin Sck => _device.Pins[0];
-
-        private Pin Miso => _device.Pins[1];
-
-        private Pin Mosi => _device.Pins[2];
-
+        /** @name Main components
+        @{
+         */
         /// <summary>
         ///     Enable or disable the SPI module.
         /// </summary>
@@ -231,6 +215,11 @@ namespace Treehopper
             return returnedData;
         }
 
+        /// @}
+
+
+        /** @name Other components
+            @{ */
         /// <summary>
         ///     Gets a string representing the SPI peripheral's state
         /// </summary>
@@ -241,6 +230,40 @@ namespace Treehopper
                 return "Enabled";
             return "Not enabled";
         }
+
+        /// <summary>
+        /// Gets the SCK pin of the board
+        /// </summary>
+        public Pin Sck
+        {
+            get
+            {
+                return _device.Pins[0];
+            }
+        }
+
+        /// <summary>
+        /// Gets the MISO pin of the board
+        /// </summary>
+        public Pin Miso
+        {
+            get
+            {
+                return _device.Pins[1];
+            }
+        }
+
+        /// <summary>
+        /// Gets the MOSI pin of the board
+        /// </summary>
+        public Pin Mosi
+        {
+            get
+            {
+                return _device.Pins[2];
+            }
+        }
+        ///@}
 
         private void SendConfig()
         {

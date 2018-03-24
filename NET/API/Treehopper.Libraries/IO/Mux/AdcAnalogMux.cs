@@ -19,6 +19,7 @@ namespace Treehopper.Libraries.IO.Mux
         ///     Construct an <see cref="I2cMux" /> using a standard 4052-style two-bit 4:1 mux.
         /// </summary>
         /// <param name="muxedPin">The upstream Adc pin to mux</param>
+        /// <param name="settlingTime">The settling time, in ms, to use</param>
         /// <param name="pins">The pin(s) to use to control the mux, starting with the least-significant bit</param>
         public AdcAnalogMux(AdcPin muxedPin, int settlingTime, params DigitalOut[] pins)
         {

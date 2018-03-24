@@ -27,6 +27,7 @@ namespace Treehopper.Libraries.Displays
         /// </summary>
         /// <param name="spi">The SPI port to use</param>
         /// <param name="numLeds">The number of APA102 smart LEDs in this chain</param>
+        /// <param name="frequency">The frequency to use</param>
         public Apa102(Spi spi, int numLeds, double frequency = 6)
         {
             this.spi = spi;
