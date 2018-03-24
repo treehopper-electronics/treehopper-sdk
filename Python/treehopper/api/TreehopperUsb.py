@@ -268,18 +268,35 @@ class TreehopperUsb:
                     for pin in self.pins:
                         pin._update_value(data[i], data[i+1])
                         i += 2
-            except:
-                pass
+            except usb.USBError as e:
+                if e.errno == 10060:  # timeout win32
+                    pass
+                elif e.errno == 110:  # timeout libusb
+                    pass
+                elif e.errno == 60:   # timeout macos
+                    pass
+                else:
+                    self._connected = False
         return
 
     def _send_pin_config(self, data: List[int]):
-        self._dev.write(self._pin_config_endpoint, data)
+        try:
+            self._dev.write(self._pin_config_endpoint, data)
+        except usb.USBError:
+            self._connected = False
 
     def _send_peripheral_config_packet(self, data: List[int]):
-        self._dev.write(self._peripheral_config_endpoint, data)
+        try:
+            self._dev.write(self._peripheral_config_endpoint, data)
+        except usb.USBError:
+            self._connected = False
 
     def _receive_comms_response_packet(self, num_bytes_to_read: int) -> List[int]:
-        return self._dev.read(self._peripheral_response_endpoint, num_bytes_to_read)
+        try:
+            return self._dev.read(self._peripheral_response_endpoint, num_bytes_to_read)
+        except usb.USBError:
+            self._connected = False
+            return [0] * num_bytes_to_read
 
     @property
     def led(self) -> bool:
@@ -305,7 +322,7 @@ class TreehopperUsb:
         """
         self._led = val
         data = [DeviceCommands.LedConfig, self._led]
-        self._dev.write(self._peripheral_config_endpoint, data)
+        self._send_peripheral_config_packet(data)
 
     @property
     def connected(self):
