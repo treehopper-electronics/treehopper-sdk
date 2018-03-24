@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using Treehopper.Libraries.Utilities;
 
 namespace Treehopper.Libraries.Displays
 {
@@ -23,7 +23,7 @@ namespace Treehopper.Libraries.Displays
         ///     Set the color of the RGB LED
         /// </summary>
         /// <param name="color">The desired color</param>
-        void SetRgb(Color color);
+        void SetColor(Color color);
 
         /// <summary>
         ///     Set the RGB value of this RGB LED

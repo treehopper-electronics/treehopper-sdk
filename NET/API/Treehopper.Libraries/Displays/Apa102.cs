@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Treehopper.Libraries.IO;
@@ -162,14 +161,14 @@ namespace Treehopper.Libraries.Displays
             /// <param name="luminance">The luminance, from 0-100, of the desired color</param>
             public void SetHsl(float hue, float saturation, float luminance)
             {
-                SetRgb(ColorConverter.FromHsl(hue, saturation, luminance));
+                SetColor(Color.FromHsl(hue, saturation, luminance));
             }
 
             /// <summary>
             ///     Set the color of the RGB LED
             /// </summary>
             /// <param name="color">The desired color</param>
-            public void SetRgb(Color color)
+            public void SetColor(Color color)
             {
                 SetRgb(color.R, color.G, color.B);
             }
