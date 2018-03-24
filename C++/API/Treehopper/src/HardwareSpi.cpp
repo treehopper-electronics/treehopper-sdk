@@ -47,6 +47,14 @@ namespace Treehopper {
 			Utility::error("Chip select pin must belong to this SPI module", true);
 		}
 
+		if(speed > 0.8 && speed < 6)
+		{
+			Utility::error("NOTICE: automatically rounding up SPI speed to 6 MHz, due to a possible silicon bug. "
+								   "This bug affects SPI speeds between 0.8 and 6 MHz, so if you need a speed lower "
+								   "than 6 MHz, please set to 0.8 MHz or lower.", false);
+			speed = 6;
+		}
+
 		int spi0ckr = (int)round((24.0 / speed) - 1);
 		if (spi0ckr > 255.0)
 		{

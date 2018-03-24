@@ -65,7 +65,7 @@ public class HardwareSpi implements Spi {
      * @return The data read from the peripheral
      */
     public byte[] SendReceive(byte[] dataToWrite) {
-        return SendReceive(dataToWrite, null, ChipSelectMode.SpiActiveLow, 1, BurstMode.NoBurst, SpiMode.Mode00);
+        return SendReceive(dataToWrite, null, ChipSelectMode.SpiActiveLow, 6, BurstMode.NoBurst, SpiMode.Mode00);
     }
 
     /**
@@ -121,6 +121,14 @@ public class HardwareSpi implements Spi {
             if (TreehopperUsb.Settings.shouldThrowExceptions()) {
                 throw new RuntimeException(message);
             }
+        }
+
+        if(speedMhz > 0.8 && speedMhz < 6)
+        {
+            logger.info("NOTICE: automatically rounding up SPI speed to 6 MHz, due to a possible silicon bug. " +
+                    "This bug affects SPI speeds between 0.8 and 6 MHz, so if you need a speed lower than 6 MHz, " +
+                    "please set to 0.8 MHz or lower.");
+            speedMhz = 6;
         }
 
         if (dataToWrite.length > 255) {

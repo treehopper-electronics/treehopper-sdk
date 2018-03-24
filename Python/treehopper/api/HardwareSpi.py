@@ -62,6 +62,12 @@ class HardwareSpi(Spi):
         else:
             tx_size = len(data_to_write)
 
+        if 0.8 < speed_mhz < 6:
+            self._logger.info("NOTICE: automatically rounding up SPI speed to 6 MHz, due to a possible silicon bug. "
+                              "This bug affects SPI speeds between 0.8 and 6 MHz, so if you need a speed lower than 6 "
+                              "MHz, please set to 0.8 MHz or lower.")
+            speed_mhz = 6
+
         spi0_ckr = round(24.0 / speed_mhz - 1)
         if spi0_ckr > 255.0:
             spi0_ckr = constrain(spi0_ckr, 0, 255)

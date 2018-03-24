@@ -18,7 +18,7 @@ namespace Treehopper
 			uint8_t* readBuffer,
 			SpiChipSelectPin* chipSelect = NULL,
 			ChipSelectMode chipSelectMode = ChipSelectMode::SpiActiveLow,
-			double speed = 1,
+			double speed = 6,
 			SpiBurstMode burstMode = SpiBurstMode::NoBurst,
 			SpiMode spiMode = SpiMode::Mode00
 		);

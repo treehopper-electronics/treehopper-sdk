@@ -142,6 +142,14 @@ namespace Treehopper
             if (chipSelect != null && chipSelect.SpiModule != this)
                 Utility.Error("Chip select pin must belong to this SPI module", true);
 
+            if (speedMhz > 0.8 && speedMhz < 6)
+            {
+                Debug.WriteLine(
+                       "NOTICE: automatically rounding up SPI speed to 6 MHz, due to a possible silicon bug. This bug affects SPI speeds between 0.8 and 6 MHz, so if you need a speed lower than 6 MHz, please set to 0.8 MHz or lower.");
+
+                speedMhz = 6;
+            }
+
             using (await _device.ComsLock.LockAsync().ConfigureAwait(false))
             {
                 var spi0Ckr = (int) Math.Round(24.0 / speedMhz - 1);
