@@ -8,6 +8,10 @@ namespace Treehopper
 {
 /** Built-in SPI peripheral
 
+# Basic Usage
+Once \link #Enable enabled\endlink, you can use the hardware SPI module on %Treehopper through the #SendReceiveAsync() method, which is used to simultaneously transmit and/or receive data.
+
+# Background
 SPI is a full-duplex synchronous serial interface useful for interfacing with both complex, high-speed peripherals, as well as simple LED drivers, output ports, and any other general-purpose input or output shift register.
 
 Compared to I<sup>2</sup>, SPI is a simpler protocol, generally much faster, and less popular for modern peripheral ICs.
@@ -41,6 +45,9 @@ SPI does not specify a transaction-level protocol for accessing peripheral funct
 
 \note In the current firmware release, clock rates between 800 kHz and 6 MHz are disallowed. There appears to be a silicon bug in the SPI FIFO that can cause lock-ups with heavy USB traffic. We hope to create a workaround for this issue in future firmware updates.
 
+## Burst mode
+If you only need to transmit or receive data from the device, %Treehopper supports an \link Treehopper.SpiBurstMode SpiBurstMode\endlink flag, which can improve performance substantially (especially in the case of BurstTx, which eliminates the back-and-forth needed, reducing transaction times down to a few hundred microseconds).
+
 ## Chaining Devices & Shift Registers
 %Treehopper's SPI module works well for interfacing with many types of shift registers, which typically have a single output state "register" that is updated whenever new SPI data comes in. Because of the nature of SPI, any existing data in this register is sent to the MISO pin (sometimes labeled "DO" --- digital output --- or, confusingly, "SO" --- serial output). Thus, many shift registers (even of different types) can be chained together by connecting the DO pin of each register to the DI pin of the next:
 
@@ -49,7 +56,7 @@ Please note that most shift registers refer to their "CS" pin as a "latch enable
 
 In the example above, if both of these shift registers were 8-bit, sending the byte array {0xff, 0x03} would send "0xff" to the right register, and "0x03" to the left one. 
 
-%Treehopper.Libraries has support for many different peripherals you can use with the %SPI peripheral, including shift registers. See the \ref libraries documentation for more details on all the library components. Examples of shift register library components include Treehopper.Libraries.Displays.LedShiftRegister, Treehopper.Libraries.Interface.Hc166, Treehopper.Libraries.Interface.Hc595.
+%Treehopper.Libraries has support for many different peripherals you can use with the %SPI peripheral, including shift registers. See the \ref libraries documentation for more details on all the library components. Examples of shift register library components include Treehopper.Libraries.Displays.LedShiftRegister, Treehopper.Libraries.IO.PortExpander.Hc166, Treehopper.Libraries.IO.PortExpander.Hc595.
 
  ## Further Reading
  Wikipedia has an excellent SPI article: [Serial Peripheral Interface Bus](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus)
@@ -104,13 +111,12 @@ In the example above, if both of these shift registers were 8-bit, sending the b
         ///     Send/receive data
         /// </summary>
         /// <param name="dataToWrite">
-        ///     a byte array of the data to send. The length of the transaction is determined by the length
-        ///     of this array.
+        ///     a byte array of the data to send. The length of the transaction is determined by the length of this array.
         /// </param>
         /// <param name="chipSelect">The chip select pin, if any, to use during this transaction.</param>
         /// <param name="chipSelectMode">The chip select mode to use during this transaction (if a CS pin is selected)</param>
         /// <param name="speedMhz">The speed to perform this transaction at.</param>
-        /// <param name="burstMode">Whether to use one of the burst modes</param>
+        /// <param name="burstMode"The burst mode (if any) to use.</param>
         /// <param name="spiMode">The SPI mode to use during this transaction.</param>
         /// <returns>An awaitable byte array with the received data.</returns>
         public async Task<byte[]> SendReceiveAsync(byte[] dataToWrite, SpiChipSelectPin chipSelect = null,

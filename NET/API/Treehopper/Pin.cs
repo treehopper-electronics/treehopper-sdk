@@ -126,7 +126,7 @@ A work around is to wait for two consecutive pin updates to be received before c
 However, pin updates are only sent to the computer when a pin's value changes, so if you wish to synchronously sample a pin that might not change, you should set an unused pin as an analog input, which will almost certainly guarantee a constant stream of pin updates:
 
 ```
-board.Pins[19].Mode = AnalogInput; // this will ensure we get continuous pin updates
+board.Pins[19].Mode = PinMode.AnalogInput; // this will ensure we get continuous pin updates
 
 var pin0 = board.Pins[0];
 var pin1 = board.Pins[1];

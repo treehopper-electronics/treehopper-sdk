@@ -151,6 +151,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FirmwareUpdater", "Apps\Fir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirmwareUpdater.Wpf", "Apps\FirmwareUpdater\FirmwareUpdater.Wpf\FirmwareUpdater.Wpf.csproj", "{6D0F850E-6586-4D7F-9DAE-CE205C27F256}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreehopperDAQ", "Demos\WPF\TreehopperDAQ\TreehopperDAQ.csproj", "{57298809-347E-4C97-8185-F45BB1193B84}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{0c457ad6-8ee0-4e4b-8e38-e47d1db69c28}*SharedItemsImports = 4
@@ -1088,6 +1090,22 @@ Global
 		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x64.Build.0 = Release|Any CPU
 		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x86.ActiveCfg = Release|Any CPU
 		{6D0F850E-6586-4D7F-9DAE-CE205C27F256}.Release|x86.Build.0 = Release|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|ARM.Build.0 = Debug|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|x64.ActiveCfg = Debug|x64
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|x64.Build.0 = Debug|x64
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|x86.ActiveCfg = Debug|x86
+		{57298809-347E-4C97-8185-F45BB1193B84}.Debug|x86.Build.0 = Debug|x86
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|ARM.ActiveCfg = Release|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|ARM.Build.0 = Release|Any CPU
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|x64.ActiveCfg = Release|x64
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|x64.Build.0 = Release|x64
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|x86.ActiveCfg = Release|x86
+		{57298809-347E-4C97-8185-F45BB1193B84}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1164,6 +1182,7 @@ Global
 		{FDE7B38D-0336-4868-9DBA-06E267E0F703} = {0732EAC4-CE73-4E08-8D99-81C4701F111E}
 		{5D6E649A-65D5-4C74-B808-1873136C48A8} = {FDE7B38D-0336-4868-9DBA-06E267E0F703}
 		{6D0F850E-6586-4D7F-9DAE-CE205C27F256} = {FDE7B38D-0336-4868-9DBA-06E267E0F703}
+		{57298809-347E-4C97-8185-F45BB1193B84} = {3299A2A6-A61C-486E-A642-E177DA0FC754}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5057C2CE-5C8D-414F-9703-0699AAFFD2C1}
