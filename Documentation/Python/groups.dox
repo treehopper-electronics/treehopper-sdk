@@ -1,0 +1,90 @@
+/** \defgroup core-classes Core classes
+These classes are the foundation of %Treehopper.
+
+Many of these classes contain useful code examples and tips on usage.
+
+# Important concepts
+## Assemblies
+Except for ConnectionService, all these classes live in the %Treehopper.dll assembly (which resides in the Treehopper NuGet package).
+
+## Object Construction
+In almost all cases, the entire object tree is built for you. For example, you'll never call
+
+```
+Pin pin = new Pin(5); // this makes no sense
+```
+
+Instead, you'll access these objects through the TreehopperUsb object, which you'll obtain from the ConnectionService.Instance. Like so:
+
+```
+TreehopperUsb board = await ConnectionService.Instance.GetFirstDeviceAsync(); // get the first device found
+await board.ConnectAsync(); // connect to the board
+board.I2c.Enabled = true; // enable the I2C peripheral
+```
+
+@{
+    \class treehopper.api.treehopper_usb.TreehopperUsb
+    \class treehopper.api.pin.Pin
+    \class treehopper.api.spi.HardwareSpi
+    \class treehopper.api.i2c.HardwareI2C
+    \class treehopper.api.uart.HardwareUart
+    \class treehopper.api.pwm.HardwarePwm
+@}
+
+\defgroup libraries Libraries
+Provides a rich collection of peripheral drivers for various sensors, actuators, and other IO.
+
+
+\defgroup displays Displays
+LED drivers, LCDs, and other displays
+\ingroup libraries
+@{
+    \class treehopper.libraries.displays.Ht16k33.Ht16k33
+    \class treehopper.libraries.displays.Max7219.Max7219
+    \class treehopper.libraries.displays.LedShiftRegister.LedShiftRegister
+@}
+
+\defgroup display-utilities Display Utilities
+Display collections and other classes for working with displays
+\ingroup libraries
+@{
+    \class treehopper.libraries.displays.SevenSegmentDisplay.SevenSegmentDisplay
+@}
+
+\defgroup Inertial Inertial Sensors
+Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+\ingroup libraries
+@{
+    \class treehopper.libraries.sensors.inertial.Adxl345.Adxl345
+    \class treehopper.libraries.sensors.inertial.Bno055.Bno055
+    \class treehopper.libraries.sensors.inertial.Mpu6050.Mpu6050
+    \class treehopper.libraries.sensors.inertial.Mpu9250.Mpu9250
+    \class treehopper.libraries.sensors.inertial.Ak8975.Ak8975
+@}
+
+\defgroup environmental Environmental Sensors
+Temperature, humidity, and pressure sensors
+\ingroup libraries
+@{
+    \class treehopper.libraries.sensors.temperature.Ds18b20.Ds18b20
+    \class treehopper.libraries.sensors.optical.Lm75.Lm75
+    \class treehopper.libraries.sensors.optical.Mcp9808.Mcp9808
+@}
+
+\defgroup optical Optical Sensors
+Optical sensors and camera modules
+\ingroup libraries
+@{
+    \class treehopper.libraries.sensors.optical.Bh1750.Bh1750
+    \class treehopper.libraries.sensors.optical.Tsl2591.Tsl2591
+    \class treehopper.libraries.sensors.optical.Vcnl4010.Vcnl4010
+@}
+
+\defgroup interface Interface
+ADCs, DACs, shift registers, muxes, and digital pots
+\ingroup libraries
+@{
+    \class treehopper.libraries.io.expander.ChainableShiftRegisterOutput.ChainableShiftRegisterOutput
+@}
+
+*/
