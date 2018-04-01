@@ -1,9 +1,9 @@
 import logging
 from typing import List, TYPE_CHECKING
 if TYPE_CHECKING:
-    from treehopper.api.TreehopperUsb import TreehopperUsb
-from treehopper.api import DeviceCommands
-from treehopper.api.IOneWire import IOneWire
+    from treehopper.api.treehopper_usb import TreehopperUsb
+from treehopper.api.device_commands import DeviceCommands
+from treehopper.api.interfaces import OneWire, Uart
 from treehopper.utils.error import error
 
 
@@ -14,6 +14,7 @@ class UartMode:
     OneWire = 1
     """The UART is in OneWire mode"""
 
+
 class UartConfig:
     Disabled, Standard, OneWire = range(3)
 
@@ -22,25 +23,21 @@ class UartCommand:
     Transmit, Receive, OneWireReset, OneWireScan = range(4)
 
 
-class HardwareUart(IOneWire):
+class HardwareUart(Uart, OneWire):
     """
     Hardware UART module
     """
 
+    ## \cond PRIVATE
     def __init__(self, board: 'TreehopperUsb'):
-        """
-        Construct a new Hardware UART connected to the specified board.
-        @param board: the board the hardware UART is attached to
-
-        This constructor should not be called by the user; you can obtain a reference to the hardware UART
-        on your board by accessing the board's "uart" property. See the documentation for TreehopperUsb for more info.
-        """
+        super().__init__()
         self._board = board
         self._baud = 9600
         self._enabled = False
         self._mode = UartMode.Uart
         self._use_open_drain_tx = False
         self._logging = logging.getLogger(__name__)
+    ## \endcond
 
     def start_one_wire(self):
         """

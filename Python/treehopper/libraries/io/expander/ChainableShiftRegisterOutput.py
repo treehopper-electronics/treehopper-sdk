@@ -1,15 +1,15 @@
 from typing import List
 
-from treehopper.api import Spi
-from treehopper.api.Pin import SpiChipSelectPin
-from treehopper.api.Spi import SpiMode, ChipSelectMode, SpiBurstMode
+from treehopper.api import spi
+from treehopper.api.pin import SpiChipSelectPin
+from treehopper.api.spi import SpiMode, ChipSelectMode, SpiBurstMode
 from treehopper.libraries import SpiDevice
 from treehopper.libraries.Flushable import Flushable
 
 
 class ChainableShiftRegisterOutput(Flushable):
     def __init__(self,
-                 spi: Spi = None,
+                 spi: spi = None,
                  latch_pin: SpiChipSelectPin = None,
                  parent: 'ChainableShiftRegisterOutput' = None,
                  num_bytes=1,

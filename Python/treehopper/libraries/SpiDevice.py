@@ -1,6 +1,6 @@
-from treehopper.api import Spi
-from treehopper.api.Spi import ChipSelectMode, SpiMode, SpiBurstMode
-from treehopper.api.Pin import SpiChipSelectPin
+from treehopper.api import spi
+from treehopper.api.spi import ChipSelectMode, SpiMode, SpiBurstMode
+from treehopper.api.pin import SpiChipSelectPin
 
 
 class SpiDevice:
@@ -10,7 +10,7 @@ class SpiDevice:
     This class provides a simple wrapper around Spi.send_receive() that preserves the chip-select, mode, and frequency
     configurations.
     """
-    def __init__(self, spi_module: Spi, chip_select: SpiChipSelectPin, chip_select_mode=ChipSelectMode.SpiActiveLow, speed_mhz=6, spi_mode=SpiMode.Mode00):
+    def __init__(self, spi_module: spi, chip_select: SpiChipSelectPin, chip_select_mode=ChipSelectMode.SpiActiveLow, speed_mhz=6, spi_mode=SpiMode.Mode00):
         """
         Construct a new SPI device.
         :param spi_module: The SPI module to use
@@ -23,7 +23,7 @@ class SpiDevice:
         """
         self.chip_select_mode = chip_select_mode
         self.chip_select = chip_select
-        self._spi = spi_module  # type: Spi
+        self._spi = spi_module  # type: spi
         self.frequency = speed_mhz
         self.mode = spi_mode
         self._spi.enabled = True

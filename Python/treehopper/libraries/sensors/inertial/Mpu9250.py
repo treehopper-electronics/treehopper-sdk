@@ -1,6 +1,6 @@
 from typing import List
 
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial import Mpu6050, Gyroscope
 from treehopper.libraries.sensors.magnetic.Ak8975 import Ak8975
@@ -9,7 +9,7 @@ from treehopper.libraries.sensors.magnetic.Magnetometer import Magnetometer
 
 class Mpu9250(Mpu6050, Magnetometer):
     @staticmethod
-    def probe(i2c: I2c) -> List['Mpu9250']:
+    def probe(i2c: I2C) -> List['Mpu9250']:
         devs = []  # type: List['Mpu9250']
         try:
             dev = SMBusDevice(0x68, i2c, 100)
@@ -29,7 +29,7 @@ class Mpu9250(Mpu6050, Magnetometer):
 
         return devs
 
-    def __init__(self, i2c: I2c, alt_address=False, rate=100):
+    def __init__(self, i2c: I2C, alt_address=False, rate=100):
         super().__init__(i2c, alt_address, rate)
         self._registers.intPinCfg.bypassEn = 1
         self._registers.intPinCfg.latchIntEn = 1

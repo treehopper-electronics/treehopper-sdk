@@ -1,7 +1,7 @@
 from math import log
 from typing import List
 
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.Register import sign_extend
 from treehopper.libraries.sensors.humidity.HumiditySensor import HumiditySensor
@@ -11,7 +11,7 @@ from treehopper.libraries.sensors.pressure.Bmp280Registers import Oversamplings
 
 class Bme280(Bmp280, HumiditySensor):
     @staticmethod
-    def probe(i2c: I2c) -> List['Bme280']:
+    def probe(i2c: I2C) -> List['Bme280']:
         devs = []  # type: List['Bme280']
         try:
             dev = SMBusDevice(0x76, i2c, 100)
@@ -31,7 +31,7 @@ class Bme280(Bmp280, HumiditySensor):
 
         return devs
 
-    def __init__(self, i2c: I2c, sdo=False, rate=100.0):
+    def __init__(self, i2c: I2C, sdo=False, rate=100.0):
         super().__init__(i2c, sdo, rate)
         self._registers.readRange(self._registers.h2, self._registers.h6)
 

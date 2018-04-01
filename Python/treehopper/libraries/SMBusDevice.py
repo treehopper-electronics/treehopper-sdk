@@ -1,4 +1,4 @@
-from treehopper.api import I2c
+from treehopper.api import I2C
 
 
 class SMBusDevice:
@@ -7,7 +7,7 @@ class SMBusDevice:
 
     This class provides useful methods for reading and writing registers of SMBus-compliant I2C devices.
     """
-    def __init__(self, address: int, i2c_module: I2c, rate_khz=100.0):
+    def __init__(self, address: int, i2c_module: I2C, rate_khz=100.0):
         if address > 0x7f:
             raise ValueError("The address parameter expects a 7-bit address that doesn't include a Read/Write bit. The maximum address is 0x7F")
         self._address = address

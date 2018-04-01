@@ -1,14 +1,14 @@
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.optical.Vcnl4010Registers import Vcnl4010Registers
 from treehopper.libraries.sensors.optical.Vcnl4010Registers import Rates, AlsRates
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries.sensors.optical.AmbientLightSensor import AmbientLightSensor
 from treehopper.libraries.sensors import Proximity
 
 
 class Vcnl4010(AmbientLightSensor, Proximity):
     """Vishay VCNL4010 proximity and ambient light sensor."""
-    def __init__(self, i2c: I2c):
+    def __init__(self, i2c: I2C):
         self.registers = Vcnl4010Registers(SMBusDevice(0x13, i2c))
         self.registers.readRange(self.registers.command, self.registers.ambientLightParameters)
         self.registers.proximityRate.set_value(Rates.Hz_7_8125)

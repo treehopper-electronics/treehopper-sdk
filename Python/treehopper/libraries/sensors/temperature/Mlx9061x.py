@@ -1,4 +1,4 @@
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.temperature import TemperatureSensor
 
@@ -15,14 +15,14 @@ class TempRegister(TemperatureSensor):
 
 
 class Mlx90614:
-    def __init__(self, i2c: I2c):
+    def __init__(self, i2c: I2C):
         self._dev = SMBusDevice(0x5a, i2c)
         self.ambient = TempRegister(self._dev, 0x06)
         self.object = TempRegister(self._dev, 0x07)
 
 
 class Mlx90615:
-    def __init__(self, i2c: I2c):
+    def __init__(self, i2c: I2C):
         self._dev = SMBusDevice(0x5b, i2c)
         self.ambient = TempRegister(self._dev, 0x26)
         self.object = TempRegister(self._dev, 0x27)

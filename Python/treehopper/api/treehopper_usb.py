@@ -5,15 +5,14 @@ import usb.core
 import usb.util
 import threading
 
-from treehopper.api.HardwarePwmManager import HardwarePwmManager
-from treehopper.api.HardwareSpi import HardwareSpi
-from treehopper.api.HardwareUart import HardwareUart
-from treehopper.utils.EventHandler import EventHandler
-from treehopper.api.Pin import Pin
-from treehopper.api.HardwarePwm import HardwarePwm
-from treehopper.api.HardwareI2c import HardwareI2c
-from treehopper.api.DeviceCommands import DeviceCommands
-from treehopper.api.SoftPwmManager import SoftPwmManager
+from treehopper.api.pwm import HardwarePwmManager
+from treehopper.api.spi import HardwareSpi
+from treehopper.api.uart import HardwareUart
+from treehopper.utils.event_handler import EventHandler
+from treehopper.api.pin import Pin, SoftPwmManager
+from treehopper.api.pwm import HardwarePwm
+from treehopper.api.i2c import HardwareI2C
+from treehopper.api.device_commands import DeviceCommands
 
 
 class TreehopperUsb:
@@ -37,20 +36,24 @@ class TreehopperUsb:
         >>> board.disconnect()              # Disconnect from the board when finished.
 
     Attributes:
-        pins (list[DigitalPin]): Collection of pins that belong to this board (List[Pin.Pin]).
-        spi (HardwareSpi): The SPI peripheral (HardwareSpi.HardwareSpi).
-        i2c (HardwareI2c): The I2C peripheral (HardwareI2c.HardwareI2c).
-        uart (HardwareUart): The UART peripheral (HardwareUart.HardwareUart).
-        pwm1 (HardwarePwm): The PWM1 peripheral (HardwarePwm.HardwarePwm).
-        pwm2 (HardwarePwm): The PWM2 peripheral (HardwarePwm.HardwarePwm).
-        pwm3 (HardwarePwm): The PWM3 peripheral (HardwarePwm.HardwarePwm).
-        hardware_pwm_manager (HardwarePwmManager): The hardware PWM manager (HardwarePwmManager.HardwarePwmManager).
+        pins (list[DigitalPin]): Collection of pins that belong to this board (List[pin.Pin]).
+        spi (HardwareSpi): The SPI peripheral (spi.HardwareSpi).
+        i2c (HardwareI2C): The I2C peripheral (i2c.HardwareI2C).
+        uart (HardwareUart): The UART peripheral (uart.HardwareUart).
+        pwm1 (HardwarePwm): The PWM1 peripheral (pwm.HardwarePwm).
+        pwm2 (HardwarePwm): The PWM2 peripheral (pwm.HardwarePwm).
+        pwm3 (HardwarePwm): The PWM3 peripheral (pwm.HardwarePwm).
+        hardware_pwm_manager (HardwarePwmManager): The hardware PWM manager (pwm.HardwarePwmManager).
 
     """
+
+    ## \cond PRIVATE
     def __init__(self, dev: usb.core.Device):
         self._pin_listener_thread = threading.Thread(target=self._pin_listener)
         self._dev = dev
         self._comms_lock = threading.Lock()
+
+        self._pin_update_flag = threading.Event()
 
         self._pin_report_endpoint = 0x81
         self._peripheral_response_endpoint = 0x82
@@ -75,7 +78,7 @@ class TreehopperUsb:
         self.pins[9].name = "Pin 9 (PWM3)"
 
         self.spi = HardwareSpi(self)
-        self.i2c = HardwareI2c(self)
+        self.i2c = HardwareI2C(self)
         self.uart = HardwareUart(self)
 
         self.pwm1 = HardwarePwm(self.pins[7])
@@ -89,6 +92,7 @@ class TreehopperUsb:
         self._led = False
         self._connected = False
         self._pin_report_received = EventHandler(self)
+    ## \endcond
 
     def connect(self):
         """
@@ -166,10 +170,10 @@ class TreehopperUsb:
             None
 
         Examples:
-        >>> board = find_boards()[0]                 # Get the first board.
-        >>> board.connect()                          # Be sure to connect before doing anything else.
-        >>> board.update_serial_number("a3bY392")    # Change the serial number.
-        >>> board.reboot()                           # Reboot the board so the OS picks up the changes.
+            >>> board = find_boards()[0]                 # Get the first board.
+            >>> board.connect()                          # Be sure to connect before doing anything else.
+            >>> board.update_serial_number("a3bY392")    # Change the serial number.
+            >>> board.reboot()                           # Reboot the board so the OS picks up the changes.
         """
         length = len(serial_number)
         if length > 60:
@@ -200,11 +204,11 @@ class TreehopperUsb:
             None
 
         Examples:
-        >>> board = find_boards()[0]                 # Get the first board.
-        >>> board.connect()                          # Be sure to connect before doing anything else.
-        >>> board.update_device_name("Acme Widget")  # Update the device name.
-        >>> board.update_serial_number("a3bY392")    # Change the serial number to force Windows refresh.
-        >>> board.reboot()                           # Reboot the board so the OS picks up the changes.
+            >>> board = find_boards()[0]                 # Get the first board.
+            >>> board.connect()                          # Be sure to connect before doing anything else.
+            >>> board.update_device_name("Acme Widget")  # Update the device name.
+            >>> board.update_serial_number("a3bY392")    # Change the serial number to force Windows refresh.
+            >>> board.reboot()                           # Reboot the board so the OS picks up the changes.
 
         """
         length = len(device_name)
@@ -215,50 +219,6 @@ class TreehopperUsb:
         self._send_peripheral_config_packet(data_to_send)
         sleep(0.1)
 
-    @property
-    def serial_number(self):
-        """
-        [Property] Gets the serial number of the board.
-
-        This property is available to read even without connecting to the board. If you wish to change the serial number,
-        use update_serial_number().
-
-        Note:
-            While you do not need to connect() to the board before querying its serial number, you will not be able
-            to retrieve the serial number of a board to which another application is connected.
-
-            Treehopper's Python USB backend calls into LibUSB, which doesn't support querying the OS for device info,
-            so LibUSB implicitly connects to the board, queries the string descriptor, and disconnects. Since
-            concurrent operation isn't supported by LibUSB, this operation will error if the board is already open.
-
-        Returns:
-            str: The serial number.
-
-        """
-        return self._dev.serial_number
-
-    @property
-    def name(self):
-        """
-        [Property] Gets the device name of the board.
-
-        This property is available to read even without connecting to the board. If you wish to change the device name,
-        use update_device_name().
-
-        Note:
-            While you do not need to connect() to the board before querying its device name, you will not be able
-            to retrieve the device name of a board to which another application is connected.
-
-            Treehopper's Python USB backend calls into LibUSB, which doesn't support querying the OS for device info,
-            so LibUSB implicitly connects to the board, queries the string descriptor, and disconnects. Since
-            concurrent operation isn't supported by LibUSB, this operation will error if the board is already open.
-
-        Returns:
-            str: The device name.
-
-        """
-        return self._dev.product
-
     def _pin_listener(self):
         while self._connected:
             try:
@@ -268,6 +228,7 @@ class TreehopperUsb:
                     for pin in self.pins:
                         pin._update_value(data[i], data[i+1])
                         i += 2
+                    self._pin_update_flag.set()
             except usb.USBError as e:
                 if e.errno == 10060:  # timeout win32
                     pass
@@ -298,10 +259,20 @@ class TreehopperUsb:
             self._connected = False
             return [0] * num_bytes_to_read
 
+    def await_pin_update(self):
+        """ Returns when the board has received a new pin update """
+        self._pin_update_flag.clear()
+        self._pin_update_flag.wait()
+
     @property
     def led(self) -> bool:
         """
-        [Property] Gets the state of the LED.
+        Gets or sets the state of the LED.
+
+        Example:
+            >>> while board.connected:
+            >>>     board.led = not board.led  # toggle the LED
+            >>>     sleep(0.1)
 
         Returns:
             bool: The current state of the LED.
@@ -311,23 +282,16 @@ class TreehopperUsb:
 
     @led.setter
     def led(self, val: bool) -> None:
-        """
-        [Property] Sets the state of the LED.
-
-        Args:
-            val (bool): The new state of the LED.
-
-        Returns:
-            None
-        """
         self._led = val
         data = [DeviceCommands.LedConfig, self._led]
         self._send_peripheral_config_packet(data)
 
+
+
     @property
     def connected(self):
         """
-        [Property] Gets whether the board is connected.
+        Gets whether the board is connected.
 
         Returns:
             bool: Whether the board is connected
@@ -337,3 +301,47 @@ class TreehopperUsb:
             so this is a useful property to consult to determine if a board is physically attached to a computer.
         """
         return self._connected
+
+    @property
+    def serial_number(self):
+        """
+        Gets the serial number of the board.
+
+        This property is available to read even without connecting to the board. If you wish to change the serial number,
+        use update_serial_number().
+
+        Note:
+            While you do not need to connect() to the board before querying its serial number, you will not be able
+            to retrieve the serial number of a board to which another application is connected.
+
+            Treehopper's Python USB backend calls into LibUSB, which doesn't support querying the OS for device info,
+            so LibUSB implicitly connects to the board, queries the string descriptor, and disconnects. Since
+            concurrent operation isn't supported by LibUSB, this operation will error if the board is already open.
+
+        Returns:
+            str: The serial number.
+
+        """
+        return self._dev.serial_number
+
+    @property
+    def name(self):
+        """
+        Gets the device name of the board.
+
+        This property is available to read even without connecting to the board. If you wish to change the device name,
+        use update_device_name().
+
+        Note:
+            While you do not need to connect() to the board before querying its device name, you will not be able
+            to retrieve the device name of a board to which another application is connected.
+
+            Treehopper's Python USB backend calls into LibUSB, which doesn't support querying the OS for device info,
+            so LibUSB implicitly connects to the board, queries the string descriptor, and disconnects. Since
+            concurrent operation isn't supported by LibUSB, this operation will error if the board is already open.
+
+        Returns:
+            str: The device name.
+
+        """
+        return self._dev.product

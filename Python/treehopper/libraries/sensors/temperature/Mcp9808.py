@@ -1,6 +1,6 @@
 from typing import List
 
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.temperature import TemperatureSensor
 from treehopper.libraries.Register import sign_extend
@@ -8,7 +8,7 @@ from treehopper.libraries.Register import sign_extend
 
 class Mcp9808(TemperatureSensor):
     @staticmethod
-    def probe(i2c: I2c, rate=100) -> List['Mcp9808']:
+    def probe(i2c: I2C, rate=100) -> List['Mcp9808']:
         devs = []  # type: List['Mcp9808']
         try:
             dev = SMBusDevice(0x18, i2c, rate)
@@ -76,7 +76,7 @@ class Mcp9808(TemperatureSensor):
 
         return devs
 
-    def __init__(self, i2c: I2c, a0=False, a1=False, a2=False):
+    def __init__(self, i2c: I2C, a0=False, a1=False, a2=False):
         super().__init__()
         self._dev = SMBusDevice(0x18 | (a0 << 0) | (a1 << 1) | (a2 << 2), i2c)
 

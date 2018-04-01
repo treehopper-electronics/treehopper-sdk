@@ -1,7 +1,7 @@
 from time import sleep
 from typing import List
 
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial.Bno055Registers import Bno055Registers, OperatingModes, PowerModes
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
@@ -11,7 +11,7 @@ from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 class Bno055(Accelerometer, Gyroscope, Magnetometer, TemperatureSensor):
     @staticmethod
-    def probe(i2c: I2c, rate=100) -> List['Bno055']:
+    def probe(i2c: I2C, rate=100) -> List['Bno055']:
         devs = []  # type: List['Bno055']
         try:
             dev = SMBusDevice(0x28, i2c, rate)
@@ -31,7 +31,7 @@ class Bno055(Accelerometer, Gyroscope, Magnetometer, TemperatureSensor):
 
         return devs
 
-    def __init__(self, i2c: I2c, alt_address=False, rate=100):
+    def __init__(self, i2c: I2C, alt_address=False, rate=100):
         super().__init__()
         self._linear_acceleration = [0, 0, 0]
         self._quaternion = [0, 0, 0, 0]

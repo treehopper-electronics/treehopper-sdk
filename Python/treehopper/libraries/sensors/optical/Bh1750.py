@@ -1,4 +1,4 @@
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.optical import AmbientLightSensor
 
@@ -7,7 +7,7 @@ class Bh1750(AmbientLightSensor):
     class Resolution:
         Medium, High, Low = range(3)
 
-    def __init__(self, i2c: I2c, address_pin=False):
+    def __init__(self, i2c: I2C, address_pin=False):
         super().__init__()
         self._resolution = 0
         self._dev = SMBusDevice(0x5c if address_pin else 0x23, i2c, 100)

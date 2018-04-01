@@ -1,11 +1,11 @@
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.magnetic.Magnetometer import Magnetometer
 from treehopper.libraries.sensors.magnetic.Ak8975Registers import Ak8975Registers
 
 
 class Ak8975(Magnetometer):
-    def __init__(self, i2c: I2c):
+    def __init__(self, i2c: I2C):
         super().__init__()
         dev = SMBusDevice(0x0c, i2c)
         self._registers = Ak8975Registers(dev)

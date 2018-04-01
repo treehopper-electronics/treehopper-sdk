@@ -1,1 +1,1 @@
-from treehopper.utils.EventHandler import EventHandler
+from treehopper.utils.event_handler import EventHandler

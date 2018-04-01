@@ -1,7 +1,7 @@
 from typing import List
 from math import log2
 
-from treehopper.api import I2c
+from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial.Mpu6050Registers import Mpu6050Registers
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
@@ -10,7 +10,7 @@ from treehopper.libraries.sensors.temperature.TemperatureSensor import Temperatu
 
 class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):
     @staticmethod
-    def probe(i2c: I2c, include_mpu9250: bool) -> List['Mpu6050']:
+    def probe(i2c: I2C, include_mpu9250: bool) -> List['Mpu6050']:
         devs = []  # type: List['Mpu6050']
         try:
             dev = SMBusDevice(0x68, i2c, 100)
@@ -30,7 +30,7 @@ class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):
 
         return devs
 
-    def __init__(self, i2c: I2c, alt_address=False, rate=100):
+    def __init__(self, i2c: I2C, alt_address=False, rate=100):
         super().__init__()
         self._dev = SMBusDevice((0x69 if alt_address else 0x68), i2c, rate)
         self._registers = Mpu6050Registers(self._dev)
