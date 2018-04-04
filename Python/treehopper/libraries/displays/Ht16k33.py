@@ -5,7 +5,29 @@ from treehopper.libraries.displays.led import LedDriver, Led
 
 
 class Ht16k33(LedDriver):
-    """Holtek HT16K33 LED driver
+    """Holtek HT16K33 8x8 matrix LED driver
+
+    This is a popular driver found in dev boards such as the [Adafruit LED backpack](
+    https://learn.adafruit.com/adafruit-led-backpack).
+
+    Example:
+        >>> from time import sleep
+        >>> from treehopper.api import *
+        >>> from treehopper.libraries.displays import Ht16k33
+
+        >>> board = find_boards()[0]
+        >>> board.connect()
+        >>> driver = Ht16k33(i2c=board.i2c, package=Ht16k33.Package.sop20)
+
+        >>> while board.connected:
+        >>>     for led in driver.leds:
+        >>>         led.state = True
+        >>>         sleep(0.04)
+
+        >>>     for led in driver.leds:
+        >>>         led.state = False
+        >>>         sleep(0.04)
+
 
     """
     _command_brightness = 0xe0

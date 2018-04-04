@@ -3,6 +3,7 @@ from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 
+## \cond PRIVATE
 class TempRegister(TemperatureSensor):
     def __init__(self, dev: SMBusDevice, register: int):
         super().__init__()
@@ -13,10 +14,10 @@ class TempRegister(TemperatureSensor):
         data = self._dev.read_word_data(self._register)
         data &= 0x7FFF
         self._celsius = data * 0.02 - 273.15
-
+## \endcond
 
 class Mlx90614:
-    """Melexis Mlx90614 non-contact I2C thermal sensor"""
+    """Melexis MLX90614 non-contact I2C thermal sensor"""
     def __init__(self, i2c: I2C):
         self._dev = SMBusDevice(0x5a, i2c)
         self.ambient = TempRegister(self._dev, 0x06)
@@ -24,7 +25,7 @@ class Mlx90614:
 
 
 class Mlx90615:
-    """Melexis Mlx90615 non-contact I2C thermal sensor"""
+    """Melexis MLX90615 non-contact I2C thermal sensor"""
     def __init__(self, i2c: I2C):
         self._dev = SMBusDevice(0x5b, i2c)
         self.ambient = TempRegister(self._dev, 0x26)

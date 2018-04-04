@@ -6,7 +6,24 @@ from treehopper.libraries.sensors import Proximity
 
 
 class Vcnl4010(AmbientLightSensor, Proximity):
-    """Vishay VCNL4010 proximity and ambient light sensor."""
+    """Vishay VCNL4010 proximity and ambient light sensor
+
+    Example:
+        >>> from time import sleep
+        >>> from treehopper.api import *
+        >>> from treehopper.libraries.sensors.optical import Vcnl4010
+
+        >>> board = find_boards()[0]
+        >>> board.connect()
+        >>> sensor = Vcnl4010(i2c=board.i2c)
+        >>> sensor.auto_update_when_property_read = False
+        >>> while board.connected:
+        >>>     sensor.update()
+        >>>     print(sensor.meters)
+        >>>     print(sensor.lux)
+        >>>     sleep(0.1)
+
+    """
     def __init__(self, i2c: I2C):
         self.registers = Vcnl4010Registers(SMBusDevice(0x13, i2c))
         self.registers.readRange(self.registers.command, self.registers.ambientLightParameters)

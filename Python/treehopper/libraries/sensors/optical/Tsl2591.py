@@ -5,6 +5,7 @@ from treehopper.libraries.sensors.optical.tsl2591_registers import Tsl2591Regist
 
 
 class Tsl2591(AmbientLightSensor):
+    """Avago/ams TSL2591 High-dynamic range digital light sensor """
     @staticmethod
     def probe(i2c: I2C):
         dev = SMBusDevice(0x29, i2c, 100)

@@ -3,6 +3,7 @@ from treehopper.libraries.sensors import Pollable
 
 
 class Accelerometer(Pollable):
+    """Three-axis accelerometer"""
     def __init__(self):
         super().__init__()
         self._accelerometer = [0.0, 0.0, 0.0]
@@ -18,7 +19,9 @@ class Accelerometer(Pollable):
     def update(self):
         pass
 
+
 class Gyroscope(Pollable):
+    """Three-axis gyroscope"""
     def __init__(self):
         super().__init__()
         self._gyroscope = [0.0, 0.0, 0.0]

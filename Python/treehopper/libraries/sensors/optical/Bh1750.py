@@ -4,6 +4,7 @@ from treehopper.libraries.sensors.optical import AmbientLightSensor
 
 
 class Bh1750(AmbientLightSensor):
+    """Rohm Semiconductor BH1750FVI ambient light sensor """
     class Resolution:
         Medium, High, Low = range(3)
 

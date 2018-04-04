@@ -6,6 +6,14 @@ from treehopper.utils.utils import constrain
 
 
 class Led:
+    """A single, monochromatic LED
+
+    Attributes:
+        brightness_control: whether this LED has individual brightness control
+        channel: an integer representing the channel of the driver to which this LED belongs
+        driver: the LedDriver instance that owns this LED
+
+    """
     def __init__(self, driver: 'LedDriver', channel=0, has_brightness_control=False):
         self._brightness = 1.0
         self._state = False
@@ -15,6 +23,7 @@ class Led:
 
     @property
     def brightness(self, value):
+        """Gets or sets the brightness of the LED (from 0.0 - 1.0)"""
         if math.isclose(value, self._brightness):
             return
 
@@ -30,6 +39,7 @@ class Led:
 
     @property
     def state(self):
+        """Gets or sets the state of the LED (True or False)"""
         return self._state
 
     @state.setter
@@ -45,6 +55,14 @@ class Led:
 
 
 class LedDriver(Flushable):
+    """An LED driver, controlling a collection of one or more LEDs
+
+    Attributes:
+        leds: the collection of LEDs controlled by this driver.
+        individual_brightness: whether this controller has individual brightness control
+        global_brightness: whether this controller has global brightness control
+
+    """
     def __init__(self, num_leds: int, has_global_brightness_control: bool, has_individual_brightness_control: bool):
         Flushable.__init__(self)
         self._logger = logging.getLogger(__name__)

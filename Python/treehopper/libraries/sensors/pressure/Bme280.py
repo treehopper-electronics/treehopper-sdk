@@ -10,6 +10,7 @@ from treehopper.libraries.sensors.pressure.bmp280_registers import Oversamplings
 
 
 class Bme280(Bmp280, HumiditySensor):
+    """Bosch BME280 barometric pressure, temperature, and humidity sensor"""
     @staticmethod
     def probe(i2c: I2C) -> List['Bme280']:
         devs = []  # type: List['Bme280']

@@ -14,7 +14,7 @@ else:
 
 imu.auto_update_when_property_read = False
 
-while True:
+while board.connected:
     imu.update()
     print(imu.accelerometer)
     print(imu.gyroscope)

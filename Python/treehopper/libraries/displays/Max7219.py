@@ -23,6 +23,63 @@ class Opcode:
 
 
 class Max7219(LedDriver):
+    """Maxim MAX7219 8x8 LED matrix driver
+
+    Attributes:
+        parent: the Max7219 instance that this instance is connected to.
+        state: a list of 8 numbers that represent the bit pattern of the display
+
+    The Maxim MAX7219 (and compatible MAX7221, and MAX6951) drives 8x8 matrices of LEDs commonly found in multi-digit
+    7-segment displays, as well as LED dot matrices. Because of the proliferation of low-cost MAX7219 dev boards on
+    eBay, Amazon, and other popular retailers, these devices have been popular among hobbyists and students.
+
+    Example:
+        >>> from time import sleep
+        >>> from treehopper.api import *
+        >>> from treehopper.libraries.displays import Max7219, SevenSegmentDisplay
+
+        >>> board = find_boards()[0]
+        >>> board.connect()
+
+        >>> driver = Max7219(spi_module=board.spi, load_pin=board.pins[15])
+
+        >>> for led in driver.leds:
+        >>>     led.state = True
+        >>>     sleep(0.01)
+
+        >>> for led in driver.leds:
+        >>>     led.state = False
+        >>>     sleep(0.01)
+
+    The driver also supports chaining multiple MAX7219 ICs together with the #parent property.
+
+        >>> driver1 = Max7219(spi_module=board.spi, load_pin=board.pins[15])
+        >>> driver2 = Max7219(parent=driver1)
+        >>> driver3 = Max7219(parent=driver2)
+
+        >>> leds = driver3.leds + driver2.leds + driver1.leds
+
+        >>> for led in leds:
+        >>>     led.state = True
+        >>>     sleep(0.01)
+
+        >>> for led in leds:
+        >>>     led.state = False
+        >>>     sleep(0.01)
+
+    By default, this driver orders the LEDs using the Treehopper convention for seven-segment LEDs (A-DP),
+    which allows hooking up a SevenSegmentDisplay class directly to the LED collection to create a display you can
+    print numbers (and some letters) to.
+
+        >>> display = SevenSegmentDisplay(leds)
+        >>> i = 0
+        >>> while board.connected:
+        >>>     display.clear()
+        >>>     display.write(i)
+        >>>     i += 1
+
+    """
+
     _num_devices = 0
 
     def __init__(self, spi_module=None, load_pin=None, parent=None, speed_mhz=1):
@@ -36,10 +93,11 @@ class Max7219(LedDriver):
             self._logger.error("You must specify a parent MAX7219, or an SPI module and load pin")
 
         if spi_module is not None:
-            self.dev = SpiDevice(spi_module=spi_module, chip_select=load_pin, chip_select_mode=ChipSelectMode.PulseHighAtEnd, speed_mhz=speed_mhz)
+            self._dev = SpiDevice(spi_module=spi_module, chip_select=load_pin,
+                                  chip_select_mode=ChipSelectMode.PulseHighAtEnd, speed_mhz=speed_mhz)
             self.address = 0
         else:
-            self.dev = parent.dev
+            self._dev = parent.dev
             self.address = parent.address + 1
 
         ## Gets or sets whether the driver should auto-flush when an LED is modified
@@ -84,16 +142,16 @@ class Max7219(LedDriver):
 
         spi_data.reverse()
 
-        self.dev.send_receive(spi_data, SpiBurstMode.BurstTx)
+        self._dev.send_receive(spi_data, SpiBurstMode.BurstTx)
 
     @property
     def shutdown(self):
-        """[Property] Gets or sets whether the display should be disabled"""
+        """Gets or sets whether the display should be disabled"""
         return self._shutdown
 
     @shutdown.setter
     def shutdown(self, value):
-        """[Property] Gets or sets whether the display should be disabled"""
+        """Gets or sets whether the display should be disabled"""
         if self._shutdown == value:
             return
 
@@ -102,12 +160,12 @@ class Max7219(LedDriver):
 
     @property
     def scan_limit(self):
-        """[Property] Gets or sets the maximum digit index (from 0 to 7) that should be scanned"""
+        """Gets or sets the maximum digit index (from 0 to 7) that should be scanned"""
         return self._scan_limit
 
     @scan_limit.setter
     def scan_limit(self, value):
-        """[Property] Gets or sets the maximum digit index (from 0 to 7) that should be scanned"""
+        """Gets or sets the maximum digit index (from 0 to 7) that should be scanned"""
         if value == self._scan_limit:
             return
         self._scan_limit = value

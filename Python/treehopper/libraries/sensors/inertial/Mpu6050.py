@@ -9,6 +9,7 @@ from treehopper.libraries.sensors.temperature.temperature_sensor import Temperat
 
 
 class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):
+    """Invensense MPU-6050 6-axis IMU"""
     @staticmethod
     def probe(i2c: I2C, include_mpu9250: bool) -> List['Mpu6050']:
         devs = []  # type: List['Mpu6050']

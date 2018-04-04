@@ -1,5 +1,4 @@
 from time import sleep
-
 from treehopper.api import *
 from treehopper.libraries.displays import Max7219, SevenSegmentDisplay
 
@@ -25,8 +24,8 @@ for led in leds:
     sleep(0.01)
 
 display = SevenSegmentDisplay(leds)
-i=0
-while True:
+i = 0
+while board.connected:
     display.clear()
     display.write(i)
     i += 1

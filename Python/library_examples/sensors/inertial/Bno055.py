@@ -7,6 +7,6 @@ board = find_boards()[0]
 board.connect()
 
 imu = Bno055(board.i2c)
-while True:
+while board.connected:
     print(imu.quaternion)
     sleep(0.1)

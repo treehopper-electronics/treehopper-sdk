@@ -3,6 +3,7 @@ from treehopper.libraries.sensors import Pollable
 
 
 class Magnetometer(Pollable):
+    """Three-axis magnetic sensor"""
     def __init__(self):
         super().__init__()
         self._magnetometer = [0.0, 0.0, 0.0]

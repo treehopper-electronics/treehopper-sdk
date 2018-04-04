@@ -10,6 +10,7 @@ from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 
 class Bmp280(Pressure, TemperatureSensor):
+    """Bosch BMP280 barometric pressure / altitude / temperature sensor """
     @staticmethod
     def probe(i2c: I2C, include_bme280=True, rate=100.0) -> List['Bmp280']:
         devs = []  # type: List['Bmp280']

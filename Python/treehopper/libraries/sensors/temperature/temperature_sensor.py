@@ -3,6 +3,7 @@ from treehopper.libraries.sensors.pollable import Pollable
 
 
 class TemperatureSensor(Pollable):
+    """Temperature sensor"""
     def __init__(self):
         super().__init__()
         self._celsius = 0

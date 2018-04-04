@@ -8,6 +8,7 @@ from treehopper.libraries.sensors.magnetic.magnetometer import Magnetometer
 
 
 class Mpu9250(Mpu6050, Magnetometer):
+    """Invensense MPU-9250 9-axis IMU"""
     @staticmethod
     def probe(i2c: I2C) -> List['Mpu9250']:
         devs = []  # type: List['Mpu9250']

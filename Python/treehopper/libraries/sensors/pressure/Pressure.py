@@ -3,6 +3,7 @@ from treehopper.libraries.sensors import Pollable
 
 
 class Pressure(Pollable):
+    """Pressure sensor"""
     def __init__(self):
         super().__init__()
         self._pascal = 0

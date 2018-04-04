@@ -10,6 +10,7 @@ from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 
 class Bno055(Accelerometer, Gyroscope, Magnetometer, TemperatureSensor):
+    """Bosch BNO055 9-axis IMU with absolute orientation output"""
     @staticmethod
     def probe(i2c: I2C, rate=100) -> List['Bno055']:
         devs = []  # type: List['Bno055']

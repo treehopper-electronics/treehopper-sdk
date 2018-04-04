@@ -11,7 +11,7 @@ shift2 = ChainableShiftRegisterOutput(parent=shift1)
 shift1.auto_flush = False
 shift2.auto_flush = False
 
-while True:
+while board.connected:
     for i in range(255):
         shift1.current_value = [0, 0]
         shift2.current_value = [i, 0]

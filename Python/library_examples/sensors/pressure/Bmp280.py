@@ -14,7 +14,7 @@ else:
 
 sensor.auto_update_when_property_read = False
 
-while True:
+while board.connected:
     sensor.update()
     print(f"Pressure: {sensor.atm} Atm")
     print(f"Temperature: {sensor.celsius} °C ({sensor.fahrenheit} °F)")
