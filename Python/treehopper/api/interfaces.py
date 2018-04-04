@@ -6,6 +6,7 @@ from treehopper.utils.event_handler import EventHandler
 
 class Pwm(ABC):
     """Represents a generic PWM pin"""
+
     @property
     @abstractmethod
     def duty_cycle(self):
@@ -97,24 +98,12 @@ class AdcPin:
         self._old_analog_value = 0
         self._old_analog_voltage = 0
         self.max_voltage = max_voltage  # type: float
-
-        #: Fires whenever the voltage change exceeds analog_voltage_threshold
         self.analog_voltage_changed = EventHandler(self)  # type: EventHandler
-
         self.analog_value_changed = EventHandler(self)  # type: EventHandler
-        """Fires whenever the analog value change exceeds analog_value_threshold"""
-
         self.adc_value_changed = EventHandler(self)  # type: EventHandler
-        """Fires whenever the ADC value change exceeds adc_value_threshold"""
-
         self.adc_value_threshold = 4  # type: int
-        """The ADC value threshold used for the adc_value_changed event"""
-
         self.analog_value_threshold = 0.05  # type: float
-        """Analog value threshold used for the analog_value_changed event"""
-
         self.analog_voltage_threshold = 0.1  # type: float
-        """Analog voltage threshold used for the analog_voltage_changed event"""
 
     @property
     def adc_value(self) -> int:
@@ -147,7 +136,6 @@ class AdcPin:
     def _update_value(self, adc_value):
         # self._old_analog_voltage = self.analog_voltage
         # self._old_analog_value = self.analog_value
-
         self._adc_value = adc_value
 
         if abs(self.analog_voltage - self._old_analog_voltage) > self.analog_voltage_threshold:
@@ -237,13 +225,21 @@ class Spi(ABC):
         """
         Send and receive data through SPI
 
-        :param data_to_write: a list of bytes to send
-        :param chip_select: the chip select pin to use
-        :param chip_select_mode: the chip select mode to use
-        :param speed_mhz: the speed, in Mhz, to clock the data at
-        :param burst_mode: the burst mode to use --- if any
-        :param spi_mode:
-        :return: the data read from the bus
+        Args:
+            data_to_write: a list of data to send. The length of the transaction is determined
+            by the length of this list (list[int]).
+            chip_select: The chip select pin, if any, to use during this transaction (\link treehopper.api.pin.Pin
+            Pin\endlink).
+            chip_select_mode: if a CS pin is selected, this sets the chip select mode to use during this transaction
+            (select from \link interfaces.ChipSelectMode ChipSelectMode\endlink).
+            speed_mhz: The speed to perform this transaction at (float, default: 6.0).
+            burst_mode: The burst mode to use (select from \link interfaces.SpiBurstMode SpiBurstMode\endlink
+            values, default: \link interfaces.SpiBurstMode.NoBurst SpiBurstMode.NoBurst\endlink).
+            spi_mode: The SPI mode to use during this transaction (select from \link interfaces.SpiMode
+            SpiMode\endlink values, default: \link interfaces.SpiMode.Mode00 SpiMode.Mode00\endlink).
+
+        Returns:
+            A byte array with the received data (list[int])
         """
         pass
 
@@ -280,12 +276,12 @@ class I2C(ABC):
         and reads back num_bytes_to_read.
 
         Args:
-            address: (int) the 7-bit I2C address of the peripheral devices.
-            write_data: (list[int]) a list of bytes to send to the peripheral device.
-            num_bytes_to_read: (int) the number of bytes to read back.
+            address: The 7-bit slave address to address (int).
+            write_data: A list of data to write to the slave (list[int], default: None).
+            num_bytes_to_read: The number of bytes to read after the write operation (int, default: 0).
 
         Returns:
-            (list[int]) the data read from the device (if any)
+            A list of data received.
 
         """
         pass
