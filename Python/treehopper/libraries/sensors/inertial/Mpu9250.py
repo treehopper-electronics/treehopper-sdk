@@ -3,8 +3,8 @@ from typing import List
 from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial import Mpu6050, Gyroscope
-from treehopper.libraries.sensors.magnetic.Ak8975 import Ak8975
-from treehopper.libraries.sensors.magnetic.Magnetometer import Magnetometer
+from treehopper.libraries.sensors.magnetic.ak8975 import Ak8975
+from treehopper.libraries.sensors.magnetic.magnetometer import Magnetometer
 
 
 class Mpu9250(Mpu6050, Magnetometer):

@@ -1,1 +1,1 @@
-from treehopper.libraries.io.expander.ChainableShiftRegisterOutput import ChainableShiftRegisterOutput
+from treehopper.libraries.io.expander.shift_register import ChainableShiftRegisterOutput

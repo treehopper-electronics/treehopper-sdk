@@ -3,10 +3,11 @@ from typing import List
 from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.temperature import TemperatureSensor
-from treehopper.libraries.Register import sign_extend
+from treehopper.libraries.register_manager import sign_extend
 
 
 class Mcp9808(TemperatureSensor):
+    """Microchip MCP9808 I2C temperature sensor"""
     @staticmethod
     def probe(i2c: I2C, rate=100) -> List['Mcp9808']:
         devs = []  # type: List['Mcp9808']

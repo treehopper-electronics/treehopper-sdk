@@ -1,4 +1,4 @@
-from treehopper.libraries.io.adc.Nau7802Registers import Nau7802Registers
+from treehopper.libraries.io.adc.nau7802_registers import Nau7802Registers
 
 class Nau7802:
     pass

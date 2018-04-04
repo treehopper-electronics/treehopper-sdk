@@ -3,9 +3,9 @@ from math import log2
 
 from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.sensors.inertial.Mpu6050Registers import Mpu6050Registers
+from treehopper.libraries.sensors.inertial.mpu6050_registers import Mpu6050Registers
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
-from treehopper.libraries.sensors.temperature.TemperatureSensor import TemperatureSensor
+from treehopper.libraries.sensors.temperature.temperature_sensor import TemperatureSensor
 
 
 class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):

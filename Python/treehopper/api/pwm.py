@@ -104,9 +104,10 @@ class HardwarePwm(Pwm):
             return "{:0.2f}% duty cycle ({:0.02f} us pulse width)".format(self.duty_cycle * 100, self.pulse_width)
 
 
-## /private
+## \cond PRIVATE
 class PwmPinEnableMode:
     NoPin, Pin7, Pin7Pin8, Pin7Pin8Pin9 = range(4)
+## \endcond
 
 
 class HardwarePwmFrequency:
@@ -115,7 +116,8 @@ class HardwarePwmFrequency:
 
 
 class HardwarePwmManager:
-    ## /cond PRIVATE
+    """Manages hardware PWM pins"""
+    ## \cond PRIVATE
     def __init__(self, board):
         self._board = board
         self._duty_cycle_pin7 = [0, 0]
@@ -124,7 +126,7 @@ class HardwarePwmManager:
         self._frequency = HardwarePwmFrequency.Freq_732Hz
         self._mode = PwmPinEnableMode.NoPin
         self.logger = logging.getLogger(__name__)
-    ## /endcond
+    ## \endcond
 
     @property
     def microseconds_per_tick(self) -> float:

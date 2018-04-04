@@ -1,4 +1,4 @@
-from treehopper.libraries.Flushable import Flushable
+from treehopper.libraries.flushable import Flushable
 from abc import ABC, abstractmethod
 
 class CharacterDisplay(Flushable):

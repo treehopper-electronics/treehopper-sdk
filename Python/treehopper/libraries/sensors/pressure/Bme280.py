@@ -3,10 +3,10 @@ from typing import List
 
 from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.Register import sign_extend
-from treehopper.libraries.sensors.humidity.HumiditySensor import HumiditySensor
+from treehopper.libraries.register_manager import sign_extend
+from treehopper.libraries.sensors.humidity.humidity_sensor import HumiditySensor
 from treehopper.libraries.sensors.pressure import Bmp280
-from treehopper.libraries.sensors.pressure.Bmp280Registers import Oversamplings
+from treehopper.libraries.sensors.pressure.bmp280_registers import Oversamplings
 
 
 class Bme280(Bmp280, HumiditySensor):

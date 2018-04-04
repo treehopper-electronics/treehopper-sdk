@@ -4,7 +4,7 @@ from treehopper.api import spi
 from treehopper.api.pin import SpiChipSelectPin
 from treehopper.api.spi import SpiMode, ChipSelectMode, SpiBurstMode
 from treehopper.libraries import SpiDevice
-from treehopper.libraries.Flushable import Flushable
+from treehopper.libraries.flushable import Flushable
 
 
 class ChainableShiftRegisterOutput(Flushable):

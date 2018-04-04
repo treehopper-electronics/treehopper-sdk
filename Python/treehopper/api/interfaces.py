@@ -36,21 +36,25 @@ class Pwm(ABC):
 
 
 class DigitalBase:
+    """Base digital pin"""
     def __init__(self):
         self._digital_value = False
 
 
 class DigitalIn(DigitalBase):
+    """Digital input pin"""
     def __init__(self):
         super().__init__()
         self.digital_value_changed = EventHandler(self)
 
     @property
     def digital_value(self) -> bool:
+        """Gets the last value read from the pin"""
         return self._digital_value
 
     @abstractmethod
     def make_digital_in(self):
+        """Make the pin a digital input"""
         pass
 
     def _update_value(self, value: bool):
@@ -62,11 +66,13 @@ class DigitalIn(DigitalBase):
 
 
 class DigitalOut(DigitalBase):
+    """Digital output"""
     def __init__(self):
         super().__init__()
 
     @property
     def digital_value(self) -> bool:
+        """Gets or sets the digital value of the pin"""
         return self._digital_value
 
     @digital_value.setter
@@ -76,6 +82,7 @@ class DigitalOut(DigitalBase):
 
     @abstractmethod
     def make_digital_push_pull_out(self):
+        """Make the pin a push-pull digital output"""
         pass
 
 
@@ -288,6 +295,7 @@ class I2C(ABC):
 
 
 class Uart(ABC):
+    """UART module base class"""
     def __init__(self):
         super().__init__()
 

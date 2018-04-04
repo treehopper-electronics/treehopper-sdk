@@ -1,7 +1,7 @@
 from treehopper.libraries import SpiDevice
 from treehopper.api.spi import ChipSelectMode, SpiBurstMode
-from treehopper.libraries.displays.LedDriver import LedDriver
-from treehopper.libraries.displays.Led import Led
+from treehopper.libraries.displays.led import LedDriver
+from treehopper.libraries.displays.led import Led
 import logging
 
 

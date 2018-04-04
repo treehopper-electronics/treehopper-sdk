@@ -1,8 +1,7 @@
 from treehopper.api import I2C
 from treehopper.utils.utils import bit_list_to_bytes
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.displays.LedDriver import LedDriver
-from treehopper.libraries.displays.Led import Led
+from treehopper.libraries.displays.led import LedDriver, Led
 
 
 class Ht16k33(LedDriver):

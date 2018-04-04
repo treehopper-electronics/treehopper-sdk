@@ -8,10 +8,12 @@ from treehopper.utils.utils import *
 
 
 class I2CTransferError:
+    """An enumeration of possible I2C transfer errors"""
     ArbitrationLostError, NackError, UnknownError, TxunderError = range(4)
     Success = 255
 
     def ErrorString(val):
+        """Gets a string representation of an I2CTransferError value"""
         if val == I2CTransferError.ArbitrationLostError:
             return "Arbitration lost"
         elif val == I2CTransferError.NackError:
@@ -46,7 +48,7 @@ class HardwareI2C(I2C):
 
     If you want to change the communication rate from the default 100 kHz, consult the #speed property.
 
-    Note that Treehopper.Libraries contains \link treehopper.libraries.SMBusDevice SMBusDevice\endlink,
+    Note that Treehopper.Libraries contains \link treehopper.libraries.smbus_device.SMBusDevice SMBusDevice\endlink,
     a useful class for reading and writing device registers. Almost all %I2C drivers in %Treehopper.Libraries use it.
 
     Speaking of which, before writing a driver yourself, check to make it's not already in Treehopper.Libraries. You
@@ -89,7 +91,8 @@ class HardwareI2C(I2C):
     %send_receive() Function
     -----------------------
     It would be impractical for %Treehopper to directly expose low-level I<sup>2</sup>C functions (start bit,
-    stop bit, ack/nack); instead, %Treehopper's I<sup>2</sup>C module supports a single high-level send_receive() function that is used to exchange data.
+    stop bit, ack/nack); instead, %Treehopper's I<sup>2</sup>C module supports a single high-level send_receive()
+    function that is used to exchange data.
 
     This function can be used to either write data to the device (if `numBytesToRead` is `0`), read data from the
     device (if `writeData` is `null`), or both write data to the device and then read from it.
@@ -250,8 +253,8 @@ class HardwareI2C(I2C):
         By supporting both None write_data and num_bytes_to_read=0 conditions, this function can be used for all
         standard I2C/SMBus transactions.
 
-        Most I2C devices use a register-based scheme for exchanging data; consider using SMBusDevice for interacting
-        with these devices.
+        Most I2C devices use a register-based scheme for exchanging data; consider using \link
+        treehopper.libraries.smbus_device.SMBusDevice SMBusDevice\endlink for interacting with these devices.
         """
         if not self._enabled:
             self._logger.error("I2c.send_receive() called before enabling the peripheral. This call will be ignored.")

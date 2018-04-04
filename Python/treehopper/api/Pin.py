@@ -10,18 +10,23 @@ if TYPE_CHECKING:
 
 
 class PinMode:
+    """Enumeration of possible pin modes"""
     Reserved, DigitalInput, PushPullOutput, OpenDrainOutput, AnalogInput, SoftPwm, Unassigned = range(7)
 
 
+## \cond PRIVATE
 class PinConfigCommands:
     Reserved, MakeDigitalInput, MakePushPullOutput, MakeOpenDrainOutput, MakeAnalogInput, SetDigitalValue = range(6)
+## \endcond
 
 
 class ReferenceLevel:
+    """Enumeration of possible ADC reference values"""
     Vref_3V3, Vref_1V65, Vref_1V8, Vref_2V4, Vref_3V3Derived, Vref_3V6 = range(6)
 
 
 class SpiChipSelectPin(DigitalOut):
+    """A pin that can be used by an SPI peripheral for chip-select duties"""
     @property
     @abstractmethod
     def spi_module(self):
@@ -251,12 +256,7 @@ class Pin(AdcPin, DigitalIn, SpiChipSelectPin, Pwm):
 
     @property
     def reference_level(self) -> ReferenceLevel:
-        """Reference level for the pin.
-
-        :type: ReferenceLevel        
-        :getter: Returns the current ReferenceLevel
-        :setter: Sets the desired ReferenceLevel
-        """
+        """Gets or sets the ReferenceLevel for the pin"""
         return self._reference_level
 
     @reference_level.setter
@@ -368,6 +368,7 @@ class Pin(AdcPin, DigitalIn, SpiChipSelectPin, Pwm):
             return "{}: Digital open-drain, {}".format(self.name, self.digital_value)
 
 
+### \cond PRIVATE
 class SoftPwmPinConfig:
     def __init__(self):
         self.duty_cycle = 0
@@ -375,6 +376,7 @@ class SoftPwmPinConfig:
         self.use_pulse_width = True
         self.ticks = 0
         self.pin = []  # type: Pin
+
 
 
 class SoftPwmManager:
@@ -461,3 +463,4 @@ class SoftPwmManager:
 
         else:
             self._board._send_peripheral_config_packet([DeviceCommands.SoftPwmConfig, 0])
+### \endcond

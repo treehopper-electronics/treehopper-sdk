@@ -45,7 +45,7 @@ namespace RegisterGenerator
 
                 {
                     // C Sharp
-                    var outPath = $"{treehopperRoot}\\NET\\Libraries\\{path.Replace("Libraries", "Treehopper.Libraries")}\\{library.Name}.generated.cs";
+                    var outPath = $"{treehopperRoot}\\NET\\API\\{path.Replace("Libraries", "Treehopper.Libraries")}\\{library.Name}.generated.cs";
                     Render.FileToFile("Templates\\Registers.cs", library, outPath);
 
                     // add to the csproj file
@@ -62,7 +62,7 @@ namespace RegisterGenerator
                 }
                 {
                     // Python
-                    var outPath = $"{treehopperRoot}\\Python\\treehopper\\libraries\\{path.Replace("Libraries\\", "").ToLower()}\\{library.Name}Registers.py";
+                    var outPath = $"{treehopperRoot}\\Python\\treehopper\\libraries\\{path.Replace("Libraries\\", "").ToLower()}\\{library.Name.ToLower()}_registers.py";
                     Directory.CreateDirectory(Path.GetDirectoryName(outPath));
                     Render.FileToFile("Templates\\Registers.py", library, outPath);
                 }

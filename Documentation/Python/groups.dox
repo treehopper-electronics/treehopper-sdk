@@ -39,9 +39,9 @@ Provides a rich collection of peripheral drivers for various sensors, actuators,
 LED drivers, LCDs, and other displays
 \ingroup libraries
 @{
-    \class treehopper.libraries.displays.Ht16k33.Ht16k33
-    \class treehopper.libraries.displays.Max7219.Max7219
-    \class treehopper.libraries.displays.LedShiftRegister.LedShiftRegister
+    \class treehopper.libraries.displays.ht16k33.Ht16k33
+    \class treehopper.libraries.displays.max7219.Max7219
+    \class treehopper.libraries.displays.led_shift_register.LedShiftRegister
 @}
 
 \defgroup display-utilities Display Utilities
@@ -55,36 +55,36 @@ Display collections and other classes for working with displays
 Accelerometers, gyroscopes, magnetometers, and integrated IMUs
 \ingroup libraries
 @{
-    \class treehopper.libraries.sensors.inertial.Adxl345.Adxl345
-    \class treehopper.libraries.sensors.inertial.Bno055.Bno055
-    \class treehopper.libraries.sensors.inertial.Mpu6050.Mpu6050
-    \class treehopper.libraries.sensors.inertial.Mpu9250.Mpu9250
-    \class treehopper.libraries.sensors.inertial.Ak8975.Ak8975
+    \class treehopper.libraries.sensors.inertial.adxl345.Adxl345
+    \class treehopper.libraries.sensors.inertial.bno055.Bno055
+    \class treehopper.libraries.sensors.inertial.mpu6050.Mpu6050
+    \class treehopper.libraries.sensors.inertial.mpu9250.Mpu9250
+    \class treehopper.libraries.sensors.magnetic.ak8975.Ak8975
 @}
 
 \defgroup environmental Environmental Sensors
 Temperature, humidity, and pressure sensors
 \ingroup libraries
 @{
-    \class treehopper.libraries.sensors.temperature.Ds18b20.Ds18b20
-    \class treehopper.libraries.sensors.optical.Lm75.Lm75
-    \class treehopper.libraries.sensors.optical.Mcp9808.Mcp9808
+    \class treehopper.libraries.sensors.temperature.ds18b20.Ds18b20
+    \class treehopper.libraries.sensors.temperature.lm75.Lm75
+    \class treehopper.libraries.sensors.temperature.mcp9808.Mcp9808
 @}
 
 \defgroup optical Optical Sensors
 Optical sensors and camera modules
 \ingroup libraries
 @{
-    \class treehopper.libraries.sensors.optical.Bh1750.Bh1750
-    \class treehopper.libraries.sensors.optical.Tsl2591.Tsl2591
-    \class treehopper.libraries.sensors.optical.Vcnl4010.Vcnl4010
+    \class treehopper.libraries.sensors.optical.bh1750.Bh1750
+    \class treehopper.libraries.sensors.optical.tsl2591.Tsl2591
+    \class treehopper.libraries.sensors.optical.vcnl4010.Vcnl4010
 @}
 
 \defgroup interface Interface
 ADCs, DACs, shift registers, muxes, and digital pots
 \ingroup libraries
 @{
-    \class treehopper.libraries.io.expander.ChainableShiftRegisterOutput.ChainableShiftRegisterOutput
+    \class treehopper.libraries.io.expander.shift_register.ChainableShiftRegisterOutput
 @}
 
 */

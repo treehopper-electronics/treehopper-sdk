@@ -3,8 +3,8 @@ from typing import List
 
 from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.sensors.pressure.Pressure import Pressure
-from treehopper.libraries.sensors.pressure.Bmp280Registers import Bmp280Registers, Modes, OversamplingPressures, \
+from treehopper.libraries.sensors.pressure.pressure import Pressure
+from treehopper.libraries.sensors.pressure.bmp280_registers import Bmp280Registers, Modes, OversamplingPressures, \
     OversamplingTemperatures
 from treehopper.libraries.sensors.temperature import TemperatureSensor
 

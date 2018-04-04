@@ -5,6 +5,7 @@ from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 class TempRegister(TemperatureSensor):
     def __init__(self, dev: SMBusDevice, register: int):
+        super().__init__()
         self._dev = dev
         self._register = register
 
@@ -15,6 +16,7 @@ class TempRegister(TemperatureSensor):
 
 
 class Mlx90614:
+    """Melexis Mlx90614 non-contact I2C thermal sensor"""
     def __init__(self, i2c: I2C):
         self._dev = SMBusDevice(0x5a, i2c)
         self.ambient = TempRegister(self._dev, 0x06)
@@ -22,6 +24,7 @@ class Mlx90614:
 
 
 class Mlx90615:
+    """Melexis Mlx90615 non-contact I2C thermal sensor"""
     def __init__(self, i2c: I2C):
         self._dev = SMBusDevice(0x5b, i2c)
         self.ambient = TempRegister(self._dev, 0x26)

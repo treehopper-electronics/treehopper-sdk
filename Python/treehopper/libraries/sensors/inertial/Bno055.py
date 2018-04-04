@@ -3,9 +3,9 @@ from typing import List
 
 from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.sensors.inertial.Bno055Registers import Bno055Registers, OperatingModes, PowerModes
+from treehopper.libraries.sensors.inertial.bno055_registers import Bno055Registers, OperatingModes, PowerModes
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
-from treehopper.libraries.sensors.magnetic.Magnetometer import Magnetometer
+from treehopper.libraries.sensors.magnetic.magnetometer import Magnetometer
 from treehopper.libraries.sensors.temperature import TemperatureSensor
 
 

@@ -16,12 +16,14 @@ class UartMode:
     """The UART is in OneWire mode"""
 
 
+### \cond PRIVATE
 class UartConfig:
     Disabled, Standard, OneWire = range(3)
 
 
 class UartCommand:
     Transmit, Receive, OneWireReset, OneWireScan = range(4)
+### \endcond
 
 
 class HardwareUart(Uart, OneWire):

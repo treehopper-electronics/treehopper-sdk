@@ -1,1 +1,1 @@
-from treehopper.libraries.io.adc.Nau7802 import Nau7802
+from treehopper.libraries.io.adc.nau7802 import Nau7802

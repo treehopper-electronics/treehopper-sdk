@@ -1,8 +1,7 @@
 from treehopper.libraries import SMBusDevice
-from treehopper.libraries.sensors.optical.Vcnl4010Registers import Vcnl4010Registers
-from treehopper.libraries.sensors.optical.Vcnl4010Registers import Rates, AlsRates
+from treehopper.libraries.sensors.optical.vcnl4010_registers import Vcnl4010Registers, Rates, AlsRates
 from treehopper.api import I2C
-from treehopper.libraries.sensors.optical.AmbientLightSensor import AmbientLightSensor
+from treehopper.libraries.sensors.optical.ambient_light import AmbientLightSensor
 from treehopper.libraries.sensors import Proximity
 
 
