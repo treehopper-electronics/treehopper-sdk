@@ -1,4 +1,4 @@
-\page get-started Getting Started
+\page geting-started Getting Started
 
 # Prerequisites
 Treehopper requires Python 3.6 or later. This is not a particularly new version of Python (it has already been superseded by 3.7), but some regular Python users are still using Python 3.5.
