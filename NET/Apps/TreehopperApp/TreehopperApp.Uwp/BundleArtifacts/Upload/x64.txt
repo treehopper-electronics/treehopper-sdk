@@ -1,2 +1,2 @@
-MainPackage=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\x64\Release\Upload\TreehopperApp.Uwp_1.11.1.0_x64.appx
-SymbolPackage=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\x64\Release\Upload\TreehopperApp.Uwp_1.11.1.0\TreehopperApp.Uwp_1.11.1.0_x64.appxsym
+MainPackage=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\x64\Release\Upload\TreehopperApp.Uwp_1.11.4.0_x64.appx
+SymbolPackage=F:\Git\treehopper-sdk\NET\Apps\TreehopperApp\TreehopperApp.Uwp\bin\x64\Release\Upload\TreehopperApp.Uwp_1.11.4.0\TreehopperApp.Uwp_1.11.4.0_x64.appxsym
