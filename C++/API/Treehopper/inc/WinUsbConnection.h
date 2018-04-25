@@ -14,7 +14,7 @@ namespace Treehopper
 	class TREEHOPPER_API  WinUsbConnection : public UsbConnection
 	{
 	public:
-		WinUsbConnection(wstring devicePath);
+		WinUsbConnection(wstring devicePath, wstring friendlyName, wstring serialNumber, int rev);
 		~WinUsbConnection();
 		bool open();
 		void close();
@@ -25,6 +25,7 @@ namespace Treehopper
 		wstring devicePath();
 		bool receivePinReportPacket(uint8_t* data);
 		bool receiveDataPeripheralChannel(uint8_t* data, size_t len);
+		static void debugPrintLastError();
 	private:
 		typedef struct _DEVICE_DATA {
 

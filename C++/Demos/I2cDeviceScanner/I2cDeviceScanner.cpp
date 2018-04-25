@@ -5,6 +5,9 @@
 #include "I2cTransferException.h"
 #include <iostream>
 #include "Settings.h"
+#include <vector>
+#include <stdint.h>
+
 using namespace std;
 using namespace Treehopper;
 
@@ -18,8 +21,7 @@ int main()
 		cout << "0x" << std::hex << i << ": ";
 		for (int j = 0; j < 3; j++)	{
 			try {
-				uint8_t sendData = 0;
-				board.i2c.sendReceive((uint8_t)i, &sendData, 1, NULL, 0);
+				board.i2c.sendReceive((uint8_t)i, std::vector<uint8_t>(1), 0);
 				cout << "Device found!";
 				break;
 			} catch (...) {

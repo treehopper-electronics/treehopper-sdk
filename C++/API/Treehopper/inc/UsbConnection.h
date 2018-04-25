@@ -24,6 +24,7 @@ namespace Treehopper
 		wstring _serialNumber;
 		wstring _name;
 		wstring _devicePath;
+		int _rev;
 		uint8_t pinReportEndpoint = 0x81;
 		uint8_t peripheralResponseEndpoint = 0x82;
 		uint8_t pinConfigEndpoint = 0x01;

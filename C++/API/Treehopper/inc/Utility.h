@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "Treehopper.h"
 #include <stdexcept>
 
@@ -17,5 +18,6 @@ namespace Treehopper
 		}
 		static bool closeTo(double a, double b, double error = 0.001);
 		static bool isBigEndian();
+		static int nthOccurrence(const std::wstring& str, const std::wstring& findMe, int nth);
 	};
 }

@@ -6,23 +6,14 @@ using namespace std;
 
 namespace Treehopper 
 {
-	void DebugPrintLastError();
+	void debugPrintLastError();
 
-	WinUsbConnection::WinUsbConnection(wstring devPath)
+	WinUsbConnection::WinUsbConnection(wstring devicePath, wstring friendlyName, wstring serialNumber, int rev)
 	{
-		_devicePath = wstring(devPath);
-		OutputDebugString(L"Adding board: ");
-		OutputDebugString(_devicePath.c_str());
-		OutputDebugString(L"\n");
-		open();
-
-		// Fill the "name" property from the descriptor
-		wchar_t buffer[64];
-		ULONG transfered;
-		WinUsb_GetDescriptor(deviceData.WinusbHandle, 0x03, 0x02, 0x0409, (PUCHAR)buffer, 64, &transfered); 	// The 0x02-index 0x03 (string) descriptor stores the name
-		_name.assign(&buffer[1], transfered / 2 - 1);
-
-		close();
+		_devicePath = devicePath;
+		_serialNumber = serialNumber;
+		_name = friendlyName;
+		_rev = rev;
 	}
 
 	WinUsbConnection::~WinUsbConnection()
@@ -41,13 +32,13 @@ namespace Treehopper
 
 		if (deviceData.DeviceHandle == INVALID_HANDLE_VALUE)
 		{
-			DebugPrintLastError();
+			debugPrintLastError();
 			return false;
 		}
 
 		if (WinUsb_Initialize(deviceData.DeviceHandle, &deviceData.WinusbHandle) == FALSE)
 		{
-			DebugPrintLastError();
+			debugPrintLastError();
 			return false;
 		}
 
@@ -121,7 +112,7 @@ namespace Treehopper
 		return false;
 	}
 
-	void DebugPrintLastError()
+	void WinUsbConnection::debugPrintLastError()
 	{
 		wchar_t buf[256];
 		FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
