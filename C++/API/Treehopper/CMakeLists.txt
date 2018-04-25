@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(Treehopper)
 
 add_definitions(-DTREEHOPPER_EXPORTS)
+add_definitions(-DUNICODE)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -37,3 +38,8 @@ elseif(UNIX)
 elseif(WIN32)
     target_link_libraries(Treehopper winusb setupapi)
 endif(APPLE)
+
+install(TARGETS Treehopper
+    RUNTIME DESTINATION bin
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib)
