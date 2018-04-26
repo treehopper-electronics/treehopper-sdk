@@ -183,7 +183,7 @@ namespace Treehopper
     
     wstring MacUsbConnection::devicePath()
     {
-        return wstring();
+		return _devicePath;
     }
     
     bool MacUsbConnection::receivePinReportPacket(uint8_t* data)

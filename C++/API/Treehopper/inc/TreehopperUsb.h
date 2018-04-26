@@ -89,6 +89,7 @@ namespace Treehopper
 		void pinStateListener();
 		uint8_t buffer[41];
 		bool _led;
+		bool _isDestroyed = false;
 	protected:
 		void sendPinConfigPacket(uint8_t* data, size_t len);
 		void sendPeripheralConfigPacket(uint8_t* data, size_t len);

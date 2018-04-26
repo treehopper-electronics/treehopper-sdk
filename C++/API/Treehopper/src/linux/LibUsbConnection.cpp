@@ -48,15 +48,15 @@ namespace Treehopper {
     }
 
     wstring LibUsbConnection::devicePath() {
-
+		return _devicePath;
     }
 
     wstring LibUsbConnection::name() {
-
+		return _name;
     }
 
     std::wstring LibUsbConnection::serialNumber() {
-
+		return _serialNumber;
     }
 
     bool LibUsbConnection::receiveDataPeripheralChannel(uint8_t *data, size_t len) {

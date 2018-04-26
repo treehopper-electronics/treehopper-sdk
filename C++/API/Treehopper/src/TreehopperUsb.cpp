@@ -19,8 +19,13 @@ namespace Treehopper
 
 	TreehopperUsb::~TreehopperUsb()
 	{
+		if (_isDestroyed)
+			return;
+
+		cout << "Destructor" << endl;
         disconnect();
-        delete &connection;
+        //delete &connection;
+		_isDestroyed = true;
 	}
 
 	bool TreehopperUsb::connect()

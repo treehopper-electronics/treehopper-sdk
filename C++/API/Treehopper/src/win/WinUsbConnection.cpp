@@ -18,6 +18,7 @@ namespace Treehopper
 
 	WinUsbConnection::~WinUsbConnection()
 	{
+		OutputDebugString(L"Connection destroyed\r\n");
 	}
 
 	bool WinUsbConnection::open()
@@ -44,7 +45,7 @@ namespace Treehopper
 
 		deviceData.HandlesOpen = true;
 
-		OutputDebugString(L"Device Opened");
+		OutputDebugString(L"Connection Opened\r\n");
 
 		return true;
 	}
@@ -57,11 +58,14 @@ namespace Treehopper
 		WinUsb_Free(deviceData.WinusbHandle);
 		CloseHandle(deviceData.DeviceHandle);
 		deviceData.HandlesOpen = false;
-		OutputDebugString(L"Device Closed");
+		OutputDebugString(L"Connection Closed\r\n");
 	}
 
 	void WinUsbConnection::sendDataPinConfigChannel(uint8_t* data, size_t len)
 	{
+		if (!deviceData.HandlesOpen)
+			return;
+
 		ULONG sent = 0;
 		WinUsb_WritePipe(deviceData.WinusbHandle, pinConfigEndpoint, data, len, &sent, 0);
 		if (sent != len)
@@ -70,6 +74,9 @@ namespace Treehopper
 
 	void WinUsbConnection::sendDataPeripheralChannel(uint8_t* data, size_t len)
 	{
+		if (!deviceData.HandlesOpen)
+			return;
+
 		ULONG sent = 0;
 		WinUsb_WritePipe(deviceData.WinusbHandle, peripheralConfigEndpoint, data, len, &sent, 0);
 		if (sent != len)
@@ -78,10 +85,7 @@ namespace Treehopper
 
 	wstring WinUsbConnection::serialNumber()
 	{
-		int offset = 26;
-		wstring result = _devicePath.substr(offset, _devicePath.length() - offset);
-		offset = result.find('#', 0);
-		return result.substr(0, offset);
+		return _serialNumber;
 	}
 
 	wstring WinUsbConnection::name()
@@ -96,6 +100,9 @@ namespace Treehopper
 
 	bool WinUsbConnection::receivePinReportPacket(uint8_t* data)
 	{
+		if (!deviceData.HandlesOpen)
+			return false;
+
 		ULONG transferred;
 		WinUsb_ReadPipe(deviceData.WinusbHandle, pinReportEndpoint, data, 64, &transferred, 0);
 		if (transferred > 0) return true;
@@ -105,6 +112,9 @@ namespace Treehopper
 
 	bool WinUsbConnection::receiveDataPeripheralChannel(uint8_t * data, size_t len)
 	{
+		if (!deviceData.HandlesOpen)
+			return false;
+
 		ULONG transferred;
 		WinUsb_ReadPipe(deviceData.WinusbHandle, peripheralResponseEndpoint, data, len, &transferred, 0);
 		if (transferred > 0) return true;
