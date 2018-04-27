@@ -12,4 +12,4 @@ set(SOURCE_FILES
 
 add_executable(Sandbox ${SOURCE_FILES})
 
-target_link_libraries(Sandbox Treehopper TreehopperLibraries)
+target_link_libraries(Sandbox treehopper treehopperLibraries)

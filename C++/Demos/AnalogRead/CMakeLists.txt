@@ -11,4 +11,4 @@ set(SOURCE_FILES
 
 add_executable(AnalogRead ${SOURCE_FILES})
 
-target_link_libraries(AnalogRead Treehopper)
+target_link_libraries(AnalogRead treehopper)

@@ -11,4 +11,4 @@ set(SOURCE_FILES
 
 add_executable(Pwm ${SOURCE_FILES})
 
-target_link_libraries(Pwm Treehopper)
+target_link_libraries(Pwm treehopper)

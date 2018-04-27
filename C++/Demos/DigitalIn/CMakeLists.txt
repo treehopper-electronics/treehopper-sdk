@@ -12,4 +12,4 @@ set(SOURCE_FILES
 
 add_executable(DigitalIn ${SOURCE_FILES})
 
-target_link_libraries(DigitalIn Treehopper)
+target_link_libraries(DigitalIn treehopper)

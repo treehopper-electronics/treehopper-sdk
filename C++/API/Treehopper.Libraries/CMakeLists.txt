@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-project(TreehopperLibraries)
+project(treehopperLibraries)
 
 add_definitions(-DTREEHOPPERLIBRARIES_EXPORTS)
 add_definitions(-DUNICODE)
@@ -11,10 +11,10 @@ include_directories(../Treehopper/inc)
 
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
-add_library(TreehopperLibraries SHARED ${SOURCE_FILES})
-target_link_libraries(TreehopperLibraries Treehopper)
+add_library(treehopperLibraries SHARED ${SOURCE_FILES})
+target_link_libraries(treehopperLibraries treehopper)
 
-install(TARGETS TreehopperLibraries
+install(TARGETS treehopperLibraries
     RUNTIME DESTINATION bin
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib)

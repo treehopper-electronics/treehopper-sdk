@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-project(Treehopper)
+project(treehopper)
 
 add_definitions(-DTREEHOPPER_EXPORTS)
 add_definitions(-DUNICODE)
@@ -27,19 +27,23 @@ set(SOURCE_FILES ${COMMON_SRC} ${PLATFORM_SRC})
 
 include_directories(inc)
 
-add_library(Treehopper SHARED ${SOURCE_FILES})
+add_library(treehopper SHARED ${SOURCE_FILES})
+
+target_include_directories(treehopper INTERFACE $<INSTALL_INTERFACE:include>)
 
 if(APPLE)
     find_library(CORE_FOUNDATION CoreFoundation)
     find_library(IOKIT IOKit)
-    target_link_libraries(Treehopper pthread ${CORE_FOUNDATION} ${IOKIT})
+    target_link_libraries(treehopper pthread ${CORE_FOUNDATION} ${IOKIT})
 elseif(UNIX)
-    target_link_libraries(Treehopper usb-1.0 pthread)
+    target_link_libraries(treehopper usb-1.0 pthread)
 elseif(WIN32)
-    target_link_libraries(Treehopper winusb setupapi)
+    target_link_libraries(treehopper winusb setupapi)
 endif(APPLE)
 
-install(TARGETS Treehopper
+install(TARGETS treehopper EXPORT treehopperConfig
     RUNTIME DESTINATION bin
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib)
+
+install(EXPORT treehopperConfig DESTINATION share/treehopper)

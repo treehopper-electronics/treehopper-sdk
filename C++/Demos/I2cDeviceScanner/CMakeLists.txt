@@ -11,4 +11,4 @@ set(SOURCE_FILES
 
 add_executable(I2cDeviceScanner ${SOURCE_FILES})
 
-target_link_libraries(I2cDeviceScanner Treehopper)
+target_link_libraries(I2cDeviceScanner treehopper)

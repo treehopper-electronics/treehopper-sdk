@@ -12,4 +12,4 @@ set(SOURCE_FILES
 
 add_executable(Blink ${SOURCE_FILES})
 
-target_link_libraries(Blink Treehopper)
+target_link_libraries(Blink treehopper)

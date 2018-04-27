@@ -13,4 +13,4 @@ set(SOURCE_FILES
 
 add_executable(ImuDemo ${SOURCE_FILES})
 
-target_link_libraries(ImuDemo Treehopper TreehopperLibraries)
+target_link_libraries(ImuDemo treehopper treehopperLibraries)
