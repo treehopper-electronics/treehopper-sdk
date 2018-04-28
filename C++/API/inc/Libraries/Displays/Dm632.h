@@ -2,14 +2,14 @@
 
 #include "Libraries/Treehopper.Libraries.h"
 #include "Libraries/Displays/LedDriver.h"
-#include "Libraries/Interface/PortExpander/ChainableShiftRegisterOutput.h"
+#include "Libraries/IO/PortExpander/ChainableShiftRegisterOutput.h"
 #include <bitset>
 
 namespace Treehopper {
     namespace Libraries {
         namespace Displays {
 
-            using namespace Treehopper::Libraries::Interface::PortExpander;
+            using namespace Treehopper::Libraries::IO::PortExpander;
 
             /** Library for the SiTI DM632, DM633, and DM634 16-channel, 16-bit PWM-capable shift-register-type LED driver */
             class LIBRARIES_API Dm632 : public ChainableShiftRegisterOutput, public LedDriver {

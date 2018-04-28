@@ -1,9 +1,9 @@
 #include <cstring>
-#include "Libraries/Interface/PortExpander/ChainableShiftRegisterOutput.h"
+#include "Libraries/IO/PortExpander/ChainableShiftRegisterOutput.h"
 
 namespace Treehopper {
     namespace Libraries {
-        namespace Interface {
+        namespace IO {
             namespace PortExpander {
                 ChainableShiftRegisterOutput::ChainableShiftRegisterOutput(Spi &spiModule, SpiChipSelectPin *latchPin,
                                                                            int numBytes, double speedMhz, SpiMode mode,

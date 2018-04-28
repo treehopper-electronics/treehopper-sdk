@@ -2,7 +2,7 @@
 
 #include "Libraries/Treehopper.Libraries.h"
 #include "Libraries/Displays/Led.h"
-#include "Libraries/Interface/Flushable.h"
+#include "Libraries/IO/Flushable.h"
 #include <vector>
 
 namespace Treehopper {
@@ -10,7 +10,7 @@ namespace Treehopper {
         namespace Displays {
 
             using namespace std;
-            using namespace Treehopper::Libraries::Interface;
+            using namespace Treehopper::Libraries::IO;
 
             /// <summary>
             /// Base class that all LED drivers inherit from.

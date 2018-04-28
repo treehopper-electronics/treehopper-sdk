@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Libraries/Treehopper.Libraries.h"
-#include "Libraries/Interface/Flushable.h"
+#include "Libraries/IO/Flushable.h"
 #include "Spi.h"
 #include "SpiDevice.h"
 #include <vector>
 
 namespace Treehopper {
     namespace Libraries {
-        namespace Interface {
+        namespace IO {
             namespace PortExpander {
                 /// <summary>
                 /// Any shift-register-like device that can be daisy-chained onto other shift registers.

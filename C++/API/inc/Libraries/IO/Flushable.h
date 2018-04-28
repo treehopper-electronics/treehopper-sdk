@@ -4,7 +4,7 @@
 
 namespace Treehopper {
     namespace Libraries {
-        namespace Interface {
+        namespace IO {
             /** Represents any object that has a flushable interface */
             class LIBRARIES_API Flushable {
             public:
