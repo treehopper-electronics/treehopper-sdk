@@ -1,9 +1,9 @@
 #pragma once
 
 #include <tuple>
-#include <Types.h>
-#include "Treehopper.Libraries.h"
-#include "Pollable.h"
+#include <Libraries/Types.h>
+#include "Libraries/Treehopper.Libraries.h"
+#include "Libraries/Pollable.h"
 
 namespace Treehopper {
     namespace Libraries {

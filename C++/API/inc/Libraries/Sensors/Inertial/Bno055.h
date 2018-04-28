@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SMBusDevice.h>
-#include <Sensors/Temperature/TemperatureSensor.h>
-#include <Sensors/Magnetic/Magnetometer.h>
+#include <Libraries/Sensors/Temperature/TemperatureSensor.h>
+#include <Libraries/Sensors/Magnetic/Magnetometer.h>
 #include "Accelerometer.h"
 #include "Bno055Registers.h"
 #include "Gyroscope.h"

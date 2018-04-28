@@ -1,7 +1,7 @@
 #pragma once
 
 #include "I2c.h"
-#include "Treehopper.Libraries.h"
+#include "Libraries/Treehopper.Libraries.h"
 #include "SMBusDevice.h"
 
 namespace Treehopper {

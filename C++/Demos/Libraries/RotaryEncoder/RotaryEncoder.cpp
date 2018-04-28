@@ -1,6 +1,6 @@
 #include <iostream>
 #include "ConnectionService.h"
-#include "Input/RotaryEncoder.h"
+#include "Libraries/Input/RotaryEncoder.h"
 #include <chrono>
 
 using namespace Treehopper;

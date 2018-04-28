@@ -1,7 +1,7 @@
 #pragma once
 
 #include <I2c.h>
-#include "Treehopper.Libraries.h"
+#include "Libraries/Treehopper.Libraries.h"
 #include "Magnetometer.h"
 #include "Ak8975Registers.h"
 

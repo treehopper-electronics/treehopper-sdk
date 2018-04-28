@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
-#include "Sensors/Pressure/PressureSensor.h"
-#include "Sensors/Temperature/TemperatureSensor.h"
-#include "Sensors/Pressure/Bmp280Registers.h"
+#include "Libraries/Treehopper.Libraries.h"
+#include "Libraries/Sensors/Pressure/PressureSensor.h"
+#include "Libraries/Sensors/Temperature/TemperatureSensor.h"
+#include "Libraries/Sensors/Pressure/Bmp280Registers.h"
 #include "I2c.h"
 #include <memory>
 

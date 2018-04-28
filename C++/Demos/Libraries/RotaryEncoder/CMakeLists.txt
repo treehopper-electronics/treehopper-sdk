@@ -4,8 +4,7 @@ project(RotaryEncoder)
 
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(../../../API/Treehopper/inc)
-include_directories(../../../API/Treehopper.Libraries/inc)
+include_directories(../../../API/inc)
 
 set(SOURCE_FILES
         RotaryEncoder.cpp
@@ -13,4 +12,4 @@ set(SOURCE_FILES
 
 add_executable(RotaryEncoder ${SOURCE_FILES})
 
-target_link_libraries(RotaryEncoder treehopper treehopperLibraries)
+target_link_libraries(RotaryEncoder treehopper)

@@ -1,5 +1,5 @@
 #include <cstring>
-#include "Interface/PortExpander/ChainableShiftRegisterOutput.h"
+#include "Libraries/Interface/PortExpander/ChainableShiftRegisterOutput.h"
 
 namespace Treehopper {
     namespace Libraries {

@@ -1,6 +1,6 @@
 #pragma once
 #include "SMBusDevice.h"
-#include "Treehopper.Libraries.h"
+#include "Libraries/Treehopper.Libraries.h"
 
 using namespace Treehopper::Libraries;
 

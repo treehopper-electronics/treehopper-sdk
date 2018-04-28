@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
+#include "Libraries/Treehopper.Libraries.h"
 #include "Mpu6050Registers.h"
 #include "Accelerometer.h"
 #include "Gyroscope.h"
 #include "SMBusDevice.h"
-#include "Sensors/Temperature/TemperatureSensor.h"
+#include "Libraries/Sensors/Temperature/TemperatureSensor.h"
 
 using namespace Treehopper::Libraries::Sensors::Temperature;
 

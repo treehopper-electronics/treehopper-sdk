@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Sensors/ProximitySensor.h>
+#include <Libraries/Sensors/ProximitySensor.h>
 #include <I2c.h>
 #include <SMBusDevice.h>
-#include "Treehopper.Libraries.h"
+#include "Libraries/Treehopper.Libraries.h"
 #include "AmbientLightSensor.h"
 #include "Vcnl4010Registers.h"
 

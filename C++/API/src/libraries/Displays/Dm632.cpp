@@ -1,5 +1,5 @@
-#include "Displays/Dm632.h"
-#include "Displays/Utility.h"
+#include "Libraries/Displays/Dm632.h"
+#include "Libraries/Displays/Utility.h"
 
 namespace Treehopper {
     namespace Libraries {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "ConnectionService.h"
-#include "Input/RotaryEncoder.h"
-#include "Sensors/Inertial/Adxl345.h"
+#include "Libraries/Input/RotaryEncoder.h"
+#include "Libraries/Sensors/Inertial/Adxl345.h"
 
 using namespace Treehopper;
 using namespace Treehopper::Libraries::Sensors::Inertial;

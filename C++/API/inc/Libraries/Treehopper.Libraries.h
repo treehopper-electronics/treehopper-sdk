@@ -4,7 +4,7 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // TREEHOPPERLIBRARIES_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
-#ifdef TREEHOPPERLIBRARIES_EXPORTS
+#ifdef TREEHOPPER_EXPORTS
     #ifdef _WIN32
         #define LIBRARIES_API __declspec(dllexport)
     #else

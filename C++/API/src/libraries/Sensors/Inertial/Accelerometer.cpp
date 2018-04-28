@@ -1,4 +1,4 @@
-#include "Sensors/Inertial/Accelerometer.h"
+#include "Libraries/Sensors/Inertial/Accelerometer.h"
 
 namespace Treehopper {
     namespace Libraries {

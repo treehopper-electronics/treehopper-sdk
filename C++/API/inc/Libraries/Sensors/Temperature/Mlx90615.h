@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
+#include "Libraries/Treehopper.Libraries.h"
 #include "TemperatureSensor.h"
 #include "I2c.h"
 #include "SMBusDevice.h"

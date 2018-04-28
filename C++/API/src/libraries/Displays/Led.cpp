@@ -1,6 +1,6 @@
 #include "Utility.h"
-#include "Displays/Led.h"
-#include "Displays/LedDriver.h"
+#include "Libraries/Displays/Led.h"
+#include "Libraries/Displays/LedDriver.h"
 
 namespace Treehopper {
     namespace Libraries {

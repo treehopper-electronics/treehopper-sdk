@@ -1,4 +1,4 @@
-#include "Sensors/Temperature/Mlx90614.h"
+#include "Libraries/Sensors/Temperature/Mlx90614.h"
 
 namespace Treehopper {
     namespace Libraries {

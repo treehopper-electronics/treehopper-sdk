@@ -1,5 +1,5 @@
 #include <thread>
-#include "Sensors/Inertial/Bno055.h"
+#include "Libraries/Sensors/Inertial/Bno055.h"
 
 namespace Treehopper {
     namespace Libraries {

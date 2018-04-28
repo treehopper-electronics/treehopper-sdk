@@ -1,4 +1,4 @@
-#include <Sensors/Humidity/HumiditySensor.h>
+#include <Libraries/Sensors/Humidity/HumiditySensor.h>
 
 namespace Treehopper {
     namespace Libraries {

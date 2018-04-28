@@ -1,4 +1,4 @@
-#include "Sensors/Magnetic/Ak8975.h"
+#include "Libraries/Sensors/Magnetic/Ak8975.h"
 
 namespace Treehopper {
     namespace Libraries {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
-#include "Sensors/Inertial/Mpu6050.h"
-#include "Sensors/Magnetic/Ak8975.h"
+#include "Libraries/Treehopper.Libraries.h"
+#include "Libraries/Sensors/Inertial/Mpu6050.h"
+#include "Libraries/Sensors/Magnetic/Ak8975.h"
 
 using namespace Treehopper::Libraries::Sensors::Magnetic;
 

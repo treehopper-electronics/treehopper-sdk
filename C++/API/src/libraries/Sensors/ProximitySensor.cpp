@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Sensors/ProximitySensor.h>
+#include <Libraries/Sensors/ProximitySensor.h>
 
 using namespace Treehopper::Libraries;
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include "Treehopper/inc/ConnectionService.h"
-#include "Treehopper.Libraries/inc/Sensors/Temperature/Lm75.h"
+#include "Libraries/Sensors/Temperature/Lm75.h"
 
 using namespace Treehopper;
 using namespace Treehopper::Libraries::Sensors::Temperature;

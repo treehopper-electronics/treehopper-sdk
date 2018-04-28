@@ -1,4 +1,4 @@
-#include <Sensors/Inertial/Adxl345.h>
+#include <Libraries/Sensors/Inertial/Adxl345.h>
 
 namespace Treehopper {
     namespace Libraries {

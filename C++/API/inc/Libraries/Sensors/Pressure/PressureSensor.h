@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
-#include "Pollable.h"
+#include "Libraries/Treehopper.Libraries.h"
+#include "Libraries/Pollable.h"
 
 using namespace Treehopper::Libraries;
 

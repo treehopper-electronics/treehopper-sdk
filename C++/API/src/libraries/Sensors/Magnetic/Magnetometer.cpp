@@ -1,4 +1,4 @@
-#include "Sensors/Magnetic/Magnetometer.h"
+#include "Libraries/Sensors/Magnetic/Magnetometer.h"
 
 namespace Treehopper {
     namespace Libraries {

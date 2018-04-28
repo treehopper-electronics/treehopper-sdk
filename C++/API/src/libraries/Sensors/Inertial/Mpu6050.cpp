@@ -1,5 +1,5 @@
 #include "I2c.h"
-#include "Sensors/Inertial/Mpu6050.h"
+#include "Libraries/Sensors/Inertial/Mpu6050.h"
 
 namespace Treehopper {
     namespace Libraries {

@@ -1,5 +1,5 @@
 #include <SMBusDevice.h>
-#include "Sensors/Pressure/Bmp280.h"
+#include "Libraries/Sensors/Pressure/Bmp280.h"
 #include <cmath>
 
 namespace Treehopper {

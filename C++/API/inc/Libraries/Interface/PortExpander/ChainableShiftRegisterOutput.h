@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
-#include "Interface/Flushable.h"
+#include "Libraries/Treehopper.Libraries.h"
+#include "Libraries/Interface/Flushable.h"
 #include "Spi.h"
 #include "SpiDevice.h"
 #include <vector>

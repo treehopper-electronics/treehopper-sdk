@@ -1,8 +1,8 @@
 #pragma once
 
 #include <HardwareI2c.h>
-#include <Sensors/Humidity/HumiditySensor.h>
-#include "Treehopper.Libraries.h"
+#include <Libraries/Sensors/Humidity/HumiditySensor.h>
+#include "Libraries/Treehopper.Libraries.h"
 #include "Bmp280.h"
 
 using namespace Treehopper::Libraries::Sensors::Humidity;

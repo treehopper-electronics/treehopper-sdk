@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Treehopper.Libraries.h"
-#include "Sensors/Inertial/Lis3dhRegisters.h"
+#include "Libraries/Treehopper.Libraries.h"
+#include "Libraries/Sensors/Inertial/Lis3dhRegisters.h"
 #include "Accelerometer.h"
 
 namespace Treehopper {

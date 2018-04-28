@@ -1,4 +1,4 @@
-#include "Sensors/Inertial/Gyroscope.h"
+#include "Libraries/Sensors/Inertial/Gyroscope.h"
 
 namespace Treehopper {
     namespace Libraries {

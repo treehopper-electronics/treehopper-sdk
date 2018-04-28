@@ -1,4 +1,4 @@
-#include "Sensors/Inertial/Lis3dh.h"
+#include "Libraries/Sensors/Inertial/Lis3dh.h"
 
 namespace Treehopper {
     namespace Libraries {

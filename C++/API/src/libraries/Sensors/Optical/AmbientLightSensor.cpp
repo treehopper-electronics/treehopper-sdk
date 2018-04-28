@@ -1,4 +1,4 @@
-#include <Sensors/Optical/AmbientLightSensor.h>
+#include <Libraries/Sensors/Optical/AmbientLightSensor.h>
 
 namespace Treehopper {
     namespace Libraries {
