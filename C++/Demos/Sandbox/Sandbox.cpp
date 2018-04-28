@@ -1,6 +1,6 @@
 #include <iostream>
 #include "ConnectionService.h"
-#include "Sensors/Pressure/Bmp280.h"
+#include "Libraries/Sensors/Pressure/Bmp280.h"
 #include <chrono>
 #include <thread>
 

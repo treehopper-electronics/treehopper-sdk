@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace Treehopper;
+using namespace std::chrono;
 
 int main()
 {
@@ -22,7 +23,7 @@ int main()
 		board.led(!board.led());
 		//board.pins[1].toggleOutput();
         cout << board.pins[2].adcValue() << endl;
-        this_thread::sleep_for(chrono::milliseconds(100));
+        this_thread::sleep_for(milliseconds(100));
 	}
 	board.disconnect();
 

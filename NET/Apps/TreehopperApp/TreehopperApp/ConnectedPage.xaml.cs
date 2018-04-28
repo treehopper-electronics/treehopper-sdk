@@ -26,7 +26,8 @@ namespace TreehopperApp
             NavigationPage.SetHasBackButton(this, false);
 
             this.BarBackgroundColor = Color.FromRgb(0x8b, 0xc3, 0x4a);
-            this.BarTextColor = Color.White;
+            if(Device.RuntimePlatform != Device.GTK)
+                this.BarTextColor = Color.White;
 
             InitializeComponent();
         }

@@ -13,4 +13,4 @@ set(SOURCE_FILES
 
 add_executable(RotaryEncoder ${SOURCE_FILES})
 
-target_link_libraries(RotaryEncoder Treehopper TreehopperLibraries)
+target_link_libraries(RotaryEncoder treehopper treehopperLibraries)
