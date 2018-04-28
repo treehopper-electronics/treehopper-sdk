@@ -30,35 +30,74 @@ Finally, integrate vcpkg into Visual Studio:
 
 ### Installing %Treehopper's C++ API
 
-Treehopper and Treehopper.Libraries are distributed in a single `treehopper` package that you can install:
+Finally, install the `treehopper` package using `vcpkg`:
 
     $ ./vcpkg install treehopper
 
 ## Manually using CMake
 
-If you do not wish to use `vcpkg`, you can manually clone %Treehopper's repo, open the C++ folder in CMake, generate an XCode or Makefile-based project, and build it. This will result in a `.DyLib` and `.a` file for use in your projects.
+If you do not wish to use `vcpkg`, you can manually clone %Treehopper's repo, open the C++ folder in CMake, generate an XCode or Makefile-based project, and build it.
 
 # Blinky
 
-Create a new Visual C++ Windows Console application in Visual Studio 2017. Replace the contents of the main file with the following code:
+Once you have the treehopper package installed, you're ready to build your first project.
 
-    #include "Treehopper\ConnectionService.h"
+Create a `blinky` directory for your new project. Inside, create a `main.c` file:
 
-    using namespace Treehopper;
+```{.c}
+// main.c
+#include <Treehopper/ConnectionService.h>
+#include <chrono>
 
-    int main()
+using namespace Treehopper;
+using namespace std::chrono;
+
+int main()
+{
+    auto board = ConnectionService::instance().getFirstDevice();
+    board.connect();
+
+    for (int i = 0; i<20; i++)
     {
-        auto board = ConnectionService::instance().getFirstDevice();
-        board.connect();
-
-        for (int i = 0; i<20; i++)
-        {
-            board.led(!board.led());
-            this_thread::sleep_for(chrono::milliseconds(100));
-        }
-
-        board.disconnect();
-        return 0;
+        board.led(!board.led());
+        this_thread::sleep_for(milliseconds(100));
     }
+
+    board.disconnect();
+    return 0;
+}
+```
+
+Also, create a `CMakeLists.txt` file inside the directory:
+
+    # CMakeLists.txt
+    cmake_minimum_required(VERSION 3.0)
+
+    set(CMAKE_CXX_STANDARD 11)
+
+    project(blinky)
+
+    find_package(treehopper REQUIRED)
+
+    add_executable(main main.cpp)
+    target_link_libraries(main treehopper)
+
+Now, run `cmake`. If you're using Vcpkg, make sure to append the toolchain file:
+
+    $ cmake .. "-DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake"
+
+This will create a `Makefile` in the project directory. You can simply
+
+    $ make
+
+Or, CMake can build it for you, too:
+
+    $ cmake --build .
+
+In this case, CMake will refresh the `CMakeLists.txt` file in case you have committed updates.
+
+Now that your program has been built, you can execute it:
+
+    $ ./main
 
 This code will get a reference to the first board found connected to the system, connect to it, and blink the LED 20 times before disconnecting and exiting.

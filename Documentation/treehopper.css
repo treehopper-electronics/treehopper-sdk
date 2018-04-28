@@ -31,12 +31,12 @@ h2 {
 	margin-top:30px;
 }
 
-body, table, div, p, dl {
-	font: 400 14px/22px;
+p, dl, ul {
+	font: 400 14px/22px "Roboto";
 }
 
 p.reference, p.definition {
-	font: 400 14px/22px;
+	font: 400 14px/22px "Roboto";
 }
 
 /* @group Heading Levels */
@@ -49,7 +49,7 @@ h1.groupheader {
 	font-size: 52px;
 	font-weight: lighter;
 	text-transform: uppercase;
-	margin: 10px 0 0 12px;
+	margin: 25px 0 0 12px;
 }
 
 h2.groupheader {
@@ -77,7 +77,6 @@ h1.glow, h2.glow, h3.glow, h4.glow, h5.glow, h6.glow {
 
 dt {
 	font-weight: bold;
-	margin-left:10px;
 }
 
 div.multicol {
@@ -191,31 +190,35 @@ dl.el {
 	margin-left: -1cm;
 }
 
+code {
+	font-family: Consolas, monospace, fixed;
+	font-weight: bold;
+}
+
 pre.fragment {
-        border: 1px solid #333;
+        border: 3px solid #eee;
         background-color: #f7f7f7;
         padding: 4px 6px;
         margin: 4px 8px 4px 2px;
         overflow: auto;
         word-wrap: break-word;
-        font-size:  9pt;
-        line-height: 125%;
-        font-family: monospace, fixed;
-        font-size: 105%;
+	line-height: 125%;
+        font-family: Consolas, monospace, fixed;
+        font-size: 12px;
 }
 
 div.fragment {
         padding: 10px;
         margin: 4px 8px 4px 2px;
 	background-color: #f7f7f7;
-	border: 1px solid #aaa;
+	border: 3px solid #eee;
+	font-size: 12px;
 }
 
 div.line {
-	font-family: monospace, fixed;
-        font-size: 13px;
+	font-family: Consolas, monospace, fixed;
 	min-height: 13px;
-	line-height: 1.0;
+	line-height: 1.2;
 	text-wrap: unrestricted;
 	white-space: -moz-pre-wrap; /* Moz */
 	white-space: -pre-wrap;     /* Opera 4-6 */
@@ -1526,6 +1529,12 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter {
 
 
 /* tabs.css overrides */
+@media (min-width: 768px) {
+	.sm-dox ul {
+		border: none;
+		padding: 0;
+	}
+}
 .sm-dox a:hover {
 	background: black;
 	background-image: none;
@@ -1535,21 +1544,23 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter {
 	background: #8bc34a;
 }
 
-.sm-dox a, .sm-dox a.highlighted, .sm-dox a:focus, .sm-dox a:hover {
+.sm-dox a, .sm-dox a:focus, .sm-dox a:hover {
 	text-shadow: none;
 	color: #ffffff;
 	font-family: "Roboto Slab", sans-serif;
 	font-weight: normal;
 	font-size: 18px;
+	background-image: none;
 }
 
 .sm-dox ul a, .sm-dox ul a:focus, .sm-dox ul a:hover, .sm-dox ul a:active {
 	background: #333;
+	color: #fff;
 }
 
 /* navtree.css overrides */
 .ui-resizable-e {
-	background: #ccc;
+	background: #eee;
 }
 
 #nav-tree {
@@ -1566,6 +1577,7 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter {
 }
 
 /* @end */
+
 
 @media only screen and (max-width: 700px) {
 	#projectname {

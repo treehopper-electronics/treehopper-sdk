@@ -18,7 +18,7 @@ To keep GUI applications running smoothly without the developer having to worry 
 Each %Treehopper board has a serial number and a name. Both of these properties can be set by the user. Note that these properties correspond to the ProductName and SerialNumber that are part of the USB specification, which means they'll be visible across your operating system.
 
 ## Board Discovery (ConnectionService)
-All %Treehopper connectivity APIs provide a static instance of the Treehopper.ConnectionService class that can be used to retrieve instances to attached %Treehopper boards.
+All %Treehopper C# connectivity APIs provide a static instance of the Treehopper.ConnectionService class that can be used to retrieve instances to attached %Treehopper boards.
 
 You can use multiple %Treehopper boards simultaneously from a single application. Access these boards from the Treehopper.ConnectionService.Instance.Boards collection.
 
@@ -28,4 +28,4 @@ Only one application can connect to a %Treehopper board at a time. This has some
  - <b>When possible, Treehopper.ConnectionService will query the OS --- not the device directly --- about its name and serial number</b>. This allows an application to scan all the boards attached to a computer; even if the boards are in use by other applications. Unfortunately, this is not currently supported in Linux.
 
  # Xamarin.Forms Support
- %Treehopper's user-facing platform-specific calls reside in Treehopper.ConnectionService --- these live in different platform-specific assemblies. To make Xamarin.Forms and other code-sharing projects effortless, all ConnectionService classes live in the same %Treehopper namespace, so they overlay seamlessly.
+ %Treehopper has good support for Xamarin.Forms and any other cross-platform system that uses shared projects. While the ConnectionService class is platform-specific, each platform's implementation lives in the same %Treehopper namespace, so they overlay seamlessly in code-sharing projects.

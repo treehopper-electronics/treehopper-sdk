@@ -44,24 +44,28 @@ If you do not wish to use `vcpkg`, you can manually clone %Treehopper's repo, op
 
 Create a new Visual C++ Windows Console application in Visual Studio 2017. Replace the contents of the main file with the following code:
 
-    #include "stdafx.h"
-    #include "Treehopper\ConnectionService.h"
+```{.c}
+// main.c
+#include <Treehopper/ConnectionService.h>
+#include <chrono>
 
-    using namespace Treehopper;
+using namespace Treehopper;
+using namespace std::chrono;
 
-    int main()
+int main()
+{
+    auto board = ConnectionService::instance().getFirstDevice();
+    board.connect();
+
+    for (int i = 0; i<20; i++)
     {
-        auto board = ConnectionService::instance().getFirstDevice();
-        board.connect();
-
-        for (int i = 0; i<20; i++)
-        {
-            board.led(!board.led());
-            this_thread::sleep_for(chrono::milliseconds(100));
-        }
-
-        board.disconnect();
-        return 0;
+        board.led(!board.led());
+        this_thread::sleep_for(milliseconds(100));
     }
+
+    board.disconnect();
+    return 0;
+}
+```
 
 This code will get a reference to the first board found connected to the system, connect to it, and blink the LED 20 times before disconnecting and exiting.

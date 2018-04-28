@@ -5,7 +5,7 @@ Many of these classes contain useful code examples and tips on usage.
 
 # Important concepts
 ## Assemblies
-Except for ConnectionService, all these classes live in the %Treehopper.dll assembly (which resides in the Treehopper NuGet package).
+Except for ConnectionService, all these classes live in the %Treehopper.dll assembly (which resides in the %Treehopper NuGet package).
 
 ## Object Construction
 In almost all cases, the entire object tree is built for you. For example, you'll never call
@@ -83,8 +83,6 @@ Accelerometers, gyroscopes, magnetometers, and integrated IMUs
     \class Treehopper.Libraries.Sensors.Magnetic.Hmc5883l
     \class Treehopper.Libraries.Sensors.Magnetic.Ak8975
     \class Treehopper.Libraries.Sensors.Magnetic.Tlv493d
-    \class Treehopper.Libraries.Sensors.Pressure.Bmp280
-    \class Treehopper.Libraries.Sensors.Pressure.Bme280
 @}
 
 \defgroup environmental Environmental Sensors
