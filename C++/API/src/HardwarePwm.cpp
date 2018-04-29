@@ -3,30 +3,27 @@
 #include "HardwarePwmManager.h"
 #include "Pin.h"
 
-namespace Treehopper 
-{
-	HardwarePwm::HardwarePwm(TreehopperUsb& board, int pinNumber) : board(board), pinNumber(pinNumber)
-	{
-	}
+namespace Treehopper {
+    HardwarePwm::HardwarePwm(TreehopperUsb &board, int pinNumber) : board(board), pinNumber(pinNumber) {
+    }
 
-	bool HardwarePwm::enabled() { return _enabled; }
-	void HardwarePwm::enabled(bool value) {
-		if (_enabled == value)
-			return;
+    bool HardwarePwm::enabled() { return _enabled; }
 
-		_enabled = value;
-		if (_enabled)
-			board.pwmManager.start(*this);
-		else
-			board.pwmManager.stop(*this);
-	}
+    void HardwarePwm::enabled(bool value) {
+        if (_enabled == value)
+            return;
 
-	HardwarePwm::~HardwarePwm()
-	{
-	}
+        _enabled = value;
+        if (_enabled)
+            board.pwmManager.start(*this);
+        else
+            board.pwmManager.stop(*this);
+    }
 
-	void HardwarePwm::updateDutyCycle()
-	{
-		board.pwmManager.updateDutyCycle(*this);
-	}
+    HardwarePwm::~HardwarePwm() {
+    }
+
+    void HardwarePwm::updateDutyCycle() {
+        board.pwmManager.updateDutyCycle(*this);
+    }
 }

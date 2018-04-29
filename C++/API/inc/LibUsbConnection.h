@@ -12,17 +12,27 @@
 namespace Treehopper {
     class TREEHOPPER_API LibUsbConnection : public UsbConnection {
     public:
-        LibUsbConnection(libusb_device* device);
+        LibUsbConnection(libusb_device *device);
+
         ~LibUsbConnection();
+
         bool open();
+
         void close();
+
         std::wstring serialNumber();
+
         wstring name();
+
         wstring devicePath();
-        void sendDataPinConfigChannel(uint8_t* data, size_t len);
-        void sendDataPeripheralChannel(uint8_t* data, size_t len);
-        bool receiveDataPeripheralChannel(uint8_t* data, size_t len);
-        bool receivePinReportPacket(uint8_t* data);
+
+        void sendDataPinConfigChannel(uint8_t *data, size_t len);
+
+        void sendDataPeripheralChannel(uint8_t *data, size_t len);
+
+        bool receiveDataPeripheralChannel(uint8_t *data, size_t len);
+
+        bool receivePinReportPacket(uint8_t *data);
 
     protected:
         wstring _serialNumber;
@@ -34,7 +44,7 @@ namespace Treehopper {
         uint8_t pinConfigEndpoint = 0x01;
         uint8_t peripheralConfigEndpoint = 0x02;
 
-        libusb_device* deviceProfile;
+        libusb_device *deviceProfile;
         libusb_device_handle *deviceHandle = NULL;
     };
 

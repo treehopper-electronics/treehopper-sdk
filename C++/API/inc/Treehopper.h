@@ -5,15 +5,15 @@
 // TREEHOPPER_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 #ifdef TREEHOPPER_EXPORTS
-    #ifdef _WIN32
-        #define TREEHOPPER_API __declspec(dllexport)
-    #else
-        #define TREEHOPPER_API __attribute__ ((dllexport))
-    #endif
+#ifdef _WIN32
+#define TREEHOPPER_API __declspec(dllexport)
 #else
-    #ifdef _WIN32
-        #define TREEHOPPER_API __declspec(dllimport)
-    #else
-        #define TREEHOPPER_API __attribute__ ((dllimport))
-    #endif
+#define TREEHOPPER_API __attribute__ ((dllexport))
+#endif
+#else
+#ifdef _WIN32
+#define TREEHOPPER_API __declspec(dllimport)
+#else
+#define TREEHOPPER_API __attribute__ ((dllimport))
+#endif
 #endif

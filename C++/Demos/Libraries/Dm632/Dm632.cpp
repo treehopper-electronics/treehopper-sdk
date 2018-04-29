@@ -1,6 +1,5 @@
-#include "stdafx.h"
 #include <iostream>
-#include "ConnectionService.h"
+#include <ConnectionService.h>
 #include "Libraries/Displays/Dm632.h"
 using namespace Treehopper;
 using namespace Treehopper::Libraries::Displays;

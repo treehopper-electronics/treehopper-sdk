@@ -1,7 +1,9 @@
 #pragma once
+
 #include "Treehopper.h"
 #include "TreehopperUsb.h"
 #include "UsbConnection.h"
+
 #ifdef __APPLE__
 #include <IOKit/IOKitLib.h>
 #include <IOKit/IOTypes.h>
@@ -10,29 +12,28 @@
 #ifdef __linux__
 #include "libusb-1.0/libusb.h"
 #endif
+
 #include <vector>
 
-namespace Treehopper 
-{
-	/** Provides TreehopperUsb discovery and factory duties. */
-	class TREEHOPPER_API ConnectionService
-	{
-	public:
+namespace Treehopper {
+    /** Provides TreehopperUsb discovery and factory duties. */
+    class TREEHOPPER_API ConnectionService {
+    public:
         ConnectionService();
-		~ConnectionService();
 
-		/** Get the ConnectionService instance to use for TreehopperUsb discovery. */
-		static ConnectionService& instance()
-		{
-			static ConnectionService instance;
-			return instance;
-		}
+        ~ConnectionService();
 
-        TreehopperUsb& getFirstDevice();
-        
-		vector<TreehopperUsb> boards;
-	private:
-		void scan();
+        /** Get the ConnectionService instance to use for TreehopperUsb discovery. */
+        static ConnectionService &instance() {
+            static ConnectionService instance;
+            return instance;
+        }
+
+        TreehopperUsb &getFirstDevice();
+
+        vector<TreehopperUsb> boards;
+    private:
+        void scan();
 
 #ifdef __linux__
         libusb_context *context;
@@ -47,6 +48,6 @@ namespace Treehopper
         static std::thread deviceListenerThread;
         static IONotificationPortRef gNotifyPort;
 #endif
-	};
+    };
 }
 

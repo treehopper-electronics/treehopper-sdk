@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.6)
 cmake_policy(SET CMP0015 NEW)
-project(Blink)
+project(Dm632)
 
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(../../API/inc)
+include_directories(../../../API/inc)
 
 set(SOURCE_FILES
-        Blink.cpp
+        Dm632.cpp
         )
 
-add_executable(Blink ${SOURCE_FILES})
+add_executable(Dm632 ${SOURCE_FILES})
 
-target_link_libraries(Blink treehopper)
+target_link_libraries(Dm632 treehopper)

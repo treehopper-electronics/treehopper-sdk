@@ -5,51 +5,47 @@
 #include <vector>
 #include "Event.h"
 
-namespace Treehopper 
-{
-	using namespace std;
+namespace Treehopper {
+    using namespace std;
 
-	class DigitalIn;
+    class DigitalIn;
 
-	struct PinChangedEventArgs
-	{
-	public:
-		bool newValue;
-	};
-	
-	/*!	\brief digital input pin abstract class.
+    struct PinChangedEventArgs {
+    public:
+        bool newValue;
+    };
 
-	This abstract class provides digital input support used by Pin, and can also be extended by GPIO expanders and other peripherals that provide DigitalIn -like functionality.
-	*/
-	class TREEHOPPER_API DigitalIn
-	{
-	public:
-		DigitalIn() :pinChanged(*this) { }
+    /*!	\brief digital input pin abstract class.
 
-		/** Fires whenever the digital input changes. */
-		Event<DigitalIn, PinChangedEventArgs> pinChanged;
+    This abstract class provides digital input support used by Pin, and can also be extended by GPIO expanders and other peripherals that provide DigitalIn -like functionality.
+    */
+    class TREEHOPPER_API DigitalIn {
+    public:
+        DigitalIn() : pinChanged(*this) {}
 
-		/** Make the pin a digital input.
-		*/
-		virtual void makeDigitalInput() = 0;
+        /** Fires whenever the digital input changes. */
+        Event<DigitalIn, PinChangedEventArgs> pinChanged;
 
-		/** Get the digital value
-		*/
-		virtual bool digitalValue()
-		{
-			return _digitalValue;
-		}
-	protected:
-		bool _digitalValue;
+        /** Make the pin a digital input.
+        */
+        virtual void makeDigitalInput() = 0;
 
-		virtual void update(bool newValue)
-		{
-			if (newValue == _digitalValue) return;
+        /** Get the digital value
+        */
+        virtual bool digitalValue() {
+            return _digitalValue;
+        }
 
-			_digitalValue = newValue;
-			PinChangedEventArgs args;
-			args.newValue = newValue;
-			pinChanged.invoke(args);
-		}
-	};
+    protected:
+        bool _digitalValue;
+
+        virtual void update(bool newValue) {
+            if (newValue == _digitalValue) return;
+
+            _digitalValue = newValue;
+            PinChangedEventArgs args;
+            args.newValue = newValue;
+            pinChanged.invoke(args);
+        }
+    };
 }

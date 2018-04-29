@@ -1,7 +1,6 @@
 #include <Libraries/RegisterManager.h>
 #include <Utility.h>
 #include <Libraries/Register.h>
-#include <algorithm>
 
 namespace Treehopper {
     namespace Libraries {

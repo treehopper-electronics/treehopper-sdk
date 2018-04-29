@@ -60,8 +60,7 @@ namespace Treehopper {
 
                     // all these bytes are backwards, so flip them
                     reverse(bytes.begin(), bytes.end());
-                    spiDevice->sendReceive(&bytes[0], bytes.size(), NULL, SpiBurstMode::BurstTx);
-
+                    spiDevice->sendReceive(&bytes[0], bytes.size(), nullptr, SpiBurstMode::BurstTx);
                 }
 
                 void ChainableShiftRegisterOutput::setupSpi(Spi &spiModule, SpiChipSelectPin *latchPin, double speedMhz,

@@ -22,3 +22,5 @@ add_subdirectory(Demos/Sandbox)
 
 add_subdirectory(Demos/Libraries/RotaryEncoder)
 add_subdirectory(Demos/Libraries/ImuDemo)
+add_subdirectory(Demos/Libraries/Dm632)
+
