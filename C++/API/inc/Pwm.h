@@ -8,8 +8,10 @@ namespace Treehopper {
     public:
         virtual ~Pwm() {};
 
+        /** Gets the duty cycle */
         virtual double dutyCycle() { return _dutyCycle; }
 
+        /** Sets the duty cycle */
         virtual void dutyCycle(double value) {
             if (Utility::closeTo(_dutyCycle, value))
                 return;
@@ -22,11 +24,13 @@ namespace Treehopper {
 
         virtual void enabled(bool value) = 0;
 
+        /** Gets the pulse width */
         virtual double pulseWidth() {
             // always calculate from frequency and dc
             return _dutyCycle * 1000000.0 / _frequency;
         }
 
+        /** Sets the pulse width */
         virtual void pulseWidth(double value) {
             if (Utility::closeTo(pulseWidth(), value))
                 return;

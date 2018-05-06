@@ -21,10 +21,10 @@ namespace Treehopper {
     */
     class TREEHOPPER_API DigitalIn {
     public:
-        DigitalIn() : pinChanged(*this) {}
+        DigitalIn() : digitalValueChanged(*this) {}
 
         /** Fires whenever the digital input changes. */
-        Event<DigitalIn, PinChangedEventArgs> pinChanged;
+        Event<DigitalIn, PinChangedEventArgs> digitalValueChanged;
 
         /** Make the pin a digital input.
         */
@@ -45,7 +45,7 @@ namespace Treehopper {
             _digitalValue = newValue;
             PinChangedEventArgs args;
             args.newValue = newValue;
-            pinChanged.invoke(args);
+            digitalValueChanged.invoke(args);
         }
     };
 }

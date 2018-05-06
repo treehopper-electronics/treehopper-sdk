@@ -8,7 +8,14 @@ namespace Treehopper {
 
     class TreehopperUsb;
 
-    /** A hardware PWM pin */
+/** Built-in hardware PWM channels
+
+\note
+Treehopper has two types of PWM support --- Hardware and Software PWM. For information on software PWM functionality, visit Treehopper.Pin.
+
+Treehopper has three 16-bit hardware PWM channels labeled *PWM1*, *PWM2*, and *PWM3*. Like all peripherals, these are accessible from the TreehopperUsb instance.
+
+ */
     class TREEHOPPER_API HardwarePwm : public Pwm {
         friend class HardwarePwmManager;
 

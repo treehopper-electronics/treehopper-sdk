@@ -13,12 +13,16 @@ namespace Treehopper {
         SetDigitalValue,
     };
 
-    Pin::Pin(TreehopperUsb *board, uint8_t pinNumber) {
+    Pin::Pin(TreehopperUsb *board, uint8_t pinNumber) :
+            analogValueChanged(*this),
+            analogVoltageChanged(*this),
+            adcValueChanged(*this)
+    {
         this->pinNumber = pinNumber;
         this->board = board;
         this->spiModule = &board->spi;
         _mode = PinMode::Reserved;
-        referenceLevel = AdcReferenceLevel::VREF_3V3;
+        _referenceLevel = AdcReferenceLevel::VREF_3V3;
     }
 
     void Pin::makePushPullOutput() {
@@ -52,14 +56,14 @@ namespace Treehopper {
         digitalValue(!digitalValue());
     }
 
-    AdcReferenceLevel Pin::getReferenceLevel() {
-        return referenceLevel;
+    AdcReferenceLevel Pin::referenceLevel() {
+        return _referenceLevel;
     }
 
-    void Pin::setReferenceLevel(AdcReferenceLevel value) {
-        if (referenceLevel == value) return;
+    void Pin::referenceLevel(AdcReferenceLevel value) {
+        if (_referenceLevel == value) return;
 
-        referenceLevel = value;
+        _referenceLevel = value;
 
         if (_mode == PinMode::AnalogInput) {
             uint8_t cmd[2];
@@ -76,7 +80,7 @@ namespace Treehopper {
         } else if (_mode == PinMode::AnalogInput) {
             double voltage = 0;
 
-            switch (referenceLevel) {
+            switch (_referenceLevel) {
                 case AdcReferenceLevel::VREF_3V3:
                     voltage = (double) newVal * 3.3 / 4092;
                     break;
@@ -107,12 +111,18 @@ namespace Treehopper {
             {
                 _adcValue = newVal;
                 _analogVoltage = voltage;
-                if (AnalogValueChanged != NULL) {
-                    AnalogValueChanged(_adcValue);
-                }
-                if (AnalogVoltageChanged != NULL) {
-                    AnalogVoltageChanged(_analogVoltage);
-                }
+
+                AdcValueChangedEventArgs adcValueArgs;
+                adcValueArgs.newValue = _adcValue;
+                adcValueChanged.invoke(adcValueArgs);
+
+                AnalogValueChangedEventArgs analogValueArgs;
+                analogValueArgs.newValue = _adcValue/4092.0;
+                analogValueChanged.invoke(analogValueArgs);
+
+                AnalogVoltageChangedEventArgs analogVoltageArgs;
+                analogVoltageArgs.newValue = voltage;
+                analogVoltageChanged.invoke(analogVoltageArgs);
             }
         }
     }

@@ -53,7 +53,7 @@ namespace Treehopper {
     \code{.cpp}
     class MyClass
     {
-        Event<MyClass&, ReadingReceivedEventArgs&> readingReceived;
+        Event<MyClass, ReadingReceivedEventArgs> readingReceived;
     }
     \endcode
 

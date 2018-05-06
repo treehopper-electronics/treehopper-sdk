@@ -10,7 +10,6 @@ namespace Treehopper {
         /// <summary>
         /// Start the UART with the specified baud
         /// </summary>
-        /// <param name="baud">The baud, in bps, to use</param>
         virtual void startUart() = 0;
 
         /// <summary>

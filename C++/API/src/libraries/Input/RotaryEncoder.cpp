@@ -9,7 +9,7 @@ namespace Treehopper {
                 a.makeDigitalInput();
                 b.makeDigitalInput();
 
-                a.pinChanged += [&](DigitalIn &object, PinChangedEventArgs e) {
+                a.digitalValueChanged += [&](DigitalIn &object, PinChangedEventArgs e) {
                     if (b.digitalValue() && a.digitalValue()) {
                         _position++;
                     } else if (b.digitalValue() && !a.digitalValue()) {
@@ -23,7 +23,7 @@ namespace Treehopper {
                     updatePosition();
                 };
 
-                b.pinChanged += [&](DigitalIn &object, PinChangedEventArgs e) {
+                b.digitalValueChanged += [&](DigitalIn &object, PinChangedEventArgs e) {
                     if (b.digitalValue() && a.digitalValue()) {
                         _position--;
                     } else if (b.digitalValue() && !a.digitalValue()) {

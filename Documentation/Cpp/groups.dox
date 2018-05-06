@@ -28,7 +28,7 @@ board.I2c.Enabled = true; // enable the I2C peripheral
     \class Treehopper.TreehopperUsb
     \class Treehopper.Pin
     \class Treehopper.HardwareSpi
-    \class Treehopper.HardwareI2C
+    \class Treehopper.HardwareI2c
     \class Treehopper.HardwareUart
     \class Treehopper.HardwarePwm
 @}

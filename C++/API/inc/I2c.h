@@ -25,10 +25,9 @@ namespace Treehopper {
 
         /** Send and/or receive data with the i2c module.
         @param[in] address the address of the slave i2c board you wish to communicate with
-        @param[in] writeBuffer a pointer to the buffer of data to send
-        @param[in] numBytesToWrite the number of bytes to write
-        @param[out] readBuffer a pointer to the buffer to use for reading data into
+        @param[in] data a vector containing the bytes to write
         @param[in] numBytesToRead the number of bytes to read from the board
+        @returns the read data, or nullptr.
         */
         virtual std::vector<uint8_t> sendReceive(uint8_t address, std::vector<uint8_t> data,
                                                  size_t numBytesToRead = 0) = 0;

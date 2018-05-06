@@ -5,10 +5,13 @@
 
 namespace Treehopper {
     class OneWire {
+        /** Start one wire mode */
         virtual void startOneWire() = 0;
 
+        /** Reset the One Wire bus and address the specified device */
         virtual void oneWireResetAndMatchAddress(uint64_t address) = 0;
 
+        /** Search the One Wire bus and return a vector of addresses found */
         virtual std::vector<uint64_t> oneWireSearch() = 0;
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace Treehopper {
         /// <summary>
         ///     Send a byte out of the UART
         /// </summary>
-        /// <param name="data">The byte to send</param>
+        /// <param name="dataToSend">The byte to send</param>
         /// <returns>An awaitable task that completes upon transmission of the byte</returns>
         virtual void send(uint8_t dataToSend) = 0;
     };

@@ -24,11 +24,11 @@ int main()
 	board.pins[0].mode(PinMode::DigitalInput);
 	board.pins[1].mode(PinMode::DigitalInput);
 
-	// you can hook into the pinChanged event by passing in a named function
-	board.pins[0].pinChanged += &pin1inputHandler;
+	// you can hook into the digitalValueChanged event by passing in a named function
+	board.pins[0].digitalValueChanged += &pin1inputHandler;
 
 	// ... or by defining an in-place lambda expression
-	board.pins[1].pinChanged += [](DigitalIn& sender, PinChangedEventArgs& e) {
+	board.pins[1].digitalValueChanged += [](DigitalIn& sender, PinChangedEventArgs& e) {
 		cout << "Pin 1 event: " << e.newValue << endl;
 	};
 
@@ -36,7 +36,7 @@ int main()
 	cout << "removing pin 0 event" << endl;
 
 	// you can remove an event handler, too:
-	board.pins[0].pinChanged -= &pin1inputHandler;
+	board.pins[0].digitalValueChanged -= &pin1inputHandler;
 
 	// make sure that your main program doesn't exit
 	this_thread::sleep_for(chrono::seconds(1000));

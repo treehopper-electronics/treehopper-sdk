@@ -8,7 +8,14 @@
 namespace Treehopper {
     class TreehopperUsb;
 
-    /** Manages the HardwarePwm pins */
+/// <summary>
+///     Hardware PWM manager
+/// </summary>
+/**
+This class wouldn't typically be exposed to the user, but it provides one useful property: #HardwarePwmFrequency.
+
+With it, you can change the frequency that PWM1, PWM2, and PWM3 operate at. By default, the board uses a frequency of 732Hz, which helps avoid any trace of flicker when driving LEDs or other lighting. If you're driving motors or other inductive loads, you may wish to lower the frequency to reduce switching losses, or to lower the tone of the motor.  
+*/
     class TREEHOPPER_API HardwarePwmManager {
         friend class HardwarePwm;
 

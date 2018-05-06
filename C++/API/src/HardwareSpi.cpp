@@ -33,9 +33,9 @@ namespace Treehopper {
         }
     }
 
-    void HardwareSpi::sendReceive(uint8_t *dataToWrite, int numBytesToTransfer, uint8_t *readBuffer,
-                                  SpiChipSelectPin *chipSelect, ChipSelectMode chipSelectMode, double speed,
-                                  SpiBurstMode burstMode, SpiMode spiMode) {
+    std::vector<uint8_t> HardwareSpi::sendReceive(std::vector<uint8_t> dataToWrite, SpiChipSelectPin *chipSelect,
+                                                  ChipSelectMode chipSelectMode, double speed,
+                                                  SpiBurstMode burstMode, SpiMode spiMode) {
         if (_enabled != true) {
             Utility::error("SPI module must be enabled before starting transaction", true);
         }
@@ -68,14 +68,13 @@ namespace Treehopper {
             Utility::error(
                     "NOTICE: SPI module actual frequency is more than 1 MHz away from the requested frequency of {1} MHz");
 
+        auto numBytesToTransfer = dataToWrite.size();
+
+        auto readData = std::vector<uint8_t>(numBytesToTransfer, 0);
+
         if (numBytesToTransfer > 255) {
             Utility::error("Maximum packet length is 255 bytes");
             numBytesToTransfer = 255; // clip
-        }
-
-        if (readBuffer == NULL && burstMode != SpiBurstMode::BurstTx) {
-            Utility::error("Read buffer was NULL; forcing burstMode to BurstTx");
-            burstMode = SpiBurstMode::BurstTx;
         }
 
         uint8_t *dataToSend = new uint8_t[7 + numBytesToTransfer];
@@ -97,7 +96,7 @@ namespace Treehopper {
         if (burstMode == SpiBurstMode::BurstRx) {
             board.sendPeripheralConfigPacket(dataToSend, 7);
         } else {
-            copy(dataToWrite, dataToWrite + numBytesToTransfer, dataToSend + 7);
+            copy(dataToWrite.begin(), dataToWrite.end(), dataToSend + 7);
 
             int bytesRemaining = numBytesToTransfer + 7;
             int offset = 0;
@@ -115,12 +114,14 @@ namespace Treehopper {
             int offset = 0;
             while (bytesRemaining > 0) {
                 int numBytesToTransfer = bytesRemaining > 64 ? 64 : bytesRemaining;
-                board.receivePeripheralConfigPacket(readBuffer + offset, numBytesToTransfer);
+                board.receivePeripheralConfigPacket(readData.data() + offset, numBytesToTransfer);
                 offset += numBytesToTransfer;
                 bytesRemaining -= numBytesToTransfer;
             }
         }
 
         delete[] dataToSend;
+
+        return readData;
     }
 }

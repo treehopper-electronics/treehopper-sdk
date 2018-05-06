@@ -30,14 +30,11 @@ This class is essentially used to "save your settings" (chip select, clock rate,
 
         /** Starts an SPI send/receive transaction
         \param[in] dataToSend	The transmit buffer where the data is
-        \param[in] numBytesToSend The number of bytes to read from the buffer
-        \param[out] receiveBuffer	The receive buffer (or NULL) to use when reading data back. Note that numBytesToSend number of bytes must be allocated to this buffer.
         \param[in] burst	The SPI burst mode to use when performing this transaction
+        \returns            A vector of received data.
         */
-        void sendReceive(uint8_t *dataToSend, int numBytesToSend, uint8_t *receiveBuffer,
-                         SpiBurstMode burst = SpiBurstMode::NoBurst) {
-            return spi.sendReceive(dataToSend, numBytesToSend, receiveBuffer, chipSelect, chipSelectMode, frequency,
-                                   burst, mode);
+        std::vector<uint8_t> sendReceive(std::vector<uint8_t> dataToSend, SpiBurstMode burst) {
+            return spi.sendReceive(dataToSend, chipSelect, chipSelectMode, frequency, burst, mode);
         }
 
     private:

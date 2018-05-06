@@ -23,14 +23,16 @@ namespace Treehopper {
 
         ~ConnectionService();
 
-        /** Get the ConnectionService instance to use for TreehopperUsb discovery. */
+        /** Gets the ConnectionService instance to use for TreehopperUsb discovery. */
         static ConnectionService &instance() {
             static ConnectionService instance;
             return instance;
         }
 
-        TreehopperUsb &getFirstDevice();
+        /** Gets the first TreehopperUsb board connected to the computer */
+        TreehopperUsb& getFirstDevice();
 
+        /** Gets the collection of TreehopperUsb boards connected to the computer */
         vector<TreehopperUsb> boards;
     private:
         void scan();
