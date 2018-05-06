@@ -37,16 +37,16 @@ Note that UART cross-over is a common problem when people are attaching devices 
 ## Implementation Details
 %Treehopper's UART is designed for average baud rates; the range of supported rates is 7813 baud to 2.4 Mbaud, though communication will be less reliable above 1-2 Mbaud.
 
-Transmitting data is straightforward: simply pass a byte array --- up to 63 characters long --- to the Send() function once the UART is enabled.
+Transmitting data is straightforward: simply pass a byte array --- up to 63 characters long --- to the send() function once the UART is enabled.
 
-Receiving data is more challenging, since incoming data can appear on the RX pin at any moment when the UART is enabled. Since all actions on %Treehopper are initiated on the host, to get around UART's inherent asynchronicity, a 32-byte buffer holds any received data that comes in while the UART is enabled. Then, when the host wants to access this data, it can Receive() it from the board to obtain the buffer.
+Receiving data is more challenging, since incoming data can appear on the RX pin at any moment when the UART is enabled. Since all actions on %Treehopper are initiated on the host, to get around UART's inherent asynchronicity, a 32-byte buffer holds any received data that comes in while the UART is enabled. Then, when the host wants to access this data, it can receive() it from the board to obtain the buffer.
 
-Whenever Receive() is called, the entire buffer is sent to the host, and the buffer's pointer is reset to 0 (i.e., the buffer is reset). This can be useful for clearing out any gibberish and returning the UART to a known state before you expect to receive data --- for example, if you're addressing a device that you send commands to, and read responses back from, you may wish to call Receive() before sending the command; that way, parsing the received data will be simpler.
+Whenever receive() is called, the entire buffer is sent to the host, and the buffer's pointer is reset to 0 (i.e., the buffer is reset). This can be useful for clearing out any gibberish and returning the UART to a known state before you expect to receive data --- for example, if you're addressing a device that you send commands to, and read responses back from, you may wish to call receive() before sending the command; that way, parsing the received data will be simpler.
 
 ## Other Considerations
 This ping-pong short-packet-oriented back-and-forth scenario is what %Treehopper's UART is built for, as it's what's most commonly needed when interfacing with embedded devices that use a UART.
 
-There is a tight window of possible baud rates where it is plausible to receive data continuously without interruption. For example, at 9600 baud, the Receive() function only need to finish execution every 33 milliseconds, which can easily be accomplished in most operating systems. However, because data is not double-buffered on the board, under improbable circumstances, continuously-transmitted data may inadvertently be discarded.
+There is a tight window of possible baud rates where it is plausible to receive data continuously without interruption. For example, at 9600 baud, the receive() function only need to finish execution every 33 milliseconds, which can easily be accomplished in most operating systems. However, because data is not double-buffered on the board, under improbable circumstances, continuously-transmitted data may inadvertently be discarded.
 
 %Treehopper's UART is not designed to replace a high-quality CDC-class USB-to-serial converter, especially for high data-rate applications. In addition to streaming large volumes of data continuously, USB CDC-class UARTs should also offer lower latency for receiving data. %Treehopper also has no way of exposing its UART to the operating system as a COM port, so it's most certainly not a suitable replacement for a USB-to-serial converter in most applications.
 */

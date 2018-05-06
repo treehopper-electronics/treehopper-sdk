@@ -7,7 +7,7 @@
 namespace Treehopper {
     class TreehopperUsb;
 
-    /** Built-in SPI peripheral
+/** Built-in SPI peripheral
 
 # Basic Usage
 Once enabled(), you can use the hardware SPI module on %Treehopper through the sendReceive() method, which is used to simultaneously transmit and/or receive data.
