@@ -20,7 +20,7 @@ board.I2c.Enabled = true;
 // send 0x31 to device with address 0x17, and read two bytes back
 byte writeData = 0x31; // the register to read from
 byte address = 0x17; // 7-bit address
-readData = await board.I2c.SendReceiveAsync(address, writeData, 2)
+var readData = await board.I2c.SendReceiveAsync(address, new byte[] {writeData}, 2)
 ```
 If you want to change the communication rate from the default 100 kHz, consult the #Speed property.
 
@@ -63,11 +63,11 @@ readData = await board.I2c.SendReceiveAsync(address, writeData, 2)
 This translates to this transaction:
 ![ReadWrite function maps to a standard SMBus-compatible transaction](images/i2c-function-mapping.svg)
 
-Note that %Treehopper correctly implements the Restart condition when it requests data from the device after writing `writeData` to it.permission. While unusual, if your peripheral required a STOP condition to be sent before requesting data from it, simply break up the transaction into two SendReceiveAsync() calls:
+Note that %Treehopper correctly implements the Restart condition when it requests data from the device after writing `writeData` to it. While unusual, if your peripheral required a STOP condition to be sent before requesting data from it, simply break up the transaction into two SendReceiveAsync() calls:
 ```
 byte writeData = 0x31; // the register to read from
 byte address = 0x17; // 7-bit address
-await board.I2c.SendReceiveAsync(address, writeData, 0)
+await board.I2c.SendReceiveAsync(address, new byte[] { writeData }, 0)
 readData = await board.I2c.SendReceiveAsync(address, null, 2)
 ```
 

@@ -112,7 +112,7 @@ var pin1 = board.Pins[1];
 pin0.Mode = PinMode.PushPullOutput;
 pin1.Mode = PinMode.DigitalInput;
 
-await pin0.DigitalValue = 0;
+pin0.DigitalValue = true;
 if(pin1.DigitalValue == pin0.DigitalValue)
 {
     // we generally won't get here, since pin1's DigitalValue 

@@ -449,7 +449,7 @@ To learn about accessing different %Treehopper peripherals, visit the doc links 
         }
 
         /// <summary>
-        ///     Reinitialize the board, setting all pins as digital inputs
+        ///     Reinitialize the board, setting all pins as high-impedance
         /// </summary>
         public void Reinitialize()
         {

@@ -34,7 +34,6 @@ There is a tight window of possible baud rates where it is plausible to receive 
 
 Treehopper's UART is not designed to replace a high-quality CDC-class USB-to-serial converter, especially for high data-rate applications. In addition to streaming large volumes of data continuously, USB CDC-class UARTs should also offer lower latency for receiving data. Treehopper also has no way of exposing its UART to the operating system as a COM port, so it's most certainly not a suitable replacement for a USB-to-serial converter in most applications.
 */
-
     public class HardwareUart : Uart, OneWire
     {
         private readonly TreehopperUsb _device;
