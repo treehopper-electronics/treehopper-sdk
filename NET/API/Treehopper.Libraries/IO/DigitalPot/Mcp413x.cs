@@ -29,7 +29,7 @@ namespace Treehopper.Libraries.IO.DigitalPot
             scale = 128;
         }
 
-        private double wiper1;
+        private double wiper1 = -1;
 
         public double Wiper1
         {

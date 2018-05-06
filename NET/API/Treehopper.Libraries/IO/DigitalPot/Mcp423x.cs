@@ -13,7 +13,7 @@ namespace Treehopper.Libraries.IO.DigitalPot
 
         }
 
-        private double wiper2;
+        private double wiper2 = -1;
 
         public double Wiper2
         {
