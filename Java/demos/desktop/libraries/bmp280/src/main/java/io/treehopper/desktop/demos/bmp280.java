@@ -1,8 +1,7 @@
 package io.treehopper.desktop.demos;
 
 import io.treehopper.TreehopperUsb;
-import io.treehopper.desktop.ConnectionService;
-import io.treehopper.libraries.sensors.pressure.bmp280.Bme280;
+import io.treehopper.ConnectionService;
 import io.treehopper.libraries.sensors.pressure.bmp280.Bmp280;
 
 import java.util.List;

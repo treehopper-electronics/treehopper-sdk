@@ -1,8 +1,7 @@
 package io.treehopper.desktop.demos;
 
 import io.treehopper.*;
-import io.treehopper.desktop.*;
-import java.util.ArrayList;
+import io.treehopper.ConnectionService;
 
 public class Blink {
     public static void main(String[] args) throws InterruptedException {

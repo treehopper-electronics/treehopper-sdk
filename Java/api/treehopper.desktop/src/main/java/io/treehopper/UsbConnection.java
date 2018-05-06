@@ -1,4 +1,4 @@
-package io.treehopper.desktop;
+package io.treehopper;
 
 import io.treehopper.TreehopperUsb;
 

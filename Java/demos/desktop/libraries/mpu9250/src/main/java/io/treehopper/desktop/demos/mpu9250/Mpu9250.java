@@ -1,11 +1,8 @@
 package io.treehopper.desktop.demos.mpu9250;
 
-import com.badlogic.gdx.math.Vector3;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import io.treehopper.desktop.*;
+import io.treehopper.ConnectionService;
 import io.treehopper.*;
 import io.treehopper.libraries.sensors.inertial.mpu6050.*;
 

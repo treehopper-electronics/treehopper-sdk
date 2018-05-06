@@ -1,7 +1,6 @@
 package io.treehopper.desktop.demos;
 
-import java.util.ArrayList;
-import io.treehopper.desktop.*;
+import io.treehopper.ConnectionService;
 import io.treehopper.*;
 import io.treehopper.Pin;
 import io.treehopper.enums.PinMode;

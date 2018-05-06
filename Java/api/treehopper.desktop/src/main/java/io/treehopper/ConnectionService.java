@@ -1,23 +1,12 @@
-package io.treehopper.desktop;
+package io.treehopper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import javax.usb.UsbDevice;
-import javax.usb.UsbDeviceDescriptor;
-import javax.usb.UsbException;
-import javax.usb.UsbHostManager;
-import javax.usb.UsbHub;
-
-import org.apache.logging.log4j.MarkerManager;
 import org.usb4java.*;
 
 import io.treehopper.TreehopperUsb;
 
-/**
- * javax-usb ConnectionService
- */
 public class ConnectionService {
 	// these are the Treehopper USB VID/PID
 	private int result;
@@ -29,7 +18,11 @@ public class ConnectionService {
 	
 	// this stores a collection of boards; the key is the serial number
 	private ArrayList<TreehopperUsb> boards = new ArrayList<TreehopperUsb>();
-	
+
+    /**
+     * Gets the ConnectionService instance for use
+     * @return the ConnectionService instance to access
+     */
 	public static ConnectionService getInstance() {
 		return instance;
 	}
@@ -120,8 +113,25 @@ public class ConnectionService {
 	    }
 	}
 
-	public ArrayList<TreehopperUsb> getBoards() {
+	/**
+	 * (Desktop) Gets a list of boards attached to this device
+	 * @return a list of boards
+	 */
+	public List<TreehopperUsb> getBoards() {
 		return boards;
+	}
+
+	public TreehopperUsb getFirstDevice()
+	{
+		while(boards.size() == 0)
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return boards.get(0);
 	}
 
 	@Override

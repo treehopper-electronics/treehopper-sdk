@@ -3,8 +3,13 @@ package io.treehopper;
 import io.treehopper.enums.PinMode;
 import io.treehopper.interfaces.Pwm;
 
-/**
- * Hardware PWM pin
+/** Built-in hardware PWM channels
+
+\note
+Treehopper has two types of PWM support --- Hardware and Software PWM. For information on software PWM functionality, visit Treehopper.Pin.
+
+Treehopper has three 16-bit hardware PWM channels labeled *PWM1*, *PWM2*, and *PWM3*. Like all peripherals, these are accessible from the TreehopperUsb instance.
+
  */
 public class HardwarePwm implements Pwm {
     Pin pin;

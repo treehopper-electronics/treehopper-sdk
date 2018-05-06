@@ -1,4 +1,4 @@
-package io.treehopper.android;
+package io.treehopper;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -16,8 +16,23 @@ import java.util.Map;
 import io.treehopper.events.TreehopperEventsHandler;
 import io.treehopper.TreehopperUsb;
 
-/**
- * Android-based ConnectionService
+/** Discovers %Treehopper boards attached to your device.
+ This documentation set covers the %ConnectionService class found in both **Treehopper.Desktop**, and **Treehopper.Android** packages.
+
+ \note %ConnectionService should always be accessed through its singleton property, getInstance(). Do not create instances of %ConnectionService yourself.
+
+ ## Basic usage
+ There are two ways to access discovered boards. If you simply want to wait until the first Treehopper board is attached
+ to the computer, the getFirstDevice() method will return an awaitable task with a result that contains the board:
+
+ \code{.java}
+ TreehopperUsb board = ConnectionService.getInstance().getFirstDevice();
+ \endcode
+
+ ## Advanced usage
+ For simple applications, you can retrieve a board instance with getFirstDevice(), however, if you'd like to present the user with a list of devices from which to choose, you can reference the getBoards() property.
+
+ \warning Board discovery on Android is done asynchronously, so getBoards() will generally return an empty collection on application start-up. Inherit from TreehopperActivity or manually add the ConnectionService callback plumbing to receive boardAdded and boardRemoved callbacks.
  */
 public class ConnectionService extends BroadcastReceiver {
 
@@ -25,6 +40,10 @@ public class ConnectionService extends BroadcastReceiver {
 
     private static final ConnectionService instance = new ConnectionService();
 
+    /**
+     * Gets the ConnectionService instance for use
+     * @return the ConnectionService instance to access
+     */
     public static ConnectionService getInstance() {
         return instance;
     }
@@ -117,8 +136,32 @@ public class ConnectionService extends BroadcastReceiver {
 
     private HashMap<String, TreehopperUsb> boards = new HashMap<String, TreehopperUsb>();
 
+    /**
+     * (Android) Gets a HashMap of boards connected to this device
+     * @return a HashMap of boards
+     */
     public HashMap<String, TreehopperUsb> getBoards() {
         return boards;
+    }
+
+    /**
+     * Gets the first device attached
+     * @return the first attached TreehopperUsb board
+     *
+     * This function will block until a device is attached
+     */
+    public TreehopperUsb getFirstDevice()
+    {
+        while(boards.size() == 0)
+        {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return boards.get(0);
     }
 
     private ArrayList<TreehopperEventsHandler> listeners = new ArrayList<TreehopperEventsHandler>();
@@ -190,7 +233,6 @@ public class ConnectionService extends BroadcastReceiver {
             }
         }
     }
-
 
     @Override
     public void onReceive(Context context, Intent intent) {

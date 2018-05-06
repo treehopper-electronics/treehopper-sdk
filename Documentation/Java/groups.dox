@@ -1,0 +1,87 @@
+/** \defgroup core-classes Core classes
+These classes are the foundation of %Treehopper.
+
+Many of these classes contain useful code examples and tips on usage.
+
+# Important concepts
+## Assemblies
+Except for ConnectionService, all these classes live in the %Treehopper.dll assembly (which resides in the %Treehopper NuGet package).
+
+## Object Construction
+In almost all cases, the entire object tree is built for you. For example, you'll never call
+
+```
+Pin pin = new Pin(5); // this makes no sense
+```
+
+Instead, you'll access these objects through the TreehopperUsb object, which you'll obtain from the ConnectionService.Instance. Like so:
+
+```
+TreehopperUsb board = await ConnectionService.Instance.GetFirstDeviceAsync(); // get the first device found
+await board.ConnectAsync(); // connect to the board
+board.I2c.Enabled = true; // enable the I2C peripheral
+```
+
+
+@{
+    \class io.treehopper.ConnectionService
+    \class io.treehopper.TreehopperUsb
+    \class io.treehopper.Pin
+    \class io.treehopper.HardwareSpi
+    \class io.treehopper.HardwareI2c
+    \class io.treehopper.HardwareUart
+    \class io.treehopper.HardwarePwm
+@}
+
+\defgroup libraries Libraries
+Provides a rich collection of peripheral drivers for various sensors, actuators, and other IO.
+
+
+\defgroup displays Displays
+LED drivers, LCDs, and other displays
+\ingroup libraries
+@{
+    \class io.treehopper.libraries.displays.Is31fl3218
+    \class io.treehopper.libraries.displays.Tm1650
+    \class io.treehopper.libraries.displays.SevenSegmentDisplay
+@}
+
+\defgroup interface Interface
+ADCs, DACs, and other I/O interfaces
+\ingroup libraries
+@{
+    \class io.treehopper.libraries.io.adc.nau7802.Nau7802
+    \class io.treehopper.libraries.io.Mcp4661
+@}
+
+\defgroup Inertial Inertial Sensors
+Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+\ingroup libraries
+@{
+    \class io.treehopper.libraries.sensors.inertial.adxl345.Adxl345
+    \class io.treehopper.libraries.sensors.inertial.mpu6050.Mpu6050
+    \class io.treehopper.libraries.sensors.inertial.mpu6050.Mpu9250
+    \class io.treehopper.libraries.sensors.magnetic.ak8975.Ak8975
+@}
+
+\defgroup environmental Environmental Sensors
+Temperature, humidity, and pressure sensors
+\ingroup libraries
+@{
+    \class io.treehopper.libraries.sensors.temperature.Lm75
+    \class io.treehopper.libraries.sensors.temperature.Mcp9808
+    \class io.treehopper.libraries.sensors.temperature.Mlx90614
+    \class io.treehopper.libraries.sensors.temperature.Mlx90615
+    \class io.treehopper.libraries.sensors.pressure.bmp280.Bmp280
+    \class io.treehopper.libraries.sensors.pressure.bmp280.Bme280
+@}
+
+\defgroup optical Optical Sensors
+Optical sensors and camera modules
+\ingroup libraries
+@{
+    \class io.treehopper.libraries.sensors.optical.vcnl4010.Vcnl4010
+    \class io.treehopper.libraries.sensors.optical.bh1750.Bh1750
+@}
+
+*/

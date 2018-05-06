@@ -1,4 +1,4 @@
-package io.treehopper.android;
+package io.treehopper;
 
 import android.content.Context;
 import android.hardware.usb.*;

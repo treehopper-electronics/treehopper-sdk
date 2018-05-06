@@ -8,8 +8,42 @@ import io.treehopper.interfaces.I2c;
 import io.treehopper.interfaces.Pwm;
 import io.treehopper.interfaces.Spi;
 
-/**
- * Main Treehopper USB board class
+/** The core class for communicating with %Treehopper USB boards.
+
+ ![Treehopper pinout](images/treehopper-hardware.svg)
+ # Core Hardware {#core-hardware}
+ %Treehopper is a USB 2.0 Full Speed device with 20 \link Pin Pins\endlink — each of which can be used as an analog input, digital input, digital output, or soft-PWM output. Many of these pins also have dedicated peripheral functions for \link HardwareSpi SPI\endlink, \link HardwareI2c I2C\endlink, \link HardwareUart UART\endlink, and \link HardwarePwm PWM\endlink.
+
+ You'll access all the pins, peripherals, and board functions through this class, which will automatically create all peripheral instances for you.
+
+ ## Getting a board reference
+ To obtain a reference to the board, use the \link ConnectionService.getFirstDevice() ConnectionService.getInstance().getFirstDevice()\endlink method:
+
+ ```{.java}
+ TreehopperUsb board = ConnectionService.getInstance().getFirstDevice();
+ ```
+
+ Or the \link ConnectionService.getBoards() ConnectionService.getInstance().getBoards()\endlink vector.
+
+ \warning While you're free to create TreehopperUsb variables that reference boards, never call %TreehopperUsb's constructor yourself.
+
+ ## Connect to the board
+ Before you use the board, you must explicitly connect to it by calling the ConnectAsync() method
+
+ ```{.java}
+ TreehopperUsb board = ConnectionService.getInstance().getFirstDevice();
+ board.connect();
+ ```
+
+ \note Once a board is connected, other applications won't be able to use it. 
+
+ ## Next steps
+ To learn about accessing different %Treehopper peripherals, visit the doc links to the relevant classes:
+ - Pin
+ - HardwareSpi
+ - HardwareI2c
+ - HardwareUart
+ - HardwarePwm
  */
 public class TreehopperUsb {
 
@@ -23,7 +57,7 @@ public class TreehopperUsb {
     public Pwm pwm2;
     public Pwm pwm3;
     public HardwarePwmManager hardwarePwmManager;
-    public Uart uart;
+    public HardwareUart uart;
     Object comsLock = new Object();
     private Connection usbConnection;
     private boolean led;
@@ -48,7 +82,7 @@ public class TreehopperUsb {
 
         i2c = new HardwareI2c(this);
         spi = new HardwareSpi(this);
-        uart = new Uart(this);
+        uart = new HardwareUart(this);
         softPwmManager = new SoftPwmManager(this);
 
         hardwarePwmManager = new HardwarePwmManager(this);

@@ -1,9 +1,8 @@
 package io.treehopper.blink;
 import android.os.Bundle;
-import android.util.Log;
 
 import io.treehopper.TreehopperUsb;
-import io.treehopper.android.TreehopperActivity;
+import io.treehopper.TreehopperActivity;
 
 public class MainActivity extends TreehopperActivity {
 
