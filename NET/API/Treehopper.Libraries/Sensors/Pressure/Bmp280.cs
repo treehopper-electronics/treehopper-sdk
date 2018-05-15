@@ -75,7 +75,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
         {
             get
             {
-                if (AutoUpdateWhenPropertyRead) UpdateAsync().Wait();
+                if (AutoUpdateWhenPropertyRead)
+                    Task.Run(UpdateAsync).Wait();
                 return altitude;
             }
 
@@ -85,10 +86,18 @@ namespace Treehopper.Libraries.Sensors.Pressure
         internal int PayloadSize { get; set; } = 6;
         internal byte[] LastReceivedData { get; set; }
 
-        /// <summary>
-        ///     Temperature, in degrees Celsius
-        /// </summary>
-        public double Celsius { get; protected set; }
+        private double celsius;
+
+        public double Celsius
+        {
+            get {
+                if (AutoUpdateWhenPropertyRead)
+                    Task.Run(UpdateAsync).Wait();
+                return celsius;
+            }
+        }
+
+
 
         /// <summary>
         ///     Temperature, in degrees Fahrenheit
@@ -132,7 +141,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
             var var1 = (registers.temperature.value / 16384.0 - registers.t1.value / 1024.0) * registers.t2.value;
             var var2 = ((registers.temperature.value / 131072.0 - registers.t1.value / 8192.0) * (registers.temperature.value / 131072.0 - registers.t1.value / 8192.0)) * registers.t3.value;
             tFine = (var1 + var2);
-            Celsius = (var1 + var2) / 5120.0;
+            celsius = (var1 + var2) / 5120.0;
 
             double p;
             var1 = tFine / 2.0 - 64000.0;
@@ -153,8 +162,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 var2 = p * registers.p8.value / 32768.0;
                 p = p + (var1 + var2 + registers.p7.value) / 16.0;
                 pascal = p;
-                var kelvin = TemperatureSensorBase.ToKelvin(Celsius);
-                altitude = AltitudeFromPressure(kelvin, Pascal);
+                var kelvin = TemperatureSensorBase.ToKelvin(celsius);
+                altitude = AltitudeFromPressure(kelvin, pascal);
             }
 
             RaisePropertyChanged(this, nameof(Celsius));
