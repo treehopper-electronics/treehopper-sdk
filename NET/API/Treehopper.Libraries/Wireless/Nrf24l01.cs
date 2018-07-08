@@ -9,6 +9,20 @@ namespace Treehopper.Libraries.Wireless
 {
     public class Nrf24l01
     {
+        public enum CrcMode
+        {
+            CrcDisabled,
+            Crc8Bit,
+            Crc16Bit
+        }
+
+        public class PacketReceivedEventArgs : EventArgs
+        {
+            public byte[] Data { get; set; }
+        }
+
+        public delegate void PacketReceivedEventHandler(object sender, PacketReceivedEventArgs e);
+
         SpiDevice dev;
         DigitalIn irqPin;
         DigitalIn cePin;
@@ -21,6 +35,38 @@ namespace Treehopper.Libraries.Wireless
 
             // go into RX mode by default
             Task.Run(() => WriteRegister((byte)Registers.NrfConfig, (byte)channel)).Wait();
+        }
+
+        private int retryCount;
+
+        public int RetryCount
+        {
+            get { return retryCount; }
+            set { retryCount = value; }
+        }
+
+        private int retryDelay;
+
+        public int RetryDelay
+        {
+            get { return retryDelay; }
+            set { retryDelay = value; }
+        }
+
+        private CrcMode crc;
+
+        public CrcMode Crc
+        {
+            get { return crc; }
+            set { crc = value; }
+        }
+
+        private bool autoAckEnabled;
+
+        public bool AutoAckEnabled
+        {
+            get { return autoAckEnabled; }
+            set { autoAckEnabled = value; }
         }
 
         private int channel = 0;
@@ -40,7 +86,10 @@ namespace Treehopper.Libraries.Wireless
             }
         }
 
+        public async Task Transmit(byte[] data, bool requestAck=true)
+        {
 
+        }       
 
         private async Task<byte> ReadRegister(byte register)
         {
