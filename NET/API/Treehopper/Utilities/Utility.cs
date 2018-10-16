@@ -59,6 +59,8 @@ namespace Treehopper.Utilities
             StringBuilder hex = new StringBuilder(ba.Length * 2);
             foreach (byte b in ba)
                 hex.AppendFormat("{0:x2}, ", b);
+
+            hex.Remove(hex.Length - 2, 2); // remove the trailing ", "
             return hex.ToString();
         }
 
