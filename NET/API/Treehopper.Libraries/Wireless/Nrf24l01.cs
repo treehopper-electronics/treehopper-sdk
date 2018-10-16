@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,21 @@ namespace Treehopper.Libraries.Wireless
             Crc16Bit
         }
 
+        public enum DataRate
+        {
+            Rate_1mbps,
+            Rate_500kbps,
+            Rate_250kbps
+        }
+
+        public enum PowerLevel
+        {
+            Min,
+            Low,
+            High,
+            Max
+        }
+
         public class PacketReceivedEventArgs : EventArgs
         {
             public byte[] Data { get; set; }
@@ -25,16 +41,25 @@ namespace Treehopper.Libraries.Wireless
 
         SpiDevice dev;
         DigitalIn irqPin;
-        DigitalIn cePin;
+        DigitalOut cePin;
 
-        public Nrf24l01(Spi spi, SpiChipSelectPin csPin, DigitalIn irqPin, DigitalIn cePin)
+        public Nrf24l01(Spi spi, SpiChipSelectPin csPin, DigitalOut cePin, DigitalIn irqPin)
         {
             dev = new SpiDevice(spi, csPin);
             this.irqPin = irqPin;
             this.cePin = cePin;
+            Task.Run(irqPin.MakeDigitalInAsync).Wait();
+            Task.Run(cePin.MakeDigitalPushPullOutAsync).Wait();
+            cePin.DigitalValue = false;
+            irqPin.DigitalValueChanged += IrqPin_DigitalValueChanged;
+            Task.Run(writeConfig).Wait();
+            Task.Run(() => dev.SendReceiveAsync(new byte[] {0x50, 0x73 })).Wait();
+            Task.Run(() => WriteRegister((byte)Registers.Feature, 0x03)).Wait();
+        }
 
-            // go into RX mode by default
-            Task.Run(() => WriteRegister((byte)Registers.NrfConfig, (byte)channel)).Wait();
+        private void IrqPin_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
+        {
+            Debug.WriteLine("IRQ");
         }
 
         private int retryCount;
@@ -53,12 +78,36 @@ namespace Treehopper.Libraries.Wireless
             set { retryDelay = value; }
         }
 
-        private CrcMode crc;
+        private CrcMode crc = CrcMode.Crc8Bit;
 
         public CrcMode Crc
         {
             get { return crc; }
-            set { crc = value; }
+            set {
+                crc = value;
+                Task.Run(writeConfig).Wait();
+            }
+        }
+
+        private Task writeConfig()
+        {
+            var config = 0;
+            switch(Crc)
+            {
+                case CrcMode.CrcDisabled:
+                    config = 0b0000;
+                    break;
+                case CrcMode.Crc8Bit:
+                    config = 0b1000;
+                    break;
+                case CrcMode.Crc16Bit:
+                    config = 0b1100;
+                    break;
+            }
+
+            config |= 0b10; // PWR_UP
+
+            return WriteRegister((byte)Registers.NrfConfig, (byte)config);
         }
 
         private bool autoAckEnabled;
@@ -69,7 +118,7 @@ namespace Treehopper.Libraries.Wireless
             set { autoAckEnabled = value; }
         }
 
-        private int channel = 0;
+        private int channel = 76; // this is the default power-up channel
 
         public int Channel
         {
@@ -86,10 +135,41 @@ namespace Treehopper.Libraries.Wireless
             }
         }
 
+        private int addressWidth = 5;
+
+        public int AddressWidth
+        {
+            get { return addressWidth; }
+            set {
+                if(value != 3 && value != 4 && value != 5)
+                {
+                    Utility.Error("AddressWidth must be of value 3, 4, or 5.");
+                }
+
+                addressWidth = value;
+                Task.Run(() => WriteRegister((byte)Registers.SetupAddressWidth, (byte)(addressWidth - 2))).Wait();
+            }
+        }
+
+        private long address = 0xE7E7E7E7E7; // default address, per NRF datasheet
+
+        public long Address
+        {
+            get { return address; }
+            set { address = value; }
+        }
+
+
+        /// <summary>
+        /// Transmit a packet to the specified receiver slot
+        /// </summary>
+        /// <param name="data">The data to send</param>
+        /// <param name="requestAck">Whether the receiver should ACK</param>
+        /// <returns></returns>
         public async Task Transmit(byte[] data, bool requestAck=true)
         {
 
-        }       
+        }
 
         private async Task<byte> ReadRegister(byte register)
         {
