@@ -10,6 +10,13 @@ namespace Treehopper.Libraries.Wireless
 {
     public class Nrf24l01
     {
+        public class DataReceivedEventArgs : EventArgs
+        {
+            public byte[] DataReceived { get; set; }
+        }
+
+        public delegate void DataReceivedHandler(object sender, DataReceivedEventArgs e);
+
         public class Pipe
         {
             public Pipe(int index, Nrf24l01 rf)
@@ -30,6 +37,18 @@ namespace Treehopper.Libraries.Wireless
                 }
             }
 
+            internal bool enablePipe = false;
+
+            public bool EnablePipe
+            {
+                get { return enablePipe; }
+                set {
+                    enablePipe = value;
+                    Task.Run(rf.updateEnableRxAddresses).Wait();
+                }
+            }
+
+
             internal long address;
 
             public long Address
@@ -38,9 +57,26 @@ namespace Treehopper.Libraries.Wireless
                 set {
                     address = value;
                     var bytes = BitConverter.GetBytes(address);
-                    Task.Run(() => rf.WriteRegister((byte)((byte)(Registers.RxAddrPipe0)+index), bytes.Take(5).ToArray())).Wait();
+                    Task.Run(() =>
+                    {
+                        if(index == 0 || index == 1)
+                            rf.WriteRegister((byte)((byte)(Registers.RxAddrPipe0) + index), bytes.Take(rf.AddressWidth).ToArray());
+                        else
+                            rf.WriteRegister((byte)((byte)(Registers.RxAddrPipe0) + index), bytes.Take(1).ToArray());
+
+                    }).Wait();
                 }
             }
+
+            public byte[] LastReceivedData { get; private set; }
+
+            internal void OnDataReceived(byte[] data)
+            {
+                LastReceivedData = data;
+                DataReceived?.Invoke(this, new DataReceivedEventArgs() { DataReceived = data });
+            }
+
+            public event DataReceivedHandler DataReceived;
         }
 
         public enum CrcMode
@@ -110,10 +146,21 @@ namespace Treehopper.Libraries.Wireless
             get { return rxEnable; }
             set {
                 rxEnable = value;
-
+                Task.Run(writeConfig).Wait();
+                cePin.DigitalValue = rxEnable;
             }
         }
 
+        private Task updateEnableRxAddresses()
+        {
+            var enRxAddr = 0;
+            for(int i=0;i<6;i++)
+            {
+                if (pipes[i].enablePipe)
+                    enRxAddr |= (1 << i);
+            }
+            return WriteRegister((byte)Registers.EnableRxAddresses, (byte)enRxAddr);
+        }
 
         public class PacketReceivedEventArgs : EventArgs
         {
@@ -139,9 +186,6 @@ namespace Treehopper.Libraries.Wireless
             Task.Run(() => dev.SendReceiveAsync(new byte[] { 0x50, 0x73 })).Wait(); // enable feature register
             Task.Run(() => WriteRegister((byte)Registers.Feature, 0b00000111)).Wait();
             Task.Run(() => WriteRegister((byte)Registers.DynamicPayloadLength, 0b00111111)).Wait();
-            Task.Run(FlushRx).Wait();
-            Task.Run(FlushTx).Wait();
-
             Task.Run(writeConfig).Wait();
 
             for (int i = 0; i < 6; i++)
@@ -156,7 +200,21 @@ namespace Treehopper.Libraries.Wireless
             pipes[4].address = 0xC2C2C2C2C5;
             pipes[5].address = 0xC2C2C2C2C6;
 
+            // set default enable state
+            pipes[0].enablePipe = true;
+            pipes[1].enablePipe = true;
+
             Task.Run(() => Task.Delay(5)).Wait();
+            Task.Run(FlushRx).Wait();
+            Task.Run(FlushTx).Wait();
+
+            powerUp = true;
+            Task.Run(writeConfig).Wait();
+
+            Task.Run(() => Task.Delay(5)).Wait();
+
+            // manually call the ISR just in case there's something pending
+            IrqPin_DigitalValueChanged(this, new DigitalInValueChangedEventArgs(cePin.DigitalValue));
         }
 
         private Pipe[] pipes = new Pipe[6];
@@ -173,10 +231,30 @@ namespace Treehopper.Libraries.Wireless
 
         private async void IrqPin_DigitalValueChanged(object sender, DigitalInValueChangedEventArgs e)
         {
-            Debug.WriteLine("IRQ");
+            if (e.NewValue == true)
+                return;
+
             var data = new byte[] { (byte)((byte)Registers.Status | 0x20), 0b01110000 };
             var bytes = await dev.SendReceiveAsync(data);
-            DebugStatus(bytes[0]);
+
+            if(((bytes[0] >> 6) & 0x01) == 0x01) // RX_DR
+            {
+                var rxIndex = (bytes[0] >> 1) & 0b111;
+
+                var numBytesToRead = (await dev.SendReceiveAsync(new byte[] { 0b01100000, 0xff }))[1];
+                var rxFifoSend = new byte[numBytesToRead + 1];
+                rxFifoSend[0] = 0b01100001;
+                for (int i = 0; i < numBytesToRead; i++)
+                    rxFifoSend[i + 1] = 0xff;
+
+                var result = await dev.SendReceiveAsync(rxFifoSend).ConfigureAwait(false);
+                var readBytes = result.Skip(1).Take(numBytesToRead).ToArray();
+
+                if (rxIndex == 0b111)
+                    return;
+
+                pipes[rxIndex].OnDataReceived(readBytes);
+            }
         }
 
         private int retryCount = 3;
@@ -244,10 +322,22 @@ namespace Treehopper.Libraries.Wireless
                     break;
             }
 
-            config |= 0b10; // PWR_UP
+            config |= (powerUp ? 0b10 : 0b00); // PWR_UP
+
+            if (rxEnable)
+                config |= 1; // PRIM_RX
 
             return WriteRegister((byte)Registers.NrfConfig, (byte)config);
         }
+
+        private bool powerUp = false;
+
+        public bool PowerUp
+        {
+            get { return powerUp; }
+            set { powerUp = value; Task.Run(writeConfig).Wait(); }
+        }
+
 
         private bool autoAckEnabled;
 
