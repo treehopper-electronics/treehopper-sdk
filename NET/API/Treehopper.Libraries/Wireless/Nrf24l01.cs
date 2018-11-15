@@ -68,11 +68,8 @@ namespace Treehopper.Libraries.Wireless
                 }
             }
 
-            public byte[] LastReceivedData { get; private set; }
-
             internal void OnDataReceived(byte[] data)
             {
-                LastReceivedData = data;
                 DataReceived?.Invoke(this, new DataReceivedEventArgs() { DataReceived = data });
             }
 
