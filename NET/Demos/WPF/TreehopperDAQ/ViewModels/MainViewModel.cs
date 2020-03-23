@@ -1,14 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
-using Treehopper.Mvvm.ViewModels;
 using Treehopper;
-using Treehopper.Mvvm;
 using TreehopperDAQ.Models;
 using System.Diagnostics;
 using System.Windows;
 using System.Timers;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace TreehopperDAQ.ViewModels
 {
@@ -20,9 +19,6 @@ namespace TreehopperDAQ.ViewModels
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private readonly SelectorViewModel selector = new SelectorViewModel();
-        public SelectorViewModel Selector => selector;
-
         private readonly Stopwatch sw = new Stopwatch(); // accurate timer
         readonly System.Timers.Timer timer = new System.Timers.Timer(); // fire every second to update the GUI
 
@@ -30,11 +26,36 @@ namespace TreehopperDAQ.ViewModels
         {
             for (int i = 0; i < 20; i++)
                 ChannelEnabled.Add(true);
-            Selector.OnBoardConnected += Selector_OnBoardConnected;
-            Selector.OnBoardDisconnected += Selector_OnBoardDisconnected;
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 / refreshRate;
             msFreq = Stopwatch.Frequency / 1000.0;
+        }
+
+
+        public async Task Start()
+        {
+            Data.Clear();
+            board = await ConnectionService.Instance.GetFirstDeviceAsync();
+            await board.ConnectAsync();
+            board.Connection.UpdateRate = sampleRate;
+            for (int i = 0; i < 20; i++)
+            {
+
+                if (ChannelEnabled[i])
+                    board.Pins[i].Mode = PinMode.AnalogInput;
+                else
+                    board.Pins[i].Mode = PinMode.Unassigned;
+            }
+
+            board.OnPinValuesUpdated += Board_OnPinValuesUpdated;
+            sw.Restart();
+            timer.Start();
+        }
+
+        public void Stop()
+        {
+            timer.Stop();
+            board.Disconnect();
         }
 
         readonly Queue<DataPoint> buffer = new Queue<DataPoint>(); // temp buffer to avoid tying down the GUI
@@ -51,26 +72,6 @@ namespace TreehopperDAQ.ViewModels
         public string RefreshRate { get { return refreshRate.ToString(); } set { refreshRate = double.Parse(value); timer.Interval = 1000 / refreshRate; } }
 
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
-        private void Selector_OnBoardConnected(object sender, BoardConnectedEventArgs e)
-        {
-            Data.Clear();
-            board = e.Board;
-            board.Connection.UpdateRate = sampleRate;
-            for (int i = 0; i < 20; i++)
-            {
-
-                if(ChannelEnabled[i])
-                    board.Pins[i].Mode = PinMode.AnalogInput;
-                else
-                    board.Pins[i].Mode = PinMode.Unassigned;
-            }
-                
-
-
-            board.OnPinValuesUpdated += Board_OnPinValuesUpdated;
-            sw.Restart();
-            timer.Start();
-        }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -99,11 +100,5 @@ namespace TreehopperDAQ.ViewModels
             buffer.Enqueue(data);
             semaphore.Release();
         }
-
-        private void Selector_OnBoardDisconnected(object sender, BoardDisconnectedEventArgs e)
-        {
-            timer.Stop();
-        }
-
     }
 }

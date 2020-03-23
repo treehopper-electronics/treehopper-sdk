@@ -5,12 +5,16 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using ToggleSwitch;
+using TreehopperDAQ.ViewModels;
+
 namespace TreehopperDAQ
 {
     public partial class MainWindow : ModernWindow
     {
+        private MainViewModel vm = new MainViewModel();
         public MainWindow()
         {
+            this.DataContext = vm;
             InitializeComponent();
 
             int numPins = 20;
@@ -74,6 +78,22 @@ namespace TreehopperDAQ
 
             channelGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(35, GridUnitType.Pixel) });
 
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if ((string)(((Button)sender).Content) == "Start")
+            {
+                vm.Start();
+                ((Button)sender).Content = "Stop";
+            }
+                
+            else
+            {
+                vm.Stop();
+                ((Button)sender).Content = "Start";
+            }
+                
         }
     }
 }
