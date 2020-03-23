@@ -33,7 +33,6 @@
 
 int16_t main(void) {
 	enter_DefaultMode_from_RESET();
-
 	Treehopper_Init();
 
 #ifdef ENABLE_TIMING_DEBUGGING

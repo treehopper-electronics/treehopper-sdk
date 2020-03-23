@@ -89,6 +89,7 @@ void SerialNumber_updateName(uint8_t* string, uint8_t len) {
 
 void writeUsbString(uint8_t* string, uint8_t len, uint16_t addr) {
 	int i;
+	IE_EA = 0; // disable all interrupts
 	flash_erasePage(addr);
 	flash_writeByte(addr, USB_STRING_DESCRIPTOR_UTF16LE_PACKED);
 	flash_writeByte(addr + 1, (len + 1) * 2);
@@ -96,4 +97,5 @@ void writeUsbString(uint8_t* string, uint8_t len, uint16_t addr) {
 	for (i = 0; i < len; i++) {
 		flash_writeByte(addr + 3 + i, string[i]);
 	}
+	IE_EA = 1;
 }
