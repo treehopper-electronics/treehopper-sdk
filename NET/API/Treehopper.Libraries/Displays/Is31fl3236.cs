@@ -5,24 +5,54 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Displays
 {
     /// <summary>
-    ///     ISSI IS31FL3218 I2c 18-channel 8-bit PWM constant-current LED driver
+    ///     ISSI IS31FL3236 I2c 36-channel 8-bit PWM constant-current LED driver
     /// </summary>
-    [Supports("ISSI", "IS31FL3218")]
-    public class Is31fl3218 : LedDriver
+    [Supports("ISSI", "IS31FL3236")]
+    public class Is31fl3236 : LedDriver
     {
-        private bool[] currentStates = new bool[18];
-        private byte[] currentValues = new byte[18];
-        private readonly SMBusDevice dev;
+        /// <summary>
+        /// The possible values to assign to each Currents element
+        /// </summary>
+        public enum Current
+        {
+            /// <summary>
+            /// The maximum current
+            /// </summary>
+            IMax,
 
+            /// <summary>
+            /// Half of Imax
+            /// </summary>
+            HalfImax,
+
+            /// <summary>
+            /// One third of Imax
+            /// </summary>
+            ThirdImax,
+
+            /// <summary>
+            /// One fourth of Imax
+            /// </summary>
+            QuarterImax
+        }
+
+        private bool[] states = new bool[36];
+        private byte[] values = new byte[36];
+        private readonly SMBusDevice dev;
         private bool shutdown;
 
         /// <summary>
-        ///     Construct a new IS31FL3218
+        /// Gets or sets the current for each channel (defaults to Imax)
+        /// </summary>
+        public Current[] Currents = new Current[36];
+
+        /// <summary>
+        ///     Construct a new IS31FL3236
         /// </summary>
         /// <param name="i2c">The I2C peripheral this chip is attached to</param>
         /// <param name="rateKhz">The frequency, in kHz, that should be used to communicate with the chip</param>
         /// <param name="sdb">The (optional) hardware shutdown pin, SDB</param>
-        public Is31fl3218(I2C i2c, int rateKhz = 100, bool ad0 = false, DigitalOut sdb = null) : base(18, false, true)
+        public Is31fl3236(I2C i2c, int rateKhz = 100, bool ad0 = false, DigitalOut sdb = null) : base(36, false, true)
         {
             if (sdb != null)
             {
@@ -58,30 +88,26 @@ namespace Treehopper.Libraries.Displays
         /// <returns>An awaitable task</returns>
         public override Task FlushAsync(bool force = false)
         {
-            var states = new byte[3];
-            for (var i = 0; i < currentStates.Length; i++)
+            var controls = new byte[36];
+            for (var i = 0; i < states.Length; i++)
             {
-                var bit = i % 6;
-                var theByte = i / 6;
-                if (currentStates[i])
-                    states[theByte] |= (byte) (1 << bit);
-                else
-                    states[theByte] &= (byte) ~(1 << bit);
+                controls[i] = (byte)((((int)Currents[i]) << 1) | (states[i] ? 1 : 0));
             }
 
-            var dataToWrite = currentValues.Concat(states).Concat(new byte[1] {0x00}).ToArray();
+            // send the 36 PWM registers, followed by the PWM update register (0x25), followed by the 36 LED control registers, followed by the global control register
+            var dataToWrite = values.Concat(new byte[] { 0x00 }).Concat(controls).Concat(new byte[1] {0x00}).ToArray();
             return dev.WriteBufferDataAsync((byte) Registers.PwmBase, dataToWrite);
         }
 
         internal override void LedBrightnessChanged(Led led)
         {
-            currentValues[led.Channel] = (byte) Math.Round(led.Brightness * 255);
+            values[led.Channel] = (byte) Math.Round(led.Brightness * 255);
             if (AutoFlush) FlushAsync().Wait();
         }
 
         internal override void LedStateChanged(Led led)
         {
-            currentStates[led.Channel] = led.State;
+            states[led.Channel] = led.State;
             if (AutoFlush) FlushAsync().Wait();
         }
 
