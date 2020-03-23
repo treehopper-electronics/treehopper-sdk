@@ -63,11 +63,19 @@ namespace Treehopper.Desktop.WinUsb
 
             if (winUsbHandle != null && !winUsbHandle.IsInvalid)
             {
-                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, peripheralConfigEndpoint);
-                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, peripheralResponseEndpoint);
-                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, pinConfigEndpoint);
-                WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, pinReportEndpoint);
-                winUsbHandle.Dispose();
+                try
+                {
+                    WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, peripheralConfigEndpoint);
+                    WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, peripheralResponseEndpoint);
+                    WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, pinConfigEndpoint);
+                    WinUsb.NativeMethods.WinUsb_AbortPipe(winUsbHandle, pinReportEndpoint);
+                    winUsbHandle.Dispose();
+                }
+
+                catch(Exception ex)
+                {
+
+                }
             }
 
             if (deviceHandle != null && !deviceHandle.IsInvalid)
