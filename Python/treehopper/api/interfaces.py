@@ -38,7 +38,7 @@ class Pwm(ABC):
 class DigitalBase:
     """Base digital pin"""
     def __init__(self):
-        self._digital_value = False
+        self._digital_value = None
 
 
 class DigitalIn(DigitalBase):
