@@ -25,6 +25,7 @@ namespace Treehopper.Libraries.Input
             Input = input;
             this.activeLow = activeLow;
             input.DigitalValueChanged += Input_DigitalValueChanged;
+            input.MakeDigitalInAsync();
         }
 
         /// <summary>
