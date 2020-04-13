@@ -52,7 +52,7 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         protected class Tsl2591Registers : RegisterManager
         {
-            internal Tsl2591Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Tsl2591Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 enable = new EnableRegister(this);
                 _registers.Add(enable);

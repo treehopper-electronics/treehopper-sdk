@@ -56,7 +56,8 @@ namespace RegisterGenerator
                 }
                 {
                     // C++
-                    var outPath = $"{treehopperRoot}\\C++\\API\\Treehopper.Libraries\\inc\\{path.Replace("Libraries\\", "")}\\{library.Name}Registers.h";
+                    var outPath = $"{treehopperRoot}\\C++\\API\\inc\\{path}\\{library.Name}Registers.h";
+
                     Directory.CreateDirectory(Path.GetDirectoryName(outPath));
                     Render.FileToFile("Templates\\Registers.h", library, outPath);
                 }

@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
     {
         protected class Adxl345Registers : RegisterManager
         {
-            internal Adxl345Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Adxl345Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 powerCtl = new PowerCtlRegister(this);
                 _registers.Add(powerCtl);

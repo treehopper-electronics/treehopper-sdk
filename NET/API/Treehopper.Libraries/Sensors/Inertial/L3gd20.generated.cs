@@ -31,7 +31,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected class L3gd20Registers : RegisterManager
         {
-            internal L3gd20Registers(SMBusDevice dev = null) : base(dev, true)
+            internal L3gd20Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 whoAmI = new WhoAmIRegister(this);
                 _registers.Add(whoAmI);

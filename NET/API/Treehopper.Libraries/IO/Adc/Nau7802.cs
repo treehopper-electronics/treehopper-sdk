@@ -30,7 +30,7 @@ namespace Treehopper.Libraries.IO.Adc
             AutoUpdateWhenPropertyRead = true;
 
             dev = new SMBusDevice(0x2A, i2c);
-            registers = new Nau7802Registers(dev);
+            registers = new Nau7802Registers(new SMBusRegisterManagerAdapter(dev));
 
             registers.puCtrl.registerReset = 1;  // reset all registers
             registers.puCtrl.write().Wait();

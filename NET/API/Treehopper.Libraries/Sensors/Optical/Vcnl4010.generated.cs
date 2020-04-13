@@ -50,7 +50,7 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         protected class Vcnl4010Registers : RegisterManager
         {
-            internal Vcnl4010Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Vcnl4010Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 command = new CommandRegister(this);
                 _registers.Add(command);

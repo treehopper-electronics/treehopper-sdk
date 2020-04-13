@@ -21,7 +21,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <param name="i2c">The bus the device is attached to.</param>
         public Vcnl4010(I2C i2c)
         {
-            registers = new Vcnl4010Registers(new SMBusDevice(0x13, i2c));
+            registers = new Vcnl4010Registers(new SMBusRegisterManagerAdapter(new SMBusDevice(0x13, i2c)));
             Task.Run(() => registers.readRange(registers.command, registers.ambientLightParameters)).Wait();
             registers.proximityRate.setRate(Rates.Hz_7_8125);
             registers.ledCurrent.irLedCurrentValue = 20;

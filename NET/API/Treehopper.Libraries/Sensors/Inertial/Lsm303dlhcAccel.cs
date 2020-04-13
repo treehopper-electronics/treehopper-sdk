@@ -15,7 +15,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         public Lsm303dlhcAccel(I2C i2c, int rate=100)
         {
-            registers = new Lsm303dlhcAccelRegisters(new SMBusDevice(0x19, i2c, rate));
+            registers = new Lsm303dlhcAccelRegisters(new SMBusRegisterManagerAdapter(new SMBusDevice(0x19, i2c, rate)));
             registers.ctrl1.setOutputDataRate(OutputDataRates.Hz_100);
             registers.ctrl1.xEnable = 1;
             registers.ctrl1.yEnable = 1;

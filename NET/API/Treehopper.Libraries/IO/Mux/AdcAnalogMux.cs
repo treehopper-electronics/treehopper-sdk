@@ -16,7 +16,7 @@ namespace Treehopper.Libraries.IO.Mux
         internal int settlingTime;
 
         /// <summary>
-        ///     Construct an <see cref="I2cMux" /> using a standard 4052-style two-bit 4:1 mux.
+        ///     Construct an <see cref="AdcAnalogMux" /> using a standard 4052-style two-bit 4:1 mux.
         /// </summary>
         /// <param name="muxedPin">The upstream Adc pin to mux</param>
         /// <param name="settlingTime">The settling time, in ms, to use</param>
@@ -26,13 +26,17 @@ namespace Treehopper.Libraries.IO.Mux
             this.pins = pins;
             this.pin = muxedPin;
             this.settlingTime = settlingTime;
+            muxedPin.MakeAnalogInAsync();
             foreach (var pin in pins)
                 pin.MakeDigitalPushPullOutAsync();
         }
 
         internal AdcPin pin { get; set; }
 
-        public Collection<AdcPin> AnalogPins { get; set; }
+        /// <summary>
+        /// The analog pins provided by the mux
+        /// </summary>
+        public Collection<AdcPin> Pins { get; set; }
 
         /// <summary>
         ///     Set the mux
@@ -127,19 +131,23 @@ namespace Treehopper.Libraries.IO.Mux
             }
 
             /// <summary>
-            ///     Occurs when the ADC value change exceeds AdcValueChangedThreshold
+            ///     This event is not supported.
             /// </summary>
             public event OnAdcValueChanged AdcValueChanged;
 
             /// <summary>
-            ///     Occurs when the analog value change exceeds AnalogValueChangedThreshold
+            ///     This event is not supported.
             /// </summary>
             public event OnAnalogValueChanged AnalogValueChanged;
 
             /// <summary>
-            ///     Occurs when the analog voltage change exceeds AnalogVoltageChangedThreshold
+            ///     This event is not supported.
             /// </summary>
             public event OnAnalogVoltageChanged AnalogVoltageChanged;
+
+            /// <summary>
+            /// This event is not supported.
+            /// </summary>
             public event PropertyChangedEventHandler PropertyChanged;
 
             /// <summary>

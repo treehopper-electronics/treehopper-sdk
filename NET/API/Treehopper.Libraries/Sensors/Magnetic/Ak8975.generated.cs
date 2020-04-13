@@ -14,7 +14,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
     {
         protected class Ak8975Registers : RegisterManager
         {
-            internal Ak8975Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Ak8975Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 wia = new WiaRegister(this);
                 _registers.Add(wia);

@@ -44,7 +44,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
         protected class Lsm303dlhcMagRegisters : RegisterManager
         {
-            internal Lsm303dlhcMagRegisters(SMBusDevice dev = null) : base(dev, true)
+            internal Lsm303dlhcMagRegisters(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 tempOut = new TempOutRegister(this);
                 _registers.Add(tempOut);

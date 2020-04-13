@@ -142,7 +142,7 @@ protected override void OnResume()
 
         GUI apps or more advanced console apps can query or bind directly to the #Boards property, which is an ObservableCollection that can notify when boards are attached or removed:
 
-        ```
+        \code
         ConnectionService.Instance.Boards.CollectionChanged += async(o, e) => {
                 if(e.NewItems.Count > 0) // a new board was added
                     RunApp((TreehopperUsb)e.NewItems[0])
@@ -151,12 +151,11 @@ protected override void OnResume()
         // if we already have a board in the collection, start the app
         if(ConnectionService.Instance.Boards.Count > 0)
             RunApp(ConnectionService.Instance.Boards[0]);
-
-        ```
+        \endcode
 
         \warning After subscribing to CollectionChanged, you should always check the collection. A board may have already been added before you subscribed to the CollectionChanged event, and the event will not re-fire for new subscribers.
 
-        */
+        **/
         public ObservableCollection<TreehopperUsb> Boards { get; }
         
         /// <summary>

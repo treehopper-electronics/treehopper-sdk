@@ -54,7 +54,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected class Lsm303dlhcAccelRegisters : RegisterManager
         {
-            internal Lsm303dlhcAccelRegisters(SMBusDevice dev = null) : base(dev, true)
+            internal Lsm303dlhcAccelRegisters(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 ctrl1 = new Ctrl1Register(this);
                 _registers.Add(ctrl1);

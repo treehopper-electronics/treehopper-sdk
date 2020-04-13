@@ -4,7 +4,10 @@
 
 namespace Treehopper {
     namespace Libraries {
-        RegisterManager::RegisterManager(SMBusDevice &dev, bool multiRegisterAccess) : dev(dev) {
+        RegisterManager::RegisterManager(SMBusDevice &dev, bool multiRegisterAccess)
+			: dev(dev), 
+			multiRegisterAccess(multiRegisterAccess)
+		{
 
         }
 

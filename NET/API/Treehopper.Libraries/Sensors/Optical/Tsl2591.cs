@@ -34,7 +34,8 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <param name="rate">The rate to use.</param>
         public Tsl2591(I2C i2c, int rate=100)
         {
-            registers = new Tsl2591Registers(new SMBusDevice(0x29, i2c, rate));
+
+            registers = new Tsl2591Registers(new SMBusRegisterManagerAdapter(new SMBusDevice(0x29, i2c, rate)));
             registers.enable.powerOn = 1;
             registers.enable.alsEnable = 1;
             Task.Run(registers.enable.write).Wait();

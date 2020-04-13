@@ -64,7 +64,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public Mpu6050(I2C i2c, bool addressPin = false, int ratekHz = 400)
         {
             this.dev = new SMBusDevice((byte)(addressPin ? 0x69 : 0x68), i2c, ratekHz);
-            this._registers = new Mpu6050Registers(dev);
+            this._registers = new Mpu6050Registers(new SMBusRegisterManagerAdapter(dev));
             Task.Run(async () =>
             {
                 await _registers.powerMgmt1.read().ConfigureAwait(false);

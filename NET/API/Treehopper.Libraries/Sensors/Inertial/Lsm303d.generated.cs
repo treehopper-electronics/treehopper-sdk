@@ -94,7 +94,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected class Lsm303dRegisters : RegisterManager
         {
-            internal Lsm303dRegisters(SMBusDevice dev = null) : base(dev, true)
+            internal Lsm303dRegisters(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 tempOut = new TempOutRegister(this);
                 _registers.Add(tempOut);

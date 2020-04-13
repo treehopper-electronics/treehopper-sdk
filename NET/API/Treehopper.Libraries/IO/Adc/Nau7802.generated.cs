@@ -67,7 +67,7 @@ namespace Treehopper.Libraries.IO.Adc
 
         protected class Nau7802Registers : RegisterManager
         {
-            internal Nau7802Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Nau7802Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 puCtrl = new PuCtrlRegister(this);
                 _registers.Add(puCtrl);

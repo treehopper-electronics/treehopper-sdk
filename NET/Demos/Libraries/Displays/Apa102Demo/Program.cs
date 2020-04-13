@@ -21,7 +21,7 @@ namespace Apa102Demo
             await board.ConnectAsync();
             Console.WriteLine("Board connected. Starting rainbow demo");
             Console.WriteLine("Press any key to clear display and disconnect.");
-            var driver = new Apa102(board.Spi, 200); // change to match the number of LEDs you have connected
+            var driver = new Apa102(board.Spi, 1); // change to match the number of LEDs you have connected
 
             driver.Brightness = 1; 
             driver.AutoFlush = false; // only send updates when we explicitly Flush()
@@ -32,7 +32,8 @@ namespace Apa102Demo
             {
                 for (int i = 0; i < driver.Leds.Count; i++)
                 {
-                    driver.Leds[i].SetHsl((360f / driver.Leds.Count ) * i + hueOffset, 100, 50);
+                    //driver.Leds[i].SetRgb(0, 0, 255);
+                    driver.Leds[i].SetHsl((360f / driver.Leds.Count) * i + hueOffset, 100, 50);
                 }
 
                 await driver.FlushAsync().ConfigureAwait(false);

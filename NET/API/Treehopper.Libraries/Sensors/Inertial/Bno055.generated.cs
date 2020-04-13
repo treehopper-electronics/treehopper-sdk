@@ -38,7 +38,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected class Bno055Registers : RegisterManager
         {
-            internal Bno055Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Bno055Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 chipId = new ChipIdRegister(this);
                 _registers.Add(chipId);

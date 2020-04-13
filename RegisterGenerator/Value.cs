@@ -10,14 +10,41 @@ namespace RegisterGenerator
 {
     public class Value
     {
+        // These properties come in from the JSON deserialization:
+
+        /// <summary>
+        /// The name of the register value
+        /// </summary>
         public string Name { get; set; }
-        public string CapitalizedName => Name.ToPascalCase();
+
+        /// <summary>
+        /// The offset of the register value (optional)
+        /// </summary>
         public int? Offset { get; set; }
+
+        /// <summary>
+        /// The width of the register value (optional, default 1)
+        /// </summary>
         public int Width { get; set; } = 1;
-        public string Bitmask => $"0x{((1 << Width) - 1):X}";
+
+        /// <summary>
+        /// Whether the register value is signed or unsigned (optional, default false)
+        /// </summary>
         public bool IsSigned { get; set; }
-        public bool Last { get; set; }
+
+        /// <summary>
+        /// The enum associated with this value (optional)
+        /// </summary>
         public Enum Enum { get; set; }
+
+        // These properties are calculated during processing
+
+        /// <summary>
+        /// Whether this is the last register value
+        /// </summary>
+        public bool Last { get; set; }
+        public string CapitalizedName => Name.ToPascalCase();
+        public string Bitmask => $"0x{((1 << Width) - 1):X}";
 
         public void Preprocess()
         {

@@ -1,0 +1,115 @@
+/*
+The TSL2561 uses a non-standard protocol for the SMBus "address" byte 
+(referred to as the "command register" in the documentation:) 
+  - CMD (bit 7): Select command register. Must write as 1.
+
+  - CLEAR (bit 6): Interrupt clear. Clears any pending interrupt. 
+                   This bit is a write-one-to-clear bit. It is self clearing
+
+  - WORD (bit 5): SMB Write/Read Word Protocol. 1 indicates that this SMB transaction 
+                  is using either the SMB Write Word or Read Word protocol.
+
+  - BLOCK (bit 4): Block Write/Read Protocol. 1 indicates that this transaction 
+                   is using either the Block Write or the Block Read protocol.
+
+  - ADDRESS (bit 3:0): Register Address. This field selects the specific control 
+                       or status register for following write and read commands according to Table 2
+
+  To make this SMBus-compliant, we use addresses in the following register table that have already 
+  encoded these bits. That's why the following addresses do not directly match those in the datasheet.
+*/
+{
+  "multiRegisterAccess": "true",
+  "registers": {
+    "control": {
+      "address": "0x80",
+      "values": {
+        "power": {
+          "width": "2",
+          "enum": {
+            "values": {
+              "powerDown": "0",
+              "powerUp": "3"
+            }
+          }
+        }
+      }
+    },
+
+    "timing": {
+      "address": "0x81",
+      "values": {
+        "integrationTiming": {
+          "width": "2",
+          "enum": {
+            "isPublic": "true",
+            "values": {
+              "Time_13_7ms": null,
+              "Time_101ms": null,
+              "Time_402ms": null,
+              "Time_Manual": null
+            }
+          }
+        },
+        "manual": {
+          "offset": 3
+        },
+        "gain": {}
+      }
+    },
+
+    "interruptThresholdLow": {
+      "address": "0x82",
+      "width": 16
+    },
+
+    "interruptThresholdHigh": {
+      "address": "0x84",
+      "width": 16
+    },
+
+    "interruptControl": {
+      "address": "0x86",
+      "values": {
+        "persist": {
+          "width": 4
+        },
+        "intrControlSelect": {
+          "width": 2,
+          "enum": {
+            "isPublic": "true",
+            "values": {
+              "InterruptOutputDisabled": null,
+              "LevelInterrupt": null,
+              "SMBAlertCompliant": null,
+              "TestMode": null
+            }
+          }
+        }
+      }
+    },
+
+    "id": {
+      "address": "0x8A",
+      "values": {
+        "revNumber": {
+          "width": 4
+        },
+        "partNumber": {
+          "width": 4
+        }
+      }
+    },
+
+    "data0": {
+      "address": "0x8C",
+      "width": 16
+    },
+
+    "data1": {
+      "address": "0x8E",
+      "width": 16
+    }
+
+  }
+}

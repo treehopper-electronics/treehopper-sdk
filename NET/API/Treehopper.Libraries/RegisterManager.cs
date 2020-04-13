@@ -9,18 +9,18 @@ namespace Treehopper.Libraries
     public class RegisterManager
     {
         protected List<Register> _registers = new List<Register>();
-        protected SMBusDevice _dev;
+        private IRegisterManagerAdapter adapter;
         protected bool multiRegisterAccess;
 
-        public RegisterManager(SMBusDevice dev, bool multiRegisterAccess)
+        public RegisterManager(IRegisterManagerAdapter adapter, bool multiRegisterAccess)
         {
-            _dev = dev;
+            this.adapter = adapter;
             this.multiRegisterAccess = multiRegisterAccess;
         }
 
         public async Task read(Register register)
         {
-            var data = await _dev.ReadBufferDataAsync((byte) register.Address, register.Width).ConfigureAwait(false);
+            var data = await adapter.read(register.Address, register.Width).ConfigureAwait(false);
             register.setBytes(data);
         }
 
@@ -29,7 +29,7 @@ namespace Treehopper.Libraries
             if (multiRegisterAccess)
             {
                 var count = (end.Address + end.Width) - start.Address;
-                var bytes = await _dev.ReadBufferDataAsync((byte)start.Address, count).ConfigureAwait(false);
+                var bytes = await adapter.read(start.Address, count).ConfigureAwait(false);
                 int i = 0;
                 foreach (var reg in _registers.Where(reg => reg.Address >= start.Address && reg.Address <= end.Address))
                 {
@@ -44,12 +44,11 @@ namespace Treehopper.Libraries
                     await read(reg);
                 }
             }
-
         }
 
         public Task write(Register register)
         {
-            return _dev.WriteBufferDataAsync((byte) register.Address, register.getBytes());
+            return adapter.write(register.Address, register.getBytes());
         }
 
         public async Task writeRange(Register start, Register end)
@@ -61,7 +60,7 @@ namespace Treehopper.Libraries
                 {
                     bytes.AddRange(reg.getBytes());
                 }
-                await _dev.WriteBufferDataAsync((byte) start.Address, bytes.ToArray()).ConfigureAwait(false);
+                await adapter.write(start.Address, bytes.ToArray()).ConfigureAwait(false);
             }
             else
             {
@@ -70,9 +69,6 @@ namespace Treehopper.Libraries
                     await write(reg).ConfigureAwait(false);
                 }
             }
-
-
-
         }
     }
 }

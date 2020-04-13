@@ -6,7 +6,7 @@ using Treehopper.Utilities;
 
 namespace Treehopper
 {
-/** Built-in I/O pins
+    /** Built-in I/O pins
 
 # Quick guide
 Once you have connected to a TreehopperUsb board, you can access pins through the \link TreehopperUsb.Pins Pins\endlink property of the board. 
@@ -20,23 +20,23 @@ board.Pins[3].Mode = PinMode.PushPullOutput;
 board.Pins[3].DigitalValue = true;
 ```
 
-Or create reference variables:
+Or create a reference variable:
 ```
 board = await ConnectionService.Instance.GetFirstDeviceAsync();
 await board.ConnectAsync();
-Pin redLed = board.Pins[7];
+var redLed = board.Pins[7];
 redLed.Mode = PinMode.OpenDrainOutput;
 redLed.DigitalValue = false;
 ```
 
-You can choose whether a pin should be a digital input, digital output, analog input, or soft-PWM output by setting the pin's \link Pin.Mode Mode\endlink property to one of the values in PinMode.
+You can choose whether a pin should be a digital input, digital output, analog input, or soft-PWM output by setting the pin's \link Pin.Mode Mode\endlink property to one of the values in \link Treehopper.PinMode PinMode\endlink.
 
-You can set or retrieve the digital value of a pin by accessing the \link Pin.DigitalValue DigitalValue\endlink property. Note that writing to this property --- even if the pin is an input --- will implicitly force it to be an output.
+You can set or retrieve the digital value of a pin by accessing the \link Pin.DigitalValue DigitalValue\endlink property. Note that writing to this property if the pin is an input will implicitly change the pin mode so that it becomes an output.
 
 If the pin is set as an analog input, you can access its data through any of the following properties:
- - \link Pin.AnalogValue AnalogValue\endlink: retrieve a normalized (0.0 - 1.0) pin value
- - \link Pin.AnalogVoltage AnalogVoltage\endlink: retrieve the voltage (0.0 - 3.3) on the pin
- - \link Pin.AdcValue AdcValue\endlink: retrieve the raw ADC value (0 - 4095) of the pin
+     - \link Pin.AnalogValue AnalogValue\endlink: retrieve a normalized (0.0 - 1.0) pin value
+     - \link Pin.AnalogVoltage AnalogVoltage\endlink: retrieve the voltage (0.0 - 3.3) on the pin
+     - \link Pin.AdcValue AdcValue\endlink: retrieve the raw ADC value (0 - 4095) of the pin
 
 # More information
 This section dives into more details and electrical characteristics about %Treehopper's pins.
@@ -46,50 +46,50 @@ You can choose whether a pin should be a digital input, output, or analog input 
 
 ## Digital outputs
 All pins on %Treehopper support both push-pull and open-drain outputs. Writing a true or false to the pin's digital value will flush that value to the pin.
- - **Push-Pull**: Push-pull is the most commonly used output mode; when a pin is set to true, %Treehopper will attempt to drive the pin to logic HIGH (3.3V) — when a pin is set to false, %Treehopper will attempt to drive the pin to logic LOW (0V — ground).
- - **Open-Drain**: Open-drain outputs can only drive a strong logic LOW (0V); in the HIGH state, the pin is weakly pulled high.
+     - **Push-Pull**: Push-pull is the most commonly used output mode; when a pin is set to true, %Treehopper will attempt to drive the pin to logic HIGH (3.3V) — when a pin is set to false, %Treehopper will attempt to drive the pin to logic LOW (0V — ground).
+     - **Open-Drain**: Open-drain outputs can only drive a strong logic LOW (0V); in the HIGH state, the pin is weakly pulled high.
 
 ### Output current limitations
 %Treehopper's output impedance varies, but is roughly 100 ohm source and 50 ohm sink when supplying weaker loads, but increases as the load increases. In the worst-case scenario (when short-circuited), %Treehopper can source approximately 20 mA of current, and sink approximately 40 mA of current. The pin's drivers are rated for a maximum of 100 mA of output current, so you cannot damage the board by short-circuiting its output to ground or 3.3V.
 
-While this is plenty of current for peripheral ICs and small indicator LEDs, do not expect to drive large arrays of LEDs, or low-impedance loads like motors, solenoids, or speakers directly from %Treehopper's pins. There are a wide variety of peripherals in the Treehopper.Libraries package for your language API that can be used for interfacing with these peripherals.
+While this is plenty of current for peripheral ICs and small indicator LEDs, do not expect to drive large arrays of LEDs, or low-impedance loads like motors, solenoids, or speakers directly from %Treehopper's pins. There are a wide variety of peripherals in the Treehopper.Libraries package that can be used for interfacing with these peripherals.
 
 \warning **To avoid damaging the device permanently, do not source or sink more than 400 mA of combined current out of the pins on the board!** Note that these limits have nothing to do with the 3.3V supply pins found on %Treehopper, which can comfortably source 500 mA --- or the unfused 5V pin, which has no imposed current limit (other than that of your computer).
 
 ## Digital input
-%Treehopper's digital inputs are used to sample digital signals — i.e., signals that have either a <i>LOW</i> or <i>HIGH</i> state. Logic LOW (false) is considered a voltage less than or equal to 0.6V. Logic HIGH (true) is considered a voltage greater than or equal to 2.7V.
+%Treehopper's digital inputs are used to convert voltages into a digital signal that has either a <i>LOW</i> or <i>HIGH</i> state. When an input voltage is below 0.6V, the pin will read as Logic LOW (false) When an input voltage is above or equal to 2.7V, the pin will read as a Logic HIGH (true).
 
-%Treehopper pins are true 5V-tolerant signals; consequently, you do not need any sort of logic-level conversion or series-limiting resistor when using the pin as a digital input with a 5V source.
+%Treehopper pins are true 5V-tolerant signals; consequently, you do not need any sort of logic-level conversion or current-limiting resistor when using the pin as a digital input with a 5V source.
 
-You can access the most recent \link Pin.DigitalValue DigitalValue\endlink, or use the \link Pin.DigitalValueChanged DigitalValueChanged\endlink event to subscribe to change notifications.
+To access the most recently retrieved digital value of a pin, read the \link Pin.DigitalValue DigitalValue\endlink property. Note that reading this property does not actually trigger a GPIO read, it simply returns the last value that the board sent your application. Values are only sent to your computer when they change, and you can use the \link Pin.DigitalValueChanged DigitalValueChanged\endlink event to subscribe to change notifications. This is discussed more below.
 
 ## Analog inputs
-Each Treehopper pin can be read using the on-board 12-bit ADC. There is no limit to the total number of analog pins activated at any time. 
+Each Treehopper pin can be read using the on-chip 12-bit ADC. There is no limit to the total number of analog pins activated at any time. When a pin is configured as an analog input, it is sampled continuously and each new value is sent to the computer. Since Treehopper does not have a fixed sample rate, it isn't well-suited for working with fast time-varying analog signals.
 
 ### Output Format
 When the pin is sampled and sent to the host, the value is simultaneously available to the user in three forms:
- - \link Pin.AdcValue AdcValue\endlink -- the raw, 12-bit result from conversion.
- - \link Pin.AnalogValue AnalogValue\endlink -- the normalized value of the ADC (from 0-1).
- - \link Pin.AnalogVoltage AnalogVoltage\endlink -- the actual voltage at the pin (taking into account the reference level).
+     - \link Pin.AdcValue AdcValue\endlink -- the raw, 12-bit result from conversion.
+     - \link Pin.AnalogValue AnalogValue\endlink -- the normalized value of the ADC (from 0-1).
+     - \link Pin.AnalogVoltage AnalogVoltage\endlink -- the actual voltage at the pin (taking into account the reference level).
 
 There are OnChanged events associated with each of these properties:
- - \link Pin.AnalogVoltageChanged AnalogVoltageChanged\endlink
- - \link Pin.AnalogValueChanged AnalogValueChanged\endlink
- - \link Pin.AdcValueChanged AdcValueChanged\endlink
+     - \link Pin.AnalogVoltageChanged AnalogVoltageChanged\endlink
+     - \link Pin.AnalogValueChanged AnalogValueChanged\endlink
+     - \link Pin.AdcValueChanged AdcValueChanged\endlink
 
 Plus thresholds for each of these events that give you fine-grained control over when the event will fire:
- - \link Pin.AnalogVoltageChangedThreshold AnalogVoltageChangedThreshold\endlink
- - \link Pin.AnalogValueChangedThreshold AnalogValueChangedThreshold\endlink
- - \link Pin.AdcValueChangedThreshold AdcValueChangedThreshold\endlink
+     - \link Pin.AnalogVoltageChangedThreshold AnalogVoltageChangedThreshold\endlink
+     - \link Pin.AnalogValueChangedThreshold AnalogValueChangedThreshold\endlink
+     - \link Pin.AdcValueChangedThreshold AdcValueChangedThreshold\endlink
 
 ### Reference Levels
-Each pin has a configurable ReferenceLevel that can be used to measure the pin against. The possible reference levels are:
- - 3.3V generated by the on-board LDO, rated at 1.5% accuracy (default).
- - 3.7V (effective) reference derived from the on-chip 1.85V reference.
- - 2.4V on-chip reference rated at 2.1% accuracy.
- - 1.85V on-chip reference.
- - 1.65V on-chip reference, 1.8% accurate.
- - 3.3V (effective) reference that is derived from the on-chip 1.65V reference.
+Each pin has a configurable \link Treehopper.ReferenceLevel ReferenceLevel\endlink that can be used to measure the pin against. The possible reference levels are:
+     - 3.3V generated by the on-board LDO, rated at 1.5% accuracy (default).
+     - 3.7V (effective) reference derived from the on-chip 1.85V reference.
+     - 2.4V on-chip reference rated at 2.1% accuracy.
+     - 1.85V on-chip reference.
+     - 1.65V on-chip reference, 1.8% accurate.
+     - 3.3V (effective) reference that is derived from the on-chip 1.65V reference.
 
 For most ratiometric applications --- i.e., when measuring a device whose output is ratioed to its power supply --- connect the sensor's power supply to the 3.3V supply pin the %Treehopper and use the default 3.3V reference. The other reference options are provided for advanced scenarios that involve reading from precision voltage outputs accurately.
 
@@ -99,11 +99,11 @@ For most ratiometric applications --- i.e., when measuring a device whose output
 As a result, you can directly bind GUI controls like progress bars, checkboxes, etc to %Treehopper pins in WPF, UWP, or Xamarin.Forms applications, and they will automatically update.
 
 ## A note about pin reads
-All of %Treehopper's pins configured as digital or analog inputs are sampled continuously onboard; when any pin changes, this data is sent to the host device. When you access the digital or one of the analog value properties, you're accessing the last received data. This makes property reads instantaneous --- keeping your GUI or application running responsively.
+All of %Treehopper's pins configured as digital or analog inputs are sampled continuously onboard; when any pin changes, this data is sent to the host device. When you access the digital or one of the analog value properties, you're accessing the last received data. This makes property reads instantaneous --- keeping your application running responsively. It also reduces chattiness and improves overall performance.
 
-For almost all applications, changes to digital or analog inputs are to be reacted to (like with switches, interrupt outputs, encoders), or sampled (like with sensor outputs). Care must be taken, however, if you need to synchronize pin reads with other functions.
+Most applications react to changes in digital or analog inputs asynchronously (like with switches, interrupt outputs, encoders), or through sampling (like with sensor outputs). Care must be taken, however, if you need to synchronize pin reads with other functions.
 
-For example, consider the case where you electrically short pins 0 and 1 together on the board, and then run this code:
+For example, consider the case where you electrically short pins 0 and 1 to each other. You may think to try to read the output value of one pin by reading the input value of the other, as is done in this code:
 
 ```
 var pin0 = board.Pins[0];
@@ -115,15 +115,14 @@ pin1.Mode = PinMode.DigitalInput;
 pin0.DigitalValue = true;
 if(pin1.DigitalValue == pin0.DigitalValue)
 {
-    // we generally won't get here, since pin1's DigitalValue 
-    // isn't explicitly read from the pin when we access it; it only returns
-    // the last value read from a separate pin-reading thread
+   // we never get here :(
 }
 ```
+while you may assume your application would always end up in the conditional branch, this won't generally happen, since pin1's DigitalValue isn't explicitly read from the pin when accessed; it only returns the last value read from a separate pin-reading thread, and it is unlikely that pin1 will have been read by the time we access its DigitalValue property.
 
-A work around is to wait for two consecutive pin updates to be received before checking the pin's value. This can be accomplished by awaiting TreehopperUsb.AwaitPinUpdateAsync(). 
+A work around is to wait for your application to receive two consecutive pin updates before checking the pin's value. This can be accomplished by awaiting TreehopperUsb.AwaitPinUpdateAsync(). 
 
-However, pin updates are only sent to the computer when a pin's value changes, so if you wish to synchronously sample a pin that might not change, you should set an unused pin as an analog input, which will almost certainly guarantee a constant stream of pin updates:
+However, pin updates are only sent to the computer when at least one pin's value changes, so AwaitPinUpdateAsync() can hang indefinitely if none of the input pin values have changed. If you want to force a constant stream of updates, regardless of whether there are new digital values or not, you should set an unused pin as an analog input; the few LSBs of noise from the ADC reads will cause a constant stream of new data:
 
 ```
 board.Pins[19].Mode = PinMode.AnalogInput; // this will ensure we get continuous pin updates
@@ -139,12 +138,16 @@ await board.AwaitPinUpdateAsync(); // this first report may have been captured b
 await board.AwaitPinUpdateAsync(); // this report should have the effects of the digital output in it
 if(pin1.DigitalValue == pin0.DigitalValue)
 {
-    // we should always get here
+   // we should always get here
 }
 ```
 
 # SoftPWM functionality
-Each %Treehopper pin can be used as a SoftPWM pin.
+Each %Treehopper pin can be used as a software-based PWM output. There are no limits to the maximum number of SoftPWM channels enabled; each output has a fixed frequency of approximately 60.94 Hz and a resolution of 16 bits. This module is well-suited to controlling hobby servo motors or other low-frequency PWM applications that are less sensitive to timing jitter. For more accurate timing and higher-frequency outputs, consider using the HardwarePwm module, or an external peripheral IC (there are many in Treehopper.Libraries.Displays and Treehopper.Libraries.IO.PortExpander).
+
+You can enable SoftPWM functionality by changing the \link Treehopper.Mode Mode\endlink of the pin, or by calling EnablePwmAsync().
+
+You can adjust the output by setting either the DutyCycle or the PulseWidth properties (these cannot be controlled independently — setting one will update the other automatically). The DutyCycle property can be set between 0.0 and 1.0. The PulseWidth property can be set between 0 and 16409 microseconds, in 0.25 µs increments. 
 
 # Performance Considerations
 Writing values to (or changing pin modes of) Treehopper pins will flush to the OS's USB layer immediately, but there is no way of achieving guaranteed latency. 
@@ -572,19 +575,29 @@ Analog pins take a relatively long time to sample; if you enable tons of analog 
         /** @name SoftPWM components
             @{
         */
-
+        
+        /// <summary>
+        /// When in SoftPWM mode, the duty cycle of the output, from 0.0 - 1.0.
+        /// </summary>
         public double DutyCycle
         {
             get => Board.SoftPwmMgr.GetDutyCycle(this);
             set => Task.Run(() => Board.SoftPwmMgr.SetDutyCycleAsync(this, value)).Wait();
         }
 
+        /// <summary>
+        /// When in SoftPWM mode, the pulse width of the output, in microseconds. The pulse width can vary between 0 and 16409. Pulse widths can be set in increments of 0.25 microseconds.
+        /// </summary>
         public double PulseWidth
         {
             get => Board.SoftPwmMgr.GetPulseWidth(this);
             set => Task.Run(() => Board.SoftPwmMgr.SetPulseWidthAsync(this, value)).Wait();
         }
 
+        /// <summary>
+        /// Enables the SoftPWM functionality of this pin. Equivalent to setting the \link Treehopper.Mode\endlink property to PinMode.SoftPwm.
+        /// </summary>
+        /// <returns>An awaitable task that completes once the pin mode has been changed</returns>
         public async Task EnablePwmAsync()
         {
             _mode = PinMode.SoftPwm;
@@ -592,6 +605,10 @@ Analog pins take a relatively long time to sample; if you enable tons of analog 
             await Board.SoftPwmMgr.StartPinAsync(this).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Disables the SoftPWM functionality of this pin. Equivalent to setting the \link Treehopper.Mode\endlink property to PinMode.DigitalInput.
+        /// </summary>
+        /// <returns>An awaitable task that completes once the pin mode has been changed</returns>
         public async Task DisablePwmAsync()
         {
             _mode = PinMode.DigitalInput;

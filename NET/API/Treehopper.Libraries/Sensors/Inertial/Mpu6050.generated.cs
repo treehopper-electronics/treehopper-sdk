@@ -49,7 +49,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected class Mpu6050Registers : RegisterManager
         {
-            internal Mpu6050Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Mpu6050Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 self_test_x_gyro = new Self_test_x_gyroRegister(this);
                 _registers.Add(self_test_x_gyro);

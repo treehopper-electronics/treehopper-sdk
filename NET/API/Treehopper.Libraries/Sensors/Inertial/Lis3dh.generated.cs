@@ -58,7 +58,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
         protected class Lis3dhRegisters : RegisterManager
         {
-            internal Lis3dhRegisters(SMBusDevice dev = null) : base(dev, true)
+            internal Lis3dhRegisters(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 statusRegAux = new StatusRegAuxRegister(this);
                 _registers.Add(statusRegAux);

@@ -72,7 +72,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
         protected class Bmp280Registers : RegisterManager
         {
-            internal Bmp280Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Bmp280Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 t1 = new T1Register(this);
                 _registers.Add(t1);

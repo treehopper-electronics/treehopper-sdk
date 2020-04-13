@@ -3,14 +3,16 @@ using Treehopper.Utilities;
 
 namespace Treehopper
 {
-/** Built-in hardware PWM channels
+    /** Built-in hardware PWM channels
 
 \note
 Treehopper has two types of PWM support --- Hardware and Software PWM. For information on software PWM functionality, visit Treehopper.Pin.
 
-Treehopper has three 16-bit hardware PWM channels labeled *PWM1*, *PWM2*, and *PWM3*. Like all peripherals, these are accessible from the TreehopperUsb instance.
+Treehopper has three 16-bit hardware PWM channels, \link TreehopperUsb.Pwm1 Pwm1\endlink, \link TreehopperUsb.Pwm2 Pwm2\endlink, and \link TreehopperUsb.Pwm3 Pwm3\endlink. These correspond to pins 7, 8, and 9.
 
- */
+You can change the frequency used by the PWM channels by modifying the \link HardwarePwmManager.Frequency TreehopperUsb.HardwarePwmManager.Frequency\endlink (this is a global setting that affects all three channels).
+
+     */
     public class HardwarePwm : Pwm
     {
         private readonly TreehopperUsb _board;
@@ -86,7 +88,7 @@ Treehopper has three 16-bit hardware PWM channels labeled *PWM1*, *PWM2*, and *P
         }
 
         /// <summary>
-        ///     Get or set the pulse width, in microseconds, of the pin
+        ///     Gets or sets the pulse width, in microseconds, of the pin. The maximum pulse width depends on the hardware PWM frequency --- attempting to write a value greater than the maximum pulse width will trigger an error (and optionally an exception).
         /// </summary>
         public double PulseWidth
         {

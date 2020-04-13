@@ -8,9 +8,12 @@ namespace RegisterGenerator
 {
     public class Enum
     {
+        // These properties come in from de-serializing the JSON
         public bool IsPublic { get; set; }
         public Dictionary<string, int?> Values { get; set; }
         public string PluralizedName { get; set; }
+
+
         public List<KeyValuePair<string, EnumVal>> ValuesList = new List<KeyValuePair<string, EnumVal>>();
         public void Preprocess()
         {
@@ -31,6 +34,7 @@ namespace RegisterGenerator
                 ValuesList.Add(new KeyValuePair<string, EnumVal>(key, new EnumVal(Values[key].Value)));
             }
 
+            // This helps the template know if it's the last element so it can, for example, omit a terminal comma
             ValuesList.Last().Value.Last = true;
         }
     }

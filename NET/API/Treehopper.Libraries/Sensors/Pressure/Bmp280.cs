@@ -46,7 +46,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
         protected Bmp280Registers registers;
         protected double tFine;
         private double altitude;
-        private readonly SMBusDevice i2cDev;
+        private readonly SMBusDevice dev;
 
         /// <summary>
         ///     Construct a BMP280 hooked up to the i2C bus
@@ -55,8 +55,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
         /// <param name="sdoPin">the state of the SDO pin, which sets the address</param>
         public Bmp280(I2C i2c, bool sdoPin = false)
         {
-            i2cDev = new SMBusDevice((byte)(0x76 | (sdoPin ? 1 : 0)), i2c);
-            registers = new Bmp280Registers(i2cDev);
+            dev = new SMBusDevice((byte)(0x76 | (sdoPin ? 1 : 0)), i2c);
+            registers = new Bmp280Registers(new SMBusRegisterManagerAdapter(dev));
 
             registers.ctrlMeasure.setMode(Modes.Normal);
             registers.ctrlMeasure.setOversamplingPressure(OversamplingPressures.Oversampling_x16);

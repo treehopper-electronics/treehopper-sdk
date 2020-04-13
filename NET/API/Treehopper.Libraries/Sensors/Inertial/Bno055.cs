@@ -140,7 +140,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             else
                 dev = new SMBusDevice(0x28, i2c, rateKhz);
 
-            registers = new Bno055Registers(dev);
+            registers = new Bno055Registers(new SMBusRegisterManagerAdapter(dev));
 
             registers.operatingMode.setOperatingMode(OperatingModes.ConfigMode);
             Task.Run(registers.operatingMode.write);

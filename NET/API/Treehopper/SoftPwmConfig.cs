@@ -10,7 +10,7 @@
         public double DutyCycle { get; set; }
 
         /// <summary>
-        ///     Pulse Width, in Milliseconds
+        ///     Pulse Width, in Microseconds
         /// </summary>
         public double PulseWidthUs { get; set; }
 

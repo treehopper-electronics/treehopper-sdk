@@ -27,7 +27,7 @@ namespace Treehopper.Libraries.{{Namespace}}
         {{/RegisterList}}
         protected class {{Name}}Registers : RegisterManager
         {
-            internal {{Name}}Registers(SMBusDevice dev = null) : base(dev, {{MultiRegisterAccess}})
+            internal {{Name}}Registers(IRegisterManagerAdapter adapter) : base(adapter, {{MultiRegisterAccess}})
             {
                 {{#RegisterList}}
                 {{Name}} = new {{CapitalizedName}}Register(this);

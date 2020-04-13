@@ -21,7 +21,7 @@
         PushPullOutput,
 
         /// <summary>
-        ///     Pin is an open-drain output
+        ///     Pin is an open-drain output (with a weak internal pull-up)
         /// </summary>
         OpenDrainOutput,
 

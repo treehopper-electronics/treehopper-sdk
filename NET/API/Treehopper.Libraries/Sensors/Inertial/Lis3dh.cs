@@ -43,7 +43,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public Lis3dh(I2C i2c, bool sdo = true, int rate=100)
         {
             dev = new SMBusDevice((byte)(sdo ? 0x19 : 0x18), i2c, rate);
-            registers = new Lis3dhRegisters(dev);
+            registers = new Lis3dhRegisters(new SMBusRegisterManagerAdapter(dev));
 
             if (Task.Run(registers.whoAmI.read).Result.value != 0x33)
             {

@@ -56,7 +56,7 @@ namespace Treehopper.Libraries.IO.Adc
 
         protected class Ads1115Registers : RegisterManager
         {
-            internal Ads1115Registers(SMBusDevice dev = null) : base(dev, true)
+            internal Ads1115Registers(IRegisterManagerAdapter adapter) : base(adapter, true)
             {
                 conversion = new ConversionRegister(this);
                 _registers.Add(conversion);

@@ -50,7 +50,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public Adxl345(I2C i2c, bool altAddressPin = false, int rate = 100)
         {
             _dev = new SMBusDevice((byte)(!altAddressPin ? 0x1D : 0x53), i2c, rate);
-            registers = new Adxl345Registers(_dev);
+            registers = new Adxl345Registers(new SMBusRegisterManagerAdapter(_dev));
             registers.powerCtl.sleep = 0;
             registers.powerCtl.measure = 1;
             registers.dataFormat.range = 0x00;

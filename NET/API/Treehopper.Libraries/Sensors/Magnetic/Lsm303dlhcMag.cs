@@ -37,7 +37,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         /// <param name="rate">The rate, in kHz, to use.</param>
         public Lsm303dlhcMag(I2C i2c, int rate=100)
         {
-            registers = new Lsm303dlhcMagRegisters(new SMBusDevice(0x1E, i2c, rate));
+            registers = new Lsm303dlhcMagRegisters(new SMBusRegisterManagerAdapter(new SMBusDevice(0x1E, i2c, rate)));
             registers.mr.setMagSensorMode(MagSensorModes.ContinuousConversion);
             registers.crb.setGainConfiguration(GainConfigurations.gauss_1_3);
             registers.cra.tempEnable = 1;

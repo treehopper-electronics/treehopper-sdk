@@ -68,66 +68,114 @@ Display collections and other classes for working with displays
     \class Treehopper.Libraries.Displays.GpioLedDriver
 @}
 
-\defgroup Inertial Inertial Sensors
-Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+\defgroup sensors Sensors
+Accelerometers, gyroscopes, magnetometers, temperature sensors, etc
 \ingroup libraries
 @{
-    \class Treehopper.Libraries.Sensors.Inertial.Adxl345
-    \class Treehopper.Libraries.Sensors.Inertial.Bno055
-    \class Treehopper.Libraries.Sensors.Inertial.Itg3205
-    \class Treehopper.Libraries.Sensors.Inertial.Lis3dh
-    \class Treehopper.Libraries.Sensors.Inertial.Lsm303d
-    \class Treehopper.Libraries.Sensors.Inertial.Lsm303dlhc
-    \class Treehopper.Libraries.Sensors.Inertial.Mpu6050
-    \class Treehopper.Libraries.Sensors.Inertial.Mpu9250
-    \class Treehopper.Libraries.Sensors.Magnetic.Hmc5883l
-    \class Treehopper.Libraries.Sensors.Magnetic.Ak8975
-    \class Treehopper.Libraries.Sensors.Magnetic.Tlv493d
+    \defgroup Inertial Inertial
+    Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+    \ingroup sensors
+    @{
+        \class Treehopper.Libraries.Sensors.Inertial.Adxl345
+        \class Treehopper.Libraries.Sensors.Inertial.Bno055
+        \class Treehopper.Libraries.Sensors.Inertial.Itg3205
+        \class Treehopper.Libraries.Sensors.Inertial.Lis3dh
+        \class Treehopper.Libraries.Sensors.Inertial.Lsm303d
+        \class Treehopper.Libraries.Sensors.Inertial.Lsm303dlhc
+        \class Treehopper.Libraries.Sensors.Inertial.Mpu6050
+        \class Treehopper.Libraries.Sensors.Inertial.Mpu9250
+        \class Treehopper.Libraries.Sensors.Magnetic.Hmc5883l
+        \class Treehopper.Libraries.Sensors.Magnetic.Ak8975
+        \class Treehopper.Libraries.Sensors.Magnetic.Tlv493d
+    @}
+
+    \defgroup temperature Temperature
+    Temperature, humidity, and pressure sensors
+    \ingroup sensors
+    @{
+        \class Treehopper.Libraries.Sensors.Temperature.Ds18b20
+        \class Treehopper.Libraries.Sensors.Temperature.Lm75
+        \class Treehopper.Libraries.Sensors.Temperature.Mcp9700
+        \class Treehopper.Libraries.Sensors.Temperature.Mcp9808
+        \class Treehopper.Libraries.Sensors.Temperature.Mlx90614
+        \class Treehopper.Libraries.Sensors.Temperature.Mlx90615
+    @}
+
+    \defgroup pressure Pressure
+    Temperature, humidity, and pressure sensors
+    \ingroup sensors
+    @{
+        \class Treehopper.Libraries.Sensors.Pressure.Bmp280
+        \class Treehopper.Libraries.Sensors.Pressure.Bme280
+    @}
+
+    \defgroup optical Optical Sensors
+    Optical sensors and camera modules
+    \ingroup sensors
+    @{
+        \class Treehopper.Libraries.Sensors.Optical.FlirLepton
+        \class Treehopper.Libraries.Sensors.Optical.Vcnl4010
+        \class Treehopper.Libraries.Sensors.Optical.Tsl2591
+        \class Treehopper.Libraries.Sensors.Optical.Bh1750
+        \class Treehopper.Libraries.Sensors.Optical.Veml6070
+    @}
 @}
 
-\defgroup environmental Environmental Sensors
-Temperature, humidity, and pressure sensors
-\ingroup libraries
-@{
-    \class Treehopper.Libraries.Sensors.Temperature.Ds18b20
-    \class Treehopper.Libraries.Sensors.Temperature.Lm75
-    \class Treehopper.Libraries.Sensors.Temperature.Mcp9700
-    \class Treehopper.Libraries.Sensors.Temperature.Mcp9808
-    \class Treehopper.Libraries.Sensors.Temperature.Mlx90614
-    \class Treehopper.Libraries.Sensors.Temperature.Mlx90615
-    \class Treehopper.Libraries.Sensors.Pressure.Bmp280
-    \class Treehopper.Libraries.Sensors.Pressure.Bme280
-@}
-
-\defgroup optical Optical Sensors
-Optical sensors and camera modules
-\ingroup libraries
-@{
-    \class Treehopper.Libraries.Sensors.Optical.FlirLepton
-    \class Treehopper.Libraries.Sensors.Optical.Vcnl4010
-    \class Treehopper.Libraries.Sensors.Optical.Tsl2591
-    \class Treehopper.Libraries.Sensors.Optical.Bh1750
-    \class Treehopper.Libraries.Sensors.Optical.Veml6070
-@}
-
-\defgroup interface Interface
+\defgroup io IO
 ADCs, DACs, shift registers, muxes, and digital pots
 \ingroup libraries
 @{
-    \class Treehopper.Libraries.IO.PortExpander.Hc166
-    \class Treehopper.Libraries.IO.PortExpander.Hc595
-    \class Treehopper.Libraries.IO.PortExpander.Mcp23008
-    \class Treehopper.Libraries.IO.PortExpander.Pca9632
-    \class Treehopper.Libraries.IO.PortExpander.Pca9685
-    \class Treehopper.Libraries.IO.Mux.I2cAnalogMux
-    \class Treehopper.Libraries.IO.Adc.Ads1115
-    \class Treehopper.Libraries.IO.Adc.Nau7802
-    \class Treehopper.Libraries.IO.Adc.Ltc2305
-    \class Treehopper.Libraries.IO.Dac.Mcp4725
-    \class Treehopper.Libraries.IO.DigitalPot.Mcp413x
-    \class Treehopper.Libraries.IO.DigitalPot.Mcp415x
-    \class Treehopper.Libraries.IO.DigitalPot.Mcp423x
-    \class Treehopper.Libraries.IO.DigitalPot.Mcp425x
+    \defgroup adc Adc
+    Analog-to-Digital Converters (ADCs)
+
+    \ingroup IO
+    @{
+        \class Treehopper.Libraries.IO.Adc.Ads1115
+        \class Treehopper.Libraries.IO.Adc.Ltc2305
+        \class Treehopper.Libraries.IO.Adc.Nau7802
+    @}
+
+    \defgroup dac Dac
+    Digital-to-Analog Converters (DACs)
+
+    \ingroup IO
+    @{
+        \class Treehopper.Libraries.IO.Dac.Mcp4725
+    @}
+
+
+    \defgroup digital-pot DigitalPot
+    Digital potentiometers
+
+    \ingroup IO
+    @{
+        \class Treehopper.Libraries.IO.DigitalPot.Mcp413x
+        \class Treehopper.Libraries.IO.DigitalPot.Mcp415x
+        \class Treehopper.Libraries.IO.DigitalPot.Mcp423x
+        \class Treehopper.Libraries.IO.DigitalPot.Mcp425x
+    @}
+
+
+    \defgroup port-expander PortExpander
+    Port expanders, used to add extra digital I/O to Treehopper
+
+    \ingroup IO
+    @{
+        \class Treehopper.Libraries.IO.PortExpander.Hc166
+        \class Treehopper.Libraries.IO.PortExpander.Hc595
+        \class Treehopper.Libraries.IO.PortExpander.Mcp23008
+        \class Treehopper.Libraries.IO.PortExpander.Pca9632
+        \class Treehopper.Libraries.IO.PortExpander.Pca9685
+    @}
+
+    \defgroup mux Mux
+    Port Expanders used to add extra digital I/O functions
+
+    \ingroup IO
+    @{
+        \class Treehopper.Libraries.IO.Mux.I2cAnalogMux
+        \class Treehopper.Libraries.IO.Mux.AdcAnalogMux
+    @}
 @}
 
 \defgroup motors Motors

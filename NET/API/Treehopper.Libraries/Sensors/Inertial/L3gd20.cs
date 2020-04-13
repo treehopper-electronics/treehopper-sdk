@@ -106,7 +106,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
         /// <param name="rate">The rate to use.</param>
         public L3gd20(I2C i2c, byte address, int rate = 100)
         {
-            registers = new L3gd20Registers(new SMBusDevice(address, i2c, rate));
+            registers = new L3gd20Registers(new SMBusRegisterManagerAdapter(new SMBusDevice(address, i2c, rate)));
             Task.Run(registers.ctrlReg1.write).Wait();
             registers.ctrlReg1.xEn = 1;
             registers.ctrlReg1.yEn = 1;

@@ -24,7 +24,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         public Ak8975(I2C i2c, int rate=100)
         {
             dev = new SMBusDevice(0x0c, i2c, rate);
-            _registers = new Ak8975Registers(dev);
+            _registers = new Ak8975Registers(new SMBusRegisterManagerAdapter(dev));
         }
 
         /// <summary>
