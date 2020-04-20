@@ -46,7 +46,15 @@ namespace Treehopper.Firmware
         /// <returns>An awaitable bool indicating wheather loading was successful.</returns>
         public async Task<bool> Load(string path)
         {
-            throw new NotImplementedException();
+            if(Path.GetExtension(path) != ".tfi" && Path.GetExtension(path) != ".dhi")
+            {
+                throw new Exception();
+            }
+
+            FileStream fs = File.OpenRead(path);
+
+
+            return await Load(fs);
         }
 
         /// <summary>
