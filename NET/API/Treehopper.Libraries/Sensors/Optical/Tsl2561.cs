@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Treehopper.Libraries.Sensors.Optical
 {
+    /// <summary>
+    /// Taos / AMS TSL2561 16-bit ambient light sensor with both visible and IR photodiodes and a 1,000,000-to-1 dynamic range.
+    /// </summary>
     public partial class Tsl2561 : AmbientLightSensor
     {
         /// <summary>
@@ -33,6 +36,9 @@ namespace Treehopper.Libraries.Sensors.Optical
             return null;
         }
 
+        /// <summary>
+        /// The state of the AddrSel pin
+        /// </summary>
         public enum AddrSel
         {
             /// <summary>
@@ -51,6 +57,12 @@ namespace Treehopper.Libraries.Sensors.Optical
             Vdd = 0x49
         }
 
+        /// <summary>
+        /// Construct a new TSL2561 ambient light sensor
+        /// </summary>
+        /// <param name="i2c">The I2C bus the sensor is attached to</param>
+        /// <param name="addrSel">The state of the address pin</param>
+        /// <param name="rate">The I2C bus clock, in kHz, that should be used</param>
         public Tsl2561(I2C i2c, AddrSel addrSel, int rate = 100) : base()
         {
             registers = new Tsl2561Registers(new SMBusRegisterManagerAdapter(new SMBusDevice((byte)addrSel, i2c, rate)));
@@ -62,6 +74,9 @@ namespace Treehopper.Libraries.Sensors.Optical
 
         private Tsl2561Registers registers;
 
+        /// <summary>
+        /// Gets or sets the integration time to use
+        /// </summary>
         public IntegrationTimings IntegrationTime
         {
             get
@@ -76,6 +91,9 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
+        /// <summary>
+        /// Gets or sets whether the device should be in high-gain mode
+        /// </summary>
         public bool HighGain
         {
             get
@@ -90,6 +108,9 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
+        /// <summary>
+        /// Gets the raw ADC data from the visible channel (CH0)
+        /// </summary>
         public int RawVisible
         {
             get
@@ -100,6 +121,9 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
+        /// <summary>
+        /// Gets the raw ADC data from the IR channel (CH1)
+        /// </summary>
         public int RawIr
         {
             get
@@ -110,6 +134,10 @@ namespace Treehopper.Libraries.Sensors.Optical
             }
         }
 
+        /// <summary>
+        /// Update the Lux, RawVisible, and RawIr values from the sensor
+        /// </summary>
+        /// <returns>An awaitable task that completes once an update has succeeded</returns>
         public async override Task UpdateAsync()
         {
             await registers.data0.read().ConfigureAwait(false);
@@ -140,15 +168,19 @@ namespace Treehopper.Libraries.Sensors.Optical
                 _lux = 0;
             }
 
+            // The above calculations assume a 402 ms integration time and high-gain enabled.
+            // If these are not the current settings, we must adjust the lux value.
+
             if(!HighGain)
             {
-                _lux *= 16;
+                _lux *= 16.0;
             }
 
             if(IntegrationTime == IntegrationTimings.Time_101ms)
             {
                 _lux *= (402.0 / 101.0);
-            } else if(IntegrationTime == IntegrationTimings.Time_13_7ms)
+            }
+            else if(IntegrationTime == IntegrationTimings.Time_13_7ms)
             {
                 _lux *= (402.0 / 13.7);
             }
