@@ -143,7 +143,6 @@ ADCs, DACs, shift registers, muxes, and digital pots
         \class Treehopper.Libraries.IO.Dac.Mcp4725
     @}
 
-
     \defgroup digital-pot DigitalPot
     Digital potentiometers
 
@@ -155,9 +154,8 @@ ADCs, DACs, shift registers, muxes, and digital pots
         \class Treehopper.Libraries.IO.DigitalPot.Mcp425x
     @}
 
-
     \defgroup port-expander PortExpander
-    Port expanders, used to add extra digital I/O to Treehopper
+    Port expanders, used to add extra digital I/O to %Treehopper
 
     \ingroup IO
     @{

@@ -41,9 +41,13 @@ namespace Treehopper.Libraries.IO.PortExpander
             setup(numPins);
         }
 
-        /// <summary>
-        ///     Collection of pins for this shift register
-        /// </summary>
+        /// List of pins for this shift register
+        /// This list will automatically be populated with ShiftOutPin pins you can use just like any other digital output.
+        /// \code
+        /// myShiftRegister.Pins[3].DigitalValue = true; // set pin #3 of the shift register high
+        /// myShiftRegister.Pins[0].DigitalValue = false; // set pin #0 of the shift register low
+        /// Console.Write(myShiftRegister.Pins[3].BitNumber); // should print "3"
+        /// \endcode
         public IList<ShiftOutPin> Pins { get; protected set; } = new Collection<ShiftOutPin>();
 
 

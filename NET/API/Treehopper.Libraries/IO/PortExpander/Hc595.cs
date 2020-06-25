@@ -2,14 +2,14 @@
 {
     /// This class supports all standard 8-bit serial-input, parallel-output shift registers similar to the 74HC595.
     /// 
-    /// Once constructed, this object provides a list of Pins that can be used just as any other digital output pins. 
+    /// Once constructed, this object provides a #Pins list that can be used just as any other digital output pins. 
     /// By default, changing the value of one of these pins will immediately flush to the shift register:
     /// \code
     /// var shift1 = new Hc595(board.Spi, board.Pins[7]);
     /// shift1.Pins[3].DigitalValue = true; // immediately sets the output high
     /// shift1.Pins[2].DigitalValue = true; // performs a second SPI transaction to immediately set the output high
     /// \endcode
-    /// If you plan on updating many pins at once, set the ChainableShiftRegisterOutput.AutoFlush property to false and then call FlushAsync() whenever you wish your pin changes to be written to the shift register:
+    /// If you plan on updating many pins at once, set the #AutoFlush property to false and then call FlushAsync() whenever you wish your pin changes to be written to the shift register:
     /// \code
     /// var shift1 = new Hc595(board.Spi, board.Pins[7]);
     /// shift1.AutoFlush = false; // disable automatically flushing changes to the shift register

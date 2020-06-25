@@ -1,20 +1,18 @@
 \page windows Windows
 
-%Treehopper provides first-class support for building console and desktop Windows apps that target either class Win32 APIs, or the Windows 10 Universal Windows Platform (UWP). You can also target the new .NET Core 2.0 runtime.
+%Treehopper provides first-class support for building console and desktop Windows apps that target either classic Windows Console, Forms, and WPF applications, or the Windows 10 Universal Windows Platform (UWP). You can also target the .NET Core runtime.
 
 ## Prerequisites
-You can build C# Linux apps that connect to %Treehopper using both the classic [Mono Project](https://www.mono-project.com/) runtime, or the new [.NET Core 2.0](https://www.microsoft.com/net/learn/get-started/linux/rhel) environment.
+You'll need a .NET development environment installed. <a href="https://visualstudio.microsoft.com/vs/">Visual Studio 2019 Community Edition</a> is a free IDE that will come with everything you need out of the box for either classic .NET development, or .NET Core workloads.
+
+If you want to write .NET Core console apps on the command line, you can install the <a href="https://dotnet.microsoft.com/download">.NET Core SDK</a> and use it with your favorite text editor (like <a href="https://code.visualstudio.com/">Visual Studio Code</a>).
 
 If you have an old version of .NET Core, please make sure to update it before proceeding; %Treehopper targets .NET Core 2.0 or later.
 
-### IDEs
-The .NET Core 2.0 SDK is well-suited to developers looking for a command-line development environment. While you can use any text editor you'd like, if you jump around between .NET, Javascript, Python, and other languages, [Visual Studio Code](https://code.visualstudio.com/download) is a great lightweight text editor that has good support for .NET Core (including debugging).
-
-
 # Blinky in .NET Core {#windows-dotnet-core}
-We can build a console application that targets .NET Core 2.0. The .NET binaries produced can run on both Linux and Windows.
+We can build a console application that targets .NET Core. The .NET binaries produced can run on both Linux and Windows.
 
-We'll create the .NET Core project on the command line, but it's just as easy to create it from Visual Studio or Rider.
+We'll create the .NET Core project on the command line, but it's just as easy to create it from Visual Studio.
 
 ### Step 1: Create a new project
 Create a new folder called "blinky" and execute `dotnet new console` from it to create a new .NET Core console application.

@@ -46,8 +46,9 @@ h1.groupheader {
 }
 
 .title {
-	font-size: 32px;
-	font-weight: normal;
+	font-size: 52px;
+	font-weight: lighter;
+	text-transform: uppercase;
 	margin: 25px 0 0 12px;
 }
 
