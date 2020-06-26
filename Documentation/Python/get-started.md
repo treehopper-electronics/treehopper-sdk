@@ -1,58 +1,40 @@
 \page geting-started Getting Started
 
-# Prerequisites
-Treehopper requires Python 3.6 or later. This is not a particularly new version of Python (it has already been superseded by 3.7), but some regular Python users are still using Python 3.5.
+The [Treehopper pip package](https://pypi.org/project/treehopper/) requires Python 3.6 or later, pyusb (which will auto-install when you install the treehopper package), and libusb.
 
-While Linux and macOS often come with Python installed, these can sometimes be quite ancient. To check which version you have, invoke:
+# Windows
+On Windows, we'll need to install a Python distribution, libusb, and finally the Treehopper Python package.
+
+## Python
+Windows does not ship with a Python distribution, but instead will prompt you to install it from the Microsoft Store when you first attempt to invoke it. This option is suitable for most basic users of Python.
+
+For more serious Python users, we recommend installing the Anaconda distribution of Python, which includes a more advanced package manager and the ability to create multiple Python environments to avoid version conflicts. More information is available on the [Anaconda home page](https://www.anaconda.com/).
+
+## libusb
+You'll need the libusb DLL installed on your system to be able to use Treehopper in Python. To install, visit the [libusb web site](https://libusb.info/) to download the pre-built Windows binaries. You will also need [7-Zip](https://www.7-zip.org/download.html) to extract the download archive. This download includes the DLLs (compiled both with MSVC and MinGW), along with libs and header files should you want to write a C/C++ application that uses libusb. 
+
+For our purposes, we only need the DLL. We'll use the MSVC-compiled version found in MS64/dll/libusb-1.0.dll. To avoid having to copy this file into each new project separately, you can drag it into C:\Windows\system32, where it will be available system-wide. Note: there might be other software on your computer that has already installed libusb-1.0.dll to this location. There's no need to overwrite this file in this case.
+
+## Treehopper package
+Next, install the latest version of Treehopper's Python library by launching PowerShell or Command Prompt and typing
+```
+PS> pip install treehopper
+```
+
+# Linux
+On Linux-based systems, in addition to installing the Treehopper Python package with pip, we'll need to make sure you have a recent-enough Python distribution and a properly-configured udev rules list.
+
+## Python
+While Linux distributions often come with Python installed, these installations can be quite ancient. To check which version you have, invoke:
 ```
 python3 -V
 ```
 
-## Anaconda
-If you don't already have a Python setup, we recommend installing the [Anaconda distribution](https://www.anaconda.com/download/).
+Treehopper requires Python 3.6 or newer. If your installation is too old, try updating it with your package manager. Consult your distribution's documentation for help on doing this.
 
-On Windows and macOS, it's a standard installer you can click through to install. By the way, you can choose to install Anaconda during the Visual Studio 2017 installation process, so you may already have an installation.
+For more serious Python users, we recommend installing the Anaconda distribution of Python, which includes a more advanced package manager and the ability to create multiple Python environments to avoid version conflicts. More information is available on the [Anaconda home page](https://www.anaconda.com/).
 
-On Linux, it's a text-mode shell script. To invoke it, give it executable permission before running it:
-```
-~ $ cd ~/Downloads
-~/Downloads $ chmod a+x Anaconda*
-~/Downloads $ ./Anaconda*
-```
-
-In Linux and Windows, you can optionally add Anaconda to your PATH when prompted. This will make it easier to execute, but will shadow a potentially existing Python distribution. On Mac, Anaconda is automatically added to your PATH.
-
-This Getting Started guide will assume you're using Anaconda (with the `base` environment), but you can loosely follow along if you have another 3.6 distribution.
-
-## Launching Python
-We need a terminal prompt with Python and pip on its path. Assuming you're using Anaconda, we'll need to launch on Anaconda environment.
-
- - **In Windows:** You can invoke an Anaconda-endowed terminal by going to **Start > Anaconda3 > Anaconda Prompt**. Since we'll be installing packages, we'll need write access to the installation. If you installed Anaconda with administrative privileges in a non-user directory (like Program Files), you'll need to right-click on **Anaconda Prompt** and choose **Run as administrator...**.
- - **In macOS:** Anaconda should already be in your path, but if not, you can launch Terminal and type `source /anaconda3/bin/activate base`. If you prefer, you can also launch Anaconda Navigator, go to **Environments**, click on the arrow next to base (root), and choose **Open Terminal**.
- - **In Linux:** If Anaconda is in your path, simply open a terminal prompt. Otherwise, you can run `source anaconda3/bin/activate base` if Anaconda is not already in your path.
-
-You can verify your installation in Windows:
-```
-> python -V
-Python 3.6.2 :: Anaconda custom (64-bit)
-```
-
-or on macOS or Linux:
-```
-$ python3 -V
-Python 3.6.4 :: Anaconda, Inc.
-```
-
-## Installing Treehopper packages
-The Treehopper Python package is hosted on PyPI, so we'll use `pip` to install it:
-
-```
-(base) $ pip install treehopper
-```
-
-If you don't have write permission, this will fail with a `PermissionError`. On macOS or Linux, run the command with `sudo`. On Windows, make sure you started the Anaconda Prompt with **Run as administrator**.
-
-## Linux: Adding udev rules
+# Adding udev rules
 By default, most Linux-based operating systems restrict normal users from interacting with USB devices. To enable non-root users to interact with %Treehopper boards, you must add a udev rule.
 
 Paste and run this quick snippet into a terminal window:
@@ -72,8 +54,40 @@ $ sudo su
 # echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"8a7e\", MODE:=\"666\", GROUP=\"users\"" > /etc/udev/rules.d/999-treehopper.rules
 ```
 
+## Treehopper package
+Next, install the latest version of Treehopper's Python library by launching a terminal window and typing
+```
+$ pip3 install treehopper
+```
+
+## libusb
+It is unlikely that you do not have libusb-1.0 installed, but if you receive errors when running the example code below, check your package manager to ensure it is installed.
+
+# Mac
+On Mac, you'll need at least Python 3.6 installed, along with libusb and the Treehopper Python package.
+
+## Python
+macOS already includes an ancient Python 2.7 distribution. Python has an official [macOS installer available on their web site](https://www.python.org/downloads/mac-osx/), which will install in `/usr/local/bin`.
+
+For more serious Python users, we recommend installing the Anaconda distribution of Python, which includes a more advanced package manager and the ability to create multiple Python environments to avoid version conflicts. More information is available on the [Anaconda home page](https://www.anaconda.com/).
+
+## libusb
+We recommend using the [Homebrew package manager](https://brew.sh/) to install libusb:
+
+```
+$ brew install libusb
+```
+
+## Treehopper Python package
+Next, install the latest version of Treehopper's Python library by launching a terminal window and typing
+```
+$ pip3 install treehopper
+```
+\warning Note the `pip3` command, which will invoke the Python 3-series version of the package utility, instead of the original Python 2.7-based `pip` found on the system.
+
+
 # Interactive LED
-Let's start an interactive Python shell and manually connect to a board and turn on its LED.
+Now that we have our environment set up, let's start an interactive Python shell and manually connect to a board and turn on its LED.
 
 Launch `python` on Windows, or `python3` on macOS or Linux (`python` will also alias to `python3` if you're in an Anaconda prompt).
 
@@ -89,8 +103,6 @@ Type (or copy and paste) each of these commands, one by one (you don't need to i
 >>> quit()                                  # quit the interactive shell
 $
 ```
-
-All of Treehopper's capabilities can be used from an interactive Python shell like this, which makes the Python package an invaluable tool for diagnosing and debugging.
 
 # Blinky script
 Open a text editor and paste these contents in:

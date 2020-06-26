@@ -128,20 +128,13 @@ class TreehopperUsb:
     ## \endcond
     ## @name Main components
     # @{
+
     def connect(self):
-        """
-        Connect to the board.
-
-        Calling this method will connect to the board and start the pin listener update thread. Repeated calls to
-        this method are ignored.
-
-        Warning:
-            You must connect to the board before performing any operations (other than querying the name() or
-            serial_number() of the board).
+        """Connect to the board. Calling this method will connect to the board and start the pin listener update thread.
+        Repeated calls to this method are ignored.
 
         Returns:
             None
-
         """
         if self._connected:
             return
@@ -187,8 +180,7 @@ class TreehopperUsb:
 
     @property
     def led(self) -> bool:
-        """
-        Gets or sets the state of the LED.
+        """Gets or sets the state of the LED.
 
         Example:
             >>> while board.connected:
@@ -208,9 +200,7 @@ class TreehopperUsb:
         self._send_peripheral_config_packet(data)
 
     def disconnect(self):
-        """Disconnect from the board.
-
-        This method disconnects from the board and stops the pin listener update thread. Repeated calls to this
+        """Disconnect from the board. This method disconnects from the board and stops the pin listener update thread. Repeated calls to this
         method are ignored."""
         if not self._connected:
             return
@@ -221,8 +211,7 @@ class TreehopperUsb:
 
     @property
     def connected(self):
-        """
-        Gets whether the board is connected.
+        """Gets whether the board is connected.
 
         Returns:
             bool: Whether the board is connected
@@ -237,14 +226,11 @@ class TreehopperUsb:
     ## @}
     ## @name Board identity & firmware management
     # @{
+
     @property
     def serial_number(self):
-        """
-        Gets the serial number of the board.
-
-        This property is available to read even without connecting to the board. If you wish to change the serial
-        number,
-        use update_serial_number().
+        """Gets the serial number of the board. This property is available to read even without connecting to the board.
+        If you wish to change the serial number, use update_serial_number().
 
         Note:
             While you do not need to connect() to the board before querying its serial number, you will not be able to
@@ -263,11 +249,8 @@ class TreehopperUsb:
 
     @property
     def name(self):
-        """
-        Gets the device name of the board.
-
-        This property is available to read even without connecting to the board. If you wish to change the device name,
-        use update_device_name().
+        """Gets the device name of the board. This property is available to read even without connecting to the board. If
+        you wish to change the device name, use update_device_name().
 
         Note:
             While you do not need to connect() to the board before querying its device name, you will not be able to
@@ -285,11 +268,9 @@ class TreehopperUsb:
         return self._dev.product
 
     def update_serial_number(self, serial_number: str):
-        """
-        Update the serial number on the device.
-
-        While the new serial number is immediately available from the SerialNumber property, the changes will not take
-        effect in other applications until the device is reset. This can be done by calling reboot().
+        """Update the serial number on the device. While the new serial number is immediately available from
+        the SerialNumber property, the changes will not take effect in other applications until the device is reset.
+        This can be done by calling reboot().
 
         Args:
             serial_number: a 60-character (or fewer) string containing the new serial number (str).
@@ -312,11 +293,9 @@ class TreehopperUsb:
         sleep(0.1)
 
     def update_device_name(self, device_name: str):
-        """
-        Update the device name on the device.
-
-        While the new serial number is immediately available from the SerialNumber property, the changes will not take
-        effect in other applications until the device is reset. This can be done by calling reboot().
+        """Update the device name on the device. While the new serial number is immediately available from
+        the SerialNumber property, the changes will not take effect in other applications until the device is reset.
+        This can be done by calling reboot().
 
         Note:
             Microsoft Windows caches the device name in the registry when it is first attached to the board, so even if
@@ -349,9 +328,9 @@ class TreehopperUsb:
     ## @}
     ## @name Other components
     # @{
+
     def reboot(self):
-        """
-        Reboots the board.
+        """Reboots the board.
 
         Calling this method will automatically call the disconnect() method, and no further communication will be
         possible until the board is reopened.
@@ -363,8 +342,7 @@ class TreehopperUsb:
         self.disconnect()
 
     def reboot_into_bootloader(self):
-        """
-        Reboots the board into bootloader mode.
+        """Reboots the board into bootloader mode.
 
         Calling this method will automatically call the disconnect() method, and no further communication will be
         possible. You can load new firmware onto the board once in bootloader mode, or if you wish to return to normal
