@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props')" />
   <Import Project="..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\build\netstandard1.0\Xamarin.Forms.props')" />
   <Import Project="..\..\..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.props" Condition="Exists('..\..\..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
@@ -13,6 +14,8 @@
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,6 +71,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Xamarin.Forms.4.6.0.726\lib\Xamarin.Mac\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Xamarin.Forms.4.6.0.726\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Xamarin.Forms.4.6.0.726\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Mac" />
     <Reference Include="System.Numerics.Vectors">
       <HintPath>..\..\..\..\packages\System.Numerics.Vectors.4.4.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
@@ -78,18 +90,6 @@
       <HintPath>..\..\..\..\packages\Xamarin.CustomControls.RepeaterView.1.2.2\lib\netstandard1.0\Xamarin.CustomControls.RepeaterView.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK" />
-    <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\lib\Xamarin.Mac\Xamarin.Forms.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform.macOS">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\lib\Xamarin.Mac\Xamarin.Forms.Platform.macOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -142,4 +142,12 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.2.5.0.19271-pre2\build\netstandard1.0\Xamarin.Forms.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets'))" />
+  </Target>
+  <Import Project="..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets')" />
 </Project>
