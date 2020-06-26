@@ -9,7 +9,7 @@ namespace Treehopper
 /** Built-in SPI peripheral
 
 # Basic Usage
-Once \link #Enable enabled\endlink, you can use the hardware SPI module on %Treehopper through the #SendReceiveAsync() method, which is used to simultaneously transmit and/or receive data.
+Once #Enabled, you can use the hardware SPI module on %Treehopper through the #SendReceiveAsync() method, which is used to simultaneously transmit and/or receive data.
 
 # Background
 SPI is a full-duplex synchronous serial interface useful for interfacing with both complex, high-speed peripherals, as well as simple LED drivers, output ports, and any other general-purpose input or output shift register.
