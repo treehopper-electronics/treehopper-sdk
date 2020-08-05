@@ -332,6 +332,21 @@ SI_INTERRUPT(I2C0_ISR, SMBUS0_IRQn)
 {
   SFRPAGE = 0x0;  // Rely on page stack to restore
 
+  if(!SMB0CN0_MASTER)
+  {
+    /* HACK ALERT: if the bus is stuck low, the SMB0 peripheral will hang
+     * until the bus clears. If additional USB packets come in while SMB0
+     * is waiting, it appears to prevent the MASTER flag from getting set
+     * (which should be done automatically once a START condition is set).
+     * Until we figure out if this is a software bug or a chip errata, we'll
+     * check to make sure we're in master mode (which we should always be),
+     * and if not, abort. Otherwise, the below state machine gets screwed up
+     * and we'll hang forever waiting for the commandComplete flag to be set.
+     */
+    I2C0_errorCb(I2C0_UNKNOWN_ERROR);
+    I2C0_abort();
+  }
+
   // Jump to status vector handler
   switch (SMB0CN0 & 0xF0)
   {
