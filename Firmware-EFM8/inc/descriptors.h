@@ -9,7 +9,8 @@
 #include <efm8_usb.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 // -------------------- USB Identification ------------------------------------
