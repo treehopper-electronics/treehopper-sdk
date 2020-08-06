@@ -149,11 +149,15 @@ namespace Treehopper.Desktop.WinUsb
             if (!IsOpen) return new byte[0];
             if (UseOverlappedTransfers)
             {
-                await Task.Factory
-                    .FromAsync(
+                var readBytes = await Task.Factory
+                    .FromAsync<int>(
                         (callback, stateObject) => BeginRead(peripheralResponseEndpoint, array, array.Length, callback,
                             stateObject), EndRead, null)
                     .ConfigureAwait(false);
+                if (readBytes != numBytesToRead)
+                {
+                    throw new TimeoutException("A USB transfer timed out while reading a peripheral response packet");
+                }
             }
             else
             {
@@ -239,11 +243,15 @@ namespace Treehopper.Desktop.WinUsb
             var array = new byte[numBytesToRead];
             if (UseOverlappedTransfers)
             {
-                await Task.Factory
-                    .FromAsync(
+                var readBytes = await Task.Factory
+                    .FromAsync<int>(
                         (callback, stateObject) => BeginRead(pinReportEndpoint, array, array.Length, callback,
                             stateObject), EndRead, null)
                     .ConfigureAwait(false);
+                if (readBytes != numBytesToRead)
+                {
+                    throw new TimeoutException("A USB transfer timed out while reading the pin report packet.");
+                }
             }
             else
             {
