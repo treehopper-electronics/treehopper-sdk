@@ -58,11 +58,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<WiaRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -82,11 +77,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<InfoRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -106,11 +96,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int drdy { get; set; }
 
-                public async Task<Status1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((drdy & 0x1) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -130,11 +115,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<HxRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -154,11 +134,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<HyRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -178,11 +153,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<HzRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -203,11 +173,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 public int derr { get; set; }
                 public int hofl { get; set; }
 
-                public async Task<Status2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((derr & 0x1) << 2) | ((hofl & 0x1) << 3); }
                 internal override void setValue(long _value)
                 {
@@ -229,11 +194,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int mode { get; set; }
 
-                public async Task<ControlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((mode & 0xF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -253,11 +213,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<SensitivityXRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -277,11 +232,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<SensitivityYRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -301,11 +251,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<SensitivityZRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {

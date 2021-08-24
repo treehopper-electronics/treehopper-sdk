@@ -60,7 +60,7 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         public override async Task UpdateAsync()
         {
             await registers.readRange(registers.outX, registers.outZ).ConfigureAwait(false);
-            await registers.tempOut.read().ConfigureAwait(false);
+            await registers.tempOut.readAsync().ConfigureAwait(false);
 
             var gain = getGainXYZ();
             _magnetometer.X = registers.outX.value / gain.Item1 * 100f / 16f;

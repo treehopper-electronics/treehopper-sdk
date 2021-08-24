@@ -103,11 +103,6 @@ namespace Treehopper.Libraries.Sensors.Optical
                 public int sleepAfterInterrupt { get; set; }
                 public int noPersistInterruptEnable { get; set; }
 
-                public async Task<EnableRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((powerOn & 0x1) << 0) | ((alsEnable & 0x1) << 1) | ((alsInterruptEnable & 0x1) << 4) | ((sleepAfterInterrupt & 0x1) << 6) | ((noPersistInterruptEnable & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -141,11 +136,6 @@ namespace Treehopper.Libraries.Sensors.Optical
                 public AlsGains getAlsGain() { return (AlsGains)alsGain; }
                 public void setAlsGain(AlsGains enumVal) { alsGain = (int)enumVal; }
 
-                public async Task<ConfigRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((alsTime & 0x7) << 0) | ((alsGain & 0x3) << 3) | ((systemReset & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -169,11 +159,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<InterruptLowThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -193,11 +178,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<InterruptHighThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -217,11 +197,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<NoPersistLowThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -241,11 +216,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<NoPersistHighThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -267,11 +237,6 @@ namespace Treehopper.Libraries.Sensors.Optical
                 public InterruptPersistanceFilters getInterruptPersistanceFilter() { return (InterruptPersistanceFilters)interruptPersistanceFilter; }
                 public void setInterruptPersistanceFilter(InterruptPersistanceFilters enumVal) { interruptPersistanceFilter = (int)enumVal; }
 
-                public async Task<PersistRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((interruptPersistanceFilter & 0xF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -291,11 +256,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<PackageIdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -315,11 +275,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<DeviceIdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -341,11 +296,6 @@ namespace Treehopper.Libraries.Sensors.Optical
                 public int alsInterrupt { get; set; }
                 public int noPersistInterrupt { get; set; }
 
-                public async Task<StatusRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((alsValud & 0x1) << 0) | ((alsInterrupt & 0x1) << 4) | ((noPersistInterrupt & 0x1) << 5); }
                 internal override void setValue(long _value)
                 {
@@ -369,11 +319,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<Ch0Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -393,11 +338,6 @@ namespace Treehopper.Libraries.Sensors.Optical
 
                 public int value { get; set; }
 
-                public async Task<Ch1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {

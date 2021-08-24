@@ -21,9 +21,24 @@ namespace Treehopper.Libraries
             Address = address;
         }
 
-        public Task write()
+        public Task writeAsync()
         {
             return manager.write(this);
+        }
+
+        public void write()
+        {
+            Task.Run(writeAsync).Wait();
+        }
+
+        public Task readAsync()
+        {
+            return manager.read(this);
+        }
+
+        public void read()
+        {
+            Task.Run(readAsync).Wait();
         }
 
         internal abstract long getValue();

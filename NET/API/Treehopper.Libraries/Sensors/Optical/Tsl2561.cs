@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 namespace Treehopper.Libraries.Sensors.Optical
 {
     /// <summary>
-    /// Taos / AMS TSL2561 16-bit ambient light sensor with both visible and IR photodiodes and a 1,000,000-to-1 dynamic range.
+    /// Taos / AMS TSL2561 16-bit ambient light sensor
     /// </summary>
+    /// The Taos/AMS TSL2561 is a 16-bit ambient light sensor (ALS) with both visible 
+    /// and IR photodiodes and a 1,000,000-to-1 dynamic range. 
     public partial class Tsl2561 : AmbientLightSensor
     {
         /// <summary>
@@ -67,7 +69,7 @@ namespace Treehopper.Libraries.Sensors.Optical
         {
             registers = new Tsl2561Registers(new SMBusRegisterManagerAdapter(new SMBusDevice((byte)addrSel, i2c, rate)));
             registers.control.setPower(Powers.powerUp);
-            registers.control.write().Wait();
+            registers.control.writeAsync().Wait();
             IntegrationTime = IntegrationTimings.Time_402ms;
             HighGain = true;
         }
@@ -87,7 +89,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             set
             {
                 registers.timing.setIntegrationTiming(value);
-                registers.timing.write().Wait();
+                registers.timing.writeAsync().Wait();
             }
         }
 
@@ -104,7 +106,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             set
             {
                 registers.timing.gain = (value ? 1 : 0);
-                registers.timing.write().Wait();
+                registers.timing.writeAsync().Wait();
             }
         }
 
@@ -140,8 +142,8 @@ namespace Treehopper.Libraries.Sensors.Optical
         /// <returns>An awaitable task that completes once an update has succeeded</returns>
         public async override Task UpdateAsync()
         {
-            await registers.data0.read().ConfigureAwait(false);
-            await registers.data1.read().ConfigureAwait(false);
+            registers.data0.read();
+            registers.data1.read();
 
             var ch0 = (double)registers.data0.value;
             var ch1 = (double)registers.data1.value;

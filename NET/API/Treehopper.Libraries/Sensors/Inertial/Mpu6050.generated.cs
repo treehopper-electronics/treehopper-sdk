@@ -249,11 +249,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Self_test_x_gyroRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -273,11 +268,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Self_test_y_gyroRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -297,11 +287,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Self_test_z_gyroRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -321,11 +306,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Self_test_x_accelRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -345,11 +325,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Self_test_y_accelRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -369,11 +344,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Self_test_z_accelRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -393,11 +363,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<XGyroOffsUsrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -417,11 +382,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<YGyroOffsUsrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -441,11 +401,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<ZGyroOffsUsrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -465,11 +420,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<SampleRateDividerRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -493,11 +443,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public ExtSyncSets getExtSyncSet() { return (ExtSyncSets)extSyncSet; }
                 public void setExtSyncSet(ExtSyncSets enumVal) { extSyncSet = (int)enumVal; }
 
-                public async Task<ConfigurationRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((dlpf & 0x7) << 0) | ((extSyncSet & 0x7) << 3) | ((fifoMode & 0x1) << 6); }
                 internal override void setValue(long _value)
                 {
@@ -526,11 +471,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public GyroScales getGyroScale() { return (GyroScales)gyroScale; }
                 public void setGyroScale(GyroScales enumVal) { gyroScale = (int)enumVal; }
 
-                public async Task<GyroConfigRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((fChoiceBypass & 0x3) << 0) | ((gyroScale & 0x3) << 3) | ((zGyroCten & 0x1) << 5) | ((yGyroCten & 0x1) << 6); }
                 internal override void setValue(long _value)
                 {
@@ -561,11 +501,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public AccelScales getAccelScale() { return (AccelScales)accelScale; }
                 public void setAccelScale(AccelScales enumVal) { accelScale = (int)enumVal; }
 
-                public async Task<AccelConfigRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((accelScale & 0x3) << 3) | ((accelZselfTest & 0x1) << 5) | ((accelYselfTest & 0x1) << 6) | ((accelXselfTest & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -592,11 +527,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int dlpfCfg { get; set; }
                 public int accelFchoice { get; set; }
 
-                public async Task<AccelConfig2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((dlpfCfg & 0x7) << 0) | ((accelFchoice & 0x1) << 3); }
                 internal override void setValue(long _value)
                 {
@@ -618,11 +548,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<LowPowerAccelerometerOdrControlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -642,11 +567,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<WomThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -673,11 +593,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int gyroXout { get; set; }
                 public int tempOut { get; set; }
 
-                public async Task<FifoEnableRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((slv0 & 0x1) << 0) | ((slv1 & 0x1) << 1) | ((slv2 & 0x1) << 2) | ((accel & 0x1) << 3) | ((gyroZout & 0x1) << 4) | ((gyroYout & 0x1) << 5) | ((gyroXout & 0x1) << 6) | ((tempOut & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -715,11 +630,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int waitForEs { get; set; }
                 public int multMstEn { get; set; }
 
-                public async Task<I2cMasterControlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((i2cMasterClock & 0xF) << 0) | ((i2cMstPnsr & 0x1) << 4) | ((slv3FifoEn & 0x1) << 5) | ((waitForEs & 0x1) << 6) | ((multMstEn & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -748,11 +658,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int id { get; set; }
                 public int rnw { get; set; }
 
-                public async Task<I2cSlv0AddrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -774,11 +679,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv0RegRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -798,11 +698,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv0CtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -823,11 +718,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int id { get; set; }
                 public int rnw { get; set; }
 
-                public async Task<I2cSlv1AddrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -849,11 +739,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv1RegRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -873,11 +758,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv1CtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -898,11 +778,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int id { get; set; }
                 public int rnw { get; set; }
 
-                public async Task<I2cSlv2AddrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -924,11 +799,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv2RegRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -948,11 +818,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv2CtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -973,11 +838,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int id { get; set; }
                 public int rnw { get; set; }
 
-                public async Task<I2cSlv3AddrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -999,11 +859,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv3RegRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1023,11 +878,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv3CtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1048,11 +898,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int id { get; set; }
                 public int rnw { get; set; }
 
-                public async Task<I2cSlv4AddrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((id & 0x7F) << 0) | ((rnw & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -1074,11 +919,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv4RegRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1098,11 +938,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv4DoRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1122,11 +957,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv4CtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1146,11 +976,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv4DiRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1177,11 +1002,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int slv4Done { get; set; }
                 public int passThrough { get; set; }
 
-                public async Task<I2cMstStatusRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((slv0Nack & 0x1) << 0) | ((slv1Nack & 0x1) << 1) | ((slv2Nack & 0x1) << 2) | ((slv3Nack & 0x1) << 3) | ((slv4Nack & 0x1) << 4) | ((lostArb & 0x1) << 5) | ((slv4Done & 0x1) << 6) | ((passThrough & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -1221,11 +1041,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int open { get; set; }
                 public int actl { get; set; }
 
-                public async Task<IntPinCfgRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((bypassEn & 0x1) << 1) | ((fsyncIntModeEnable & 0x1) << 2) | ((actlFsync & 0x1) << 3) | ((intAnyRd2Clear & 0x1) << 4) | ((latchIntEn & 0x1) << 5) | ((open & 0x1) << 6) | ((actl & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -1261,11 +1076,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int fifoOverflowEnable { get; set; }
                 public int womEnable { get; set; }
 
-                public async Task<IntEnableRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((RawReadyEnable & 0x1) << 0) | ((fsyncIntEnable & 0x1) << 2) | ((fifoIntEnable & 0x1) << 3) | ((fifoOverflowEnable & 0x1) << 4) | ((womEnable & 0x1) << 1); }
                 internal override void setValue(long _value)
                 {
@@ -1296,11 +1106,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int fifoOverflowInt { get; set; }
                 public int womInt { get; set; }
 
-                public async Task<IntStatusRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((rawDataReadyInt & 0x1) << 0) | ((fsyncInt & 0x1) << 2) | ((fifoOverflowInt & 0x1) << 3) | ((womInt & 0x1) << 1); }
                 internal override void setValue(long _value)
                 {
@@ -1326,11 +1131,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Accel_xRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1350,11 +1150,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Accel_yRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1374,11 +1169,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Accel_zRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1398,11 +1188,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<TempRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1422,11 +1207,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Gyro_xRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1446,11 +1226,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Gyro_yRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1470,11 +1245,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<Gyro_zRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1494,11 +1264,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<ExtSensDataRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0x0) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1518,11 +1283,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv0doRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1542,11 +1302,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv1doRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1566,11 +1321,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv2doRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1590,11 +1340,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<I2cSlv3doRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1619,11 +1364,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int slv4DelayEn { get; set; }
                 public int delayEsShadow { get; set; }
 
-                public async Task<I2cMstDelayCtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((slv0DelayEn & 0x1) << 0) | ((slv1DelayEn & 0x1) << 1) | ((slv2DelayEn & 0x1) << 2) | ((slv3DelayEn & 0x1) << 3) | ((slv4DelayEn & 0x1) << 4) | ((delayEsShadow & 0x1) << 2); }
                 internal override void setValue(long _value)
                 {
@@ -1655,11 +1395,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int accelReset { get; set; }
                 public int gyroReset { get; set; }
 
-                public async Task<SignalPathResetRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((tempReset & 0x1) << 0) | ((accelReset & 0x1) << 1) | ((gyroReset & 0x1) << 2); }
                 internal override void setValue(long _value)
                 {
@@ -1684,11 +1419,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int accelIntelMode { get; set; }
                 public int accelIntelEnable { get; set; }
 
-                public async Task<AccelIntCtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((accelIntelMode & 0x1) << 6) | ((accelIntelEnable & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -1715,11 +1445,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int i2cMasterEnable { get; set; }
                 public int fifoEnable { get; set; }
 
-                public async Task<UserCtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((sigConditionReset & 0x1) << 0) | ((i2cMasterReset & 0x1) << 1) | ((fifoReset & 0x1) << 2) | ((i2cIfDisable & 0x1) << 1) | ((i2cMasterEnable & 0x1) << 2) | ((fifoEnable & 0x1) << 3); }
                 internal override void setValue(long _value)
                 {
@@ -1756,11 +1481,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public ClockSels getClockSel() { return (ClockSels)clockSel; }
                 public void setClockSel(ClockSels enumVal) { clockSel = (int)enumVal; }
 
-                public async Task<PowerMgmt1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((clockSel & 0x7) << 0) | ((powerDownPtat & 0x1) << 3) | ((gyroStandby & 0x1) << 4) | ((cycle & 0x1) << 5) | ((sleep & 0x1) << 6) | ((reset & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -1795,11 +1515,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
                 public int disableYA { get; set; }
                 public int disableXA { get; set; }
 
-                public async Task<PowerMgmt2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((disableZG & 0x1) << 0) | ((disableYG & 0x1) << 1) | ((disableXG & 0x1) << 2) | ((disableZA & 0x1) << 3) | ((disableYA & 0x1) << 4) | ((disableXA & 0x1) << 5); }
                 internal override void setValue(long _value)
                 {
@@ -1829,11 +1544,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<FifoCountRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0x1FFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1853,11 +1563,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<FifoRWRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1877,11 +1582,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<WhoAmIRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -1901,11 +1601,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<XAccelOffsetRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0x7FFF) << 1); }
                 internal override void setValue(long _value)
                 {
@@ -1925,11 +1620,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<YAccelOffsetRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0x7FFF) << 1); }
                 internal override void setValue(long _value)
                 {
@@ -1949,11 +1639,6 @@ namespace Treehopper.Libraries.Sensors.Inertial
 
                 public int value { get; set; }
 
-                public async Task<ZAccelOffsetRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0x7FFF) << 1); }
                 internal override void setValue(long _value)
                 {

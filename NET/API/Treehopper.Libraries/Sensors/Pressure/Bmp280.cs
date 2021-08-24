@@ -61,7 +61,7 @@ namespace Treehopper.Libraries.Sensors.Pressure
             registers.ctrlMeasure.setMode(Modes.Normal);
             registers.ctrlMeasure.setOversamplingPressure(OversamplingPressures.Oversampling_x16);
             registers.ctrlMeasure.setOversamplingTemperature(OversamplingTemperatures.Oversampling_x16);
-            Task.Run(registers.ctrlMeasure.write).Wait();
+            Task.Run(registers.ctrlMeasure.writeAsync).Wait();
 
             Task.Run(() => registers.readRange(registers.t1, registers.h1)).Wait();
         }

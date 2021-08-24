@@ -79,11 +79,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<TempOutRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFF) << 4); }
                 internal override void setValue(long _value)
                 {
@@ -104,11 +99,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 public int drdy { get; set; }
                 public int registerLock { get; set; }
 
-                public async Task<SrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((drdy & 0x1) << 0) | ((registerLock & 0x1) << 1); }
                 internal override void setValue(long _value)
                 {
@@ -133,11 +123,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 public MagDataRates getMagDataRate() { return (MagDataRates)magDataRate; }
                 public void setMagDataRate(MagDataRates enumVal) { magDataRate = (int)enumVal; }
 
-                public async Task<CraRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((magDataRate & 0x7) << 2) | ((tempEnable & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -161,11 +146,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 public GainConfigurations getGainConfiguration() { return (GainConfigurations)gainConfiguration; }
                 public void setGainConfiguration(GainConfigurations enumVal) { gainConfiguration = (int)enumVal; }
 
-                public async Task<CrbRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((gainConfiguration & 0x7) << 5); }
                 internal override void setValue(long _value)
                 {
@@ -187,11 +167,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
                 public MagSensorModes getMagSensorMode() { return (MagSensorModes)magSensorMode; }
                 public void setMagSensorMode(MagSensorModes enumVal) { magSensorMode = (int)enumVal; }
 
-                public async Task<MrRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((magSensorMode & 0x3) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -211,11 +186,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<OutXRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -235,11 +205,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<OutYRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -259,11 +224,6 @@ namespace Treehopper.Libraries.Sensors.Magnetic
 
                 public int value { get; set; }
 
-                public async Task<OutZRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {

@@ -107,15 +107,15 @@ namespace Treehopper.Libraries.Sensors.Inertial
         public L3gd20(I2C i2c, byte address, int rate = 100)
         {
             registers = new L3gd20Registers(new SMBusRegisterManagerAdapter(new SMBusDevice(address, i2c, rate)));
-            Task.Run(registers.ctrlReg1.write).Wait();
+            Task.Run(registers.ctrlReg1.writeAsync).Wait();
             registers.ctrlReg1.xEn = 1;
             registers.ctrlReg1.yEn = 1;
             registers.ctrlReg1.zEn = 1;
             registers.ctrlReg1.pd = 1;
             registers.ctrlReg1.setDataRate(DataRates.Hz_190);
-            Task.Run(registers.ctrlReg1.write).Wait();
-            Task.Run(registers.ctrlReg2.write).Wait();
-            Task.Run(registers.ctrlReg5.write).Wait();
+            Task.Run(registers.ctrlReg1.writeAsync).Wait();
+            Task.Run(registers.ctrlReg2.writeAsync).Wait();
+            Task.Run(registers.ctrlReg5.writeAsync).Wait();
         }
 
         /// <summary>

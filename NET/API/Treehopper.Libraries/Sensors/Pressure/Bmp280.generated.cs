@@ -167,11 +167,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<T1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -191,11 +186,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<T2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -215,11 +205,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<T3Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -239,11 +224,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -263,11 +243,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -287,11 +262,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P3Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -311,11 +281,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P4Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -335,11 +300,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P5Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -359,11 +319,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P6Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -383,11 +338,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P7Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -407,11 +357,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P8Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -431,11 +376,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<P9Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -455,11 +395,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<H1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -479,11 +414,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<IdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -503,11 +433,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<ResetRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -527,11 +452,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<H2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -551,11 +471,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<H3Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -575,11 +490,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<H4Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -600,11 +510,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 public int h4Low { get; set; }
                 public int h5Low { get; set; }
 
-                public async Task<H4h5Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((h4Low & 0xF) << 0) | ((h5Low & 0xF) << 4); }
                 internal override void setValue(long _value)
                 {
@@ -626,11 +531,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<H5Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -650,11 +550,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<H6Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -676,11 +571,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 public Oversamplings getOversampling() { return (Oversamplings)oversampling; }
                 public void setOversampling(Oversamplings enumVal) { oversampling = (int)enumVal; }
 
-                public async Task<CtrlHumidityRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((oversampling & 0x7) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -701,11 +591,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 public int imUpdate { get; set; }
                 public int measuring { get; set; }
 
-                public async Task<StatusRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((imUpdate & 0x1) << 0) | ((measuring & 0x1) << 3); }
                 internal override void setValue(long _value)
                 {
@@ -735,11 +620,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 public OversamplingTemperatures getOversamplingTemperature() { return (OversamplingTemperatures)oversamplingTemperature; }
                 public void setOversamplingTemperature(OversamplingTemperatures enumVal) { oversamplingTemperature = (int)enumVal; }
 
-                public async Task<CtrlMeasureRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((mode & 0x3) << 0) | ((oversamplingPressure & 0x7) << 2) | ((oversamplingTemperature & 0x7) << 5); }
                 internal override void setValue(long _value)
                 {
@@ -769,11 +649,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
                 public TStandbies getTStandby() { return (TStandbies)tStandby; }
                 public void setTStandby(TStandbies enumVal) { tStandby = (int)enumVal; }
 
-                public async Task<ConfigRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((enable3Wire & 0x1) << 0) | ((filter & 0x7) << 1) | ((tStandby & 0x7) << 4); }
                 internal override void setValue(long _value)
                 {
@@ -797,11 +672,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<PressureRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFFF) << 4); }
                 internal override void setValue(long _value)
                 {
@@ -821,11 +691,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<TemperatureRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFFF) << 4); }
                 internal override void setValue(long _value)
                 {
@@ -845,11 +710,6 @@ namespace Treehopper.Libraries.Sensors.Pressure
 
                 public int value { get; set; }
 
-                public async Task<HumidityRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
