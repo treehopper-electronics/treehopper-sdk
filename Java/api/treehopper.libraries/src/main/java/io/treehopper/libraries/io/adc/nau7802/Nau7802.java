@@ -2,6 +2,8 @@ package io.treehopper.libraries.io.adc.nau7802;
 
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.SMBusRegisterManagerAdapter;
+
 
 /**
  * Created by JayLocal on 5/2/2017.
@@ -13,7 +15,7 @@ public class Nau7802 {
 
     public Nau7802(I2c i2c) {
         dev = new SMBusDevice((byte) 0x2A, i2c);
-        registers = new Nau7802Registers(dev);
+        registers = new Nau7802Registers(new SMBusRegisterManagerAdapter(dev));
 
         registers.puCtrl.registerReset = 1;  // reset all registers
         registers.puCtrl.write();

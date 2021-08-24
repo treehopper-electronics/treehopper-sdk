@@ -3,6 +3,7 @@ package io.treehopper.libraries.sensors.inertial.mpu6050;
 import com.badlogic.gdx.math.Vector3;
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.SMBusRegisterManagerAdapter;
 import io.treehopper.libraries.sensors.inertial.IAccelerometer;
 import io.treehopper.libraries.sensors.inertial.IGyroscope;
 import io.treehopper.libraries.sensors.temperature.TemperatureSensor;
@@ -27,7 +28,7 @@ public class Mpu6050 extends TemperatureSensor implements IAccelerometer, IGyros
             addr = (byte) 0x69;
         }
 
-        registers = new Mpu6050Registers(new SMBusDevice(addr, i2c, ratekHz));
+        registers = new Mpu6050Registers(new SMBusRegisterManagerAdapter(new SMBusDevice(addr, i2c, ratekHz)));
         registers.powerMgmt1.reset = 1;
         registers.powerMgmt1.write();
         registers.powerMgmt1.reset = 0;

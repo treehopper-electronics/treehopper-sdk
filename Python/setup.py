@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
     name='treehopper',
-    version='1.11.4',
+    version='1.12.0',
     packages=['treehopper.api','treehopper.libraries', 'treehopper.utils'],
     license='MIT license',
     url='https://treehopper.io',

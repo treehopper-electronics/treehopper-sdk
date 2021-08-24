@@ -2,6 +2,7 @@ package io.treehopper.libraries.sensors.magnetic.ak8975;
 
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.SMBusRegisterManagerAdapter;
 import io.treehopper.libraries.sensors.magnetic.Magnetometer;
 
 public class Ak8975 extends Magnetometer {
@@ -10,7 +11,7 @@ public class Ak8975 extends Magnetometer {
 
     public Ak8975(I2c i2c) {
         dev = new SMBusDevice((byte) 0x0c, i2c);
-        _registers = new Ak8975Registers(dev);
+        _registers = new Ak8975Registers(new SMBusRegisterManagerAdapter(dev));
     }
 
     @Override

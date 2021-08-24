@@ -2,6 +2,7 @@ package io.treehopper.libraries.sensors.optical.vcnl4010;
 
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.SMBusRegisterManagerAdapter;
 import io.treehopper.libraries.sensors.ProximitySensor;
 import io.treehopper.libraries.sensors.optical.IAmbientLightSensor;
 
@@ -13,7 +14,7 @@ public class Vcnl4010 extends ProximitySensor implements IAmbientLightSensor {
     Vcnl4010Registers registers;
 
     public Vcnl4010(I2c i2c, int rate) {
-        registers = new Vcnl4010Registers(new SMBusDevice((byte) (0x13), i2c, rate));
+        registers = new Vcnl4010Registers(new SMBusRegisterManagerAdapter(new SMBusDevice((byte) (0x13), i2c, rate)));
         registers.readRange(registers.command, registers.ambientLightParameters);
         registers.proximityRate.setRate(Rates.Hz_7_8125);
         registers.ledCurrent.irLedCurrentValue = 20;
