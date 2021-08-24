@@ -1,0 +1,121 @@
+﻿{
+  "multiRegisterAccess": "true",
+  "registers": {
+    "deviceId": {
+      "address": "0x00",
+      "access": "read"
+    },
+    "deviceReset": {
+      "address": "0x00",
+      "access": "write"
+    },
+
+    "config1": {
+      "address": "0x01",
+      "values": {
+        "mode": {
+          "width": 3,
+          "enum": {
+            "isPublic": true,
+            "values": {
+              "PowerDown": null,
+              "Green": null,
+              "Red": null,
+              "Blue": null,
+              "Standby": null,
+              "GreenRedBlue": null,
+              "GreenRed": null,
+              "GreenBlue": null
+            }
+          }
+        },
+        "range": {
+          "enum": {
+            "isPublic": true,
+            "values": {
+              "Lux_375": null,
+              "Lux_10000": null
+            }
+          }
+        },
+        "sampleDepth": {
+          "enum": {
+            "isPublic": true,
+            "values": {
+              "Bits_16": null,
+              "Bits_12": null
+            }
+          }
+        },
+        "sync": {}
+      }
+    },
+
+    "config2": {
+      "address": "0x02",
+      "values": {
+        "alscc": { "width": 6 },
+        "irCom": { "offset": 7 }
+      }
+    },
+
+    "config3": {
+      "address": "0x03",
+      "values": {
+        "interruptSelection": {
+          "width": 2,
+          "enum": {
+            "isPublic": true,
+            "values": {
+              "NoInterrupt": null,
+              "Green": null,
+              "Red": null,
+              "Blue": null
+            }
+          }
+        },
+        "prst": {
+          "width": 2,
+          "enum": {
+            "values": {
+              "Cycles_1": null,
+              "Cycles_2": null,
+              "Cycles_4": null,
+              "Cycles_8": null
+            }
+          }
+        },
+        "conven": {}
+      }
+    },
+
+    "lowThreshold": {
+      "address": "0x04",
+      "width": 16
+    },
+
+    "highThreshold": {
+      "address": "0x06",
+      "width": 16
+    },
+
+    "status": {
+      "address": "0x08"
+    },
+
+    "greenData": {
+      "address": "0x09",
+      "width": 16
+    },
+
+    "redData": {
+      "address": "0x0B",
+      "width": 16
+    },
+
+    "blueData": {
+      "address": "0x0D",
+      "width": 16
+    }
+  }
+}

@@ -1,0 +1,266 @@
+{
+    "multiRegisterAccess": "true",
+  "registers": {
+    "outT": {
+      "address": "0x0c",
+      "access": "read"
+    },
+
+    "info1": {
+      "address": "0x0d",
+      "access": "read"
+    },
+
+    "info2": {
+      "address": "0x0e",
+      "access": "read"
+    },
+
+    "whoAmI": {
+      "address": "0x0f",
+      "access": "read"
+    },
+
+    "offX": {
+      "address": "0x10"
+    },
+
+    "offY": {
+      "address": "0x11"
+    },
+
+    "offZ": {
+      "address": "0x12"
+    },
+
+    "csX": {
+      "address": "0x13"
+    },
+
+    "csY": {
+      "address": "0x14"
+    },
+
+    "csZ": {
+      "address": "0x15"
+    },
+
+    "lc": {
+      "address": "0x16",
+      "width": 16
+    },
+
+    "stat": {
+      "address": "0x18",
+      "values": {
+        "drdy": {},
+        "dor": {},
+        "intSm2": {},
+        "intSm1": {},
+        "sync2": {},
+        "sync1": {},
+        "syncw": {},
+        "longInterrupt": {}
+      }
+    },
+
+    "peak1": {
+      "address": "0x19"
+    },
+
+    "peak2": {
+      "address": "0x1A"
+    },
+
+    "vfc1": {
+      "address": "0x1b"
+    },
+
+    "vfc2": {
+      "address": "0x1c"
+    },
+
+    "vfc3": {
+      "address": "0x1d"
+    },
+
+    "vfc4": {
+      "address": "0x1e"
+    },
+
+    "thrs3": {
+      "address": "0x1f"
+    },
+
+    "ctrlReg4": {
+      "address": "0x20",
+      "values": {
+        "xen": {},
+        "yen": {},
+        "zen": {},
+        "bdu": {},
+        "outputDataRate": {
+          "width": 4,
+          "enum": {
+            "values": {
+              "PowerDown": null,
+              "Hz_3P125": null,
+              "Hz_6P25": null,
+              "Hz_12P5": null,
+              "Hz_25": null,
+              "Hz_50": null,
+              "Hz_100": null,
+              "Hz_400": null,
+              "Hz_800": null,
+              "Hz_1600": null
+            }
+          }
+        }
+      }
+    },
+
+    "ctrlReg1": {
+      "address": "0x21",
+      "values": {
+        "sm1En": {},
+        "sm1Pin": {
+          "offset": 3
+        },
+        "Hyst1": {
+          "width": 3,
+          "offset": 5
+        }
+      }
+    },
+
+    "ctrlReg2": {
+      "address": "0x22",
+      "values": {
+        "sm2En": {},
+        "sm2Pin": { "offset": 3 },
+        "Hyst2": {
+          "width": 3,
+          "offset": 5
+        }
+      }
+    },
+
+    "ctrlReg3": {
+      "address": "0x23",
+      "values": {
+        "strt": {},
+        "vfilt": { "offset": 2 },
+        "int1En": {},
+        "int2En": {},
+        "iel": {},
+        "iea": {},
+        "drEn": {}
+      }
+    },
+
+    "ctrlReg5": {
+      "address": "0x24",
+      "values": {
+        "sim": {},
+        "st1": {},
+        "st2": {},
+        "fscale": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "g_2": null,
+              "g_4": null,
+              "g_6": null,
+              "g_8": null,
+              "g_16": null,
+            }
+          }
+        },
+        "bandwidth": {
+          "width": 3,
+          "enum": {
+            "values": {
+              "Hz_800": null,
+              "Hz_200": null,
+              "Hz_400": null,
+              "Hz_50": null
+            }
+          }
+        }
+      }
+    },
+
+    "ctrlReg6": {
+      "address": "0x25",
+      "values": {
+        "p2boot": {},
+        "p1overrun": {},
+        "p1wtm": {},
+        "p1empty": {},
+        "addInc": {},
+        "wtmEn": {},
+        "fifoEn": {},
+        "boot": {}
+      }
+    },
+
+    "status": {
+      "address": "0x27",
+      "values": {
+        "xda": {},
+        "yda": {},
+        "zda": {},
+        "zyxda": {},
+        "xor": {},
+        "yor": {},
+        "zor": {},
+        "zyxor": {}
+        }
+      },
+
+      "outX": {
+        "address": "0x28",
+        "width": 16
+      },
+
+      "outY": {
+        "address": "0x2a",
+        "width": 16
+      },
+
+      "outZ": {
+        "address": "0x2c",
+        "width": 16
+      },
+
+      "fifoCtrl": {
+        "address": "0x2e",
+        "values": {
+          "wtmp": { "width": 5 },
+          "fifoMode": {
+            "width": 3,
+            "enum": {
+              "values": {
+                "bypass": 0,
+                "fifoMode": 1,
+                "streamMode": 2,
+                "streamUntilTriggerThenFifo": 3,
+                "bypassUntilTriggerThenStream": 4,
+                "bypassUntilTriggerThenFIFO": 7
+              }
+            }
+          }
+        }
+      },
+
+      "fifoSrc": {
+        "address": "0x2f",
+        "values": {
+          "fss": { "width": 5 },
+          "empty": {},
+          "ovrnFifo": {},
+          "wtm": {}
+        }
+      }
+    }
+}
