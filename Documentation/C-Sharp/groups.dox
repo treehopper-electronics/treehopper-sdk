@@ -89,7 +89,7 @@ Accelerometers, gyroscopes, magnetometers, temperature sensors, etc
         \class Treehopper.Libraries.Sensors.Magnetic.Tlv493d
     @}
 
-    \defgroup temperature Temperature
+    \defgroup environmental Environmental Sensors
     Temperature, humidity, and pressure sensors
     \ingroup sensors
     @{
@@ -113,11 +113,13 @@ Accelerometers, gyroscopes, magnetometers, temperature sensors, etc
     Optical sensors and camera modules
     \ingroup sensors
     @{
-        \class Treehopper.Libraries.Sensors.Optical.FlirLepton
+        \class Treehopper.Libraries.Sensors.Optical.Isl29125
         \class Treehopper.Libraries.Sensors.Optical.Vcnl4010
+        \class Treehopper.Libraries.Sensors.Optical.Tsl2561
         \class Treehopper.Libraries.Sensors.Optical.Tsl2591
         \class Treehopper.Libraries.Sensors.Optical.Bh1750
         \class Treehopper.Libraries.Sensors.Optical.Veml6070
+        \class Treehopper.Libraries.Sensors.Optical.FlirLepton
     @}
 @}
 
