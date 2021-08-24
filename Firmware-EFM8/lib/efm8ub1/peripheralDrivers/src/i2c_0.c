@@ -345,6 +345,8 @@ SI_INTERRUPT(I2C0_ISR, SMBUS0_IRQn)
      */
     I2C0_errorCb(I2C0_UNKNOWN_ERROR);
     I2C0_abort();
+    SMB0CN0_SI = 0;
+    return;
   }
 
   // Jump to status vector handler

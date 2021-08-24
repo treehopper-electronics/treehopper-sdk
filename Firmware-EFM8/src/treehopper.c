@@ -213,6 +213,7 @@ void ProcessPeripheralConfigPacket() {
 
 		if(totalTransactionBytes > 64-4)
 		{
+		   // we've only read 64 bytes into our buffer, so for long transactions read the remaining data
 			timeout = 0;
 			USBD_Read(EP_PeripheralConfig, &Treehopper_PeripheralConfig[64], (totalTransactionBytes+4)-64, false);
 			while(timeout++ < 65000 && USBD_EpIsBusy(EP_PeripheralConfig));

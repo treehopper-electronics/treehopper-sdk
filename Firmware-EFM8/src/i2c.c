@@ -34,9 +34,11 @@ void I2C_SetConfig(I2cConfigData_t* config) {
 void I2C_Enable() {
 	P0SKIP &= ~(SCL_BIT | SDA_BIT);
 	XBR0 |= XBR0_SMB0E__ENABLED;
+  I2C0_abort();
 }
 
 void I2C_Disable() {
+  I2C0_abort();
 	P0SKIP |= SCL_BIT | SDA_BIT;
 	XBR0 &= ~XBR0_SMB0E__ENABLED;
 }
@@ -60,6 +62,13 @@ void I2C0_transferCompleteCb() {
 }
 
 void I2C0_errorCb(I2C0_TransferError_t error) {
+  switch(error)
+  {
+    case I2C0_ARBLOST_ERROR:
+    case I2C0_UNKNOWN_ERROR:
+      I2C0_abort();
+      break;
+  }
 	commandComplete = 1;
 	transferError = error;
 }
