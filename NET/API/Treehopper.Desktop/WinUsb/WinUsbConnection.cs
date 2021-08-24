@@ -138,8 +138,7 @@ namespace Treehopper.Desktop.WinUsb
                 PipePolicy.PipeTransferTimeout, 4, ref timeout);
 
             IsOpen = true;
-            BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback,
-                null); // kick off our first pin read
+            BeginRead(pinReportEndpoint, pinReportBuffer, pinReportBuffer.Length, pinStateCallback, null); // kick off our first pin read
             return true;
         }
 

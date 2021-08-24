@@ -155,6 +155,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirmwareUpdater.Gtk", "Apps
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirmwareUpdater", "Apps\FirmwareUpdater\FirmwareUpdater\FirmwareUpdater.csproj", "{A9801162-32EA-4134-97B0-4643E1263E72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RgbColorSensor", "Demos\Libraries\Sensors\RgbColorSensor\RgbColorSensor.csproj", "{656F9459-3624-4E21-B5C4-230FAAE9A083}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Apps\TreehopperApp\TreehopperApp\TreehopperApp.projitems*{0c457ad6-8ee0-4e4b-8e38-e47d1db69c28}*SharedItemsImports = 4
@@ -1611,6 +1613,30 @@ Global
 		{A9801162-32EA-4134-97B0-4643E1263E72}.Release|x64.Build.0 = Release|Any CPU
 		{A9801162-32EA-4134-97B0-4643E1263E72}.Release|x86.ActiveCfg = Release|Any CPU
 		{A9801162-32EA-4134-97B0-4643E1263E72}.Release|x86.Build.0 = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|ARM.Build.0 = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|x64.Build.0 = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Debug|x86.Build.0 = Debug|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|ARM.ActiveCfg = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|ARM.Build.0 = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|iPhone.Build.0 = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|x64.ActiveCfg = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|x64.Build.0 = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|x86.ActiveCfg = Release|Any CPU
+		{656F9459-3624-4E21-B5C4-230FAAE9A083}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1689,6 +1715,7 @@ Global
 		{57298809-347E-4C97-8185-F45BB1193B84} = {3299A2A6-A61C-486E-A642-E177DA0FC754}
 		{626F9725-0CFE-48A1-80C5-CE92A8CCE63E} = {FDE7B38D-0336-4868-9DBA-06E267E0F703}
 		{A9801162-32EA-4134-97B0-4643E1263E72} = {FDE7B38D-0336-4868-9DBA-06E267E0F703}
+		{656F9459-3624-4E21-B5C4-230FAAE9A083} = {EA3C9176-FDAC-445F-ABE8-D2648A007DEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5057C2CE-5C8D-414F-9703-0699AAFFD2C1}
