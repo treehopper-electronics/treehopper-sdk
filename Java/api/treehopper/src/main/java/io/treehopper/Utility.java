@@ -3,7 +3,7 @@ package io.treehopper;
 /**
  * Utilities and helpers
  */
-public class Utilities {
+public class Utility {
     /**
      * Determines whether two numbers are close to each other
      * @param a the first number
@@ -23,11 +23,15 @@ public class Utilities {
      * @param b the second number
      * @return
      */
-    static boolean CloseTo(double a, double b) {
+    public static boolean CloseTo(double a, double b) {
         return CloseTo(a, b, 0.00001);
     }
 
     static void error(String message) {
+        error(message, false);
+    }
+
+    public static void error(String message, boolean throwErrors) {
         System.err.print(message);
 
         if (TreehopperUsb.Settings.shouldThrowExceptions()) {

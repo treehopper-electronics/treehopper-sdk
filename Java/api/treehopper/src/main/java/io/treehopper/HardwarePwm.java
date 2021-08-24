@@ -69,7 +69,7 @@ public class HardwarePwm implements Pwm {
      */
     @Override
     public void setPulseWidth(double pulseWidth) {
-        if (Utilities.CloseTo(pulseWidth, getPulseWidth())) return;
+        if (Utility.CloseTo(pulseWidth, getPulseWidth())) return;
 
         setDutyCycle(pulseWidth / board.hardwarePwmManager.getPeriodMicroseconds());
     }
@@ -91,7 +91,7 @@ public class HardwarePwm implements Pwm {
      */
     @Override
     public void setDutyCycle(double dutyCycle) {
-        if (Utilities.CloseTo(dutyCycle, this.dutyCycle)) return;
+        if (Utility.CloseTo(dutyCycle, this.dutyCycle)) return;
 
         this.dutyCycle = dutyCycle;
         board.hardwarePwmManager.setDutyCycle(pin, dutyCycle);
