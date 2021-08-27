@@ -43,8 +43,11 @@ namespace Treehopper.Desktop.MacUsb
         {
             Debug.WriteLine("DeviceRemoved() called");
 
-            Boards[usbDevice].Disconnect();
-            Boards.RemoveAt(usbDevice);
+            if(usbDevice < Boards.Count)
+            {
+                Boards[usbDevice].Disconnect();
+                Boards.RemoveAt(usbDevice);
+            }
         }
 
 
