@@ -44,7 +44,7 @@ namespace TreehopperApp.Pages.Libraries
 
         public override async Task Stop()
         {
-            HobbyServo.Dispose();
+            HobbyServo?.Dispose();
             HobbyServo = null;
         }
 

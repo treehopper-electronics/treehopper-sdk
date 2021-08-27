@@ -1,10 +1,11 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using Treehopper;
 using Treehopper.Libraries.Sensors.Inertial;
-using Treehopper.Mvvm.ViewModels;
 
 namespace ImuVisualizer
 {
@@ -13,7 +14,6 @@ namespace ImuVisualizer
     /// </summary>
     public partial class MainWindow : ModernWindow, INotifyPropertyChanged
     {
-        public SelectorViewModel Selector { get; set; }
 
         public double Pitch { get; set; }
         public double Roll { get; set; }
@@ -27,30 +27,23 @@ namespace ImuVisualizer
         public MainWindow()
         {
             InitializeComponent();
-            Selector = new SelectorViewModel();
             DataContext = this;
 
-            Selector.OnBoardConnected += Selector_OnBoardConnected;
-            Selector.OnBoardDisconnected += Selector_OnBoardDisconnected;
+            Task.Run(async () =>
+            {
+                var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+                await board.ConnectAsync();
+                var imu = (await Mpu9250.ProbeAsync(board.I2c))[0];
+                imu.EnableMagnetometer = false;
+                await imu.Calibrate();
 
+                filter = new ComplementaryFilter(imu, imu, 5, true);
+                filter.FilterUpdate += Filter_FilterUpdate;
+            });
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private void Selector_OnBoardDisconnected(object sender, Treehopper.Mvvm.BoardDisconnectedEventArgs e)
-        {
-            filter.Dispose();
-        }
-
-        private async void Selector_OnBoardConnected(object sender, Treehopper.Mvvm.BoardConnectedEventArgs e)
-        {
-            var imu = new Mpu9250(e.Board.I2c);
-            imu.EnableMagnetometer = false;
-            await imu.Calibrate();
-
-            filter = new ComplementaryFilter(imu, imu, 5, true);
-            filter.FilterUpdate += Filter_FilterUpdate;
-        }
 
         private void Filter_FilterUpdate(object sender, EventArgs e)
         {
