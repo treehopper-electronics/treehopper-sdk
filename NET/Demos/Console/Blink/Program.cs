@@ -34,14 +34,23 @@ namespace Blink
 				await Board.ConnectAsync();
 
 				Console.WriteLine("Start blinking. Press any key to stop.");
-				while (Board.IsConnected && !Console.KeyAvailable)
+				while (Board.IsConnected)
 				{
-					// toggle the LED.
-					Board.Led = !Board.Led;
-					await Task.Delay(100);
+                    if (Console.KeyAvailable)
+                    {
+                        Console.ReadKey(true);
+                        Board.Disconnect();
+                        break;
+                    } else
+                    {
+                        // toggle the LED.
+                        Board.Led = !Board.Led;
+                        await Task.Delay(100);
+                    }
+
 				}
 
-                Board.Disconnect();
+                
             }
         }
     }

@@ -1,0 +1,5 @@
+﻿"Address","Name","Fields","Offset"
+{{#RegisterList}}
+{{Address}},{{CapitalizedName}},{{#Values.Values}}
+,,{{Name}},{{Offset}}{{/Values.Values}}
+{{/RegisterList}}

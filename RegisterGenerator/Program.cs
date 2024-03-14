@@ -16,14 +16,17 @@ namespace RegisterGenerator
         private static Project project;
         private static string treehopperRoot;
 
+        private static bool tableOutput = false;
+
         static void Main(string[] args)
         {
-            if(args.Length != 1)
+            if(args.Length == 0)
             {
                 Console.WriteLine("USAGE: RegisterGenerator.exe <treehopper-sdk repo location>");
                 return;
             }
             treehopperRoot = args[0];
+            if (args.Contains("-t")) tableOutput = true;
             //project = collection.LoadProject($"{treehopperRoot}\\NET\\Libraries\\Treehopper.Libraries\\Treehopper.Libraries.csproj");
             ProcessDirectory("Libraries");
             //project.Save();
@@ -84,6 +87,14 @@ namespace RegisterGenerator
                     }
                     
                 }
+                {
+                    if (tableOutput)
+                    {
+                        var outPath = $"{treehopperRoot}\\RegisterGenerator\\Tables\\{library.Name}.csv";
+                        Render.FileToFile("Templates\\Registers.csv", library, outPath);
+                    }
+                }
+                
             }
         }
     }

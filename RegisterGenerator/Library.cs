@@ -23,6 +23,9 @@ namespace RegisterGenerator
         /// Ordered list of registers
         /// </summary>
         public List<Register> RegisterList { get; set; }
+
+        //public int FixedRegisterSize { get; set; }
+
         public int FirstReadAddress { get; set; }
         public int FirstWriteAddress { get; set; }
         public int TotalReadBytes { get; set; }

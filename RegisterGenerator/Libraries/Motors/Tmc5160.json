@@ -1,0 +1,831 @@
+{
+  "registers": {
+    "gConf": {
+      "address": "0x00",
+      "width": 32,
+      "values": {
+        "recalibrate": {},
+        "fastAndStill": {
+          "enum": {
+            "values": {
+              "shortTime": null,
+              "normalTime": null
+            }
+          }
+        },
+        "enPwmMode": {},
+        "multiStepFilt": {},
+        "shaft": {},
+        "daig0Error": {},
+        "diag0Otpw": {},
+        "diag0Stall": {},
+        "diag1Stall": {},
+        "diag1Dir": {},
+        "diag1Index": {},
+        "diag1OnState": {},
+        "diag1StepsSkipped": {},
+        "diag0IntPushpull": {},
+        "diag1PoscompPushpull": {},
+        "smallHysteresis": {},
+        "stopEnable": {},
+        "directMode": {},
+        "testMode": {}
+      }
+    },
+    "gstat": {
+      "address": "0x01",
+      "width": 32,
+      "values": {
+        "reset": {},
+        "drvErr": {},
+        "uvCp": {}
+      }
+    },
+    "ifCnt": {
+      "address": "0x02",
+      "width": 32,
+      "values": {
+        "count": {
+          "width": 8
+        }
+      }
+    },
+    "nodeConf": {
+      "address": "0x03",
+      "width": 32,
+      "values": {
+        "nodeAddr": {
+          "width": 8
+        },
+        "sendDelay": {
+          "width": 4
+        }
+      }
+    },
+    "ioIn": {
+      "address": "0x04",
+      "width": 32,
+      "values": {
+        "reflStep": {},
+        "refrDir": {},
+        "encbDcenCfg4": {},
+        "drvEnn": {},
+        "encNDcoCfg6": {},
+        "sdMode": {},
+        "swCompIn": {},
+        "version": {
+          "width": 8,
+          "offset": 24
+        }
+      }
+    },
+    "output": {
+      "address": "0x04",
+      "width": 32,
+      "sdoCfg0Pol": {}
+    },
+    "xCompare": {
+      "address": "0x05",
+      "width": 32,
+      "xcompare": {
+        "width": 32
+      }
+    },
+    "otpProg": {
+      "address": "0x06",
+      "width": 32,
+      "values": {
+        "otpbit": {
+          "width": 3
+        },
+        "otpbyte": {
+          "width": 2,
+          "offset": 4
+        },
+        "otpmagic": {
+          "width": 8,
+          "offset": 8
+        }
+      }
+    },
+    "otpRead": {
+      "address": "0x07",
+      "width": 32,
+      "values": {
+        "otpbit": {
+          "width": 8
+        }
+      }
+    },
+    "factoryConf": {
+      "address": "0x08",
+      "width": 32,
+      "values": {
+        "fclktrim": {
+          "width": 5
+        }
+      }
+    },
+    "shortConf": {
+      "address": "0x09",
+      "width": 32,
+      "values": {
+        "s2vsLevel": {
+          "width": 4
+        },
+        "s2gLevel": {
+          "width": 4,
+          "offset": 8
+        },
+        "shortFilter": {
+          "width": 2,
+          "offset": 16
+        },
+        "shortDelay": {
+          "width": 1,
+          "offset": 18,
+          "enum": {
+            "750nsNormal": 0,
+            "1500nsHigh": 1
+          }
+        }
+      }
+    },
+    "drvConf": {
+      "address": "0x0a",
+      "width": 32,
+      "values": {
+        "bbmTime": {
+          "width": 5,
+          "offset": 0
+        },
+        "bbmClks": {
+          "width": 4,
+          "offset": 8
+        },
+        "otSelect": {
+          "width": 2,
+          "offset": 16
+        },
+        "drvStrength": {
+          "width": 2,
+          "offset": 18
+        },
+        "filtISense": {
+          "width": 2,
+          "offset": 20,
+          "enum": {
+            "100ns": 0,
+            "200ns": 1,
+            "300ns": 2,
+            "400ns": 3,
+          }
+        }
+      }
+    },
+    "globalScaler": {
+      "address": "0x0b",
+      "width": 32,
+      "values": {
+        "globalScaler": {
+          "width": 8
+        }
+      }
+    },
+    "offsetRead": {
+      "address": "0x0c",
+      "width": 32,
+      "values": {
+        "offsetCalibrationResultPhaseB": {
+          "width": 8,
+          "signed": true
+        },
+        "offsetCalibrationResultPhaseA": {
+          "width": 8,
+          "signed": true
+        }
+      }
+    },
+    "iHoldIRun": {
+      "address": "0x10",
+      "width": 32,
+      "values": {
+        "iHold": {
+          "width": 5
+        },
+        "iRun": {
+          "width": 5,
+          "offset": 8
+        },
+        "iHoldDelay": {
+          "width": 4,
+          "offset": 16
+        }
+      }
+    },
+    "tPowerDown": {
+      "address": "0x11",
+      "width": 32,
+      "values": {
+        "tPowerDown": {
+          "width": 8
+        }
+      }
+    },
+    "tStep": {
+        "address": "0x12",
+        "width": 32,
+        "values": {
+          "tStep": {
+            "width": 20
+        }
+    },
+    "tPwmThrs": {
+        "address": "0x13",
+        "width": 32,
+        "values": {
+          "tPwmThrs": {
+            "width": 20
+          }
+    },
+    "tCoolThrs": {
+        "address": "0x14",
+        "width": 32,
+        "values": {
+          "tCoolThrs": {
+            "width": 20
+          }
+    },
+    "tHigh": {
+        "address": "0x15",
+        "width": 32,
+        "values": {
+          "tHigh": {
+            "width": 20
+          }
+    },
+    "rampMode": {
+        "address": "0x20",
+        "width": 32,
+        "values": {
+          "rampMode": {
+            "width": 2,
+            "enum": {
+                "positioningMode": 0,
+                "velocityModePositive": 1,
+                "velocityModeNegative": 2,
+                "holdMode": 3
+            }
+          }
+    },
+    "xActual": {
+        "address": "0x21",
+        "width": 32,
+        "values": {
+          "xActual": {
+            "width": 32
+          }
+        }
+    },
+    "vActual": {
+        "address": "0x22",
+        "width": 32,
+        "values": {
+          "vActual": {
+            "width": 24
+          }
+        }
+    },
+    "vStart": {
+        "address": "0x23",
+        "width": 32,
+        "values": {
+          "vStart": {
+            "width": 18
+          }
+        }
+    },
+    "a1": {
+        "address": "0x24",
+        "width": 32,
+        "values": {
+          "a1": {
+            "width": 16
+          }
+        }
+    },
+    "v1": {
+        "address": "0x25",
+        "width": 32,
+        "values": {
+          "v1": {
+            "width": 20
+          }
+        }
+    },
+    "aMax": {
+        "address": "0x26",
+        "width": 32,
+        "values": {
+          "aMax": {
+            "width": 16
+          }
+        }
+    },
+    "vMax": {
+        "address": "0x27",
+        "width": 32,
+        "values": {
+          "vMax": {
+            "width": 23
+          }
+        }
+    },
+    "dMax": {
+        "address": "0x28",
+        "width": 32,
+        "values": {
+          "dMax": {
+            "width": 16
+          }
+        }
+    },
+    "d1": {
+        "address": "0x29",
+        "width": 32,
+        "values": {
+          "d1": {
+            "width": 16
+          }
+        }
+    },
+    "vStop": {
+        "address": "0x2b",
+        "width": 32,
+        "values": {
+          "vStop": {
+            "width": 18
+          }
+        }
+    },
+    "tZeroWait": {
+        "address": "0x2c",
+        "width": 32,
+        "values": {
+          "tZeroWait": {
+            "width": 16
+          }
+        }
+    },
+    "xTarget": {
+        "address": "0x2d",
+        "width": 32,
+        "values": {
+          "xTarget": {
+            "width": 32
+          }
+        }
+    },
+    "vDcMin": {
+        "address": "0x33",
+        "width": 32,
+        "values": {
+          "xTarget": {
+            "width": 23
+          }
+        }
+    },
+    "swMode": {
+        "address": "0x34",
+        "width": 32,
+        "values": {
+          "stopLEnable": {},
+          "stopREnable": {},
+          "polStopL": {},
+          "polStopR": {},
+          "swapLr": {},
+          "latchLActive": {},
+          "latchLInactive": {},
+          "latchRActive": {},
+          "latchRInactive": {},
+          "enLatchEncoder": {},
+          "sgStop": {},
+          "enSoftstop": {}
+        }
+    },
+    "rampStat": {
+        "address": "0x35",
+        "width": 32,
+        "values": {
+          "statusStopL": {},
+          "statusStopR": {},
+          "statusLatchL": {},
+          "statusLaatchR": {},
+          "eventStopL": {},
+          "eventStopR": {},
+          "eventStopSg": {},
+          "eventPostReached": {},
+          "velocityReached": {},
+          "positionReached": {},
+          "vZero": {},
+          "tZeroWaitActive": {},
+          "secondMove": {},
+          "statusSg": {}
+        }
+    },
+    "xLatch": {
+        "address": "0x36",
+        "width": 32,
+        "values": {
+          "xLatch": {
+            "width": 32
+          }
+        }
+    },
+    "encMode": {
+        "address": "0x38",
+        "width": 32,
+        "values": {
+          "polA": {},
+          "polB": {},
+          "polN": {},
+          "ignoreAB": {},
+          "clrCont": {},
+          "clrOnce": {},
+          "posEdge": {},
+          "negEdge": {},
+          "clrEncX": {},
+          "latchXAct": {},
+          "encSelDecimal": {}
+        }
+    },
+    "xEnc": {
+        "address": "0x39",
+        "width": 32,
+        "values": {
+          "xEnc": {
+            "width": 32
+          }
+        }
+    },
+    "encConst": {
+        "address": "0x3a",
+        "width": 32,
+        "values": {
+          "encConst": {
+            "width": 32
+          }
+        }
+    },
+    "encStatus": {
+        "address": "0x3b",
+        "width": 32,
+        "values": {
+          "encStatus": {
+            "width": 2
+          }
+        }
+    },
+    "encLatch": {
+        "address": "0x3c",
+        "width": 32,
+        "values": {
+          "encLatch": {
+            "width": 32
+          }
+        }
+    },
+    "encDeviation": {
+        "address": "0x3d",
+        "width": 32,
+        "values": {
+          "encDeviation": {
+            "width": 20
+          }
+        }
+    },
+    "msLut0": {
+        "address": "0x60",
+        "width": 32,
+        "values": {
+          "msLut0": {
+            "width": 32
+          }
+        }
+    },
+    "msLut1": {
+        "address": "0x61",
+        "width": 32,
+        "values": {
+          "msLut1": {
+            "width": 32
+          }
+        }
+    },
+    "msLut2": {
+        "address": "0x62",
+        "width": 32,
+        "values": {
+          "msLut2": {
+            "width": 32
+          }
+        }
+    },
+    "msLut3": {
+        "address": "0x63",
+        "width": 32,
+        "values": {
+          "msLut3": {
+            "width": 32
+          }
+        }
+    },
+    "msLut4": {
+        "address": "0x64",
+        "width": 32,
+        "values": {
+          "msLut4": {
+            "width": 32
+          }
+        }
+    },
+    "msLut5": {
+        "address": "0x65",
+        "width": 32,
+        "values": {
+          "msLut5": {
+            "width": 32
+          }
+        }
+    },
+    "msLut6": {
+        "address": "0x66",
+        "width": 32,
+        "values": {
+          "msLut6": {
+            "width": 32
+          }
+        }
+    },
+    "msLut7": {
+        "address": "0x67",
+        "width": 32,
+        "values": {
+          "msLut7": {
+            "width": 32
+          }
+        }
+    },
+    "msLutSel": {
+        "address": "0x68",
+        "width": 32,
+        "values": {
+          "w0": {
+            "width": 2,
+            "offset": 0
+          },
+          "w1": {
+            "width": 2,
+            "offset": 2
+          },
+          "w2": {
+            "width": 2,
+            "offset": 4
+          },
+          "w3": {
+            "width": 2,
+            "offset": 6
+          },
+          "x1": {
+            "width": 8,
+            "offset": 8
+          },
+          "x2": {
+            "width": 8,
+            "offset": 16
+          },
+          "x3": {
+            "width": 8,
+            "offset": 24
+          },
+        }
+    },
+    "msLutStart": {
+        "address": "0x69",
+        "width": 32,
+        "values": {
+          "startSin": {
+            "width": 8,
+          },
+          "startSin90": {
+            "width": 8,
+            "offset": 16
+          }
+        }
+    },
+    "msCnt": {
+        "address": "0x6a",
+        "width": 32,
+        "values": {
+          "msCnt": {
+            "width": 10
+          }
+        }
+    },
+    "msCurAct": {
+        "address": "0x6b",
+        "width": 32,
+        "values": {
+          "curB": {
+            "width": 9
+          },
+          "curA": {
+            "width": 9,
+            "offset": 16
+          }
+        }
+    },
+    "chopConf": {
+        "address": "0x6c",
+        "width": 32,
+        "values": {
+            "tOff0": {},
+            "tOff1": {},
+            "tOff2": {},
+            "tOff3": {},
+            "hStrt0": {},
+            "hStrt1": {},
+            "hStrt2": {},
+            "hEnd0": {},
+            "hEnd1": {},
+            "hEnd2": {},
+            "hEnd3": {},
+            "fd3": {},
+            "disfdcc": {},
+            "reserved1": {},
+            "chm": {},
+            "tbl0": {},
+            "tbl1": {},
+            "reserved2": {},
+            "vHighFs": {},
+            "vHighChm": {},
+            "tpfd0": {},
+            "tpfd1": {},
+            "tpfd2": {},
+            "tpfd3": {},
+            "mRes0": {},
+            "mRes1": {},
+            "mRes2": {},
+            "mRes3": {},
+            "intpol": {},
+            "dEdge": {},
+            "dIss2g": {},
+            "dIss2vs": {},
+        }
+    },
+    "coolConf": {
+        "address": "0x6d",
+        "width": 32,
+        "values": {
+            "semin0": {},
+            "semin1": {},
+            "semin2": {},
+            "semin3": {},
+            "reserved1": {},
+            "seup0": {},
+            "seup1": {},
+            "semax0": {},
+            "semax1": {},
+            "semax2": {},
+            "semax3": {},
+            "reserved2": {},
+            "sedn0": {},
+            "sedn1": {},
+            "seimin": {},
+            "sgt0": {},
+        }
+    },
+    "dcCtrl": {
+        "address": "0x6e",
+        "width": 32,
+        "values": {
+            "dcTime": {
+                "width": 10
+            },
+            "dcSg": {
+                "width": 8,
+                "offset": 16
+            }
+        }
+    },
+    "drvStatus": {
+        "address": "0x6f",
+        "width": 32,
+        "values": {
+            "sgResult": {
+                "width": 10
+            },
+            "reserved1": {
+                "width": 2
+            },
+            "shortToSupplyA": {},
+            "shortToSupplyB": {},
+            "stealth": {},
+            "fsActive": {},
+            "csActual": {
+                "width": 5
+            },
+            "reserved2": {
+                "width": 3
+            },
+            "stallGuard": {},
+            "overTemperature": {},
+            "overTemperaturePreWarning": {},
+            "shortToGndA": {},
+            "shortToGndB": {},
+            "openLoadA": {},
+            "openLoadB": {},
+            "standStill": {}
+        }
+    },
+    "pwmConf": {
+        "address": "0x70",
+        "width": 32,
+        "values": {
+            "pwmOfs": {
+                "width": 8
+            },
+            "pwmGrad": {
+                "width": 8
+            },
+            "pwmFreq": {
+                "width": 2,
+                "enum": {
+                    "2over1024": 0,
+                    "2over683": 1,
+                    "2over512": 2,
+                    "2over410": 3,
+                }
+            },
+            "pwmAutoscale": {},
+            "pwmAutograd": {},
+            "freewheel": {
+                "width": 2,
+                "enum": {
+                    "normalOperation": 0,
+                    "freeWheeling": 1,
+                    "coilShortedLowSide": 2,
+                    "coilShortedHighSide": 3
+                }
+            },
+            "reserved": {
+                "width": 2
+            },
+            "pwmReg": {
+                "width": 4
+            },
+            "pwmLim": {
+                "width": 4
+            }
+
+        }
+    },
+    "pwmScale": {
+        "address": "0x71",
+        "width": 32,
+        "values": {
+            "pwmScaleSum": {
+                "width": 8
+            },
+            "pwmScaleAuto": {
+                "width": 9,
+                "offset": 16
+            }
+
+        }
+    },
+    "pwmAuto": {
+        "address": "0x72",
+        "width": 32,
+        "values": {
+            "pwmOfsAuto": {
+                "width": 8
+            },
+            "pwmGradAuto": {
+                "width": 8,
+                "offset": 16
+            }
+        }
+    },
+    "lostSteps": {
+        "address": "0x73",
+        "width": 32,
+        "values": {
+            "lostSteps": {
+                "width": 20
+            },
+
+        }
+    },
+  }
+}

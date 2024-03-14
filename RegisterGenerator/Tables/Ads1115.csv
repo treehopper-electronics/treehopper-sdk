@@ -1,0 +1,17 @@
+"Address","Name","Fields","Bitmask"
+0x00,Conversion,
+,,value,0
+0x01,Config,
+,,comparatorQueue,0
+,,latchingComparator,2
+,,comparatorPolarity,3
+,,comparatorMode,4
+,,dataRate,5
+,,operatingMode,8
+,,pga,9
+,,mux,12
+,,operationalStatus,15
+0x02,LowThreshold,
+,,value,0
+0x03,HighThreshold,
+,,value,0

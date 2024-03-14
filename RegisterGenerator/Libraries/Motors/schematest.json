@@ -1,0 +1,11 @@
+{
+    "mode": "default",
+    "schema": {
+        "url": "string"
+    },
+    "rows": [
+        {
+            "url": "http://alturos.com"
+        }
+    ]
+}

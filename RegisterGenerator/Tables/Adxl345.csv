@@ -1,0 +1,14 @@
+"Address","Name","Fields","Bitmask"
+0x2D,PowerCtl,
+,,sleep,2
+,,measure,3
+0x31,DataFormat,
+,,range,0
+,,justify,2
+,,fullRes,3
+0x32,DataX,
+,,value,0
+0x34,DataY,
+,,value,0
+0x36,DataZ,
+,,value,0
