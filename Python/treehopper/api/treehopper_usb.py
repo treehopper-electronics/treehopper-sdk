@@ -171,7 +171,7 @@ class TreehopperUsb:
     @property
     def pwm2(self):
         """Gets the \link pwm.HardwarePwm PWM2\endlink module that belongs to this board"""
-        return self._pwm3
+        return self._pwm2
 
     @property
     def pwm3(self):
