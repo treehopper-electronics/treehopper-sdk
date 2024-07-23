@@ -56,8 +56,8 @@ namespace Treehopper.Libraries.Sensors.Pressure
             h5 = (short)((short)((registers.h5.value << 4 | registers.h4h5.h5Low) << 4) >> 4);
 
             registers.ctrlHumidity.setOversampling(Oversamplings.Oversampling_x16);
-            Task.Run(registers.ctrlHumidity.write).Wait();
-            Task.Run(registers.ctrlMeasure.write).Wait();
+            Task.Run(registers.ctrlHumidity.writeAsync).Wait();
+            Task.Run(registers.ctrlMeasure.writeAsync).Wait();
         }
 
         /// <summary>

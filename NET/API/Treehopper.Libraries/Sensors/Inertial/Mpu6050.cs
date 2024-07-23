@@ -67,23 +67,23 @@ namespace Treehopper.Libraries.Sensors.Inertial
             this._registers = new Mpu6050Registers(new SMBusRegisterManagerAdapter(dev));
             Task.Run(async () =>
             {
-                await _registers.powerMgmt1.read().ConfigureAwait(false);
+                await _registers.powerMgmt1.readAsync();
                 _registers.powerMgmt1.reset = 1;
-                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                await _registers.powerMgmt1.writeAsync().ConfigureAwait(false);
                 _registers.powerMgmt1.reset = 0;
                 _registers.powerMgmt1.sleep = 0;
-                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                await _registers.powerMgmt1.writeAsync().ConfigureAwait(false);
                 _registers.powerMgmt1.clockSel = 1;
-                await _registers.powerMgmt1.write().ConfigureAwait(false);
+                await _registers.powerMgmt1.writeAsync().ConfigureAwait(false);
                 _registers.configuration.dlpf = 3;
-                await _registers.configuration.write().ConfigureAwait(false);
+                await _registers.configuration.writeAsync().ConfigureAwait(false);
                 _registers.sampleRateDivider.value = 4;
-                await _registers.sampleRateDivider.write().ConfigureAwait(false);
-                await _registers.accelConfig2.read().ConfigureAwait(false);
+                await _registers.sampleRateDivider.writeAsync().ConfigureAwait(false);
+                await _registers.accelConfig2.readAsync().ConfigureAwait(false);
                 _registers.accelConfig2.accelFchoice = 0;
                 _registers.accelConfig2.dlpfCfg = 3;
-                await _registers.accelConfig2.write().ConfigureAwait(false);
-                await _registers.powerMgmt1.read().ConfigureAwait(false);
+                await _registers.accelConfig2.writeAsync().ConfigureAwait(false);
+                await _registers.powerMgmt1.readAsync().ConfigureAwait(false);
             }).Wait();
             AccelerometerScale = AccelScales.Fs_2g;
             GyroscopeScale = GyroScales.Dps_250;
@@ -102,7 +102,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             set
             {
                 _registers.accelConfig.setAccelScale(value);
-                Task.Run(_registers.accelConfig.write).Wait();
+                Task.Run(_registers.accelConfig.writeAsync).Wait();
             }
         }
 
@@ -118,7 +118,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             set
             {
                 _registers.gyroConfig.setGyroScale(value);
-                Task.Run(_registers.gyroConfig.write).Wait();
+                Task.Run(_registers.gyroConfig.writeAsync).Wait();
             }
         }
 

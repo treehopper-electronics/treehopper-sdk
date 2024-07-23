@@ -143,9 +143,9 @@ namespace Treehopper.Libraries.Sensors.Inertial
             registers = new Bno055Registers(new SMBusRegisterManagerAdapter(dev));
 
             registers.operatingMode.setOperatingMode(OperatingModes.ConfigMode);
-            Task.Run(registers.operatingMode.write);
+            Task.Run(registers.operatingMode.writeAsync);
             registers.sysTrigger.resetSys = 1;
-            Task.Run(registers.sysTrigger.write);
+            Task.Run(registers.sysTrigger.writeAsync);
             registers.sysTrigger.resetSys = 0;
             int id = 0;
             do
@@ -156,13 +156,13 @@ namespace Treehopper.Libraries.Sensors.Inertial
             while (id != 0xA0);
             Task.Delay(50);
             registers.powerMode.setPowerMode(PowerModes.Normal);
-            Task.Run(registers.powerMode.write);
+            Task.Run(registers.powerMode.writeAsync);
             Task.Delay(10);
             registers.sysTrigger.selfTest = 0;
-            Task.Run(registers.sysTrigger.write);
+            Task.Run(registers.sysTrigger.writeAsync);
             Task.Delay(10);
             registers.operatingMode.setOperatingMode(OperatingModes.NineDegreesOfFreedom);
-            Task.Run(registers.operatingMode.write);
+            Task.Run(registers.operatingMode.writeAsync);
             Task.Delay(20);
         }
 

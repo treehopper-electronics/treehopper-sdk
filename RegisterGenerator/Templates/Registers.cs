@@ -54,11 +54,6 @@ namespace Treehopper.Libraries.{{Namespace}}
         {{/Enum}}
         {{/Values.Values}}
 
-                public async Task<{{CapitalizedName}}Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return {{#Values.Values}}(({{Name}} & {{Bitmask}}) << {{Offset}}){{^Last}} | {{/Last}}{{/Values.Values}}; }
                 internal override void setValue(long _value)
                 {

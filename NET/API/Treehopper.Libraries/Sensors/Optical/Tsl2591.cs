@@ -38,7 +38,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             registers = new Tsl2591Registers(new SMBusRegisterManagerAdapter(new SMBusDevice(0x29, i2c, rate)));
             registers.enable.powerOn = 1;
             registers.enable.alsEnable = 1;
-            Task.Run(registers.enable.write).Wait();
+            Task.Run(registers.enable.writeAsync).Wait();
         }
 
         public int IntegrationTimeValue
@@ -83,7 +83,7 @@ namespace Treehopper.Libraries.Sensors.Optical
                     return;
 
                 registers.config.setAlsTime(value);
-                Task.Run(registers.config.write).Wait();
+                Task.Run(registers.config.writeAsync).Wait();
             }
         }
 
@@ -101,7 +101,7 @@ namespace Treehopper.Libraries.Sensors.Optical
                 if (registers.config.getAlsGain() == value)
                     return;
                 registers.config.setAlsGain(value);
-                Task.Run(registers.config.write).Wait();
+                Task.Run(registers.config.writeAsync).Wait();
             }
         }
 

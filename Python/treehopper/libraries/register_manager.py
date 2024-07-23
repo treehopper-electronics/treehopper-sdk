@@ -1,3 +1,6 @@
+from typing import List
+
+from treehopper.libraries.register_manager_adapter import RegisterManagerAdapter
 from treehopper.libraries.smbus_device import SMBusDevice
 from abc import abstractmethod
 
@@ -40,20 +43,20 @@ class Register:
 
 
 class RegisterManager:
-    def __init__(self, dev: SMBusDevice, multi_register_access: bool):
-        self.dev = dev
-        self.registers = [] # type: Register
+    def __init__(self, manager: RegisterManagerAdapter, multi_register_access: bool):
+        self.manager = manager
+        self.registers = []  # type: List[Register]
         self.multi_access = multi_register_access
 
     def read(self, reg: Register):
-        reg.set_bytes(self.dev.read_buffer_data(register=reg.address, num_bytes=reg.width))
+        reg.set_bytes(self.manager.read(reg.address, reg.width))
 
     def readRange(self, start: Register, end: Register):
         start_address = start.address
         count = end.address - start.address + end.width
         regs = [x for x in self.registers if start.address <= x.address <= end.address]
         if self.multi_access:
-            data = self.dev.read_buffer_data(register=start_address, num_bytes=count)
+            data = self.manager.read(start_address, count)
             i = 0
             for reg in regs:
                 reg.set_bytes(data[i:i+reg.width])
@@ -63,7 +66,7 @@ class RegisterManager:
                 self.read(reg)
 
     def write(self, reg: Register):
-        self.dev.write_buffer_data(reg.address, reg.get_bytes())
+        self.manager.write(reg.address, reg.get_bytes())
 
     def writeRange(self, start: Register, end: Register):
         start_address = start.address
@@ -73,7 +76,7 @@ class RegisterManager:
             data = []
             for reg in regs:
                 data += reg.get_bytes()
-            self.dev.write_buffer_data(start.address, data)
+            self.manager.write(start.address, data)
         else:
             for reg in regs:
                 self.write(reg)

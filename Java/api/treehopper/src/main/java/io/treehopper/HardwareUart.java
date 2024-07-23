@@ -144,7 +144,7 @@ public class HardwareUart implements IOneWire {
     {
         if (dataToSend.length > 63)
         {
-            Utilities.error("The maximum UART length for one transaction is 63 bytes");
+            Utility.error("The maximum UART length for one transaction is 63 bytes");
         }
 
         byte[] data = new byte[dataToSend.length + 3];
@@ -192,7 +192,7 @@ public class HardwareUart implements IOneWire {
         if (mode == UartMode.Uart)
         {
             if(oneWireNumBytes != 0)
-                Utilities.error("oneWireNumBytes is only used when the UART is in One-Wire mode");
+                Utility.error("oneWireNumBytes is only used when the UART is in One-Wire mode");
             byte[] data = new byte[2];
             data[0] = (byte)DeviceCommands.UartTransaction.ordinal();
             data[1] = (byte)UartCommand.Receive.ordinal();
@@ -247,7 +247,7 @@ public class HardwareUart implements IOneWire {
 
             if (prescalerOutOfBounds && noPrescalerOutOfBounds)
             {
-                Utilities.error("The specified baud rate was out of bounds.");
+                Utility.error("The specified baud rate was out of bounds.");
             }
             else if (prescalerOutOfBounds)
             {
@@ -293,10 +293,10 @@ public class HardwareUart implements IOneWire {
      */
     public boolean oneWireReset() {
         if (mode != UartMode.OneWire)
-            Utilities.error("The UART must be in OneWire mode to issue a oneWireReset command");
+            Utility.error("The UART must be in OneWire mode to issue a oneWireReset command");
 
         if(!enabled)
-            Utilities.error("The UART must be enabled to issue a oneWireReset command");
+            Utility.error("The UART must be enabled to issue a oneWireReset command");
 
         boolean retVal = false;
         byte[] data = new byte[2];
@@ -318,10 +318,10 @@ public class HardwareUart implements IOneWire {
     public ArrayList<Long> oneWireSearch()
     {
         if (mode != UartMode.OneWire)
-            Utilities.error("The UART must be in OneWire mode to issue a oneWireSearch command");
+            Utility.error("The UART must be in OneWire mode to issue a oneWireSearch command");
 
         if(!enabled)
-            Utilities.error("The UART must be enabled to issue a oneWireSearch command");
+            Utility.error("The UART must be enabled to issue a oneWireSearch command");
 
         ArrayList<Long> retVal = new ArrayList<Long>();
         byte[] data = new byte[2];
@@ -352,10 +352,10 @@ public class HardwareUart implements IOneWire {
     public void oneWireResetAndMatchAddress(long address)
     {
         if (mode != UartMode.OneWire)
-            Utilities.error("The UART must be in OneWire mode to issue a oneWireResetAndMatchAddress command");
+            Utility.error("The UART must be in OneWire mode to issue a oneWireResetAndMatchAddress command");
 
         if(!enabled)
-            Utilities.error("The UART must be enabled to issue a oneWireResetAndMatchAddress command");
+            Utility.error("The UART must be enabled to issue a oneWireResetAndMatchAddress command");
 
         oneWireReset();
 

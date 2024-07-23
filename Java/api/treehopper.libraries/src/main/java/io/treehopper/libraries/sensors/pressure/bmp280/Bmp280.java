@@ -2,6 +2,7 @@ package io.treehopper.libraries.sensors.pressure.bmp280;
 
 import io.treehopper.SMBusDevice;
 import io.treehopper.interfaces.I2c;
+import io.treehopper.libraries.SMBusRegisterManagerAdapter;
 import io.treehopper.libraries.sensors.pressure.PressureSensor;
 import io.treehopper.libraries.sensors.temperature.Temperature;
 import io.treehopper.libraries.sensors.temperature.TemperatureSensor;
@@ -17,7 +18,7 @@ public class Bmp280 extends PressureSensor implements Temperature {
     private double altitude;
 
     public Bmp280(I2c i2c, boolean sdoPin, int rate) {
-        registers = new Bmp280Registers(new SMBusDevice((byte) (0x76 | (sdoPin ? 1 : 0)), i2c, rate));
+        registers = new Bmp280Registers(new SMBusRegisterManagerAdapter(new SMBusDevice((byte) (0x76 | (sdoPin ? 1 : 0)), i2c, rate)));
 
         registers.ctrlMeasure.setMode(Modes.Normal);
         registers.ctrlMeasure.setOversamplingPressure(OversamplingPressures.Oversampling_x16);

@@ -109,11 +109,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public int useExternalCrystal { get; set; }
                 public int useInternalLdo { get; set; }
 
-                public async Task<PuCtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((registerReset & 0x1) << 0) | ((powerUpDigital & 0x1) << 1) | ((powerUpAnalog & 0x1) << 2) | ((powerUpReady & 0x1) << 3) | ((cycleStart & 0x1) << 4) | ((cycleReady & 0x1) << 5) | ((useExternalCrystal & 0x1) << 6) | ((useInternalLdo & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -154,11 +149,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public Vldoes getVldo() { return (Vldoes)vldo; }
                 public void setVldo(Vldoes enumVal) { vldo = (int)enumVal; }
 
-                public async Task<Ctrl1Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((gain & 0x7) << 0) | ((vldo & 0x7) << 3) | ((drdySelect & 0x1) << 6) | ((conversionReadyPinPolarity & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -192,11 +182,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public ConversionRates getConversionRate() { return (ConversionRates)conversionRate; }
                 public void setConversionRate(ConversionRates enumVal) { conversionRate = (int)enumVal; }
 
-                public async Task<Ctrl2Register> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((calMod & 0x3) << 0) | ((calStart & 0x1) << 2) | ((calError & 0x1) << 3) | ((conversionRate & 0x7) << 4) | ((channelSelect & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -231,11 +216,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public int frd { get; set; }
                 public int crsd { get; set; }
 
-                public async Task<I2cCtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((bgpCp & 0x1) << 0) | ((ts & 0x1) << 1) | ((boPga & 0x1) << 2) | ((si & 0x1) << 3) | ((wpd & 0x1) << 4) | ((spe & 0x1) << 5) | ((frd & 0x1) << 6) | ((crsd & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {
@@ -269,11 +249,6 @@ namespace Treehopper.Libraries.IO.Adc
 
                 public int value { get; set; }
 
-                public async Task<AdcResultRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -299,11 +274,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public RegChpFreqs getRegChpFreq() { return (RegChpFreqs)regChpFreq; }
                 public void setRegChpFreq(RegChpFreqs enumVal) { regChpFreq = (int)enumVal; }
 
-                public async Task<AdcRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((regChp & 0x3) << 0) | ((adcVcm & 0x3) << 2) | ((regChpFreq & 0x3) << 4); }
                 internal override void setValue(long _value)
                 {
@@ -331,11 +301,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public int ldoMode { get; set; }
                 public int rdOptSel { get; set; }
 
-                public async Task<PgaRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((disableChopper & 0x1) << 0) | ((pgaInv & 0x1) << 3) | ((pgaBypass & 0x1) << 4) | ((ldoMode & 0x1) << 5) | ((rdOptSel & 0x1) << 6); }
                 internal override void setValue(long _value)
                 {
@@ -366,11 +331,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public int masterBiasCurr { get; set; }
                 public int pgaCapEn { get; set; }
 
-                public async Task<PowerCtrlRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((pgaCurr & 0x3) << 0) | ((adcCurr & 0x3) << 2) | ((masterBiasCurr & 0x7) << 4) | ((pgaCapEn & 0x1) << 7); }
                 internal override void setValue(long _value)
                 {

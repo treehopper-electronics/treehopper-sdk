@@ -2,6 +2,7 @@ from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.optical import AmbientLightSensor
 from treehopper.libraries.sensors.optical.tsl2591_registers import Tsl2591Registers, AlsGains, AlsTimes
+from treehopper.libraries.smbus_register_manager_adapter import SMBusRegisterManagerAdapter
 
 
 class Tsl2591(AmbientLightSensor):
@@ -23,7 +24,7 @@ class Tsl2591(AmbientLightSensor):
 
     def __init__(self, i2c):
         super().__init__()
-        self._registers = Tsl2591Registers(SMBusDevice(0x29, i2c, 100))
+        self._registers = Tsl2591Registers(SMBusRegisterManagerAdapter(SMBusDevice(0x29, i2c, 100)))
         self._registers.enable.powerOn = 1
         self._registers.enable.alsEnable = 1
         self._registers.enable.write()

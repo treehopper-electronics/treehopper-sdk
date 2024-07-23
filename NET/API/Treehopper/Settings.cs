@@ -16,7 +16,7 @@ namespace Treehopper
         ///         only be printed.
         ///     </para>
         /// </remarks>
-        public bool ThrowExceptions { get; set; }
+        public bool ThrowExceptions { get; set; } = false;
 
         /// <summary>
         ///     The VID to search for

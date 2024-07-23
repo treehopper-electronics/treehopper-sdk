@@ -20,7 +20,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             registers.ctrl1.xEnable = 1;
             registers.ctrl1.yEnable = 1;
             registers.ctrl1.zEnable = 1;
-            Task.Run(registers.ctrl1.write).Wait();
+            Task.Run(registers.ctrl1.writeAsync).Wait();
         }
 
         /// <summary>

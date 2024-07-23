@@ -51,33 +51,39 @@ Display collections and other classes for working with displays
     \class treehopper.libraries.displays.SevenSegmentDisplay.SevenSegmentDisplay
 @}
 
-\defgroup Inertial Inertial Sensors
-Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+\defgroup sensors Sensors
+Accelerometers, gyroscopes, magnetometers, temperature sensors, etc
 \ingroup libraries
 @{
-    \class treehopper.libraries.sensors.inertial.adxl345.Adxl345
-    \class treehopper.libraries.sensors.inertial.bno055.Bno055
-    \class treehopper.libraries.sensors.inertial.mpu6050.Mpu6050
-    \class treehopper.libraries.sensors.inertial.mpu9250.Mpu9250
-    \class treehopper.libraries.sensors.magnetic.ak8975.Ak8975
-@}
+    \defgroup Inertial Inertial
+    Accelerometers, gyroscopes, magnetometers, and integrated IMUs
+    \ingroup sensors
+    @{
+        \class treehopper.libraries.sensors.inertial.adxl345.Adxl345
+        \class treehopper.libraries.sensors.inertial.bno055.Bno055
+        \class treehopper.libraries.sensors.inertial.mpu6050.Mpu6050
+        \class treehopper.libraries.sensors.inertial.mpu9250.Mpu9250
+        \class treehopper.libraries.sensors.magnetic.ak8975.Ak8975
+    @}
 
-\defgroup environmental Environmental Sensors
-Temperature, humidity, and pressure sensors
-\ingroup libraries
-@{
-    \class treehopper.libraries.sensors.temperature.ds18b20.Ds18b20
-    \class treehopper.libraries.sensors.temperature.lm75.Lm75
-    \class treehopper.libraries.sensors.temperature.mcp9808.Mcp9808
-@}
+    \defgroup environmental Environmental Sensors
+    Temperature, humidity, and pressure sensors
+    \ingroup sensors
+    @{
+        \class treehopper.libraries.sensors.temperature.ds18b20.Ds18b20
+        \class treehopper.libraries.sensors.temperature.lm75.Lm75
+        \class treehopper.libraries.sensors.temperature.mcp9808.Mcp9808
+    @}
 
-\defgroup optical Optical Sensors
-Optical sensors and camera modules
-\ingroup libraries
-@{
-    \class treehopper.libraries.sensors.optical.bh1750.Bh1750
-    \class treehopper.libraries.sensors.optical.tsl2591.Tsl2591
-    \class treehopper.libraries.sensors.optical.vcnl4010.Vcnl4010
+    \defgroup optical Optical Sensors
+    Optical sensors and camera modules
+    \ingroup sensors
+    @{
+        \class treehopper.libraries.sensors.optical.isl29125.Isl29125
+        \class treehopper.libraries.sensors.optical.bh1750.Bh1750
+        \class treehopper.libraries.sensors.optical.tsl2591.Tsl2591
+        \class treehopper.libraries.sensors.optical.vcnl4010.Vcnl4010
+    @}
 @}
 
 \defgroup interface Interface

@@ -54,7 +54,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             mag.AutoUpdateWhenPropertyRead = false;
             _registers.intPinCfg.bypassEn = 1;
             _registers.intPinCfg.latchIntEn = 1;
-            Task.Run(_registers.intPinCfg.write).Wait();
+            Task.Run(_registers.intPinCfg.writeAsync).Wait();
         }
 
         /// <summary>

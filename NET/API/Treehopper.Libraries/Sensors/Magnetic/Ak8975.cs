@@ -42,10 +42,10 @@ namespace Treehopper.Libraries.Sensors.Magnetic
         public override async Task UpdateAsync()
         {
             _registers.control.mode = 1;
-            Task.Run(_registers.control.write).Wait();
+            Task.Run(_registers.control.writeAsync).Wait();
             while(true)
             {
-                await _registers.status1.read().ConfigureAwait(false);
+                await _registers.status1.readAsync().ConfigureAwait(false);
                 if (_registers.status1.drdy == 1)
                     break;
             }

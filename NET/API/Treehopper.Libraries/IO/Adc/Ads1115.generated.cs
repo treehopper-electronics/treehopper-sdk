@@ -79,11 +79,6 @@ namespace Treehopper.Libraries.IO.Adc
 
                 public int value { get; set; }
 
-                public async Task<ConversionRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -119,11 +114,6 @@ namespace Treehopper.Libraries.IO.Adc
                 public Muxes getMux() { return (Muxes)mux; }
                 public void setMux(Muxes enumVal) { mux = (int)enumVal; }
 
-                public async Task<ConfigRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((comparatorQueue & 0x3) << 0) | ((latchingComparator & 0x1) << 2) | ((comparatorPolarity & 0x1) << 3) | ((comparatorMode & 0x1) << 4) | ((dataRate & 0x7) << 5) | ((operatingMode & 0x1) << 8) | ((pga & 0x7) << 9) | ((mux & 0x7) << 12) | ((operationalStatus & 0x1) << 15); }
                 internal override void setValue(long _value)
                 {
@@ -159,11 +149,6 @@ namespace Treehopper.Libraries.IO.Adc
 
                 public int value { get; set; }
 
-                public async Task<LowThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {
@@ -183,11 +168,6 @@ namespace Treehopper.Libraries.IO.Adc
 
                 public int value { get; set; }
 
-                public async Task<HighThresholdRegister> read()
-                {
-                    await manager.read(this).ConfigureAwait(false);
-                    return this;
-                }
                 internal override long getValue() { return ((value & 0xFFFF) << 0); }
                 internal override void setValue(long _value)
                 {

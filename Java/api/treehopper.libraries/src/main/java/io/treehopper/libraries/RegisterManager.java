@@ -1,28 +1,23 @@
 package io.treehopper.libraries;
 
-import io.treehopper.SMBusDevice;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by JayLocal on 5/2/2017.
- */
 public class RegisterManager {
     protected ArrayList<Register> _registers = new ArrayList<>();
-    protected SMBusDevice _dev;
+    protected IRegisterManagerAdapter _adapter;
 
-    public RegisterManager(SMBusDevice dev) {
-        _dev = dev;
+    public RegisterManager(IRegisterManagerAdapter adapter) {
+        _adapter = adapter;
     }
 
     public void read(Register register) {
-        register.setBytes(_dev.readBufferData((byte) register.address, register.width));
+        register.setBytes(_adapter.read(register.address, register.width));
     }
 
     public void readRange(Register start, Register end) {
         int count = (end.address + end.width) - start.address;
-        byte[] bytes = _dev.readBufferData((byte) start.address, count);
+        byte[] bytes = _adapter.read(start.address, count);
         int i = 0;
 
         for (Register reg : _registers) {
@@ -35,7 +30,7 @@ public class RegisterManager {
     }
 
     public void write(Register register) {
-        _dev.writeBufferData((byte) register.address, register.getBytes());
+        _adapter.write(register.address, register.getBytes());
     }
 
     public void writeRange(Register start, Register end) {
@@ -54,6 +49,6 @@ public class RegisterManager {
             bytesToWrite[i] = bytes.get(i);
         }
 
-        _dev.writeBufferData((byte) start.address, bytesToWrite);
+        _adapter.write(start.address, bytesToWrite);
     }
 }

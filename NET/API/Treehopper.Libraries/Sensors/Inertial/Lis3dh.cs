@@ -44,8 +44,8 @@ namespace Treehopper.Libraries.Sensors.Inertial
         {
             dev = new SMBusDevice((byte)(sdo ? 0x19 : 0x18), i2c, rate);
             registers = new Lis3dhRegisters(new SMBusRegisterManagerAdapter(dev));
-
-            if (Task.Run(registers.whoAmI.read).Result.value != 0x33)
+            registers.whoAmI.read();
+            if (registers.whoAmI.value != 0x33)
             {
                 Utility.Error("Incorrect chip ID found when addressing the LIS3DH");
             }
@@ -55,7 +55,7 @@ namespace Treehopper.Libraries.Sensors.Inertial
             registers.ctrl1.zAxisEnable = 1;
             registers.ctrl1.setOutputDataRate(OutputDataRates.Hz_1);
             registers.ctrl1.lowPowerEnable = 0;
-            Task.Run(registers.ctrl1.write).Wait();
+            Task.Run(registers.ctrl1.writeAsync).Wait();
         }
 
         /// <summary>

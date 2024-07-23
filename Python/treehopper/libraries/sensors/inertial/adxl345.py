@@ -2,6 +2,7 @@ from treehopper.api import I2C
 from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial.adxl345_registers import Adxl345Registers
 from treehopper.libraries.sensors.inertial import Accelerometer
+from treehopper.libraries.smbus_register_manager_adapter import SMBusRegisterManagerAdapter
 
 
 class Adxl345(Accelerometer):
@@ -21,7 +22,7 @@ class Adxl345(Accelerometer):
     def __init__(self, i2c: I2C, alt_address=False, rate=100):
         super().__init__()
         self._dev = SMBusDevice((0x53 if alt_address else 0x1D), i2c, rate)
-        self._registers = Adxl345Registers(self._dev)
+        self._registers = Adxl345Registers(SMBusRegisterManagerAdapter(self._dev))
         self._registers.powerCtl.sleep = 0
         self._registers.powerCtl.measure = 1
         self._registers.dataFormat.range = 0x03

@@ -3,6 +3,7 @@ from treehopper.libraries.sensors.optical.vcnl4010_registers import Vcnl4010Regi
 from treehopper.api import I2C
 from treehopper.libraries.sensors.optical.ambient_light import AmbientLightSensor
 from treehopper.libraries.sensors import Proximity
+from treehopper.libraries.smbus_register_manager_adapter import SMBusRegisterManagerAdapter
 
 
 class Vcnl4010(AmbientLightSensor, Proximity):
@@ -25,7 +26,7 @@ class Vcnl4010(AmbientLightSensor, Proximity):
 
     """
     def __init__(self, i2c: I2C):
-        self.registers = Vcnl4010Registers(SMBusDevice(0x13, i2c))
+        self.registers = Vcnl4010Registers(SMBusRegisterManagerAdapter(SMBusDevice(0x13, i2c)))
         self.registers.readRange(self.registers.command, self.registers.ambientLightParameters)
         self.registers.proximityRate.set_value(Rates.Hz_7_8125)
         self.registers.ledCurrent.irLedCurrentValue = 20

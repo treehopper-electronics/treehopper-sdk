@@ -47,7 +47,7 @@ namespace Treehopper.Libraries.Sensors.Optical
             set
             {
                 registers.ledCurrent.irLedCurrentValue = (int)Math.Round(value / 10d);
-                Task.Run(registers.ledCurrent.write).Wait();
+                Task.Run(registers.ledCurrent.writeAsync).Wait();
             }
         }
 
@@ -93,18 +93,18 @@ namespace Treehopper.Libraries.Sensors.Optical
             // start ambient and prox conversion
             registers.command.alsOnDemandStart = 1;
             registers.command.proxOnDemandStart = 1;
-            await registers.command.write().ConfigureAwait(false);
+            await registers.command.writeAsync().ConfigureAwait(false);
 
 
             while(true)
             {
-                await registers.command.read().ConfigureAwait(false);
+                await registers.command.readAsync().ConfigureAwait(false);
                 if (registers.command.proxDataReady == 1 && registers.command.alsDataReady == 1)
                     break;
             }
 
-            await registers.ambientLightResult.read().ConfigureAwait(false);
-            await registers.proximityResult.read().ConfigureAwait(false);
+            await registers.ambientLightResult.readAsync().ConfigureAwait(false);
+            await registers.proximityResult.readAsync().ConfigureAwait(false);
             
             // from datasheet
             lux = registers.ambientLightResult.value * 0.25;

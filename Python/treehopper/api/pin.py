@@ -409,7 +409,7 @@ class SoftPwmManager:
     def set_pulse_width(self, pin: "Pin", pulse_width: float):
         with self._lock:
             self._pins[pin.number].pulse_width = pulse_width
-            self._pins[pin.number].use_pulse_width = False
+            self._pins[pin.number].use_pulse_width = True
             self.update_config()
 
     def get_duty_cycle(self, pin: "Pin"):

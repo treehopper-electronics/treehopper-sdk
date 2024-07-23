@@ -6,6 +6,7 @@ from treehopper.libraries import SMBusDevice
 from treehopper.libraries.sensors.inertial.mpu6050_registers import Mpu6050Registers
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
 from treehopper.libraries.sensors.temperature.temperature_sensor import TemperatureSensor
+from treehopper.libraries.smbus_register_manager_adapter import SMBusRegisterManagerAdapter
 
 
 class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):
@@ -34,7 +35,7 @@ class Mpu6050(Accelerometer, Gyroscope, TemperatureSensor):
     def __init__(self, i2c: I2C, alt_address=False, rate=100):
         super().__init__()
         self._dev = SMBusDevice((0x69 if alt_address else 0x68), i2c, rate)
-        self._registers = Mpu6050Registers(self._dev)
+        self._registers = Mpu6050Registers(SMBusRegisterManagerAdapter(self._dev))
         self._registers.powerMgmt1.reset = 1
         self._registers.powerMgmt1.write()
         self._registers.powerMgmt1.reset = 0

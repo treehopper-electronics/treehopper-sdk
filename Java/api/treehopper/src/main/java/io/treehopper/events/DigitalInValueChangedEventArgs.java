@@ -4,9 +4,9 @@ package io.treehopper.events;
  * Digital value changed EventArgs
  */
 public class DigitalInValueChangedEventArgs {
-    public boolean newDigitalValue;
+    public boolean newValue;
 
-    public DigitalInValueChangedEventArgs(boolean newDigitalValue) {
-        this.newDigitalValue = newDigitalValue;
+    public DigitalInValueChangedEventArgs(boolean newValue) {
+        this.newValue = newValue;
     }
 }

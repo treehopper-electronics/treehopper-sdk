@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props')" />
+  <Import Project="..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.props')" />
   <Import Project="..\TreehopperApp\TreehopperApp.projitems" Label="Shared" Condition="Exists('..\TreehopperApp\TreehopperApp.projitems')" />
-  <Import Project="..\..\..\..\packages\Xamarin.Forms.3.1.0.292472-nightly\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.3.1.0.292472-nightly\build\netstandard2.0\Xamarin.Forms.props')" />
   <PropertyGroup>
     <ProjectGuid>{823C3249-3BA0-457C-9A88-A6ED9891E9D3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -53,20 +52,14 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Mono.Posix" />
-    <Reference Include="webkit-sharp, Version=1.1.15.0, Culture=neutral, PublicKeyToken=eaa1d335d2e19745, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Xamarin.Forms.Platform.GTK.4.6.0.726\lib\net45\webkit-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Xamarin.Forms.4.6.0.726\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Xamarin.Forms.4.6.0.726\lib\netstandard2.0\Xamarin.Forms.Platform.dll</HintPath>
-    </Reference>
     <Reference Include="SkiaSharp">
       <HintPath>..\..\..\..\packages\SkiaSharp.1.60.0\lib\net45\SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="SkiaSharp.Views.Forms">
       <HintPath>..\..\..\..\packages\SkiaSharp.Views.Forms.1.60.0\lib\netstandard1.3\SkiaSharp.Views.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="webkit-sharp, Version=1.1.15.0, Culture=neutral, PublicKeyToken=eaa1d335d2e19745, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Xamarin.Forms.Platform.GTK.5.0.0.2083\lib\net45\webkit-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.CustomControls.RepeaterView">
       <HintPath>..\..\..\..\packages\Xamarin.CustomControls.RepeaterView.1.2.2\lib\netstandard1.0\Xamarin.CustomControls.RepeaterView.dll</HintPath>
@@ -77,11 +70,17 @@
     <Reference Include="mscorlib" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Drawing" />
+    <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Xamarin.Forms.5.0.0.2083\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Xamarin.Forms.5.0.0.2083\lib\netstandard2.0\Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Forms.Platform.GTK, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Xamarin.Forms.Platform.GTK.4.6.0.726\lib\net45\Xamarin.Forms.Platform.GTK.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Forms.Platform.GTK.5.0.0.2083\lib\net45\Xamarin.Forms.Platform.GTK.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Xamarin.Forms.4.6.0.726\lib\netstandard2.0\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Forms.5.0.0.2083\lib\netstandard2.0\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -114,15 +113,14 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\..\packages\Xamarin.Forms.3.1.0.292472-nightly\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\Xamarin.Forms.3.1.0.292472-nightly\build\netstandard2.0\Xamarin.Forms.targets')" />
   <Import Project="..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\..\..\..\packages\SkiaSharp.1.60.0\build\net45\SkiaSharp.targets" Condition="Exists('..\..\..\..\packages\SkiaSharp.1.60.0\build\net45\SkiaSharp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.targets'))" />
   </Target>
-  <Import Project="..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.4.6.0.726\build\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.5.0.0.2083\build\Xamarin.Forms.targets')" />
 </Project>

@@ -150,7 +150,7 @@ public class HardwareI2c implements I2c {
      */
     @Override
     public void setSpeed(double speed) {
-        if (Utilities.CloseTo(speed, this.speed)) return; // don't update if we're already there
+        if (Utility.CloseTo(speed, this.speed)) return; // don't update if we're already there
 
         this.speed = speed;
         SendConfig();

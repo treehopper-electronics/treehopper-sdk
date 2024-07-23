@@ -7,6 +7,7 @@ from treehopper.libraries.sensors.inertial.bno055_registers import Bno055Registe
 from treehopper.libraries.sensors.inertial import Accelerometer, Gyroscope
 from treehopper.libraries.sensors.magnetic.magnetometer import Magnetometer
 from treehopper.libraries.sensors.temperature import TemperatureSensor
+from treehopper.libraries.smbus_register_manager_adapter import SMBusRegisterManagerAdapter
 
 
 class Bno055(Accelerometer, Gyroscope, Magnetometer, TemperatureSensor):
@@ -44,7 +45,7 @@ class Bno055(Accelerometer, Gyroscope, Magnetometer, TemperatureSensor):
         else:
             dev = SMBusDevice(0x28, i2c, rate)
 
-        self._registers = Bno055Registers(dev)
+        self._registers = Bno055Registers(SMBusRegisterManagerAdapter(dev))
 
         self._registers.operatingMode.operatingMode = OperatingModes.ConfigMode
         self._registers.operatingMode.write()

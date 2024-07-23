@@ -94,6 +94,9 @@
     <None Include="Libraries\Sensors\Inertial\L3gd20.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Libraries\Sensors\Inertial\Lis3dsh.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Libraries\Sensors\Magnetic\Lsm303dlhcMag.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -107,6 +110,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Libraries\Sensors\Magnetic\Ak8975.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\Sensors\Optical\Isl29125.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Libraries\Sensors\Optical\Tsl2561.json">
