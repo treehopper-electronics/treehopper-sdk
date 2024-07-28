@@ -121,7 +121,7 @@ void UART0_reset()
 #if EFM8PDL_UART0_USE_BUFFER == 1
 
 /**
- * Internal variable fort trackig buffer transfers. transferLenth[UART0_TX_TRANSFER] = bytes remaining in transfer.
+ * Internal variable for tracking buffer transfers. transferLenth[UART0_TX_TRANSFER] = bytes remaining in transfer.
  */
 SI_SEGMENT_VARIABLE(txRemaining, static uint8_t,  SI_SEG_XDATA)=0;
 SI_SEGMENT_VARIABLE(rxRemaining, static uint8_t,  SI_SEG_XDATA)=0;
