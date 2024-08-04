@@ -9,13 +9,25 @@
 #include "uart_0.h"
 #include "efm8_usb.h"
 #include <SI_EFM8UB1_Register_Enums.h>
+#include "stdbool.h"
 
 #define TX_BIT		0x10
 #define RX_BIT		0x20
 
-#define BUFF_LEN	32
-SI_SEGMENT_VARIABLE(rxBuffer[BUFF_LEN+1], uint8_t, SI_SEG_XDATA);
+#define RX_BUFF_LEN	32
+//extern SI_SEGMENT_VARIABLE(rxRemaining, uint8_t,  SI_SEG_XDATA); // use this if we need to make it faster
+SI_SEGMENT_VARIABLE(rxBufferA[RX_BUFF_LEN+1], uint8_t, SI_SEG_IDATA);
+SI_SEGMENT_VARIABLE(rxBufferB[RX_BUFF_LEN+1], uint8_t, SI_SEG_IDATA);
+
+#define TX_BUFF_LEN 63
+SI_SEGMENT_VARIABLE(txBuffer[TX_BUFF_LEN+1], uint8_t, SI_SEG_XDATA);
+
 SI_SEGMENT_VARIABLE(temp, uint8_t, SI_SEG_XDATA);
+
+bool rxTargetA;
+bool rxBufferFull;
+
+
 UartConfiguration_t mode;
 
 volatile uint8_t txBusy = 0;
@@ -69,9 +81,10 @@ void UART_SetConfig(UartConfigData_t* config) {
 		else
 			P0MDOUT |= TX_BIT;
 
-		UART0_readBuffer(rxBuffer, BUFF_LEN);
+		rxTargetA = true;
+		rxBufferFull = false;
+		UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
 		break;
-
 	case UART_ONEWIRE:
 		// 115200 baud
 		TH1 = 48;
@@ -112,14 +125,15 @@ void UART_Transaction(uint8_t* txBuff) {
 	switch (txBuff[0]) {
 	case UART_CMD_TX:
 		if (mode == UART_STANDARD) {
-			IE_ES0 = 0; // disable UART interrupts
-			for (i = 0; i < len; i++) {
-				SCON0_TI = 0;
-				SBUF0 = txBuff[i + 2];
-				while (!SCON0_TI)
-					;
-			}
-			IE_ES0 = 1;
+//			IE_ES0 = 0; // disable UART interrupts
+//			for (i = 0; i < len; i++) {
+//				SCON0_TI = 0;
+//				SBUF0 = txBuff[i + 2];
+//				while (!SCON0_TI)
+//					;
+//			}
+//			IE_ES0 = 1;
+			UART0_writeBuffer(txBuffer, len);
 
 			temp = 0xff;
 			USBD_Write(EP2IN, &temp, 1, false);
@@ -137,20 +151,39 @@ void UART_Transaction(uint8_t* txBuff) {
 
 	case UART_CMD_RX:
 		if (mode == UART_STANDARD) {
-			rxBuffer[BUFF_LEN] = BUFF_LEN - UART0_rxBytesRemaining();
-			USBD_Write(EP2IN, rxBuffer, BUFF_LEN + 1, false);
-			memset(rxBuffer, 0, BUFF_LEN);
-			UART0_readBuffer(rxBuffer, BUFF_LEN);
+			if(rxBufferFull){
+				if(rxTargetA){ // currently targetting A, B is already full
+					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN;
+					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+				} else {
+					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN;
+					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+				}
+				rxBufferFull = false;
+			} else {
+				if(rxTargetA){
+					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
+					UART0_readBuffer(rxBufferB, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
+					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+				} else {
+					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
+					UART0_readBuffer(rxBufferA, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
+					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+				}
+			}
+//			rxBufferA[BUFF_LEN] = BUFF_LEN - UART0_rxBytesRemaining();
+//			USBD_Write(EP2IN, rxBufferA, BUFF_LEN + 1, false);
+//			memset(rxBufferA, 0, BUFF_LEN);
+//			UART0_readBuffer(rxBufferA, BUFF_LEN);
 
 		} else if (mode == UART_ONEWIRE) {
 			IE_ES0 = 0; // disable UART interrupts
 			for (i = 0; i < len; i++) {
-				rxBuffer[i] = oneWire_readByte();
+				rxBufferA[i] = oneWire_readByte();
 			}
-			rxBuffer[BUFF_LEN] = len;
+			rxBufferA[RX_BUFF_LEN] = len;
 			IE_ES0 = 1; // enable UART interrupts
-			USBD_Write(EP2IN, rxBuffer, BUFF_LEN + 1, false);
-
+			USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 		}
 
 		break;
@@ -219,25 +252,25 @@ void oneWire_writeBit(uint8_t val) {
 
 }
 
-uint8_t id[8];
-uint8_t nextDevice;
+xdata uint8_t id[8];
+xdata uint8_t nextDevice;
 void oneWire_FindSlaves() {
 	nextDevice = 65;
 	memset(id, 0, 8);
 
 	while (nextDevice) {
 		nextDevice = oneWire_Search(nextDevice);
-		rxBuffer[0] = 0x00; // not done yet
-		memcpy(&rxBuffer[1], id, 8);
+		rxBufferA[0] = 0x00; // not done yet
+		memcpy(&rxBufferA[1], id, 8);
 		while (USBD_EpIsBusy(EP2IN))
 			;
-		USBD_Write(EP2IN, rxBuffer, 9, false);
+		USBD_Write(EP2IN, rxBufferA, 9, false);
 	}
 
-	rxBuffer[0] = 0xff; // done
+	rxBufferA[0] = 0xff; // done
 	while (USBD_EpIsBusy(EP2IN))
 		;
-	USBD_Write(EP2IN, rxBuffer, 9, false);
+	USBD_Write(EP2IN, rxBufferA, 9, false);
 }
 
 // from https://electricimp.com/docs/resources/onewire/
@@ -310,6 +343,16 @@ void UART0_transmitCompleteCb() {
 }
 
 void UART0_receiveCompleteCb() {
-	// we filled up our buffer before we read everything. Oops... oh well, try again
-	UART0_readBuffer(rxBuffer, BUFF_LEN);
+	if(mode == UART_STANDARD){
+		rxBufferFull = true;
+		if(rxTargetA){
+			rxTargetA = false;
+			UART0_readBuffer(rxBufferB, RX_BUFF_LEN);
+		} else {
+			rxTargetA = true;
+			UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+		}
+	} else {
+		UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+	}
 }
