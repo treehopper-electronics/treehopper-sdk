@@ -16,9 +16,8 @@
 #define RX_BIT		0x20
 
 #define RX_BUFF_LEN	32
-//extern SI_SEGMENT_VARIABLE(rxRemaining, uint8_t,  SI_SEG_XDATA); // use this if we need to make it faster
-SI_SEGMENT_VARIABLE(rxBufferA[RX_BUFF_LEN+1], uint8_t, SI_SEG_IDATA);
-SI_SEGMENT_VARIABLE(rxBufferB[RX_BUFF_LEN+1], uint8_t, SI_SEG_IDATA);
+SI_SEGMENT_VARIABLE(rxBufferA[RX_BUFF_LEN+1], uint8_t, SI_SEG_XDATA);
+SI_SEGMENT_VARIABLE(rxBufferB[RX_BUFF_LEN+1], uint8_t, SI_SEG_XDATA);
 
 #define TX_BUFF_LEN 63
 SI_SEGMENT_VARIABLE(txBuffer[TX_BUFF_LEN+1], uint8_t, SI_SEG_XDATA);
@@ -26,9 +25,9 @@ SI_SEGMENT_VARIABLE(txBuffer[TX_BUFF_LEN+1], uint8_t, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE(temp, uint8_t, SI_SEG_XDATA);
 
 bool rxTargetA;
-bool rxBufferFull;
+bool AFull;
+bool BFull;
 extern bool fresh;
-
 
 UartConfiguration_t mode;
 
@@ -59,7 +58,7 @@ void UART_Disable() {
 	XBR0 &= ~XBR0_URT0E__ENABLED;
 }
 
-void UART_SetConfig(UartConfigData_t* config) {
+void UART_SetConfig(UartConfigData_t *config) {
 	SFRPAGE = 0x00;
 
 	mode = config->Config; // save the UART mode so we know how to interpret future commands
@@ -92,13 +91,19 @@ void UART_SetConfig(UartConfigData_t* config) {
 		GPIO_MakeOutput(14, PushPullOutput);
 		GPIO_WriteValue(14, false);
 
+		GPIO_MakeOutput(12, PushPullOutput);
+		GPIO_WriteValue(12, false);
+
 		rxTargetA = true;
-		rxBufferFull = false;
+		AFull = false;
+		BFull = false;
+
 		UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
 		break;
 	case UART_ONEWIRE:
 		// 115200 baud
 		TH1 = 48;
+		IE_ES0 = 0; // disable interrupts? ( I don't think we need these, right, Jay?)
 		CKCON0 |= CKCON0_T1M__BMASK;
 		P0MDOUT &= ~TX_BIT; // use open drain
 		UART_Enable();
@@ -108,8 +113,7 @@ void UART_SetConfig(UartConfigData_t* config) {
 
 }
 
-void UART_StartDebugging115200()
-{
+void UART_StartDebugging115200() {
 	UartConfigData_t config;
 	config.Config = 1;
 	config.TH1Val = 152;
@@ -118,8 +122,7 @@ void UART_StartDebugging115200()
 	UART_SetConfig(&config);
 }
 
-void UART_SendChar(uint8_t c)
-{
+void UART_SendChar(uint8_t c) {
 	IE_ES0 = 0;
 	SFRPAGE = 0x00;
 	SCON0_TI = 0;
@@ -128,7 +131,7 @@ void UART_SendChar(uint8_t c)
 		;
 }
 
-void UART_Transaction(uint8_t* txBuff) {
+void UART_Transaction(uint8_t *txBuff) {
 	uint8_t val;
 	uint8_t i;
 	uint8_t len = txBuff[1];
@@ -138,14 +141,6 @@ void UART_Transaction(uint8_t* txBuff) {
 	case UART_CMD_TX:
 		GPIO_WriteValue(3, true);
 		if (mode == UART_STANDARD) {
-//			IE_ES0 = 0; // disable UART interrupts
-//			for (i = 0; i < len; i++) {
-//				SCON0_TI = 0;
-//				SBUF0 = txBuff[i + 2];
-//				while (!SCON0_TI)
-//					;
-//			}
-//			IE_ES0 = 1;
 			UART0_writeBuffer(txBuffer, len);
 
 			temp = 0xff;
@@ -156,7 +151,7 @@ void UART_Transaction(uint8_t* txBuff) {
 			for (i = 0; i < len; i++) {
 				oneWire_writeByte(txBuff[2 + i]);
 			}
-			IE_ES0 = 1;
+//			IE_ES0 = 1;
 			temp = 0xff;
 			USBD_Write(EP2IN, &temp, 1, false);
 		}
@@ -164,76 +159,83 @@ void UART_Transaction(uint8_t* txBuff) {
 		break;
 
 	case UART_CMD_RX:
-
-		if (mode == UART_STANDARD){
-
-			if(rxBufferFull){
-				if(rxTargetA){ // currently targetting A, B is already full
+		if (mode == UART_STANDARD) {
+			if (AFull || BFull) {
+				if (rxTargetA) { // currently targetting A, B is already full
 					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN;
 					GPIO_WriteValue(14, true);
 					GPIO_WriteValue(14, false);
 					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+					BFull = false;
+					if (AFull) { // if the buffer we're already targeting is also full, we need to restart
+						UART0_readBuffer(rxBufferB, RX_BUFF_LEN);
+					}
 				} else {
 					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN;
 					GPIO_WriteValue(13, true);
 					GPIO_WriteValue(13, false);
 					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+					AFull = false;
+					if (BFull) { // if the buffer we're already targeting is also full, we need to restart
+						UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+					}
 				}
-				rxBufferFull = false;
+//				rxBufferFull = false;
 			} else {
-				if(rxTargetA){
-//					for(i = 0; i < RX_BUFF_LEN - UART0_rxBytesRemaining(); i++){
-//						GPIO_WriteValue(4, true);
-//						GPIO_WriteValue(4, false);
-//					}
+				if (rxTargetA) {
 					GPIO_WriteValue(4, true);
 
-					fresh = false;
-					if(CKCON0 & CKCON0_T1M__BMASK) { // 250ns per tick with prescaler
-						for(j = 0; j < (0xff - TH1) * 10; j++){ // 500ns per loop,
-							if(fresh) break;
+					fresh = false; // signalled from ISR
+					if ((CKCON0 & CKCON0_T1M__BMASK) & 0xff) {  // 20ns per tick with sysclk
+						for (j = 0; j < (0xff - TH1); j++) { // 500ns per loop, 1 byte time would be 8 * (0xff - TH1)
+							if (fresh)
+								break;
 						}
-					} else { // 20ns per tick
-						for(j = 0; j < (0xff - TH1); j++){ // 500ns per loop,
-							if(fresh) break;
+					} else { // 250ns per tick with prescaler
+						for (j = 0; j < (0xff - TH1) * 10; j++) { // 500ns per loop. 1 byte time would be 0.64 * (0xff - TH1)
+							if (fresh)
+								break;
 						}
 					}
-
-					GPIO_WriteValue(4, false);
-					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
+					for (j = 0; j < (10); j++) { // 500ns per loop,
+					}
+					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN
+							- UART0_rxBytesRemaining();
 					UART0_readBuffer(rxBufferB, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
-//					GPIO_WriteValue(4, false);
+					GPIO_WriteValue(4, false);
 					rxTargetA = false;
 					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 				} else {
-//					for(i = 0; i < RX_BUFF_LEN - UART0_rxBytesRemaining(); i++){
-//						GPIO_WriteValue(3, true);
-//						GPIO_WriteValue(3, false);
-//					}
 					GPIO_WriteValue(3, true);
-					fresh = false;
-					if(CKCON0 & CKCON0_T1M__BMASK) { // 250ns per tick with prescaler
-						for(j = 0; j < (0xff - TH1) * 10; j++){ // 500ns per loop,
-							if(fresh) break;
+					fresh = false; // signalled from ISR
+					if ((CKCON0 & CKCON0_T1M__BMASK) & 0xff) { // 20ns per tick with sysclk
+						for (j = 0; j < (0xff - TH1); j++) { // 500ns per loop,
+							if (fresh){
+								break;
+							}
 						}
-					} else { // 20ns per tick
-						for(j = 0; j < (0xff - TH1); j++){ // 500ns per loop,
-							if(fresh) break;
+					} else { // 250ns per tick with prescaler
+						for (j = 0; j < (0xff - TH1)*10; j++) { // 500ns per loop,
+							if (fresh){
+								break;
+							}
 						}
 					}
-					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
+					for (j = 0; j < (10); j++) { // 500ns per loop,
+					}
+					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN
+							- UART0_rxBytesRemaining();
 					UART0_readBuffer(rxBufferA, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer. We have one byte-time to get this done
 					GPIO_WriteValue(3, false);
 					rxTargetA = true;
 					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
 				}
-
 			}
 //			rxBufferA[BUFF_LEN] = BUFF_LEN - UART0_rxBytesRemaining();
 //			USBD_Write(EP2IN, rxBufferA, BUFF_LEN + 1, false);
 //			memset(rxBufferA, 0, BUFF_LEN);
-//			UART0_readBuffer(rxBufferA, BUFF_LEN);
-
+//			UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+//			USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 			break;
 		} else if (mode == UART_ONEWIRE) {
 			IE_ES0 = 0; // disable UART interrupts
@@ -241,7 +243,7 @@ void UART_Transaction(uint8_t* txBuff) {
 				rxBufferA[i] = oneWire_readByte();
 			}
 			rxBufferA[RX_BUFF_LEN] = len;
-			IE_ES0 = 1; // enable UART interrupts
+//			IE_ES0 = 1; // enable UART interrupts
 			USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 		}
 
@@ -250,14 +252,14 @@ void UART_Transaction(uint8_t* txBuff) {
 	case UART_CMD_ONEWIRE_RESET:
 		IE_ES0 = 0; // disable UART interrupts
 		val = oneWire_Reset();
-		IE_ES0 = 1;
+//		IE_ES0 = 1;
 		USBD_Write(EP2IN, &val, 1, false);
 		break;
 
 	case UART_CMD_ONEWIRE_SEARCH:
 		IE_ES0 = 0; // disable UART interrupts
 		oneWire_FindSlaves();
-		IE_ES0 = 1;
+//		IE_ES0 = 1;
 		break;
 	}
 
@@ -402,14 +404,21 @@ void UART0_transmitCompleteCb() {
 }
 
 void UART0_receiveCompleteCb() {
-	if(mode == UART_STANDARD){
-		rxBufferFull = true;
-		if(rxTargetA){
-			rxTargetA = false;
-			UART0_readBuffer(rxBufferB, RX_BUFF_LEN);
+	if (mode == UART_STANDARD) {
+		if (rxTargetA) {
+			if (BFull) { // uh oh
+
+			} else {
+				rxTargetA = false;
+				UART0_readBuffer(rxBufferB, RX_BUFF_LEN);
+			}
 		} else {
-			rxTargetA = true;
-			UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+			if (AFull) { // uh oh
+
+			} else {
+				rxTargetA = true;
+				UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+			}
 		}
 	} else {
 		UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
