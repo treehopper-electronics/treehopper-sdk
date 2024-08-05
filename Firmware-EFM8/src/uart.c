@@ -27,6 +27,7 @@ SI_SEGMENT_VARIABLE(temp, uint8_t, SI_SEG_XDATA);
 
 bool rxTargetA;
 bool rxBufferFull;
+extern bool fresh;
 
 
 UartConfiguration_t mode;
@@ -131,6 +132,7 @@ void UART_Transaction(uint8_t* txBuff) {
 	uint8_t val;
 	uint8_t i;
 	uint8_t len = txBuff[1];
+	uint16_t j;
 
 	switch (txBuff[0]) {
 	case UART_CMD_TX:
@@ -184,10 +186,23 @@ void UART_Transaction(uint8_t* txBuff) {
 //						GPIO_WriteValue(4, true);
 //						GPIO_WriteValue(4, false);
 //					}
-					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
 					GPIO_WriteValue(4, true);
-					UART0_readBuffer(rxBufferB, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
+
+					fresh = false;
+					if(CKCON0 & CKCON0_T1M__BMASK) { // 250ns per tick with prescaler
+						for(j = 0; j < (0xff - TH1) * 10; j++){ // 500ns per loop,
+							if(fresh) break;
+						}
+					} else { // 20ns per tick
+						for(j = 0; j < (0xff - TH1); j++){ // 500ns per loop,
+							if(fresh) break;
+						}
+					}
+
 					GPIO_WriteValue(4, false);
+					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
+					UART0_readBuffer(rxBufferB, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
+//					GPIO_WriteValue(4, false);
 					rxTargetA = false;
 					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 				} else {
@@ -195,8 +210,18 @@ void UART_Transaction(uint8_t* txBuff) {
 //						GPIO_WriteValue(3, true);
 //						GPIO_WriteValue(3, false);
 //					}
-					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
 					GPIO_WriteValue(3, true);
+					fresh = false;
+					if(CKCON0 & CKCON0_T1M__BMASK) { // 250ns per tick with prescaler
+						for(j = 0; j < (0xff - TH1) * 10; j++){ // 500ns per loop,
+							if(fresh) break;
+						}
+					} else { // 20ns per tick
+						for(j = 0; j < (0xff - TH1); j++){ // 500ns per loop,
+							if(fresh) break;
+						}
+					}
+					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
 					UART0_readBuffer(rxBufferA, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer. We have one byte-time to get this done
 					GPIO_WriteValue(3, false);
 					rxTargetA = true;
