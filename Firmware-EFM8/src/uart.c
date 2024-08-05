@@ -10,6 +10,7 @@
 #include "efm8_usb.h"
 #include <SI_EFM8UB1_Register_Enums.h>
 #include "stdbool.h"
+#include "gpio.h"
 
 #define TX_BIT		0x10
 #define RX_BIT		0x20
@@ -66,7 +67,6 @@ void UART_SetConfig(UartConfigData_t* config) {
 	case UART_DISABLED:
 		UART_Disable();
 		break;
-
 	case UART_STANDARD:
 		UART_Enable();
 		TH1 = config->TH1Val;
@@ -80,6 +80,16 @@ void UART_SetConfig(UartConfigData_t* config) {
 			P0MDOUT &= ~TX_BIT;
 		else
 			P0MDOUT |= TX_BIT;
+
+		GPIO_MakeOutput(3, PushPullOutput);
+		GPIO_WriteValue(3, false);
+		GPIO_MakeOutput(13, PushPullOutput);
+		GPIO_WriteValue(13, false);
+
+		GPIO_MakeOutput(4, PushPullOutput);
+		GPIO_WriteValue(4, false);
+		GPIO_MakeOutput(14, PushPullOutput);
+		GPIO_WriteValue(14, false);
 
 		rxTargetA = true;
 		rxBufferFull = false;
@@ -124,6 +134,7 @@ void UART_Transaction(uint8_t* txBuff) {
 
 	switch (txBuff[0]) {
 	case UART_CMD_TX:
+		GPIO_WriteValue(3, true);
 		if (mode == UART_STANDARD) {
 //			IE_ES0 = 0; // disable UART interrupts
 //			for (i = 0; i < len; i++) {
@@ -147,35 +158,58 @@ void UART_Transaction(uint8_t* txBuff) {
 			temp = 0xff;
 			USBD_Write(EP2IN, &temp, 1, false);
 		}
+		GPIO_WriteValue(3, false);
 		break;
 
 	case UART_CMD_RX:
-		if (mode == UART_STANDARD) {
+
+		if (mode == UART_STANDARD){
+
 			if(rxBufferFull){
 				if(rxTargetA){ // currently targetting A, B is already full
 					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN;
+					GPIO_WriteValue(14, true);
+					GPIO_WriteValue(14, false);
 					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
 				} else {
 					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN;
+					GPIO_WriteValue(13, true);
+					GPIO_WriteValue(13, false);
 					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 				}
 				rxBufferFull = false;
 			} else {
 				if(rxTargetA){
+//					for(i = 0; i < RX_BUFF_LEN - UART0_rxBytesRemaining(); i++){
+//						GPIO_WriteValue(4, true);
+//						GPIO_WriteValue(4, false);
+//					}
 					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
+					GPIO_WriteValue(4, true);
 					UART0_readBuffer(rxBufferB, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
+					GPIO_WriteValue(4, false);
+					rxTargetA = false;
 					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
 				} else {
+//					for(i = 0; i < RX_BUFF_LEN - UART0_rxBytesRemaining(); i++){
+//						GPIO_WriteValue(3, true);
+//						GPIO_WriteValue(3, false);
+//					}
 					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN - UART0_rxBytesRemaining();
-					UART0_readBuffer(rxBufferA, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
+					GPIO_WriteValue(3, true);
+					UART0_readBuffer(rxBufferA, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer. We have one byte-time to get this done
+					GPIO_WriteValue(3, false);
+					rxTargetA = true;
 					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
 				}
+
 			}
 //			rxBufferA[BUFF_LEN] = BUFF_LEN - UART0_rxBytesRemaining();
 //			USBD_Write(EP2IN, rxBufferA, BUFF_LEN + 1, false);
 //			memset(rxBufferA, 0, BUFF_LEN);
 //			UART0_readBuffer(rxBufferA, BUFF_LEN);
 
+			break;
 		} else if (mode == UART_ONEWIRE) {
 			IE_ES0 = 0; // disable UART interrupts
 			for (i = 0; i < len; i++) {
