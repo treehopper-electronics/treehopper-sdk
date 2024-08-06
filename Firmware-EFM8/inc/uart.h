@@ -9,6 +9,7 @@
 #define UART_H_
 
 #include "stdint.h"
+#include "uart_0.h"
 
 typedef enum {
 	UART_DISABLED, UART_STANDARD, UART_ONEWIRE
@@ -32,5 +33,9 @@ void UART_Enable();
 void UART_Disable();
 void UART_SendChar(uint8_t c);
 void UART_StartDebugging115200();
+
+static void sendUsbRxResponse(SI_VARIABLE_SEGMENT_POINTER(buffer,
+        uint8_t,
+        EFM8PDL_UART0_RX_BUFTYPE));
 
 #endif /* UART_H_ */

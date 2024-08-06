@@ -93,6 +93,11 @@ void UART_SetConfig(UartConfigData_t *config) {
 
 		GPIO_MakeOutput(12, PushPullOutput);
 		GPIO_WriteValue(12, false);
+		GPIO_MakeOutput(10, PushPullOutput);
+		GPIO_WriteValue(10, false);
+		GPIO_MakeOutput(11, PushPullOutput);
+		GPIO_WriteValue(11, false);
+
 
 		rxTargetA = true;
 		AFull = false;
@@ -136,6 +141,8 @@ void UART_Transaction(uint8_t *txBuff) {
 	uint8_t i;
 	uint8_t len = txBuff[1];
 	uint16_t j;
+	int8_t usbReturn;
+	bool retry;
 
 	switch (txBuff[0]) {
 	case UART_CMD_TX:
@@ -160,24 +167,26 @@ void UART_Transaction(uint8_t *txBuff) {
 
 	case UART_CMD_RX:
 		if (mode == UART_STANDARD) {
-			if (AFull || BFull) {
+			if(AFull || BFull) {
 				if (rxTargetA) { // currently targetting A, B is already full
 					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN;
-					GPIO_WriteValue(14, true);
-					GPIO_WriteValue(14, false);
-					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+					GPIO_WriteValue(12, true);
+					GPIO_WriteValue(12, false);
+					sendUsbRxResponse(rxBufferB);
 					BFull = false;
 					if (AFull) { // if the buffer we're already targeting is also full, we need to restart
 						UART0_readBuffer(rxBufferB, RX_BUFF_LEN);
+						rxTargetA = false;
 					}
 				} else {
 					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN;
-					GPIO_WriteValue(13, true);
-					GPIO_WriteValue(13, false);
-					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+					GPIO_WriteValue(11, true);
+					GPIO_WriteValue(11, false);
+					sendUsbRxResponse(rxBufferA);
 					AFull = false;
 					if (BFull) { // if the buffer we're already targeting is also full, we need to restart
 						UART0_readBuffer(rxBufferA, RX_BUFF_LEN);
+						rxTargetA = true;
 					}
 				}
 //				rxBufferFull = false;
@@ -197,14 +206,21 @@ void UART_Transaction(uint8_t *txBuff) {
 								break;
 						}
 					}
-					for (j = 0; j < (10); j++) { // 500ns per loop,
-					}
 					rxBufferA[RX_BUFF_LEN] = RX_BUFF_LEN
 							- UART0_rxBytesRemaining();
 					UART0_readBuffer(rxBufferB, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer
 					GPIO_WriteValue(4, false);
 					rxTargetA = false;
-					USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+
+//					usbReturn = USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+//					if(usbReturn != USB_STATUS_OK){
+//						USBD_AbortTransfer(EP2IN);
+//						usbReturn = USBD_Write(EP2IN, rxBufferA, RX_BUFF_LEN + 1, false);
+//						GPIO_WriteValue(13, true);
+//						GPIO_WriteValue(13, false);
+//					}
+					sendUsbRxResponse(rxBufferA);
+
 				} else {
 					GPIO_WriteValue(3, true);
 					fresh = false; // signalled from ISR
@@ -221,14 +237,21 @@ void UART_Transaction(uint8_t *txBuff) {
 							}
 						}
 					}
-					for (j = 0; j < (10); j++) { // 500ns per loop,
-					}
+
 					rxBufferB[RX_BUFF_LEN] = RX_BUFF_LEN
 							- UART0_rxBytesRemaining();
 					UART0_readBuffer(rxBufferA, RX_BUFF_LEN); // redirect incoming bytes to fresh buffer. We have one byte-time to get this done
 					GPIO_WriteValue(3, false);
 					rxTargetA = true;
-					USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+
+					sendUsbRxResponse(rxBufferB);
+//					usbReturn = USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+//					if(usbReturn != USB_STATUS_OK){
+//						USBD_AbortTransfer(EP2IN);
+//						usbReturn = USBD_Write(EP2IN, rxBufferB, RX_BUFF_LEN + 1, false);
+//						GPIO_WriteValue(14, true);
+//						GPIO_WriteValue(14, false);
+//					}
 				}
 			}
 //			rxBufferA[BUFF_LEN] = BUFF_LEN - UART0_rxBytesRemaining();
@@ -399,6 +422,16 @@ uint8_t oneWire_Reset() {
 	return (val != 0xf0);
 }
 
+static void sendUsbRxResponse(SI_VARIABLE_SEGMENT_POINTER(buffer,
+        uint8_t,
+        EFM8PDL_UART0_RX_BUFTYPE)){
+	int8_t retVal;
+	retVal = USBD_Write(EP2IN, buffer, RX_BUFF_LEN + 1, false);
+	if(retVal != USB_STATUS_OK) {
+		USBD_AbortTransfer(EP2IN);
+	}
+}
+
 void UART0_transmitCompleteCb() {
 	txBusy = 0;
 }
@@ -406,13 +439,16 @@ void UART0_transmitCompleteCb() {
 void UART0_receiveCompleteCb() {
 	if (mode == UART_STANDARD) {
 		if (rxTargetA) {
+			AFull = true;
 			if (BFull) { // uh oh
 
 			} else {
 				rxTargetA = false;
+
 				UART0_readBuffer(rxBufferB, RX_BUFF_LEN);
 			}
 		} else {
+			BFull = true;
 			if (AFull) { // uh oh
 
 			} else {

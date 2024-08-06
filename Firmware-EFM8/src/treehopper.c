@@ -90,8 +90,10 @@ void Treehopper_Task() {
 	if (!USBD_EpIsBusy(EP_PeripheralConfig)) {
 		ProcessPeripheralConfigPacket();
 	}
-	if(!USBD_EpIsBusy(EP_PinStatus))
+	if(!USBD_EpIsBusy(EP_PinStatus)) {
 		SendPinStatus();
+	}
+
 	DEBUG_LOW();
 }
 

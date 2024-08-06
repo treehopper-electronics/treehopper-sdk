@@ -127,7 +127,8 @@ SI_SEGMENT_VARIABLE(txRemaining, static uint8_t,  SI_SEG_XDATA)=0;
 SI_SEGMENT_VARIABLE(rxRemaining, static uint8_t,  SI_SEG_XDATA)=0;
 SI_SEGMENT_VARIABLE_SEGMENT_POINTER(txBuffer,    static uint8_t, EFM8PDL_UART0_TX_BUFTYPE, SI_SEG_XDATA);
 SI_SEGMENT_VARIABLE_SEGMENT_POINTER(rxBuffer,    static uint8_t, EFM8PDL_UART0_RX_BUFTYPE, SI_SEG_XDATA);
-
+#include "stdbool.h"
+bool fresh = false;
 
 SI_INTERRUPT(UART0_ISR, UART0_IRQn)
 {
@@ -145,6 +146,7 @@ SI_INTERRUPT(UART0_ISR, UART0_IRQn)
       *rxBuffer = SBUF0;
       ++rxBuffer;
       --rxRemaining;
+      fresh = true;
       if (!rxRemaining)
       {
         UART0_receiveCompleteCb();
