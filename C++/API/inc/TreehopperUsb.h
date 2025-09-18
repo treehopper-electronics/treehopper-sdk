@@ -11,6 +11,7 @@
 #include "HardwareSpi.h"
 #include "HardwareUart.h"
 #include <thread>
+#include <stdint.h>
 
 using namespace std;
 
