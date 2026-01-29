@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Version>1.11.6</Version>
     <Authors>Treehopper Electronics</Authors>
     <Company>Treehopper Electronics</Company>
@@ -13,19 +13,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>..\..\..\Output\NET\$(Configuration)\</OutputPath>
     <PackageIconUrl>https://treehopper.io/files/assets/icon-64.png</PackageIconUrl>
+    <OutputPath>..\..\..\Output\NET\$(Configuration)\</OutputPath>
     <AssemblyVersion>1.11.6.0</AssemblyVersion>
     <FileVersion>1.11.6.0</FileVersion>
     <PackageReleaseNotes />
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>..\..\..\Output\NET\Release\netstandard2.0\Treehopper.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\..\Output\NET\Debug\netstandard2.0\Treehopper.xml</DocumentationFile>
-  </PropertyGroup>
-
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>..\..\..\Output\NET\Release\Treehopper.xml</DocumentationFile>
+	</PropertyGroup>
 </Project>
