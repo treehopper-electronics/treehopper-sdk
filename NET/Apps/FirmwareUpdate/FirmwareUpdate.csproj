@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\API\Treehopper.Desktop\Treehopper.Desktop.csproj" />
-    <ProjectReference Include="..\..\..\API\Treehopper.Firmware\Treehopper.Firmware.csproj" />
-    <ProjectReference Include="..\..\..\API\Treehopper\Treehopper.csproj" />
+    <ProjectReference Include="..\..\API\Treehopper.Desktop\Treehopper.Desktop.csproj" />
+    <ProjectReference Include="..\..\API\Treehopper.Firmware\Treehopper.Firmware.csproj" />
+    <ProjectReference Include="..\..\API\Treehopper\Treehopper.csproj" />
   </ItemGroup>
 
 </Project>
