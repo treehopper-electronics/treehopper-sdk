@@ -17,43 +17,9 @@
   <Folder Name="/Apps/">
     <Project Path="Apps/Sandbox/Sandbox.csproj" Id="4994edf6-d505-4d66-80f0-9c7e7759c8e2" />
   </Folder>
-  <Folder Name="/Apps/FirmwareUpdater/">
-    <Project Path="Apps/FirmwareUpdater/FirmwareUpdater.Gtk/FirmwareUpdater.Gtk.csproj" Id="626f9725-0cfe-48a1-80c5-ce92a8cce63e" />
-    <Project Path="Apps/FirmwareUpdater/FirmwareUpdater.Wpf/FirmwareUpdater.Wpf.csproj" Id="6d0f850e-6586-4d7f-9dae-ce205c27f256" />
-    <Project Path="Apps/FirmwareUpdater/FirmwareUpdater/FirmwareUpdater.csproj" />
-  </Folder>
-  <Folder Name="/Apps/TreehopperApp/">
-    <Project Path="Apps/TreehopperApp/TreehopperApp.Android/TreehopperApp.Android.csproj">
-      <Deploy />
-    </Project>
-    <Project Path="Apps/TreehopperApp/TreehopperApp.Gtk/TreehopperApp.Gtk.csproj" Id="823c3249-3ba0-457c-9a88-a6ed9891e9d3" />
-    <Project Path="Apps/TreehopperApp/TreehopperApp.Mac/TreehopperApp.Mac.csproj" />
-    <Project Path="Apps/TreehopperApp/TreehopperApp.Uwp/TreehopperApp.Uwp.csproj" Id="bb271fb3-afb9-4998-8557-ed9613102e38">
-      <Platform Solution="*|Any CPU" Project="x86" />
-      <Platform Solution="*|ARM" Project="ARM" />
-      <Platform Solution="*|iPhone" Project="x86" />
-      <Platform Solution="*|iPhoneSimulator" Project="x86" />
-      <Platform Solution="*|x64" Project="x64" />
-      <Platform Solution="*|x86" Project="x86" />
-      <Build Solution="*|Any CPU" Project="false" />
-      <Build Solution="*|iPhone" Project="false" />
-      <Build Solution="*|iPhoneSimulator" Project="false" />
-      <Deploy Solution="*|ARM" />
-      <Deploy Solution="*|x64" />
-      <Deploy Solution="*|x86" />
-    </Project>
-    <Project Path="Apps/TreehopperApp/TreehopperApp.Wpf/TreehopperApp.Wpf.csproj" Id="7a589e90-71e6-4b62-aba0-d40eb57cf213">
-      <Build Solution="*|iPhone" Project="false" />
-      <Build Solution="*|iPhoneSimulator" Project="false" />
-    </Project>
-    <Project Path="Apps/TreehopperApp/TreehopperApp/TreehopperApp.shproj" />
-  </Folder>
+  <Folder Name="/Apps/FirmwareUpdater/" />
+  <Folder Name="/Apps/TreehopperApp/" />
   <Folder Name="/Demos/" />
-  <Folder Name="/Demos/Android/">
-    <Project Path="Demos/Android/Blink/Blink.csproj">
-      <Deploy />
-    </Project>
-  </Folder>
   <Folder Name="/Demos/Console/">
     <Project Path="Demos/Console/AnalogRead/AnalogRead.csproj" Id="b1618cc5-a581-42bb-adbb-c6245fc91664" />
     <Project Path="Demos/Console/Blink/Blink.csproj" Id="67ccafd7-a170-4b29-843d-6858af653af0" />
