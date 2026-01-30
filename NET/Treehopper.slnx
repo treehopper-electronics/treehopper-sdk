@@ -12,13 +12,6 @@
     <Project Path="API/Treehopper.Desktop/Treehopper.Desktop.csproj" />
     <Project Path="API/Treehopper.Firmware/Treehopper.Firmware.csproj" Id="46bfff7e-edce-42b5-88be-ec27f41266fc" />
     <Project Path="API/Treehopper.Libraries/Treehopper.Libraries.csproj" />
-    <Project Path="API/Treehopper.Uwp/Treehopper.Uwp.csproj" Id="f85ffd61-cec5-420e-a521-31c475580cad">
-      <Platform Solution="*|ARM" Project="ARM" />
-      <Platform Solution="*|x64" Project="x64" />
-      <Platform Solution="*|x86" Project="x86" />
-      <Build Solution="*|iPhone" Project="false" />
-      <Build Solution="*|iPhoneSimulator" Project="false" />
-    </Project>
     <Project Path="API/Treehopper/Treehopper.csproj" />
   </Folder>
   <Folder Name="/Apps/">
@@ -64,9 +57,8 @@
   <Folder Name="/Demos/Console/">
     <Project Path="Demos/Console/AnalogRead/AnalogRead.csproj" Id="b1618cc5-a581-42bb-adbb-c6245fc91664" />
     <Project Path="Demos/Console/Blink/Blink.csproj" Id="67ccafd7-a170-4b29-843d-6858af653af0" />
-    <Project Path="Demos/Console/BlinkCore/BlinkCore.csproj" />
     <Project Path="Demos/Console/DigitalRead/DigitalRead.csproj" Id="64b351f2-ae9a-4cee-804a-dd1b601dd5eb" />
-    <Project Path="Demos/Console/FirmwareUpdate/FirmwareUpdate.csproj" Id="253b9c1d-861c-4bc8-a923-0e46309bf0b2" />
+    <Project Path="Demos/Console/FirmwareUpdate/FirmwareUpdate.csproj" Id="0359b4c6-4b50-40ae-8c27-bd1a427f59ad" />
     <Project Path="Demos/Console/I2cDeviceScanner/I2cDeviceScanner.csproj" Id="5e55266b-29c7-402b-b5a0-538825248264" />
     <Project Path="Demos/Console/OneWire/OneWireScan.csproj" Id="ee48bd42-08ae-435b-8f16-913a4334fe94" />
     <Project Path="Demos/Console/PwmFade/Pwm.csproj" Id="a9daa73d-fe45-4dd0-9cb7-b7892a3db024" />
