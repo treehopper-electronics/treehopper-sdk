@@ -1,38 +1,23 @@
-﻿using System;
-using System.Threading.Tasks;
-using Treehopper;
+﻿using Treehopper;
 using Treehopper.Libraries.Sensors.Temperature;
-namespace Mlx90615Demo
+
+var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+await board.ConnectAsync();
+
+var tempSensor = new Mlx90615(board.I2c);
+
+while (true)
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            App().Wait();
-        }
+    Console.Write("Ambient temperature: ");
+    Console.WriteLine(tempSensor.Ambient.Fahrenheit);
 
-        static async Task App()
-        {
-            var board = await ConnectionService.Instance.GetFirstDeviceAsync();
-            await board.ConnectAsync();
+    Console.Write("Object temperature: ");
+    Console.WriteLine(tempSensor.Object.Fahrenheit);
 
-            var tempSensor = new Mlx90615(board.I2c);
+    Console.Write("Raw IR data: ");
+    Console.WriteLine(tempSensor.RawIrData);
 
-            while(true)
-            {
-                Console.Write("Ambient temperature: ");
-                Console.WriteLine(tempSensor.Ambient.Fahrenheit);
+    Console.WriteLine();
 
-                Console.Write("Object temperature: ");
-                Console.WriteLine(tempSensor.Object.Fahrenheit);
-
-                Console.Write("Raw IR data: ");
-                Console.WriteLine(tempSensor.RawIrData);
-
-                Console.WriteLine();
-
-                await Task.Delay(1000);
-            }
-        }
-    }
+    await Task.Delay(1000);
 }
