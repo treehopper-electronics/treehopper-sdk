@@ -28,9 +28,6 @@
     <Project Path="Demos/Console/SoftPwm/SoftPwm.csproj" />
   </Folder>
   <Folder Name="/Demos/Libraries/" />
-  <Folder Name="/Demos/Libraries/ArduinoShim/">
-    <Project Path="Demos/Libraries/ArduinoShim/Blink/Blink.csproj" />
-  </Folder>
   <Folder Name="/Demos/Libraries/Displays/">
     <Project Path="Demos/Libraries/Displays/Apa102Demo/Apa102Demo.csproj" />
     <Project Path="Demos/Libraries/Displays/CharacterLcd16x2Gpio/CharacterLcd16x2Gpio.csproj" />
