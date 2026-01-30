@@ -19,56 +19,54 @@
   </Folder>
   <Folder Name="/Demos/" />
   <Folder Name="/Demos/Console/">
+    <Project Path="Demos/Console/AnalogRead/AnalogRead.csproj" Id="b1618cc5-a581-42bb-adbb-c6245fc91664" />
     <Project Path="Demos/Console/Blink/Blink.csproj" />
-    <Project Path="Demos/Console/AnalogRead/AnalogRead.csproj" />
-    <Project Path="Demos/Console/DigitalRead/DigitalRead.csproj" />
-    <Project Path="Demos/Console/I2cDeviceScanner/I2cDeviceScanner.csproj" />
-    <Project Path="Demos/Console/OneWire/OneWireScan.csproj" />
-    <Project Path="Demos/Console/PwmFade/Pwm.csproj" />
-    <Project Path="Demos/Console/SoftPwm/SoftPwm.csproj" />
+    <Project Path="Demos/Console/DigitalRead/DigitalRead.csproj" Id="64b351f2-ae9a-4cee-804a-dd1b601dd5eb" />
+    <Project Path="Demos/Console/I2cDeviceScanner/I2cDeviceScanner.csproj" Id="5e55266b-29c7-402b-b5a0-538825248264" />
+    <Project Path="Demos/Console/OneWire/OneWireScan.csproj" Id="ee48bd42-08ae-435b-8f16-913a4334fe94" />
+    <Project Path="Demos/Console/PwmFade/Pwm.csproj" Id="a9daa73d-fe45-4dd0-9cb7-b7892a3db024" />
+    <Project Path="Demos/Console/SoftPwm/SoftPwm.csproj" Id="3f2fe187-564c-452f-a3b5-55dac3a0937f" />
   </Folder>
   <Folder Name="/Demos/Libraries/" />
   <Folder Name="/Demos/Libraries/Displays/">
-    <Project Path="Demos/Libraries/Displays/Apa102Demo/Apa102Demo.csproj" />
-    <Project Path="Demos/Libraries/Displays/CharacterLcd16x2Gpio/CharacterLcd16x2Gpio.csproj" />
-    <Project Path="Demos/Libraries/Displays/CharacterLcd16x2Pcf8574/CharacterLcd20x4Pcf8574.csproj" />
-    <Project Path="Demos/Libraries/Displays/Dm632/Dm632.csproj" />
-    <Project Path="Demos/Libraries/Displays/Ht16k33Demo/Ht16k33Demo.csproj" />
-    <Project Path="Demos/Libraries/Displays/Is31Fl3218/Is31Fl3218.csproj" />
-    <Project Path="Demos/Libraries/Displays/LedShiftRegister/LedShiftRegister.csproj" />
-    <Project Path="Demos/Libraries/Displays/Max7219PixelDisplay/Max7219PixelDisplay.csproj" />
-    <Project Path="Demos/Libraries/Displays/Max7219SevenSeg/Max7219SevenSeg.csproj" />
-    <Project Path="Demos/Libraries/Displays/Ssd1306Oled128x32/Ssd1306Oled128x32.csproj" />
-    <Project Path="Demos/Libraries/Displays/Tm1650SevenSeg/Tm1650SevenSeg.csproj" />
+    <Project Path="Demos/Libraries/Displays/Apa102Demo/Apa102Demo.csproj" Id="2ef85215-74ea-40d9-bdb2-59ac50b8aa3b" />
+    <Project Path="Demos/Libraries/Displays/CharacterLcd16x2Gpio/CharacterLcd16x2Gpio.csproj" Id="bd266eb4-bf49-407c-956f-0e4ef94491aa" />
+    <Project Path="Demos/Libraries/Displays/CharacterLcd16x2Pcf8574/CharacterLcd20x4Pcf8574.csproj" Id="a3534d51-572c-4811-868e-ed4dc7d91738" />
+    <Project Path="Demos/Libraries/Displays/Dm632/Dm632.csproj" Id="60520fe8-9c3e-4f13-819b-9721068c1f95" />
+    <Project Path="Demos/Libraries/Displays/Ht16k33Demo/Ht16k33Demo.csproj" Id="ff194cd7-12e6-4669-8a4a-8c235d8bb7a7" />
+    <Project Path="Demos/Libraries/Displays/Is31Fl3218/Is31Fl3218.csproj" Id="0d0caad4-afe7-4a46-9e21-9aa06ff9da25" />
+    <Project Path="Demos/Libraries/Displays/LedShiftRegister/LedShiftRegister.csproj" Id="03119c98-bf14-4085-ae37-e7ff08241a99" />
+    <Project Path="Demos/Libraries/Displays/Max7219PixelDisplay/Max7219PixelDisplay.csproj" Id="212927a9-aa19-4400-a506-b012451220c3" />
+    <Project Path="Demos/Libraries/Displays/Max7219SevenSeg/Max7219SevenSeg.csproj" Id="cebea7b8-d59a-472a-8971-7f89a2da61a5" />
+    <Project Path="Demos/Libraries/Displays/Ssd1306Oled128x32/Ssd1306Oled128x32.csproj" Id="f3dab45d-1224-4799-9f6c-2a14b4f4a2b5" />
+    <Project Path="Demos/Libraries/Displays/Tm1650SevenSeg/Tm1650SevenSeg.csproj" Id="310a7c1c-abb9-4433-9a58-7d5fbb841b22" />
   </Folder>
   <Folder Name="/Demos/Libraries/Input/">
-    <Project Path="Demos/Libraries/Input/RotaryEncoder/RotaryEncoder.csproj" />
-    <Project Path="Demos/Libraries/Input/SuperNesDemo/SuperNesDemo.csproj" />
-    <Project Path="Demos/Libraries/Input/WiiNunchukDemo/WiiNunchukDemo.csproj" />
+    <Project Path="Demos/Libraries/Input/RotaryEncoder/RotaryEncoder.csproj" Id="a82d4bbd-179f-4a5f-8c9b-23eb5d73492b" />
+    <Project Path="Demos/Libraries/Input/SuperNesDemo/SuperNesDemo.csproj" Id="5cf61d17-d5a3-4e55-ba85-6fa8a68105bd" />
+    <Project Path="Demos/Libraries/Input/WiiNunchukDemo/WiiNunchukDemo.csproj" Id="7c3302be-6a99-487e-9781-670cd9ad9f47" />
   </Folder>
   <Folder Name="/Demos/Libraries/Interface/">
-    <Project Path="Demos/Libraries/Interface/AdcDemo/AdcDemo.csproj" />
-    <Project Path="Demos/Libraries/Interface/DacDemo/DacDemo.csproj" />
-    <Project Path="Demos/Libraries/Interface/I2cAnalogMux/I2cAnalogMux.csproj" />
-    <Project Path="Demos/Libraries/Interface/Ltc2305/Ltc2305.csproj" />
-    <Project Path="Demos/Libraries/Interface/Mcp23008Demo/Mcp23008Demo.csproj" />
-    <Project Path="Demos/Libraries/Interface/Pca9685/Pca9685.csproj" />
-    <Project Path="Demos/Libraries/Interface/Sn74hc166/Sn74hc166.csproj" />
-    <Project Path="Demos/Libraries/Interface/Sn74Hc595/Sn74hc595.csproj"/>
+    <Project Path="Demos/Libraries/Interface/AdcDemo/AdcDemo.csproj" Id="b9312c5b-bd69-4843-81cb-5784ec29eef3" />
+    <Project Path="Demos/Libraries/Interface/DacDemo/DacDemo.csproj" Id="70d5f590-cbc5-4056-99fd-dd31b69c99c2" />
+    <Project Path="Demos/Libraries/Interface/I2cAnalogMux/I2cAnalogMux.csproj" Id="4ec6aa2d-da54-46e2-aeac-0d1b16be3797" />
+    <Project Path="Demos/Libraries/Interface/Ltc2305/Ltc2305.csproj" Id="ca133d2a-0b6a-4fe5-a38a-5bcfde5051d2" />
+    <Project Path="Demos/Libraries/Interface/Mcp23008Demo/Mcp23008Demo.csproj" Id="d155a077-3d5a-4043-b5d4-ba678f8233ac" />
+    <Project Path="Demos/Libraries/Interface/Pca9685/Pca9685.csproj" Id="882a1d8e-4a67-440b-a104-5fa7c2fb2d60" />
+    <Project Path="Demos/Libraries/Interface/Sn74hc166/Sn74hc166.csproj" Id="cf72bd07-5ff9-4304-b3b5-64a8d1a8a65b" />
+    <Project Path="Demos/Libraries/Interface/Sn74Hc595/Sn74hc595.csproj" Id="29384192-2466-4da6-b3e2-666de97fff28" />
   </Folder>
   <Folder Name="/Demos/Libraries/Motors/">
-    <Project Path="Demos/Libraries/Motors/Amis30624/Amis30624.csproj" />
-    <Project Path="Demos/Libraries/Motors/HobbyServo/HobbyServo.csproj" />
-    <Project Path="Demos/Libraries/Motors/MotorizedFader/MotorizedFader.csproj" />
+    <Project Path="Demos/Libraries/Motors/Amis30624/Amis30624.csproj" Id="85736044-7a89-499d-96fd-33fe07d7755e" />
+    <Project Path="Demos/Libraries/Motors/HobbyServo/HobbyServo.csproj" Id="7f7ea1c8-0342-4371-93af-5ee075bcc049" />
+    <Project Path="Demos/Libraries/Motors/MotorizedFader/MotorizedFader.csproj" Id="57e2b989-5433-4dee-9181-70b97671d2dd" />
   </Folder>
   <Folder Name="/Demos/Libraries/Sensors/">
-    <Project Path="Demos/Libraries/Sensors/BarometricPressure/BarometricPressure.csproj" />
-    <Project Path="Demos/Libraries/Sensors/Ds18b20/Ds18b20.csproj" />
-    <Project Path="Demos/Libraries/Sensors/HMC5883Demo/HMC5883Demo.csproj" />
-    <Project Path="Demos/Libraries/Sensors/ImuVisualizer/ImuVisualizer.csproj" />
-    <Project Path="Demos/Libraries/Sensors/Mlx90615/Mlx90615.csproj" />
-    <Project Path="Demos/Libraries/Sensors/Mpu9250/Mpu9250.csproj" />
-    <Project Path="Demos/Libraries/Sensors/RgbColorSensor/RgbColorSensor.csproj" />
-    <Project Path="Demos/Libraries/Sensors/Temperature/Temperature.csproj" />
+    <Project Path="Demos/Libraries/Sensors/BarometricPressure/BarometricPressure.csproj" Id="d5c29f91-dbc0-438a-96e4-d4e5db76f226" />
+    <Project Path="Demos/Libraries/Sensors/Ds18b20/Ds18b20.csproj" Id="ea319b7d-54df-4d13-ba9a-87849a3ef4a5" />
+    <Project Path="Demos/Libraries/Sensors/HMC5883Demo/HMC5883Demo.csproj" Id="bd95b176-20fe-4580-b246-2f7bf989e15f" />
+    <Project Path="Demos/Libraries/Sensors/Mlx90615/Mlx90615.csproj" Id="1eb2bfc4-a438-43bd-ac7d-674836daf41d" />
+    <Project Path="Demos/Libraries/Sensors/Mpu9250/Mpu9250.csproj" Id="284216e1-a28e-4a95-b649-f82d9e6511b4" />
+    <Project Path="Demos/Libraries/Sensors/Temperature/Temperature.csproj" Id="8a2085f5-6f95-4666-81e8-e4dbff02efb2" />
   </Folder>
 </Solution>
