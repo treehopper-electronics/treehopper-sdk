@@ -1,33 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
-using Treehopper;
-using Treehopper.Desktop;
+﻿using Treehopper;
 using Treehopper.Libraries.Displays;
 
-namespace Demo
+var board = await ConnectionService.Instance.GetFirstDeviceAsync();
+await board.ConnectAsync();
+var controller = new Max7219(board.Spi, board.Pins[7]);
+var display = new SevenSegmentDisplay(controller.Leds, true);
+
+int i = 0;
+while (!Console.KeyAvailable)
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            App().ConfigureAwait(false);
-        }
-
-        static async Task App()
-        {
-            var board = await ConnectionService.Instance.GetFirstDeviceAsync();
-            await board.ConnectAsync();
-            var controller = new Max7219(board.Spi, board.Pins[7]);
-            var display = new SevenSegmentDisplay(controller.Leds, true);
-
-            int i = 0;
-            while (!Console.KeyAvailable)
-            {
-                display.Text = i++;
-                await Task.Delay(10);
-            }
-
-            board.Disconnect();
-        }
-    }
+    display.Text = i++;
+    await Task.Delay(10);
 }
+
+board.Disconnect();
