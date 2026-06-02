@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
@@ -75,24 +74,12 @@ namespace Treehopper.Desktop.WinUsb
                     }
                     else
                     {
-                        var board = Service.Boards
-                            .Where(x => x.Connection.DevicePath.Substring(3).ToLower() ==
-                                        devBroadcastMsg.DevicePath.Substring(3).ToLower())
-                            .FirstOrDefault();
-                        if (board != null)
-                        {
-                            Debug.WriteLine("Removing: " + board);
-                            board.Connection.Dispose(); // kill the connection first
-                            board.Dispose();
-                            if (currentContext == null)
-                            {
-                                Service.Boards.Remove(board);
-                            }
-                            else
-                            {
-                                currentContext.Post(delegate { Service.Boards.Remove(board); }, null);
-                            }
-                        }
+                        // Delegate to the service so the Boards mutation is marshaled onto the consumer's
+                        // SynchronizationContext (the same one add() uses) instead of being applied
+                        // synchronously here, inside the WndProc / CollectionChanged callstack. Mutating the
+                        // ObservableCollection from this device-notification thread threw
+                        // "Cannot change ObservableCollection during a CollectionChanged event."
+                        Service.remove(devBroadcastMsg.DevicePath);
                     }
                 }
             }
