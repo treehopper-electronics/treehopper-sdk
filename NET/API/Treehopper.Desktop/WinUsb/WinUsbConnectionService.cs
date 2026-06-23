@@ -111,6 +111,30 @@ namespace Treehopper.Desktop.WinUsb
             SetupApi.SetupDiDestroyDeviceInfoList(devInfo);
         }
 
+        internal void remove(string matchDevicePath)
+        {
+            // Find the board whose connection matches the removed device. Substring(3) skips the
+            // differing path prefix, matching the comparison convention used elsewhere for these paths.
+            var board = Boards.FirstOrDefault(x =>
+                x.Connection.DevicePath.Substring(3).ToLower() ==
+                matchDevicePath.Substring(3).ToLower());
+            if (board == null)
+                return;
+
+            Debug.WriteLine("Removing: " + board);
+            board.Connection.Dispose(); // kill the connection first (blocking native USB teardown; keep it off the UI thread)
+            board.Dispose();
+
+            // Marshal the ObservableCollection mutation onto the same context add() uses, so every
+            // Boards mutation runs on one thread and never reentrantly inside a CollectionChanged
+            // dispatch. Mutating synchronously on the WM_DEVICECHANGE (devNotify) thread is what threw
+            // "Cannot change ObservableCollection during a CollectionChanged event."
+            if (currentContext == null)
+                Boards.Remove(board);
+            else
+                currentContext.Post(delegate { Boards.Remove(board); }, null);
+        }
+
         public override void Dispose()
         {
             mNotifyWindow.Dispose();
